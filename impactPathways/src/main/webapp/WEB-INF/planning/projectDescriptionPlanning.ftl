@@ -78,14 +78,14 @@
         [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.workplanRequired" value="true"  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+            [@customForm.checkbox name="project.workplanRequired" value="true" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
           <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
             <div class="halfPartBlock fileUpload projectWorkplan"> 
               [#if project.workplanName?has_content]
-                <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+                <p> ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
               [#else]
-                [#if (editable && !project.workplanRequired )]
+                [#if (editable && project.workplanRequired )]
                   [@customForm.inputFile name="file"  /]
                 [/#if] 
               [/#if] 

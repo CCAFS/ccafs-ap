@@ -303,6 +303,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     if (this.isHttpPost()) {
       if (project.getLinkedProjects() != null) {
         project.getLinkedProjects().clear();
+        project.setWorkplanName("");
+        project.setBilateralContractProposalName("");
       }
     }
   }
@@ -357,8 +359,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           previousProject.setWorkplanName(fileFileName);
           FileManager.copyFile(file, this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
         } else {
-          if (project.getWorkplanName().isEmpty() && !previousProject.getWorkplanName().isEmpty()) {
+          if (project.getWorkplanName().isEmpty()) {
             FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+            previousProject.setWorkplanName("");
           }
         }
       }
