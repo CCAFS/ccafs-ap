@@ -49,7 +49,7 @@ public class MySQLDAOManager extends DAOManager {
   @Override
   public int delete(String preparedUpdateQuery, Object[] values) {
     try (Connection conn = this.getConnection()) {
-      return makeChangeSecure(conn, preparedUpdateQuery, values);
+      return this.makeChangeSecure(conn, preparedUpdateQuery, values);
     } catch (SQLException e) {
       LOG.error("Connection to the database couldn't be established.", e);
       return -1;
@@ -57,12 +57,86 @@ public class MySQLDAOManager extends DAOManager {
   }
 
   @Override
+  public boolean deleteOnCascade(String tableName, String columnName, Object columnValue, int userID,
+    String justification) {
+    ResultSet rsReferences, rsColumnExist;
+    StringBuilder query = new StringBuilder();
+    Object[] values;
+    int result;
+    boolean problem = false;
+
+    try (Connection conn = this.getConnection()) {
+
+      // Let's find all the tables that are related to the current table.
+      query.append("SELECT * FROM information_schema.KEY_COLUMN_USAGE ");
+      query.append("WHERE TABLE_SCHEMA = '");
+      query.append(this.getProperties().getPropertiesAsString(APConfig.MYSQL_DATABASE));
+      query.append("' ");
+      query.append("AND REFERENCED_TABLE_NAME = '");
+      query.append(tableName);
+      query.append("' ");
+      query.append("AND REFERENCED_COLUMN_NAME = '");
+      query.append(columnName);
+      query.append("' ");
+      rsReferences = this.makeQuery(query.toString(), conn);
+
+      String table, column;
+      while (rsReferences.next()) {
+        // Validate that the column "is_active" exists.
+        table = rsReferences.getString("TABLE_NAME");
+        column = rsReferences.getString("COLUMN_NAME");
+
+        query.setLength(0);
+        query.append("SELECT COUNT(*) FROM information_schema.COLUMNS ");
+        query.append("WHERE TABLE_SCHEMA = '");
+        query.append(this.getProperties().getPropertiesAsString(APConfig.MYSQL_DATABASE));
+        query.append("' ");
+        query.append("AND TABLE_NAME = '");
+        query.append(table);
+        query.append("' ");
+        query.append("AND COLUMN_NAME = 'is_active'");
+
+        rsColumnExist = this.makeQuery(query.toString(), conn);
+        if (rsColumnExist.next() && rsColumnExist.getInt(1) != 0) {
+          // If is_active exists.
+
+          query.setLength(0);
+          query.append("UPDATE ");
+          query.append(table);
+          query.append(" SET is_active = 0, modified_by = ?, modification_justification = ? ");
+          query.append("WHERE ");
+          query.append(column);
+          query.append(" = ?");
+
+          values = new Object[3];
+          values[0] = userID;
+          values[1] = justification;
+          values[2] = columnValue;
+
+          // Setting is_active to 0.
+          result = this.makeChangeSecure(conn, query.toString(), values);
+          if (result == -1) {
+            // Mark a problem.
+            problem = true;
+          }
+        }
+      }
+
+    } catch (SQLException e) {
+      LOG.error("There was a problem trying to open a connection to the database.", e);
+    }
+
+    return !problem;
+  }
+
+  @Override
   public Connection getConnection() throws SQLException {
-    return openConnection(this.getProperties().getPropertiesAsString(APConfig.MYSQL_USER), this.getProperties()
-      .getPropertiesAsString(APConfig.MYSQL_PASSWORD), this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
+    return this.openConnection(this.getProperties().getPropertiesAsString(APConfig.MYSQL_USER),
+      this.getProperties().getPropertiesAsString(APConfig.MYSQL_PASSWORD),
+      this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
       this.getProperties().getPropertiesAsString(APConfig.MYSQL_PORT),
       this.getProperties().getPropertiesAsString(APConfig.MYSQL_DATABASE));
-// return null;
+    // return null;
   }
 
   @Override
