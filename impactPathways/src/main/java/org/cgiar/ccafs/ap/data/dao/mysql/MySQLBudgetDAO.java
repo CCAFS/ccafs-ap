@@ -571,6 +571,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
       query.append(" AND pb.project_id = ");
       query.append(projectID);
 
+      if (budgetData.get("cofinance_project_id") != null) {
+        query.append(" AND pb.cofinance_project_id = ");
+        query.append(budgetData.get("cofinance_project_id"));
+      }
+
       try (Connection con = databaseManager.getConnection()) {
         ResultSet rs = databaseManager.makeQuery(query.toString(), con);
         if (rs.next()) {
@@ -587,18 +592,19 @@ public class MySQLBudgetDAO implements BudgetDAO {
         // Insert new budget record
         query.setLength(0);
         query.append("INSERT INTO project_budgets (project_id, year, budget_type, institution_id, amount, ");
-        query.append("gender_percentage, created_by, modified_by, modification_justification) ");
-        query.append("VALUES (?,?,?,?,?,?,?,?,?)  ");
-        values = new Object[9];
+        query.append("gender_percentage, cofinance_project_id, created_by, modified_by, modification_justification) ");
+        query.append("VALUES (?,?,?,?,?,?,?,?,?,?)  ");
+        values = new Object[10];
         values[0] = projectID;
         values[1] = budgetData.get("year");
         values[2] = budgetData.get("budget_type");
         values[3] = budgetData.get("institution_id");
         values[4] = budgetData.get("amount");
         values[5] = budgetData.get("gender_percentage");
-        values[6] = budgetData.get("user_id");
+        values[6] = budgetData.get("cofinance_project_id");
         values[7] = budgetData.get("user_id");
-        values[8] = budgetData.get("justification");
+        values[8] = budgetData.get("user_id");
+        values[9] = budgetData.get("justification");
         result = databaseManager.saveData(query.toString(), values);
       }
     }

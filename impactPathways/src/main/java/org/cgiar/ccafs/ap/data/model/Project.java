@@ -177,6 +177,19 @@ public class Project {
     return budgets;
   }
 
+  public Budget getCofinancingBudget(int confinancingProjectID, int year) {
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        if (budget.getCofinancingProject() != null) {
+          if (budget.getCofinancingProject().getId() == confinancingProjectID && budget.getYear() == year) {
+            return budget;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public List<Budget> getCofinancingBudgets() {
     List<Budget> budgets = new ArrayList<>();
     if (this.getBudgets() != null) {
@@ -365,6 +378,10 @@ public class Project {
     return outputs;
   }
 
+  public List<OutputBudget> getOutputsBudgets() {
+    return outputsBudgets;
+  }
+
   public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
   }
@@ -385,10 +402,10 @@ public class Project {
     return projectPartners;
   }
 
+
   public List<IPProgram> getRegions() {
     return regions;
   }
-
 
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
@@ -582,6 +599,10 @@ public class Project {
     this.outputs = outputs;
   }
 
+  public void setOutputsBudgets(List<OutputBudget> outputsBudgets) {
+    this.outputsBudgets = outputsBudgets;
+  }
+
   public void setOutputsOverview(List<OutputOverview> outpusOverview) {
     this.outputsOverview = outpusOverview;
   }
@@ -629,13 +650,5 @@ public class Project {
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
-  }
-
-  public List<OutputBudget> getOutputsBudgets() {
-    return outputsBudgets;
-  }
-
-  public void setOutputsBudgets(List<OutputBudget> outputsBudgets) {
-    this.outputsBudgets = outputsBudgets;
   }
 }
