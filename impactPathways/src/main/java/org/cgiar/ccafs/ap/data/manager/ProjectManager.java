@@ -39,13 +39,15 @@ public interface ProjectManager {
   public boolean deleteIndicator(int projectID, int indicatorID, User user, String justification);
 
   /**
-   * This method deletes the project identified by the value received by
-   * parameter.
+   * This method deletes the project identified by the value received by parameter.
+   * This method also deletes all the items related to the project.
    * 
-   * @param projectID
+   * @param projectID is the project identifier.
+   * @param user is the user that is making the action.
+   * @param justification is the justification example.
    * @return True if the project was deleted, false otherwise.
    */
-  public boolean deleteProject(int projectID);
+  public boolean deleteProject(int projectID, User user, String justification);
 
   /**
    * This method delete the relation between the project and the output

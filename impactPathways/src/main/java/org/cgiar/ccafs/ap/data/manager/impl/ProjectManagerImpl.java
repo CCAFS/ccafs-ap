@@ -77,8 +77,16 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public boolean deleteProject(int projectID) {
-    return projectDAO.deleteProject(projectID);
+  public boolean deleteProject(int projectID, User user, String justification) {
+    boolean result = true;
+    boolean deleted;
+
+    // Deleting project.
+    deleted = projectDAO.deleteProject(projectID, user.getId(), justification);
+    if (!deleted) {
+      result = false;
+    }
+    return result;
   }
 
   @Override

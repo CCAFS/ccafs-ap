@@ -53,8 +53,29 @@
           [#if (!editable && canEdit)]
             <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
           [/#if]
-          [#-- Title --]
-          <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /]</h6></div>
+          <div class="fieldset clearfix">
+            [#-- Total budget amount --]
+            <div class="BudgetByYear"> 
+              <h6 class="subTitle"> Total budget remaining </h6> 
+              <p id="budgetByYear">
+                [#assign totalProjectBudgetByYear]50000[/#assign]
+                US$ <span>${totalProjectBudgetByYear?number?string(",##0.00")}</span>
+                <input type="hidden" value="${totalProjectBudgetByYear?number}" />
+              </p>
+            </div>
+            [#-- Total gender budget amount --]
+            <div class="BudgetByYear"> 
+              <h6 class="subTitle"> Total Gender remaining </h6> 
+              <p id="genderBudgetByYear">
+                US$ <span>${(10000)?string(",##0.00")}</span>
+                <input type="hidden" value="10000" />
+              </p>
+            </div>
+            
+          </div> <!-- End Budget by year  -->
+          <div class="midOutcomeTitle">
+            [#-- Title --]
+            <h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /]</h6></div>
             [#list project.outputs as output]
               [#assign mogBudget = action.getOutputBudget(output.id)!]
               <div class="simpleBox clearfix"> 
@@ -69,7 +90,7 @@
                 <div class="halfPartBlock budget clearfix">
                   <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
                   <div class="content">
-                    [@customForm.input name="project.outputsBudgets[${output_index}].totalContribution" className="percentage" value="${mogBudget.totalContribution!'0'}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
+                    [@customForm.input name="project.outputsBudgets[${output_index}].totalContribution" className="percentage budgetInput" value="${mogBudget.totalContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
                   </div>
                 </div>
 
@@ -77,9 +98,10 @@
                 <div class="halfPartBlock budget clearfix">
                   <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
                   <div class="content">
-                    [@customForm.input name="project.outputsBudgets[${output_index}].genderContribution" className="percentage" value="${mogBudget.genderContribution!'0'}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
+                    [@customForm.input name="project.outputsBudgets[${output_index}].genderContribution" className="percentage genderBudgetInput" value="${mogBudget.genderContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
                   </div>
                 </div>
+                
               </div>
             [/#list]
           </div>
@@ -106,35 +128,5 @@
   </article>
   [/@s.form]
 </section>
-
-[#macro projectBudget projectPartner pp_index="0" isBilateral=true isCofunded=true editable=true]
-<div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
-  <h6 class="title">${projectPartner.type} - ${projectPartner.institution.composedName}</h6>
-  [#-- Project Budget --]
-  <div class="budget clearfix">
-    <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
-    <div class="content">
-      <p>[@s.text name="planning.projectBudget.totalAmount"][@s.param]${isBilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p> 
-      [@customForm.input name="project.budgets[${pp_index}].amount" className="projectBudget" showTitle=false value="" editable=editable/] 
-    </div>
-  </div><!-- End budget -->
-  [#-- Project budget per bilateral --]
-  [#if isCofunded]
-  <div class="budget clearfix">
-    <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudgetPerBilateral" /]:</h6></div>
-    <div class="content">  
-    </div>
-  </div><!-- End budget -->
-  [/#if]
-  [#-- Project Gender Budget --]
-  <div class="budget clearfix">
-    <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
-    <div class="content"> 
-      <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${isBilateral?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]:</p>
-      [@customForm.input name="project.budgets[${pp_index}].amount" showTitle=false value="" editable=editable/] 
-    </div>
-  </div><!-- End budget -->
-</div>
-[/#macro]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
