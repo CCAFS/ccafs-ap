@@ -24,9 +24,6 @@
           [#-- if projects?has_content --]
           <li class="">
             <a href="#projects">[@s.text name="home.dashboard.projects" /]</a>
-          </li>  
-          <li class="">
-            <a href="#activities">[@s.text name="home.dashboard.activities" /]</a>
           </li>
           <li class="">
              <a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a>
@@ -43,20 +40,11 @@
               <p>
             [/#if]
           </div>
-          <div id="activities"> 
-            [#if activities?has_content]
-              [@activitiesList.activitiesList activities=activities canValidate=true canEditProject=true namespace="/planning/projects/activities" tableID="activities-table" /]
-            [#else]
-              <p class="emptyMessage">
-                [@s.text name="home.dashboard.activities.empty" /]
-              <p>
-            [/#if]
+          <div id="ipGraph-content" style="position: relative;">
+            <div id="loading-ipGraph-content" style="display:none;position: absolute;top: 45%;right: 45%;">
+                <img style="display: block; margin: 0 auto;" src="./images/global/loading.gif" alt="Loader" />
+            </div>
           </div>
-        <div id="ipGraph-content" style="position: relative;">
-          <div id="loading-ipGraph-content" style="display:none;position: absolute;top: 45%;right: 45%;">
-              <img style="display: block; margin: 0 auto;" src="./images/global/loading.gif" alt="Loader" />
-          </div>
-        </div>
       </div> <!-- End dashboard -->
       
       [#-- Deadline --]
@@ -66,15 +54,11 @@
       <div id="deadline" class="borderBox">
         <div id="deadlineGraph" >
           <div class="point active">1</div>
-          <div class="point active">2</div>
+          <div class="point inactive">2</div>
           <div class="point inactive">3</div>
           <div class="point inactive">4</div>
-          <div class="point inactive">5</div>
         </div>
         <div id="deadlineGraph">
-          <div class="textPoint" >
-            [@s.text name="home.dashboard.deadline.preplanning" /] 
-          </div>  
           <div class="textPoint">
             [@s.text name="home.dashboard.deadline.planning" /] 
           </div> 
@@ -91,16 +75,12 @@
         <div id="deadlineDates">
           <table>
             <tr>
-              <td>[@s.text name="home.dashboard.deadline.preplanning" /] LAM</td>
-              <td>1st September</td>
+              <td>[@s.text name="home.dashboard.deadline.planning" /]</td>
+              <td>15th September</td>
             </tr>
             <tr>
-              <td>[@s.text name="home.dashboard.deadline.planning" /] LAM</td>
-              <td>8th September</td>
-            </tr>
-            <tr>
-              <td>[@s.text name="home.dashboard.deadline.planning" /] SA, SEA, WA and EA</td>
-              <td>29th September</td>
+              <td>[@s.text name="home.dashboard.deadline.reporting" /]</td>
+              <td>TBD</td>
             </tr>
           </table>
         </div>

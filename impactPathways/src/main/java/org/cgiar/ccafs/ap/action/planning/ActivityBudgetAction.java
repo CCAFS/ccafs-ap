@@ -290,18 +290,12 @@ public class ActivityBudgetAction extends BaseAction {
         // We validate if the partner leader is already in the employees table. If so, we get this
         // information. If not, we load the information from expected project leader.
         User activityLeader = activityManager.getActivityLeader(activity.getId());
-        // if the official leader is defined.
-        if (activityLeader != null) {
-          activity.setLeader(activityLeader);
-        } else {
-          activity.setLeader(activityManager.getExpectedActivityLeader(activityID));
-        }
         // if the project leader is still not defined, stop here.
         if (activity.getLeader() != null) {
 
           // Getting the Total Overall Project Budget
-          totalActivitiesBudget = budgetManager.calculateTotalActivityBudget(activityID);
-          totalActivitiesBudgetByYear = budgetManager.calculateTotalActivityBudgetByYear(activityID, year);
+          // totalActivitiesBudget = budgetManager.calculateTotalActivityBudget(activityID);
+          // totalActivitiesBudgetByYear = budgetManager.calculateTotalActivityBudgetByYear(activityID, year);
 
           // Getting all the activity partners.
           activityPartners = partnerManager.getActivityPartnersByActivity(activityID);
@@ -322,7 +316,7 @@ public class ActivityBudgetAction extends BaseAction {
           }
 
           // Getting the list of budgets.
-          activity.setBudgets(budgetManager.getActivityBudgetsByYear(activity.getId(), year));
+          // activity.setBudgets(budgetManager.getActivityBudgetsByYear(activity.getId(), year));
           // Creating budgets that do not exist.
           mapBudgets = this.generateMapBudgets(year);
 
@@ -349,10 +343,10 @@ public class ActivityBudgetAction extends BaseAction {
 
       // Saving project budgets
       for (Budget budget : activity.getBudgets()) {
-        boolean saved = budgetManager.saveActivityBudget(activityID, budget);
-        if (!saved) {
-          success = false;
-        }
+        // boolean saved = budgetManager.saveActivityBudget(activityID, budget);
+        // if (!saved) {
+        // success = false;
+        // }
       }
 
       if (!success) {

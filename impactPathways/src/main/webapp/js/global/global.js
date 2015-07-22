@@ -66,7 +66,7 @@ $(document).ready(function() {
   }
 
   // Generating hash from form information
-  formBefore = getHash($('form [id!="justification"]').serialize());
+  setFormHash();
 });
 
 /**
@@ -99,7 +99,15 @@ function validateEvent(button,fields) {
 }
 
 function isChanged() {
-  return(formBefore != getHash($('form [id!="justification"]').serialize()));
+  return(formBefore != getFormHash());
+}
+
+function setFormHash() {
+  formBefore = getFormHash();
+}
+
+function getFormHash() {
+  return getHash($('form [id!="justification"]').serialize());
 }
 
 function validateField($input) {

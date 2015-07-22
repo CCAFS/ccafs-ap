@@ -168,6 +168,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if can update the project budget section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectBudgetByMOG() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE);
+  }
+
+  /**
    * Verify if can update the project CCAFS outcomes section
    * 
    * @return

@@ -168,7 +168,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("modified_by", user.getId());
     deliverableData.put("modification_justification", justification);
 
-
     int result = deliverableDAO.saveDeliverable(deliverableData);
 
     if (result > 0) {

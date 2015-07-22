@@ -1,33 +1,33 @@
 $.fn.dataTableExt.sErrMode = 'throw';
-$(document).ready(function(){
-  
+$(document).ready(function() {
+
   initTabs();
   // initSlidr();
   initDatatable();
-  
+
 });
 
-function workflowModal(){
+function workflowModal() {
   $("#showPandRWorkflowDialog").dialog({
-    modal : true,
-    width : 700,
-    height : 770,
-    buttons : {
-      Ok : function(){
-        $(this).dialog("close");
+      modal: true,
+      width: 700,
+      height: 770,
+      buttons: {
+        Ok: function() {
+          $(this).dialog("close");
+        }
       }
-    }
   });
   return false;
 }
 
 var graphStarted = false;
-function initTabs(){
+function initTabs() {
   $("#dashboard").tabs({
-    activate : function(event,ui){
-      
-      if (ui.newTab.index() == 2) {
-        if (!graphStarted) {
+    activate: function(event,ui) {
+
+      if(ui.newTab.index() == 1) {
+        if(!graphStarted) {
           callCytos(baseURL + "/json/prePlanningIpGraph.do", "ipGraph-content");
           graphStarted = true;
         }
@@ -36,26 +36,38 @@ function initTabs(){
   });
 }
 
-function initDatatable(){
+function initDatatable() {
   $('#projects-table').dataTable({
-    "aLengthMenu": [[5, 10], [5, 10]],
-    "iDisplayLength" : 5
+      "aLengthMenu": [
+          [
+              5, 10
+          ], [
+              5, 10
+          ]
+      ],
+      "iDisplayLength": 5
   });
   $("#activities-table").dataTable({
-    "aLengthMenu": [[5, 10], [5, 10]],
-    "iDisplayLength" : 5
+      "aLengthMenu": [
+          [
+              5, 10
+          ], [
+              5, 10
+          ]
+      ],
+      "iDisplayLength": 5
   });
-  
+
   $("#deadlineDates table").dataTable();
 }
 
-function initSlidr(){
+function initSlidr() {
   slidr.create('slider', {
-    breadcrumbs : true,
-    keyboard : true,
-    overflow : true,
-    pause : false,
-    theme : '#444',
-    touch : true
+      breadcrumbs: true,
+      keyboard: true,
+      overflow: true,
+      pause: false,
+      theme: '#444',
+      touch: true
   }).start();
 }

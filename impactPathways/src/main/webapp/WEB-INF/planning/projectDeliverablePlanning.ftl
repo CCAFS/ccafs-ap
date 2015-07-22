@@ -12,7 +12,7 @@
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projectOutputs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"},
   {"label":"projectDeliverables", "nameSpace":"planning/projects", "action":"deliverablesList", "param":"projectID=${project.id}"}
-  {"label":"projectDeliverable", "nameSpace":"planning/projects", "action":"deliverable", "param":"projectID=${project.id}"}
+  {"label":"projectDeliverable", "nameSpace":"planning/projects", "action":"deliverable", "param":"deliverableID=${deliverable.id}"}
 ]/]
 
 [#assign params = {
@@ -33,7 +33,7 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectDeliverables.help" /] </p>
+    <p> [@s.text name="planning.deliverables.help" /] </p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
@@ -69,12 +69,8 @@
         </div>
       </div> 
       <div class="fullBlock">
-        [#assign deliverableType]
-          [#if deliverable.type??]${deliverable.type.category.id}[#else]-1[/#if]
-        [/#assign]
-        [#assign deliverableSubType]
-          [#if deliverable.type??]${deliverable.type.id}[#else]-1[/#if]
-        [/#assign]
+        [#assign deliverableType][#if deliverable.type??]${deliverable.type.category.id}[#else]-1[/#if][/#assign]
+        [#assign deliverableSubType][#if deliverable.type??]${deliverable.type.id}[#else]-1[/#if][/#assign]
         [#-- Main Type --]
         <div class="halfPartBlock chosen"> 
           [@customForm.select name="mainType" value="${deliverableType}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" editable=editable /]
@@ -83,10 +79,10 @@
         [#-- Sub Type --]
         <div class="halfPartBlock chosen"> 
           [@customForm.select name="${params.deliverable.name}.type" value="${deliverableSubType}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
-          [#if !editable]${deliverable.type.name}[/#if]
+          [#if !editable][#if deliverable.typeOther??]${(deliverable.typeOther)!}[#else]${deliverable.type.name}[/#if][/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverableSubType}" />
           [#-- Specify other deliverable type--] 
-          [@customForm.input name="${params.deliverable.name}.otherType" className="otherType" showTitle=false i18nkey="planning.deliverables.specify" display=false required=true disabled=true editable=editable /]
+          [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          
         </div> 
       </div>
       <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
@@ -103,6 +99,8 @@
           [#list deliverable.nextUsers as nu] 
             [@deliverableTemplate.nextUserTemplate nu_name=params.nextUsers.name nu_index="${nu_index}" nextUserValue="${nu.id}" editable=editable canEdit=canEdit /]
           [/#list]
+        [#else]
+          <p class="emptyText">[@s.text name="planning.projectDeliverable.nextUsers.emptyText" /]</p>  
         [/#if]
         [#if editable && canEdit]
           <div id="addNextUserBlock" class="addLink"><a href=""  class="addNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
@@ -119,12 +117,12 @@
       <div class="fullBlock">
         [#-- Partner who is responsible --]
         <div class="fullBlock">
-          <p>[@s.text name="planning.projectDeliverable.indicateResponsablePartner" /]</p>
+          <p>[@customForm.text name="planning.projectDeliverable.indicateResponsablePartner" readText=!editable/]</p>
           [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
         </div>
         [#-- Other contact person that will contribute --]
         <div class="fullBlock">
-          <p>[@s.text name="planning.projectDeliverable.indicateOtherContact" /]</p>
+          <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
           [#if deliverable.otherPartners?has_content]
             [#list deliverable.otherPartners as dp]  
               [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="institutions" editable=editable /]

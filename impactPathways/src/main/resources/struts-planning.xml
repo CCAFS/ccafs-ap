@@ -236,7 +236,7 @@
       </result>
       <result name="cancel" type="redirectAction">
         <param name="actionName">deliverable</param>
-        <param name="projectID">${project.id}</param>
+        <param name="deliverableID">${deliverable.id}</param>
       </result>
     </action>
 
@@ -289,7 +289,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">budget</param>
         <param name="projectID">${project.id}</param>
-        <param name="year">${targetYear}</param>
+        <param name="year">${year}</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">budgetByMog</param>
@@ -301,7 +301,7 @@
       </result>
     </action>
     
-    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.planning.ProjectOutputsPlanningAction">
+    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.planning.ProjectBudgetByMOGPlanningAction">
       <result name="input">/WEB-INF/planning/projectBudgetByMogPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">budgetByMog</param>

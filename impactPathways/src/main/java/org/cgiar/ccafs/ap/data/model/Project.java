@@ -34,8 +34,7 @@ public class Project {
 
   private int id;
   private String title;
-  private String type; // Type of project see APConstants. e.g. CCAFS Core, Bilateral Stand-alone or Bilateral
-  // Co-Funded.
+  private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
   private String summary;
   private Date startDate;
   private Date endDate;
@@ -57,6 +56,7 @@ public class Project {
   private List<Activity> activities;
   private List<IPElement> outputs;
   private List<OutputOverview> outputsOverview;
+  private List<OutputBudget> outputsBudgets;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
   private List<CRP> crpContributions;
@@ -175,6 +175,19 @@ public class Project {
 
   public List<Budget> getBudgets() {
     return budgets;
+  }
+
+  public Budget getCofinancingBudget(int confinancingProjectID, int year) {
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        if (budget.getCofinancingProject() != null) {
+          if (budget.getCofinancingProject().getId() == confinancingProjectID && budget.getYear() == year) {
+            return budget;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   public List<Budget> getCofinancingBudgets() {
@@ -365,6 +378,10 @@ public class Project {
     return outputs;
   }
 
+  public List<OutputBudget> getOutputsBudgets() {
+    return outputsBudgets;
+  }
+
   public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
   }
@@ -385,10 +402,10 @@ public class Project {
     return projectPartners;
   }
 
+
   public List<IPProgram> getRegions() {
     return regions;
   }
-
 
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
@@ -416,11 +433,31 @@ public class Project {
     return title;
   }
 
-  public double getTotalCcafsBudget() {
+  public double getTotalBilateralBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isBilateral()) ? budget.getAmount() : 0;
+      }
+    }
+    return totalBudget;
+  }
+
+  public double getTotalBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
       for (Budget budget : this.getBudgets()) {
         totalBudget += budget.getAmount();
+      }
+    }
+    return totalBudget;
+  }
+
+  public double getTotalCcafsBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isCCAFSBudget()) ? budget.getAmount() : 0;
       }
     }
     return totalBudget;
@@ -560,6 +597,10 @@ public class Project {
 
   public void setOutputs(List<IPElement> outputs) {
     this.outputs = outputs;
+  }
+
+  public void setOutputsBudgets(List<OutputBudget> outputsBudgets) {
+    this.outputsBudgets = outputsBudgets;
   }
 
   public void setOutputsOverview(List<OutputOverview> outpusOverview) {

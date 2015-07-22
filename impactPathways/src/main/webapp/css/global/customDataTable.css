@@ -37,6 +37,7 @@ table tr:first-child th:last-child{
 table.dataTable {  
   font-size: 0.95em;
   border-left: 1px solid #CCC;
+  border-top: 1px solid #AEAEAE;
 }
 
 table.dataTable thead {

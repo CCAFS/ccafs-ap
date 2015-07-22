@@ -184,7 +184,7 @@ public class ActivityDescriptionAction extends BaseAction {
       // Deleting unused years from activity budget.
       for (Integer previousYear : previousYears) {
         if (!currentYears.contains(previousYear)) {
-          budgetManager.deleteActivityBudgetByYear(activityID, previousYear.intValue());
+          // budgetManager.deleteActivityBudgetByYear(activityID, previousYear.intValue());
         }
       }
 

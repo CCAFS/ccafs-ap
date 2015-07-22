@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
@@ -25,6 +26,7 @@ import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetPlanningValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Collection;
@@ -51,6 +53,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private BudgetManager budgetManager;
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
+  private ProjectCofinancingLinkageManager linkedCoreProjectManager;
   private HistoryManager historyManager;
 
   private ProjectBudgetPlanningValidator validator;
@@ -63,15 +66,19 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private int year;
   private boolean hasLeader;
   private boolean invalidYear;
+  private double totalCCAFSBudget;
+  private double totalBilateralBudget;
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
     ProjectBudgetPlanningValidator validator, ProjectPartnerManager projectPartnerManager,
-    ProjectManager projectManager, HistoryManager historyManager) {
+    ProjectCofinancingLinkageManager linkedCoreProjectManager, ProjectManager projectManager,
+    HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
+    this.linkedCoreProjectManager = linkedCoreProjectManager;
     this.historyManager = historyManager;
     this.validator = validator;
   }
@@ -94,6 +101,14 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
+  }
+
+  public double getTotalBilateralBudget() {
+    return totalBilateralBudget;
+  }
+
+  public double getTotalCCAFSBudget() {
+    return totalCCAFSBudget;
   }
 
   public String getW1W2BudgetLabel() {
@@ -120,9 +135,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return hasLeader;
   }
 
+
   public boolean isInvalidYear() {
     return invalidYear;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -133,6 +150,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
 
+    // If project is CCAFS cofounded, we should load the core projects linked to it.
+    if (!project.isBilateralProject()) {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+    }
+
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
       projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
@@ -142,6 +164,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     } else {
       hasLeader = false;
     }
+
+    totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
+    totalBilateralBudget =
+      budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
@@ -164,21 +190,27 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         String parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
         year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : allYears.get(0);
       } catch (NumberFormatException e) {
-        LOG.error("-- prepare() > There was an error parsing the year '{}'.", year);
-        return; // Stop here and go to the execute method.
+        LOG.warn("-- prepare() > There was an error parsing the year '{}'.", year);
+        // Set the first year of the project as current
+        year = allYears.get(0);
       }
 
-      if (allYears.contains(new Integer(year))) {
+      if (!allYears.contains(new Integer(year))) {
+        year = allYears.get(0);
+      }
 
-        if (project.getLeader() != null) {
-          // Getting the list of budgets.
-          project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
-        } else {
-          hasLeader = false;
-        }
+      if (project.getLeader() != null) {
+        // Getting the list of budgets.
+        project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
       } else {
-        invalidYear = true;
+        hasLeader = false;
       }
+
+
+      super.setHistory(historyManager.getProjectBudgetHistory(projectID));
+
+    } else {
+      invalidYear = true;
     }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -188,6 +220,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       }
     }
   }
+
 
   @Override
   public String save() {
@@ -220,12 +253,21 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return NOT_AUTHORIZED;
   }
 
+
   public void setProject(Project project) {
     this.project = project;
   }
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setTotalBilateralBudget(double totalBilateralBudget) {
+    this.totalBilateralBudget = totalBilateralBudget;
+  }
+
+  public void setTotalCCAFSBudget(double totalCCAFSBudget) {
+    this.totalCCAFSBudget = totalCCAFSBudget;
   }
 
   @Override

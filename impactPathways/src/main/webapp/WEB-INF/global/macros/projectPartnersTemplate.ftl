@@ -1,15 +1,15 @@
 [#ftl]
-[#macro partnerSection projectPartners ap_name editable partnerTypes countries ppaPartner=false responsabilities=false ]
+[#macro partnerSection projectPartners ap_name editable partnerTypes countries ppaPartner=false isBilateral=false responsabilities=false ]
   [#if projectPartners?has_content]
     [#list projectPartners as ap]   
-        [@partner ap ap_index ap_name editable ppaPartner responsabilities=responsabilities  /]
+        [@partner ap ap_index ap_name editable ppaPartner isBilateral responsabilities=responsabilities  /]
     [/#list]
   [#else]  
-    [#if !editable]This project not has partners[/#if]
+    [#if !editable][@s.text name="planning.projectPartners.emptyPartners" /][/#if]
   [/#if]  
 [/#macro]
 
-[#macro partner ap ap_index ap_name  editable=false isPPA=false responsabilities=false   ]
+[#macro partner ap ap_index ap_name  editable=false isPPA=false isBilateral=true responsabilities=false   ]
   <div id="projectPartner-${ap_index}" class="projectPartner borderBox">
     [#-- Partner identifier --]
     <input id="id" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />
@@ -61,7 +61,7 @@
     </div>
     [/#if]
     [#-- Indicate which PPA Partners for second level partners --]
-    [#if !isPPA]
+    [#if !isPPA && !isBilateral]
     <div class="fullPartBlock">      
       <div class="ppaPartnersList panel tertiary">
         <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 

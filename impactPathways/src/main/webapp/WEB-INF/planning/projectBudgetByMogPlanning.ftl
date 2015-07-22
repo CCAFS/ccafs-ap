@@ -24,25 +24,10 @@
     <a href="[@s.url namespace="/" action='glossary'][/@s.url]#budget">[@s.text name="planning.projectBudget.budget" /]</a> [@s.text name="planning.projectBudget.help2" /]
     <a href="[@s.url namespace="/" action='glossary'][/@s.url]#partners">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
     <a href="[@s.url namespace="/" action='glossary'][/@s.url]#managementLiaison"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
-    <div class="quote">
-      <p><strong>[@s.text name="preplanning.projectBudget.w1" /]: </strong> [@s.text name="preplanning.projectBudget.w1.tooltip" /]</p>
-      <p><strong>[@s.text name="preplanning.projectBudget.w2" /]: </strong> [@s.text name="preplanning.projectBudget.w2.tooltip" /]</p>
-      <p><strong>[@s.text name="preplanning.projectBudget.w3" /]: </strong> [@s.text name="preplanning.projectBudget.w3.tooltip" /]</p>
-      <p><strong>[@s.text name="preplanning.projectBudget.bilateral" /]: </strong> [@s.text name="preplanning.projectBudget.bilateral.tooltip" /]</p>
-      <p><strong>[@s.text name="preplanning.projectBudget.gender" /]: </strong> [@s.text name="preplanning.projectBudget.gender.tooltip" /]</p>
-      <p><strong>[@s.text name="preplanning.projectBudget.leveraged" /]: </strong> [@s.text name="preplanning.projectBudget.leveraged.tooltip" /]</p>
-      <p><strong>[@s.text name="preplanning.projectBudget.partnership" /]: </strong> [@s.text name="preplanning.projectBudget.partnership.tooltip" /]</p>
-    </div>
-    <div id="downloadGuidelineMessage">
-      <a  href="${baseUrl}/resources/guidelines/FP_Guidelines_Budget_20141007_to Liaison.pptx">  
-        <img class="icon" src="${baseUrl}/images/global/download-icon_636368.png" />
-        <p>[@s.text name="preplanning.projectBudget.guideline.title" /]</p>
-      </a>
-    </div>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="budget" cssClass="pure-form"]
+  [@s.form action="budgetByMog" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
       [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
       [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
@@ -71,22 +56,31 @@
           [#-- Title --]
           <div class="midOutcomeTitle"><h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /]</h6></div>
             [#list project.outputs as output]
-            [#assign outputOverview = project.getOutputOverview(output.id, year)! /]
-            <div class="mog fullBlock clearfix">
-              <div class="fullPartBlock">
+              [#assign mogBudget = action.getOutputBudget(output.id)!]
+              <div class="simpleBox clearfix"> 
                 <div class="fullPartBlock">
                   <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
                 </div>
-                <div class="halfPartBlock">
-                  <h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6>
-                  [@customForm.input name="project.budgets.amount" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
+                [#-- Hidden inputs --]
+                <input type="hidden" name="project.outputsBudgets[${output_index}].id" value="${mogBudget.id!"-1"}" />
+                <input type="hidden" name="project.outputsBudgets[${output_index}].output.id" value="${output.id}" />
+
+                [#-- Total contribution --]
+                <div class="halfPartBlock budget clearfix">
+                  <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
+                  <div class="content">
+                    [@customForm.input name="project.outputsBudgets[${output_index}].totalContribution" className="percentage" value="${mogBudget.totalContribution!'0'}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
+                  </div>
                 </div>
-                <div class="halfPartBlock">
-                  <h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6>
-                  [@customForm.input name="project.budgets.amount" value="" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
+
+                [#-- Gender contribution --]
+                <div class="halfPartBlock budget clearfix">
+                  <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
+                  <div class="content">
+                    [@customForm.input name="project.outputsBudgets[${output_index}].genderContribution" className="percentage" value="${mogBudget.genderContribution!'0'}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
+                  </div>
                 </div>
               </div>
-            </div>
             [/#list]
           </div>
       </div>

@@ -53,6 +53,7 @@ function addNextUserEvent(e) {
   e.preventDefault();
   var $newElement = $("#projectNextUserTemplate").clone(true).removeAttr("id").addClass("projectNextUser");
   $(e.target).parent().before($newElement);
+  $('#deliverable-nextUsers').find('.emptyText').hide();
   $newElement.fadeIn("slow");
   setDeliverablesIndexes();
 }
@@ -103,15 +104,16 @@ function updateDeliverableSubTypeList(event) {
     });
     // Refresh the plugin in order to show the changes
     $subTypeSelect.trigger("liszt:updated");
+    // Check if other specify is selected
+    checkOtherType();
     // Regenerating hash from form information
     if(!hashRegenerated) {
-      formBefore = getHash($('form [id!="justification"]').serialize());
+      setFormHash();
       hashRegenerated = true;
     }
   }).fail(function() {
     console.log("error");
   });
-  checkOtherType();
 }
 
 function checkOtherType() {

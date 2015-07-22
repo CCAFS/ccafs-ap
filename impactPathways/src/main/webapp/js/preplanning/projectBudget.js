@@ -1,14 +1,21 @@
 // Global VARS
 var $allBudgetInputs, $overallInputs, $CCAFSBudgetInputs;
+var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
 var editable = true;
 
 $(document).ready(init);
 
 function init() {
-  // Setting vars
+  // Setting Global vars
   $allBudgetInputs = $("input.projectBudget");
   $genderBudgetInputs = $('input.projectGenderBudget');
   $overallInputs = $("input[name$=isfullyInstitutionalCost]");
+  
+  projectBudget = new BudgetObject('#totalProjectBudget', '.W1_W2', false);
+  projectBudgetByYear = new BudgetObject('#totalProjectBudgetByYear', '.W1_W2', true);
+  bilateralBudget = new BudgetObject('#totalBilateralBudget', '.W3_BILATERAL', false);
+  bilateralBudgetByYear = new BudgetObject('#totalBilateralBudgetByYear', '.W3_BILATERAL', true);
+  
   // This function enables launch the pop up window
   popups();
 
@@ -19,47 +26,40 @@ function init() {
   $("#budgetTables").fadeIn("slow");
 
   // Active initial currency format to all inputs
-  $allBudgetInputs.attr("autocomplete", "off");
-  $allBudgetInputs.trigger("focusout");
+  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
+  $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
 
   // Validate justification and information
   validateEvent('[name=save], [name=next]', [
     "#justification"
   ]);
-}
 
-function calculateTotalBudgetByPartner() {
-  $(".partnerBudget").each(
-      function(index,partnerBudget) {
-        var Amount =
-            totalBudget($(partnerBudget).find(".W1_W2 input[name$='amount'],.W3_BILATERAL input[name$='amount']"));
-        $(partnerBudget).find("span.totalBudgetByPartner").text(setCurrencyFormat(Amount));
-      });
+  // Regenerating hash from form information
+  setFormHash();
 }
 
 function attachEvents() {
-  $allBudgetInputs.on("keyup", function(e) {
-    calculateW1W2Budget(e);
+  // Events for amount inputs
+  $allBudgetInputs.on("keydown", isNumber).on("focusout", setCurrency).on("focus", removeCurrency).on("click",
+      function() {
+        $(this).select();
+      }).on("keyup", function(e) {
+        projectBudget.calculateBudget();
+        projectBudgetByYear.calculateBudget();
+        bilateralBudget.calculateBudget();
+        bilateralBudgetByYear.calculateBudget();
+        calculateGenderBudget($(e.target).parents('.partnerBudget'));
   });
-  $allBudgetInputs.on("keydown", function(event) {
-    isNumber(event);
-  });
-  $genderBudgetInputs.on("keydown", function(event) {
-    isNumber(event);
-  });
-  $allBudgetInputs.on("focusout", setCurrency).on("focus", removeCurrency);
-  $genderBudgetInputs.on("focusout", setPercentage).on("focus", removePercentage).on("click", function() {
-    $(this).select();
-  });
-
-  $("form").submit(function(event) {
-    $("input[name$='amount']").each(function() {
-      $(this).attr("readonly", true);
-      $(this).val(removeCurrencyFormat($(this).val()));
-    });
-    return;
+  
+  // Events for percentage inputs
+  $genderBudgetInputs.on("keydown", isNumber).on("focusout", setPercentage).on("focus", removePercentage).on("click",
+      function() {
+        $(this).select();
+      }).on("keyup", function(e) {
+        calculateGenderBudget($(e.target).parents('.partnerBudget'));
   });
 
+  // Overhead (for bilateral projects) radio buttons event
   $overallInputs.on("change", function(e) {
     var $content = $(e.target).parents('.budget').find('.overhead-block');
     if($(e.target).val() === "1") {
@@ -68,74 +68,78 @@ function attachEvents() {
       $content.slideUp('slow');
     }
   });
-
-  $(".handlediv").on("click", function(e) {
-    $(e.target).parent().siblings().slideToggle("slow");
-    $(e.target).toggleClass("down");
-    $(e.target).parent().toggleClass("down");
-  });
-
+  
   // Enable save with tabs when is saveable and exist an target
   if($("#targetYear").exists()) {
-    $("li.yearTab").click(function(e) {
-      e.preventDefault();
-      var yearTarget = $(this).attr("id").split("-")[1];
-      $("input[name$='targetYear']").val(yearTarget);
-      $("#budget_save").trigger("click");
+    $("li.yearTab").on("click", function(e) {
+      var $yearTab = $(this);
+      if(isChanged()) {
+        e.preventDefault();
+        $("#dialog-confirm").dialog({
+          buttons: {
+              "Save": function() {
+                var yearTarget = $yearTab.attr("id").split("-")[1];
+                var $tempField = $(this).find('.justification');
+                $tempField.removeClass('fieldError');
+                $("input[name$='targetYear']").val(yearTarget);
+                if($tempField.val().length > 0){
+                  $('#justification').val($tempField.val());
+                  $(this).dialog("close");
+                  $("#budget_save").trigger("click");                  
+                }else{
+                  $tempField.addClass('fieldError');
+                }
+              },
+              "Not Save": function() { 
+                window.location.href = $yearTab.find('a').attr('href');
+              }
+          }
+        });
+      } else {
+        return
+      }
     });
   }
-
-}
-
-function verifyBudgetExceeded(e,type) {
-  var $parent = $(e.target).parent().parent().parent();
-  var budget =
-      {
-          W1W2: removeCurrencyFormat($parent.find(".W1_W2 input[name$='amount']").val() + ""),
-          W3BILATERAL: removeCurrencyFormat($parent.find(".W3_BILATERAL input[name$='amount']").val() + ""),
-          LEVERAGED: removeCurrencyFormat($parent.find(".LEVERAGED input[name$='amount']").val() + ""),
-          W1_W2_PARTNERS: removeCurrencyFormat($parent.find(".W1_W2_PARTNERS input[name$='amount']").val() + ""),
-          W1_W2_OTHER: removeCurrencyFormat($parent.find(".W1_W2_OTHER input[name$='amount']").val() + ""),
-          W3_BILATERAL_PARTNERS: removeCurrencyFormat($parent.find(".W3_BILATERAL_PARTNERS input[name$='amount']")
-              .val()
-              + ""),
-          W3_BILATERAL_OTHERS: removeCurrencyFormat($parent.find(".W3_BILATERAL_OTHERS input[name$='amount']").val()
-              + ""),
-          W1_W2_GENDER: removeCurrencyFormat($parent.find(".W1_W2_GENDER input[name$='amount']").val() + ""),
-          W3_BILATERAL_GENDER: removeCurrencyFormat($parent.find(".W3_BILATERAL_GENDER input[name$='amount']").val()
-              + "")
-      };
-  $allBudgetInputs.removeClass("fieldError");
-  if(type == "W3BILATERAL") {
-    if((budget.W3_BILATERAL_PARTNERS + budget.W3_BILATERAL_OTHERS + budget.W3_BILATERAL_GENDER) > budget.W3BILATERAL) {
-      $(e.target).addClass("fieldError");
-    } else {
-      $(e.target).removeClass("fieldError");
-    }
-  } else if(type == "W1W2") {
-    if((budget.W1_W2_PARTNERS + budget.W1_W2_OTHER + budget.W1_W2_GENDER) > budget.W1W2) {
-      $(e.target).addClass("fieldError");
-    } else {
-      $(e.target).removeClass("fieldError");
-    }
-  }
-}
-
-// Activate the chosen plugin to leveraged institutions
-function addChosen() {
-  $("form select.leveraged").each(function() {
-    $(this).chosen({
-      search_contains: true
+  
+  // Get out format for amount and percentage inputs on submit 
+  $("form").submit(function(event) {
+    $allBudgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
+    $genderBudgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
+    });
+    return;
   });
 }
 
-// Calculate budget functions
-function calculateW1W2Budget(e) {
-  var Amount = totalBudget($("form .W1_W2 input[name$='amount']"));
-  var totalAmount = yearTotalW1W2Budget + Amount;
-  $("span#projectTotalW1W2BudgetByYear").text(setCurrencyFormat(Amount));
-  $("span#projectTotalW1W2Budget").text(setCurrencyFormat(totalAmount));
+function BudgetObject(budget, type, byYear) {   
+  this.obj = $(budget);
+  this.span =$(this.obj).find('span');
+  this.input = $(this.obj).find('input');
+  this.yearValue= parseFloat(totalBudget($('input'+type)));
+  this.getValue = $(this.input).val();
+  this.setValue = function (value){
+    $(this.span).html(setCurrencyFormat(value));
+    $(this.input).val(value);
+  };
+  this.calculateBudget = function(){ 
+    var result = parseFloat(totalBudget($('input'+type)));
+    if (!byYear){
+      result += (this.getValue - this.yearValue);
+    }
+    this.setValue(result); 
+  };
+}
+
+function calculateGenderBudget(partnerBudget){
+  var percentage = removePercentageFormat($(partnerBudget).find('input.projectGenderBudget').val())||0;
+  var value = removeCurrencyFormat($(partnerBudget).find('input.projectBudget').val())||0;
+  if (percentage > 100){
+    percentage = 100;
+  }
+  var result = (value/100)*percentage;
+  $(partnerBudget).find('input.projectGenderBudget').parents('.budget').find('.inputTitle span').text(setCurrencyFormat(result));
 }
 
 function totalBudget($inputList) {
@@ -180,9 +184,6 @@ function setPercentage(event) {
 }
 
 function removePercentage(event) {
-  $input = $(event.target);
+  var $input = $(event.target);
   $input.val(removePercentageFormat($input.val()));
-  if($input.val() == "0") {
-    $input.val("");
-  }
 }

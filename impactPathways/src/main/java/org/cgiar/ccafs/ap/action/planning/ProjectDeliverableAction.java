@@ -186,6 +186,9 @@ public class ProjectDeliverableAction extends BaseAction {
       if (deliverable.getOtherPartners() != null) {
         deliverable.getOtherPartners().clear();
       }
+      if (deliverable.getTypeOther() != null) {
+        deliverable.setTypeOther(null);
+      }
     }
 
   }
@@ -295,7 +298,5 @@ public class ProjectDeliverableAction extends BaseAction {
     if (save) {
       validator.validate(this, deliverable);
     }
-
-
   }
 }

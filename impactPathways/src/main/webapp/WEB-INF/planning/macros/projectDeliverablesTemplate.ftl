@@ -19,7 +19,7 @@
           <td class="name"><a href="${dlurl}">${dl.title!}</a></td>
           <td class="type"><a href="${dlurl}">${dl.type.name}</a></td> 
           <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
-          <td class="remove">
+          <td class="removeDeliverable-row">
             [#if action.canDelete(dl.id)]
               <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="#" title="" >
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="planning.deliverables.removeDeliverable" /]" /> 
@@ -35,6 +35,36 @@
     <div class="clearfix"></div>
   [/#if]  
 [/#macro] 
+
+[#macro nextUserTemplate nu_name="" nu_index="0" nextUserValue="-1" template=false editable=true canEdit=true ]
+  [#if template]
+    <div id="projectNextUserTemplate" class="borderBox" style="display:none">
+      <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
+      <input type="hidden" value="${nextUserValue}" name="].id" />
+      <span class="index">${nu_index?number+1}</span>
+      [#-- Next User --]
+      [@customForm.input name="user" type="text" i18nkey="planning.deliverables.nextUser" required=true /]<br/>
+      [#-- Expected Changes --]
+      [@customForm.textArea name="expectedChanges" i18nkey="planning.deliverables.expectedChanges" required=true /]<br/>
+      [#-- Strategies --]
+      [@customForm.textArea name="strategies" i18nkey="planning.deliverables.strategies" required=true /]<br/>
+    </div>
+  [#else]
+    <div id="projectNextUser-${nu_index}" class="projectNextUser borderBox">
+      [#if editable]
+        <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
+        <input type="hidden" name="${nu_name}[${nu_index}].id" value="${nextUserValue}" />
+      [/#if]
+      <span class="index">${nu_index?number+1}</span>
+      [#-- Next User --]
+      [@customForm.input name="${nu_name}[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" required=true editable=editable /]<br/>
+      [#-- Expected Changes --]
+      [@customForm.textArea name="${nu_name}[${nu_index}].expectedChanges" i18nkey="planning.deliverables.expectedChanges" required=true editable=editable /]<br/>
+      [#-- Strategies --]
+      [@customForm.textArea name="${nu_name}[${nu_index}].strategies" i18nkey="planning.deliverables.strategies" required=true editable=editable /]<br/>
+    </div>
+  [/#if]
+[/#macro]
 
 [#macro deliverablePartner dp dp_name="" dp_index="" institutionList="" isResponsable=false template=false editable=true]
   <div id="${template?string('deliverablePartnerTemplate','')}" class="${isResponsable?string('responsiblePartner','deliverablePartner')} ${isResponsable?string('simpleBox','borderBox')}" style="${template?string('display:none','')}">
@@ -74,33 +104,3 @@
     [/#if] 
   </div> 
 [/#macro] 
-
-[#macro nextUserTemplate nu_name="" nu_index="0" nextUserValue="-1" template=false editable=true canEdit=true ]
-  [#if template]
-    <div id="projectNextUserTemplate" class="borderBox" style="display:none">
-      <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
-      <input type="hidden" value="${nextUserValue}" name="].id" />
-      <span class="index">${nu_index?number+1}</span>
-      [#-- Next User --]
-      [@customForm.input name="user" type="text" i18nkey="planning.deliverables.nextUser" required=true /]<br/>
-      [#-- Expected Changes --]
-      [@customForm.textArea name="expectedChanges" i18nkey="planning.deliverables.expectedChanges" required=true /]<br/>
-      [#-- Strategies --]
-      [@customForm.textArea name="strategies" i18nkey="planning.deliverables.strategies" required=true /]<br/>
-    </div>
-  [#else]
-    <div id="projectNextUser-${nu_index}" class="projectNextUser borderBox">
-      [#if editable]
-        <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
-        <input type="hidden" name="${nu_name}[${nu_index}].id" value="${nextUserValue}" />
-      [/#if]
-      <span class="index">${nu_index?number+1}</span>
-      [#-- Next User --]
-      [@customForm.input name="${nu_name}[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" required=true editable=editable /]<br/>
-      [#-- Expected Changes --]
-      [@customForm.textArea name="${nu_name}[${nu_index}].expectedChanges" i18nkey="planning.deliverables.expectedChanges" required=true editable=editable /]<br/>
-      [#-- Strategies --]
-      [@customForm.textArea name="${nu_name}[${nu_index}].strategies" i18nkey="planning.deliverables.strategies" required=true editable=editable /]<br/>
-    </div>
-  [/#if]
-[/#macro]
