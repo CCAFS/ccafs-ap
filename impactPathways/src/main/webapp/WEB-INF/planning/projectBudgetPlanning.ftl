@@ -49,16 +49,22 @@
     [#if allYears?has_content]
       [#if project.leader?has_content]
         [#-- Accumulative total project budget --]
-        <div id="totalBudget" class="thirdPartBlock">
+        <div class="thirdPartBlock">
           <h6>[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]</h6>
-          [#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget)!0)}[/#assign]
-          <p id="projectTotalW1W2">US$ <span>${(totalProjectBudget?number)?string(",##0.00")}</span></p>
+          <p id="totalProjectBudget">
+            [#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign]
+            US$ <span>${(totalProjectBudget?number)?string(",##0.00")}</span>
+            <input type="hidden" value="${totalProjectBudget?number}" />
+          </p>
         </div> 
+        [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
         [#if project.coFundedProject]
-          [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
-          <div id="totalBudget" class="thirdPartBlock">
-            <h6>[@s.text name="preplanning.projectBudget.totalBudget"][@s.param] ${w3BilateralBudgetLabel}[/@s.param][/@s.text]</h6>
-            <p id="projectTotalW1W2">US$ <span>${totalBilateralBudget!0?string(",##0.00")}</span></p>
+          <div class="thirdPartBlock">
+            <h6>[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]</h6>
+            <p id="totalBilateralBudget">
+              US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span>
+              <input type="hidden" value="${(totalBilateralBudget!0)?number}" />
+            </p>
           </div> 
         [/#if]
         
@@ -83,6 +89,7 @@
           </div><!-- End budget -->
         </div>
         [/#if]
+        
         <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="display:none"> 
           [#-- Tertiary Menu - All years --] 
           <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
@@ -101,17 +108,20 @@
               <div class="fieldset clearfix">
                 [#-- Accumulative total project budget By year --]
                 <div id="totalw1w2BudgetByYear" class="BudgetByYear"> 
-                  <p id="projectTotalByYear">
-                    <strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</strong> 
-                    <br>US$ <span id="projectTotalW1W2BudgetByYear">${(!project.bilateralProject)?string((project.totalCcafsBudget)!0, (totalBilateralBudget)!0)?number?string(",##0.00")}</span>
+                  <h6> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</h6> 
+                  <p id="totalProjectBudgetByYear">
+                    [#assign totalProjectBudgetByYear]${(!project.bilateralProject)?string((project.totalCcafsBudget)!0, project.totalBilateralBudget)!0}[/#assign]
+                    <br>US$ <span>${totalProjectBudgetByYear?number?string(",##0.00")}</span>
+                    <input type="hidden" value="${totalProjectBudgetByYear?number}" />
                   </p>
                 </div>
+                [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
                 [#if project.coFundedProject]
-                  [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
-                  <div id="totalw1w2BudgetByYear" class="BudgetByYear"> 
-                    <p id="projectTotalByYear">
-                      <strong> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</strong> 
-                      <br>US$ <span id="projectTotalW1W2BudgetByYear">${totalBilateralBudget!0?string(",##0.00")}</span>
+                  <div class="BudgetByYear"> 
+                    <h6> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${w3BilateralBudgetLabel}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</h6> 
+                    <p id="totalBilateralBudgetByYear">
+                      <br>US$ <span>${project.totalBilateralBudget?string(",##0.00")}</span>
+                      <input type="hidden" value="${project.totalBilateralBudget?number}" />
                     </p>
                   </div>
                 [/#if]
@@ -169,30 +179,36 @@
 
 [#-- Dialog save confirmation --]
 <div id="dialog-confirm" title="[@s.text name="planning.projectBudget.dialogConfirmation.title" /]" style="text-align:left;display:none">
-  <p>[@s.text name="planning.projectBudget.dialogConfirmation.message" /]</p>
+  <div class="fullPartBlock">
+    <p>[@s.text name="planning.projectBudget.dialogConfirmation.message" /]</p>
+  </div>
+  <div class="fullPartBlock pure-form">
+    [@customForm.textArea name="" i18nkey="saving.justification" required=true className="justification"/]
+  </div>
 </div>
 
 [#macro projectBudget institution budget project isPL=false pp_index="0" cofinancing_budgets="" editable=true]
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
+  [#assign projectType=(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL") /]
   <h6 class="title">${isPL?string('PL','PPA')} - ${institution.composedName}</h6>
   [#-- Hidden values --]
   <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
   <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
   <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(budget.institution.id)!institution.id}" />
-  <input type="hidden" name="project.budgets[${counter}].type" value="${(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL")}" />
+  <input type="hidden" name="project.budgets[${counter}].type" value="${projectType}" />
   [#-- Project Budget --]
   <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
     <div class="content">
-      <p>[@s.text name="planning.projectBudget.totalAmount"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p> 
-      [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget" showTitle=false value="${(budget.amount)!0}" editable=editable/] 
+      <p class="inputTitle">[@s.text name="planning.projectBudget.totalAmount"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p> 
+      [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget ${projectType}" showTitle=false value="${(budget.amount)!0}" editable=editable/] 
     </div>
   </div><!-- End budget -->
   [#-- Project Gender Budget --]
   <div class="halfPartBlock budget clearfix">
     <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
     <div class="content">
-      <p>[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p>
+      <p class="inputTitle">[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:  <span></span></p>
       [@customForm.input name="project.budgets[${counter}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}" editable=editable/]
       [@s.set var="counter" value="${counter+1}"/]
     </div>
@@ -200,20 +216,22 @@
   [#-- Project budget per bilateral --]
   [#if project.linkedProjects?has_content && isPL ]
     <hr />
-    <h6>Annual Budget per bilateral Project Component:</h6>
+    <h6>[@s.text name="planning.projectBudget.annualBudgetPerBilateralComponent" /]:</h6>
+    <br />
     [#list project.linkedProjects as bilateralProject]
     <div class="fullPartBlock budget clearfix">
-      <p>${bilateralProject.title}</p>
       <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
       <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
       <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(budget.institution.id)!institution.id}" />
       <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
+      <p class="checked" >${bilateralProject.title}</p>
       <div class="halfPartBlock">
-        <div class="content"> 
-        [@customForm.input name="project.budgets[${counter}].amount" value="" className="projectBudget" showTitle=false  editable=editable/]
-        [@s.set var="counter" value="${counter+1}"/]
+        <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:</p>
+        <div class="content">
+          [@customForm.input name="project.budgets[${counter}].amount" value="" className="projectBudget W3_BILATERAL" showTitle=false  editable=editable/]
         </div>
       </div>
+      [@s.set var="counter" value="${counter+1}"/]
     </div><!-- End budget -->
     [/#list]
   [/#if]
