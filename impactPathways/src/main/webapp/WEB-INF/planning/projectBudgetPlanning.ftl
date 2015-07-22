@@ -216,7 +216,7 @@
       [#if editable]
         [@customForm.input name="project.budgets[${counter}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}"/]
       [#else]
-        ${((budget.genderPercentage)!0)?number?string.percent}
+        ${((budget.genderPercentage)!0)}%
       [/#if]
       [@s.set var="counter" value="${counter+1}"/]
     </div>
