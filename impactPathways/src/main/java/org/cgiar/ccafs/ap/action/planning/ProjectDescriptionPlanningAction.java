@@ -343,15 +343,22 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         previousProject.setEndDate(project.getEndDate());
       }
 
-      if (securityContext.canAllowProjectWorkplanUpload() && project.isCoreProject()) {
+      if (securityContext.canAllowProjectWorkplanUpload()) {
         // TODO - Check if this permission changes when the checkbox is disabled.
         previousProject.setWorkplanRequired(project.isWorkplanRequired());
+      }
 
-        if (previousProject.isWorkplanRequired()) {
-          if (file != null) {
+      if (!project.isBilateralProject() && previousProject.isWorkplanRequired()) {
+        if (file != null) {
+          if (previousProject.getWorkplanName() != null) {
             FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
-            FileManager.copyFile(file, this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
-            previousProject.setWorkplanName(fileFileName);
+          }
+
+          previousProject.setWorkplanName(fileFileName);
+          FileManager.copyFile(file, this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+        } else {
+          if (project.getWorkplanName().isEmpty() && !previousProject.getWorkplanName().isEmpty()) {
+            FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
           }
         }
       }
@@ -377,6 +384,11 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
             FileManager.deleteFile(this.getBilateralProposalAbsolutePath(previousProject.getWorkplanName()));
             FileManager.copyFile(file, this.getBilateralProposalAbsolutePath(previousProject.getWorkplanName()));
             previousProject.setWorkplanName(fileFileName);
+          } else {
+            if (project.getBilateralContractProposalName().isEmpty()
+              && !previousProject.getBilateralContractProposalName().isEmpty()) {
+              FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+            }
           }
         }
       }

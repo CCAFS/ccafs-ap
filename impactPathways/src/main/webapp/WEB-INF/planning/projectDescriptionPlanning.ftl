@@ -75,10 +75,10 @@
         </div> 
 
         [#-- Project upload work plan --]
-        [#if project.coreProject]
+        [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+            [@customForm.checkbox name="project.workplanRequired" value="true"  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
           <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
             <div class="halfPartBlock fileUpload projectWorkplan"> 
@@ -93,9 +93,9 @@
           </div>  
         </div>
         [/#if]
-        
+
         [#-- Project upload bilateral contract --]
-        [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
+        [#if (project.bilateralProject && securityContext.canUploadBilateralContract())]
         <div class="fullBlock fileUpload bilateralContract">
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
           <div class="uploadContainer">

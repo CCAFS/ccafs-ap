@@ -51,9 +51,9 @@ public class APConfig {
   private static final String UPLOADS_BASE_FOLDER = "file.uploads.baseFolder";
   private static final String LOCATIONS_TEMPLATE_FOLDER = "file.uploads.locationsTemplateFolder";
   private static final String CASE_STUDIES_FOLDER = "file.uploads.caseStudiesImagesFolder";
-  private static final String PROJECTS_BASE_FOLDER = "file.uploads.caseStudiesImagesFolder";
-  private static final String PROJECT_WORKPLAN_FOLDER = "file.uploads.caseStudiesImagesFolder";
-  private static final String PROJECT_BILATERAL_PROPOSAL_FOLDER = "file.uploads.caseStudiesImagesFolder";
+  private static final String PROJECTS_BASE_FOLDER = "file.uploads.projectsFolder";
+  private static final String PROJECT_WORKPLAN_FOLDER = "file.uploads.project.WorkplanFolder";
+  private static final String PROJECT_BILATERAL_PROPOSAL_FOLDER = "file.uploads.project.bilateralProposalFolder";
   private static final String FILE_DOWNLOADS = "file.downloads";
 
   // Logging.
