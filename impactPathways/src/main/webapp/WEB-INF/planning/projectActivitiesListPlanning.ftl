@@ -23,6 +23,7 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 [#import "/WEB-INF/global/macros/usersPopup.ftl" as usersForm/]
 [#import "/WEB-INF/planning/macros/projectActivitiesTemplate.ftl" as activitiesForms /]
+[#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
   <div class="helpMessage">

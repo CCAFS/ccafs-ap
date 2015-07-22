@@ -111,7 +111,7 @@
                   <h6> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</h6> 
                   <p id="totalProjectBudgetByYear">
                     [#assign totalProjectBudgetByYear]${(!project.bilateralProject)?string((project.totalCcafsBudget)!0, project.totalBilateralBudget)!0}[/#assign]
-                    <br>US$ <span>${totalProjectBudgetByYear?number?string(",##0.00")}</span>
+                    US$ <span>${totalProjectBudgetByYear?number?string(",##0.00")}</span>
                     <input type="hidden" value="${totalProjectBudgetByYear?number}" />
                   </p>
                 </div>
@@ -120,7 +120,7 @@
                   <div class="BudgetByYear"> 
                     <h6> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${w3BilateralBudgetLabel}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</h6> 
                     <p id="totalBilateralBudgetByYear">
-                      <br>US$ <span>${project.totalBilateralBudget?string(",##0.00")}</span>
+                      US$ <span>${project.totalBilateralBudget?string(",##0.00")}</span>
                       <input type="hidden" value="${project.totalBilateralBudget?number}" />
                     </p>
                   </div>
@@ -201,7 +201,11 @@
     <div class="title"><h6>[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
     <div class="content">
       <p class="inputTitle">[@s.text name="planning.projectBudget.totalAmount"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:</p> 
-      [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget ${projectType}" showTitle=false value="${(budget.amount)!0}" editable=editable/] 
+      [#if editable]
+        [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget ${projectType}" showTitle=false value="${(budget.amount)!0}"/] 
+      [#else]
+        US$ ${((budget.amount)!0)?number?string(",##0.00")}
+      [/#if]    
     </div>
   </div><!-- End budget -->
   [#-- Project Gender Budget --]
@@ -209,7 +213,11 @@
     <div class="title"><h6>[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
     <div class="content">
       <p class="inputTitle">[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:  <span></span></p>
-      [@customForm.input name="project.budgets[${counter}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}" editable=editable/]
+      [#if editable]
+        [@customForm.input name="project.budgets[${counter}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}"/]
+      [#else]
+        ${((budget.genderPercentage)!0)?number?string.percent}
+      [/#if]
       [@s.set var="counter" value="${counter+1}"/]
     </div>
   </div><!-- End budget -->
@@ -229,8 +237,12 @@
         <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
         <div class="halfPartBlock">
           <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:</p>
-          <div class="content"> 
-          [@customForm.input name="project.budgets[${counter}].amount" value="${cofinancingBudget.amount!0}" className="projectBudget W3_BILATERAL" showTitle=false  editable=editable/]
+          <div class="content">
+          [#if editable]
+            [@customForm.input name="project.budgets[${counter}].amount" value="${cofinancingBudget.amount!0}" className="projectBudget W3_BILATERAL" showTitle=false/]
+          [#else]
+            US$ ${((cofinancingBudget.amount)!0)?number?string(",##0.00")}
+          [/#if]
           [@s.set var="counter" value="${counter+1}"/]
           </div>
         </div>
