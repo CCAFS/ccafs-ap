@@ -1,14 +1,21 @@
 // Global VARS
 var $allBudgetInputs, $overallInputs, $CCAFSBudgetInputs;
+var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
 var editable = true;
 
 $(document).ready(init);
 
 function init() {
-  // Setting vars
+  // Setting Global vars
   $allBudgetInputs = $("input.projectBudget");
   $genderBudgetInputs = $('input.projectGenderBudget');
   $overallInputs = $("input[name$=isfullyInstitutionalCost]");
+  
+  projectBudget = new BudgetObject('#totalProjectBudget', '.W1_W2', false);
+  projectBudgetByYear = new BudgetObject('#totalProjectBudgetByYear', '.W1_W2', true);
+  bilateralBudget = new BudgetObject('#totalBilateralBudget', '.W3_BILATERAL', false);
+  bilateralBudgetByYear = new BudgetObject('#totalBilateralBudgetByYear', '.W3_BILATERAL', true);
+  
   // This function enables launch the pop up window
   popups();
 
@@ -19,8 +26,8 @@ function init() {
   $("#budgetTables").fadeIn("slow");
 
   // Active initial currency format to all inputs
-  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout");
-  $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout");
+  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
+  $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
 
   // Validate justification and information
   validateEvent('[name=save], [name=next]', [
@@ -32,28 +39,27 @@ function init() {
 }
 
 function attachEvents() {
+  // Events for amount inputs
   $allBudgetInputs.on("keydown", isNumber).on("focusout", setCurrency).on("focus", removeCurrency).on("click",
       function() {
         $(this).select();
       }).on("keyup", function(e) {
+        projectBudget.calculateBudget();
+        projectBudgetByYear.calculateBudget();
+        bilateralBudget.calculateBudget();
+        bilateralBudgetByYear.calculateBudget();
+        calculateGenderBudget($(e.target).parents('.partnerBudget'));
   });
-
+  
+  // Events for percentage inputs
   $genderBudgetInputs.on("keydown", isNumber).on("focusout", setPercentage).on("focus", removePercentage).on("click",
       function() {
         $(this).select();
       }).on("keyup", function(e) {
+        calculateGenderBudget($(e.target).parents('.partnerBudget'));
   });
 
-  $("form").submit(function(event) {
-    $allBudgetInputs.each(function() {
-      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
-    });
-    $genderBudgetInputs.each(function() {
-      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
-    });
-    return;
-  });
-
+  // Overhead (for bilateral projects) radio buttons event
   $overallInputs.on("change", function(e) {
     var $content = $(e.target).parents('.budget').find('.overhead-block');
     if($(e.target).val() === "1") {
@@ -62,13 +68,7 @@ function attachEvents() {
       $content.slideUp('slow');
     }
   });
-
-  $(".handlediv").on("click", function(e) {
-    $(e.target).parent().siblings().slideToggle("slow");
-    $(e.target).toggleClass("down");
-    $(e.target).parent().toggleClass("down");
-  });
-
+  
   // Enable save with tabs when is saveable and exist an target
   if($("#targetYear").exists()) {
     $("li.yearTab").on("click", function(e) {
@@ -79,11 +79,18 @@ function attachEvents() {
           buttons: {
               "Save": function() {
                 var yearTarget = $yearTab.attr("id").split("-")[1];
-                $("input[name$='targetYear']").val(yearTarget);
-                $("#budget_save").trigger("click");
-                $(this).dialog("close");
+                var $tempField = $(this).find('.justification');
+                $tempField.removeClass('fieldError');
+                if($tempField.val().length > 0){
+                  $('#justification').val($tempField.val());
+                  $('#targetYear').val(yearTarget);
+                  $("#budget_save").trigger("click");                  
+                  $(this).dialog("close");
+                }else{
+                  $tempField.addClass('fieldError');
+                }
               },
-              "Not Save": function() { 
+              "Discard changes": function() { 
                 window.location.href = $yearTab.find('a').attr('href');
               }
           }
@@ -93,7 +100,46 @@ function attachEvents() {
       }
     });
   }
+  
+  // Get out format for amount and percentage inputs on submit 
+  $("form").submit(function(event) {
+    $allBudgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
+    });
+    $genderBudgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
+    });
+    return;
+  });
+}
 
+function BudgetObject(budget, type, byYear) {   
+  this.obj = $(budget);
+  this.span =$(this.obj).find('span');
+  this.input = $(this.obj).find('input');
+  this.yearValue= parseFloat(totalBudget($('input'+type)));
+  this.getValue = $(this.input).val();
+  this.setValue = function (value){
+    $(this.span).html(setCurrencyFormat(value));
+    $(this.input).val(value);
+  };
+  this.calculateBudget = function(){ 
+    var result = parseFloat(totalBudget($('input'+type)));
+    if (!byYear){
+      result += (this.getValue - this.yearValue);
+    }
+    this.setValue(result); 
+  };
+}
+
+function calculateGenderBudget(partnerBudget){
+  var percentage = removePercentageFormat($(partnerBudget).find('input.projectGenderBudget').val())||0;
+  var value = removeCurrencyFormat($(partnerBudget).find('input.projectBudget').val())||0;
+  if (percentage > 100){
+    percentage = 100;
+  }
+  var result = (value/100)*percentage;
+  $(partnerBudget).find('input.projectGenderBudget').parents('.budget').find('.inputTitle span').text(setCurrencyFormat(result));
 }
 
 function totalBudget($inputList) {

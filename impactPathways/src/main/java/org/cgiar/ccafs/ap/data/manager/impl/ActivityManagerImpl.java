@@ -113,9 +113,6 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
       }
-      if (activityData.get("expected_leader_id") != null) {
-        activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
-      }
       if (activityData.get("leader_id") != null) {
         activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
       }
@@ -156,9 +153,6 @@ public class ActivityManagerImpl implements ActivityManager {
         } catch (ParseException e) {
           LOG.error("There was an error formatting the end date", e);
         }
-      }
-      if (activityData.get("expected_leader_id") != null) {
-        activity.setExpectedLeader(this.getExpectedActivityLeader(activityID));
       }
       if (activityData.get("leader_id") != null) {
         activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
@@ -272,9 +266,6 @@ public class ActivityManagerImpl implements ActivityManager {
         } catch (ParseException e) {
           LOG.error("There was an error formatting the end date", e);
         }
-        if (activityData.get("expected_leader_id") != null) {
-          activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
-        }
         if (activityData.get("leader_id") != null) {
           activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
         }
@@ -291,30 +282,8 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public User getExpectedActivityLeader(int activityID) {
-    Map<String, String> expectedActivityLeaderData = activityDAO.getExpectedActivityLeader(activityID);
-    if (!expectedActivityLeaderData.isEmpty()) {
-      User expectedActivityLeader = new User();
-      expectedActivityLeader.setId(Integer.parseInt(expectedActivityLeaderData.get("id")));
-      expectedActivityLeader.setFirstName(expectedActivityLeaderData.get("name"));
-      expectedActivityLeader.setEmail(expectedActivityLeaderData.get("email"));
-      if (expectedActivityLeaderData.get("institution_id") != null) {
-        expectedActivityLeader.setCurrentInstitution(institutionManager.getInstitution(Integer
-          .parseInt(expectedActivityLeaderData.get("institution_id"))));
-      }
-      return expectedActivityLeader;
-    }
-    return null;
-  }
-
-  @Override
   public List<Integer> getLedActivityIds(User user) {
     return activityDAO.getLedActivities(user.getId());
-  }
-
-  @Override
-  public boolean isOfficialExpectedLeader(int activityID) {
-    return activityDAO.isOfficialExpectedLeader(activityID);
   }
 
   @Override
@@ -327,9 +296,6 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("description", activity.getDescription());
     activityData.put("startDate", activity.getStartDate());
     activityData.put("endDate", activity.getEndDate());
-    if (activity.getExpectedLeader() != null) {
-      activityData.put("expected_leader_id", activity.getExpectedLeader().getId());
-    }
     activityData.put("is_global", activity.isGlobal());
     activityData.put("expected_research_outputs", activity.getExpectedResearchOutputs());
     activityData.put("expected_gender_contribution", activity.getExpectedGenderContribution());
@@ -365,23 +331,19 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public boolean saveActivityLeader(int activityID, User user) {
-    boolean allSaved = true;
-
-    int result = activityDAO.saveActivityLeader(activityID, user.getId());
-
-    if (result > 0) {
-      LOG.debug("saveExpectedActivityLeader > New Activity Leader added with id {}", result);
-    } else if (result == 0) {
-      LOG.debug("saveExpectedActivityLeader > Activity Leader with id={} was updated", user.getId());
-    } else {
-      LOG.error(
-        "saveExpectedActivityLeader > There was an error trying to save/update an Activity Leader for activityID={}",
-        activityID);
-      allSaved = false;
+  public int saveActivityList(int projectID, List<Activity> activityList) {
+    List<Map<String, Object>> activityArrayMap = new ArrayList<Map<String, Object>>();
+    for (Activity activity : activityList) {
+      Map<String, Object> activityData = new HashMap<>();
+      activityData.put("id", activity.getId());
+      activityData.put("title", activity.getTitle());
+      activityData.put("description", activity.getDescription());
+      activityData.put("startDate", activity.getStartDate());
+      activityData.put("endDate", activity.getEndDate());
+      activityData.put("leader_id", activity.getLeader());
+      activityArrayMap.add(activityData);
     }
-
-    return allSaved;
+    return activityDAO.saveActivityList(projectID, activityArrayMap);
   }
 
   @Override
@@ -409,32 +371,4 @@ public class ActivityManagerImpl implements ActivityManager {
     return saved;
   }
 
-  @Override
-  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader, boolean isOfficialLeader) {
-
-    Map<String, Object> activityData = new HashMap<>();
-    if (expectedActivityLeader.getId() > 0) {
-      activityData.put("id", expectedActivityLeader.getId());
-    }
-    activityData.put("institution_id", expectedActivityLeader.getCurrentInstitution().getId());
-    activityData.put("name", expectedActivityLeader.getFirstName());
-    activityData.put("email", expectedActivityLeader.getEmail());
-    activityData.put("is_official", isOfficialLeader);
-
-    int result = activityDAO.saveExpectedActivityLeader(activityID, activityData, isOfficialLeader);
-
-    if (result > 0) {
-      LOG.debug("saveExpectedActivityLeader > New Expected Activity Leader added with id {}", result);
-    } else if (result == 0) {
-      LOG.debug("saveExpectedActivityLeader > Expected Activity Leader with id={} was updated",
-        expectedActivityLeader.getId());
-    } else {
-      LOG
-        .error(
-          "saveExpectedActivityLeader > There was an error trying to save/update an Expected Activity Leader for activityId={}",
-          activityID);
-    }
-
-    return result;
-  }
 }

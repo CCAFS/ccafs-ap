@@ -83,7 +83,7 @@ a.disabled {
 .fieldset {
   padding: 10px 11px;
   margin: 10px 0px;
-  border: 1px dotted #CCC;
+  border: 1px dotted #9B9B9B;
   border-radius: 15px 0px;
 }
 
@@ -159,30 +159,36 @@ p.fieldError{
 }
 
 p.warning-info {
-    background-color: #F6BB42;    border-color: #F6BB42;
-    color: #fff;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
+  background-color: #F6BB42;    border-color: #F6BB42;
+  color: #fff;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+p.inputTitle {
+  color: #777;
 }
 
 p.checked, label.checked {
-    background: url(../../images/global/icon-check.png) no-repeat 0 25%;
-    padding: 3px 0  3px 23px;
+  background: url(../../images/global/icon-check.png) no-repeat 0 40%;
+  padding: 3px 0  3px 23px;
+  margin-bottom: 5px;
+  text-align: justify;
 }
 
 h6.checked-true {
-    background: url(../../images/global/checked-true.png) no-repeat 0;
-    padding: 3px 0  3px 23px;
+  background: url(../../images/global/checked-true.png) no-repeat 0;
+  padding: 3px 0  3px 23px;
 }
 h6.checked-false {
-    background: url(../../images/global/checked-false.png) no-repeat 0;
-    padding: 3px 0  3px 23px;
+  background: url(../../images/global/checked-false.png) no-repeat 0;
+  padding: 3px 0  3px 23px;
 }
 
 
 .hasDatepicker {
-    background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
+  background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
 }
 
 fieldset {
@@ -203,14 +209,14 @@ textarea {
 }
 
 textarea#justification {
-    height: 60px;
+  height: 60px;
 }
 
 .textArea p, .input p, .select p {
-    text-align: justify;
-    width: 98%;
-    font-size: 1.07em;
-    margin-top: -1px;
+  text-align: justify;
+  width: 98%;
+  font-size: 1.07em;
+  margin-top: -1px;
 }
 
 input[type="radio"] {
