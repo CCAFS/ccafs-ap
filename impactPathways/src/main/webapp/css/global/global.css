@@ -81,7 +81,7 @@ a.disabled {
 }
 
 .fieldset {
-  padding: 10px 11px;
+  padding: 8px 13px;
   margin: 10px 0px;
   border: 1px dotted #9B9B9B;
   border-radius: 15px 0px;
@@ -186,6 +186,12 @@ h6.checked-false {
   padding: 3px 0  3px 23px;
 }
 
+h6.subTitle {
+  color: #575757;    
+  font-size: 1.05em;                
+  padding-top: 7px;    
+  padding-bottom: 0px;
+}
 
 .hasDatepicker {
   background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
@@ -1393,7 +1399,7 @@ h1.simpleTitle span {
 .halfPartBlock {
   display: inline-block;
   padding: 0 8px 5px 0;
-  width: 48%;
+  width: 47%;
   vertical-align: top;
 }
 
@@ -2141,25 +2147,28 @@ textarea[id$='summary'] {
 /* Project Budget */
 
 .budget {
-    margin-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  padding-left: 9px;
+  border-left: 2px solid #F9F9F9;
 }
-.budget:hover .title{
-  background-color: #f1f1f1;
+.budget:hover {
+  border-left: 2px solid #E5E5E5; 
 }
 .budget .title {
-    width: 70%;
-    padding: 9px 0;
-    float: left;
-    /* height: 56px; */
-    line-height: 7px;
-    border-radius: 2px;
-    position: relative;
+  width: 98%;
+  padding: 9px 0;
+  float: left;
+  /* height: 56px; */
+  line-height: 7px;
+  border-radius: 2px;
+  position: relative;
 }
 
 .budget .content {
-    width: 70%;
+    width: 98%;
     float: left;
-    margin: 5px 0;
+    margin-bottom: 2px;
 }
 
 .budget .content p {
@@ -3023,7 +3032,7 @@ font-size: 1.05em;
 
 .simpleBox {
     border: 1px solid #E7E7E7;    
-    padding: 12px 15px 10px 15px;    
+    padding: 12px 20px 10px 20px;    
     border-radius: 3px;   
     margin: 0 0px 17px 0;    
     position: relative;
