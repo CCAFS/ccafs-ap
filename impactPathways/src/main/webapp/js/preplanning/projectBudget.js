@@ -81,16 +81,16 @@ function attachEvents() {
                 var yearTarget = $yearTab.attr("id").split("-")[1];
                 var $tempField = $(this).find('.justification');
                 $tempField.removeClass('fieldError');
-                $("input[name$='targetYear']").val(yearTarget);
                 if($tempField.val().length > 0){
                   $('#justification').val($tempField.val());
-                  $(this).dialog("close");
+                  $('#targetYear').val(yearTarget);
                   $("#budget_save").trigger("click");                  
+                  $(this).dialog("close");
                 }else{
                   $tempField.addClass('fieldError');
                 }
               },
-              "Not Save": function() { 
+              "Discard changes": function() { 
                 window.location.href = $yearTab.find('a').attr('href');
               }
           }
