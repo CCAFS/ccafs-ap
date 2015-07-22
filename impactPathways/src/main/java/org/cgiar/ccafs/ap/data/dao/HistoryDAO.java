@@ -40,6 +40,15 @@ public interface HistoryDAO {
 
   /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of
+   * project budget by MOGs to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectBudgetByMogHistory(int projectID);
+
+  /**
+   * This method return the last five changes (only the user, date, action and justification) made in the interface of
    * project outputs (overview by MOGs) to the project identified by the value received by parameter.
    * 
    * @param projectID - Project identifier
@@ -65,6 +74,7 @@ public interface HistoryDAO {
    */
   public List<Map<String, String>> getProjectDescriptionHistory(int projectID);
 
+
   /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of
    * project Other contributions to the project identified by the value received by parameter.
@@ -73,7 +83,6 @@ public interface HistoryDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getProjectIPOtherContributionHistory(int projectID);
-
 
   /**
    * This method return the last five changes (only the user, date, action and justification) made in the interface of

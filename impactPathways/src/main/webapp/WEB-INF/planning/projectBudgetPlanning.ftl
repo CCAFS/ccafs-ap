@@ -213,26 +213,28 @@
       [@s.set var="counter" value="${counter+1}"/]
     </div>
   </div><!-- End budget -->
-  [#-- Project budget per bilateral --]
+  [#-- Project budget per bilateral linked project --]
   [#if project.linkedProjects?has_content && isPL ]
     <hr />
     <h6>[@s.text name="planning.projectBudget.annualBudgetPerBilateralComponent" /]:</h6>
     <br />
     [#list project.linkedProjects as bilateralProject]
-    <div class="fullPartBlock budget clearfix">
-      <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
-      <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
-      <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(budget.institution.id)!institution.id}" />
-      <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
-      <p class="checked" >${bilateralProject.title}</p>
-      <div class="halfPartBlock">
-        <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:</p>
-        <div class="content">
-          [@customForm.input name="project.budgets[${counter}].amount" value="" className="projectBudget W3_BILATERAL" showTitle=false  editable=editable/]
+      [#assign cofinancingBudget = project.getCofinancingBudget(bilateralProject.id, year)! /]
+      <div class="fullPartBlock budget clearfix">
+        <p class="checked" >${bilateralProject.title}</p>
+        <input type="hidden" name="project.budgets[${counter}].id" value="${cofinancingBudget.id!"-1"}" />
+        <input type="hidden" name="project.budgets[${counter}].year" value="${year}" />
+        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(cofinancingBudget.institution.id)!institution.id}" />
+        <input type="hidden" name="project.budgets[${counter}].cofinancingProject.id" value="${bilateralProject.id}" />
+        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
+        <div class="halfPartBlock">
+          <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:</p>
+          <div class="content"> 
+          [@customForm.input name="project.budgets[${counter}].amount" value="${cofinancingBudget.amount!0}" className="projectBudget W3_BILATERAL" showTitle=false  editable=editable/]
+          [@s.set var="counter" value="${counter+1}"/]
+          </div>
         </div>
-      </div>
-      [@s.set var="counter" value="${counter+1}"/]
-    </div><!-- End budget -->
+      </div><!-- End budget -->
     [/#list]
   [/#if]
 </div>

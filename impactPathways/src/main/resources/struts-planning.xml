@@ -301,7 +301,7 @@
       </result>
     </action>
     
-    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.planning.ProjectBudgetByMOG">
+    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.planning.ProjectBudgetByMOGPlanningAction">
       <result name="input">/WEB-INF/planning/projectBudgetByMogPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">budgetByMog</param>

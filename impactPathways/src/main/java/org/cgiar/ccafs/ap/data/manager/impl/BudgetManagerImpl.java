@@ -176,10 +176,10 @@ public class BudgetManagerImpl implements BudgetManager {
       // Institution as institution_id
       budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
 
-      if (budgetData.get("cofinance_project_id") != null) {
+      if (budgetData.get("cofinancing_project_id") != null) {
         Project project = new Project();
-        project.setId(Integer.parseInt(budgetData.get("cofinance_project_id")));
-        project.setTitle(budgetData.get("cofinance_project_title"));
+        project.setId(Integer.parseInt(budgetData.get("cofinancing_project_id")));
+        project.setTitle(budgetData.get("cofinancing_project_title"));
         budget.setCofinancingProject(project);
       }
 
@@ -252,6 +252,9 @@ public class BudgetManagerImpl implements BudgetManager {
     budgetData.put("institution_id", budget.getInstitution().getId());
     budgetData.put("amount", budget.getAmount());
     budgetData.put("gender_percentage", budget.getGenderPercentage());
+    if (budget.getCofinancingProject() != null) {
+      budgetData.put("cofinance_project_id", budget.getCofinancingProject().getId());
+    }
     budgetData.put("user_id", user.getId());
     budgetData.put("justification", justification);
 
