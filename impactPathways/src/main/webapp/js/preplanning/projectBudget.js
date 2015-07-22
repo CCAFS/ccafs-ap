@@ -26,8 +26,8 @@ function init() {
   $("#budgetTables").fadeIn("slow");
 
   // Active initial currency format to all inputs
-  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout");
-  $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout");
+  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
+  $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
 
   // Validate justification and information
   validateEvent('[name=save], [name=next]', [
