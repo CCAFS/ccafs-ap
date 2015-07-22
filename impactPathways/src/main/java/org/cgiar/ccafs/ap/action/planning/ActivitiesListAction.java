@@ -16,9 +16,14 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -34,25 +39,31 @@ public class ActivitiesListAction extends BaseAction {
 
   private static final long serialVersionUID = 6131146898077781801L;
 
+  // LOG
+  private static Logger LOG = LoggerFactory.getLogger(ActivitiesListAction.class);
   // Manager
   private ActivityManager activityManager;
 
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ActivitiesListAction.class);
+  private HistoryManager historyManager;
 
   // Model for the back-end
   private List<Activity> activities;
+  private Project project;
 
 
   // Model for the front-end
   private int projectID;
   private int activityID;
 
+  // validator
+  private ActivitiesListValidator validator;
+
 
   @Inject
-  public ActivitiesListAction(APConfig config, ActivityManager activityManager) {
+  public ActivitiesListAction(APConfig config, ActivityManager activityManager, ActivitiesListValidator validator) {
     super(config);
     this.activityManager = activityManager;
+    this.validator = validator;
   }
 
 
@@ -61,7 +72,7 @@ public class ActivitiesListAction extends BaseAction {
     // Create new activity and redirect to activity description using the new activityID assigned by the database.
     activityID = activityManager.saveActivity(projectID, new Activity(-1));
     if (activityID > 0) {
-      addActionMessage(getText("saving.add.new", new String[] {getText("planning.activity")}));
+      this.addActionMessage(this.getText("saving.add.new", new String[] {this.getText("planning.activity")}));
       // Let's redirect the user to the Activity Description section.
       return BaseAction.SUCCESS;
     }
@@ -93,9 +104,60 @@ public class ActivitiesListAction extends BaseAction {
     activities = activityManager.getActivitiesByProject(projectID);
   }
 
+  @Override
+  public String save() {
+    if (securityContext.canUpdateProjectActivities()) {
+      // Update only the values to which the user is authorized to modify
+
+      List<Activity> activityArray = new ArrayList<Activity>();
+      Activity previousActivity = new Activity();
+      for (Activity activity : activities) {
+
+        previousActivity.setId(activity.getId());
+
+        previousActivity.setTitle(activity.getTitle());
+
+        previousActivity.setLeader(activity.getLeader());
+
+        previousActivity.setStartDate(activity.getStartDate());
+
+        previousActivity.setEndDate(activity.getEndDate());
+
+        previousActivity.setDescription(activity.getDescription());
+
+        activityArray.add(previousActivity);
+      }
+      // Save the information
+      int result = activityManager.saveActivityList(projectID, activityArray);
+      if (result < 0) {
+        this.addActionError(this.getText("saving.problem"));
+        LOG.warn("There was a problem saving the activity list.");
+        return BaseAction.INPUT;
+      }
+
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
+      return SUCCESS;
+    }
+    return NOT_AUTHORIZED;
+  }
+
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
 
+  @Override
+  public void validate() {
+    if (save) {
+      validator.validate(this, project);
+    }
+  }
 
 }

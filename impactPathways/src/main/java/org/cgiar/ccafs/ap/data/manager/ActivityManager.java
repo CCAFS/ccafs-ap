@@ -139,14 +139,6 @@ public interface ActivityManager {
   public List<Activity> getAllActivities();
 
   /**
-   * This method gets all the information of an Expected Activity Leader of a given activity
-   * 
-   * @param activityID - is the activity identifier
-   * @return an user object representing the expected activity leader, or null if no information was found.
-   */
-  public User getExpectedActivityLeader(int activityID);
-
-  /**
    * This method returns a all the activity identifiers from the activities that the user was assigned as Activity
    * Leader.
    * 
@@ -154,15 +146,6 @@ public interface ActivityManager {
    * @return a List with activity identifiers or an empty list if nothing found.
    */
   public List<Integer> getLedActivityIds(User currentUser);
-
-  /**
-   * This method lets you know if the Project Leader wants to create or not an account for the specified Activity
-   * Leader.
-   * 
-   * @param activityID - is the activity identifier
-   * @return true if the expected Activity Leader needs to be created, or false otherwise.
-   */
-  public boolean isOfficialExpectedLeader(int activityID);
 
   /**
    * This method saves the information of the given activity that belong to a specific activity into the database.
@@ -185,13 +168,14 @@ public interface ActivityManager {
   public boolean saveActivityIndicators(List<IPIndicator> indicators, int activityID);
 
   /**
-   * This method updates the activity, with the give activity Leader.
+   * This method saves the information of the given activities that belong to a specific project into the database.
    * 
-   * @param user is the activity leader.
-   * @param projectID is the activity identifier.
-   * @return true if the activity leader was successfully saved, false otherwise.
+   * @param projectID
+   * @param activityArray
+   * @return A number greater than zero representing the new IDs assigned by the database for the activities, 0 if the
+   *         activities were updated or -1 if some error occurred.
    */
-  public boolean saveActivityLeader(int projectID, User user);
+  public int saveActivityList(int projectID, List<Activity> activityArray);
 
   /**
    * This method save the outcome related to the activity received as parameter
@@ -210,15 +194,4 @@ public interface ActivityManager {
    * @return true if ALL the relations were saved successfully. False otherwise.
    */
   public boolean saveActivityOutputs(List<IPElement> outputs, int activityID);
-
-  /**
-   * This method saves the information of a given expected activity leader
-   * 
-   * @param expectedActivityLeader is the user to be saved.
-   * @param activityID is the activity identifier
-   * @param isOfficialLeader is true when the user wants to create a profile of this leader into the system.
-   * @return a number greater than zero with the new identifier assigned by the database, 0 if the information was
-   *         updated or -1 if some error occurred.
-   */
-  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader, boolean isOfficialLeader);
 }

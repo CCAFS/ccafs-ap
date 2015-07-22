@@ -143,7 +143,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(projectID);
 
     LOG.debug("-- getActivitiesByProject() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -167,8 +167,6 @@ public class MySQLActivityDAO implements ActivityDAO {
         if (rs.getDate("endDate") != null) {
           activityData.put("endDate", rs.getDate("endDate").toString());
         }
-        activityData.put("leader_id", rs.getString("leader_id"));
-        activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
         activityData.put("created", rs.getTimestamp("active_since").getTime() + "");
         if (rs.getString("is_global") != null) {
           activityData.put("is_global", rs.getString("is_global"));
@@ -346,7 +344,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("FROM activities ");
 
     LOG.debug("-- getAllActivities() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   private List<Map<String, String>> getData(String query) {
@@ -366,8 +364,6 @@ public class MySQLActivityDAO implements ActivityDAO {
         if (rs.getDate("endDate") != null) {
           activityData.put("endDate", rs.getDate("endDate").toString());
         }
-        activityData.put("leader_id", rs.getString("leader_id"));
-        activityData.put("expected_leader_id", rs.getString("expected_leader_id"));
         activityData.put("created", rs.getTimestamp("active_since").getTime() + "");
         if (rs.getString("is_global") != null) {
           activityData.put("is_global", rs.getString("is_global"));
@@ -385,30 +381,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
     LOG.debug("<< executeQuery():activitiesList.size={}", activitiesList.size());
     return activitiesList;
-  }
-
-  @Override
-  public Map<String, String> getExpectedActivityLeader(int activityID) {
-    Map<String, String> activityLeaderData = new HashMap<String, String>();
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT eal.*   ");
-    query.append("FROM expected_activity_leaders as eal ");
-    query.append("INNER JOIN activities a ON eal.id=a.expected_leader_id ");
-    query.append("WHERE a.id=  ");
-    query.append(activityID);
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        activityLeaderData.put("id", rs.getString("id"));
-        activityLeaderData.put("institution_id", rs.getString("institution_id"));
-        activityLeaderData.put("name", rs.getString("name"));
-        activityLeaderData.put("email", rs.getString("email"));
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the activity {}.", activityID, e);
-    }
-    return activityLeaderData;
   }
 
   @Override
@@ -435,27 +407,6 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public boolean isOfficialExpectedLeader(int activityID) {
-    boolean isOfficialLeader = false;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT eal.is_official   ");
-    query.append("FROM expected_activity_leaders as eal ");
-    query.append("INNER JOIN activities a ON eal.id=a.expected_leader_id ");
-    query.append("WHERE a.id=  ");
-    query.append(activityID);
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        isOfficialLeader = rs.getBoolean("is_official");
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the activity {}.", activityID, e);
-    }
-    return isOfficialLeader;
-  }
-
-  @Override
   public int saveActivity(int projectID, Map<String, Object> activityData) {
     LOG.debug(">> saveActivity(activityData={})", activityData);
     StringBuilder query = new StringBuilder();
@@ -476,20 +427,19 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       // update activity record
       query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, ");
-      query.append("expected_leader_id = ?, is_global=?, expected_research_outputs=?,  ");
+      query.append("is_global=?, expected_research_outputs=?,  ");
       query.append("expected_gender_contribution=?, gender_percentage=? ");
       query.append("WHERE id = ? ");
-      values = new Object[10];
+      values = new Object[9];
       values[0] = activityData.get("title");
       values[1] = activityData.get("description");
       values[2] = activityData.get("startDate");
       values[3] = activityData.get("endDate");
-      values[4] = activityData.get("expected_leader_id");
-      values[5] = activityData.get("is_global");
-      values[6] = activityData.get("expected_research_outputs");
-      values[7] = activityData.get("expected_gender_contribution");
-      values[8] = activityData.get("gender_percentage");
-      values[9] = activityData.get("id");
+      values[4] = activityData.get("is_global");
+      values[5] = activityData.get("expected_research_outputs");
+      values[6] = activityData.get("expected_gender_contribution");
+      values[7] = activityData.get("gender_percentage");
+      values[8] = activityData.get("id");
       int result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",
@@ -519,9 +469,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
       LOG
-        .warn(
-          "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
-          indicatorData);
+      .warn(
+        "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
+        indicatorData);
       LOG.debug("<< saveActivityIndicators(): {}", false);
       return false;
     }
@@ -550,6 +500,48 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
 
     LOG.debug("<< saveActivityLeader():{}", result);
+    return result;
+  }
+
+  @Override
+  public int saveActivityList(int projectID, List<Map<String, Object>> activityArrayMap) {
+    LOG.debug(">> saveActivity(activityArray={})", activityArrayMap);
+    StringBuilder query = new StringBuilder();
+    int result = -1;
+    for (Map<String, Object> activityData : activityArrayMap) {
+      Object[] values;
+      if (activityData.get("id") == null) {
+        // Insert new activity record
+        query.append("INSERT INTO activities (project_id) ");
+        query.append("VALUES (?) ");
+        values = new Object[1];
+        values[0] = projectID;
+        int newId = databaseManager.saveData(query.toString(), values);
+        if (newId <= 0) {
+          LOG.error("A problem happened trying to add a new activity with id={}", projectID);
+          return -1;
+        }
+        return newId;
+      } else {
+        // update activity record
+        query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, ");
+        query.append("leader_id=? ");
+        query.append("WHERE id = ? ");
+        values = new Object[6];
+        values[0] = activityData.get("title");
+        values[1] = activityData.get("description");
+        values[2] = activityData.get("startDate");
+        values[3] = activityData.get("endDate");
+        values[4] = activityData.get("leader_id");
+        values[5] = activityData.get("id");
+      }
+      result = databaseManager.saveData(query.toString(), values);
+      if (result == -1) {
+        LOG.error("A problem happened trying to update the activity identified with the id = {}",
+          activityData.get("id"));
+        return -1;
+      }
+    }
     return result;
   }
 
@@ -599,47 +591,5 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     LOG.debug("<< saveActivityIndicators(): {}", newId);
     return newId;
-  }
-
-  @Override
-  public int
-    saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader) {
-    LOG.debug(">> saveExpectedActivityLeader(activityLeaderData={})", activityLeaderData);
-    StringBuilder query = new StringBuilder();
-    int result = -1;
-    Object[] values;
-    if (activityLeaderData.get("id") == null) {
-      // Insert new activity record
-      query.append("INSERT INTO expected_activity_leaders (institution_id, name, email, is_official) ");
-      query.append("VALUES (?,?,?,?) ");
-      values = new Object[4];
-      values[0] = activityLeaderData.get("institution_id");
-      values[1] = activityLeaderData.get("name");
-      values[2] = activityLeaderData.get("email");
-      values[3] = activityLeaderData.get("is_official");
-      result = databaseManager.saveData(query.toString(), values);
-      if (result <= 0) {
-        LOG.error("A problem happened trying to add a new activity Leader with id={}");
-        return -1;
-      }
-    } else {
-      // update activity record
-      query.append("UPDATE expected_activity_leaders SET institution_id = ?, name = ?, email = ? , is_official=? ");
-      query.append("WHERE id = ? ");
-      values = new Object[5];
-      values[0] = activityLeaderData.get("institution_id");
-      values[1] = activityLeaderData.get("name");
-      values[2] = activityLeaderData.get("email");
-      values[3] = activityLeaderData.get("is_official");
-      values[4] = activityLeaderData.get("id");
-      result = databaseManager.saveData(query.toString(), values);
-      if (result == -1) {
-        LOG.error("A problem happened trying to update the activity leader with the id = {}",
-          activityLeaderData.get("id"));
-        return -1;
-      }
-    }
-    LOG.debug("<< saveExpectedActivityLeader():{}", result);
-    return result;
   }
 }
