@@ -16,13 +16,16 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,14 +40,15 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class ProjectBudgetByMOG extends BaseAction {
+public class ProjectBudgetByMOGPlanningAction extends BaseAction {
 
   private static final long serialVersionUID = 4022245671803576328L;
-  private static Logger LOG = LoggerFactory.getLogger(ProjectBudgetByMOG.class);
+  private static Logger LOG = LoggerFactory.getLogger(ProjectBudgetByMOGPlanningAction.class);
 
   // Managers
   private ProjectManager projectManager;
   private IPElementManager ipElementManager;
+  private BudgetByMogManager budgetByMogManager;
   private HistoryManager historyManager;
 
   // Model
@@ -52,11 +56,12 @@ public class ProjectBudgetByMOG extends BaseAction {
   private int projectID;
 
   @Inject
-  public ProjectBudgetByMOG(APConfig config, ProjectManager projectManager, IPElementManager ipElementManager,
-    HistoryManager historyManager) {
+  public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager,
+    IPElementManager ipElementManager, BudgetByMogManager budgetByMogManager, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipElementManager = ipElementManager;
+    this.budgetByMogManager = budgetByMogManager;
     this.historyManager = historyManager;
   }
 
@@ -81,6 +86,15 @@ public class ProjectBudgetByMOG extends BaseAction {
     return index;
   }
 
+  public OutputBudget getOutputBudget(int outputID) {
+    for (OutputBudget ob : project.getOutputsBudgets()) {
+      if (ob.getOutput().getId() == outputID) {
+        return ob;
+      }
+    }
+    return null;
+  }
+
   public Project getProject() {
     return project;
   }
@@ -96,16 +110,53 @@ public class ProjectBudgetByMOG extends BaseAction {
     // Getting the project information
     project = projectManager.getProject(projectID);
     project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    project.setOutputsBudgets(budgetByMogManager.getProjectOutputsBudget(projectID));
+
 
     // Remove the outputs duplicated
     Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
     project.getOutputs().clear();
     project.getOutputs().addAll(outputsTemp);
 
-    this.setHistory(historyManager.getProjectOutputsHistory(projectID));
+    this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
+  }
+
+  @Override
+  public String save() {
+    boolean success = false;
+    if (securityContext.canUpdateProjectBudgetByMOG()) {
+
+      success = budgetByMogManager.saveProjectOutputsBudget(project, this.getCurrentUser(), this.getJustification());
+
+      if (success) {
+        // Get the validation messages and append them to the save message
+        Collection<String> messages = this.getActionMessages();
+        if (!messages.isEmpty()) {
+          String validationMessage = messages.iterator().next();
+          this.setActionMessages(null);
+          this.addActionWarning(this.getText("saving.saved") + validationMessage);
+        } else {
+          this.addActionMessage(this.getText("saving.saved"));
+        }
+        return SUCCESS;
+      } else {
+        this.addActionError(this.getText("saving.problem"));
+        LOG.warn("There was a problem saving the project outputs planning.");
+        return BaseAction.INPUT;
+      }
+    } else {
+      return NOT_AUTHORIZED;
+    }
   }
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  @Override
+  public void validate() {
+    if (save) {
+
+    }
   }
 }
