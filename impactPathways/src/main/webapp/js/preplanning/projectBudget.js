@@ -101,7 +101,7 @@ function attachEvents() {
     });
   }
   
-  // Get out format for amount and percentage inputs on submit 
+  // Get out format for amount and percentage inputs on submit
   $("form").submit(function(event) {
     $allBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
@@ -113,9 +113,9 @@ function attachEvents() {
   });
 }
 
-function BudgetObject(budget, type, byYear) {   
+function BudgetObject(budget, type, byYear) {    
   this.obj = $(budget);
-  this.span =$(this.obj).find('span');
+  this.span =$(this.obj).find('span');  
   this.input = $(this.obj).find('input');
   this.yearValue= parseFloat(totalBudget($('input'+type)));
   this.getValue = $(this.input).val();
