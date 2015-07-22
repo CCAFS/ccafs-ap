@@ -58,12 +58,48 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
-   * Verify if can edit the end date of a project in the planning section
+   * Verify if the project activities description can be updated
+   * 
+   * @return
+   */
+  public boolean canEditActivityDescription() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_INFO_UPDATE);
+  }
+
+  /**
+   * Verify if the project activity leader can be updated
+   * 
+   * @return
+   */
+  public boolean canEditActivityLeader() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_LEADER_UPDATE);
+  }
+
+  /**
+   * Verify if the end date of a project in the planning section can be edited
    * 
    * @return
    */
   public boolean canEditEndDate() {
     return this.hasPermission(Permission.PLANNING_PROJECT_END_DATE_UPDATE);
+  }
+
+  /**
+   * Verify if the end date of an activity in the planning section can be edited
+   * 
+   * @return
+   */
+  public boolean canEditEndDateActivities() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_END_DATE_UPDATE);
+  }
+
+  /**
+   * Verify if the lead organization of an activity in the planning section can be edited
+   * 
+   * @return
+   */
+  public boolean canEditLeadOrganization() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_LEAD_ORGANIZATION_UPDATE);
   }
 
   /**
@@ -96,12 +132,21 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
-   * Verify if can edit the start date of a project in the planning section
+   * Verify if the start date of a project in the planning section can be edited
    * 
    * @return
    */
   public boolean canEditStartDate() {
     return this.hasPermission(Permission.PLANNING_PROJECT_START_DATE_UPDATE);
+  }
+
+  /**
+   * Verify if the end date of an activity in the planning section can be edited
+   * 
+   * @return
+   */
+  public boolean canEditStartDateActivities() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE);
   }
 
   /**

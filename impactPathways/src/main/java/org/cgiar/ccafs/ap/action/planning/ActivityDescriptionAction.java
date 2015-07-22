@@ -26,7 +26,6 @@ import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.IPCrossCutting;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;
@@ -136,7 +135,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     }
@@ -156,15 +155,6 @@ public class ActivityDescriptionAction extends BaseAction {
       isExpected = false;
     } else {
       isExpected = true;
-      // Let's create an empty user.
-      if (activity.getExpectedLeader() == null) {
-        User expectedLeader = new User();
-        expectedLeader.setId(-1);
-        activity.setExpectedLeader(expectedLeader);
-      } else {
-        // Setting isOfficialLeader variable.
-        isOfficialLeader = activityManager.isOfficialExpectedLeader(activityID);
-      }
     }
 
     // Getting the activity outcome information
@@ -198,37 +188,6 @@ public class ActivityDescriptionAction extends BaseAction {
         }
       }
 
-      // Reviewing if there were any change in the institution of the activity leader.
-      Institution previousLeadInstitution = null;
-      if (isExpected) {
-        User previousExpectedLeader = activityManager.getExpectedActivityLeader(activity.getId());
-        if (previousExpectedLeader != null) {
-          previousLeadInstitution = previousExpectedLeader.getCurrentInstitution();
-        }
-      } else {
-        previousLeadInstitution = activityManager.getActivityLeader(activity.getId()).getCurrentInstitution();
-      }
-      if (previousLeadInstitution != null) {
-        Institution currentLeadInstitution;
-        if (isExpected) {
-          currentLeadInstitution = activity.getExpectedLeader().getCurrentInstitution();
-        } else {
-          currentLeadInstitution = activity.getLeader().getCurrentInstitution();
-        }
-        if (!currentLeadInstitution.equals(previousLeadInstitution)) {
-          budgetManager.deleteActivityBudgetsByInstitution(activity.getId(), previousLeadInstitution.getId());
-        }
-      }
-
-      if (activity.getExpectedLeader() != null) {
-        // Saving the information of the expected leader.
-        int result =
-          activityManager.saveExpectedActivityLeader(activityID, activity.getExpectedLeader(), isOfficialLeader);
-        if (result > 0) {
-          // if new record was added, we need to assign this new id to the activity.
-          activity.getExpectedLeader().setId(result);
-        }
-      }
       // then, save the full information of the activity description, included the expected activity leader, if applies.
       int result = activityManager.saveActivity(project.getId(), activity);
       if (result < 0) {
@@ -240,16 +199,16 @@ public class ActivityDescriptionAction extends BaseAction {
       for (IPCrossCutting ipCrossTheme : activity.getCrossCuttings()) {
         ipCrossCuttingManager.saveCrossCutting(activityID, ipCrossTheme.getId());
       }
-
       if (!activityManager.saveActivityOutcome(activity)) {
         success = false;
       }
 
       if (success == false) {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
       }
-      addActionMessage(getText("saving.success", new String[] {getText("planning.activityDescription")}));
+      this
+      .addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.activityDescription")}));
       return BaseAction.SUCCESS;
 
     } else {
@@ -298,14 +257,14 @@ public class ActivityDescriptionAction extends BaseAction {
       for (ActivityPartner partner : activityPartnerManager.getActivityPartnersByActivity(activity.getId())) {
         if (partner.getPartner().equals(ledIntitution)) {
           problem = true;
-          addFieldError("activity.expectedLeader.currentInstitution",
-            getText("preplanning.projectPartners.duplicatedInstitution.field"));
+          this.addFieldError("activity.expectedLeader.currentInstitution",
+            this.getText("preplanning.projectPartners.duplicatedInstitution.field"));
         }
       }
     }
 
     if (problem) {
-      addActionError(getText("planning.activityDescription.duplicatedInstitution",
+      this.addActionError(this.getText("planning.activityDescription.duplicatedInstitution",
         new String[] {ledIntitution.getName()}));
     }
 

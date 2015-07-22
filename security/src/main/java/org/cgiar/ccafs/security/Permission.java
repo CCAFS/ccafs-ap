@@ -189,9 +189,38 @@ public class Permission {
   // --------------------------- Project activities list---------------------------------
 
   /**
-   * Can update the planning project activities list section
+   * the planning project activities list section can be updated
    */
   public static final String PLANNING_PROJECT_ACTIVITIES_LIST_UPDATE = "planning:projects:activities:update";
+
+  /**
+   * the planning project activities info can be updated
+   */
+  public static final String PLANNING_PROJECT_ACTIVITIES_INFO_UPDATE = "planning:projects:activities:info:update";
+
+  /**
+   * the planning project activities end date can be updated
+   */
+  public static final String PLANNING_PROJECT_ACTIVITIES_END_DATE_UPDATE =
+    "planning:projects:activities:endDate:update";
+
+  /**
+   * the planning project activities lead organization can be updated
+   */
+  public static final String PLANNING_PROJECT_ACTIVITIES_LEAD_ORGANIZATION_UPDATE =
+    "planning:projects:activities:leadOrganization:update";
+
+  /**
+   * the planning project activities leader can be updated
+   */
+  public static final String PLANNING_PROJECT_ACTIVITIES_LEADER_UPDATE = "planning:projects:activities:leader:update";
+
+  /**
+   * the planning project activities start date can be updated
+   */
+  public static final String PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE =
+    "planning:projects:activities:startDate:update";
+
 
   // --------------------------- End of Project activities list---------------------------------
 
@@ -241,7 +270,7 @@ public class Permission {
   /**
    * Can update the end date of some specific project
    */
-  public static final String PROJECT_END_DATE_UPDATE = "project:description::endDate:*";
+  public static final String PROJECT_END_DATE_UPDATE = "project:description:endDate:*";
 
   /**
    * Can upload a project work plan of some specific project
