@@ -36,7 +36,8 @@
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
       [/#if] 
       [#-- Project Title --]
-      <h1 class="contentTitle">${project.type} [@s.text name="preplanning.projectBudgetByMog.title" /]</h1> 
+      <h1 class="contentTitle">[@s.text name="preplanning.projectBudgetByMog.title" /]</h1> 
+      [#-- TODO Delete below static variables --]
       [#assign allYears=2015..2017 /] 
       [#assign year=2015 /]
       <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" > 
@@ -44,7 +45,7 @@
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
           [#list allYears as yearMenu]
             <li id="year-${yearMenu}" class="yearTab ui-state-default ui-corner-top [#if yearMenu=year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
-              <a href="[@s.url action='budget' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
+              <a href="[@s.url action='budgetByMog' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
             </li>
           [/#list]
         </ul>
@@ -56,19 +57,20 @@
           <div class="fieldset clearfix">
             [#-- Total budget amount --]
             <div class="BudgetByYear"> 
-              <h6 class="subTitle"> Total budget remaining </h6> 
+              [#assign totalBudgetByYear]50000[/#assign]
+              <h6 class="subTitle">Total ${year} budget remaining of US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span> </h6> 
               <p id="budgetByYear">
-                [#assign totalProjectBudgetByYear]50000[/#assign]
-                US$ <span>${totalProjectBudgetByYear?number?string(",##0.00")}</span>
-                <input type="hidden" value="${totalProjectBudgetByYear?number}" />
+                US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span>
+                <input type="hidden" value="${totalBudgetByYear?number}" />
               </p>
             </div>
             [#-- Total gender budget amount --]
             <div class="BudgetByYear"> 
-              <h6 class="subTitle"> Total Gender remaining </h6> 
+              [#assign totalGenderBudgetByYear]20000[/#assign]
+              <h6 class="subTitle">Total ${year} Gender budget remaining of US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
               <p id="genderBudgetByYear">
-                US$ <span>${(10000)?string(",##0.00")}</span>
-                <input type="hidden" value="10000" />
+                US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span>
+                <input type="hidden" value="${totalGenderBudgetByYear?number}" />
               </p>
             </div>
             
@@ -78,6 +80,7 @@
             <h6 class="title">[@s.text name="planning.projectImpactPathways.mogs" /]</h6></div>
             [#list project.outputs as output]
               [#assign mogBudget = action.getOutputBudget(output.id)!]
+              [#assign projectTypeLabel][@s.text name="${project.bilateralProject?string('planning.projectBudget.W3Bilateral', 'planning.projectBudget.W1W2')}" /][/#assign]
               <div class="simpleBox clearfix"> 
                 <div class="fullPartBlock">
                   <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
@@ -88,17 +91,27 @@
 
                 [#-- Total contribution --]
                 <div class="halfPartBlock budget clearfix">
-                  <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
+                  <div class="title">
+                    <p> <strong> [@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: [#if !editable](${mogBudget.totalContribution!0}%) [/#if]</strong>
+                    US$ <span>${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></p>
+                  </div>
                   <div class="content">
-                    [@customForm.input name="project.outputsBudgets[${output_index}].totalContribution" className="percentage budgetInput" value="${mogBudget.totalContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget" editable=editable/] 
+                  [#if editable]
+                    [@customForm.input name="project.outputsBudgets[${output_index}].totalContribution" className="percentage budgetInput" value="${mogBudget.totalContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget"/] 
+                  [/#if]
                   </div>
                 </div>
 
                 [#-- Gender contribution --]
                 <div class="halfPartBlock budget clearfix">
-                  <div class="title"><h6>[@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${project.bilateralProject?string('W3/Bilateral', 'W1 W2')}[/@s.param][/@s.text]</h6></div>
+                  <div class="title">
+                    <p> <strong> [@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: [#if !editable](${mogBudget.genderContribution!0}%) [/#if]</strong>
+                    US$ <span>${((totalGenderBudgetByYear?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></p>
+                  </div>
                   <div class="content">
-                    [@customForm.input name="project.outputsBudgets[${output_index}].genderContribution" className="percentage genderBudgetInput" value="${mogBudget.genderContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget" editable=editable/] 
+                  [#if editable]
+                    [@customForm.input name="project.outputsBudgets[${output_index}].genderContribution" className="percentage genderBudgetInput" value="${mogBudget.genderContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"/] 
+                  [/#if]
                   </div>
                 </div>
                 
