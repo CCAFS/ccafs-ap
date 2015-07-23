@@ -37,8 +37,6 @@
       [/#if] 
       [#-- Project Title --]
       <h1 class="contentTitle">${project.type} [@s.text name="preplanning.projectBudgetByMog.title" /]</h1> 
-      [#assign allYears=2015..2017 /] 
-      [#assign year=2015 /]
       <div id="budgetTables" class="ui-tabs ui-widget ui-widget-content ui-corner-all" > 
         [#-- Tertiary Menu - All years --] 
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
