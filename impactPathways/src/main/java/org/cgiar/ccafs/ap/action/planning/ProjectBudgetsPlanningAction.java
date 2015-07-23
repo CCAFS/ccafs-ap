@@ -179,7 +179,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
 
     // Remove the project leader from the list of PPA partner in case it is present.
-    projectPPAPartners.remove(project.getLeader().getInstitution());
+    if (project.getLeader() != null) {
+      projectPPAPartners.remove(project.getLeader().getInstitution());
+    }
 
     allYears = project.getAllYears();
     invalidYear = allYears.isEmpty();

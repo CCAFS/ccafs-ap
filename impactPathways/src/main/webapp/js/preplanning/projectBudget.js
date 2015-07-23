@@ -1,6 +1,7 @@
 // Global VARS
 var $allBudgetInputs, $overallInputs, $CCAFSBudgetInputs;
 var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
+var projectType;
 var editable = true;
 
 $(document).ready(init);
@@ -11,8 +12,10 @@ function init() {
   $genderBudgetInputs = $('input.projectGenderBudget');
   $overallInputs = $("input[name$=isfullyInstitutionalCost]");
   
-  projectBudget = new BudgetObject('#totalProjectBudget', '.W1_W2', false);
-  projectBudgetByYear = new BudgetObject('#totalProjectBudgetByYear', '.W1_W2', true);
+  projectType = "."+$('#projectType').val();
+  
+  projectBudget = new BudgetObject('#totalProjectBudget', projectType, false);
+  projectBudgetByYear = new BudgetObject('#totalProjectBudgetByYear', projectType , true);
   bilateralBudget = new BudgetObject('#totalBilateralBudget', '.W3_BILATERAL', false);
   bilateralBudgetByYear = new BudgetObject('#totalBilateralBudgetByYear', '.W3_BILATERAL', true);
   
@@ -83,7 +86,7 @@ function attachEvents() {
                 $tempField.removeClass('fieldError');
                 if($tempField.val().length > 0){
                   $('#justification').val($tempField.val());
-                  $('#targetYear').val(yearTarget);
+                  $('#year').val(yearTarget);
                   $("#budget_save").trigger("click");                  
                   $(this).dialog("close");
                 }else{

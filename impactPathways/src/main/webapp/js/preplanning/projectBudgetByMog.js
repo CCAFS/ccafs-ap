@@ -1,6 +1,6 @@
 // Global VARS
 var $allBudgetInputs, $overallInputs, $CCAFSBudgetInputs;
-
+var budgetByYear, genderBudgetByYear;
 $(document).ready(init);
 
 function init() {
@@ -17,6 +17,8 @@ function init() {
 
   // Active initial currency format to all inputs
   $percentageInputs.attr("autocomplete", "off").trigger("focusout");
+  $genderBudgetInputs.trigger("keyup");
+  $budgetInputs.trigger("keyup");
 
   // Validate justification and information
   validateEvent('[name=save], [name=next]', [
@@ -34,44 +36,56 @@ function attachEvents() {
       });
 
   $budgetInputs.on("keyup", function(e) {
-    checkPercentages($(e.target), $budgetInputs, budgetByYear);
+    setPercentageCurrency($(this), budgetByYear);
+    checkPercentages($(this), $budgetInputs, budgetByYear);
+
   });
 
   $genderBudgetInputs.on("keyup", function(e) {
+    setPercentageCurrency($(this), genderBudgetByYear);
     checkPercentages($(e.target), $genderBudgetInputs, genderBudgetByYear);
   });
 
   $("form").submit(function(event) {
     $percentageInputs.each(function() {
       $(this).attr("readonly", true);
-      $(this).val(removeCurrencyFormat($(this).val()));
+      $(this).val(removePercentageFormat($(this).val()));
     });
     return;
   });
 }
 
 function BudgetRemaining(budget) {
-  this.getValue = $(budget).find('input').val();
+  this.initValue = $(budget).find('input').val();
   this.setValue = function(value) {
     $(budget).find('span').text(setCurrencyFormat(value));
     $(budget).find('input').val(value);
   };
   this.calculateRemain = function(percentage) {
-    var result = (this.getValue / 100) * percentage;
-    this.setValue(this.getValue - result);
+    var result = (this.initValue / 100) * percentage;
+    this.setValue(this.initValue - result);
   };
 }
 
+function setPercentageCurrency(inputTarget,remainBudget) {
+  var percentage = removePercentageFormat($(inputTarget).val());
+  if(percentage > 100) {
+    percentage = 100;
+  }
+  var value = (remainBudget.initValue / 100) * percentage;
+  $(inputTarget).parents('.budget').find('span').text(setCurrencyFormat(value));
+}
+
 function checkPercentages(inputTarget,inputList,remainBudget) {
-  var result = 0;
+  var totalPercentage = 0;
   $(inputList).removeClass('fieldError');
   $(inputList).each(function(i,input) {
-    result += parseFloat(removePercentageFormat($(input).val() || 0));
+    totalPercentage += parseFloat(removePercentageFormat($(input).val() || 0));
   });
-  if(result > 100) {
+  if(totalPercentage > 100) {
     $(inputTarget).addClass('fieldError');
   } else {
-    remainBudget.calculateRemain(result);
+    remainBudget.calculateRemain(totalPercentage);
   }
 }
 

@@ -168,6 +168,7 @@ p.warning-info {
 
 p.inputTitle {
   color: #777;
+  line-height: 1.3em;
 }
 
 p.checked, label.checked {
@@ -2157,7 +2158,7 @@ textarea[id$='summary'] {
 }
 .budget .title {
   width: 98%;
-  padding: 9px 0;
+  padding: 5px 0;
   float: left;
   /* height: 56px; */
   line-height: 7px;
@@ -2247,7 +2248,7 @@ table tr.row:hover{
 
 .BudgetByYear {
   float: left;
-  padding: 0 86px 0px 0;
+  padding: 0 70px 0px 0;
   /* width: 33%; */
 }
 
@@ -2311,6 +2312,10 @@ p.partnerTitle {
   right: 30px;
   color: #626262;
   font-size: 0.85em;
+}
+
+input.projectBudget, input.projectGenderBudget, input.percentage {
+    width: 70%;
 }
 
 /* Project/Activities QUOTE */
