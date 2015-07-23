@@ -81,9 +81,9 @@ a.disabled {
 }
 
 .fieldset {
-  padding: 10px 11px;
+  padding: 8px 13px;
   margin: 10px 0px;
-  border: 1px dotted #CCC;
+  border: 1px dotted #9B9B9B;
   border-radius: 15px 0px;
 }
 
@@ -159,30 +159,43 @@ p.fieldError{
 }
 
 p.warning-info {
-    background-color: #F6BB42;    border-color: #F6BB42;
-    color: #fff;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
+  background-color: #F6BB42;    border-color: #F6BB42;
+  color: #fff;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+p.inputTitle {
+  color: #777;
+  line-height: 1.3em;
 }
 
 p.checked, label.checked {
-    background: url(../../images/global/icon-check.png) no-repeat 0 25%;
-    padding: 3px 0  3px 23px;
+  background: url(../../images/global/icon-check.png) no-repeat 0 40%;
+  padding: 3px 0  3px 23px;
+  margin-bottom: 5px;
+  text-align: justify;
 }
 
 h6.checked-true {
-    background: url(../../images/global/checked-true.png) no-repeat 0;
-    padding: 3px 0  3px 23px;
+  background: url(../../images/global/checked-true.png) no-repeat 0;
+  padding: 3px 0  3px 23px;
 }
 h6.checked-false {
-    background: url(../../images/global/checked-false.png) no-repeat 0;
-    padding: 3px 0  3px 23px;
+  background: url(../../images/global/checked-false.png) no-repeat 0;
+  padding: 3px 0  3px 23px;
 }
 
+h6.subTitle {
+  color: #575757;    
+  font-size: 1.05em;                
+  padding-top: 7px;    
+  padding-bottom: 0px;
+}
 
 .hasDatepicker {
-    background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
+  background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
 }
 
 fieldset {
@@ -203,14 +216,14 @@ textarea {
 }
 
 textarea#justification {
-    height: 60px;
+  height: 60px;
 }
 
 .textArea p, .input p, .select p {
-    text-align: justify;
-    width: 98%;
-    font-size: 1.07em;
-    margin-top: -1px;
+  text-align: justify;
+  width: 98%;
+  font-size: 1.07em;
+  margin-top: -1px;
 }
 
 input[type="radio"] {
@@ -1387,7 +1400,7 @@ h1.simpleTitle span {
 .halfPartBlock {
   display: inline-block;
   padding: 0 8px 5px 0;
-  width: 48%;
+  width: 47%;
   vertical-align: top;
 }
 
@@ -2135,25 +2148,28 @@ textarea[id$='summary'] {
 /* Project Budget */
 
 .budget {
-    margin-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  padding-left: 9px;
+  border-left: 2px solid #F9F9F9;
 }
-.budget:hover .title{
-  background-color: #f1f1f1;
+.budget:hover {
+  border-left: 2px solid #E5E5E5; 
 }
 .budget .title {
-    width: 70%;
-    padding: 9px 0;
-    float: left;
-    /* height: 56px; */
-    line-height: 7px;
-    border-radius: 2px;
-    position: relative;
+  width: 98%;
+  padding: 5px 0;
+  float: left;
+  /* height: 56px; */
+  line-height: 7px;
+  border-radius: 2px;
+  position: relative;
 }
 
 .budget .content {
-    width: 70%;
+    width: 98%;
     float: left;
-    margin: 5px 0;
+    margin-bottom: 2px;
 }
 
 .budget .content p {
@@ -2232,7 +2248,7 @@ table tr.row:hover{
 
 .BudgetByYear {
   float: left;
-  padding: 0 86px 0px 0;
+  padding: 0 70px 0px 0;
   /* width: 33%; */
 }
 
@@ -2296,6 +2312,10 @@ p.partnerTitle {
   right: 30px;
   color: #626262;
   font-size: 0.85em;
+}
+
+input.projectBudget, input.projectGenderBudget, input.percentage {
+    width: 70%;
 }
 
 /* Project/Activities QUOTE */
@@ -3017,7 +3037,7 @@ font-size: 1.05em;
 
 .simpleBox {
     border: 1px solid #E7E7E7;    
-    padding: 12px 15px 10px 15px;    
+    padding: 12px 20px 10px 20px;    
     border-radius: 3px;   
     margin: 0 0px 17px 0;    
     position: relative;

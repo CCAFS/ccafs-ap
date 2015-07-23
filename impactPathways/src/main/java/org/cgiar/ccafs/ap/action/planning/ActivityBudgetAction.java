@@ -290,12 +290,6 @@ public class ActivityBudgetAction extends BaseAction {
         // We validate if the partner leader is already in the employees table. If so, we get this
         // information. If not, we load the information from expected project leader.
         User activityLeader = activityManager.getActivityLeader(activity.getId());
-        // if the official leader is defined.
-        if (activityLeader != null) {
-          activity.setLeader(activityLeader);
-        } else {
-          activity.setLeader(activityManager.getExpectedActivityLeader(activityID));
-        }
         // if the project leader is still not defined, stop here.
         if (activity.getLeader() != null) {
 

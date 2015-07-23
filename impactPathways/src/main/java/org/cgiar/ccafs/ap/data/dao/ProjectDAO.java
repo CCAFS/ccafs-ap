@@ -32,10 +32,12 @@ public interface ProjectDAO {
   /**
    * This method deletes the project identified by the value received by parameter.
    * 
-   * @param projectID
+   * @param projectID is the project identifier.
+   * @param userID is the user identifier who is making the change.
+   * @param justification is the justification statement.
    * @return True if the project was deleted successfully, false otherwise.
    */
-  public boolean deleteProject(int projectID);
+  public boolean deleteProject(int projectID, int userID, String justification);
 
   /**
    * This method deletes from the database the relation between the project and the indicator

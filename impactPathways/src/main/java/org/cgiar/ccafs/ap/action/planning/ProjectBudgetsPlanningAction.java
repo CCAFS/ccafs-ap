@@ -26,6 +26,7 @@ import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetPlanningValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Collection;
@@ -178,7 +179,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
 
     // Remove the project leader from the list of PPA partner in case it is present.
-    projectPPAPartners.remove(project.getLeader().getInstitution());
+    if (project.getLeader() != null) {
+      projectPPAPartners.remove(project.getLeader().getInstitution());
+    }
 
     allYears = project.getAllYears();
     invalidYear = allYears.isEmpty();

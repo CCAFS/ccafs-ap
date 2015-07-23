@@ -231,7 +231,6 @@ public class LocationManagerImpl implements LocationManager {
 
           LocationType type = new LocationType();
           type.setId(Integer.parseInt(lData.get("type_id")));
-          ;
           type.setName(lData.get("type_name"));
           location.setType(type);
 
