@@ -40,12 +40,13 @@
     <article class="halfContent" id="projectBudget">
     [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+    [#assign projectType=(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL") /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
     [#if !canEdit]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
     [/#if] 
     [#-- Project Title --]
-    <h1 class="contentTitle">${project.type} [@s.text name="preplanning.projectBudget.title" /]</h1> 
+    <h1 class="contentTitle">[@s.text name="preplanning.projectBudget.title" /]</h1> 
     [#if allYears?has_content]
       [#if project.leader?has_content]
         [#-- Accumulative total project budget --]
@@ -160,8 +161,9 @@
       <div class="borderBox"> 
         [#-- Project identifier --]
         <input name="projectID" type="hidden" value="${project.id?c}" />
-        <input name="year" type="hidden" value="${year?c}" /> 
+        <input name="year" id="year" type="hidden" value="${year?c}" /> 
         <input name="targetYear" type="hidden" id="targetYear" value="${year?c}" />
+        <input type="hidden" id="projectType" value="${projectType}"/>
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -189,7 +191,6 @@
 
 [#macro projectBudget institution budget project isPL=false pp_index="0" cofinancing_budgets="" editable=true]
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
-  [#assign projectType=(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL") /]
   <h6 class="title">${isPL?string('PL','PPA')} - ${institution.composedName}</h6>
   [#-- Hidden values --]
   <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
