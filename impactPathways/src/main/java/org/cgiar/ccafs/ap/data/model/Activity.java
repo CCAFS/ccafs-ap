@@ -33,14 +33,13 @@ public class Activity {
   private String description;
   private Date startDate;
   private Date endDate;
-  private User leader;
-  private User expectedLeader;
+  private ProjectPartner leader;
   private boolean isGlobal;
-  // private ExpectedActivityLeader expectedLeader;
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
   private long created;
   private List<ActivityPartner> activityPartners;
+  private List<ProjectPartner> projectPartners;
   private List<IPElement> outputs;
   private List<IPIndicator> indicators;
   private List<Budget> budgets;
@@ -86,7 +85,7 @@ public class Activity {
    * This method calculates all the years between the start date and the end date.
    * 
    * @return a List of numbers representing all the years, or an empty list if nothing found.
-   */
+   **/
   public List<Integer> getAllYears() {
     List<Integer> allYears = new ArrayList<>();
     if (startDate != null && endDate != null) {
@@ -126,7 +125,6 @@ public class Activity {
     return null;
   }
 
-
   public long getCreated() {
     return created;
   }
@@ -135,6 +133,7 @@ public class Activity {
   public List<IPCrossCutting> getCrossCuttings() {
     return crossCuttings;
   }
+
 
   public List<Deliverable> getDeliverables() {
     return deliverables;
@@ -150,10 +149,6 @@ public class Activity {
 
   public String getExpectedGenderContribution() {
     return expectedGenderContribution;
-  }
-
-  public User getExpectedLeader() {
-    return expectedLeader;
   }
 
   public String getExpectedResearchOutputs() {
@@ -196,7 +191,7 @@ public class Activity {
     return ipOtherContribution;
   }
 
-  public User getLeader() {
+  public ProjectPartner getLeader() {
     return leader;
   }
 
@@ -210,6 +205,10 @@ public class Activity {
 
   public List<IPElement> getOutputs() {
     return outputs;
+  }
+
+  public List<ProjectPartner> getProjectPartners() {
+    return projectPartners;
   }
 
   public Date getStartDate() {
@@ -257,10 +256,6 @@ public class Activity {
     this.deliverables = deliverables;
   }
 
-// public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-// this.expectedLeader = expectedLeader;
-// }
-
   public void setDescription(String description) {
     this.description = description;
   }
@@ -271,10 +266,6 @@ public class Activity {
 
   public void setExpectedGenderContribution(String expectedGenderContribution) {
     this.expectedGenderContribution = expectedGenderContribution;
-  }
-
-  public void setExpectedLeader(User expectedLeader) {
-    this.expectedLeader = expectedLeader;
   }
 
   public void setExpectedResearchOutputs(String expectedResearchOutputs) {
@@ -301,14 +292,14 @@ public class Activity {
     this.ipOtherContribution = ipOtherContribution;
   }
 
-  public void setLeader(User leader) {
+  public void setLeader(ProjectPartner leader) {
     this.leader = leader;
   }
-
 
   public void setLocations(List<Location> locations) {
     this.locations = locations;
   }
+
 
   public void setOutcome(String outcome) {
     this.outcome = outcome;
@@ -316,6 +307,10 @@ public class Activity {
 
   public void setOutputs(List<IPElement> outputs) {
     this.outputs = outputs;
+  }
+
+  public void setProjectPartners(List<ProjectPartner> projectPartners) {
+    this.projectPartners = projectPartners;
   }
 
   public void setStartDate(Date startDate) {

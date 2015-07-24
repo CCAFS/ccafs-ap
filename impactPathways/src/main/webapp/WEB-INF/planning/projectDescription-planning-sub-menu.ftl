@@ -1,5 +1,6 @@
 [#ftl]
 <nav id="stageMenu" class="clearfix"> 
+[#--
   <ul>  
     <li [#if currentSubStage == "description"] class="currentSection" [/#if]>
       <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
@@ -17,4 +18,5 @@
       </a>
     </li> 
   </ul>
+--]
 </nav> 

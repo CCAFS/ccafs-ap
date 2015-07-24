@@ -56,16 +56,11 @@
           [#if midOutcomesSelected?has_content]
             [#list midOutcomesSelected as midOutcome]
               <div class="contribution ">
-                [#if editable]
-                  [#-- Remove Contribution --]
-                  <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
-                [/#if] 
                 [#-- Midoutcome title --]
                 <div class="midOutcomeTitle">
                   <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
                   <input id="programID" value="${midOutcome.program.id}" type="hidden" /> 
                   <h6 class="title">${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
-                  
                   <p class="description"> ${midOutcome.description} </p>
                 </div> 
                 [#-- Indicators list --]
@@ -74,7 +69,6 @@
                   [#if midOutcome.indicators?has_content]
                   <div class="indicatorsBlock">
                     [#list midOutcome.indicators as indicator]
-    
                       [#if indicator.parent?has_content ]
                         [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id,  midOutcomeYear) /]
                       [#else]
@@ -82,10 +76,9 @@
                       [/#if]
                       [#assign isUniqueIndicator = (indicator_index == 0 && !indicator_has_next)]
                       [#if projectIndicator.id != -1 || isUniqueIndicator]
-    
                         <div class="midOutcomeIndicator" >
                           [#if editable] 
-                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked"[/#if] [#if isUniqueIndicator]disabled="disabled"[/#if]  />
+                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked" disabled="disabled"[/#if] [#if isUniqueIndicator][/#if]  />
                           [/#if]
                           [#if indicator.parent?has_content] 
                             <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.parent.description}</label>
@@ -121,7 +114,7 @@
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                   [#if editable]
-                                    <textarea class="projectIndicatorTarget" name="project.indicators.target" >${projectIndicator.target!}</textarea>
+                                    <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     <p>${projectIndicator.target!}</p>
                                   [/#if]
@@ -131,7 +124,7 @@
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
                                   [#if editable]
-                                    <textarea class="projectIndicatorDescription" name="project.indicators.description" >${projectIndicator.description!}</textarea>
+                                    <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     ${projectIndicator.description!}
                                   [/#if] 
@@ -175,7 +168,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label>  <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                 [#if editable]
-                                  <textarea class="projectIndicatorTarget" name="project.indicators.target" ></textarea>                              
+                                  <input type="text" class="projectIndicatorTarget" name="project.indicators.target" />                              
                                 [/#if]
                               </div>
                               
@@ -205,7 +198,7 @@
                           <div class="mog">
                             [#if editable]
                               <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
-                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)] checked [/#if] />
+                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)]class="disabled" checked onclick="return false"[/#if] />
                               <label class=""> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
                             [#else]
                                [#if project.containsOutput(output.id, midOutcome.id)] 
@@ -291,7 +284,7 @@
             <div class="checkboxGroup vertical indicatorNarrative">
               [#-- Target value --]
               <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
-              <textarea  class="projectIndicatorTarget" name="project_indicator_target" ></textarea>
+              <input type="text"  class="projectIndicatorTarget" name="project_indicator_target" />
               [#-- Target description --]
               <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
               <textarea  class="projectIndicatorDescription" name="project_indicator_description" ></textarea>

@@ -72,7 +72,7 @@
           </div> 
         [/#list] [#-- End years list --] 
       [#else]
-        [@s.text name="planning.projectOutputs.empty" /]
+        <p class="simpleBox center">[@s.text name="planning.projectOutputs.empty" /]</p>
       [/#if]
        
     </div>

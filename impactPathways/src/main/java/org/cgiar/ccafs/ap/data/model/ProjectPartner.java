@@ -32,6 +32,7 @@ public class ProjectPartner {
   private String responsabilities;
   private String type;
   private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating
+
   // with.
 
   public ProjectPartner() {
@@ -47,9 +48,24 @@ public class ProjectPartner {
   public boolean equals(Object obj) {
     if (obj instanceof ProjectPartner) {
       ProjectPartner o = (ProjectPartner) obj;
-      return o.id == this.id;
+      return o.getInstitution().getId() == this.institution.getId() && o.getUser().getId() == this.user.getId();
     }
     return false;
+  }
+
+  /**
+   * This method returns a composed way to show a User.
+   * 
+   * @return a String that represents a User.
+   */
+  public String getComposedName() {
+
+    if (this.id == -1) {
+      return "";
+    }
+    return user.getLastName() + ", " + user.getFirstName() + " <" + user.getEmail() + ">, " + institution.getAcronym()
+      + " : " + institution.getName();
+
   }
 
   /**
@@ -83,7 +99,9 @@ public class ProjectPartner {
 
   @Override
   public int hashCode() {
-    return id;
+    int hash = 425;
+    hash = (institution.getId() + user.getId()) * hash;
+    return hash;
   }
 
   /**

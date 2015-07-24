@@ -191,12 +191,14 @@ public class ActivityPartnersAction extends BaseAction {
       for (ActivityPartner activityPartner : activity.getActivityPartners()) {
         activityInstitutions.add(activityPartner.getPartner());
       }
+
+      // TODO adjust all the dependencies of getLeader and getCurrentInstitution
       // Adding also the activity leader institution.
-      if (activity.getLeader() != null) {
-        activityInstitutions.add(activity.getLeader().getCurrentInstitution());
-      } else if (activity.getExpectedLeader() != null) {
-        activityInstitutions.add(activity.getExpectedLeader().getCurrentInstitution());
-      }
+      // if (activity.getLeader() != null) {
+      // // activityInstitutions.add(activity.getLeader().getCurrentInstitution());
+      // } else if (activity.getExpectedLeader() != null) {
+      // activityInstitutions.add(activity.getExpectedLeader().getCurrentInstitution());
+      // }
 
       // Getting all the current budget institutions for the activity.
       // List<Institution> budgetInstitutions = budgetManager.getActivityInstitutionsBudgets(activity.getId());
@@ -240,11 +242,12 @@ public class ActivityPartnersAction extends BaseAction {
   public void validate() {// Validate if there are duplicate institutions.
     boolean problem = false;
     Set<Institution> institutions = new HashSet<>();
-    if (activity.getLeader() != null) {
-      institutions.add(activity.getLeader().getCurrentInstitution());
-    } else if (activity.getExpectedLeader() != null) {
-      institutions.add(activity.getExpectedLeader().getCurrentInstitution());
-    }
+    // TODO adjust all the dependencies of getLeader and getCurrentInstitution
+    // if (activity.getLeader() != null) {
+    // // institutions.add(activity.getLeader().getCurrentInstitution());
+    // } else if (activity.getExpectedLeader() != null) {
+    // institutions.add(activity.getExpectedLeader().getCurrentInstitution());
+    // }
     for (int c = 0; c < activity.getActivityPartners().size(); c++) {
       if (!institutions.add(activity.getActivityPartners().get(c).getPartner())) {
         this.addFieldError("activity.activityPartners[" + c + "].partner",

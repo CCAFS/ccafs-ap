@@ -24,8 +24,8 @@
     <p>[@s.text name="planning.projectsList.help3" /]</p>
   </div>
 
-  [#include "/WEB-INF/global/pages/planning-secondary-menu.ftl"/]
-    <article class="halfContent" id="mainInformation">
+  
+    <article class="fullBlock" id="mainInformation">
       <h1 class="contentTitle">
         [@s.text name="planning.projects.title" /]
       </h1>

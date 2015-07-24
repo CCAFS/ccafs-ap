@@ -59,7 +59,6 @@ function BudgetRemaining(budget) {
   this.initValue = $(budget).find('input').val();
   this.setValue = function(value) {
     $(budget).find('span').text(setCurrencyFormat(value));
-    $(budget).find('input').val(value);
   };
   this.calculateRemain = function(percentage) {
     var result = (this.initValue / 100) * percentage;
