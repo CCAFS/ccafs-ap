@@ -1094,6 +1094,7 @@ nav#mainMenu ul a.disabled li{
   border: 1px solid #dbdbdb;
   border-radius: 5px 5px 5px 5px;
   background: #fff;
+  box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
 }
 
 #secondaryMenuBar {
@@ -1174,37 +1175,53 @@ a.currentReportingSection li #i-additionalInformation{
   background:url('../../images/global/sprite-icons.png') -25px -198px; 
 }
 
-#secondaryMenu ul a {
+#secondaryMenu ul p {
   display: list-item;
   height: 26px;
   margin-left: 0px;
   padding-bottom: 5px;
   padding-left: 10px;
-  padding-top: 11px;
+  padding-top: 6px;
   color: #535353;
   text-decoration: none;
 }
 #secondaryMenu > ul > li {
-  /* border-bottom: 1px solid #dbdbdb; */
+  /* background-image: url("../../images/global/reportingMenuMarker.png"); */    background-repeat: no-repeat;    background-position-y: -2px;    margin-left: -13px;    width: 191px;    padding: 0px 0px 0px 13px;
+}
+
+#secondaryMenu ul li ul li{
+    background-image: url("../../images/global/list-icon.png");
+    background-repeat: no-repeat;
+    background-size: 11px;
+    background-position: 10px 41%;
 }
 
 #secondaryMenu ul li ul li.currentSection{
     font-weight: bold;
 }
 
-#secondaryMenu ul li ul li a{
-  color: #6B6A6A;
+#secondaryMenu ul li ul li {
+  
   padding: 0;
-  border: none;
-  padding: 3px 0 2px 8px;
-  margin: 3px 0px 3px 8px;
-  height: 20px;
-  border-left: 2px solid #EFEFEF;
+  border-bottom: 1px solid rgba(219, 219, 219, 0.78);
+  padding: 5px 0 2px 24px;
+  height: 24px;
+  width: 158px;
 }
+
+#secondaryMenu ul li ul li a{
+  text-decoration: none;
+  color: #5E5E5E;
+}
+
+#secondaryMenu ul li ul li:hover{
+  background-color: #F7F7F7;
+}
+
 
 #secondaryMenu ul li ul {
   /* display:none; */
-  font-size: 0.95em;
+  margin-top: 5px;
 }
 
 #secondaryMenu a.goBack {
@@ -1223,17 +1240,19 @@ a.currentReportingSection li #i-additionalInformation{
 #secondaryMenu > ul > li > hr {
     border: none;
     margin: 0;
-    border-top: 1px solid #DBDBDB;
+    /* border-top: 1px solid #DBDBDB; */
 }
 #secondaryMenu > ul > li.currentSection > hr {
     width: 183px;
     margin: 1px 0 0px 0px;
 }
 
-#secondaryMenu > ul > li.currentReportingSection, 
-#secondaryMenu > ul > li.currentSection {
-  background-image: url("../../images/global/reportingMenuMarker.png");
+
+
+#secondaryMenu > ul > li.currentSection{
+  /* background-image: url("../../images/global/reportingMenuMarker.png"); */
   background-repeat: no-repeat;
+  background-position-y: -2px;
   margin-left: -13px;
   width: 191px;
   padding: 0px 0px 0px 13px;  
@@ -1243,10 +1262,20 @@ a.currentReportingSection li #i-additionalInformation{
   display:block;
 }
 
-#secondaryMenu > ul > li.currentReportingSection > a,
-#secondaryMenu > ul > li.currentSection > a {
+
+#secondaryMenu > ul > li.currentSection > p {
   color: white;
   font-weight: bold;
+  /* background-color: initial; */
+}
+
+#secondaryMenu > ul > li > p{
+  color: #FFFFFF;
+  font-weight: bold;
+  background-color: #47939C;
+  height: 17px;
+  width: 173px;
+  border-radius: 1px;
 }
 
 #arrowDown {
@@ -2364,7 +2393,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   cursor: pointer;
   position: absolute;
   right: 0;
-  top: 0;
+  top: -27px;
 }
 
 #top-quote img { 
@@ -2716,6 +2745,7 @@ margin-bottom: 8px;
   display: block;
   margin: 0px 30px 15px 0px;
   text-align: center;
+  min-height: 18px;
   position: relative;
 }
 

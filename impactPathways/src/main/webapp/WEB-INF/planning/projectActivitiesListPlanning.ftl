@@ -6,6 +6,7 @@
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activities" /]
 [#assign currentStage = "activities" /]
+[#assign currentSubStage = "activities" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},

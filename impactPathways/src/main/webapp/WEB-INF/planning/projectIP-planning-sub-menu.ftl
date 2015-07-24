@@ -1,6 +1,7 @@
 [#ftl]
 <nav id="stageMenu" class="clearfix"> 
   <div id="ipGraph-button" title="[@s.text name="menu.preplanning.submenu.ipGraph" /]"></div>
+  [#--
   <ul> 
     <li [#if currentSubStage == "outcomes"] class="currentSection" [/#if]>
       <a href="[@s.url action='outcomes' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutcomes" /]</a>
@@ -12,6 +13,7 @@
       <a href="[@s.url action='otherContributions' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.otherContributions" /]</a>
     </li> 
   </ul>
+  --]
 </nav> 
 
 <div id="content-ip" style="display:none;height: 270px;width: 100%;margin: 21px 0px;position:relative;" class="ui-widget-content">
