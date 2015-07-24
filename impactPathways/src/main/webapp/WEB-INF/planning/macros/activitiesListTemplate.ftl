@@ -62,6 +62,6 @@
       </tbody>
     </table>
   [#else]
-    <p>[@s.text name="planning.activities.empty" /]</p>
+    <p class="simpleBox center">[@s.text name="planning.activities.empty" /]</p>
   [/#if]
 [/#macro]
