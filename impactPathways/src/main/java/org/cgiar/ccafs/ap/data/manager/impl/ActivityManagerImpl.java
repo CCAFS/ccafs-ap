@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -52,11 +53,14 @@ public class ActivityManagerImpl implements ActivityManager {
   // Managers
   private InstitutionManager institutionManager;
   private UserManager userManager;
+  private ProjectPartnerManager projectPartnerManager;
 
   @Inject
-  public ActivityManagerImpl(ActivityDAO activityDAO, InstitutionManager institutionManager, UserManager userManager) {
+  public ActivityManagerImpl(ActivityDAO activityDAO, InstitutionManager institutionManager,
+    ProjectPartnerManager projectPartnerManager, UserManager userManager) {
     this.activityDAO = activityDAO;
     this.institutionManager = institutionManager;
+    this.projectPartnerManager = projectPartnerManager;
     this.userManager = userManager;
   }
 
@@ -114,7 +118,8 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("leader_id") != null) {
-        activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
+        activity
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal((activityData.get("is_global").equals("1")));
@@ -155,7 +160,8 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("leader_id") != null) {
-        activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
+        activity
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal(activityData.get("is_global").equals("1"));
@@ -267,7 +273,8 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
         if (activityData.get("leader_id") != null) {
-          activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
+          activity
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
         if (activityData.get("is_global") != null) {
           activity.setGlobal((activityData.get("is_global").equals("1")));
@@ -340,7 +347,8 @@ public class ActivityManagerImpl implements ActivityManager {
       activityData.put("description", activity.getDescription());
       activityData.put("startDate", activity.getStartDate());
       activityData.put("endDate", activity.getEndDate());
-      activityData.put("leader_id", activity.getLeader());
+      activityData.put("leader_id", activity.getLeader().getId());
+      System.out.print("<<<<<" + activity.getLeader() + ">>>>>");
       activityArrayMap.add(activityData);
     }
     return activityDAO.saveActivityList(projectID, activityArrayMap);

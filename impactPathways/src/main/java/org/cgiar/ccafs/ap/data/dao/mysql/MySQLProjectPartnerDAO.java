@@ -113,6 +113,23 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
+  public Map<String, String> getProjectPartnerById(int partnerID) {
+    LOG.debug(">> getProjectPartner projectID = {} )", partnerID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT pp.*   ");
+    query.append("FROM project_partners as pp ");
+    query.append("WHERE pp.id= ");
+    query.append(partnerID);
+    query.append(" AND pp.is_active = 1 ");
+    query.append("ORDER BY partner_id, partner_type");
+
+
+    LOG.debug("-- getProject() > Calling method executeQuery to get the results");
+    return this.getData(query.toString()).get(0);
+  }
+
+  @Override
   public List<Map<String, String>> getProjectPartners(int projectID) {
     LOG.debug(">> getProjectPartners projectID = {} )", projectID);
 
@@ -131,8 +148,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
   @Override
   public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
-    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})",
-      new Object[] {projectID, projectPartnerType});
+    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})", new Object[] {projectID,
+      projectPartnerType});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT *   ");
@@ -157,8 +174,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     Object[] values;
     if (projectPartnerData.get("id") == null) {
       // Insert new record
-      query.append(
-        "INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
+      query
+        .append("INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[9];
       values[0] = projectPartnerData.get("id");
@@ -172,8 +189,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       values[8] = projectPartnerData.get("modification_justification");
     } else {
       // update record
-      query.append(
-        "UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, partner_type = ?, responsabilities = ?, modified_by = ?, modification_justification = ? ");
+      query
+        .append("UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, partner_type = ?, responsabilities = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[8];
       values[0] = projectPartnerData.get("project_id");

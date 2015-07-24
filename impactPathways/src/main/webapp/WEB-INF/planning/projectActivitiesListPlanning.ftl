@@ -6,6 +6,7 @@
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activities" /]
 [#assign currentStage = "activities" /]
+[#assign currentSubStage = "activities" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
@@ -53,10 +54,10 @@
           [/#list] 
         [#else]
           [#if editable]
-            <p>[@s.text name="planning.activities.message.empty" /] [@s.text name="planning.activities.message.addNew" /]</p>
+            <p class="simpleBox center">[@s.text name="planning.activities.message.empty" /] [@s.text name="planning.activities.message.addNew" /]</p>
             <div class="buttons">[@s.submit type="button" name="add"][@s.text name="planning.activities.button.add" /][/@s.submit]</div>
           [#else]
-            <p>[@s.text name="planning.activities.message.empty" /]</p>
+            <p class="simpleBox center">[@s.text name="planning.activities.message.empty" /]</p>
           [/#if]
         [/#if]
       </div><!-- End Activities list -->

@@ -1,5 +1,6 @@
 [#ftl] 
 [#macro logList list ] 
+[#if list?has_content]
   <div id="log-history" class="borderBox">
     <h1 class="simpleTitle"> [@s.text name="logHistory.title" /] <span>[@s.text name="logHistory.subTitle" /]</span></h1> 
     <table class="log-table">
@@ -23,5 +24,5 @@
       </tbody>
     </table>
   </div>
-  
+[/#if]
 [/#macro]

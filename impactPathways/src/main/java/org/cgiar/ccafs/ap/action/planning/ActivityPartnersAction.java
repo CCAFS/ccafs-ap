@@ -193,7 +193,7 @@ public class ActivityPartnersAction extends BaseAction {
       }
       // Adding also the activity leader institution.
       if (activity.getLeader() != null) {
-        activityInstitutions.add(activity.getLeader().getCurrentInstitution());
+        // activityInstitutions.add(activity.getLeader().getCurrentInstitution());
       } else if (activity.getExpectedLeader() != null) {
         activityInstitutions.add(activity.getExpectedLeader().getCurrentInstitution());
       }
@@ -241,7 +241,7 @@ public class ActivityPartnersAction extends BaseAction {
     boolean problem = false;
     Set<Institution> institutions = new HashSet<>();
     if (activity.getLeader() != null) {
-      institutions.add(activity.getLeader().getCurrentInstitution());
+      // institutions.add(activity.getLeader().getCurrentInstitution());
     } else if (activity.getExpectedLeader() != null) {
       institutions.add(activity.getExpectedLeader().getCurrentInstitution());
     }
