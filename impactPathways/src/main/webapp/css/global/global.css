@@ -1193,7 +1193,7 @@ a.currentReportingSection li #i-additionalInformation{
     background-image: url("../../images/global/list-icon.png");
     background-repeat: no-repeat;
     background-size: 11px;
-    background-position: 10px 41%;
+    background-position: 10px 45%;
 }
 
 #secondaryMenu ul li ul li.currentSection{
@@ -1204,8 +1204,8 @@ a.currentReportingSection li #i-additionalInformation{
   
   padding: 0;
   border-bottom: 1px solid rgba(219, 219, 219, 0.78);
-  padding: 5px 0 2px 24px;
-  height: 24px;
+  padding: 10px 0 2px 24px;
+  height: 27px;
   width: 158px;
 }
 
@@ -1221,7 +1221,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 #secondaryMenu ul li ul {
   /* display:none; */
-  margin-top: 5px;
+  /* margin-top: 5px; */
 }
 
 #secondaryMenu a.goBack {
