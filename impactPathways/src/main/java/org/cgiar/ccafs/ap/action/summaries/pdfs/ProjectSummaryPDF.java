@@ -14,19 +14,6 @@
 
 package org.cgiar.ccafs.ap.action.summaries.pdfs;
 
-import java.awt.Color;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -52,8 +39,19 @@ import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.awt.Color;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import com.google.inject.Inject;
 import com.lowagie.text.Chunk;
@@ -66,6 +64,8 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -534,25 +534,27 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(this.getText("summaries.project.activities.activityLeader"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
 
-      if (activity.getLeader() != null) {
-        cellContent = new Paragraph(activity.getLeader().getComposedName(), TABLE_BODY_FONT);
-      } else if (activity.getExpectedLeader() != null) {
-        cellContent = new Paragraph(activity.getExpectedLeader().getComposedName(), TABLE_BODY_FONT);
-      } else {
-        cellContent = new Paragraph(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
-      }
+      // TODO adjust all the dependencies of getLeader and getCurrentInstitution
+      // if (activity.getLeader() != null) {
+      // cellContent = new Paragraph(activity.getLeader().getComposedName(), TABLE_BODY_FONT);
+      // } else if (activity.getExpectedLeader() != null) {
+      // cellContent = new Paragraph(activity.getExpectedLeader().getComposedName(), TABLE_BODY_FONT);
+      // } else {
+      // cellContent = new Paragraph(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
+      // }
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
       cellContent = new Paragraph(this.getText("summaries.project.activities.leadOrganization"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
 
-      if (activity.getLeader() != null) {
-        cellContent = new Paragraph(activity.getLeader().getCurrentInstitution().getName(), TABLE_BODY_FONT);
-      } else if (activity.getExpectedLeader() != null) {
-        cellContent = new Paragraph(activity.getExpectedLeader().getCurrentInstitution().getName(), TABLE_BODY_FONT);
-      } else {
-        cellContent = new Paragraph(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
-      }
+      // TODO adjust all the dependencies of getLeader and getCurrentInstitution
+      // if (activity.getLeader() != null) {
+      // cellContent = new Paragraph(activity.getLeader().getCurrentInstitution().getName(), TABLE_BODY_FONT);
+      // } else if (activity.getExpectedLeader() != null) {
+      // cellContent = new Paragraph(activity.getExpectedLeader().getCurrentInstitution().getName(), TABLE_BODY_FONT);
+      // } else {
+      // cellContent = new Paragraph(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
+      // }
 
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
@@ -664,138 +666,138 @@ public class ProjectSummaryPDF extends BasePDF {
       paragraph.setKeepTogether(true);
       StringBuilder stringBuilder = new StringBuilder();
 
-     
+
       // **** Deliverable Information *********
       paragraph = new Paragraph(this.getText("summaries.project.deliverable.information"), HEADING4_FONT);
       paragraph.add(new Chunk().NEWLINE);
       paragraph.add(new Chunk().NEWLINE);
-      
-      //Title   
+
+      // Title
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.information.title")+" : " );
-      
+      paragraph.add(this.getText("summaries.project.deliverable.information.title") + " : ");
+
       paragraph.setFont(BODY_TEXT_FONT);
       stringBuilder.append(deliverable.getTitle());
       paragraph.add(stringBuilder.toString());
       paragraph.add(new Chunk().NEWLINE);
- 
-      
+
+
       // MOG
       stringBuilder = new StringBuilder();
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      stringBuilder.append( this.getText("summaries.project.deliverable.information.mog"));
+      stringBuilder.append(this.getText("summaries.project.deliverable.information.mog"));
       stringBuilder.append(" : ");
       paragraph.add(stringBuilder.toString());
-      
+
       paragraph.setFont(BODY_TEXT_FONT);
       stringBuilder = new StringBuilder();
       stringBuilder.append(deliverable.getOutput().getDescription());
       paragraph.add(stringBuilder.toString());
       paragraph.add(new Chunk().NEWLINE);
 
-      
-      
+
       // Year
       stringBuilder = new StringBuilder();
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      stringBuilder.append( this.getText("summaries.project.deliverable.information.year"));
+      stringBuilder.append(this.getText("summaries.project.deliverable.information.year"));
       stringBuilder.append(" : ");
       paragraph.add(stringBuilder.toString());
-      
+
       paragraph.setFont(BODY_TEXT_FONT);
       stringBuilder = new StringBuilder();
       stringBuilder.append(deliverable.getYear());
       paragraph.add(stringBuilder.toString());
       paragraph.add(new Chunk().NEWLINE);
 
-      
+
       // Main Type
       stringBuilder = new StringBuilder();
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      stringBuilder.append( this.getText("summaries.project.deliverable.information.main"));
+      stringBuilder.append(this.getText("summaries.project.deliverable.information.main"));
       stringBuilder.append(" : ");
       paragraph.add(stringBuilder.toString());
-      
+
       paragraph.setFont(BODY_TEXT_FONT);
       stringBuilder = new StringBuilder();
       stringBuilder.append(deliverable.getType().getCategory().getName());
       paragraph.add(stringBuilder.toString());
       paragraph.add(new Chunk().NEWLINE);
 
-      
+
       // Sub Type
       stringBuilder = new StringBuilder();
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      stringBuilder.append( this.getText("summaries.project.deliverable.information.sub"));
+      stringBuilder.append(this.getText("summaries.project.deliverable.information.sub"));
       stringBuilder.append(" : ");
       paragraph.add(stringBuilder.toString());
-      
+
       paragraph.setFont(BODY_TEXT_FONT);
       stringBuilder = new StringBuilder();
-      
-      if(deliverable.getType().getName()!= null){
-      stringBuilder.append(deliverable.getType().getName());}
+
+      if (deliverable.getType().getName() != null) {
+        stringBuilder.append(deliverable.getType().getName());
+      }
       paragraph.add(stringBuilder.toString());
       paragraph.add(new Chunk().NEWLINE);
       paragraph.add(new Chunk().NEWLINE);
 
-      
+
       // ********** Next Users**************************************
       paragraph.setFont(HEADING4_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.next.user")+ "s");
+      paragraph.add(this.getText("summaries.project.deliverable.next.user") + "s");
       paragraph.add(new Chunk().NEWLINE);
-      paragraph.add(new Chunk().NEWLINE);
-      
-      //Next user   
-      for(NextUser nextUser : deliverable.getNextUsers()){
-      paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.next.user")+" : " );      
-      paragraph.setFont(BODY_TEXT_FONT);
-      stringBuilder.append(nextUser.getUser());
-      paragraph.add(stringBuilder.toString());
       paragraph.add(new Chunk().NEWLINE);
 
-      
-      //Expected Changes
-      paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.next.user.strategies")+" : " );      
-      paragraph.setFont(BODY_TEXT_FONT);
-      stringBuilder.append(nextUser.getExpectedChanges());
-      paragraph.add(stringBuilder.toString());
-      paragraph.add(new Chunk().NEWLINE);
-  
-      
-      //Strategies  
-      paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.next.user.expected.change")+" : " );      
-      paragraph.setFont(BODY_TEXT_FONT);
-      stringBuilder.append(nextUser.getStrategies());
-      paragraph.add(stringBuilder.toString());
-      paragraph.add(new Chunk().NEWLINE); 
-      paragraph.add(new Chunk().NEWLINE); 
-      
+      // Next user
+      for (NextUser nextUser : deliverable.getNextUsers()) {
+        paragraph.setFont(BODY_TEXT_BOLD_FONT);
+        paragraph.add(this.getText("summaries.project.deliverable.next.user") + " : ");
+        paragraph.setFont(BODY_TEXT_FONT);
+        stringBuilder.append(nextUser.getUser());
+        paragraph.add(stringBuilder.toString());
+        paragraph.add(new Chunk().NEWLINE);
+
+
+        // Expected Changes
+        paragraph.setFont(BODY_TEXT_BOLD_FONT);
+        paragraph.add(this.getText("summaries.project.deliverable.next.user.strategies") + " : ");
+        paragraph.setFont(BODY_TEXT_FONT);
+        stringBuilder.append(nextUser.getExpectedChanges());
+        paragraph.add(stringBuilder.toString());
+        paragraph.add(new Chunk().NEWLINE);
+
+
+        // Strategies
+        paragraph.setFont(BODY_TEXT_BOLD_FONT);
+        paragraph.add(this.getText("summaries.project.deliverable.next.user.expected.change") + " : ");
+        paragraph.setFont(BODY_TEXT_FONT);
+        stringBuilder.append(nextUser.getStrategies());
+        paragraph.add(stringBuilder.toString());
+        paragraph.add(new Chunk().NEWLINE);
+        paragraph.add(new Chunk().NEWLINE);
+
       }
-      
+
       // ********** Deliverable partnership**************************************
-     
+
       paragraph.setFont(HEADING4_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.partnership")+" : ");
+      paragraph.add(this.getText("summaries.project.deliverable.partnership") + " : ");
       paragraph.add(new Chunk().NEWLINE);
       paragraph.add(new Chunk().NEWLINE);
-      
-      //Organization
+
+      // Organization
       stringBuilder = new StringBuilder();
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.partnership.organization")+" : " );      
+      paragraph.add(this.getText("summaries.project.deliverable.partnership.organization") + " : ");
       paragraph.setFont(BODY_TEXT_FONT);
       stringBuilder.append(deliverable.getResponsiblePartner().getInstitution().getName());
       paragraph.add(stringBuilder.toString());
       paragraph.add(new Chunk().NEWLINE);
-      
-      //Contact Email  
+
+      // Contact Email
       stringBuilder = new StringBuilder();
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
-      paragraph.add(this.getText("summaries.project.deliverable.partnership.email")+" : " );      
+      paragraph.add(this.getText("summaries.project.deliverable.partnership.email") + " : ");
       paragraph.setFont(BODY_TEXT_FONT);
       stringBuilder.append(deliverable.getResponsiblePartner().getUser().getEmail());
       paragraph.add(stringBuilder.toString());
@@ -803,8 +805,8 @@ public class ProjectSummaryPDF extends BasePDF {
       paragraph.add(new Chunk().NEWLINE);
 
       partnersBlock.add(paragraph);
-      
-      
+
+
     }
   }
 
@@ -1279,6 +1281,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
 
   }
+
   private void addProjectOutcome() {
     String outcomeProgress;
     Paragraph outcomesBlock = new Paragraph();
@@ -1286,7 +1289,7 @@ public class ProjectSummaryPDF extends BasePDF {
     Paragraph title = new Paragraph("5. " + this.getText("summaries.project.outcome"), HEADING2_FONT);
     outcomesBlock.add(title);
     outcomesBlock.add(new Chunk().NEWLINE);
-    title = new Paragraph(); 
+    title = new Paragraph();
     title.setFont(HEADING3_FONT);
     title.add("5.1 " + this.getText("summaries.project.outcomeNarrative"));
     outcomesBlock.add(title);
@@ -1327,42 +1330,42 @@ public class ProjectSummaryPDF extends BasePDF {
       } else {
         outcomeProgress = project.getOutcomes().get(String.valueOf(year)).getStatement();
       }
-      
+
       outcomesBlock.setFont(BODY_TEXT_FONT);
       outcomesBlock.add(outcomeProgress);
       outcomesBlock.add(new Chunk().NEWLINE);
       try {
-          document.add(outcomesBlock);
-          document.add(new Chunk().NEWLINE);
-        } catch (DocumentException e) {
-          LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
-        }
+        document.add(outcomesBlock);
+        document.add(new Chunk().NEWLINE);
+      } catch (DocumentException e) {
+        LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
       }
-    
-    //******************* Gender contribution ***************/
+    }
+
+    // ******************* Gender contribution ***************/
 
     outcomesBlock = new Paragraph();
     outcomesBlock.setFont(HEADING3_FONT);
     outcomesBlock.add(this.getText("summaries.project.outcome.gender"));
     outcomesBlock.add(new Chunk().NEWLINE);
-    
-    
-    for(int year = currentPlanningYear; year < midOutcomeYear; year++)
-    {
+
+
+    for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
       outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-      outcomesBlock.add(this.getText("summaries.project.outcome.gender.contributiton", new String[] {String.valueOf(year)}));
-      outcomesBlock.add(new Chunk().NEWLINE);    	
-      
+      outcomesBlock.add(this.getText("summaries.project.outcome.gender.contributiton",
+        new String[] {String.valueOf(year)}));
+      outcomesBlock.add(new Chunk().NEWLINE);
+
       if (project.getOutcomes().get(String.valueOf(year)) == null) {
-          outcomeProgress = this.getText("summaries.project.empty");
-        } else {
-          outcomeProgress = project.getOutcomes().get(String.valueOf(year)).getGenderDimension();
-        }
+        outcomeProgress = this.getText("summaries.project.empty");
+      } else {
+        outcomeProgress = project.getOutcomes().get(String.valueOf(year)).getGenderDimension();
+      }
       outcomesBlock.setFont(BODY_TEXT_FONT);
       outcomesBlock.add(outcomeProgress);
       outcomesBlock.add(new Chunk().NEWLINE);
-      
-    }	
+
+    }
     // Add paragraphs to document
     try {
       document.add(outcomesBlock);
@@ -1370,19 +1373,19 @@ public class ProjectSummaryPDF extends BasePDF {
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
-  
-    //******************* Gender contribution ***************/
-  
-    
+
+    // ******************* Gender contribution ***************/
+
+
   }
 
   // Entering the project outputs in the summary
   private void addProjectOutputs() {
 
-	//**********************************************************************************
-    //***************************  Overview By Mog *************************************
-	//**********************************************************************************
-     
+    // **********************************************************************************
+    // *************************** Overview By Mog *************************************
+    // **********************************************************************************
+
     Paragraph overview_title = new Paragraph("4. " + this.getText("summaries.project.projectOutput"), HEADING2_FONT);
     Paragraph overview_title_1 =
       new Paragraph("4.1 " + this.getText("summaries.project.overviewbymogs"), HEADING3_FONT);
@@ -1424,26 +1427,26 @@ public class ProjectSummaryPDF extends BasePDF {
       }
       counter++;
     }
-    
-    //**********************************************************************************
+
+    // **********************************************************************************
     // *************************** Deliverables.****************************************
-    //**********************************************************************************
+    // **********************************************************************************
 
 
     Paragraph paragraph;
     try {
-        paragraph =  new Paragraph("4.2 " + this.getText("summaries.project.deliverable.title"), HEADING3_FONT);
+      paragraph = new Paragraph("4.2 " + this.getText("summaries.project.deliverable.title"), HEADING3_FONT);
       document.add(paragraph);
       document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project title to the project summary pdf", e);
     }
-    
+
     List<Paragraph> listParagraphDeliverables = new ArrayList<Paragraph>();
     for (Deliverable deliverable : project.getDeliverables()) {
-    	paragraph = new Paragraph();
-    	this.addDelivable(paragraph, deliverable);
-    	listParagraphDeliverables.add(paragraph);
+      paragraph = new Paragraph();
+      this.addDelivable(paragraph, deliverable);
+      listParagraphDeliverables.add(paragraph);
     }
 
     for (Paragraph paragraph_1 : listParagraphDeliverables) {
@@ -1457,12 +1460,11 @@ public class ProjectSummaryPDF extends BasePDF {
       } catch (DocumentException e) {
         LOG.error("There was an error trying to add the project title to the project summary pdf", e);
       }
-      
+
     }
-   
-    
+
+
   }
-  
 
 
   private void addProjectPartners() {
@@ -1608,12 +1610,14 @@ public class ProjectSummaryPDF extends BasePDF {
       partnersBlock.add(paragraph);
     }
   }
-/**
- *  This method is used for generate the file pdf. 
- * @param project
- * @param currentPlanningYear
- * @param midOutcomeYear
- */
+
+  /**
+   * This method is used for generate the file pdf.
+   * 
+   * @param project
+   * @param currentPlanningYear
+   * @param midOutcomeYear
+   */
   public void generatePdf(Project project, int currentPlanningYear, int midOutcomeYear) {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     this.document = new Document(PageSize.A4, 57, 57, 60, 57);
@@ -1644,10 +1648,10 @@ public class ProjectSummaryPDF extends BasePDF {
     this.addProjectIndicators();
     this.addActivities();
 
-    
+
     // this.addProjectBudget();
     // this.addProjectOutcome();
-    
+
     // Close document
     document.close();
 
@@ -1712,11 +1716,12 @@ public class ProjectSummaryPDF extends BasePDF {
     return midOutcomes;
   }
 
- /**
- * Auxiliary method used for numbering the mogs in the summary  
- * @param mog
- * @return
- */
+  /**
+   * Auxiliary method used for numbering the mogs in the summary
+   * 
+   * @param mog
+   * @return
+   */
   public int getMOGIndex(IPElement mog) {
     int index = 0;
     List<IPElement> allMOGs = elementManager.getIPElements(mog.getProgram(), mog.getType());
