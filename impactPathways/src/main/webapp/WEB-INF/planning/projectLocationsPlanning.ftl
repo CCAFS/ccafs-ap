@@ -50,7 +50,12 @@
         [@customForm.checkbox className="globalCheck" name="project.global" value="true" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
         [#-- [@customForm.checkbox name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global value="true" /]  --] 
       </div>
-      <div id="projectLocations-map"></div> 
+      <div id="projectLocations-map">
+      [#if project.global && !editable]
+        <img id="global" src="${baseUrl}/images/global/global-map.png">
+        <p class="global">[@s.text name="planning.project.locations.map.isGlobal" /]</p>
+      [/#if]
+      </div> 
       <div id="locationsBlock" class="clearfix">
         <div id="fields">
             [#assign notApplicableText] [@s.text name="planning.project.locations.notApplicable" /] [/#assign]
@@ -156,10 +161,6 @@
         <!-- internal parameter --> 
         [#-- Project identifier --]
         <input type="hidden" name="projectID" value="${project.id?c}">
-        [#if project.global]
-        <input type="hidden" id="isGlobal" value="${project.global?string}">
-        [/#if] 
-        
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -174,6 +175,9 @@
   </article>
   [/@s.form] 
   [#-- Hidden values used by js --]
+  [#if project.global]
+    <input type="hidden" id="isGlobal" value="${project.global?string}">
+  [/#if] 
   <input type="hidden" id="isGlobalText" value="[@s.text name="planning.project.locations.map.isGlobal" /]">
   <input type="hidden" id="isEditable" value="${editable?string('1','0')}">
 </section>
