@@ -81,7 +81,7 @@ a.disabled {
 }
 
 .fieldset {
-  padding: 10px 11px;
+  padding: 8px 13px;
   margin: 10px 0px;
   border: 1px dotted #9B9B9B;
   border-radius: 15px 0px;
@@ -168,6 +168,7 @@ p.warning-info {
 
 p.inputTitle {
   color: #777;
+  line-height: 1.3em;
 }
 
 p.checked, label.checked {
@@ -186,6 +187,12 @@ h6.checked-false {
   padding: 3px 0  3px 23px;
 }
 
+h6.subTitle {
+  color: #575757;    
+  font-size: 1.05em;                
+  padding-top: 7px;    
+  padding-bottom: 0px;
+}
 
 .hasDatepicker {
   background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
@@ -1081,12 +1088,13 @@ nav#mainMenu ul a.disabled li{
     padding-left: 0px;
 }
 
-#secondaryMenu ul {
+#secondaryMenu > ul {
   list-style-type: none;
   margin-left: 0;
   border: 1px solid #dbdbdb;
   border-radius: 5px 5px 5px 5px;
   background: #fff;
+  box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
 }
 
 #secondaryMenuBar {
@@ -1167,16 +1175,53 @@ a.currentReportingSection li #i-additionalInformation{
   background:url('../../images/global/sprite-icons.png') -25px -198px; 
 }
 
-#secondaryMenu ul a {
+#secondaryMenu ul p {
   display: list-item;
   height: 26px;
   margin-left: 0px;
   padding-bottom: 5px;
   padding-left: 10px;
-  padding-top: 14px;
-  border-bottom: 1px solid #dbdbdb;
+  padding-top: 6px;
   color: #535353;
   text-decoration: none;
+}
+#secondaryMenu > ul > li {
+  /* background-image: url("../../images/global/reportingMenuMarker.png"); */    background-repeat: no-repeat;    background-position-y: -2px;    margin-left: -13px;    width: 191px;    padding: 0px 0px 0px 13px;
+}
+
+#secondaryMenu ul li ul li{
+    background-image: url("../../images/global/list-icon.png");
+    background-repeat: no-repeat;
+    background-size: 11px;
+    background-position: 10px 41%;
+}
+
+#secondaryMenu ul li ul li.currentSection{
+    font-weight: bold;
+}
+
+#secondaryMenu ul li ul li {
+  
+  padding: 0;
+  border-bottom: 1px solid rgba(219, 219, 219, 0.78);
+  padding: 5px 0 2px 24px;
+  height: 24px;
+  width: 158px;
+}
+
+#secondaryMenu ul li ul li a{
+  text-decoration: none;
+  color: #5E5E5E;
+}
+
+#secondaryMenu ul li ul li:hover{
+  background-color: #F7F7F7;
+}
+
+
+#secondaryMenu ul li ul {
+  /* display:none; */
+  margin-top: 5px;
 }
 
 #secondaryMenu a.goBack {
@@ -1192,16 +1237,45 @@ a.currentReportingSection li #i-additionalInformation{
   font-size: 0.9em;
 }
 
+#secondaryMenu > ul > li > hr {
+    border: none;
+    margin: 0;
+    /* border-top: 1px solid #DBDBDB; */
+}
+#secondaryMenu > ul > li.currentSection > hr {
+    width: 183px;
+    margin: 1px 0 0px 0px;
+}
 
-#secondaryMenu ul a.currentReportingSection, #secondaryMenu ul a.currentSection {
-  color: white;
-  background-image: url("../../images/global/reportingMenuMarker.png");
+
+
+#secondaryMenu > ul > li.currentSection{
+  /* background-image: url("../../images/global/reportingMenuMarker.png"); */
   background-repeat: no-repeat;
-  width: 220px;
-  margin-left: -12px;
-  padding: 10px 5px 9px 21px;
-  border: none;
+  background-position-y: -2px;
+  margin-left: -13px;
+  width: 191px;
+  padding: 0px 0px 0px 13px;  
+}
+
+#secondaryMenu > ul > li.currentSection ul{
+  display:block;
+}
+
+
+#secondaryMenu > ul > li.currentSection > p {
+  color: white;
   font-weight: bold;
+  /* background-color: initial; */
+}
+
+#secondaryMenu > ul > li > p{
+  color: #FFFFFF;
+  font-weight: bold;
+  background-color: #47939C;
+  height: 17px;
+  width: 173px;
+  border-radius: 1px;
 }
 
 #arrowDown {
@@ -1393,7 +1467,7 @@ h1.simpleTitle span {
 .halfPartBlock {
   display: inline-block;
   padding: 0 8px 5px 0;
-  width: 48%;
+  width: 47%;
   vertical-align: top;
 }
 
@@ -2141,25 +2215,28 @@ textarea[id$='summary'] {
 /* Project Budget */
 
 .budget {
-    margin-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  padding-left: 9px;
+  border-left: 2px solid #F9F9F9;
 }
-.budget:hover .title{
-  background-color: #f1f1f1;
+.budget:hover {
+  border-left: 2px solid #E5E5E5; 
 }
 .budget .title {
-    width: 70%;
-    padding: 9px 0;
-    float: left;
-    /* height: 56px; */
-    line-height: 7px;
-    border-radius: 2px;
-    position: relative;
+  width: 98%;
+  padding: 5px 0;
+  float: left;
+  /* height: 56px; */
+  line-height: 7px;
+  border-radius: 2px;
+  position: relative;
 }
 
 .budget .content {
-    width: 70%;
+    width: 98%;
     float: left;
-    margin: 5px 0;
+    margin-bottom: 2px;
 }
 
 .budget .content p {
@@ -2238,7 +2315,7 @@ table tr.row:hover{
 
 .BudgetByYear {
   float: left;
-  padding: 0 86px 0px 0;
+  padding: 0 70px 0px 0;
   /* width: 33%; */
 }
 
@@ -2304,6 +2381,10 @@ p.partnerTitle {
   font-size: 0.85em;
 }
 
+input.projectBudget, input.projectGenderBudget, input.percentage {
+    width: 70%;
+}
+
 /* Project/Activities QUOTE */
 
 #top-quote {
@@ -2312,7 +2393,7 @@ p.partnerTitle {
   cursor: pointer;
   position: absolute;
   right: 0;
-  top: 0;
+  top: -27px;
 }
 
 #top-quote img { 
@@ -2664,6 +2745,7 @@ margin-bottom: 8px;
   display: block;
   margin: 0px 30px 15px 0px;
   text-align: center;
+  min-height: 18px;
   position: relative;
 }
 
@@ -3023,7 +3105,7 @@ font-size: 1.05em;
 
 .simpleBox {
     border: 1px solid #E7E7E7;    
-    padding: 12px 15px 10px 15px;    
+    padding: 12px 20px 10px 20px;    
     border-radius: 3px;   
     margin: 0 0px 17px 0;    
     position: relative;

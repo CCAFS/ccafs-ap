@@ -1,6 +1,7 @@
 // Global VARS
 var $allBudgetInputs, $overallInputs, $CCAFSBudgetInputs;
 var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
+var projectType;
 var editable = true;
 
 $(document).ready(init);
@@ -11,8 +12,10 @@ function init() {
   $genderBudgetInputs = $('input.projectGenderBudget');
   $overallInputs = $("input[name$=isfullyInstitutionalCost]");
   
-  projectBudget = new BudgetObject('#totalProjectBudget', '.W1_W2', false);
-  projectBudgetByYear = new BudgetObject('#totalProjectBudgetByYear', '.W1_W2', true);
+  projectType = "."+$('#projectType').val();
+  
+  projectBudget = new BudgetObject('#totalProjectBudget', projectType, false);
+  projectBudgetByYear = new BudgetObject('#totalProjectBudgetByYear', projectType , true);
   bilateralBudget = new BudgetObject('#totalBilateralBudget', '.W3_BILATERAL', false);
   bilateralBudgetByYear = new BudgetObject('#totalBilateralBudgetByYear', '.W3_BILATERAL', true);
   
@@ -81,16 +84,16 @@ function attachEvents() {
                 var yearTarget = $yearTab.attr("id").split("-")[1];
                 var $tempField = $(this).find('.justification');
                 $tempField.removeClass('fieldError');
-                $("input[name$='targetYear']").val(yearTarget);
                 if($tempField.val().length > 0){
                   $('#justification').val($tempField.val());
-                  $(this).dialog("close");
+                  $('#year').val(yearTarget);
                   $("#budget_save").trigger("click");                  
+                  $(this).dialog("close");
                 }else{
                   $tempField.addClass('fieldError');
                 }
               },
-              "Not Save": function() { 
+              "Discard changes": function() { 
                 window.location.href = $yearTab.find('a').attr('href');
               }
           }
@@ -101,7 +104,7 @@ function attachEvents() {
     });
   }
   
-  // Get out format for amount and percentage inputs on submit 
+  // Get out format for amount and percentage inputs on submit
   $("form").submit(function(event) {
     $allBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
@@ -113,9 +116,9 @@ function attachEvents() {
   });
 }
 
-function BudgetObject(budget, type, byYear) {   
+function BudgetObject(budget, type, byYear) {    
   this.obj = $(budget);
-  this.span =$(this.obj).find('span');
+  this.span =$(this.obj).find('span');  
   this.input = $(this.obj).find('input');
   this.yearValue= parseFloat(totalBudget($('input'+type)));
   this.getValue = $(this.input).val();

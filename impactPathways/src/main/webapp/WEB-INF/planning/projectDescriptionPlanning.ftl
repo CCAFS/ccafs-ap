@@ -75,27 +75,27 @@
         </div> 
 
         [#-- Project upload work plan --]
-        [#if project.coreProject]
+        [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+            [@customForm.checkbox name="project.workplanRequired" value="true" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
           <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
             <div class="halfPartBlock fileUpload projectWorkplan"> 
               [#if project.workplanName?has_content]
-                <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+                <p> ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
               [#else]
-                [#if (editable && !project.workplanRequired )]
-                  [@customForm.inputFile name="project.projectWorkplan"  /]
+                [#if (editable && project.workplanRequired )]
+                  [@customForm.inputFile name="file"  /]
                 [/#if] 
               [/#if] 
             </div> 
           </div>  
         </div>
         [/#if]
-        
+
         [#-- Project upload bilateral contract --]
-        [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
+        [#if (project.bilateralProject && securityContext.canUploadBilateralContract())]
         <div class="fullBlock fileUpload bilateralContract">
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
           <div class="uploadContainer">
@@ -103,7 +103,7 @@
               <p>${project.bilateralContractProposalName}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
-                [@customForm.inputFile name="project.bilateralContract"  /]
+                [@customForm.inputFile name="file"  /]
               [#else]  
                 [@s.text name="form.values.notFileUploaded" /]
               [/#if] 

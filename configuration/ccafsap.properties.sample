@@ -52,6 +52,15 @@ file.uploads.caseStudiesImagesFolder=caseStudies/
 # folder to upload locations templates (this folder will be inside the base folder)
 file.uploads.locationsTemplateFolder=locationsTemplate/
 
+# folder that will contain the files related to a project
+file.uploads.projectsFolder=projects/
+
+# folder to upload project work plans
+file.uploads.project.WorkplanFolder=workplan/
+
+# folder to upload bilateral project contract proposal
+file.uploads.project.bilateralProposalFolder=bilateralProposal/
+
 # URL where the files uploaded can be downloaded
 file.downloads=localhost/ccafspr_ip/
 

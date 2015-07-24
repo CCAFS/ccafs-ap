@@ -1,6 +1,6 @@
 $.fn.dataTableExt.sErrMode = 'throw';
 $(document).ready(function() {
-
+  $('.loadingBlock').hide().next().fadeIn(500);
   initTabs();
   // initSlidr();
   initDatatable();

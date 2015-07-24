@@ -402,7 +402,6 @@ public class Project {
     return projectPartners;
   }
 
-
   public List<IPProgram> getRegions() {
     return regions;
   }

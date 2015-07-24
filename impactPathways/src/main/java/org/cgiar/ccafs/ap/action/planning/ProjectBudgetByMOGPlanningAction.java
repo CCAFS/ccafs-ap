@@ -54,6 +54,8 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   // Model
   private Project project;
   private int projectID;
+  private List<Integer> allYears;
+  private int year;
 
   @Inject
   public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager,
@@ -63,6 +65,10 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     this.ipElementManager = ipElementManager;
     this.budgetByMogManager = budgetByMogManager;
     this.historyManager = historyManager;
+  }
+
+  public List<Integer> getAllYears() {
+    return allYears;
   }
 
   public int getCurrentPlanningYear() {
@@ -103,6 +109,10 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     return projectID;
   }
 
+  public int getYear() {
+    return year;
+  }
+
   @Override
   public void prepare() throws Exception {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -118,8 +128,27 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     project.getOutputs().clear();
     project.getOutputs().addAll(outputsTemp);
 
+    allYears = project.getAllYears();
+    if (!allYears.isEmpty()) {
+
+      // Getting the year from the URL parameters.
+      try {
+        String parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
+        year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : allYears.get(0);
+      } catch (NumberFormatException e) {
+        LOG.warn("-- prepare() > There was an error parsing the year '{}'.", year);
+        // Set the first year of the project as current
+        year = allYears.get(0);
+      }
+
+      if (!allYears.contains(new Integer(year))) {
+        year = allYears.get(0);
+      }
+    }
+
     this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
   }
+
 
   @Override
   public String save() {
@@ -149,8 +178,17 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     }
   }
 
+
+  public void setAllYears(List<Integer> allYears) {
+    this.allYears = allYears;
+  }
+
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
   @Override
