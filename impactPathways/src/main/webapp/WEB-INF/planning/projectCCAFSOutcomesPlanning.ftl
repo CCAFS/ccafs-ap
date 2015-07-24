@@ -114,7 +114,7 @@
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                   [#if editable]
-                                    <textarea class="projectIndicatorTarget" name="project.indicators.target" >${projectIndicator.target!}</textarea>
+                                    <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     <p>${projectIndicator.target!}</p>
                                   [/#if]
@@ -124,7 +124,7 @@
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
                                   [#if editable]
-                                    <textarea class="projectIndicatorDescription" name="project.indicators.description" >${projectIndicator.description!}</textarea>
+                                    <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     ${projectIndicator.description!}
                                   [/#if] 
@@ -168,7 +168,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label>  <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                 [#if editable]
-                                  <textarea class="projectIndicatorTarget" name="project.indicators.target" ></textarea>                              
+                                  <input type="text" class="projectIndicatorTarget" name="project.indicators.target" />                              
                                 [/#if]
                               </div>
                               
@@ -198,7 +198,7 @@
                           <div class="mog">
                             [#if editable]
                               <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
-                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)] checked [/#if] />
+                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)]class="disabled" checked onclick="return false"[/#if] />
                               <label class=""> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
                             [#else]
                                [#if project.containsOutput(output.id, midOutcome.id)] 
@@ -284,7 +284,7 @@
             <div class="checkboxGroup vertical indicatorNarrative">
               [#-- Target value --]
               <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
-              <textarea  class="projectIndicatorTarget" name="project_indicator_target" ></textarea>
+              <input type="text"  class="projectIndicatorTarget" name="project_indicator_target" />
               [#-- Target description --]
               <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
               <textarea  class="projectIndicatorDescription" name="project_indicator_description" ></textarea>
