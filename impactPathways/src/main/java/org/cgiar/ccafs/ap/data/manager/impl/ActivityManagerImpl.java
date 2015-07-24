@@ -13,16 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
-import org.cgiar.ccafs.ap.data.model.User;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,9 +22,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Inject;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * @author Javier Andrés Gallego
@@ -113,6 +113,9 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
       }
+      if (activityData.get("expected_leader_id") != null) {
+        activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
+      }
       if (activityData.get("leader_id") != null) {
         activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
       }
@@ -154,8 +157,11 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
       }
+      if (activityData.get("expected_leader_id") != null) {
+        activity.setExpectedLeader(this.getExpectedActivityLeader(activityID));
+      }
       if (activityData.get("leader_id") != null) {
-        activity.setLeader(userManager.getOwner(Integer.parseInt(activityData.get("leader_id"))));
+        activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal(activityData.get("is_global").equals("1"));
@@ -266,6 +272,9 @@ public class ActivityManagerImpl implements ActivityManager {
         } catch (ParseException e) {
           LOG.error("There was an error formatting the end date", e);
         }
+        if (activityData.get("expected_leader_id") != null) {
+          activity.setExpectedLeader(this.getExpectedActivityLeader(Integer.parseInt(activityData.get("id"))));
+        }
         if (activityData.get("leader_id") != null) {
           activity.setLeader(userManager.getUser(Integer.parseInt(activityData.get("leader_id"))));
         }
@@ -281,9 +290,32 @@ public class ActivityManagerImpl implements ActivityManager {
     return activityList;
   }
 
+
+  public User getExpectedActivityLeader(int activityID) {
+    /*
+     * Map<String, String> expectedActivityLeaderData = activityDAO.getExpectedActivityLeader(activityID);
+     * if (!expectedActivityLeaderData.isEmpty()) {
+     * User expectedActivityLeader = new User();
+     * expectedActivityLeader.setId(Integer.parseInt(expectedActivityLeaderData.get("id")));
+     * expectedActivityLeader.setFirstName(expectedActivityLeaderData.get("name"));
+     * expectedActivityLeader.setEmail(expectedActivityLeaderData.get("email"));
+     * if (expectedActivityLeaderData.get("institution_id") != null) {
+     * expectedActivityLeader.setCurrentInstitution(institutionManager.getInstitution(Integer
+     * .parseInt(expectedActivityLeaderData.get("institution_id"))));
+     * }
+     * return expectedActivityLeader;
+     * }
+     */
+    return null;
+  }
+
   @Override
   public List<Integer> getLedActivityIds(User user) {
     return activityDAO.getLedActivities(user.getId());
+  }
+
+  public boolean isOfficialExpectedLeader(int activityID) {
+    return true;
   }
 
   @Override
@@ -296,6 +328,9 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("description", activity.getDescription());
     activityData.put("startDate", activity.getStartDate());
     activityData.put("endDate", activity.getEndDate());
+    if (activity.getExpectedLeader() != null) {
+      activityData.put("expected_leader_id", activity.getExpectedLeader().getId());
+    }
     activityData.put("is_global", activity.isGlobal());
     activityData.put("expected_research_outputs", activity.getExpectedResearchOutputs());
     activityData.put("expected_gender_contribution", activity.getExpectedGenderContribution());
@@ -330,20 +365,29 @@ public class ActivityManagerImpl implements ActivityManager {
     return saved;
   }
 
-  @Override
-  public int saveActivityList(int projectID, List<Activity> activityList) {
-    List<Map<String, Object>> activityArrayMap = new ArrayList<Map<String, Object>>();
-    for (Activity activity : activityList) {
-      Map<String, Object> activityData = new HashMap<>();
-      activityData.put("id", activity.getId());
-      activityData.put("title", activity.getTitle());
-      activityData.put("description", activity.getDescription());
-      activityData.put("startDate", activity.getStartDate());
-      activityData.put("endDate", activity.getEndDate());
-      activityData.put("leader_id", activity.getLeader());
-      activityArrayMap.add(activityData);
+  public boolean saveActivityLeader(int activityID, User user) {
+    boolean allSaved = true;
+
+    int result = activityDAO.saveActivityLeader(activityID, user.getId());
+
+    if (result > 0) {
+      LOG.debug("saveExpectedActivityLeader > New Activity Leader added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("saveExpectedActivityLeader > Activity Leader with id={} was updated", user.getId());
+    } else {
+      LOG.error(
+        "saveExpectedActivityLeader > There was an error trying to save/update an Activity Leader for activityID={}",
+        activityID);
+      allSaved = false;
     }
-    return activityDAO.saveActivityList(projectID, activityArrayMap);
+
+    return allSaved;
+  }
+
+  @Override
+  public int saveActivityList(int projectID, List<Activity> activityArray) {
+    // TODO Auto-generated method stub
+    return 0;
   }
 
   @Override
@@ -371,4 +415,32 @@ public class ActivityManagerImpl implements ActivityManager {
     return saved;
   }
 
+  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader, boolean isOfficialLeader) {
+
+    Map<String, Object> activityData = new HashMap<>();
+    if (expectedActivityLeader.getId() > 0) {
+      activityData.put("id", expectedActivityLeader.getId());
+    }
+    activityData.put("institution_id", expectedActivityLeader.getCurrentInstitution().getId());
+    activityData.put("name", expectedActivityLeader.getFirstName());
+    activityData.put("email", expectedActivityLeader.getEmail());
+    activityData.put("is_official", isOfficialLeader);
+
+    // int result = activityDAO.saveExpectedActivityLeader(activityID, activityData, isOfficialLeader);
+
+    int result = 0;
+    if (result > 0) {
+      LOG.debug("saveExpectedActivityLeader > New Expected Activity Leader added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("saveExpectedActivityLeader > Expected Activity Leader with id={} was updated",
+        expectedActivityLeader.getId());
+    } else {
+      LOG
+        .error(
+          "saveExpectedActivityLeader > There was an error trying to save/update an Expected Activity Leader for activityId={}",
+          activityID);
+    }
+
+    return result;
+  }
 }
