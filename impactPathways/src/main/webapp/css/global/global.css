@@ -59,6 +59,10 @@ a.disabled {
     background: #E0E0E0;
 }
 
+input.disabled {
+  opacity: 0.6;
+}
+
 .clearfix:before,.clearfix:after {
   content: "";
   display: table;
@@ -93,8 +97,9 @@ p.msj {
 }
 
 p.emptyText {
-    margin: 10px 0;    padding: 5px;
-    border-left: 3px solid #eee;
+    /* margin: 10px 0; */    
+    /* padding: 5px; */
+    /* border-left: 3px solid #eee; */
 }
 
 ul.fieldError {
@@ -464,7 +469,7 @@ img.icon {
 
 .addLink{
   margin: 15px 5px 12px 0px;
-  text-align: left;
+  text-align: right;
 }
 
 .addLink img, .addLink a {
@@ -2726,7 +2731,7 @@ margin-bottom: 8px;
 }
 
 .mogsBlock .mog label, .mogsBlock .mog h6 {
-    color: #5C5C5C;
+    /* color: #5C5C5C; */
 }
 .mogsBlock .mog textarea {
   height:55px;

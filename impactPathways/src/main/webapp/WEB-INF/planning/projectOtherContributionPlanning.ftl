@@ -62,7 +62,8 @@
         <div class="crpContribution panel tertiary">
           <div class="panel-head">[@customForm.text name="planning.impactPathways.otherContributions.collaboratingCRPs" readText=!editable /]</div> 
           <div class="panel-body"> 
-            <ul class="list">  
+            <ul class="list">
+            [#if project.crpContributions?has_content]  
               [#list project.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
                   <input class="id" type="hidden" name="project.crpContributions" value="${crp.id}" />
@@ -70,6 +71,9 @@
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
               [/#list] 
+            [#else]
+              <p class="emptyText"> [@s.text name="planning.impactPathways.otherContributions.crpsEmpty" /] </p>  
+            [/#if]  
             </ul>
             [#if editable]
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="crps" keyFieldName="id"  displayFieldName="name" className="crpsSelect" value="" /]
