@@ -56,16 +56,11 @@
           [#if midOutcomesSelected?has_content]
             [#list midOutcomesSelected as midOutcome]
               <div class="contribution ">
-                [#if editable]
-                  [#-- Remove Contribution --]
-                  <div id="removeContribution" class="removeContribution removeElement removeLink" title="[@s.text name="preplanning.midOutcomes.removeMidOutcome" /]"></div>
-                [/#if] 
                 [#-- Midoutcome title --]
                 <div class="midOutcomeTitle">
                   <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
                   <input id="programID" value="${midOutcome.program.id}" type="hidden" /> 
                   <h6 class="title">${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
-                  
                   <p class="description"> ${midOutcome.description} </p>
                 </div> 
                 [#-- Indicators list --]
