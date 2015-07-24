@@ -309,7 +309,7 @@ public class ActivityBudgetAction extends BaseAction {
           allInstitutions.add(0, headerInstitution);
 
           // Removing the institution that is already added as project partner:
-          allInstitutions.remove(activity.getLeader().getCurrentInstitution());
+          // allInstitutions.remove(activity.getLeader().getCurrentInstitution());
           // Removing those institutions that were added in project partners.
           for (ActivityPartner activityParner : activityPartners) {
             allInstitutions.remove(activityParner.getPartner());

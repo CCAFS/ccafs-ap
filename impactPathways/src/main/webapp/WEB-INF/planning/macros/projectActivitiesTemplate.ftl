@@ -28,20 +28,14 @@
         [@customForm.input name="${activitiesName}.endDate" className="endDate"  type="text" i18nkey="planning.activityDescription.endDate" required=true editable=editable/]
       </div>
     </div>
-    [#-- Partner Institution Name --]
-    <div class="fullPartBlock partnerName chosen">
-      [@customForm.select name="${activitiesName}.leader.institution" label="" className="leaderInstitution" i18nkey="planning.activityDescription.leadOrganization" listName="institutionList" keyFieldName="id"  displayFieldName="name" editable=editable /]
-    </div>
-    [#-- Contact Person --]
-    <div class="fullPartBlock clearfix">
-      [#if activity.leader??]
-        [@customForm.input name="" value="${activity.leader.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="planning.activityDescription.leaderName" required=true readOnly=true editable=editable/]
-        <input class="userId" type="hidden" name="${activitiesName}.leader" value="${activity.leader.id}"> 
+    [#-- Project Partner --]
+    <div class="fullPartBlock">
+      
+      [#if activity.projectPartners??]
+        [@customForm.select name="${activitiesName}.projectPartners" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
       [#else]
-        [@customForm.input name="" value="" className="userName" type="text" disabled=!canEdit i18nkey="planning.activityDescription.leaderName" required=true readOnly=true editable=editable/]
-        <input class="userId" type="hidden" name="${activitiesName}.leader" value="-1">
+        [@customForm.select name="${activitiesName}.projectPartners" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
       [/#if]
-      [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
     </div>  
   </div><!-- End ${activityId} -->
 [/#macro]

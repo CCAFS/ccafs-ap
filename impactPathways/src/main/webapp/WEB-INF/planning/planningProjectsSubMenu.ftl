@@ -15,8 +15,7 @@
     <li><a [#if currentStage == "outputs"]${currCss}[/#if] href="[@s.url action='outputs'  includeParams='get'][#if project??][@s.param name='projectID']${project.id}[/@s.param][/#if][/@s.url]">
       [@s.text name="menu.secondary.planning.project.outputs" /]
     </a></li>
-    <li>
-    <a class="disabled" href="#[#-- @s.url action='activities' includeParams='get'][#if project??][@s.param name='projectID']${project.id}[/@s.param][/#if][/@s.url --]">
+    <li><a [#if currentStage == "activities"]${currCss}[/#if] href="[@s.url action='activities' includeParams='get'][#if project??][@s.param name='projectID']${project.id}[/@s.param][/#if][/@s.url]">
       [@s.text name="menu.secondary.planning.project.activities" /]
     </a></li>
     <li><a [#if currentStage == "budget"]${currCss}[/#if] href="[@s.url action='budget'  includeParams='get'][#if project??][@s.param name='projectID']${project.id}[/@s.param][/#if][/@s.url]">
