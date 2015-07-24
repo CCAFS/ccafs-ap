@@ -69,7 +69,6 @@
                   [#if midOutcome.indicators?has_content]
                   <div class="indicatorsBlock">
                     [#list midOutcome.indicators as indicator]
-    
                       [#if indicator.parent?has_content ]
                         [#assign projectIndicator = project.getIndicator(indicator.parent.id, midOutcome.id,  midOutcomeYear) /]
                       [#else]
@@ -77,10 +76,9 @@
                       [/#if]
                       [#assign isUniqueIndicator = (indicator_index == 0 && !indicator_has_next)]
                       [#if projectIndicator.id != -1 || isUniqueIndicator]
-    
                         <div class="midOutcomeIndicator" >
                           [#if editable] 
-                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked"[/#if] [#if isUniqueIndicator]disabled="disabled"[/#if]  />
+                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked" disabled="disabled"[/#if] [#if isUniqueIndicator][/#if]  />
                           [/#if]
                           [#if indicator.parent?has_content] 
                             <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.parent.description}</label>
