@@ -358,6 +358,7 @@ public class MySQLActivityDAO implements ActivityDAO {
         activityData.put("id", rs.getString("id"));
         activityData.put("title", rs.getString("title"));
         activityData.put("description", rs.getString("description"));
+        activityData.put("leader_id", rs.getString("leader_id"));
         if (rs.getDate("startDate") != null) {
           activityData.put("startDate", rs.getDate("startDate").toString());
         }
@@ -469,9 +470,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
       LOG
-      .warn(
-        "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
-        indicatorData);
+        .warn(
+          "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
+          indicatorData);
       LOG.debug("<< saveActivityIndicators(): {}", false);
       return false;
     }
@@ -525,7 +526,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       } else {
         // update activity record
         query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, ");
-        query.append("leader_id=? ");
+        query.append("leader_id = ? ");
         query.append("WHERE id = ? ");
         values = new Object[6];
         values[0] = activityData.get("title");

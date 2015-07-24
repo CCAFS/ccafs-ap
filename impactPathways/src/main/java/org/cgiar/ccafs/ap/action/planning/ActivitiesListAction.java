@@ -17,14 +17,19 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -43,14 +48,15 @@ public class ActivitiesListAction extends BaseAction {
   private static Logger LOG = LoggerFactory.getLogger(ActivitiesListAction.class);
   // Manager
   private ActivityManager activityManager;
-
+  private ProjectManager projectManager;
+  private ProjectPartnerManager projectPartnerManager;
   private HistoryManager historyManager;
 
   // Model for the back-end
   private List<Activity> activities;
   private Project project;
-
-
+  private List<ProjectPartner> projectPartnersAux;
+  private List<ProjectPartner> projectPartners;
   // Model for the front-end
   private int projectID;
   private int activityID;
@@ -60,12 +66,14 @@ public class ActivitiesListAction extends BaseAction {
 
 
   @Inject
-  public ActivitiesListAction(APConfig config, ActivityManager activityManager, ActivitiesListValidator validator) {
+  public ActivitiesListAction(APConfig config, ActivityManager activityManager, ProjectManager projectManager,
+    ProjectPartnerManager projectPartnerManager, ActivitiesListValidator validator) {
     super(config);
     this.activityManager = activityManager;
+    this.projectManager = projectManager;
+    this.projectPartnerManager = projectPartnerManager;
     this.validator = validator;
   }
-
 
   @Override
   public String add() {
@@ -80,7 +88,6 @@ public class ActivitiesListAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
-
   public List<Activity> getActivities() {
     return activities;
   }
@@ -89,8 +96,16 @@ public class ActivitiesListAction extends BaseAction {
     return activityID;
   }
 
+  public Project getProject() {
+    return project;
+  }
+
   public int getProjectID() {
     return projectID;
+  }
+
+  public List<ProjectPartner> getProjectPartners() {
+    return projectPartnersAux;
   }
 
   public String getProjectRequest() {
@@ -101,14 +116,21 @@ public class ActivitiesListAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+    project = projectManager.getProject(projectID);
     activities = activityManager.getActivitiesByProject(projectID);
+    projectPartnersAux = projectPartnerManager.getProjectPartners(projectID);
+
+    Set<ProjectPartner> projectPartners = new HashSet<>();
+    projectPartners.addAll(projectPartnersAux);
+    projectPartners.remove(projectPartners.iterator().equals(projectPartners.containsAll(projectPartnersAux)));
+    System.out.println(projectPartners);
+
   }
 
   @Override
   public String save() {
     if (securityContext.canUpdateProjectActivities()) {
       // Update only the values to which the user is authorized to modify
-
       List<Activity> activityArray = new ArrayList<Activity>();
       Activity previousActivity = new Activity();
       for (Activity activity : activities) {
@@ -117,16 +139,17 @@ public class ActivitiesListAction extends BaseAction {
 
         previousActivity.setTitle(activity.getTitle());
 
-        previousActivity.setLeader(activity.getLeader());
+        previousActivity.setDescription(activity.getDescription());
 
         previousActivity.setStartDate(activity.getStartDate());
 
         previousActivity.setEndDate(activity.getEndDate());
 
-        previousActivity.setDescription(activity.getDescription());
+        previousActivity.setProjectPartners(activity.getProjectPartners());
 
         activityArray.add(previousActivity);
       }
+
       // Save the information
       int result = activityManager.saveActivityList(projectID, activityArray);
       if (result < 0) {

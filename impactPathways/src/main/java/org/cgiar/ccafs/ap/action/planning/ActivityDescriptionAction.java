@@ -208,7 +208,7 @@ public class ActivityDescriptionAction extends BaseAction {
         return BaseAction.INPUT;
       }
       this
-      .addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.activityDescription")}));
+        .addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.activityDescription")}));
       return BaseAction.SUCCESS;
 
     } else {
@@ -248,9 +248,7 @@ public class ActivityDescriptionAction extends BaseAction {
 
     Institution ledIntitution = null;
     if (activity.getLeader() != null) {
-      ledIntitution = activity.getLeader().getCurrentInstitution();
-    } else if (activity.getExpectedLeader() != null) {
-      ledIntitution = activity.getExpectedLeader().getCurrentInstitution();
+      ledIntitution = activity.getLeader().getInstitution();
     }
 
     if (ledIntitution != null) {
