@@ -169,7 +169,7 @@
         [#if coordinator?has_content]
         <div class="fullPartBlock clearfix">  
           [#assign coordinatorUserValue][#if coordinator.user?has_content ]${coordinator.user.id}[#else]-1[/#if][/#assign] 
-          [@customForm.input name="" value="${coordinator.user.composedName}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
+          [@customForm.input name="" value="${coordinator.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
           <input class="partnerId" type="hidden" name="project.coordinator.id" value="${coordinator.id}">
           <input class="type" type="hidden" name="project.coordinator.type" value="${typeProjectCoordinator}">
           <input class="userId" type="hidden" name="project.coordinator.user" value="${coordinatorUserValue}">
