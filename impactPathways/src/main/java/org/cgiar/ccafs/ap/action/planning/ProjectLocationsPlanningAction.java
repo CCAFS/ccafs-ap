@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.LocationTypeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ClimateSmartVillage;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
@@ -52,7 +51,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
   // Model
   private List<LocationType> locationTypes;
-  private Activity activity;
   private List<Country> countries;
   private List<Region> regions;
   private List<Location> climateSmartVillages;
@@ -159,7 +157,9 @@ public class ProjectLocationsPlanningAction extends BaseAction {
    * As we receive the project locations in several lists,
    * we need to re-organize the locations elements in order to save them
    * in the same order entered by the user
-   */
+   * 
+   * @return a list with the locations organized
+   **/
   public List<Location> organizeProjectLocations() {
     locationsOrganized = new ArrayList<>();
     int maxSizeList, totalLocations;

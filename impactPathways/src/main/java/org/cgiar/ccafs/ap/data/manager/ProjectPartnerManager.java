@@ -49,6 +49,15 @@ public interface ProjectPartnerManager {
 
 
   /**
+   * This method is used to get the Project Partner that belongs to a specific project.
+   *
+   * @param partnerId is the id of the partner.
+   * @return The ProjectPartner object that belongs to the project identified with the given id. If no projects
+   *         are found, this method will return an empty list.
+   */
+  public ProjectPartner getProjectPartnerById(int partnerId);
+
+  /**
    * This method is used to get the list of Project Partners that belongs to a specific project.
    *
    * @param projectId is the id of the project.
