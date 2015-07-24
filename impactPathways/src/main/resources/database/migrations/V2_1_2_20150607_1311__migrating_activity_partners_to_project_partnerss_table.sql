@@ -126,7 +126,7 @@ WHERE ap.user_id IS NULL;
 INSERT INTO project_partners 
 (project_id, partner_id, user_id, partner_type, activity_partner, responsabilities, is_active, active_since,
 created_by, modified_by, modification_justification)
-SELECT p.id, ap.institution_id, ap.user_id, 'PP', 1, ap.contribution, ap.is_active, ap.active_since,
+SELECT p.id, ap.institution_id, ap.user_id, 'PP', 1,  CONCAT("Activity 2014-", a.id , " *Partner*: ")  , ap.is_active, ap.active_since,
 ap.created_by, ap.modified_by, ''
 FROM activity_partners ap
 INNER JOIN activities a ON a.id = ap.activity_id
