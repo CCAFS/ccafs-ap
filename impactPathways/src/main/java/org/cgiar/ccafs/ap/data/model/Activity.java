@@ -34,9 +34,7 @@ public class Activity {
   private Date startDate;
   private Date endDate;
   private ProjectPartner leader;
-  private User expectedLeader;
   private boolean isGlobal;
-  // private ExpectedActivityLeader expectedLeader;
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
   private long created;
@@ -153,10 +151,6 @@ public class Activity {
     return expectedGenderContribution;
   }
 
-  public User getExpectedLeader() {
-    return expectedLeader;
-  }
-
   public String getExpectedResearchOutputs() {
     return expectedResearchOutputs;
   }
@@ -266,20 +260,12 @@ public class Activity {
     this.description = description;
   }
 
-  // public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-  // this.expectedLeader = expectedLeader;
-  // }
-
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
 
   public void setExpectedGenderContribution(String expectedGenderContribution) {
     this.expectedGenderContribution = expectedGenderContribution;
-  }
-
-  public void setExpectedLeader(User expectedLeader) {
-    this.expectedLeader = expectedLeader;
   }
 
   public void setExpectedResearchOutputs(String expectedResearchOutputs) {

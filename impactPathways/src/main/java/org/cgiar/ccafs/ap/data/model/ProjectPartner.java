@@ -63,8 +63,9 @@ public class ProjectPartner {
     if (this.id == -1) {
       return "";
     }
-    return user.getId() + ", name: " + user.getLastName() + ", " + user.getFirstName() + " <" + user.getEmail() + ">, "
-      + institution.getId() + " : " + institution.getAcronym() + " : " + institution.getName() + id;
+    return user.getLastName() + ", " + user.getFirstName() + " <" + user.getEmail() + ">, " + institution.getAcronym()
+      + " : " + institution.getName();
+
   }
 
   /**

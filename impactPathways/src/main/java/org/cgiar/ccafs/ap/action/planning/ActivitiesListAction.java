@@ -27,9 +27,7 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +53,6 @@ public class ActivitiesListAction extends BaseAction {
   // Model for the back-end
   private List<Activity> activities;
   private Project project;
-  private List<ProjectPartner> projectPartnersAux;
   private List<ProjectPartner> projectPartners;
   // Model for the front-end
   private int projectID;
@@ -105,7 +102,7 @@ public class ActivitiesListAction extends BaseAction {
   }
 
   public List<ProjectPartner> getProjectPartners() {
-    return projectPartnersAux;
+    return projectPartners;
   }
 
   public String getProjectRequest() {
@@ -118,12 +115,7 @@ public class ActivitiesListAction extends BaseAction {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
     activities = activityManager.getActivitiesByProject(projectID);
-    projectPartnersAux = projectPartnerManager.getProjectPartners(projectID);
-
-    Set<ProjectPartner> projectPartners = new HashSet<>();
-    projectPartners.addAll(projectPartnersAux);
-    projectPartners.remove(projectPartners.iterator().equals(projectPartners.containsAll(projectPartnersAux)));
-    System.out.println(projectPartners);
+    projectPartners = projectPartnerManager.getProjectPartners(projectID);
 
   }
 
@@ -145,7 +137,9 @@ public class ActivitiesListAction extends BaseAction {
 
         previousActivity.setEndDate(activity.getEndDate());
 
-        previousActivity.setProjectPartners(activity.getProjectPartners());
+        previousActivity.setProjectPartners(projectPartners);
+
+        previousActivity.setLeader(activity.getLeader());
 
         activityArray.add(previousActivity);
       }
