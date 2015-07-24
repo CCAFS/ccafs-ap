@@ -149,12 +149,12 @@
            </div>
         </div> <!-- End budget -->
       [#else]
-        [#-- If project leader is not defined --]
-        <p>[@s.text name="preplanning.projectBudget.message.leaderUndefined" /]</p>
+        [#-- If project leader is not defined --] 
+        <p class="simpleBox center">[@s.text name="preplanning.projectBudget.message.leaderUndefined" /]</p>
       [/#if] 
     [#else]
       [#-- If the project has not an start date and/or end date defined --]
-      <p>[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
+      <p class="simpleBox center">[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
     [/#if] 
     
     [#if editable]

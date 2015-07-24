@@ -48,7 +48,7 @@ ALTER TABLE project_partners ADD activity_id  bigint(20)  NOT NULL;
 -- Inserting data to project_partners coming from temporal table activities1.
 -- The inner join is filtering the records that have some value in leader_id.
 INSERT INTO project_partners ( `project_id`,`partner_id`,`user_id`, responsabilities,`partner_type`, `activity_partner`, `is_active`, `created_by`, `modified_by` , activity_id ) 
-SELECT act.project_id, e.institution_id, e.user_id,  CONCAT("Activity 2014-", a.id , " *Leader*: ") ,'PP', 1, 1, act.created_by, act.created_by  , a.id 
+SELECT act.project_id, e.institution_id, e.user_id,  CONCAT("Activity 2014-", a.id , " *Leader*. ") ,'PP', 1, 1, act.created_by, act.created_by  , a.id 
 FROM activities1 a
 INNER JOIN employees  e ON a.leader_id = e.id 
 INNER JOIN activities act ON a.id = act.id ;
@@ -80,14 +80,14 @@ WHERE u.id is NULL AND el.email != '' GROUP BY el.email;
 
 -- Enter the expected_leaders in the table project_partners
 INSERT INTO project_partners (project_id, partner_id, user_id, responsabilities, partner_type, activity_partner, is_active, created_by, modified_by, activity_id) 
-SELECT a.project_id, el.institution_id  as partner_id, IF(el.email = '', NULL, u.id),  CONCAT("Activity 2014-", a.id , " *Leader*: ")  ,'PP', 1 , 1, a.created_by, a.created_by, a.id
+SELECT a.project_id, el.institution_id  as partner_id, IF(el.email = '', NULL, u.id),  CONCAT("Activity 2014-", a.id , " *Leader*. ")  ,'PP', 1 , 1, a.created_by, a.created_by, a.id
 FROM expected_activity_leaders el 
 INNER JOIN activities a ON el.id = a.expected_leader_id  
 INNER JOIN users u ON el.email = u.email;
 
 -- Entering data of special cases project partners (they don't have  user_id) Activities 173, 181 and 215
 INSERT INTO project_partners (project_id, partner_id, user_id, responsabilities, partner_type, activity_partner, is_active, created_by, modified_by, activity_id) VALUES 
-(28, 46, NULL, 'Activity 2014-181 *Leader*: ','PP', 1, 1, 90,90,181) , (28, 46, NULL, 'Activity 2014-173 *Leader*: ','PP', 1, 1, 90,90,173) , (41, 172, NULL, 'Activity 2014-215 *Leader*: ','PP', 1, 1, 97,97,215);
+(28, 46, NULL, 'Activity 2014-181 *Leader*. ','PP', 1, 1, 90,90,181) , (28, 46, NULL, 'Activity 2014-173 *Leader*. ','PP', 1, 1, 90,90,173) , (41, 172, NULL, 'Activity 2014-215 *Leader*. ','PP', 1, 1, 97,97,215);
 
 -- Adding new column project_partner_id in activities table.
 ALTER TABLE activities ADD project_partner_id  BIGINT(20) NOT NULL AFTER gender_percentage;
