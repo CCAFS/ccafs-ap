@@ -300,10 +300,12 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
     background: #408088;
     padding: 6px;
     border-radius: 4px 4px 0 0;
-    cursor: pointer;
     margin-top: 4px;
 }
-
+.accordion.active:hover {
+  background: #386E75;
+  cursor:pointer;
+}
 .accordion span{
     float: left;
 }
@@ -709,8 +711,11 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .panel span.listButton.select {
     background-color: #E6E6E6;
- 
 }
+.panel span.name {
+  cursor:pointer;
+}
+
 .remove {
     background-color: #D5504C;
     color: #fff;
