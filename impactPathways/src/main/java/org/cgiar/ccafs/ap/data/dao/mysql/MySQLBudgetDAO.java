@@ -50,12 +50,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as total ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
+    query.append("SELECT SUM(pb.amount) as total ");
+    query.append("FROM project_budgets pb ");
     query.append("WHERE pb.project_id = " + projectID);
-    query.append(" AND  b.budget_type = " + budgetTypeID);
-    query.append(" AND  b.year = " + year);
+    query.append(" AND pb.budget_type = " + budgetTypeID);
+    query.append(" AND  pb.year = " + year);
 
 
     try (Connection con = databaseManager.getConnection()) {
