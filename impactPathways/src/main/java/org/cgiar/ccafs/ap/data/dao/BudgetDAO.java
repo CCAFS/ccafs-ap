@@ -30,13 +30,13 @@ import com.google.inject.ImplementedBy;
 public interface BudgetDAO {
 
   /**
-   * This method return the budget amount of the project of the type received as
-   * parameter and for the year received as parameter.
+   * This method returns the budget amount of the project depending on budget type given as
+   * parameter and the year.
    * 
    * @param projectID - Project identifier
    * @param budgetTypeID - Budget type identifier
-   * @param year
-   * @return budget amount
+   * @param year - Year
+   * @return a decimal number representing the amount requested, 0 if nothing found and -1 if some error occurred.
    */
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
