@@ -119,7 +119,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal((activityData.get("is_global").equals("1")));
@@ -161,7 +161,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal(activityData.get("is_global").equals("1"));
@@ -274,7 +274,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
         if (activityData.get("is_global") != null) {
           activity.setGlobal((activityData.get("is_global").equals("1")));
@@ -342,7 +342,7 @@ public class ActivityManagerImpl implements ActivityManager {
     List<Map<String, Object>> activityArrayMap = new ArrayList<Map<String, Object>>();
     for (Activity activity : activityList) {
       Map<String, Object> activityData = new HashMap<>();
-      activityData.put("id", activity.getId());
+      activityData.put("id", activity.getId() == -1 ? null : activity.getId());
       activityData.put("title", activity.getTitle());
       activityData.put("description", activity.getDescription());
       activityData.put("startDate", activity.getStartDate());

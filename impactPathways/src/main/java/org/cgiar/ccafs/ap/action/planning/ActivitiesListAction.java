@@ -85,6 +85,15 @@ public class ActivitiesListAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
+  public boolean canBeDeleted(int activityID) {
+    for (Activity activity : activities) {
+      if (activity.getId() == activityID) {
+        return activity.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
+      }
+    }
+    return false;
+  }
+
   public List<Activity> getActivities() {
     return activities;
   }
