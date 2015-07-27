@@ -6,7 +6,7 @@
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${activity_index}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
-    [#if (editable && canEdit)]
+    [#if (editable && canEdit) && (activity?? || action.canBeDeleted(activity.id))]
       <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div> 
     [/#if]
     <span class="index">${activity_index+1}</span> 
