@@ -158,6 +158,9 @@ public class Project {
   }
 
   public String getBilateralContractProposalName() {
+    if (bilateralContractProposalName == null) {
+      return "";
+    }
     return bilateralContractProposalName;
   }
 
