@@ -556,7 +556,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           // Getting the Total Overall Project Budget
           totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
           totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
-          totalW1W2W3BilateralBudget = budgetManager.calculateProjectW1W2W3BilateralBudget(projectID);
+          totalW1W2W3BilateralBudget = budgetManager.calculateTotalCCAFSBudget(projectID);
           totalW1W2W3BilateralBudgetByYear = budgetManager.calculateProjectW1W2W3BilateralBudgetByYear(projectID, year);
           totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
           totalW1W2BudgetByYear = budgetManager.calculateTotalProjectW1W2ByYear(projectID, year);
@@ -604,8 +604,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       this.addActionError(this.getText("saving.problem"));
       return BaseAction.INPUT;
     } else {
-      this.addActionMessage(this.getText("saving.success",
-        new String[] {this.getText("preplanning.projectBudget.title")}));
+      this.addActionMessage(
+        this.getText("saving.success", new String[] {this.getText("preplanning.projectBudget.title")}));
       return BaseAction.SUCCESS;
     }
   }

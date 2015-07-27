@@ -65,11 +65,6 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double calculateProjectW1W2W3BilateralBudget(int projectID) {
-    return budgetDAO.calculateProjectW1W2W3BilateralBudget(projectID);
-  }
-
-  @Override
   public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year) {
     return budgetDAO.calculateProjectW1W2W3BilateralBudgetByYear(projectID, year);
   }

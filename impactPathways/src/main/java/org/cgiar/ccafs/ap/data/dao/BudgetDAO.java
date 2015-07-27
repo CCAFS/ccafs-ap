@@ -41,26 +41,17 @@ public interface BudgetDAO {
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
   /**
-   * This method returns the sum of the budgets with type W1W2 + W3_bilateral.
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number representing the amount, if no data found the method
-   *         will return 0.0 and if some error happen a -1.0 will be returned.
-   */
-  public double calculateProjectW1W2W3BilateralBudget(int projectID);
-
-  /**
    * This method returns the sum of the budgets with type W1W2 + W3_bilateral for the given year
    * 
    * @param projectID is the project id.
-   * @param year
+   * @param year - specific year.
    * @return a decimal number representing the amount, if no data found the method
    *         will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year);
 
   /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
+   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL for ALL years.
    * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
