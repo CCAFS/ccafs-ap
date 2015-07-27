@@ -119,7 +119,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal((activityData.get("is_global").equals("1")));
@@ -161,7 +161,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       if (activityData.get("is_global") != null) {
         activity.setGlobal(activityData.get("is_global").equals("1"));
@@ -274,7 +274,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
         if (activityData.get("is_global") != null) {
           activity.setGlobal((activityData.get("is_global").equals("1")));
@@ -347,8 +347,7 @@ public class ActivityManagerImpl implements ActivityManager {
       activityData.put("description", activity.getDescription());
       activityData.put("startDate", activity.getStartDate());
       activityData.put("endDate", activity.getEndDate());
-      activityData.put("leader_id", activity.getLeader().getId());
-      System.out.print("<<<<<" + activity.getLeader() + ">>>>>");
+      activityData.put("leader_id", activity.getLeader());
       activityArrayMap.add(activityData);
     }
     return activityDAO.saveActivityList(projectID, activityArrayMap);

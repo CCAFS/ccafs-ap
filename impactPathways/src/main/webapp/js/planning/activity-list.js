@@ -40,6 +40,7 @@ function addElement(e) {
   setActivitiesIndexes();
   addChosen();
   datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));
+  $elementsBlock.find('p.emptyText').fadeOut();
 }
 
 function setActivitiesIndexes() {

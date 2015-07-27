@@ -34,9 +34,7 @@ public class Activity {
   private Date startDate;
   private Date endDate;
   private ProjectPartner leader;
-  private User expectedLeader;
   private boolean isGlobal;
-  // private ExpectedActivityLeader expectedLeader;
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
   private long created;
@@ -131,7 +129,6 @@ public class Activity {
     return created;
   }
 
-
   public List<IPCrossCutting> getCrossCuttings() {
     return crossCuttings;
   }
@@ -151,10 +148,6 @@ public class Activity {
 
   public String getExpectedGenderContribution() {
     return expectedGenderContribution;
-  }
-
-  public User getExpectedLeader() {
-    return expectedLeader;
   }
 
   public String getExpectedResearchOutputs() {
@@ -242,6 +235,17 @@ public class Activity {
     return isGlobal;
   }
 
+  /**
+   * Return if the activity is new.
+   * An activity is new when it was created in the planning phase for the current year
+   * 
+   * @param currentPlanningYear
+   * @return true if the activity is recent, false otherwise
+   */
+  public boolean isNew(Date planningStartDate) {
+    return this.created >= planningStartDate.getTime();
+  }
+
   public void setActivityPartners(List<ActivityPartner> partners) {
     this.activityPartners = partners;
   }
@@ -266,20 +270,12 @@ public class Activity {
     this.description = description;
   }
 
-  // public void setExpectedLeader(ExpectedActivityLeader expectedLeader) {
-  // this.expectedLeader = expectedLeader;
-  // }
-
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
 
   public void setExpectedGenderContribution(String expectedGenderContribution) {
     this.expectedGenderContribution = expectedGenderContribution;
-  }
-
-  public void setExpectedLeader(User expectedLeader) {
-    this.expectedLeader = expectedLeader;
   }
 
   public void setExpectedResearchOutputs(String expectedResearchOutputs) {

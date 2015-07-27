@@ -55,6 +55,7 @@ function addItemList($option) {
   $option.remove();
   $select.trigger("liszt:updated");
   setIndexes($list, $('#crpsName').val());
+  $list.find('.emptyText').fadeOut();
 }
 
 function setIndexes($element,elementName) {

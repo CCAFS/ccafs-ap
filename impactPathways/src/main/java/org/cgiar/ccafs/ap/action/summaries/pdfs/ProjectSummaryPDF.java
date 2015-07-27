@@ -574,8 +574,6 @@ public class ProjectSummaryPDF extends BasePDF {
 
       if (activity.getLeader() != null) {
         cellContent = new Paragraph(activity.getLeader().getComposedName(), TABLE_BODY_FONT);
-      } else if (activity.getExpectedLeader() != null) {
-        cellContent = new Paragraph(activity.getExpectedLeader().getComposedName(), TABLE_BODY_FONT);
       } else {
         cellContent = new Paragraph(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
       }
@@ -586,8 +584,6 @@ public class ProjectSummaryPDF extends BasePDF {
 
       if (activity.getLeader() != null) {
         cellContent = new Paragraph(activity.getLeader().getInstitution().getComposedName(), TABLE_BODY_FONT);
-      } else if (activity.getExpectedLeader() != null) {
-        cellContent = new Paragraph(activity.getExpectedLeader().getComposedName(), TABLE_BODY_FONT);
       } else {
         cellContent = new Paragraph(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
       }

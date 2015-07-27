@@ -53,7 +53,7 @@
       <p>[@s.text name="menu.secondary.planning.project.activities" /]</p>
       <ul>
         <li [#if currentSubStage == "activities" ] class="currentSection" [/#if]>
-          <a href="[@s.url action='activities' includeParams='get'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectActivities.activitiesList" /]</a>
+          <a class="disabled" href="#[#--@s.url action='activities' includeParams='get'][@s.param name='projectID']${projectId}[/@s.param][/@s.url--]">[@s.text name="menu.planning.submenu.projectActivities.activitiesList" /]</a>
         </li> 
       </ul>
     </li>
