@@ -32,13 +32,13 @@ import com.google.inject.ImplementedBy;
 public interface BudgetManager {
 
   /**
-   * This method return the budget amount of the project of the type received as
-   * parameter and for the year received as parameter.
+   * This method returns the budget amount of the project depending on the budget type given in the
+   * parameter and in the year specified.
    * 
    * @param projectID - Project identifier
    * @param budgetTypeID - Budget type identifier
-   * @param year
-   * @return budget amount
+   * @param year - Year
+   * @return a decimal number representing the total amount, 0 if nothing found, or -1 if an error occurred.
    */
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
@@ -48,6 +48,7 @@ public interface BudgetManager {
    * @param projectID is the project id.
    * @return a decimal number representing the amount, if no data found the method
    *         will return 0.0 and if some error happen a -1.0 will be returned.
+   *         TODO
    */
   public double calculateProjectW1W2W3BilateralBudget(int projectID);
 
@@ -58,6 +59,7 @@ public interface BudgetManager {
    * @param year
    * @return a decimal number representing the amount, if no data found the method
    *         will return 0.0 and if some error happen a -1.0 will be returned.
+   *         TODO
    */
   public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year);
 
@@ -67,6 +69,7 @@ public interface BudgetManager {
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
+   *         TODO
    */
   public double calculateTotalCCAFSBudget(int projectID);
 
@@ -76,6 +79,7 @@ public interface BudgetManager {
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
+   *         TODO
    */
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
 
@@ -86,6 +90,7 @@ public interface BudgetManager {
    * @param projectID is the project id.
    * @return a decimal number that represents the total amount of money used on that specific project. If no data found
    *         the method will return 0.0 and if some error happen a -1.0 will be returned.
+   *         TODO
    */
   public double calculateTotalOverallBudget(int projectID);
 
@@ -96,6 +101,7 @@ public interface BudgetManager {
    * @param projectID is the project id.
    * @return a decimal number that represents the total amount of money used on that specific project. If no data found
    *         the method will return 0.0 and if some error happen a -1.0 will be returned.
+   *         TODO
    */
   public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
@@ -105,6 +111,7 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param budgetTypeID budget type identifier.
    * @return a double representing this value, or -1 if some error found.
+   *         TODO
    */
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
 
@@ -113,6 +120,7 @@ public interface BudgetManager {
    * 
    * @param projectID is the project identifier.
    * @return a double representing this value, or -1 if some error found.
+   *         TODO
    */
   public double calculateTotalProjectW1W2(int projectID);
 
@@ -122,6 +130,7 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param year is the year.
    * @return a double representing this value, or -1 if some error found.
+   *         TODO
    */
   public double calculateTotalProjectW1W2ByYear(int projectID, int year);
 
@@ -130,6 +139,7 @@ public interface BudgetManager {
    * 
    * @param budgetId is the budget identifier.
    * @return true if the budget was successfully deleted, false otherwise.
+   *         TODO
    */
   public boolean deleteBudget(int budgetId);
 
@@ -139,6 +149,7 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param institutionID is the institution identifier.
    * @return true if the set of budgets were successfully deleted, false otherwise.
+   *         TODO
    */
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
 
@@ -148,6 +159,7 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param year is the year.
    * @return true if the set of budgets were successfully deleted, false otherwise.
+   *         TODO
    */
   public boolean deleteBudgetsByYear(int projectID, int year);
 
@@ -156,6 +168,7 @@ public interface BudgetManager {
    * 
    * @param projectID - is the Id of the project
    * @return a List of Budget with the budget Information related with the project
+   *         TODO
    */
   public List<Budget> getBudgetsByProject(Project projectID);
 
@@ -166,6 +179,7 @@ public interface BudgetManager {
    * @param projectID is the id that identifies the project.
    * @param type is the type of budget see ({@link BudgetType}
    * @return a list of Budget objects.
+   *         TODO
    */
   public List<Budget> getBudgetsByType(int projectID, int budgetType);
 
@@ -175,6 +189,7 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param year is the year.
    * @return a List of Budget objects.
+   *         TODO
    */
   public List<Budget> getBudgetsByYear(int projectID, int year);
 
@@ -183,6 +198,7 @@ public interface BudgetManager {
    * 
    * @param projectID is the project id.
    * @return a List of CCAFS Budgets for that specific project.
+   *         TODO
    */
   public List<Budget> getCCAFSBudgets(int projectID);
 
@@ -193,6 +209,7 @@ public interface BudgetManager {
    * 
    * @param projectID is the project Identifier.
    * @return a List of Institutions.
+   *         TODO
    */
   public List<Institution> getW1Institutions(int projectID);
 
@@ -204,6 +221,7 @@ public interface BudgetManager {
    * @param user - The use who is making the change
    * @param justification
    * @return true if the budget was saved successfully, false otherwise.
+   *         TODO
    */
   public boolean saveBudget(int projectID, Budget budget, User user, String justification);
 
