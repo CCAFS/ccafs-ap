@@ -6,8 +6,12 @@
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${activity_index}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
-    [#if (editable && canEdit) && (activity?? || action.canBeDeleted(activity.id))]
-      <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div> 
+    [#if template]
+      <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
+    [#else]
+      [#if editable && canEdit && action.canBeDeleted(activity.id)]
+        <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
+      [/#if]
     [/#if]
     <span class="index">${activity_index+1}</span> 
       <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
