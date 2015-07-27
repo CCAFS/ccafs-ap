@@ -470,9 +470,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
       LOG
-        .warn(
-          "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
-          indicatorData);
+      .warn(
+        "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
+        indicatorData);
       LOG.debug("<< saveActivityIndicators(): {}", false);
       return false;
     }
@@ -506,20 +506,25 @@ public class MySQLActivityDAO implements ActivityDAO {
 
   @Override
   public int saveActivityList(int projectID, List<Map<String, Object>> activityArrayMap) {
-    LOG.debug(">> saveActivity(activityArray={})", activityArrayMap);
+    LOG.debug(">> saveActivityList(activityArray={})", activityArrayMap);
     StringBuilder query = new StringBuilder();
     int result = -1;
     for (Map<String, Object> activityData : activityArrayMap) {
       Object[] values;
       if (activityData.get("id") == null) {
         // Insert new activity record
-        query.append("INSERT INTO activities (project_id) ");
-        query.append("VALUES (?) ");
-        values = new Object[1];
+        query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id) ");
+        query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+        values = new Object[6];
         values[0] = projectID;
+        values[1] = activityData.get("title");
+        values[2] = activityData.get("description");
+        values[3] = activityData.get("startDate");
+        values[4] = activityData.get("endDate");
+        values[5] = activityData.get("leader_id");
         int newId = databaseManager.saveData(query.toString(), values);
         if (newId <= 0) {
-          LOG.error("A problem happened trying to add a new activity with id={}", projectID);
+          LOG.error("A problem happened trying to add a new activity with id={}", activityData.get("id"));
           return -1;
         }
         return newId;
