@@ -129,7 +129,6 @@ public class Activity {
     return created;
   }
 
-
   public List<IPCrossCutting> getCrossCuttings() {
     return crossCuttings;
   }
@@ -234,6 +233,17 @@ public class Activity {
 
   public boolean isGlobal() {
     return isGlobal;
+  }
+
+  /**
+   * Return if the activity is new.
+   * An activity is new when it was created in the planning phase for the current year
+   * 
+   * @param currentPlanningYear
+   * @return true if the activity is recent, false otherwise
+   */
+  public boolean isNew(Date planningStartDate) {
+    return this.created >= planningStartDate.getTime();
   }
 
   public void setActivityPartners(List<ActivityPartner> partners) {
