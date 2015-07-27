@@ -47,7 +47,7 @@
       [@s.text name="planning.project" /]: ${project.composedId} - [@s.text name="planning.project.locations.title" /] 
       </h1>  
       <div id="locationsGlobalBlock" class="clearfix">
-        [@customForm.checkbox className="globalCheck" name="project.global" value="true" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
+        [@customForm.checkbox className="globalCheck" name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
         [#-- [@customForm.checkbox name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global value="true" /]  --] 
       </div>
       <div id="projectLocations-map">
@@ -58,18 +58,18 @@
       </div> 
       <div id="locationsBlock" class="clearfix">
         <div id="fields">
-            [#assign notApplicableText] [@s.text name="planning.project.locations.notApplicable" /] [/#assign]
-            <div id="location-head" class="row clearfix">
-              <div id="locationIndex-head" class="locationIndex"><strong>#</strong></div>
-              [#-- Type/Level --]
-              <div id="locationLevel-head" class="locationLevel grid_2"><strong>[@s.text name="planning.project.locations.level" /]</strong></div>
-              [#-- Latitude --]
-              <div id="locationLatitude-head" class="locationLatitude grid_2"><strong>[@s.text name="planning.project.locations.latitude" /]</strong></div>
-              [#-- Longitude --]
-              <div id="locationLongitude-head" class="locationLatitude grid_2"><strong>[@s.text name="planning.project.locations.longitude" /]</strong></div>
-              [#-- Name --]
-              <div id="locationName-head" class="locationName grid_3"><strong>[@s.text name="planning.project.locations.name" /]</strong></div>
-            </div> 
+          [#assign notApplicableText] [@s.text name="planning.project.locations.notApplicable" /] [/#assign]
+          <div id="location-head" class="row clearfix">
+            <div id="locationIndex-head" class="locationIndex"><strong>#</strong></div>
+            [#-- Type/Level --]
+            <div id="locationLevel-head" class="locationLevel grid_2"><strong>[@s.text name="planning.project.locations.level" /]</strong></div>
+            [#-- Latitude --]
+            <div id="locationLatitude-head" class="locationLatitude grid_2"><strong>[@s.text name="planning.project.locations.latitude" /]</strong></div>
+            [#-- Longitude --]
+            <div id="locationLongitude-head" class="locationLatitude grid_2"><strong>[@s.text name="planning.project.locations.longitude" /]</strong></div>
+            [#-- Name --]
+            <div id="locationName-head" class="locationName grid_3"><strong>[@s.text name="planning.project.locations.name" /]</strong></div>
+          </div> 
           [#if project?has_content]
             [#if project.locations?has_content]
               [#list project.locations as location]

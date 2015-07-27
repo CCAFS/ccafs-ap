@@ -78,7 +78,7 @@
   </security-constraint>
   
   <session-config>  
-	  <session-timeout> 360 </session-timeout>  
+	  <session-timeout> 21600 </session-timeout>  
   </session-config> 
   
   <welcome-file-list>
