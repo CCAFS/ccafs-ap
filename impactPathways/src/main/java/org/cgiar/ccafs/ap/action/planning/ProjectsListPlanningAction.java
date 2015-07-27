@@ -106,7 +106,7 @@ public class ProjectsListPlanningAction extends BaseAction {
       }
     }
 
-    // If nothing returned yet, we need to loop the second list shich is the list of projects that the user is not able
+    // If nothing returned yet, we need to loop the second list which is the list of projects that the user is not able
     // to edit.
     for (Project project : this.getAllProjects()) {
       if (project.getId() == projectID) {
