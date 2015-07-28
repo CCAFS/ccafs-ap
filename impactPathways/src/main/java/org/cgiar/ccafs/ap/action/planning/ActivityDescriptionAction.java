@@ -189,7 +189,8 @@ public class ActivityDescriptionAction extends BaseAction {
       }
 
       // then, save the full information of the activity description, included the expected activity leader, if applies.
-      int result = activityManager.saveActivity(project.getId(), activity);
+      int result =
+        activityManager.saveActivity(project.getId(), activity, this.getCurrentUser(), this.getJustification());
       if (result < 0) {
         success = false;
       }
@@ -208,7 +209,7 @@ public class ActivityDescriptionAction extends BaseAction {
         return BaseAction.INPUT;
       }
       this
-        .addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.activityDescription")}));
+      .addActionMessage(this.getText("saving.success", new String[] {this.getText("planning.activityDescription")}));
       return BaseAction.SUCCESS;
 
     } else {
