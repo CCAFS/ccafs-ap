@@ -46,8 +46,7 @@
 	      [/#if]
 	      
 	      [#-- Reporting section --]
-	      [#-- 
-	      [#if !securityContext.Guest ] 
+	      [#if !securityContext.guest ] 
 	        [#if reportingActive ]               
 	          <a href="${baseUrl}/reporting/introduction.do" >
 	        [#else]
@@ -56,7 +55,7 @@
 	          <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
 	        </a>
 	      [/#if]	      
-	      --]
+	     
 	      [#-- Summaries section --]
 	      [#--
 	      [#if securityContext.CU || securityContext.FPL || securityContext.RPL || securityContext.admin ]
