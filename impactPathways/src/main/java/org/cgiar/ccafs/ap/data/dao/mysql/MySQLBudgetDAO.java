@@ -72,37 +72,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(amount) as total ");
-    query.append("FROM project_budgets ");
-    query.append(" WHERE project_id = ");
-    query.append(projectID);
-    query.append(" AND ( budget_type = ");
-    query.append(BudgetType.W1_W2.getValue());
-    query.append(" OR budget_type = ");
-    query.append(BudgetType.W3_BILATERAL.getValue());
-    query.append(" ) ");
-    query.append(" AND year = ");
-    query.append(year);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
-      total = -1.0;
-    }
-    return total;
-  }
-
-  @Override
   public double calculateTotalCCAFSBudget(int projectID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -131,12 +100,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append(" WHERE pb.project_id = ");
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
     query.append(projectID);
-    query.append(" AND b.year =  ");
+    query.append(" AND year =  ");
     query.append(year);
 
     try (Connection con = databaseManager.getConnection()) {
