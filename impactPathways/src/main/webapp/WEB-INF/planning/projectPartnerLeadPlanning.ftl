@@ -47,7 +47,7 @@
     <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-      <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">  
+      <div id="partnerTables-partnerLead" class="partnerTable borderBox clearfix">  
         [#if !editable]
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]  
