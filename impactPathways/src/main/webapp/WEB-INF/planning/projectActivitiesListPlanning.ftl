@@ -15,7 +15,7 @@
 ]/]
 
 [#assign params = {
-  "activities": {"id":"activitiesName", "name":"activities"}
+  "activities": {"id":"activitiesName", "name":"project.activities"}
   }
 /] 
 
@@ -47,8 +47,8 @@
         <h1 class="contentTitle">[@s.text name="planning.activities.title" /]</h1> 
         [#-- Validating amount of activities to be listed --]
         <div id="activitiesList" class="">
-        [#if activities?size > 0]
-            [#list activities as activity] 
+        [#if project.activities?size > 0]
+            [#list project.activities as activity] 
               [#-- Activity --]
               [@activitiesForms.activityMacro activity=activity activity_name=params.activities.name activity_index=activity_index editable=editable canEdit=canEdit /]
             [/#list] 
