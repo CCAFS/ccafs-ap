@@ -516,7 +516,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
-    project.setBudgets(budgetManager.getCCAFSBudgets(projectID));
+    project.setBudgets(budgetManager.getBudgetsByProject(project));
 
 
     // Getting all the years of the project.

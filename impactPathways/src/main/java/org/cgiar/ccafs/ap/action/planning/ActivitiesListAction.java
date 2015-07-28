@@ -40,8 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ActivitiesListAction extends BaseAction {
 
-  private static final long serialVersionUID = 6131146898077781801L;
-
+  private static final long serialVersionUID = -5425536924161465111L;
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ActivitiesListAction.class);
   // Manager
@@ -75,7 +74,8 @@ public class ActivitiesListAction extends BaseAction {
   @Override
   public String add() {
     // Create new activity and redirect to activity description using the new activityID assigned by the database.
-    activityID = activityManager.saveActivity(projectID, new Activity(-1));
+    activityID =
+      activityManager.saveActivity(projectID, new Activity(-1), this.getCurrentUser(), this.getJustification());
     if (activityID > 0) {
       this.addActionMessage(this.getText("saving.add.new", new String[] {this.getText("planning.activity")}));
       // Let's redirect the user to the Activity Description section.
@@ -154,8 +154,9 @@ public class ActivitiesListAction extends BaseAction {
       }
 
       // Save the information
-      int result = activityManager.saveActivityList(projectID, activityArray);
-      if (result < 0) {
+      boolean result =
+        activityManager.saveActivityList(projectID, activityArray, this.getCurrentUser(), this.getJustification());
+      if (!result) {
         this.addActionError(this.getText("saving.problem"));
         LOG.warn("There was a problem saving the activity list.");
         return BaseAction.INPUT;

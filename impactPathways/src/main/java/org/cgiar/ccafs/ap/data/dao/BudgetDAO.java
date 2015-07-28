@@ -79,22 +79,26 @@ public interface BudgetDAO {
   public boolean deleteBudget(int budgetId, int userId, String justification);
 
   /**
-   * Deletes the information of the Budgets related by a given project id and an institution id
+   * Deletes the information of the Budgets related by a given project id and an institution.
    * 
-   * @param projectID
-   * @param institutionID
-   * @return true if the elements were deleted successfully. False otherwise
+   * @param projectID is the project identifier.
+   * @param institutionID is an institution identifier.
+   * @param userID is the identifier of the person who is making the deletion.
+   * @param justification is the justification statement.
+   * @return true if the elements were deleted successfully. False otherwise.
    */
-  public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
+  public boolean deleteBudgetsByInstitution(int projectID, int institutionID, int userID, String justification);
 
   /**
    * This method removes all the budgets identified with the given projectID and year.
    * 
    * @param projectID is the project identifier.
    * @param year is a year.
+   * @param userID is the identifier of the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise.
    */
-  public boolean deleteBudgetsByYear(int projectID, int year);
+  public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification);
 
   /**
    * This method gets all the budget information by a given Project Id
@@ -105,15 +109,6 @@ public interface BudgetDAO {
   public List<Map<String, String>> getBudgetsByProject(int projectID);
 
   /**
-   * This method gets all the Budget Information by a given project ID and a Budget Type
-   * 
-   * @param projectID - is the id of the project
-   * @param budgetType - is the id of a Budget Type
-   * @return a list of Map of the Budgets related with the budget type id and the project id
-   */
-  public List<Map<String, String>> getBudgetsByType(int projectID, int budgetType);
-
-  /**
    * This method gets all the Budget information by a given project Id and a year
    * 
    * @param projectID - is the id of the project
@@ -121,22 +116,6 @@ public interface BudgetDAO {
    * @return a list of Map of the Budgets related with the year and the project id
    */
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
-
-  /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
-   */
-  public List<Map<String, String>> getCCAFSBudgets(int projectID);
-
-  /**
-   * This method gets all the W1 budget institutions that belong to a specific project.
-   * 
-   * @param projectID is the project identifier.
-   * @return a list of Maps with the information of institutions.
-   */
-  public List<Map<String, String>> getW1Institutions(int projectID);
 
   /**
    * This method saves the Budget and the Project Budget relation

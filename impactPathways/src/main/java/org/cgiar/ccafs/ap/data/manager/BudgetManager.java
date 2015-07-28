@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.BudgetManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Budget;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -83,41 +82,31 @@ public interface BudgetManager {
    * This method removes a set of budgets that belong to a specific project and institution.
    * 
    * @param projectID is the project identifier.
-   * @param institutionID is the institution identifier.
+   * @param institution is the institution identifier.
+   * @param user is the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the set of budgets were successfully deleted, false otherwise.
-   *         TODO
    */
-  public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
+  public boolean deleteBudgetsByInstitution(int projectID, Institution institution, User user, String justification);
 
   /**
    * This method removes a set of budgets that belong to a specific project and year.
    * 
    * @param projectID is the project identifier.
    * @param year is the year.
+   * @param user is the person who is making the deletion.
+   * @param justifications is the justification statement.
    * @return true if the set of budgets were successfully deleted, false otherwise.
-   *         TODO
    */
-  public boolean deleteBudgetsByYear(int projectID, int year);
+  public boolean deleteBudgetsByYear(int projectID, int year, User user, String justification);
 
   /**
-   * This method gets all the budget information by a given Project Id
+   * This method gets all the budget information by a given Project Id in ALL years.
    * 
    * @param projectID - is the Id of the project
    * @return a List of Budget with the budget Information related with the project
-   *         TODO
    */
   public List<Budget> getBudgetsByProject(Project projectID);
-
-  /**
-   * This method gets all the budget information that belongs to the same type of a specific project.
-   * Type can be Window 1, Window 2, Window 3, Bilateral or Leveraged.
-   * 
-   * @param projectID is the id that identifies the project.
-   * @param type is the type of budget see ({@link BudgetType}
-   * @return a list of Budget objects.
-   *         TODO
-   */
-  public List<Budget> getBudgetsByType(int projectID, int budgetType);
 
   /**
    * This method gets all the budget information that belongs to a project in a specific year.
@@ -125,29 +114,8 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param year is the year.
    * @return a List of Budget objects.
-   *         TODO
    */
   public List<Budget> getBudgetsByYear(int projectID, int year);
-
-  /**
-   * This method gets the CCAFS Budget which is the information of budget type W1+W2+W3
-   * 
-   * @param projectID is the project id.
-   * @return a List of CCAFS Budgets for that specific project.
-   *         TODO
-   */
-  public List<Budget> getCCAFSBudgets(int projectID);
-
-
-  /**
-   * This method gets all the institutions that are currently saved in the budget section.
-   * Only the institutions for budget W1 are going to be returned.
-   * 
-   * @param projectID is the project Identifier.
-   * @return a List of Institutions.
-   *         TODO
-   */
-  public List<Institution> getW1Institutions(int projectID);
 
   /**
    * This method saves the information of the given budget that belong to a specific project into the database.
@@ -157,7 +125,6 @@ public interface BudgetManager {
    * @param user - The use who is making the change
    * @param justification
    * @return true if the budget was saved successfully, false otherwise.
-   *         TODO
    */
   public boolean saveBudget(int projectID, Budget budget, User user, String justification);
 

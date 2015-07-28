@@ -126,7 +126,7 @@ public interface ActivityManager {
    * This method gets all the outputs related with the activity identified by the value
    * received as parameter.
    * 
-   * @param activityID - activity identifer
+   * @param activityID - activity identifier
    * @return a list of IPElement objects
    */
   public List<IPElement> getActivityOutputs(int activityID);
@@ -148,14 +148,16 @@ public interface ActivityManager {
   public List<Integer> getLedActivityIds(User currentUser);
 
   /**
-   * This method saves the information of the given activity that belong to a specific activity into the database.
+   * This method saves the information of the given activity that belongs to a specific project into the database.
    * 
-   * @param projectID
-   * @param activity
+   * @param projectID - project identifier
+   * @param activity - the activity to be saved
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
    * @return A number greater than zero representing the new ID assigned by the database for the activity, 0 if the
    *         activity was updated or -1 if some error occurred.
    */
-  public int saveActivity(int projectID, Activity activity);
+  public int saveActivity(int projectID, Activity activity, User user, String justification);
 
   /**
    * This method save into the database the relation between an activity and
@@ -168,14 +170,16 @@ public interface ActivityManager {
   public boolean saveActivityIndicators(List<IPIndicator> indicators, int activityID);
 
   /**
-   * This method saves the information of the given activities that belong to a specific project into the database.
+   * This method saves the Activity list related to the project identified by the
+   * value received as parameter
    * 
-   * @param projectID
-   * @param activityArray
-   * @return A number greater than zero representing the new IDs assigned by the database for the activities, 0 if the
-   *         activities were updated or -1 if some error occurred.
+   * @param projectID - the project identifier
+   * @param activityArray - the list of activities to be saved
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
+   * @return true if the information was saved successfully, false otherwise.
    */
-  public int saveActivityList(int projectID, List<Activity> activityArray);
+  public boolean saveActivityList(int projectID, List<Activity> activityArray, User user, String justification);
 
   /**
    * This method save the outcome related to the activity received as parameter

@@ -50,7 +50,7 @@ public class ProjectPartnerConverter extends StrutsTypeConverter {
       } catch (NumberFormatException e) {
         // Do Nothing
         LOG
-          .error("Problem to convert Project Partner from String (convertFromString) for id = {} ", id, e.getMessage());
+        .error("Problem to convert Project Partner from String (convertFromString) for id = {} ", id, e.getMessage());
       }
     }
     return null;

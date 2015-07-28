@@ -36,9 +36,9 @@
     <div class="fullPartBlock">
       
       [#if activity.projectPartners??]
-        [@customForm.select name="${activitiesName}.leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+        [@customForm.select name="${activitiesName}.leader" className="leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
       [#else]
-        [@customForm.select name="${activitiesName}.leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+        [@customForm.select name="${activitiesName}.leader" className="leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
       [/#if]
     </div>  
   </div><!-- End ${activityId} -->

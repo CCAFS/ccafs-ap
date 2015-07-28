@@ -320,7 +320,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         List<Integer> previousYears = previousProject.getAllYears();
         for (Integer previousYear : previousYears) {
           if (!currentYears.contains(previousYear)) {
-            budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
+            budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
       }
@@ -422,9 +423,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved =
-              true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-                this.getJustification());
+            saved = true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 
@@ -443,10 +443,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved =
-              saved
-                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-                  this.getJustification());
+            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 

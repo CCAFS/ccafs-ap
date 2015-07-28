@@ -199,7 +199,7 @@ public class ProjectDescriptionPreplanningAction extends BaseAction {
     // Deleting unused years from project budget.
     for (Integer previousYear : previousYears) {
       if (!currentYears.contains(previousYear)) {
-        budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
+        // budgetManager.deleteBudgetsByYear(projectID, previousYear.intValue());
       }
     }
 
