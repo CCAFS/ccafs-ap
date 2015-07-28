@@ -558,7 +558,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           // totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
           totalW1W2W3BilateralBudget = budgetManager.calculateTotalCCAFSBudget(projectID);
           totalW1W2W3BilateralBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
-          totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
+          // totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
           totalW1W2BudgetByYear = budgetManager.calculateTotalProjectW1W2ByYear(projectID, year);
           // leveragedBudgetByYear = budgetManager.calculateProjectLeveragedBudgetByYear(projectID, year);
           // totalLeveragedBudget = budgetManager.calculateProjectTotalLeveragedBudget(projectID);

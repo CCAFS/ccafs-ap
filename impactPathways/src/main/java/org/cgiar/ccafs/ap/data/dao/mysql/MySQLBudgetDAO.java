@@ -147,34 +147,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
-
-  @Override
-  public double calculateTotalProjectW1W2(int projectID) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON pb.budget_id = b.id ");
-    query.append("WHERE pb.project_id = ");
-    query.append(projectID);
-    query.append(" AND b.budget_type = ");
-    query.append(BudgetType.W1_W2.getValue());
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
-      total = -1.0;
-    }
-    return total;
-  }
-
   @Override
   public double calculateTotalProjectW1W2ByYear(int projectID, int year) {
     Double total = 0.0;
