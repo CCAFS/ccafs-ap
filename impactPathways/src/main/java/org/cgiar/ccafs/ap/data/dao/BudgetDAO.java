@@ -118,22 +118,6 @@ public interface BudgetDAO {
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
 
   /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project.
-   */
-  public List<Map<String, String>> getCCAFSBudgets(int projectID);
-
-  /**
-   * This method gets all the W1 budget institutions that belong to a specific project.
-   * 
-   * @param projectID is the project identifier.
-   * @return a list of Maps with the information of institutions.
-   */
-  public List<Map<String, String>> getW1Institutions(int projectID);
-
-  /**
    * This method saves the Budget and the Project Budget relation
    * 
    * @param budgetData

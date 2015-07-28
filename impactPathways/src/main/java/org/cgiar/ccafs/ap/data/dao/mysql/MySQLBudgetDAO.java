@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -274,23 +273,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return budgetList;
   }
 
-  @Override
-  public List<Map<String, String>> getCCAFSBudgets(int projectID) {
-    LOG.debug(">> getCCAFSBudgets projectID = {} )", projectID);
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT b.*   ");
-    query.append("FROM budgets as b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
-    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
-    query.append("WHERE pb.project_id=  ");
-    query.append(projectID);
-
-    LOG.debug("-- getCCAFSBudgets() > Calling method executeQuery to get the results");
-    return this.getData(query.toString());
-  }
-
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> budgetList = new ArrayList<>();
@@ -317,45 +299,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     LOG.debug("<< executeQuery():budgetList.size={}", budgetList.size());
     return budgetList;
-  }
-
-  @Override
-  public List<Map<String, String>> getW1Institutions(int projectID) {
-    LOG.debug(">> getW1Institutions projectID = {} )", projectID);
-    List<Map<String, String>> leveragedInstitutionDataList = new ArrayList<>();
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT DISTINCT i.*   ");
-    query.append("FROM institutions as i ");
-    query.append("INNER JOIN budgets b ON b.institution_id = i.id ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
-    query.append("WHERE pb.project_id = ");
-    query.append(projectID);
-    query.append(" AND b.budget_type = ");
-    query.append(BudgetType.W1_W2.getValue());
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> leveragedInstitutionData = new HashMap<String, String>();
-        leveragedInstitutionData.put("id", rs.getString("id"));
-        leveragedInstitutionData.put("name", rs.getString("name"));
-        leveragedInstitutionData.put("acronym", rs.getString("acronym"));
-        leveragedInstitutionData.put("contact_person_name", rs.getString("contact_person_name"));
-        leveragedInstitutionData.put("contact_person_name", rs.getString("contact_person_name"));
-        leveragedInstitutionData.put("city", rs.getString("city"));
-        leveragedInstitutionData.put("website_link", rs.getString("website_link"));
-        leveragedInstitutionData.put("program_id", rs.getString("program_id"));
-        leveragedInstitutionData.put("institution_type_id", rs.getString("institution_type_id"));
-        leveragedInstitutionData.put("country_id", rs.getString("country_id"));
-
-        leveragedInstitutionDataList.add(leveragedInstitutionData);
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the WI institutions for the project {}.", projectID, e.getNextException());
-    }
-    return leveragedInstitutionDataList;
   }
 
   @Override

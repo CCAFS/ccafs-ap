@@ -137,57 +137,6 @@ public class BudgetManagerImpl implements BudgetManager {
     return budgets;
   }
 
-
-  @Override
-  public List<Budget> getCCAFSBudgets(int projectID) {
-    List<Budget> budgets = new ArrayList<>();
-    List<Map<String, String>> budgetDataList = budgetDAO.getCCAFSBudgets(projectID);
-    for (Map<String, String> budgetData : budgetDataList) {
-      Budget budget = new Budget();
-      budget.setId(Integer.parseInt(budgetData.get("id")));
-      budget.setYear(Integer.parseInt(budgetData.get("year")));
-      budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
-      budget.setAmount(Double.parseDouble(budgetData.get("amount")));
-
-      // Institution as institution_id
-      budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
-
-      // adding information of the object to the array
-      budgets.add(budget);
-    }
-    return budgets;
-  }
-
-  @Override
-  public List<Institution> getW1Institutions(int projectID) {
-    List<Institution> institutions = new ArrayList<>();
-    List<Map<String, String>> institutionDataList = budgetDAO.getW1Institutions(projectID);
-    for (Map<String, String> iData : institutionDataList) {
-      Institution institution = new Institution();
-      institution.setId(Integer.parseInt(iData.get("id")));
-      institution.setName(iData.get("name"));
-      institution.setAcronym(iData.get("acronym"));
-      institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
-
-      // InstitutionType Object
-      if (iData.get("institution_type_id") != null) {
-        institution.setType(institutionManager.getInstitutionType(Integer.parseInt(iData.get("institution_type_id"))));
-      }
-      // Program Object
-      if (iData.get("program_id") != null) {
-        institution.setProgram(ipProgramManager.getIPProgramById(Integer.parseInt(iData.get("program_id"))));
-      }
-      // Location Object
-      if (iData.get("loc_elements_id") != null) {
-        institution.setCountry(locationManger.getCountry(Integer.parseInt(iData.get("loc_elements_id"))));
-      }
-
-      // Adding object to the array.
-      institutions.add(institution);
-    }
-    return institutions;
-  }
-
   @Override
   public boolean saveBudget(int projectID, Budget budget, User user, String justification) {
     boolean allSaved = true;

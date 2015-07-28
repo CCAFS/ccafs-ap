@@ -114,29 +114,8 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param year is the year.
    * @return a List of Budget objects.
-   *         TODO
    */
   public List<Budget> getBudgetsByYear(int projectID, int year);
-
-  /**
-   * This method gets the CCAFS Budget which is the information of budget type W1+W2+W3
-   * 
-   * @param projectID is the project id.
-   * @return a List of CCAFS Budgets for that specific project.
-   *         TODO
-   */
-  public List<Budget> getCCAFSBudgets(int projectID);
-
-
-  /**
-   * This method gets all the institutions that are currently saved in the budget section.
-   * Only the institutions for budget W1 are going to be returned.
-   * 
-   * @param projectID is the project Identifier.
-   * @return a List of Institutions.
-   *         TODO
-   */
-  public List<Institution> getW1Institutions(int projectID);
 
   /**
    * This method saves the information of the given budget that belong to a specific project into the database.

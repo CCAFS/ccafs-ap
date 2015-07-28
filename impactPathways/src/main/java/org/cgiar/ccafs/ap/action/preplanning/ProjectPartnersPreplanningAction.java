@@ -244,15 +244,15 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     }
 
     // Getting all the current budget institutions from W1, W2, W3 and Bilateral.
-    List<Institution> budgetInstitutions = budgetManager.getW1Institutions(project.getId());
+    // List<Institution> budgetInstitutions = budgetManager.getW1Institutions(project.getId());
 
 
     // Deleting Institutions from budget section
-    for (Institution institutionToDelete : budgetInstitutions) {
-      if (!partnerInstitutions.contains(institutionToDelete)) {
-        // budgetManager.deleteBudgetsByInstitution(project.getId(), institutionToDelete.getId());
-      }
-    }
+    // for (Institution institutionToDelete : budgetInstitutions) {
+    // if (!partnerInstitutions.contains(institutionToDelete)) {
+    // // budgetManager.deleteBudgetsByInstitution(project.getId(), institutionToDelete.getId());
+    // }
+    // }
 
     // ------------------------------------------
 
