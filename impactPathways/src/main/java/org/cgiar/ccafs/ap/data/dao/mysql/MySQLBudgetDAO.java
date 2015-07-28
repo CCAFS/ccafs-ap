@@ -71,78 +71,13 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
-
-  @Override
-  public double calculateProjectW1W2W3BilateralBudget(int projectID) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as total ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append(" WHERE pb.project_id = ");
-    query.append(projectID);
-    query.append(" AND ( b.budget_type = ");
-    query.append(BudgetType.W1_W2.getValue());
-    query.append(" OR b.budget_type = ");
-    query.append(BudgetType.W3_BILATERAL.getValue());
-    query.append(" ) ");
-
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
-      total = -1.0;
-    }
-    return total;
-  }
-
-  @Override
-  public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as total ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append(" WHERE pb.project_id = ");
-    query.append(projectID);
-    query.append(" AND ( b.budget_type = ");
-    query.append(BudgetType.W1_W2.getValue());
-    query.append(" OR b.budget_type = ");
-    query.append(BudgetType.W3_BILATERAL.getValue());
-    query.append(" ) ");
-    query.append(" AND b.year = ");
-    query.append(year);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
-      total = -1.0;
-    }
-    return total;
-  }
-
   @Override
   public double calculateTotalCCAFSBudget(int projectID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append(" WHERE pb.project_id = ");
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
     query.append(projectID);
 
     try (Connection con = databaseManager.getConnection()) {
@@ -165,12 +100,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append(" WHERE pb.project_id = ");
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
     query.append(projectID);
-    query.append(" AND b.year =  ");
+    query.append(" AND year =  ");
     query.append(year);
 
     try (Connection con = databaseManager.getConnection()) {
@@ -187,101 +121,17 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
-
-
-  @Override
-  public double calculateTotalOverallBudget(int projectID) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append(" WHERE pb.project_id = ");
-    query.append(projectID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
-      total = -1.0;
-    }
-    return total;
-  }
-
-
-  @Override
-  public double calculateTotalOverallBudgetByYear(int projectID, int year) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append(" WHERE pb.project_id = ");
-    query.append(projectID);
-    query.append(" AND b.year =  ");
-    query.append(year);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
-      total = -1.0;
-    }
-    return total;
-  }
-
 
   @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(pb.amount) as TOTAL ");
-    query.append("FROM project_budgets pb ");
-    query.append("WHERE pb.project_id = ");
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append("WHERE project_id = ");
     query.append(projectID);
-    query.append(" AND pb.budget_type = ");
+    query.append(" AND budget_type = ");
     query.append(budgetTypeID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
-      total = -1.0;
-    }
-    return total;
-  }
-
-
-  @Override
-  public double calculateTotalProjectW1W2(int projectID) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON pb.budget_id = b.id ");
-    query.append("WHERE pb.project_id = ");
-    query.append(projectID);
-    query.append(" AND b.budget_type = ");
-    query.append(BudgetType.W1_W2.getValue());
-
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
@@ -298,47 +148,20 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public double calculateTotalProjectW1W2ByYear(int projectID, int year) {
-    Double total = 0.0;
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(b.amount) as TOTAL ");
-    query.append("FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON pb.budget_id = b.id ");
-    query.append("WHERE pb.project_id = ");
-    query.append(projectID);
-    query.append(" AND b.budget_type = ");
-    query.append(BudgetType.W1_W2.getValue());
-    query.append(" AND b.year = ");
-    query.append(year);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        if (rs.getString("total") != null) {
-          total = Double.parseDouble(rs.getString("total"));
-        }
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
-      total = -1.0;
-    }
-    return total;
-  }
-
-
-  @Override
-  public boolean deleteBudget(int budgetId) {
+  public boolean deleteBudget(int budgetId, int userId, String justification) {
     LOG.debug(">> deleteBudget(id={})", budgetId);
 
-    String query = "DELETE FROM budgets WHERE id= ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {budgetId});
-    if (rowsDeleted >= 0) {
+    String query =
+      "UPDATE project_budgets SET is_active = 0, modified_by = ?, modification_justification = ? WHERE id = ?";
+    Object[] values = new Object[3];
+    values[0] = userId;
+    values[1] = justification;
+    values[2] = budgetId;
+    int result = databaseManager.saveData(query, values);
+    if (result >= 0) {
       LOG.debug("<< deleteBudget():{}", true);
       return true;
     }
-
     LOG.debug("<< deleteBudget:{}", false);
     return false;
   }

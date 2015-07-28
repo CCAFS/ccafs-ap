@@ -43,67 +43,22 @@ public interface BudgetManager {
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
   /**
-   * This method returns the sum of the budgets with type W1W2 + W3_bilateral
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number representing the amount, if no data found the method
-   *         will return 0.0 and if some error happen a -1.0 will be returned.
-   *         TODO
-   */
-  public double calculateProjectW1W2W3BilateralBudget(int projectID);
-
-  /**
-   * This method returns the sum of the budgets with type W1W2 + W3_bilateral for the given year
-   * 
-   * @param projectID is the project id.
-   * @param year
-   * @return a decimal number representing the amount, if no data found the method
-   *         will return 0.0 and if some error happen a -1.0 will be returned.
-   *         TODO
-   */
-  public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year);
-
-  /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL and a given year
+   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL for ALL years
    * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
-   *         TODO
    */
   public double calculateTotalCCAFSBudget(int projectID);
 
   /**
-   * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL and a given year
+   * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) in a given year
    * 
    * @param projectID is the project id.
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
-   *         TODO
    */
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
-
-  /**
-   * This method returns the total Budget used for that specific project and a given year.
-   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number that represents the total amount of money used on that specific project. If no data found
-   *         the method will return 0.0 and if some error happen a -1.0 will be returned.
-   *         TODO
-   */
-  public double calculateTotalOverallBudget(int projectID);
-
-  /**
-   * This method returns the total Budget used for that specific project and a given year.
-   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number that represents the total amount of money used on that specific project. If no data found
-   *         the method will return 0.0 and if some error happen a -1.0 will be returned.
-   *         TODO
-   */
-  public double calculateTotalOverallBudgetByYear(int projectID, int year);
 
   /**
    * This method calculates the total budget of some type for a given project.
@@ -111,37 +66,18 @@ public interface BudgetManager {
    * @param projectID is the project identifier.
    * @param budgetTypeID budget type identifier.
    * @return a double representing this value, or -1 if some error found.
-   *         TODO
    */
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
-
-  /**
-   * This method calculates the total W1 + W2 budget from a given project.
-   * 
-   * @param projectID is the project identifier.
-   * @return a double representing this value, or -1 if some error found.
-   *         TODO
-   */
-  public double calculateTotalProjectW1W2(int projectID);
-
-  /**
-   * This method calculates the total W1 + W2 budget from a given project in a given year.
-   * 
-   * @param projectID is the project identifier.
-   * @param year is the year.
-   * @return a double representing this value, or -1 if some error found.
-   *         TODO
-   */
-  public double calculateTotalProjectW1W2ByYear(int projectID, int year);
 
   /**
    * This method removes a specific budget value from the database.
    * 
    * @param budgetId is the budget identifier.
+   * @param user is the user that is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the budget was successfully deleted, false otherwise.
-   *         TODO
    */
-  public boolean deleteBudget(int budgetId);
+  public boolean deleteBudget(int budgetId, User user, String justification);
 
   /**
    * This method removes a set of budgets that belong to a specific project and institution.

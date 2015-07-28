@@ -11,33 +11,42 @@ $(document).ready(function() {
 
   // hash url animation
   setTimeout(function() {
-    $(window.location.hash).animate({
-      opacity: 0.5
-    }, 400, function() {
-      // Animation complete.
-      $(this).animate({
-        opacity: 1
-      }, 300);
-    });
-  }, 500);
+    $(window.location.hash).addClass('animated pulse');
+  }, 300);
 
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {
       // Validate if the notification is a warning checking if the text contains --warn--
       var message = $(this).text();
+      var messageType;
       if(message.lastIndexOf("--warn--", 0) === 0) {
         message = message.replace("--warn--", " ");
-        $('#generalMessages').noty({
-            type: 'warning',
-            text: message
-        });
-
+        messageType = 'warning';
       } else {
-        $('#generalMessages').noty({
-            type: $(this).attr("class"),
-            text: $(this).text()
-        });
+        messageType = $(this).attr("class");
       }
+
+      $('#generalMessages').noty({
+          theme: 'relax',
+          layout: 'top',
+          theme: 'relax', // or 'relax'
+          type: messageType,
+          text: message, // can be html or string
+          dismissQueue: true, // If you want to use queue feature set this true
+          animation: {
+              open: 'animated flipInX', // Animate.css class names
+              close: 'animated flipInX' // Animate.css class names
+          },
+          timeout: 10000, // delay for closing event. Set false for sticky notifications
+          force: false, // adds notification to the beginning of queue when set to true
+          modal: false,
+          maxVisible: 5, // you can set max visible notification for dismissQueue true option,
+          killer: false, // for close all notifications before show
+          closeWith: [
+            'click'
+          ]
+
+      });
     });
   }
 
@@ -82,16 +91,35 @@ function validateEvent(button,fields) {
           if(!validateField($(this))) {
             e.preventDefault();
             $(this).addClass(errorClass);
+            noty({
+                text: 'The ' + val.replace("#", "") + ' field need to be filled',
+                layout: 'bottomRight',
+                theme: 'relax',
+                timeout: 5000,
+                animation: {
+                    open: 'animated bounceInRight', // Animate.css class names
+                    close: 'animated bounceOutRight' // Animate.css class names
+                },
+                type: 'error'
+            });
           }
         } else {
           e.preventDefault();
-          var $msj = $('<p class="msj">Nothing changed</p>');
-          $(button).parent().after($msj.hide());
-          $msj.fadeIn(1000, function() {
-            $msj.fadeOut(1000, "easeInExpo", function() {
-              $(this).remove();
-            });
+          noty({
+              text: 'Nothing changed',
+              layout: 'bottomRight',
+              theme: 'relax',
+              timeout: 2500,
+              animation: {
+                  open: 'animated bounceInRight', // Animate.css class names
+                  close: 'animated bounceOutRight' // Animate.css class names
+              },
+              type: 'alert'
           });
+          /*
+           * var $msj = $('<p class="msj">Nothing changed</p>'); $(button).parent().after($msj.hide());
+           * $msj.fadeIn(1000, function() { $msj.fadeOut(1000, "easeInExpo", function() { $(this).remove(); }); });
+           */
         }
       });
     });

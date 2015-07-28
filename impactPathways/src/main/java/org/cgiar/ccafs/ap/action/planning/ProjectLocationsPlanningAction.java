@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 public class ProjectLocationsPlanningAction extends BaseAction {
 
   public static Logger LOG = LoggerFactory.getLogger(ProjectLocationsPlanningAction.class);
+ 
   private static final long serialVersionUID = -3960647459588960260L;
 
   // Managers

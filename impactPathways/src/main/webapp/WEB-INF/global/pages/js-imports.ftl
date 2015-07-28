@@ -35,10 +35,9 @@
 
       [#if libraryName="noty"]
         [#-- Additional information visit: http://needim.github.com/noty/ --]
-        [#-- Style can be found on /noty/layouts/inline.js and /noty/themes/default.js --]
-        <script type="text/javascript" src="${baseUrl}/js/libs/noty/jquery.noty.js"></script>
-        <script type="text/javascript" src="${baseUrl}/js/libs/noty/layouts/inline.js"></script>
-        <script type="text/javascript" src="${baseUrl}/js/libs/noty/themes/default.js"></script>
+        [#-- Style can be found on /noty/layouts/inline.js and /noty/themes/default.js --] 
+        <script type="text/javascript" src="${baseUrl}/js/libs/noty/packaged/jquery.noty.packaged.min.js"></script>
+        <script type="text/javascript" src="${baseUrl}/js/libs/noty/themes/relax.js"></script>
       [/#if]
 
       [#if libraryName="jreject"]

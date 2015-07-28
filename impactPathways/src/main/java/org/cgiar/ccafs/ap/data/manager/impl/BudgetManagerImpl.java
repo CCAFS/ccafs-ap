@@ -65,16 +65,6 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double calculateProjectW1W2W3BilateralBudget(int projectID) {
-    return budgetDAO.calculateProjectW1W2W3BilateralBudget(projectID);
-  }
-
-  @Override
-  public double calculateProjectW1W2W3BilateralBudgetByYear(int projectID, int year) {
-    return budgetDAO.calculateProjectW1W2W3BilateralBudgetByYear(projectID, year);
-  }
-
-  @Override
   public double calculateTotalCCAFSBudget(int projectID) {
     return budgetDAO.calculateTotalCCAFSBudget(projectID);
   }
@@ -85,33 +75,13 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double calculateTotalOverallBudget(int projectID) {
-    return budgetDAO.calculateTotalOverallBudget(projectID);
-  }
-
-  @Override
-  public double calculateTotalOverallBudgetByYear(int projectID, int year) {
-    return budgetDAO.calculateTotalOverallBudgetByYear(projectID, year);
-  }
-
-  @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     return budgetDAO.calculateTotalProjectBudgetByType(projectID, budgetTypeID);
   }
 
   @Override
-  public double calculateTotalProjectW1W2(int projectID) {
-    return budgetDAO.calculateTotalProjectW1W2(projectID);
-  }
-
-  @Override
-  public double calculateTotalProjectW1W2ByYear(int projectID, int year) {
-    return budgetDAO.calculateTotalProjectW1W2ByYear(projectID, year);
-  }
-
-  @Override
-  public boolean deleteBudget(int budgetId) {
-    return budgetDAO.deleteBudget(budgetId);
+  public boolean deleteBudget(int budgetId, User user, String justification) {
+    return budgetDAO.deleteBudget(budgetId, user.getId(), justification);
   }
 
   @Override
