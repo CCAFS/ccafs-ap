@@ -72,9 +72,11 @@ public interface BudgetDAO {
    * Deletes the information of a Budget associated by a given id
    * 
    * @param budgetId - is the id of a Budget
-   * @return true if the elements were deleted successfully. False otherwise
+   * @param userId - is the user who is making the deletion.
+   * @param justification - is the justification statement.
+   * @return true if the element was successfully deleted. False otherwise.
    */
-  public boolean deleteBudget(int budgetId);
+  public boolean deleteBudget(int budgetId, int userId, String justification);
 
   /**
    * Deletes the information of the Budgets related by a given project id and an institution id

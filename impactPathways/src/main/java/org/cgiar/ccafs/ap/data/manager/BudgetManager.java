@@ -73,10 +73,11 @@ public interface BudgetManager {
    * This method removes a specific budget value from the database.
    * 
    * @param budgetId is the budget identifier.
+   * @param user is the user that is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the budget was successfully deleted, false otherwise.
-   *         TODO
    */
-  public boolean deleteBudget(int budgetId);
+  public boolean deleteBudget(int budgetId, User user, String justification);
 
   /**
    * This method removes a set of budgets that belong to a specific project and institution.
