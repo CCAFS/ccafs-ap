@@ -60,6 +60,15 @@ public interface BudgetManager {
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
 
   /**
+   * This method calculates the total of the Gender Budget which is the percentage of the amount in a given year
+   * 
+   * @param projectID is the project identifier.
+   * @param year is the year.
+   * @return a double representing this value, or -1 if some error found.
+   */
+  public double calculateTotalGenderBudgetByYear(int projectID, int year);
+
+  /**
    * This method calculates the total budget of some type for a given project.
    * 
    * @param projectID is the project identifier.
