@@ -171,7 +171,6 @@ public interface ActivityManager {
    * @param justification - the justification for the changes made
    * @return A number greater than zero representing the new ID assigned by the database for the activity, 0 if the
    *         activity was updated or -1 if some error occurred.
-   *         TODO HT to review
    */
   public int saveActivity(int projectID, Activity activity, User user, String justification);
 
@@ -187,7 +186,7 @@ public interface ActivityManager {
   public boolean saveActivityIndicators(List<IPIndicator> indicators, int activityID);
 
   /**
-   * This method saves the Activity list related to the project identified by the
+   * This method saves a set of Activities related to the project identified by the
    * value received as parameter
    * 
    * @param projectID - the project identifier
