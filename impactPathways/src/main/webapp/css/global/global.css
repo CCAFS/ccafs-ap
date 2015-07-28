@@ -2473,6 +2473,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 .activity {
   font-size: 0.98em;
   margin-top: 20px !important;
+  padding-top: 33px !important;
   padding-bottom: 20px !important;
 }
 
@@ -3095,10 +3096,22 @@ top: 0px;
 left: 0px;
 background: #CECECE;
 color: #FFF;
-padding: 0px 12px;
+padding: 2px 12px;
 font-weight: bold;
 border-radius: 3px 0px 3px 0px;
 font-size: 1.05em;
+}
+
+.borderBox >span.elementId, .simpleBox >span.elementId {
+    border: 1px solid #CECECE;
+    background-color: #FBFBF9;
+    border-left: none;
+    border-top: none;
+    padding: 1px 15px 2px 20px;
+    position: absolute;
+    top: 0px;
+    left: 26px;
+    border-radius: 3px 0px 3px 0px;
 }
 
 .borderBox:before,.borderBox:after {
