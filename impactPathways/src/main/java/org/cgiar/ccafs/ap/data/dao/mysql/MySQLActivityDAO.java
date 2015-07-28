@@ -64,17 +64,18 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public boolean deleteActivity(int activityId) {
-    LOG.debug(">> deleteActivity(id={})", activityId);
-
-    String query = "DELETE FROM activities WHERE id= ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {activityId});
-    if (rowsDeleted >= 0) {
+  public boolean deleteActivity(int activityID, int userID, String justification) {
+    LOG.debug(">> deleteActivity(id={})", activityID);
+    String query = "UPDATE activities SET is_active = 0, modified_by = ?, modification_justification = ? WHERE id = ?";
+    Object[] values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = activityID;
+    int result = databaseManager.saveData(query, values);
+    if (result >= 0) {
       LOG.debug("<< deleteActivity():{}", true);
       return true;
     }
-
     LOG.debug("<< deleteActivity:{}", false);
     return false;
   }

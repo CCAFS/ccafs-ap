@@ -283,7 +283,6 @@ public class Activity {
     this.genderPercentage = genderPercentage;
   }
 
-
   public void setId(int id) {
     this.id = id;
   }
