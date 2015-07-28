@@ -5,12 +5,22 @@
         [@partner ap ap_index ap_name editable ppaPartner isBilateral responsabilities=responsabilities  /]
     [/#list]
   [#else]  
-    [#if !editable][@s.text name="planning.projectPartners.emptyPartners" /][/#if]
-  [/#if]  
+    [#if !editable]
+    <p class="simpleBox center">
+      [@s.text name="planning.projectPartners.emptyPartners" /].
+      [#if canEdit]
+        <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+      [/#if]
+    [/#if]
+  [/#if]
+  </p>  
 [/#macro]
 
 [#macro partner ap ap_index ap_name  editable=false isPPA=false isBilateral=true responsabilities=false   ]
-  <div id="projectPartner-${ap_index}" class="projectPartner borderBox">
+  <div id="projectPartner-${ap.id}" class="projectPartner borderBox">
+    [#if (!editable && canEdit)]
+      <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#projectPartner-${ap.id}">[@s.text name="form.buttons.edit" /]</a></div>
+    [/#if]
     [#-- Partner identifier --]
     <input id="id" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />
     [#assign nameLegend]${isPPA?string("preplanning.projectPartners.ppaPartner", "preplanning.projectPartners.partner")}[/#assign]
@@ -34,14 +44,14 @@
           [#-- Partner type list --]
           <div class="halfPartBlock partnerTypeName chosen">
             [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
-            [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${ap.institution.type.id?c}" /]
+            [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${(ap.institution.type.id)!-1}" /]
           </div>
           [#-- Country list --]
           <div class="halfPartBlock countryListBlock chosen">
             [#-- Some partners like the Regional Programs, don't have country associated --]
             [#assign countryID][#if ap.country?has_content]${ap.country.code}[#else]-1[/#if][/#assign]
             [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
-            [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${ap.institution.country.id?c}'" /]
+            [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.country" listName="countries" keyFieldName="id"  displayFieldName="name" className="countryList" value="'${(ap.institution.country.id)!-1}'" /]
           </div>
         </div>
       [/#if]  
