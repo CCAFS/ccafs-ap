@@ -7,29 +7,32 @@
 	    <tr>
 	      <th id="ids">[@s.text name="preplanning.projects.projectids" /]</th>
 	      <th id="projectTitles" >[@s.text name="preplanning.projects.projectTitles" /]</th>
+	      <th id="projectType" >[@s.text name="preplanning.projects.projectType" /]</th>
 	    </tr>
 	  </thead>
     <tbody>
       [#list projects as project]
   		  <tr>
-  		  [#-- ID --]
-        <td>
-          <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-            ${project.composedId}
-          </a>
-        </td>
+    		  [#-- ID --]
+          <td>
+            <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+              ${project.composedId}
+            </a>
+          </td>
           [#-- Project Title --]
           <td class="left"> 
-                [#if project.title?has_content]
-                  <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
-                  title="${project.title}">
-                  [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
-                [#else]
-                  <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
-                    [@s.text name="preplanning.projects.title.none" /]
-                  </a>
-                [/#if]
-               
+            [#if project.title?has_content]
+              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
+              title="${project.title}">
+              [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
+            [#else]
+              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
+                [@s.text name="preplanning.projects.title.none" /]
+              </a>
+            [/#if]
+          </td>
+          <td>
+            [@s.text name="${project.type}" /]
           </td>
         </tr>  
       [/#list]
