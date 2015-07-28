@@ -5,8 +5,15 @@
         [@partner ap ap_index ap_name editable ppaPartner isBilateral responsabilities=responsabilities  /]
     [/#list]
   [#else]  
-    [#if !editable][@s.text name="planning.projectPartners.emptyPartners" /][/#if]
-  [/#if]  
+    [#if !editable]
+    <p class="simpleBox center">
+      [@s.text name="planning.projectPartners.emptyPartners" /].
+      [#if canEdit]
+        <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+      [/#if]
+    [/#if]
+  [/#if]
+  </p>  
 [/#macro]
 
 [#macro partner ap ap_index ap_name  editable=false isPPA=false isBilateral=true responsabilities=false   ]
