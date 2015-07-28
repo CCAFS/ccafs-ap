@@ -52,9 +52,10 @@
           [/#if]
           [#if securityContext.canAddBilateralProject()]
             <a class="addButton" href="[@s.url namespace="/planning" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
-          [/#if]  
+          [/#if]
         </div>
       [/#if]
+      <div class="clearfix"></div>  
       <hr/>
       [#-- Projects List (Other Projects) --]
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
