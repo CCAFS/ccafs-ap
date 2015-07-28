@@ -195,7 +195,7 @@ function word_count(field) {
   if(typeof value === "undefined") {
     return 0;
   } else {
-    var matches = $(field).val().match(/\b/g);
+    var matches = value.match(/\b/g);
     return number = (matches) ? matches.length / 2 : 0;
   }
 

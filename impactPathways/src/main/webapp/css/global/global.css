@@ -1540,7 +1540,7 @@ h1.simpleTitle span {
   display: block;
   margin: 0;
   text-align: right;
-  margin: 17px 0 -1px 0;
+  margin: 17px 0 10px 0;
   float: right;
 }
 
@@ -2066,7 +2066,7 @@ button.ipGraph-btn{
 /* projects List */
 
 .projectsList #ids, .activities #ids {
-  width: 15px;
+  width: 47px !important;
 }
 
 .projectsList #projectTitles {
@@ -3247,20 +3247,17 @@ background: #E0E0E0;
 }
 
 #footerContainer {
-  /*background-image: url("../../images/global/footer-background.png");*/
-  background-position: right bottom;
-  background-repeat: no-repeat;
-  clear: both;
-  height: 200px;
-  padding-top: 50px;
-  text-align: left;
+  padding: 61px 0;
   color: #5A5A5A;
 }
 
 #footerContainer.little {
-  /* background-image: url("../../images/global/footer-background-small.png"); */
-  height: 80px;
-  background-size: 50%;
+}
+
+#footerContainer p.lighter {
+  font-size: 1.25em;
+  font-weight:lighter;
+  margin-top: 2px;
 }
 
 #centres-logos {
@@ -3288,9 +3285,7 @@ background: #E0E0E0;
 
 #footerContainer #reportIssue {
   float: left;
-  margin-left: 60px;
-  margin-top: 15px;
-  font-weight: lighter;
+  /* margin-top: 15px; */
 }
 
 #footerContainer #copyright {
@@ -3303,7 +3298,6 @@ background: #E0E0E0;
 
 #glossary{
   float:right;
-  margin-left: 60px;
-  margin-top: 15px;
+  /* margin-top: 15px; */
   font-weight: lighter;
 }
