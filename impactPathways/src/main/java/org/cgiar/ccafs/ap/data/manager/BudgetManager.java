@@ -70,16 +70,6 @@ public interface BudgetManager {
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
 
   /**
-   * This method calculates the total W1 + W2 budget from a given project in a given year.
-   * 
-   * @param projectID is the project identifier.
-   * @param year is the year.
-   * @return a double representing this value, or -1 if some error found.
-   *         TODO
-   */
-  public double calculateTotalProjectW1W2ByYear(int projectID, int year);
-
-  /**
    * This method removes a specific budget value from the database.
    * 
    * @param budgetId is the budget identifier.

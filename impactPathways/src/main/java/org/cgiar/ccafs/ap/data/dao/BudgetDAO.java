@@ -69,15 +69,6 @@ public interface BudgetDAO {
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
 
   /**
-   * This method calculates the total W1 + W2 budget from a given project in a given year.
-   * 
-   * @param projectID is the project identifier.
-   * @param year is the year.
-   * @return a double representing this value, or -1 if some error found.
-   */
-  public double calculateTotalProjectW1W2ByYear(int projectID, int year);
-
-  /**
    * Deletes the information of a Budget associated by a given id
    * 
    * @param budgetId - is the id of a Budget
