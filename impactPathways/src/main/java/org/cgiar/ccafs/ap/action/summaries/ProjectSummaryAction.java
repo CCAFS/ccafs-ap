@@ -26,6 +26,7 @@ import org.cgiar.ccafs.ap.action.summaries.pdfs.ProjectSummaryPDF;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
@@ -36,8 +37,10 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -77,6 +80,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   DeliverableManager deliverableManager;
   NextUserManager nextUserManager;
   DeliverablePartnerManager deliverablePartnerManager;
+  ProjectOtherContributionManager ipOtherContributionManager;
+  CRPManager crpManager;
 
   // Model
   ProjectSummaryPDF projectPDF;
@@ -90,7 +95,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     ProjectCofinancingLinkageManager linkedCoreProjectManager, LocationManager locationManager,
     IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager,
     InstitutionManager institutionManager, DeliverableManager deliverableManager,   NextUserManager nextUserManager,
-    DeliverablePartnerManager deliverablePartnerManager) {
+    DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager, CRPManager crpManager) {
     super(config);
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
@@ -107,6 +112,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.deliverableManager = deliverableManager;
     this.nextUserManager =   nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
+    this.ipOtherContributionManager = ipOtherContributionManager;
+    this.crpManager = crpManager;
   }
 
 
@@ -233,11 +240,22 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // *************************Outcomes*****************************
     project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
+    // Getting the information for the IP Other Contribution
+    project.setCrpContributions(crpManager.getCrpContributions(projectID));
+    project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+   
     project.setIndicators(projectManager.getProjectIndicators(project.getId()));
 
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
+    
+   // *************************Budgets ******************************
+   
+        project.setBudgets(this.budgetManager.getBudgetsByProject(project));
+ 
+    //totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
+    //totalBilateralBudget =
+      //budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
-    // project.setBudgets(budgetManager.getBudgetsByProject(project));
   }
 
 
