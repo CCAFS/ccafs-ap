@@ -266,7 +266,7 @@
       <result name="success" type="redirectAction">
         <param name="namespace">/planning/projects/activities</param>
         <param name="actionName">activities</param>
-        <param name="activityID">${activityID}</param>
+        <param name="projectID">${project.id}</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">budget</param>

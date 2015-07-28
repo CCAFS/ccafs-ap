@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -37,23 +36,26 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego B.
  * @author Héctor Fabio Tobón R.
+ * @author Carlos Alberto Martínez M.
  */
 public class ActivitiesListAction extends BaseAction {
 
   private static final long serialVersionUID = -5425536924161465111L;
+
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ActivitiesListAction.class);
-  // Manager
+
+  // Managers
   private ActivityManager activityManager;
   private ProjectManager projectManager;
   private ProjectPartnerManager projectPartnerManager;
-  private HistoryManager historyManager;
+  // private HistoryManager historyManager;
 
   // Model for the back-end
-  private List<Activity> activities;
-  private Project project;
   private List<ProjectPartner> projectPartners;
+
   // Model for the front-end
+  private Project project;
   private int projectID;
   private int activityID;
 
@@ -85,17 +87,14 @@ public class ActivitiesListAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
+  // TODO
   public boolean canBeDeleted(int activityID) {
-    for (Activity activity : activities) {
+    for (Activity activity : project.getActivities()) {
       if (activity.getId() == activityID) {
         return activity.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
       }
     }
     return false;
-  }
-
-  public List<Activity> getActivities() {
-    return activities;
   }
 
   public int getActivityID() {
@@ -123,8 +122,15 @@ public class ActivitiesListAction extends BaseAction {
     super.prepare();
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
-    activities = activityManager.getActivitiesByProject(projectID);
+    project.setActivities(activityManager.getActivitiesByProject(projectID));
     projectPartners = projectPartnerManager.getProjectPartners(projectID);
+
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getActivities() != null) {
+        project.getActivities().clear();
+      }
+    }
 
   }
 
@@ -134,7 +140,7 @@ public class ActivitiesListAction extends BaseAction {
       // Update only the values to which the user is authorized to modify
       List<Activity> activityArray = new ArrayList<Activity>();
       Activity previousActivity = new Activity();
-      for (Activity activity : activities) {
+      for (Activity activity : project.getActivities()) {
 
         previousActivity.setId(activity.getId());
 

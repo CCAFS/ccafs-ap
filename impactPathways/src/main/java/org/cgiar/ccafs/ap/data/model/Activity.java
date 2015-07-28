@@ -51,9 +51,11 @@ public class Activity {
   private String outcome;
 
   public Activity() {
+    super();
   }
 
   public Activity(int id) {
+    super();
     this.id = id;
   }
 
