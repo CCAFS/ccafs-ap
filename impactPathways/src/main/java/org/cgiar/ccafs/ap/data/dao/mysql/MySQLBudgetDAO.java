@@ -232,26 +232,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
-  public List<Map<String, String>> getBudgetsByType(int projectID, int BudgetTypeNew) {
-    LOG.debug(">> getBudgetsByType projectID = {} )", projectID);
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT b.*   ");
-    query.append("FROM budgets as b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append("INNER JOIN budget_types bt ON b.budget_type = bt.id ");
-    query.append("INNER JOIN institutions i ON b.institution_id = i.id ");
-    query.append("WHERE pb.project_id=  ");
-    query.append(projectID);
-    query.append(" AND b.budget_type=  ");
-    query.append(BudgetTypeNew);
-
-
-    LOG.debug("-- getBudgetsByType() > Calling method executeQuery to get the results");
-    return this.getData(query.toString());
-  }
-
-  @Override
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year) {
     LOG.debug(">> getBudgetsByYear projectID = {}, year={} )", new Object[] {projectID, year});
     List<Map<String, String>> budgetList = new ArrayList<>();

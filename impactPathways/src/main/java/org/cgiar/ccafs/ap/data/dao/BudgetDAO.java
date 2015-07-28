@@ -109,15 +109,6 @@ public interface BudgetDAO {
   public List<Map<String, String>> getBudgetsByProject(int projectID);
 
   /**
-   * This method gets all the Budget Information by a given project ID and a Budget Type
-   * 
-   * @param projectID - is the id of the project
-   * @param budgetType - is the id of a Budget Type
-   * @return a list of Map of the Budgets related with the budget type id and the project id
-   */
-  public List<Map<String, String>> getBudgetsByType(int projectID, int budgetType);
-
-  /**
    * This method gets all the Budget information by a given project Id and a year
    * 
    * @param projectID - is the id of the project

@@ -107,28 +107,6 @@ public class BudgetManagerImpl implements BudgetManager {
     return budgets;
   }
 
-
-  @Override
-  public List<Budget> getBudgetsByType(int projectID, int budgetType) {
-    List<Budget> budgets = new ArrayList<>();
-    List<Map<String, String>> budgetDataList = budgetDAO.getBudgetsByType(projectID, budgetType);
-    for (Map<String, String> budgetData : budgetDataList) {
-      Budget budget = new Budget();
-      budget.setId(Integer.parseInt(budgetData.get("id")));
-      budget.setYear(Integer.parseInt(budgetData.get("year")));
-      budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
-      budget.setAmount(Double.parseDouble(budgetData.get("amount")));
-
-      // Institution as institution_id
-      budget.setInstitution(institutionManager.getInstitution(Integer.parseInt(budgetData.get("institution_id"))));
-
-      // adding information of the object to the array
-      budgets.add(budget);
-    }
-    return budgets;
-  }
-
-
   @Override
   public List<Budget> getBudgetsByYear(int projectID, int year) {
     List<Budget> budgets = new ArrayList<>();

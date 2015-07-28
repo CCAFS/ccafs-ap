@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.BudgetManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Budget;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -102,24 +101,12 @@ public interface BudgetManager {
   public boolean deleteBudgetsByYear(int projectID, int year, User user, String justification);
 
   /**
-   * This method gets all the budget information by a given Project Id
+   * This method gets all the budget information by a given Project Id in ALL years.
    * 
    * @param projectID - is the Id of the project
    * @return a List of Budget with the budget Information related with the project
-   *         TODO
    */
   public List<Budget> getBudgetsByProject(Project projectID);
-
-  /**
-   * This method gets all the budget information that belongs to the same type of a specific project.
-   * Type can be Window 1, Window 2, Window 3, Bilateral or Leveraged.
-   * 
-   * @param projectID is the id that identifies the project.
-   * @param type is the type of budget see ({@link BudgetType}
-   * @return a list of Budget objects.
-   *         TODO
-   */
-  public List<Budget> getBudgetsByType(int projectID, int budgetType);
 
   /**
    * This method gets all the budget information that belongs to a project in a specific year.
