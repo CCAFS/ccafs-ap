@@ -191,16 +191,19 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public boolean deleteBudgetsByYear(int projectID, int year) {
+  public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification) {
     LOG.debug(">> deleteBudgetsByYear(projectId={}, eyar={})", projectID, year);
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE b FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append("WHERE pb.project_id = ? AND b.year = ?");
-
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID, year});
-    if (rowsDeleted >= 0) {
+    query.append("UPDATE project_budgets SET is_active = 0, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE project_id = ? AND year = ?");
+    Object[] values = new Object[4];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = projectID;
+    values[3] = year;
+    int result = databaseManager.saveData(query.toString(), values);
+    if (result >= 0) {
       LOG.debug("<< deleteBudgetsByYear():{}", true);
       return true;
     }

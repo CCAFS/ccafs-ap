@@ -94,9 +94,11 @@ public interface BudgetDAO {
    * 
    * @param projectID is the project identifier.
    * @param year is a year.
+   * @param userID is the identifier of the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise.
    */
-  public boolean deleteBudgetsByYear(int projectID, int year);
+  public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification);
 
   /**
    * This method gets all the budget information by a given Project Id

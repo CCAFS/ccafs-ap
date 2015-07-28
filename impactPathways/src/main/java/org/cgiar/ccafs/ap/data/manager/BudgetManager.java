@@ -95,10 +95,11 @@ public interface BudgetManager {
    * 
    * @param projectID is the project identifier.
    * @param year is the year.
+   * @param user is the person who is making the deletion.
+   * @param justifications is the justification statement.
    * @return true if the set of budgets were successfully deleted, false otherwise.
-   *         TODO
    */
-  public boolean deleteBudgetsByYear(int projectID, int year);
+  public boolean deleteBudgetsByYear(int projectID, int year, User user, String justification);
 
   /**
    * This method gets all the budget information by a given Project Id
