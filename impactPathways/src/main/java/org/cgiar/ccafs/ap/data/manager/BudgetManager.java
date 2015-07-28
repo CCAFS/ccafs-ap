@@ -61,23 +61,11 @@ public interface BudgetManager {
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
 
   /**
-   * This method returns the total Budget used for that specific project and a given year.
-   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number that represents the total amount of money used on that specific project. If no data found
-   *         the method will return 0.0 and if some error happen a -1.0 will be returned.
-   *         TODO
-   */
-  public double calculateTotalOverallBudgetByYear(int projectID, int year);
-
-  /**
    * This method calculates the total budget of some type for a given project.
    * 
    * @param projectID is the project identifier.
    * @param budgetTypeID budget type identifier.
    * @return a double representing this value, or -1 if some error found.
-   *         TODO
    */
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
 

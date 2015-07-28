@@ -75,11 +75,6 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double calculateTotalOverallBudgetByYear(int projectID, int year) {
-    return budgetDAO.calculateTotalOverallBudgetByYear(projectID, year);
-  }
-
-  @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     return budgetDAO.calculateTotalProjectBudgetByType(projectID, budgetTypeID);
   }

@@ -555,7 +555,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
           // Getting the Total Overall Project Budget
           // totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
-          totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
+          // totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
           totalW1W2W3BilateralBudget = budgetManager.calculateTotalCCAFSBudget(projectID);
           totalW1W2W3BilateralBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
           totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
