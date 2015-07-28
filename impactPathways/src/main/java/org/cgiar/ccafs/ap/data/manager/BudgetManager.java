@@ -125,7 +125,6 @@ public interface BudgetManager {
    * @param user - The use who is making the change
    * @param justification
    * @return true if the budget was saved successfully, false otherwise.
-   *         TODO
    */
   public boolean saveBudget(int projectID, Budget budget, User user, String justification);
 
