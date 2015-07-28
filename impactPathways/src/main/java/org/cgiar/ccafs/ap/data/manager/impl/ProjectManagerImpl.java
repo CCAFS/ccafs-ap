@@ -242,11 +242,9 @@ public class ProjectManagerImpl implements ProjectManager {
   @Override
   public Project getProjectBasicInfo(int projectID) {
     Map<String, String> projectData = projectDAO.getProjectBasicInfo(projectID);
-
-
     Project project = new Project(Integer.parseInt(projectData.get("id")));
     project.setTitle(projectData.get("title"));
-
+    project.setType(projectData.get("type"));
     Budget totalBudget = new Budget();
     List<Budget> budgets = new ArrayList<>(1);
     if (projectData.get("total_budget_amount") != null) {
@@ -254,7 +252,6 @@ public class ProjectManagerImpl implements ProjectManager {
       budgets.add(totalBudget);
     }
     project.setBudgets(budgets);
-
     project.setCreated(Long.parseLong(projectData.get("created")));
 
     // Getting Project Focuses - Regions
