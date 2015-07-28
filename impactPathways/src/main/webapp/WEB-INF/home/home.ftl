@@ -9,7 +9,6 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 [#import "/WEB-INF/global/templates/homeProjectsListTemplate.ftl" as projectList /]
-[#import "/WEB-INF/global/templates/homeActivitiesListTemplate.ftl" as activitiesList /]
 
 <article id="dashboard">
 

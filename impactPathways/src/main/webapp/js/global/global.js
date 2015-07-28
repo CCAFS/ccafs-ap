@@ -8,11 +8,23 @@ jQuery.fn.exists = function() {
 $(document).ready(function() {
   baseURL = $("#baseURL").val();
   showNotificationMessages();
+  showHelpText();
 
   // hash url animation
   setTimeout(function() {
     $(window.location.hash).addClass('animated pulse');
   }, 300);
+
+  function showHelpText() {
+    $('.helpMessage').addClass('animated flipInX');
+    /*
+     * $('.helpMessage p').each(function(i,p) { console.log($(p)); $('.helpMessage').noty({ theme: 'relax', layout:
+     * 'centerRight', theme: 'relax', type: 'information', text: $(p).html(), // can be html or string animation: {
+     * open: 'animated flipInX', // Animate.css class names close: 'animated flipInX' // Animate.css class names },
+     * maxVisible: 5, // you can set max visible notification for dismissQueue true option, closeWith: [ 'click' ] });
+     * });
+     */
+  }
 
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {
@@ -100,7 +112,10 @@ function validateEvent(button,fields) {
                     open: 'animated bounceInRight', // Animate.css class names
                     close: 'animated bounceOutRight' // Animate.css class names
                 },
-                type: 'error'
+                type: 'error',
+                closeWith: [
+                  'click'
+                ]
             });
           }
         } else {
@@ -114,7 +129,10 @@ function validateEvent(button,fields) {
                   open: 'animated bounceInRight', // Animate.css class names
                   close: 'animated bounceOutRight' // Animate.css class names
               },
-              type: 'alert'
+              type: 'alert',
+              closeWith: [
+                'click'
+              ]
           });
           /*
            * var $msj = $('<p class="msj">Nothing changed</p>'); $(button).parent().after($msj.hide());
