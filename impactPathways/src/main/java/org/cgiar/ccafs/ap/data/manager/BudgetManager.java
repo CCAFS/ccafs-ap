@@ -83,11 +83,12 @@ public interface BudgetManager {
    * This method removes a set of budgets that belong to a specific project and institution.
    * 
    * @param projectID is the project identifier.
-   * @param institutionID is the institution identifier.
+   * @param institution is the institution identifier.
+   * @param user is the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the set of budgets were successfully deleted, false otherwise.
-   *         TODO
    */
-  public boolean deleteBudgetsByInstitution(int projectID, int institutionID);
+  public boolean deleteBudgetsByInstitution(int projectID, Institution institution, User user, String justification);
 
   /**
    * This method removes a set of budgets that belong to a specific project and year.

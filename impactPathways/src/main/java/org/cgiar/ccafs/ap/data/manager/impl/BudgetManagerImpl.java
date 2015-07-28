@@ -85,8 +85,8 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public boolean deleteBudgetsByInstitution(int projectID, int institutionID) {
-    return budgetDAO.deleteBudgetsByInstitution(projectID, institutionID);
+  public boolean deleteBudgetsByInstitution(int projectID, Institution institution, User user, String justification) {
+    return budgetDAO.deleteBudgetsByInstitution(projectID, institution.getId(), user.getId(), justification);
   }
 
   @Override

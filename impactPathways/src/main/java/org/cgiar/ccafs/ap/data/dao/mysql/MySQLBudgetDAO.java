@@ -168,16 +168,21 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
-  public boolean deleteBudgetsByInstitution(int projectID, int institutionID) {
+  public boolean deleteBudgetsByInstitution(int projectID, int institutionID, int userID, String justification) {
     LOG.debug(">> deleteBudgetsByInstitution(projectId={}, institutionId={})", projectID, institutionID);
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE b FROM budgets b ");
-    query.append("INNER JOIN project_budgets pb ON b.id = pb.budget_id ");
-    query.append("WHERE pb.project_id = ? AND b.institution_id = ?");
+    query.append("UPDATE project_budgets SET is_active = 0, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE project_id = ? AND institution_id = ?");
 
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID, institutionID});
-    if (rowsDeleted >= 0) {
+    Object[] values = new Object[4];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = projectID;
+    values[3] = institutionID;
+
+    int result = databaseManager.saveData(query.toString(), values);
+    if (result >= 0) {
       LOG.debug("<< deleteBudgetsByInstitution():{}", true);
       return true;
     }

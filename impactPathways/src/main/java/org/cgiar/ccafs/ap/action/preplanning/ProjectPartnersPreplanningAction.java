@@ -250,7 +250,7 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // Deleting Institutions from budget section
     for (Institution institutionToDelete : budgetInstitutions) {
       if (!partnerInstitutions.contains(institutionToDelete)) {
-        budgetManager.deleteBudgetsByInstitution(project.getId(), institutionToDelete.getId());
+        // budgetManager.deleteBudgetsByInstitution(project.getId(), institutionToDelete.getId());
       }
     }
 
