@@ -92,41 +92,6 @@ public class DashboardAction extends BaseAction {
         }
       }
 
-      // ----- Listing Activities -----
-
-      // If user is an Admin
-      if (securityContext.isAdmin()) {
-        // Admins will be able to see all the activities entered in the system.
-        activities = activityManager.getAllActivities();
-      } else if (securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
-        // FPLs, RPLs and CUs users can edit activities that belongs to the projects that they are able to edit.
-        activities = new ArrayList<>();
-        for (Project project : projects) {
-          activities.addAll(activityManager.getActivitiesByProject(project.getId()));
-        }
-
-      } else if (securityContext.isPL()) {
-        // PLs can edit all the activities that belong to their projects.
-        activities = new ArrayList<>();
-        for (Project project : projects) {
-          activities.addAll(activityManager.getActivitiesByProject(project.getId()));
-        }
-
-        // Then, adding all the activities where the user was assigned as Activity Leader.
-        List<Integer> ledIds = activityManager.getLedActivityIds(this.getCurrentUser());
-        for (Integer activityId : ledIds) {
-          Activity activity = activityManager.getActivityById(activityId);
-          if (!activities.contains(activity)) {
-            activities.add(activityManager.getActivityById(activityId));
-          }
-        }
-      } else if (securityContext.isAL()) {
-        List<Integer> ledIds = activityManager.getLedActivityIds(this.getCurrentUser());
-        activities = new ArrayList<>();
-        for (Integer activityId : ledIds) {
-          activities.add(activityManager.getActivityById(activityId));
-        }
-      }
     }
   }
 

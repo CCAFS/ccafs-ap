@@ -10,7 +10,7 @@
       <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
     [#else]
       <span class="elementId">A${activity.id}</span>
-      [#if editable && canEdit && action.canBeDeleted(activity.id)]
+      [#if editable && canEdit && action.canDelete(activity.id)]
         <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
       [/#if]
     [/#if]

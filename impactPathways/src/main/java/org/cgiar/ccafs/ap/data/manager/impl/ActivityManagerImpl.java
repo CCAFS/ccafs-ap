@@ -70,8 +70,8 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public boolean deleteActivity(int activityId) {
-    return activityDAO.deleteActivity(activityId);
+  public boolean deleteActivity(int activityId, User user, String justification) {
+    return activityDAO.deleteActivity(activityId, user.getId(), justification);
   }
 
   @Override
@@ -119,10 +119,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
-      }
-      if (activityData.get("is_global") != null) {
-        activity.setGlobal((activityData.get("is_global").equals("1")));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -161,10 +158,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
-      }
-      if (activityData.get("is_global") != null) {
-        activity.setGlobal(activityData.get("is_global").equals("1"));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setExpectedResearchOutputs(activityData.get("expected_research_outputs"));
       activity.setExpectedGenderContribution(activityData.get("expected_gender_contribution"));
@@ -274,10 +268,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
-        }
-        if (activityData.get("is_global") != null) {
-          activity.setGlobal((activityData.get("is_global").equals("1")));
+            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
@@ -301,8 +292,13 @@ public class ActivityManagerImpl implements ActivityManager {
     }
     activityData.put("title", activity.getTitle());
     activityData.put("description", activity.getDescription());
-    activityData.put("startDate", activity.getStartDate());
-    activityData.put("endDate", activity.getEndDate());
+    SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    if (activity.getEndDate() != null) {
+      activityData.put("startDate", format.format(activity.getEndDate()));
+    }
+    if (activity.getStartDate() != null) {
+      activityData.put("endDate", format.format(activity.getStartDate()));
+    }
     activityData.put("leader_id", activity.getLeader());
     activityData.put("modified_by", String.valueOf(user.getId()));
     activityData.put("modification_justification", justification);
