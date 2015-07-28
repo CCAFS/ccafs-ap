@@ -122,6 +122,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateTotalGenderBudgetByYear(int projectID, int year) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -146,6 +152,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
+
   @Override
   public boolean deleteBudget(int budgetId, int userId, String justification) {
     LOG.debug(">> deleteBudget(id={})", budgetId);
@@ -164,7 +171,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("<< deleteBudget:{}", false);
     return false;
   }
-
 
   @Override
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID, int userID, String justification) {
@@ -188,6 +194,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("<< deleteBudgetsByInstitution():{}", false);
     return false;
   }
+
 
   @Override
   public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification) {
@@ -228,7 +235,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("-- getBudgetsByProject() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year) {

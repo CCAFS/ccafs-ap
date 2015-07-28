@@ -11,7 +11,7 @@
 	  </thead>
     <tbody>
       [#list projects as project]
-  		  <tr>
+  		  <tr>  		  
   		  [#-- ID --]
         <td>
           <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">

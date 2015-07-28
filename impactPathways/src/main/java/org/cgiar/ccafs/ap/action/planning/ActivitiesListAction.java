@@ -24,7 +24,6 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -87,13 +86,23 @@ public class ActivitiesListAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
-  // TODO
-  public boolean canBeDeleted(int activityID) {
+  /**
+   * This method validates if an activity can be deleted or not.
+   * Keep in mind that an activity can be deleted if it was created in the current planning cycle.
+   * 
+   * @param activityID is the activity identifier.
+   * @return true if the activity can be deleted, false otherwise.
+   */
+  public boolean canDelete(int activityID) {
+    // First, loop all projects that the user is able to edit.
     for (Activity activity : project.getActivities()) {
       if (activity.getId() == activityID) {
-        return activity.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
+        if (activity.isNew(this.config.getCurrentPlanningStartDate())) {
+          return true;
+        }
       }
     }
+    // If nothing found, return false.
     return false;
   }
 
@@ -138,31 +147,30 @@ public class ActivitiesListAction extends BaseAction {
   public String save() {
     if (securityContext.canUpdateProjectActivities()) {
       // Update only the values to which the user is authorized to modify
-      List<Activity> activityArray = new ArrayList<Activity>();
-      Activity previousActivity = new Activity();
-      for (Activity activity : project.getActivities()) {
+      boolean success = true;
 
-        previousActivity.setId(activity.getId());
+      // Getting previous activities to identify those that need to be deleted.
+      List<Activity> previousActivities = activityManager.getActivitiesByProject(projectID);
 
-        previousActivity.setTitle(activity.getTitle());
-
-        previousActivity.setDescription(activity.getDescription());
-
-        previousActivity.setStartDate(activity.getStartDate());
-
-        previousActivity.setEndDate(activity.getEndDate());
-
-        previousActivity.setProjectPartners(projectPartners);
-
-        previousActivity.setLeader(activity.getLeader());
-
-        activityArray.add(previousActivity);
+      // Deleting activities
+      boolean deleted;
+      for (Activity previousActivity : previousActivities) {
+        if (!project.getActivities().contains(previousActivity)) {
+          deleted =
+            activityManager.deleteActivity(previousActivity.getId(), this.getCurrentUser(), this.getJustification());
+          if (!deleted) {
+            success = false;
+          }
+        }
       }
+      // Saving new and old Activities
+      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+        this.getJustification());
 
-      // Save the information
-      boolean result =
-        activityManager.saveActivityList(projectID, activityArray, this.getCurrentUser(), this.getJustification());
-      if (!result) {
+      if (!saved) {
+        success = false;
+      }
+      if (!success) {
         this.addActionError(this.getText("saving.problem"));
         LOG.warn("There was a problem saving the activity list.");
         return BaseAction.INPUT;
