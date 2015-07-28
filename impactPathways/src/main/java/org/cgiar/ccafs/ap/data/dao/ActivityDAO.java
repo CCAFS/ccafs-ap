@@ -19,6 +19,7 @@ package org.cgiar.ccafs.ap.data.dao;
  * @author Hernán David Carvajal
  */
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLActivityDAO;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -155,9 +156,11 @@ public interface ActivityDAO {
    * 
    * @param activityData - is a Map with the information of the activity to be saved
    * @param projectID - is the Id of the project
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
-  public int saveActivity(int projectID, Map<String, Object> activityData);
+  public int saveActivity(int projectID, Map<String, Object> activityData, User user, String justification);
 
 
   /**
@@ -169,7 +172,6 @@ public interface ActivityDAO {
    */
   public boolean saveActivityIndicators(Map<String, String> indicatorData);
 
-
   /**
    * This method updates the activity, with the activity Leader by the given employee ID
    * 
@@ -180,13 +182,17 @@ public interface ActivityDAO {
   public int saveActivityLeader(int activityID, int employeeID);
 
   /**
-   * This method saves the Activity list
+   * This method saves the Activity list related to the project identified by the
+   * value received as parameter
    * 
-   * @param activityArray - is a List with the activities to be saved
-   * @param projectID - is the Id of the project
-   * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
+   * @param activityArrayMap - information of the activities list to be saved
+   * @param projectID - the project identifier
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
+   * @return true if the information was saved successfully, false otherwise.
    */
-  public int saveActivityList(int projectID, List<Map<String, Object>> activityArrayMap);
+  public boolean saveActivityList(int projectID, List<Map<String, Object>> activityArrayMap, User user,
+    String justification);
 
   /**
    * This method save the outcome related to the activity identified by the
