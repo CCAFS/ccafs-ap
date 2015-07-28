@@ -119,10 +119,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
-      }
-      if (activityData.get("is_global") != null) {
-        activity.setGlobal((activityData.get("is_global").equals("1")));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -161,10 +158,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
-      }
-      if (activityData.get("is_global") != null) {
-        activity.setGlobal(activityData.get("is_global").equals("1"));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setExpectedResearchOutputs(activityData.get("expected_research_outputs"));
       activity.setExpectedGenderContribution(activityData.get("expected_gender_contribution"));
@@ -274,10 +268,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
-        }
-        if (activityData.get("is_global") != null) {
-          activity.setGlobal((activityData.get("is_global").equals("1")));
+            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));

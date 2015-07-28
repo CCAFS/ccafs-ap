@@ -140,7 +140,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("SELECT a.*   ");
     query.append("FROM activities as a ");
     query.append("INNER JOIN projects p ON a.project_id = p.id ");
-    query.append("WHERE a.project_id=  ");
+    query.append("WHERE a.project_id =  ");
     query.append(projectID);
 
     LOG.debug("-- getActivitiesByProject() > Calling method executeQuery to get the results");
@@ -169,9 +169,6 @@ public class MySQLActivityDAO implements ActivityDAO {
           activityData.put("endDate", rs.getDate("endDate").toString());
         }
         activityData.put("created", rs.getTimestamp("active_since").getTime() + "");
-        if (rs.getString("is_global") != null) {
-          activityData.put("is_global", rs.getString("is_global"));
-        }
         activityData.put("expected_research_outputs", rs.getString("expected_research_outputs"));
         activityData.put("expected_gender_contribution", rs.getString("expected_gender_contribution"));
         activityData.put("gender_percentage", rs.getString("gender_percentage"));
@@ -367,10 +364,6 @@ public class MySQLActivityDAO implements ActivityDAO {
           activityData.put("endDate", rs.getDate("endDate").toString());
         }
         activityData.put("created", rs.getTimestamp("active_since").getTime() + "");
-        if (rs.getString("is_global") != null) {
-          activityData.put("is_global", rs.getString("is_global"));
-        }
-
         activitiesList.add(activityData);
       }
       rs.close();
@@ -474,10 +467,9 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
-      LOG
-        .warn(
-          "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
-          indicatorData);
+      LOG.warn(
+        "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
+        indicatorData);
       LOG.debug("<< saveActivityIndicators(): {}", false);
       return false;
     }
