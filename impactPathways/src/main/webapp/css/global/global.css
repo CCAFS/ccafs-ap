@@ -1541,6 +1541,7 @@ h1.simpleTitle span {
   margin: 0;
   text-align: right;
   margin: 17px 0 -1px 0;
+  float: right;
 }
 
 .buttons button[name=save] {

@@ -95,7 +95,7 @@ function validateEvent(button,fields) {
                 text: 'The ' + val.replace("#", "") + ' field need to be filled',
                 layout: 'bottomRight',
                 theme: 'relax',
-                timeout: 3000,
+                timeout: 5000,
                 animation: {
                     open: 'animated bounceInRight', // Animate.css class names
                     close: 'animated bounceOutRight' // Animate.css class names
@@ -109,7 +109,7 @@ function validateEvent(button,fields) {
               text: 'Nothing changed',
               layout: 'bottomRight',
               theme: 'relax',
-              timeout: 3000,
+              timeout: 2500,
               animation: {
                   open: 'animated bounceInRight', // Animate.css class names
                   close: 'animated bounceOutRight' // Animate.css class names
