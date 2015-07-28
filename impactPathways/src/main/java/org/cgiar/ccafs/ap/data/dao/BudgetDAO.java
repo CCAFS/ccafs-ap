@@ -60,16 +60,6 @@ public interface BudgetDAO {
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
 
   /**
-   * This method returns the total Budget used for that specific project.
-   * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
-   * 
-   * @param projectID is the project id.
-   * @return a decimal number that represents the total amount of money used on that specific project, if no data found
-   *         the method will return 0.0 and if some error happen a -1.0 will be returned.
-   */
-  public double calculateTotalOverallBudget(int projectID);
-
-  /**
    * This method returns the total Budget used for that specific project and a given year.
    * It consists in the addition of all Windows, plus the Bilateral and the Leveraged.
    * 
