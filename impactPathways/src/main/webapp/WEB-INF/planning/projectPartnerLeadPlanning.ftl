@@ -52,7 +52,7 @@
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]  
         [#-- Displaying partner leader from partnersTemplate.ftl --]  
-        [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator editable=editable /] 
+        [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator showResponsabilities=true editable=editable /] 
       </div>
     </div>
     
@@ -79,8 +79,7 @@
     [/#if]
   </article>
   [/@s.form] 
-  [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+
   [#-- Search users Interface Popup --]
   [@usersForm.searchUsers isActive=true/]
   
