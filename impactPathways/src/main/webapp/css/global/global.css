@@ -2029,7 +2029,7 @@ button.ipGraph-btn{
 
 .note {
   background-color: #FFF7CF;
-  padding: 11px;
+  padding: 6px;
   text-align: center;
   border-bottom: 2px solid #fff;
   font-style: italic;
@@ -2272,6 +2272,10 @@ textarea[id$='summary'] {
   margin-top: 1.5em;
 }
 
+#overhead {
+  margin-top: 12px;
+}
+
 #leveraged h6,#bilateral h6 { 
    margin: 8px 0px;
 }
@@ -2351,6 +2355,19 @@ table tr.row:hover{
   padding-bottom: 4px;
   font-size: 1.2em;
   color: #525252;
+}
+
+span.projectType {
+  font-size: 0.85em;
+  float: right;
+  background-color: #9BE2B9;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 0px 8px 2px 8px;
+  border-radius: 3px;
+}
+span.projectType.ppa {
+  background-color: #E29B9B;
 }
 
 .budgetTypeTitle {
