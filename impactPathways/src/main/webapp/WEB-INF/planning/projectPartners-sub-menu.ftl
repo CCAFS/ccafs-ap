@@ -1,5 +1,5 @@
 [#ftl] 
-<nav id="stageMenu" class="clearfix"> 
+<nav id="stageMenu" class="clearfix animated fadeInLeft"> 
   <ul>  
     <li [#if partnerStage == "partnerLead"] class="currentSection" [/#if]>
       <a href="[@s.url action='partnerLead' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">

@@ -76,16 +76,17 @@
 
         [#-- Project upload work plan --]
         [#if !project.bilateralProject]
+        ${project.workplanRequired?string}
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.workplanRequired" value="true" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+            [@customForm.checkbox name="project.workplanRequired" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
-          <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
+          <div class="tickBox-toggle uploadContainer" [#if (!project.workplanRequired )]style="display:none"[/#if]>
             <div class="halfPartBlock fileUpload projectWorkplan"> 
               [#if project.workplanName?has_content]
-                <p> ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+                  <p> ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
               [#else]
-                [#if (editable && project.workplanRequired )]
+                [#if editable]
                   [@customForm.inputFile name="file"  /]
                 [/#if] 
               [/#if] 
@@ -163,6 +164,7 @@
         <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
         <div id="bilateralProjectsList" class="panel-body"> 
           <ul class="list">
+          [#if project.linkedProjects?has_content]
             [#list project.linkedProjects as element]
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
@@ -170,6 +172,9 @@
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
             [/#list]
+          [#else]
+            <p class="emptyText"> [@s.text name="planning.projectDescription.bilateralProjects.emptyText" /]</p>
+          [/#if]  
           </ul>
           [#if editable]
              [#-- The values of this list are loaded via ajax --]

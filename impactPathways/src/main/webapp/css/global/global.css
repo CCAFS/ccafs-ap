@@ -675,7 +675,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel .panel-body {
     padding: 4px 3px 10px 10px;
-    min-height: 28px;
+    min-height: 21px;
 }
 
 .panel .panel-body ul{
@@ -897,7 +897,7 @@ a#userLogOut {
 #userInfo .institution {
   font-size: 0.8em; 
   padding-top: 2px;
-  width: 230px;
+  min-width: 153px;
   color: #E7E7E7;
   font-weight: lighter;
   /* line-height: 1em; */
@@ -1214,14 +1214,15 @@ a.currentReportingSection li #i-additionalInformation{
   
   padding: 0;
   border-bottom: 1px solid rgba(219, 219, 219, 0.78);
-  padding: 10px 0 2px 24px;
+  padding: 10px 0 2px 0px;
   height: 27px;
-  width: 158px;
+  width: 182px;
 }
 
 #secondaryMenu ul li ul li a{
   text-decoration: none;
   color: #5E5E5E;
+  padding: 10px 0px 10px 24px; */;
 }
 
 #secondaryMenu ul li ul li:hover{
@@ -1244,7 +1245,7 @@ a.currentReportingSection li #i-additionalInformation{
   color: #444;
   display: block;
   border-radius: 5px 5px 0 0;
-  font-size: 0.9em;
+  /* font-size: 0.9em; */
 }
 
 #secondaryMenu > ul > li > hr {
@@ -2066,7 +2067,7 @@ button.ipGraph-btn{
 /* projects List */
 
 .projectsList #ids, .activities #ids {
-  width: 47px !important;
+  width: 27px !important;
 }
 
 .projectsList #projectTitles {
@@ -2082,7 +2083,7 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectBudget {
-  width: 156px;
+  width: 105px;
 }
 
 .projectsList #projectReportStatus {
@@ -2105,6 +2106,14 @@ button.ipGraph-btn{
 }
 
 .projectsList td.left {
+  text-align: left;
+}
+
+.projectsList td.budget {
+  text-align: right;
+}
+
+.projectsList td.projectId {
   text-align: left;
 }
 
@@ -2457,8 +2466,12 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 
 .projectNextUser textarea{
     height: 60px;
-
 }
+
+.projectNextUser {
+  padding-top: 28px !important;
+}
+
 .deliverablePartner {
     font-size: 0.95em;
 }

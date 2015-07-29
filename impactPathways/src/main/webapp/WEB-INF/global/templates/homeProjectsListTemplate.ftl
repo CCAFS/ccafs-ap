@@ -14,9 +14,9 @@
       [#list projects as project]
     		<tr>  		  
     		  [#-- ID --]
-          <td>
+          <td class="projectId">
             <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-              ${project.composedId}
+              P${project.id}
             </a>
           </td>
           [#-- Project Title --]
