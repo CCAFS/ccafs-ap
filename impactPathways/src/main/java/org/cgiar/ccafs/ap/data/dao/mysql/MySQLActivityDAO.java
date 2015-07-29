@@ -140,9 +140,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT a.*   ");
     query.append("FROM activities as a ");
-    query.append("INNER JOIN projects p ON a.project_id = p.id ");
     query.append("WHERE a.project_id =  ");
     query.append(projectID);
+    query.append(" AND a.is_active = 1");
 
     LOG.debug("-- getActivitiesByProject() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
@@ -411,7 +411,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     int result = -1;
     if (activityData.get("id") == null) {
       // Insert new activity record
-      query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id ) ");
+      query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, ");
       query.append("modified_by, modification_justification) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[8];
@@ -441,6 +441,7 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[5] = activityData.get("modified_by");
       values[6] = activityData.get("modification_justification");
       values[7] = activityData.get("id");
+      System.out.println();
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",

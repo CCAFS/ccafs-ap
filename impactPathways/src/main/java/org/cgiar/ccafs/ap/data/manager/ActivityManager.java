@@ -84,7 +84,6 @@ public interface ActivityManager {
    * 
    * @param projectID - is the Id of the project
    * @return a List of activities with the activity Information related with the project
-   *         TODO HT to review
    */
   public List<Activity> getActivitiesByProject(int projectID);
 
