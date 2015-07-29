@@ -76,7 +76,6 @@
 
         [#-- Project upload work plan --]
         [#if !project.bilateralProject]
-        ${project.workplanRequired?string}
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
             [@customForm.checkbox name="project.workplanRequired" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
