@@ -33,7 +33,9 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.deliverables.help" /] </p>
+    <p> [@s.text name="planning.deliverables.help" /] 
+    <a href = [@s.url namespace="/" action='glossary'][/@s.url]>[@s.text name="planning.deliverables.help2" /]</a>
+    </p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
@@ -85,7 +87,9 @@
           [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          
         </div> 
       </div>
-      <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
+      [#if canEdit]
+        <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
+      [/#if]
     </div>
     
     [#-- Deliverable Next Users block  --] 

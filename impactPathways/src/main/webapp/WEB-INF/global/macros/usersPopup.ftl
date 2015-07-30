@@ -29,7 +29,7 @@
         </div>
         
         [#-- Create User Form --]    
-        <div id="create-user" class="accordion">
+        <div id="create-user" class="accordion active">
           <span class="ui-icon ui-icon-triangle-1-e"></span><h6>[@s.text name="users.createUser" /]</h6>
         </div>
         <div class="accordion-block create-user clearfix" style="display:none">

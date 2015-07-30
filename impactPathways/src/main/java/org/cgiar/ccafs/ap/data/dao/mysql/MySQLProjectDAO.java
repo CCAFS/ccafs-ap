@@ -438,7 +438,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
 
-    query.append("SELECT p.id, p.title, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.type, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
     query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
     query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
     query.append("FROM projects as p ");
@@ -456,6 +456,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       while (rs.next()) {
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
+        projectData.put("type", rs.getString("type"));
         projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
         projectData.put("regions", rs.getString("regions"));

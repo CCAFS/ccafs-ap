@@ -34,7 +34,6 @@ public class Activity {
   private Date startDate;
   private Date endDate;
   private ProjectPartner leader;
-  private boolean isGlobal;
   private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
   private List<Location> locations;
   private long created;
@@ -51,9 +50,11 @@ public class Activity {
   private String outcome;
 
   public Activity() {
+    super();
   }
 
   public Activity(int id) {
+    super();
     this.id = id;
   }
 
@@ -128,7 +129,6 @@ public class Activity {
   public long getCreated() {
     return created;
   }
-
 
   public List<IPCrossCutting> getCrossCuttings() {
     return crossCuttings;
@@ -232,8 +232,15 @@ public class Activity {
     return id;
   }
 
-  public boolean isGlobal() {
-    return isGlobal;
+  /**
+   * Return if the activity is new.
+   * An activity is new when it was created in the planning phase for the current year
+   * 
+   * @param currentPlanningYear
+   * @return true if the activity is recent, false otherwise
+   */
+  public boolean isNew(Date planningStartDate) {
+    return this.created >= planningStartDate.getTime();
   }
 
   public void setActivityPartners(List<ActivityPartner> partners) {
@@ -274,10 +281,6 @@ public class Activity {
 
   public void setGenderPercentage(double genderPercentage) {
     this.genderPercentage = genderPercentage;
-  }
-
-  public void setGlobal(boolean isGlobal) {
-    this.isGlobal = isGlobal;
   }
 
   public void setId(int id) {

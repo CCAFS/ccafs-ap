@@ -62,6 +62,7 @@
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/reset.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/custom-forms-min.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/animate/animate.min.css" />
     <!--[if lte IE 7]>
       <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
     <![endif]-->

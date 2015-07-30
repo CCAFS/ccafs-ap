@@ -1,9 +1,12 @@
+var textAreaLimitWords = 100;
+
 $(document).ready(init);
 
 function init() {
   initGraph();
   addChosen();
   initItemListEvents();
+  applyWordCounter($("div#otherContributions textarea"), textAreaLimitWords);
 }
 
 // Items list functions

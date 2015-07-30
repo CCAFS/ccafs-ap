@@ -6,8 +6,13 @@
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${activity_index}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
-    [#if (editable && canEdit)]
-      <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div> 
+    [#if template]
+      <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
+    [#else]
+      <span class="elementId">A${activity.id}</span>
+      [#if editable && canEdit && action.canDelete(activity.id)]
+        <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
+      [/#if]
     [/#if]
     <span class="index">${activity_index+1}</span> 
       <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
@@ -32,9 +37,9 @@
     <div class="fullPartBlock">
       
       [#if activity.projectPartners??]
-        [@customForm.select name="${activitiesName}.projectPartners" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+        [@customForm.select name="${activitiesName}.leader" className="leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
       [#else]
-        [@customForm.select name="${activitiesName}.projectPartners" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+        [@customForm.select name="${activitiesName}.leader" className="leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
       [/#if]
     </div>  
   </div><!-- End ${activityId} -->

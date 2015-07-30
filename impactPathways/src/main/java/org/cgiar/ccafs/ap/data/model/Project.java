@@ -158,6 +158,9 @@ public class Project {
   }
 
   public String getBilateralContractProposalName() {
+    if (bilateralContractProposalName == null) {
+      return "";
+    }
     return bilateralContractProposalName;
   }
 
@@ -496,11 +499,11 @@ public class Project {
   }
 
   /**
-   * Return if the is new.
+   * Return if the project is new.
    * A project is new when it was created in the planning phase for the current year
    * 
    * @param currentPlanningYear
-   * @return
+   * @return true if the project is recent, false otherwise
    */
   public boolean isNew(Date planningStartDate) {
     return this.getCreationDate().after(planningStartDate);

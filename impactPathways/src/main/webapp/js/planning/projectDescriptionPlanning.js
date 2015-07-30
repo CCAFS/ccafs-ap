@@ -86,6 +86,7 @@ $(document).ready(function() {
     $listElement.find('.id').val($item.val());
     $listElement.find('.name').html($item.text());
     $listElement.appendTo($coreProjects).hide().show('slow');
+    $coreProjects.find('.emptyText').hide();
     $item.remove();
     $coreSelect.trigger("liszt:updated");
     setcoreProjectsIndexes();
@@ -171,7 +172,6 @@ function addChosen() {
   $("form select").chosen({
     search_contains: true
   });
-
 }
 
 // Set default Program ID
@@ -181,5 +181,5 @@ function setProgramId() {
 }
 
 function setDisabledCheckedBoxes() {
-  $('#projectWorking input[type=checkbox]:checked').attr("onclick", "return false");
+  $('#projectWorking input[type=checkbox]:checked').attr("onclick", "return false").addClass('disabled');
 }

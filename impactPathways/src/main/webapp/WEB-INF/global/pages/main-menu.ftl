@@ -46,8 +46,7 @@
 	      [/#if]
 	      
 	      [#-- Reporting section --]
-	      [#-- 
-	      [#if !securityContext.Guest ] 
+	      [#if !securityContext.guest ] 
 	        [#if reportingActive ]               
 	          <a href="${baseUrl}/reporting/introduction.do" >
 	        [#else]
@@ -56,7 +55,7 @@
 	          <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
 	        </a>
 	      [/#if]	      
-	      --]
+	     
 	      [#-- Summaries section --]
 	      [#--
 	      [#if securityContext.CU || securityContext.FPL || securityContext.RPL || securityContext.admin ]
@@ -89,7 +88,7 @@
         <div id="userInfo">
           <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
           <p class="email">${currentUser.firstName} ${currentUser.lastName}</p>  
-          <p class="institution">${currentUser.currentInstitution.name}</p>
+          <p class="institution">${currentUser.email}</p>
         </div>
   	[/#if]
   </div>

@@ -300,10 +300,12 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
     background: #408088;
     padding: 6px;
     border-radius: 4px 4px 0 0;
-    cursor: pointer;
     margin-top: 4px;
 }
-
+.accordion.active:hover {
+  background: #386E75;
+  cursor:pointer;
+}
 .accordion span{
     float: left;
 }
@@ -673,7 +675,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel .panel-body {
     padding: 4px 3px 10px 10px;
-    min-height: 28px;
+    min-height: 21px;
 }
 
 .panel .panel-body ul{
@@ -709,8 +711,11 @@ select#partnerSave_activityPartner_partner_type_id {
 
 .panel span.listButton.select {
     background-color: #E6E6E6;
- 
 }
+.panel span.name {
+  cursor:pointer;
+}
+
 .remove {
     background-color: #D5504C;
     color: #fff;
@@ -892,7 +897,7 @@ a#userLogOut {
 #userInfo .institution {
   font-size: 0.8em; 
   padding-top: 2px;
-  width: 230px;
+  min-width: 153px;
   color: #E7E7E7;
   font-weight: lighter;
   /* line-height: 1em; */
@@ -1209,14 +1214,15 @@ a.currentReportingSection li #i-additionalInformation{
   
   padding: 0;
   border-bottom: 1px solid rgba(219, 219, 219, 0.78);
-  padding: 10px 0 2px 24px;
+  padding: 10px 0 2px 0px;
   height: 27px;
-  width: 158px;
+  width: 182px;
 }
 
 #secondaryMenu ul li ul li a{
   text-decoration: none;
   color: #5E5E5E;
+  padding: 10px 0px 10px 24px; */;
 }
 
 #secondaryMenu ul li ul li:hover{
@@ -1239,7 +1245,7 @@ a.currentReportingSection li #i-additionalInformation{
   color: #444;
   display: block;
   border-radius: 5px 5px 0 0;
-  font-size: 0.9em;
+  /* font-size: 0.9em; */
 }
 
 #secondaryMenu > ul > li > hr {
@@ -1535,7 +1541,8 @@ h1.simpleTitle span {
   display: block;
   margin: 0;
   text-align: right;
-  margin: 17px 0 -1px 0;
+  margin: 17px 0 10px 0;
+  float: right;
 }
 
 .buttons button[name=save] {
@@ -2022,7 +2029,7 @@ button.ipGraph-btn{
 
 .note {
   background-color: #FFF7CF;
-  padding: 11px;
+  padding: 6px;
   text-align: center;
   border-bottom: 2px solid #fff;
   font-style: italic;
@@ -2060,7 +2067,7 @@ button.ipGraph-btn{
 /* projects List */
 
 .projectsList #ids, .activities #ids {
-  width: 15px;
+  width: 27px !important;
 }
 
 .projectsList #projectTitles {
@@ -2076,7 +2083,7 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectBudget {
-  width: 156px;
+  width: 105px;
 }
 
 .projectsList #projectReportStatus {
@@ -2099,6 +2106,14 @@ button.ipGraph-btn{
 }
 
 .projectsList td.left {
+  text-align: left;
+}
+
+.projectsList td.budget {
+  text-align: right;
+}
+
+.projectsList td.projectId {
   text-align: left;
 }
 
@@ -2193,7 +2208,7 @@ textarea[id$='summary'] {
 /* Project Partners*/
 
 #projectLeader {
-    padding: 10px 0px;
+    /* padding: 10px 0px; */
 }
 
 .projectPartner .filters-link {
@@ -2255,6 +2270,10 @@ textarea[id$='summary'] {
 
 #budgetTables {
   margin-top: 1.5em;
+}
+
+#overhead {
+  margin-top: 12px;
 }
 
 #leveraged h6,#bilateral h6 { 
@@ -2336,6 +2355,19 @@ table tr.row:hover{
   padding-bottom: 4px;
   font-size: 1.2em;
   color: #525252;
+}
+
+span.projectType {
+  font-size: 0.85em;
+  float: right;
+  background-color: #2ecc71;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 0px 8px 2px 8px;
+  border-radius: 3px;
+}
+span.projectType.ppa {
+  background-color: #DE9A5E;
 }
 
 .budgetTypeTitle {
@@ -2451,8 +2483,12 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 
 .projectNextUser textarea{
     height: 60px;
-
 }
+
+.projectNextUser {
+  padding-top: 28px !important;
+}
+
 .deliverablePartner {
     font-size: 0.95em;
 }
@@ -2467,6 +2503,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 .activity {
   font-size: 0.98em;
   margin-top: 20px !important;
+  padding-top: 33px !important;
   padding-bottom: 20px !important;
 }
 
@@ -3089,10 +3126,22 @@ top: 0px;
 left: 0px;
 background: #CECECE;
 color: #FFF;
-padding: 0px 12px;
+padding: 2px 12px;
 font-weight: bold;
 border-radius: 3px 0px 3px 0px;
 font-size: 1.05em;
+}
+
+.borderBox >span.elementId, .simpleBox >span.elementId {
+    border: 1px solid #CECECE;
+    background-color: #FBFBF9;
+    border-left: none;
+    border-top: none;
+    padding: 1px 15px 2px 20px;
+    position: absolute;
+    top: 0px;
+    left: 26px;
+    border-radius: 3px 0px 3px 0px;
 }
 
 .borderBox:before,.borderBox:after {
@@ -3241,20 +3290,17 @@ background: #E0E0E0;
 }
 
 #footerContainer {
-  /*background-image: url("../../images/global/footer-background.png");*/
-  background-position: right bottom;
-  background-repeat: no-repeat;
-  clear: both;
-  height: 200px;
-  padding-top: 50px;
-  text-align: left;
+  padding: 61px 0;
   color: #5A5A5A;
 }
 
 #footerContainer.little {
-  /* background-image: url("../../images/global/footer-background-small.png"); */
-  height: 80px;
-  background-size: 50%;
+}
+
+#footerContainer p.lighter {
+  font-size: 1.25em;
+  font-weight:lighter;
+  margin-top: 2px;
 }
 
 #centres-logos {
@@ -3282,9 +3328,7 @@ background: #E0E0E0;
 
 #footerContainer #reportIssue {
   float: left;
-  margin-left: 60px;
-  margin-top: 15px;
-  font-weight: lighter;
+  /* margin-top: 15px; */
 }
 
 #footerContainer #copyright {
@@ -3297,7 +3341,6 @@ background: #E0E0E0;
 
 #glossary{
   float:right;
-  margin-left: 60px;
-  margin-top: 15px;
+  /* margin-top: 15px; */
   font-weight: lighter;
 }

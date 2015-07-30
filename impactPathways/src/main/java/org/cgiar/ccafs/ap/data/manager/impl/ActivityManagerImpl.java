@@ -70,8 +70,8 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public boolean deleteActivity(int activityId) {
-    return activityDAO.deleteActivity(activityId);
+  public boolean deleteActivity(int activityId, User user, String justification) {
+    return activityDAO.deleteActivity(activityId, user.getId(), justification);
   }
 
   @Override
@@ -121,9 +121,6 @@ public class ActivityManagerImpl implements ActivityManager {
         activity
         .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
-      if (activityData.get("is_global") != null) {
-        activity.setGlobal((activityData.get("is_global").equals("1")));
-      }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
       // adding information of the object to the array
@@ -162,9 +159,6 @@ public class ActivityManagerImpl implements ActivityManager {
       if (activityData.get("leader_id") != null) {
         activity
           .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
-      }
-      if (activityData.get("is_global") != null) {
-        activity.setGlobal(activityData.get("is_global").equals("1"));
       }
       activity.setExpectedResearchOutputs(activityData.get("expected_research_outputs"));
       activity.setExpectedGenderContribution(activityData.get("expected_gender_contribution"));
@@ -276,9 +270,6 @@ public class ActivityManagerImpl implements ActivityManager {
           activity
           .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
-        if (activityData.get("is_global") != null) {
-          activity.setGlobal((activityData.get("is_global").equals("1")));
-        }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -294,20 +285,25 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public int saveActivity(int projectID, Activity activity) {
+  public int saveActivity(int projectID, Activity activity, User user, String justification) {
     Map<String, Object> activityData = new HashMap<>();
     if (activity.getId() > 0) {
       activityData.put("id", activity.getId());
     }
     activityData.put("title", activity.getTitle());
     activityData.put("description", activity.getDescription());
-    activityData.put("startDate", activity.getStartDate());
-    activityData.put("endDate", activity.getEndDate());
-    activityData.put("is_global", activity.isGlobal());
-    activityData.put("expected_research_outputs", activity.getExpectedResearchOutputs());
-    activityData.put("expected_gender_contribution", activity.getExpectedGenderContribution());
-    activityData.put("gender_percentage", activity.getGenderPercentage());
-    return activityDAO.saveActivity(projectID, activityData);
+    SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    if (activity.getEndDate() != null) {
+      activityData.put("startDate", format.format(activity.getEndDate()));
+    }
+    if (activity.getStartDate() != null) {
+      activityData.put("endDate", format.format(activity.getStartDate()));
+    }
+    activityData.put("leader_id", activity.getLeader().getId());
+    activityData.put("modified_by", String.valueOf(user.getId()));
+    activityData.put("modification_justification", justification);
+
+    return activityDAO.saveActivity(projectID, activityData, user, justification);
   }
 
   @Override
@@ -338,20 +334,16 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public int saveActivityList(int projectID, List<Activity> activityList) {
-    List<Map<String, Object>> activityArrayMap = new ArrayList<Map<String, Object>>();
+  public boolean saveActivityList(int projectID, List<Activity> activityList, User user, String justification) {
+    boolean allSaved = true;
+    int result;
     for (Activity activity : activityList) {
-      Map<String, Object> activityData = new HashMap<>();
-      activityData.put("id", activity.getId());
-      activityData.put("title", activity.getTitle());
-      activityData.put("description", activity.getDescription());
-      activityData.put("startDate", activity.getStartDate());
-      activityData.put("endDate", activity.getEndDate());
-      activityData.put("leader_id", activity.getLeader().getId());
-      System.out.print("<<<<<" + activity.getLeader() + ">>>>>");
-      activityArrayMap.add(activityData);
+      result = this.saveActivity(projectID, activity, user, justification);
+      if (result == -1) {
+        allSaved = false;
+      }
     }
-    return activityDAO.saveActivityList(projectID, activityArrayMap);
+    return allSaved;
   }
 
   @Override

@@ -100,17 +100,17 @@ public class ProjectsListPlanningAction extends BaseAction {
     // First, loop all projects that the user is able to edit.
     for (Project project : this.getProjects()) {
       if (project.getId() == projectID) {
-        if (project.getCreated() >= this.config.getCurrentPlanningStartDate().getTime()) {
+        if (project.isNew(this.config.getCurrentPlanningStartDate())) {
           return true;
         }
       }
     }
 
-    // If nothing returned yet, we need to loop the second list shich is the list of projects that the user is not able
+    // If nothing returned yet, we need to loop the second list which is the list of projects that the user is not able
     // to edit.
     for (Project project : this.getAllProjects()) {
       if (project.getId() == projectID) {
-        if (project.getCreated() >= this.config.getCurrentPlanningStartDate().getTime()) {
+        if (project.isNew(this.config.getCurrentPlanningStartDate())) {
           return true;
         }
       }

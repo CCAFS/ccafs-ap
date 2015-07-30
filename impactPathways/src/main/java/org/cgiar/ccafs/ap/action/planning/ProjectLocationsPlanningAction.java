@@ -39,8 +39,9 @@ import org.slf4j.LoggerFactory;
 
 public class ProjectLocationsPlanningAction extends BaseAction {
 
+  private static final long serialVersionUID = 1958577179378224020L;
+
   public static Logger LOG = LoggerFactory.getLogger(ProjectLocationsPlanningAction.class);
-  private static final long serialVersionUID = -3960647459588960260L;
 
   // Managers
   private LocationManager locationManager;
@@ -228,9 +229,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      boolean added =
-        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
-          this.getJustification());
+      boolean added = locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+        this.getJustification());
       if (!added) {
         success = false;
       }
@@ -247,8 +247,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         this.addActionError(this.getText("planning.project.locations.saving.problem"));
         return BaseAction.INPUT;
       }
-      this.addActionMessage(this.getText("saving.success",
-        new String[] {this.getText("planning.project.locations.title")}));
+      this.addActionMessage(
+        this.getText("saving.success", new String[] {this.getText("planning.project.locations.title")}));
 
       return BaseAction.SUCCESS;
     } else {

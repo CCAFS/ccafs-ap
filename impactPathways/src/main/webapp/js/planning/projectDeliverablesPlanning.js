@@ -10,7 +10,7 @@ function init() {
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
   attachEvents();
   addChosen();
-  applyWordCounter($("textarea"), lWordsElemetDesc);
+  applyWordCounter($('textarea[id!="justification"]'), lWordsElemetDesc);
   $deliverablesTypes.trigger('change');
 
   validateEvent('[name=save], [name=next]', [

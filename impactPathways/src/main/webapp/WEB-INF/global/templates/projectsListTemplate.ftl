@@ -11,7 +11,7 @@
         <th id="projectFlagships">[@s.text name="preplanning.projects.projectFlagships" /]</th>
         <th id="projectBudget">[@s.text name="preplanning.projects.projectBudget" /]</th>
         <th id="projectType">[@s.text name="preplanning.projects.projectType" /]</th>
-        <th id="projectReportStatus">[@s.text name="preplanning.projects.projectReportStatus" /]</th>
+        [#--<th id="projectReportStatus">[@s.text name="preplanning.projects.projectReportStatus" /]</th>--]
         <th id="projectDownload"></th>
         <th id="projectDelete"></th>
         [#if isPlanning]
@@ -23,7 +23,7 @@
       [#list projects as project]
         <tr>
         [#-- ID --]
-        <td>
+        <td class="projectId">
           <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
             P${project.id}
           </a>
@@ -43,52 +43,41 @@
           </td>
           [#-- Region --]
           <td> 
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
-                [#if project.regionsAcronym?has_content]
-                  ${project.regionsAcronym}
-                [#else]
-                  [@s.text name="preplanning.projects.none" /]
-                [/#if]
-              </a>
+            [#if project.regionsAcronym?has_content]
+              ${project.regionsAcronym}
+            [#else]
+              [@s.text name="preplanning.projects.none" /]
+            [/#if]
           </td>
           [#-- Flagship --]
           <td> 
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param] [/@s.url]">
-                [#if project.flagshipsAcronym?has_content]
-                  ${project.flagshipsAcronym}
-                [#else]
-                  [@s.text name="preplanning.projects.none" /]
-                [/#if]
-              </a>
+            [#if project.flagshipsAcronym?has_content]
+              ${project.flagshipsAcronym}
+            [#else]
+              [@s.text name="preplanning.projects.none" /]
+            [/#if]
           </td>
           [#-- Budget --]
-          <td> 
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-                [#if project.totalBudget?has_content]
-                  <p id="">US$ <span id="">${project.totalBudget?string(",##0.00")}</span></p> 
-                [#else]
-                  [@s.text name="preplanning.projects.none" /]
-                [/#if]
-              </a>
+          <td class="budget"> 
+            [#if project.totalBudget?has_content]
+              <p id="">US$ <span id="">${project.totalBudget?string(",##0.00")}</span></p> 
+            [#else]
+              [@s.text name="preplanning.projects.none" /]
+            [/#if]
           </td>
           [#-- Project Type --]
-          <td> 
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-                <p id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p> 
-              </a>
+          <td>
+            <p id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p>  
           </td>
-          [#-- Project Report Status --]
+          [#-- Project Report Status 
           <td> 
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-                <p id="">Submit</p> 
-              </a>
+            <a href="#"><p id="">Submit</p> </a>
           </td>
+          --]
           [#-- Track completition of entry --]
           [#if isPlanning]
           <td> 
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-                Complete / Incomplete
-              </a>
+            <a href="#">Complete / Incomplete</a>
           </td>
           [/#if]
           [#-- Summary download --]

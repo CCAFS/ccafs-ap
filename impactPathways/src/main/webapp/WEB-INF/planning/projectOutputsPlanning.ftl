@@ -20,10 +20,6 @@
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
-  <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectOutputs.help" /] </p>
-  </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="outputs" cssClass="pure-form"]
@@ -52,7 +48,7 @@
               [#list project.outputs as output]
                 [#assign index = (year_index * project.outputs?size)+output_index /] 
                 [#assign outputOverview = project.getOutputOverview(output.id, year)! /]
-                <div class="mog fullBlock clearfix">
+                <div class="mog simpleBox clearfix">
                   [#-- Hidden values --]
                   <input type="hidden" name="project.outputsOverview[${index}].id" value="${outputOverview.id!"-1"}" />
                   <input type="hidden" name="project.outputsOverview[${index}].year" value="${year}" />
