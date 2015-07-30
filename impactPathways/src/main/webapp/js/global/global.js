@@ -1,5 +1,6 @@
 var baseURL;
 var formBefore;
+var justificationLimitWords = 100;
 jQuery.fn.exists = function() {
   return this.length > 0;
 };
@@ -9,6 +10,7 @@ $(document).ready(function() {
   baseURL = $("#baseURL").val();
   showNotificationMessages();
   showHelpText();
+  applyWordCounter($("#justification"), justificationLimitWords);
 
   // hash url animation
   setTimeout(function() {
@@ -17,13 +19,6 @@ $(document).ready(function() {
 
   function showHelpText() {
     $('.helpMessage').addClass('animated flipInX');
-    /*
-     * $('.helpMessage p').each(function(i,p) { console.log($(p)); $('.helpMessage').noty({ theme: 'relax', layout:
-     * 'centerRight', theme: 'relax', type: 'information', text: $(p).html(), // can be html or string animation: {
-     * open: 'animated flipInX', // Animate.css class names close: 'animated flipInX' // Animate.css class names },
-     * maxVisible: 5, // you can set max visible notification for dismissQueue true option, closeWith: [ 'click' ] });
-     * });
-     */
   }
 
   function showNotificationMessages() {

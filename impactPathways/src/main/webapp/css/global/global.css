@@ -2360,14 +2360,14 @@ table tr.row:hover{
 span.projectType {
   font-size: 0.85em;
   float: right;
-  background-color: #9BE2B9;
+  background-color: #2ecc71;
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
   padding: 0px 8px 2px 8px;
   border-radius: 3px;
 }
 span.projectType.ppa {
-  background-color: #E29B9B;
+  background-color: #DE9A5E;
 }
 
 .budgetTypeTitle {
