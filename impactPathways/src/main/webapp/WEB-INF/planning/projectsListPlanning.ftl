@@ -20,8 +20,6 @@
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p>[@s.text name="planning.projectsList.help1" /]</p>
-    <p>[@s.text name="planning.projectsList.help2" /]</p>
-    <p>[@s.text name="planning.projectsList.help3" /]</p>
   </div>
 
   
