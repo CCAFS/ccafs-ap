@@ -44,15 +44,15 @@
       </p>
     [/#if]
     
-    <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
+    <div id="PartnersTabs" class=""> 
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable borderBox clearfix">  
-        [#if !editable]
+        [#if !editable && canEdit]
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]  
         [#-- Displaying partner leader from partnersTemplate.ftl --]  
-        [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator editable=editable /] 
+        [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator showResponsabilities=true editable=editable /] 
       </div>
     </div>
     
@@ -79,8 +79,7 @@
     [/#if]
   </article>
   [/@s.form] 
-  [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+
   [#-- Search users Interface Popup --]
   [@usersForm.searchUsers isActive=true/]
   

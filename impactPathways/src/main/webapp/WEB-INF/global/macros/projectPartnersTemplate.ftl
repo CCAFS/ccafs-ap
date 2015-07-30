@@ -189,7 +189,7 @@
         [#-- Responsibilities --]
         [#if showResponsabilities]
         <div class="fullBlock leaderResponsabilities chosen">
-          [@customForm.textArea name="project.leaderResponsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true editable=editable/]
+          [@customForm.textArea name="project.leader.responsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true editable=editable/]
         </div>
         [/#if] 
     </div> <!-- End projectLeader -->   

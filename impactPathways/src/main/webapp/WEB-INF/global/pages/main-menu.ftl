@@ -88,7 +88,7 @@
         <div id="userInfo">
           <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
           <p class="email">${currentUser.firstName} ${currentUser.lastName}</p>  
-          <p class="institution">${currentUser.currentInstitution.name}</p>
+          <p class="institution">${currentUser.email}</p>
         </div>
   	[/#if]
   </div>

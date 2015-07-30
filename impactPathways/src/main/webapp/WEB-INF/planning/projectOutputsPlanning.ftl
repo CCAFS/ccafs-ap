@@ -52,7 +52,7 @@
               [#list project.outputs as output]
                 [#assign index = (year_index * project.outputs?size)+output_index /] 
                 [#assign outputOverview = project.getOutputOverview(output.id, year)! /]
-                <div class="mog fullBlock clearfix">
+                <div class="mog simpleBox clearfix">
                   [#-- Hidden values --]
                   <input type="hidden" name="project.outputsOverview[${index}].id" value="${outputOverview.id!"-1"}" />
                   <input type="hidden" name="project.outputsOverview[${index}].year" value="${year}" />
