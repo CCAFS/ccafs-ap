@@ -51,6 +51,16 @@ public interface ProjectContributionOverviewManager {
   public List<OutputOverview> getProjectContributionOverviews(Project project);
 
   /**
+   * This method returns the description made for each output linked to the project identified by the value received
+   * by parameter and the year.
+   * 
+   * @param project - Project Identifier
+   * @param int year - Year
+   * @return a DualMap with the format <year, output, overview>
+   */
+  public List<OutputOverview> getProjectContributionOverviewsByYearAndOutput(Project project, int year, int outputID);
+
+  /**
    * This method saves the output overviews contained in the project received by parameter.
    * 
    * @param project - Project that contains the output overviews to save.
