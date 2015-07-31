@@ -983,7 +983,7 @@ nav#mainMenu ul li.currentSection {
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 nav#mainMenu ul a.disabled li{
-  color: #b7bcc1;
+  color: #5FAAC7;
 }
 /*************** BREADCRUMB NAVIGATION ***********/
 
@@ -2360,14 +2360,14 @@ table tr.row:hover{
 span.projectType {
   font-size: 0.85em;
   float: right;
-  background-color: #9BE2B9;
+  background-color: #2ecc71;
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
   padding: 0px 8px 2px 8px;
   border-radius: 3px;
 }
 span.projectType.ppa {
-  background-color: #E29B9B;
+  background-color: #DE9A5E;
 }
 
 .budgetTypeTitle {
@@ -2467,7 +2467,8 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 }
 
 #projectOutcomes textarea {
-  height: 50px;
+  /* height: 50px; */
+  height: auto;
 }
 
 #projectOutcomes #projectOutcomeStatement textarea {
