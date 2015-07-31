@@ -14,13 +14,6 @@
 
 package org.cgiar.ccafs.ap.action.summaries;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.action.summaries.pdfs.ProjectSummaryPDF;
 import org.cgiar.ccafs.ap.config.APConstants;
@@ -40,7 +33,6 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -50,10 +42,17 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -62,30 +61,30 @@ import com.google.inject.Inject;
 
 public class ProjectSummaryAction extends BaseAction implements Summary {
 
-  private static final long serialVersionUID = 5140987672008315842L;
   public static Logger LOG = LoggerFactory.getLogger(ProjectSummaryAction.class);
+  private static final long serialVersionUID = 5140987672008315842L;
 
-  // Managers
-  ProjectManager projectManager;
-  IPProgramManager ipProgramManager;
-  ProjectPartnerManager partnerManager;
-  BudgetManager budgetManager;
-  ProjectOutcomeManager projectOutcomeManager;
   ActivityManager activityManager;
+  BudgetManager budgetManager;
+  CRPManager crpManager;
+  DeliverableManager deliverableManager;
+  DeliverablePartnerManager deliverablePartnerManager;
+  InstitutionManager institutionManager;
+  IPElementManager ipElementManager;
+  ProjectOtherContributionManager ipOtherContributionManager;
+  IPProgramManager ipProgramManager;
   ProjectCofinancingLinkageManager linkedCoreProjectManager;
   LocationManager locationManager;
-  IPElementManager ipElementManager;
-  InstitutionManager institutionManager;
-  ProjectContributionOverviewManager overviewManager;
-  DeliverableManager deliverableManager;
   NextUserManager nextUserManager;
-  DeliverablePartnerManager deliverablePartnerManager;
-  ProjectOtherContributionManager ipOtherContributionManager;
-  CRPManager crpManager;
+  ProjectContributionOverviewManager overviewManager;
+  ProjectPartnerManager partnerManager;
+  Project project;
+  // Managers
+  ProjectManager projectManager;
 
+  ProjectOutcomeManager projectOutcomeManager;
   // Model
   ProjectSummaryPDF projectPDF;
-  Project project;
   List<InputStream> streams;
 
   @Inject
@@ -94,8 +93,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     ProjectOutcomeManager projectOutcomeManager, ActivityManager activityManager,
     ProjectCofinancingLinkageManager linkedCoreProjectManager, LocationManager locationManager,
     IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager,
-    InstitutionManager institutionManager, DeliverableManager deliverableManager,   NextUserManager nextUserManager,
-    DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager, CRPManager crpManager) {
+    InstitutionManager institutionManager, DeliverableManager deliverableManager, NextUserManager nextUserManager,
+    DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
+    CRPManager crpManager) {
     super(config);
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
@@ -110,7 +110,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.overviewManager = overviewManager;
     this.institutionManager = institutionManager;
     this.deliverableManager = deliverableManager;
-    this.nextUserManager =   nextUserManager;
+    this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.crpManager = crpManager;
@@ -206,57 +206,54 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
     project.setOutputsOverview(listaOver);
 
-    
+
     // *************************Deliverables*****************************/
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
-    
-    for(Deliverable deliverable : deliverables )
-    {
-         // Getting next users.
-        deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
+    for (Deliverable deliverable : deliverables) {
+      // Getting next users.
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
-        // Getting the responsible partner.
-        List<DeliverablePartner> partners =
-          deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
-        if (partners.size() > 0) {
-          deliverable.setResponsiblePartner(partners.get(0));
-        } else {
-          DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-          responsiblePartner.setInstitution(new Institution(-1));
-          responsiblePartner.setUser(new User(-1));
-          responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-          deliverable.setResponsiblePartner(responsiblePartner);
-        }
-        
-        // Getting the other partners that are contributing to this deliverable.
-        deliverable.setOtherPartners(
-          deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+      // Getting the responsible partner.
+      List<DeliverablePartner> partners =
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
+      if (partners.size() > 0) {
+        deliverable.setResponsiblePartner(partners.get(0));
+      } else {
+        DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
+        responsiblePartner.setInstitution(new Institution(-1));
+        responsiblePartner.setUser(new User(-1));
+        responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+        deliverable.setResponsiblePartner(responsiblePartner);
+      }
+
+      // Getting the other partners that are contributing to this deliverable.
+      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
+        APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables
     project.setDeliverables(deliverables);
-    
-    
+
+
     // *************************Outcomes*****************************
     project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
     // Getting the information for the IP Other Contribution
     project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
-   
+
     project.setIndicators(projectManager.getProjectIndicators(project.getId()));
 
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
-    
-   // *************************Budgets ******************************
-   
-        project.setBudgets(this.budgetManager.getBudgetsByProject(project));
- 
-    //totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
-    //totalBilateralBudget =
-      //budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
+
+    // *************************Budgets ******************************
+
+    project.setBudgets(this.budgetManager.getBudgetsByProject(project));
+
+    // totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
+    // totalBilateralBudget =
+    // budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
   }
-
 
 }
