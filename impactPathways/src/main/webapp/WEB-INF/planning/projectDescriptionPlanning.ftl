@@ -49,11 +49,11 @@
         <div class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" editable=editable/]
+            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" required=true editable=editable/]
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" editable=editable/]
+            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" required=true editable=editable/]
           </div> 
         </div>  
         <div class="fullBlock">  

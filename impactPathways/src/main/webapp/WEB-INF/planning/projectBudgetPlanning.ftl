@@ -194,7 +194,7 @@
 
 [#macro projectBudget institution budget project isPL=false pp_index="0" cofinancing_budgets="" editable=true]
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
-  <h6 class="title">${institution.composedName} <span class="projectType ${isPL?string('pl','ppa')}">${isPL?string('Project Leader','PPA Partner')}</span> </h6>
+  <h6 class="title">${institution.composedName} <span class="projectType ${isPL?string('pl','ppa')}">${isPL?string('Project Leader','CCAFS Partner')}</span> </h6>
   [#-- Hidden values --]
   <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
   <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
