@@ -67,6 +67,9 @@
       [#if libraryName="slidr"] 
         <script src="${baseUrl}/js/libs/slidr/slidr.min.js"></script>
       [/#if]
+      [#if libraryName="autogrow"] 
+        <script src="${baseUrl}/js/libs/autogrow-3.0/jquery.autogrowtextarea.min.js"></script>
+      [/#if]
       
    [/#list]
   [/#if]
