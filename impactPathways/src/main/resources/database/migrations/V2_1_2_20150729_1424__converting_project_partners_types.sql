@@ -60,6 +60,13 @@ UPDATE project_partners pp
 SET pp.partner_id = 103
 WHERE pp.partner_id = 1030;
 
+-- Before removing records in the institutions table, we need to remove the foreign key that exists 
+-- in the employees table.
+ALTER TABLE `employees` 
+DROP FOREIGN KEY `FK_employees_institutions`;
+ALTER TABLE `employees` 
+DROP INDEX `FK_employees_institutions_idx` ;
+  
 -- deleting those institutions
 DELETE FROM `institutions` WHERE `id`='1033';
 
