@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Outputs" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen", "autogrow"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectOutputsPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
@@ -57,7 +57,7 @@
                     <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
                   </div>
                   <div class="fullBlock">
-                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]</h6>  
+                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:<span class="red">*</span></h6>  
                     [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
                   </div>
                   <div class="fullBlock">
