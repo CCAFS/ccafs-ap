@@ -9,7 +9,7 @@
     [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if][/#assign]
     [#if showTitle]
       <h6>
-        <label for="${name}">${labelTitle}:
+        <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:
           [#if required]<span class="red">*</span>[/#if]
         </label>
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
@@ -37,7 +37,7 @@
     [#assign customLabel][#if !editable]${customName}.readText[#else]${customName}[/#if][/#assign]
   	[#if showTitle]
 	    <h6> 
-	      <label for="${name}"> [@s.text name="${customLabel}"/]:[#if required]<span class="red">*</span>[/#if]</label>
+	      <label for="${name}" class="${editable?string('editable', 'readOnly')}"> [@s.text name="${customLabel}"/]:[#if required]<span class="red">*</span>[/#if]</label>
 	      [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
 	    </h6>
     [/#if]
@@ -68,7 +68,7 @@
 [#macro checkbox name value="-NULL" label="" i18nkey="" disabled=false className="" checked=false required=false display=true help="" editable=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
     [#if editable]
-      <label for="${name}">
+      <label for="${name}" class="${editable?string('editable', 'readOnly')}">
         <input type="checkbox" id="${name}" class="${className}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] [#if disabled]disabled="disabled[/#if] />
         <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
         <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>

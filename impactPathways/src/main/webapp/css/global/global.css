@@ -159,6 +159,10 @@ table.default a{
     text-decoration: none;
 }
 
+label.readOnly {
+  cursor: initial;
+}
+
 p.fieldError{
   color: #F52626;
   font-weight: bold;
@@ -235,6 +239,7 @@ textarea#justification {
   width: 98%;
   font-size: 1.07em;
   margin-top: -1px;
+  word-wrap: break-word;
 }
 
 input[type="radio"] {
