@@ -108,6 +108,7 @@ $(document).ready(function() {
               $dialogContent.find('.warning-info').text(data.message).fadeIn('slow');
             } else {
               addUser(data.newUser.composedName, data.newUser.id);
+              addUserMessage($('#created-message').val());
             }
           },
           complete: function(data) {
@@ -132,9 +133,14 @@ $(document).ready(function() {
   }
 
   function addUser(composedName,userId) {
-    $elementSelected.find("input.userName").val(composedName).hide().fadeIn("slow");
+    $elementSelected.find("input.userName").val(composedName).addClass('animated flash');
     $elementSelected.find("input.userId").val(userId);
     dialog.dialog("close");
+  }
+
+  function addUserMessage(message) {
+    $elementSelected.parent().find('.username-message').remove();
+    $elementSelected.after("<p class='username-message note animated flipInX'>" + message + "</p>");
   }
 
   function searchUsersEvent(e) {
