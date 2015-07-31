@@ -74,6 +74,7 @@ public class BasePDF {
   private static String CIAT_LOGO_PATH;
   private static String CCAFS_LOGO_PATH;
 
+
   // Text provider to read the internationalization file
   TextProvider textProvider;
 
@@ -151,7 +152,7 @@ public class BasePDF {
       phrase.setFont(HEADING1_FONT);
       int blankLines = (orientation == PORTRAIT) ? 20 : 17;
       for (int c = 0; c < blankLines; c++) {
-        phrase.add(new Chunk().NEWLINE);
+        phrase.add(Chunk.NEWLINE);
       }
       document.add(phrase);
 
@@ -244,6 +245,43 @@ public class BasePDF {
 
   /**
    * Creates a PdfCell object add the text passed and
+   * give it the standard format for body cells.
+   * 
+   * @param text - Text to insert into the cell.
+   * @param alignment - Alignment to apply in the cell.
+   * @return a PdfCell object with the text formatted.
+   */
+  public void addTableColSpanCell(PdfPTable table, Paragraph paragraph, int alignment, int rowIndex, int colspan) {
+    PdfPCell cell = new PdfPCell(paragraph);
+
+    // Set alignment
+    cell.setHorizontalAlignment(alignment);
+    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    if (rowIndex == ROW_EVEN) {
+      cell.setBackgroundColor(TABLE_BODY_EVEN_ROW_BACKGROUND);
+    } else {
+      cell.setBackgroundColor(TABLE_BODY_ODD_ROW_BACKGROUND);
+    }
+
+    // add setColspan
+    cell.setColspan(colspan);
+
+    // Set padding
+    cell.setUseBorderPadding(true);
+    cell.setPadding(5);
+
+    // Set border color
+    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
+
+    // Set leading
+    cell.setLeading(2, 1);
+
+    table.addCell(cell);
+  }
+
+
+  /**
+   * Creates a PdfCell object add the text passed and
    * give it the standard format for header cells.
    * 
    * @param text - Text to insert into the cell.
@@ -267,6 +305,7 @@ public class BasePDF {
     table.addCell(cell);
   }
 
+
   /**
    * Add a title in the current page of document.
    * 
@@ -280,7 +319,7 @@ public class BasePDF {
     paragraph.setAlignment(Paragraph.ALIGN_CENTER);
     try {
       document.add(paragraph);
-      document.add(new Chunk().NEWLINE);
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("There was an error adding title to the document", e);
     }
@@ -349,11 +388,12 @@ public class BasePDF {
     PdfWriter writer = null;
     try {
       writer = PdfWriter.getInstance(document, outputStream);
-      writer.setBoxSize("art", getBoxSize(pageOrientation));
+      writer.setBoxSize("art", this.getBoxSize(pageOrientation));
     } catch (DocumentException e) {
       LOG.error("-- initializePdf() > There was an error initializing the pdf file.", e);
     }
 
     return writer;
   }
+
 }

@@ -36,8 +36,8 @@ import org.slf4j.LoggerFactory;
 
 public class MySQLProjectContributionOverivewDAO implements ProjectContributionOverivewDAO {
 
-  private DAOManager daoManager;
   private static Logger LOG = LoggerFactory.getLogger(MySQLProjectContributionOverivewDAO.class);
+  private DAOManager daoManager;
 
   @Inject
   public MySQLProjectContributionOverivewDAO(DAOManager daoManager) {
@@ -65,6 +65,45 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
     query.append("INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
     query.append("WHERE ipc.project_id = ");
     query.append(projectID);
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> overview = new HashMap<>();
+        overview.put("id", rs.getString("id"));
+        overview.put("year", rs.getString("year"));
+        overview.put("annual_contribution", rs.getString("anual_contribution"));
+        overview.put("gender_contribution", rs.getString("gender_contribution"));
+        overview.put("output_id", rs.getString("output_id"));
+        overview.put("output_description", rs.getString("output_description"));
+
+        overviewsData.add(overview);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("-- getProjectContributionOverviews(int projectID)( ) > Exception arised trying to get the project "
+        + "contributions overview for project {}", projectID, e);
+    }
+    return overviewsData;
+  }
+
+
+  @Override
+  public List<Map<String, String>>
+  getProjectContributionOverviewsByYearAndOutput(int projectID, int year, int outputID) {
+    List<Map<String, String>> overviewsData = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
+    query.append("ie.id as 'output_id', ie.description as output_description ");
+    query.append("FROM ip_project_contributions ipc ");
+    query.append("INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipc.mog_id ");
+    query.append("INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
+    query.append("WHERE ipc.project_id = ");
+    query.append(projectID);
+    query.append(" AND ipco.year = ");
+    query.append(year);
+    query.append(" AND ipco.output_id = ");
+    query.append(outputID);
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);

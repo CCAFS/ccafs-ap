@@ -983,7 +983,7 @@ nav#mainMenu ul li.currentSection {
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 nav#mainMenu ul a.disabled li{
-  color: #b7bcc1;
+  color: #5FAAC7;
 }
 /*************** BREADCRUMB NAVIGATION ***********/
 
@@ -2467,7 +2467,8 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 }
 
 #projectOutcomes textarea {
-  height: 50px;
+  /* height: 50px; */
+  height: auto;
 }
 
 #projectOutcomes #projectOutcomeStatement textarea {

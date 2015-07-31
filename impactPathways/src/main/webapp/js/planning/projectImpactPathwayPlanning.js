@@ -1,11 +1,13 @@
 // Global vars
-var $midOutcomesList, $targetValue;
+var $midOutcomesList, $targetValue, $textAreas;
 
 $(document).ready(init);
 
 function init() {
   $midOutcomesList = $('#ccafsOutcomes_midOutcomesList');
   $targetValue = $('.projectIndicatorTarget');
+  $textAreas = $("textarea[id!='justification']");
+  setWordCounters();
   setIndicatorIndexes();
   setMogsIndexes();
   attachEvents();
@@ -16,7 +18,6 @@ function init() {
 }
 
 function attachEvents() {
-
   $midOutcomesList.change(selectMidOutcomeEvent);
   $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
@@ -27,6 +28,20 @@ function attachEvents() {
   validateEvent('[name=save], [name=next]', [
     "#justification"
   ]);
+  $textAreas.autoGrow();
+}
+
+function setWordCounters() {
+  var check = "limitWords-";
+  $textAreas.each(function(i,textarea) {
+    var className = $(textarea).attr('class');
+    var cls = $.map(className.split(' '), function(val,i) {
+      if(val.indexOf(check) > -1) {
+        return val.slice(check.length, val.length);
+      }
+    });
+    applyWordCounter($(textarea), cls.join(' '));
+  });
 }
 
 function removeContributionBlock(event) {
