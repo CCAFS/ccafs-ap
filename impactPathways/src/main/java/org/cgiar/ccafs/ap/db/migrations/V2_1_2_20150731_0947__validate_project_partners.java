@@ -119,7 +119,7 @@ public class V2_1_2_20150731_0947__validate_project_partners implements JdbcMigr
                 && ppReal.getUser().getId() == pp.getUser().getId()) {
                 updateStatement =
                   connection.prepareStatement("UPDATE activities a SET a.leader_id = " + ppReal.getId()
-                    + " WHERE leader_id = " + pp.getId());
+                    + " WHERE a.leader_id = " + pp.getId());
                 updateStatement.execute();
               }
             }
