@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Outcomes" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom", "autogrow"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
@@ -24,7 +24,7 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectImpactPathways.help" /] </p>
+    <p> [@s.text name="planning.projectImpactPathways.help2" /] </p>
   </div>
 
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]

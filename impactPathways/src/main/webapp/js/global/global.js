@@ -1,5 +1,6 @@
 var baseURL;
 var formBefore;
+var justificationLimitWords = 100;
 jQuery.fn.exists = function() {
   return this.length > 0;
 };
@@ -9,6 +10,7 @@ $(document).ready(function() {
   baseURL = $("#baseURL").val();
   showNotificationMessages();
   showHelpText();
+  applyWordCounter($("#justification"), justificationLimitWords);
 
   // hash url animation
   setTimeout(function() {
@@ -17,13 +19,6 @@ $(document).ready(function() {
 
   function showHelpText() {
     $('.helpMessage').addClass('animated flipInX');
-    /*
-     * $('.helpMessage p').each(function(i,p) { console.log($(p)); $('.helpMessage').noty({ theme: 'relax', layout:
-     * 'centerRight', theme: 'relax', type: 'information', text: $(p).html(), // can be html or string animation: {
-     * open: 'animated flipInX', // Animate.css class names close: 'animated flipInX' // Animate.css class names },
-     * maxVisible: 5, // you can set max visible notification for dismissQueue true option, closeWith: [ 'click' ] });
-     * });
-     */
   }
 
   function showNotificationMessages() {
@@ -190,9 +185,9 @@ function applyCharCounter($textArea,charCount) {
 /* Add a word counter to a specific text area */
 function applyWordCounter($textArea,wordCount) {
   $textArea.parent().append("<p class='charCount'>(<span>" + wordCount + "</span> words remaining)</p>");
-  $textArea.next(".charCount").find("span").text(wordCount - word_count($textArea));
+  $textArea.parent().find(".charCount").find("span").text(wordCount - word_count($textArea));
   $textArea.on("keyup", function(event) {
-    var $charCount = $(event.target).next(".charCount");
+    var $charCount = $(event.target).parent().find(".charCount");
     if(word_count($(event.target)) > wordCount) {
       $(event.target).val($(event.target).val().slice(0, -2));
       $(event.target).addClass('fieldError');
@@ -202,7 +197,7 @@ function applyWordCounter($textArea,wordCount) {
       $charCount.removeClass('fieldError');
     }
     // Set count value
-    $charCount.find("span").text(wordCount - word_count(event.target));
+    $charCount.find("span").text(wordCount - word_count($(event.target)));
 
   });
   $textArea.trigger("keyup");

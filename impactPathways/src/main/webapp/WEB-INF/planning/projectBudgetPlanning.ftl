@@ -71,23 +71,26 @@
         
         [#-- Project Overhead (Only for bilateral projects) --]
         [#if project.bilateralProject]
-        <div class="simpleBox">
-          <div class="budget clearfix">
-            <h6>[@s.text name="planning.projectBudget.overhead" /]</h6> 
-            <p>[@s.text name="planning.projectBudget.fullyInstitutionalCost" /]</p>
-            <div class="radios">
-              <input type="radio" name="isfullyInstitutionalCost" value="1" id="isfullyInstitutionalCost_1" /><label for="isfullyInstitutionalCost_1">[@s.text name="form.options.yes" /]</label>
-              <input type="radio" name="isfullyInstitutionalCost" value="0" id="isfullyInstitutionalCost_0" checked/><label for="isfullyInstitutionalCost_0" >[@s.text name="form.options.no" /]</label>
+        <div id="overhead" class="simpleBox">
+          [#if (!editable && canEdit)]
+            <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#overhead">[@s.text name="form.buttons.edit" /]</a></div>
+          [/#if]
+          <h6>[@s.text name="planning.projectBudget.overhead" /]</h6> 
+          <p>[@s.text name="planning.projectBudget.fullyInstitutionalCost" /]</p>
+          <div class="radios">
+            <input type="radio" name="isfullyInstitutionalCost" value="1" id="isfullyInstitutionalCost_1" checked/><label for="isfullyInstitutionalCost_1">[@s.text name="form.options.yes" /]</label>
+            <input type="radio" name="isfullyInstitutionalCost" value="0" id="isfullyInstitutionalCost_0" /><label for="isfullyInstitutionalCost_0" >[@s.text name="form.options.no" /]</label>
+          </div>
+          <div class="overhead-block" style="display:none">
+            <div class="fullPartBlock">
+              [@customForm.input name="project.budgets.amount" i18nkey="planning.projectBudget.whatIsTheContracted" value="" editable=editable/]
             </div>
-            <div class="overhead-block" style="display:none">
-              <div class="halfPartBlock">
-                [@customForm.input name="project.budgets.amount" i18nkey="planning.projectBudget.whatIsTheContracted" value="" editable=editable/]
-              </div>
-              <div class="halfPartBlock">
-                <p>[@s.text name="planning.projectBudget.yourInstitutionalOverhead" /] <span></span></p>
-              </div>
+            [#if canEdit]
+            <div class="note fullPartBlock">
+              <p>[@s.text name="planning.projectBudget.yourInstitutionalOverhead" /] <span>13%</span></p>
             </div>
-          </div><!-- End budget -->
+            [/#if]
+          </div>
         </div>
         [/#if]
         
@@ -104,7 +107,7 @@
             [#-- Project budget content by year --]
             <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
               [#if (!editable && canEdit)]
-                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#partnerTables-${year?c}">[@s.text name="form.buttons.edit" /]</a></div>
               [/#if]
               <div class="fieldset clearfix">
                 [#-- Accumulative total project budget By year --]
@@ -133,7 +136,7 @@
                 [#if project.leader?has_content]
                   [@projectBudget institution=project.leader.institution budget=project.getBudget(project.leader.institution.id, project.bilateralProject?string(2, 1)?number, year )! project=project isPL=true cofinancing_budgets=project.getCofinancingBudgets()! editable=editable /]
                 [/#if]
-                [#-- Project Partners --]
+                [#-- Project PPA Partners --]
                 [#if projectPPAPartners?has_content] 
                   [#list projectPPAPartners as partnerInstitution ]
                     [@projectBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! project=project pp_index="${partnerInstitution_index+1}" editable=editable /]
@@ -191,7 +194,7 @@
 
 [#macro projectBudget institution budget project isPL=false pp_index="0" cofinancing_budgets="" editable=true]
 <div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
-  <h6 class="title">${isPL?string('PL','PPA')} - ${institution.composedName}</h6>
+  <h6 class="title">${institution.composedName} <span class="projectType ${isPL?string('pl','ppa')}">${isPL?string('Project Leader','CCAFS Partner')}</span> </h6>
   [#-- Hidden values --]
   <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
   <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />

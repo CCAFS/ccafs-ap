@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Outcomes" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom", "autogrow"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
@@ -24,7 +24,9 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectImpactPathways.help" /] </p>
+    <p> [@s.text name="planning.projectImpactPathways.help" /] 
+    <a href= [@s.url namespace="/" action='glossary'][/@s.url]>[@s.text name="planning.projectImpactPathways.help.glossary" /]</a>
+    </p>
   </div>
 
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
@@ -48,13 +50,13 @@
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.narrative" /] </h1> 
         [#-- Project Outcome statement --]
         <div class="fullPartBlock" id="projectOutcomeStatement">
-          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" i18nkey="planning.projectOutcome.statement" editable=editable/]
+          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" className="limitWords-150" i18nkey="planning.projectOutcome.statement" editable=editable/]
         </div>
         [#-- Annual progress --]
         [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
           <div class="fullPartBlock"> 
             <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].statement" showTitle=false editable=editable /]
+            [@customForm.textArea name="project.outcomes[${year?string}].statement" className="limitWords-80" showTitle=false editable=editable /]
           </div>
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
@@ -69,13 +71,13 @@
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.genderAndSocialNarrative" /] </h1> 
         [#-- Gender and Social Narrative --]
         <div class="fullPartBlock" id="projectOutcome-genderAndSocialNarrative">
-          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderDimension" i18nkey="planning.projectOutcome.genderAndSocialStatement" editable=editable /]
+          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderDimension" className="limitWords-150" i18nkey="planning.projectOutcome.genderAndSocialStatement" editable=editable /]
         </div>
         [#-- Annual for the expected Gender and Social contribution --]
         [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
           <div class="fullPartBlock">
             <h6>[@customForm.text name="planning.projectOutcome.genderAndSocialAnnualProgress" readText=!editable param="${year}" /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].genderDimension" showTitle=false editable=editable /]
+            [@customForm.textArea name="project.outcomes[${year?string}].genderDimension" className="limitWords-100" showTitle=false editable=editable /]
           </div>
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
