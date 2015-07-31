@@ -40,7 +40,7 @@ function setWordCounters() {
         return val.slice(check.length, val.length);
       }
     });
-    applyWordCounter($(textarea), cls.join(' '));
+    applyWordCounter($(textarea), (cls.join(' ')) || 100);
   });
 }
 

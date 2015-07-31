@@ -59,7 +59,7 @@
           </p>
         </div> 
         [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
-        [#if project.coFundedProject]
+        [#if project.linkedProjects?has_content]
           <div class="thirdPartBlock">
             <h6 class="subTitle">[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]</h6>
             <p id="totalBilateralBudget">
