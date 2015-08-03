@@ -119,7 +119,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -138,7 +138,6 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
-
       // Format the date of the activity
       if (activityData.get("startDate") != null) {
         try {
@@ -158,14 +157,8 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
-      activity.setExpectedResearchOutputs(activityData.get("expected_research_outputs"));
-      activity.setExpectedGenderContribution(activityData.get("expected_gender_contribution"));
-      if (activityData.get("gender_percentage") != null) {
-        activity.setGenderPercentage(Double.parseDouble(activityData.get("gender_percentage")));
-      }
-
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
     }
@@ -268,7 +261,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));

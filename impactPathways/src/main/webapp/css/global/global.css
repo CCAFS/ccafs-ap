@@ -33,6 +33,7 @@ a.disabled {
 
 .select .selectList {
   /* margin: 6px 0; */
+  z-index: 999;
 }
 
 .select.button, .textArea.button {
@@ -158,6 +159,10 @@ table.default a{
     text-decoration: none;
 }
 
+label.readOnly {
+  cursor: initial;
+}
+
 p.fieldError{
   color: #F52626;
   font-weight: bold;
@@ -174,6 +179,11 @@ p.warning-info {
 p.inputTitle {
   color: #777;
   line-height: 1.3em;
+}
+
+p.username-message {
+  margin: -3px 0 12px 2px;
+  color: #6B6969;
 }
 
 p.checked, label.checked {
@@ -229,6 +239,7 @@ textarea#justification {
   width: 98%;
   font-size: 1.07em;
   margin-top: -1px;
+  word-wrap: break-word;
 }
 
 input[type="radio"] {
@@ -811,6 +822,7 @@ header {
 .popup_container .content {
   width: 90%;
   padding-top: 0;
+  margin: 0 auto;
 }
 
 .popup_container h1 {
@@ -983,7 +995,7 @@ nav#mainMenu ul li.currentSection {
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 nav#mainMenu ul a.disabled li{
-  color: #b7bcc1;
+  color: #5FAAC7;
 }
 /*************** BREADCRUMB NAVIGATION ***********/
 
@@ -2467,7 +2479,8 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 }
 
 #projectOutcomes textarea {
-  height: 50px;
+  /* height: 50px; */
+  height: auto;
 }
 
 #projectOutcomes #projectOutcomeStatement textarea {

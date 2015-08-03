@@ -155,7 +155,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT a.*   ");
     query.append("FROM activities as a ");
-    query.append("WHERE a.id=  ");
+    query.append("WHERE a.id =  ");
     query.append(activityID);
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -170,9 +170,6 @@ public class MySQLActivityDAO implements ActivityDAO {
           activityData.put("endDate", rs.getDate("endDate").toString());
         }
         activityData.put("created", rs.getTimestamp("active_since").getTime() + "");
-        activityData.put("expected_research_outputs", rs.getString("expected_research_outputs"));
-        activityData.put("expected_gender_contribution", rs.getString("expected_gender_contribution"));
-        activityData.put("gender_percentage", rs.getString("gender_percentage"));
       }
       con.close();
     } catch (SQLException e) {

@@ -71,6 +71,30 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
   }
 
   @Override
+  public List<OutputOverview> getProjectContributionOverviewsByYearAndOutput(Project project, int year, int outputID) {
+    List<OutputOverview> outputOverviews = new ArrayList<>();
+    List<Map<String, String>> overviewsData =
+      overviewDAO.getProjectContributionOverviewsByYearAndOutput(project.getId(), year, outputID);
+
+    for (Map<String, String> overviewData : overviewsData) {
+      OutputOverview overview = new OutputOverview();
+      overview.setId(Integer.parseInt(overviewData.get("id")));
+      overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
+      overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
+
+      IPElement output = new IPElement();
+      output.setId(Integer.parseInt(overviewData.get("output_id")));
+      output.setDescription(overviewData.get("output_description"));
+      overview.setOutput(output);
+      overview.setYear(Integer.parseInt(overviewData.get("year")));
+
+      outputOverviews.add(overview);
+    }
+
+    return outputOverviews;
+  }
+
+  @Override
   public boolean saveProjectContribution(Project project, User user, String justification) {
     boolean saved = true;
     for (OutputOverview overview : project.getOutputsOverview()) {
