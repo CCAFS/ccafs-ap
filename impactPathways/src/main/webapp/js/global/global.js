@@ -15,7 +15,9 @@ $(document).ready(function() {
 
   // hash url animation
   setTimeout(function() {
-    $(window.location.hash).addClass('animated pulse');
+    $(window.location.hash).addClass('animated flipInX').css({
+      'z-index': '9999'
+    });
   }, 300);
 
   function showHelpText() {
