@@ -91,6 +91,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT COUNT(id) FROM activities WHERE id = ");
     query.append(activityID);
+    query.append(" AND is_active = 1");
     boolean exists = false;
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);

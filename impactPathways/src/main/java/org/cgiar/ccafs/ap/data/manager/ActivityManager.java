@@ -54,7 +54,6 @@ public interface ActivityManager {
    * 
    * @param activityID is an activity identifier.
    * @return true if the activity exists, false otherwise.
-   *         TODO HT to review
    */
   public boolean existActivity(int activityID);
 
