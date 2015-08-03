@@ -55,7 +55,6 @@
             <div class="fieldset clearfix">
               [#-- Total budget amount --]
               <div class="BudgetByYear"> 
-                [#assign totalBudgetByYear]50000[/#assign]
                 <h6 class="subTitle">Total ${year} budget remaining of US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span> </h6> 
                 <p id="budgetByYear">
                   US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span>
@@ -64,7 +63,6 @@
               </div>
               [#-- Total gender budget amount --]
               <div class="BudgetByYear"> 
-                [#assign totalGenderBudgetByYear]20000[/#assign]
                 <h6 class="subTitle">Total ${year} Gender budget remaining of US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
                 <p id="genderBudgetByYear">
                   US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span>
