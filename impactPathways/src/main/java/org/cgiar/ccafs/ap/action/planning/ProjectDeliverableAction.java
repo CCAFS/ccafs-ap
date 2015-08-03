@@ -105,16 +105,7 @@ public class ProjectDeliverableAction extends BaseAction {
    */
   public boolean canDelete() {
     // Loop all the deliverables that are in the interface.
-    for (Deliverable deliverable : project.getDeliverables()) {
-      if (deliverable.getId() == deliverableID) {
-        if (deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime()) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
-    return false;
+    return deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
   }
 
 
@@ -264,13 +255,13 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     } else
       if (deliverable.getResponsiblePartner().getInstitution() == null
-        && deliverable.getResponsiblePartner().getUser() == null) {
-      saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-        this.getCurrentUser(), this.getJustification());
-      if (!saved) {
-        success = false;
+      && deliverable.getResponsiblePartner().getUser() == null) {
+        saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+          this.getCurrentUser(), this.getJustification());
+        if (!saved) {
+          success = false;
+        }
       }
-    }
 
     // Saving other contributions
 
