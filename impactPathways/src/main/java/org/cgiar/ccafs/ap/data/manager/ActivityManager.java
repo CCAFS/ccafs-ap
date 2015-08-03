@@ -33,10 +33,12 @@ public interface ActivityManager {
    * This method removes a set of activities that belongs to a specific project.
    * 
    * @param projectID is the project identifier.
+   * @param user is the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the set of activities were successfully deleted, false otherwise.
    *         TODO HT to review
    */
-  public boolean deleteActivitiesByProject(int projectID);
+  public boolean deleteActivitiesByProject(int projectID, User user, String justification);
 
   /**
    * This method removes a specific activity value from the database.

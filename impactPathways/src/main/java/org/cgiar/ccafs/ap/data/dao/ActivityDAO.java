@@ -32,10 +32,12 @@ public interface ActivityDAO {
   /**
    * Deletes the information of the Activities related by a given project id
    * 
-   * @param projectID
+   * @param projectID is the project identifier.
+   * @param userID is the identifier of the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteActivitiesByProject(int projectID);
+  public boolean deleteActivitiesByProject(int projectID, int userID, String justification);
 
   /**
    * Deletes the information of a Activity associated by a given id
