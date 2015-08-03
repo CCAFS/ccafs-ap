@@ -121,7 +121,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
   private void getMidOutcomesByProjectFocuses() {
     midOutcomes = new ArrayList<>();
     IPElement placeHolder = new IPElement(-1);
-    placeHolder.setDescription(getText("planning.activityImpactPathways.outcome.placeholder"));
+    placeHolder.setDescription(this.getText("planning.activityImpactPathways.outcome.placeholder"));
     midOutcomes.add(placeHolder);
 
     IPElementType midOutcomeType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
@@ -135,8 +135,9 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
       for (int i = 0; i < elements.size(); i++) {
         IPElement element = elements.get(i);
-        element.setDescription(program.getAcronym() + " - " + getText("planning.activityImpactPathways.outcome2019")
-          + " #" + (i + 1) + ": " + element.getDescription());
+        element
+        .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
+        + " #" + (i + 1) + ": " + element.getDescription());
         midOutcomes.add(element);
       }
     }
@@ -156,7 +157,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
   @Override
   public String next() {
-    String result = save();
+    String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
@@ -184,7 +185,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
     isGlobalProject = projectFocusList.contains(new IPProgram(APConstants.GLOBAL_PROGRAM));
 
     // Then, we have to get all the midOutcomes that belongs to the project focuses
-    getMidOutcomesByProjectFocuses();
+    this.getMidOutcomesByProjectFocuses();
 
     // Get activity the outputs from database
     activity.setOutputs(activityManager.getActivityOutputs(activityID));
@@ -232,7 +233,7 @@ public class ActivityImpactPathwayAction extends BaseAction {
     previousIndicators = new ArrayList<>();
     previousIndicators.addAll(activity.getIndicators());
 
-    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (activity.getIndicators() != null) {
         activity.getIndicators().clear();
@@ -252,10 +253,10 @@ public class ActivityImpactPathwayAction extends BaseAction {
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {
         if (!activity.getOutputs().contains(output)) {
-          boolean deleted = activityManager.deleteActivityOutput(activityID, output.getId());
-          if (!deleted) {
-            success = false;
-          }
+          // boolean deleted = activityManager.deleteActivityOutput(activityID, output.getId());
+          // if (!deleted) {
+          success = false;
+          // }
         }
       }
 
@@ -273,10 +274,11 @@ public class ActivityImpactPathwayAction extends BaseAction {
 
       success = success && activityManager.saveActivityIndicators(activity.getIndicators(), activityID);
       if (success) {
-        addActionMessage(getText("saving.success", new String[] {getText("planning.activityImpactPathways.title")}));
+        this.addActionMessage(
+          this.getText("saving.success", new String[] {this.getText("planning.activityImpactPathways.title")}));
         return SUCCESS;
       } else {
-        addActionError(getText("saving.problem"));
+        this.addActionError(this.getText("saving.problem"));
         return INPUT;
       }
     } else {
