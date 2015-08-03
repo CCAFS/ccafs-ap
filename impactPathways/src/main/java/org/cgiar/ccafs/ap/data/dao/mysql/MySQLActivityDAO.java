@@ -131,6 +131,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("FROM activities as a ");
     query.append("WHERE a.id =  ");
     query.append(activityID);
+    query.append(" AND a.is_active = 1");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
@@ -154,164 +155,13 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public List<Integer> getActivityIdsEditable(int programID) {
-    LOG.debug(">> getActivityIdsEditable( programID={})", new Object[] {programID});
-    List<Integer> activityIds = new ArrayList<>();
-    try (Connection connection = databaseManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT a.id ");
-      query.append("FROM activities a ");
-      query.append("INNER JOIN projects p ON a.project_id = p.id ");
-      query.append("INNER JOIN ip_programs pr ON p.liaison_institution_id = pr.id ");
-      query.append("WHERE p.liaison_institution_id = ");
-      query.append(programID);
-      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
-      while (rs.next()) {
-        activityIds.add(rs.getInt(1));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getActivityIdsEditable() > There was an error getting the data for  programID={}.",
-        new Object[] {programID}, e.getMessage());
-      return null;
-    }
-    LOG.debug("<< getActivityIdsEditable():{}", activityIds);
-    return activityIds;
-  }
-
-  @Override
-  public List<Map<String, String>> getActivityIndicators(int activityID) {
-    LOG.debug(">> getActivityIndicators( activityID = {} )", activityID);
-    List<Map<String, String>> indicatorsDataList = new ArrayList<>();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ai.id, ai.description, ai.target, aip.id as 'parent_id', ");
-    query.append("aip.description as 'parent_description', aip.target as 'parent_target' ");
-    query.append("FROM ip_activity_indicators as ai ");
-    query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
-    query.append("WHERE ai.activity_id=  ");
-    query.append(activityID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> indicatorData = new HashMap<String, String>();
-
-        indicatorData.put("id", rs.getString("id"));
-        indicatorData.put("description", rs.getString("description"));
-        indicatorData.put("target", rs.getString("target"));
-        indicatorData.put("parent_id", rs.getString("parent_id"));
-        indicatorData.put("parent_description", rs.getString("parent_description"));
-        indicatorData.put("parent_target", rs.getString("parent_target"));
-
-        indicatorsDataList.add(indicatorData);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      String exceptionMessage = "-- getActivityIndicators() > Exception raised trying ";
-      exceptionMessage += "to get the activity indicators for activity  " + activityID;
-
-      LOG.error(exceptionMessage, e);
-      return null;
-    }
-    LOG.debug("<< getActivityIndicators():indicatorsDataList.size={}", indicatorsDataList.size());
-    return indicatorsDataList;
-  }
-
-  @Override
-  public int getActivityLeaderId(int activityID) {
-    LOG.debug(">> getActivityLeaderId(activityID={})", new Object[] {activityID});
-    int leaderID = -1;
-    try (Connection connection = databaseManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT a.leader_id FROM activities a WHERE a.id= ");
-      query.append(activityID);
-      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
-        leaderID = rs.getInt(1) == 0 ? -1 : rs.getInt(1);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getActivityLeaderId() > There was an error getting the data for  activityID={}.",
-        new Object[] {activityID}, e.getMessage());
-    }
-    LOG.debug("<< getActivityIdsEditable(): leaderID={}", leaderID);
-    return leaderID;
-  }
-
-  @Override
-  public String getActivityOutcome(int activityID) {
-    LOG.debug(">> getActivityOutcome( activityID = {} )", activityID);
-    String outcomeText = "";
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT outcome ");
-    query.append("FROM activities ");
-    query.append("WHERE id = ");
-    query.append(activityID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        return rs.getString("outcome");
-      }
-      rs.close();
-    } catch (SQLException e) {
-      String exceptionMessage = "-- getActivityOutcome() > Exception raised trying ";
-      exceptionMessage += "to get the activity outcome for activity  " + activityID;
-
-      LOG.error(exceptionMessage, e);
-      return null;
-    }
-    LOG.debug("<< getActivityOutcome():'{}'", outcomeText);
-    return outcomeText;
-  }
-
-  @Override
-  public List<Map<String, String>> getActivityOutputs(int activityID) {
-    LOG.debug(">> getActivityOutputs( activityID = {} )", activityID);
-    List<Map<String, String>> outputsDataList = new ArrayList<>();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ipe.id, ipe.description, pe.id as 'parent_id',  ");
-    query.append("pe.description as 'parent_description' ");
-    query.append("FROM ip_elements ipe ");
-    query.append("INNER JOIN ip_activity_contributions ipc ON ipc.mog_id = ipe.id ");
-    query.append("INNER JOIN ip_elements pe ON ipc.midOutcome_id = pe.id ");
-    query.append("WHERE ipc.activity_id=  ");
-    query.append(activityID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> indicatorData = new HashMap<String, String>();
-
-        indicatorData.put("id", rs.getString("id"));
-        indicatorData.put("description", rs.getString("description"));
-        indicatorData.put("parent_id", rs.getString("parent_id"));
-        indicatorData.put("parent_description", rs.getString("parent_description"));
-
-        outputsDataList.add(indicatorData);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      String exceptionMessage = "-- getActivityOutputs() > Exception raised trying ";
-      exceptionMessage += "to get the activity outputs for activity  " + activityID;
-
-      LOG.error(exceptionMessage, e);
-      return null;
-    }
-    LOG.debug("<< getActivityOutputs():outputsDataList.size={}", outputsDataList.size());
-    return outputsDataList;
-  }
-
-  @Override
   public List<Map<String, String>> getAllActivities() {
     LOG.debug(">> getAllActivities )");
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
     query.append("FROM activities ");
+    query.append("WHERE is_active = 1 ");
 
     LOG.debug("-- getAllActivities() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
@@ -348,29 +198,6 @@ public class MySQLActivityDAO implements ActivityDAO {
     }
     LOG.debug("<< executeQuery():activitiesList.size={}", activitiesList.size());
     return activitiesList;
-  }
-
-  @Override
-  public List<Integer> getLedActivities(int userID) {
-    LOG.debug(">> getLedActivities( userID={})", new Object[] {userID});
-    List<Integer> activityIds = new ArrayList<>();
-    try (Connection connection = databaseManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT id ");
-      query.append("FROM activities ");
-      query.append("WHERE leader_id = ");
-      query.append(userID);
-      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
-      while (rs.next()) {
-        activityIds.add(rs.getInt(1));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getLedActivities() > There was an error getting the data for userID = {}.", userID, e.getMessage());
-      return null;
-    }
-    LOG.debug("<< getActivityIdsEditable():{}", activityIds);
-    return activityIds;
   }
 
   @Override
@@ -420,35 +247,6 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
     }
     return result;
-  }
-
-  @Override
-  public boolean saveActivityIndicators(Map<String, String> indicatorData) {
-    LOG.debug(">> saveActivityIndicators(indicatorData={})", indicatorData);
-    StringBuilder query = new StringBuilder();
-
-    Object[] values;
-    // Insert new activity indicator record
-    query.append("INSERT INTO ip_activity_indicators (id, description, target, activity_id, parent_id) ");
-    query.append("VALUES (?, ?, ?, ?, ?) ");
-    values = new Object[5];
-    values[0] = indicatorData.get("id");
-    values[1] = indicatorData.get("description");
-    values[2] = indicatorData.get("target");
-    values[3] = indicatorData.get("activity_id");
-    values[4] = indicatorData.get("parent_id");
-
-    int newId = databaseManager.saveData(query.toString(), values);
-    if (newId == -1) {
-      LOG.warn(
-        "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
-        indicatorData);
-      LOG.debug("<< saveActivityIndicators(): {}", false);
-      return false;
-    }
-
-    LOG.debug("<< saveActivityIndicators(): {}", true);
-    return true;
   }
 
   @Override
@@ -522,53 +320,5 @@ public class MySQLActivityDAO implements ActivityDAO {
       }
     }
     return saved;
-  }
-
-  @Override
-  public boolean saveActivityOutcome(int activityID, String outcomeText) {
-    LOG.debug(">> saveActivityOutcome(activityID={}, outcomeText={})", new Object[] {activityID, outcomeText});
-
-    StringBuilder query = new StringBuilder();
-
-    // update activity record
-    query.append("UPDATE activities SET outcome = ? ");
-    query.append("WHERE id = ? ");
-
-    int result = databaseManager.saveData(query.toString(), new String[] {outcomeText, activityID + ""});
-    if (result == -1) {
-      LOG.error("A problem happened trying to update the activity leader with the id = {}", activityID);
-      LOG.debug("<< saveActivityLeader():{}", false);
-      return false;
-    }
-
-    LOG.debug("<< saveActivityLeader():{}", true);
-    return true;
-  }
-
-  @Override
-  public int saveActivityOutput(Map<String, String> outputData) {
-    LOG.debug(">> saveActivityOutput(outputData={})", outputData);
-    StringBuilder query = new StringBuilder();
-
-    Object[] values;
-    // Insert new activity indicator record
-    query.append("INSERT IGNORE INTO ip_activity_contributions (activity_id, mog_id, midOutcome_id) ");
-    query.append("VALUES (?, ?, ?) ");
-    values = new Object[3];
-    values[0] = outputData.get("activity_id");
-    values[1] = outputData.get("mog_id");
-    values[2] = outputData.get("midOutcome_id");
-
-    int newId = databaseManager.saveData(query.toString(), values);
-    if (newId == -1) {
-      LOG.warn(
-        "-- saveActivityOutput() > A problem happened trying to add a new activity output. Data tried to save was: {}",
-        outputData);
-      LOG.debug("<< saveActivityIndicators(): {}", -1);
-      return -1;
-    }
-
-    LOG.debug("<< saveActivityIndicators(): {}", newId);
-    return newId;
   }
 }
