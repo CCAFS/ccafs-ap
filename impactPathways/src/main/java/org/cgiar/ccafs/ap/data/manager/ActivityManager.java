@@ -36,7 +36,6 @@ public interface ActivityManager {
    * @param user is the user who is making the deletion.
    * @param justification is the justification statement.
    * @return true if the set of activities were successfully deleted, false otherwise.
-   *         TODO HT to review
    */
   public boolean deleteActivitiesByProject(int projectID, User user, String justification);
 
