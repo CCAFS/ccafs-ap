@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -49,6 +50,7 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private IPElementManager ipElementManager;
   private BudgetByMogManager budgetByMogManager;
+  private BudgetManager budgetManager;
   private HistoryManager historyManager;
 
   // Model
@@ -56,14 +58,17 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   private int projectID;
   private List<Integer> allYears;
   private int year;
+  private double totalBudget;
+  private double budgetPercentageToGender;
 
   @Inject
-  public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager,
+  public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
     IPElementManager ipElementManager, BudgetByMogManager budgetByMogManager, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
     this.ipElementManager = ipElementManager;
     this.budgetByMogManager = budgetByMogManager;
+    this.budgetManager = budgetManager;
     this.historyManager = historyManager;
   }
 
@@ -109,6 +114,15 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     return projectID;
   }
 
+  public double getTotalBudgetByYear() {
+    return totalBudget;
+  }
+
+  public double getTotalGenderBudgetByYear() {
+    double a = (budgetPercentageToGender / 100) * totalBudget;
+    return a;
+  }
+
   public int getYear() {
     return year;
   }
@@ -121,7 +135,6 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     project = projectManager.getProject(projectID);
     project.setOutputs(ipElementManager.getProjectOutputs(projectID));
     project.setOutputsBudgets(budgetByMogManager.getProjectOutputsBudget(projectID));
-
 
     // Remove the outputs duplicated
     Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
@@ -141,6 +154,9 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
         year = allYears.get(0);
       }
 
+      totalBudget = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
+      budgetPercentageToGender = budgetManager.calculateTotalGenderBudgetByYear(projectID, year);
+
       if (!allYears.contains(new Integer(year))) {
         year = allYears.get(0);
       }
@@ -148,7 +164,6 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
 
     this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
   }
-
 
   @Override
   public String save() {
@@ -178,13 +193,20 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     }
   }
 
-
   public void setAllYears(List<Integer> allYears) {
     this.allYears = allYears;
   }
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setTotalBudget(double totalBudget) {
+    this.totalBudget = totalBudget;
+  }
+
+  public void setTotalGenderBudget(double totalGenderBudget) {
+    this.budgetPercentageToGender = totalGenderBudget;
   }
 
   public void setYear(int year) {
