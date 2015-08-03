@@ -70,7 +70,7 @@
         [/#if]
         
         [#-- Project Overhead (Only for bilateral projects) --]
-        [#if project.bilateralProject]
+        [#if project.bilateralProject || project.linkedProjects?has_content]
         <div id="overhead" class="simpleBox">
           [#if (!editable && canEdit)]
             <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#overhead">[@s.text name="form.buttons.edit" /]</a></div>
@@ -252,6 +252,13 @@
         </div>
       </div><!-- End budget -->
     [/#list]
+  [/#if]
+  [#if !project.bilateralProject && isPL]
+    <div class="note center">[@s.text name="planning.projectBudget.addBilateralProject" /] 
+      <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#bilateralProjects">
+        [@s.text name="form.buttons.clickingHere" /]
+      </a>
+    </div>
   [/#if]
 </div>
 [/#macro]

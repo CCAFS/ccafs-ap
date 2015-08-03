@@ -76,14 +76,17 @@
 
         [#-- Project upload work plan --]
         [#if !project.bilateralProject]
-        <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
+        <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanRequired && !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.workplanRequired" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+            [@customForm.checkbox name="project.workplanRequired" value="true" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
           <div class="tickBox-toggle uploadContainer" [#if (!project.workplanRequired )]style="display:none"[/#if]>
             <div class="halfPartBlock fileUpload projectWorkplan"> 
               [#if project.workplanName?has_content]
-                  <p> ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+                <p> 
+                  [#if editable]<span id="remove-projectWorkplan" class="remove"></span>[#else]<span id="" class="file"></span>[/#if] 
+                  ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
+                </p>
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="file"  /]
@@ -158,7 +161,7 @@
       [/#if]
       [#-- Bilateral projects only for CCAFS Projects --]
       [#if !project.bilateralProject]
-      <h1 class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
+      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
       <div class="panel tertiary">
         <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
         <div id="bilateralProjectsList" class="panel-body"> 
@@ -180,7 +183,7 @@
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
           [/#if] 
         </div>
-      </div> 
+      </div>
       [/#if]
       
       

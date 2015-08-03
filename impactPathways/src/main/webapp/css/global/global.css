@@ -33,7 +33,6 @@ a.disabled {
 
 .select .selectList {
   /* margin: 6px 0; */
-  z-index: 999;
 }
 
 .select.button, .textArea.button {
@@ -410,6 +409,18 @@ input.target {
 .fileUpload .remove{
     float: left;
     margin-right: 7px;
+    background-image: url(../../images/global/icon-remove.png);
+    background-color: initial;
+    width: 16px;
+    height: 15px;
+}
+
+.fileUpload .file{
+  float: left;
+  margin-right: 7px;
+  background-image: url(../../images/global/icon-file.png);
+  width: 16px;
+  height: 18px;
 }
 
 .fileUpload h6{
@@ -1651,7 +1662,7 @@ h1.simpleTitle span {
   cursor: pointer;
   position: absolute;
   bottom: 0.65em;
-  right: 1.1em;
+  right: 0.7em;
 }
 
 input.userName {
@@ -2200,7 +2211,8 @@ textarea[id$='summary'] {
 }
 
 #uploadWorkPlan p   { 
-    margin: 0px 0px 5px 0;
+    margin: 0px 0px 5px 14px;
+    line-height: 15px;
 }
 
 #projects .note {
