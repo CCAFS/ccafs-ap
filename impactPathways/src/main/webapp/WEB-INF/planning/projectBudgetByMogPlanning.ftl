@@ -90,7 +90,7 @@
                   [#-- Total contribution --]
                   <div class="halfPartBlock budget clearfix">
                     <div class="title">
-                      <p> <strong> [@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: [#if !editable](${mogBudget.totalContribution!0}%) [/#if]</strong>
+                      <p> <strong>[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: </strong>
                       US$ <span>${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></p>
                     </div>
                     <div class="content">
@@ -105,7 +105,7 @@
                   [#-- Gender contribution --]
                   <div class="halfPartBlock budget clearfix">
                     <div class="title">
-                      <p> <strong> [@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: [#if !editable](${mogBudget.genderContribution!0}%) [/#if]</strong>
+                      <p> <strong> [#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: </strong>
                       US$ <span>${((totalGenderBudgetByYear?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></p>
                     </div>
                     <div class="content">

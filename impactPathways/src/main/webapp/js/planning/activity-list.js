@@ -40,6 +40,7 @@ function addElement(e) {
   setActivitiesIndexes();
   addChosen();
   datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));
+  $newElement.find('textarea').autoGrow();
   $elementsBlock.find('p.emptyText').fadeOut();
 }
 

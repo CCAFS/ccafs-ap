@@ -59,6 +59,7 @@ function attachEvents() {
       function() {
         $(this).select();
       }).on("keyup", function(e) {
+        isPercentage(e);
         calculateGenderBudget($(e.target).parents('.partnerBudget'));
   });
 
@@ -138,9 +139,6 @@ function BudgetObject(budget, type, byYear) {
 function calculateGenderBudget(partnerBudget){
   var percentage = removePercentageFormat($(partnerBudget).find('input.projectGenderBudget').val())||0;
   var value = removeCurrencyFormat($(partnerBudget).find('input.projectBudget').val())||0;
-  if (percentage > 100){
-    percentage = 100;
-  }
   var result = (value/100)*percentage;
   $(partnerBudget).find('input.projectGenderBudget').parents('.budget').find('.inputTitle span').text(setCurrencyFormat(result));
 }
@@ -173,13 +171,7 @@ function removeCurrency(event) {
 
 function setPercentage(event) {
   var $input = $(event.target);
-  var value = $input.val();
-  if(value < 0) {
-    $input.val(0);
-  }
-  if(value > 100) {
-    $input.val(100);
-  }
+  isPercentage(event);
   if($input.val().length == 0) {
     $input.val(0);
   }
