@@ -86,22 +86,6 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public boolean deleteActivityIndicator(int activityID, int indicatorID) {
-    LOG.debug(">> deleteActivityIndicator(activityID={}, indicatorID={})", activityID, indicatorID);
-
-    String query = "DELETE FROM ip_activity_indicators WHERE activity_id = ? AND id = ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID, indicatorID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteActivityIndicator():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteActivityIndicator:{}", false);
-    return false;
-  }
-
-  @Override
   public boolean existActivity(int activityID) {
     LOG.debug(">> existActivity activityID = {} )", activityID);
     StringBuilder query = new StringBuilder();

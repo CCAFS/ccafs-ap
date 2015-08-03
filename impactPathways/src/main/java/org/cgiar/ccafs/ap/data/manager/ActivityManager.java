@@ -50,17 +50,6 @@ public interface ActivityManager {
   public boolean deleteActivity(int activityId, User user, String justification);
 
   /**
-   * This method delete the relation between the activity and the indicator
-   * received.
-   * 
-   * @param activityID - activity identifier
-   * @param indicatorID - indicator identifier
-   * @return true if the relation was successfully removed. False otherwise.
-   *         TODO HT to review
-   */
-  public boolean deleteIndicator(int activityID, int indicatorID);
-
-  /**
    * This method validate if the activity identify with the given id exists in the system.
    * 
    * @param activityID is an activity identifier.

@@ -49,17 +49,6 @@ public interface ActivityDAO {
    */
   public boolean deleteActivity(int activityID, int userID, String justification);
 
-
-  /**
-   * This method deletes from the database the relation between the activity and the indicator
-   * received.
-   * 
-   * @param activityID - activity identifier
-   * @param indicatorID - indicator identifier
-   * @return true if the relation was successfully removed. False otherwise.
-   */
-  public boolean deleteActivityIndicator(int activityID, int indicatorID);
-
   /**
    * This method validates if the a given activity exists in the database.
    * 
