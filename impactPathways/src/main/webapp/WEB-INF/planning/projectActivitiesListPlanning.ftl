@@ -70,6 +70,15 @@
           <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
         [/#if]
       
+      <div id="lessons" class="borderBox">
+        [#if (!editable && canEdit)]
+          <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        [/#if]
+        <div class="fullBlock">
+          [@customForm.textArea name="project.projectActivitiesLessons" i18nkey="planning.activities.lessons" required=true editable=editable /]
+        </div>
+      </div>
+      
       [#if editable]
       <div class="borderBox">
         [#-- Project identifier --]

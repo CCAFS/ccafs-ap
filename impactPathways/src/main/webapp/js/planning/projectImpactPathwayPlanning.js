@@ -1,12 +1,11 @@
 // Global vars
-var $midOutcomesList, $targetValue, $textAreas;
+var $midOutcomesList, $targetValue;
 
 $(document).ready(init);
 
 function init() {
   $midOutcomesList = $('#ccafsOutcomes_midOutcomesList');
   $targetValue = $('.projectIndicatorTarget');
-  $textAreas = $("textarea[id!='justification']");
   setWordCounters();
   setIndicatorIndexes();
   setMogsIndexes();
@@ -14,7 +13,7 @@ function init() {
   addChosen();
   addTabs();
   initGraph();
-
+  setFormHash();
 }
 
 function attachEvents() {
@@ -28,19 +27,19 @@ function attachEvents() {
   validateEvent('[name=save], [name=next]', [
     "#justification"
   ]);
-  $textAreas.autoGrow();
 }
 
 function setWordCounters() {
   var check = "limitWords-";
-  $textAreas.each(function(i,textarea) {
-    var className = $(textarea).attr('class');
+  $("textarea[id!='justification']").each(function(i,textarea) {
+    var className = $(textarea).attr('class') || '';
     var cls = $.map(className.split(' '), function(val,i) {
       if(val.indexOf(check) > -1) {
         return val.slice(check.length, val.length);
       }
     });
     applyWordCounter($(textarea), (cls.join(' ')) || 100);
+
   });
 }
 
@@ -59,8 +58,8 @@ function removeContributionBlock(event) {
 function selectMogEvent(event) {
   var $checkbox = $(event.target);
   var $hiddenInput = $checkbox.prev();
-  var index = $checkbox.attr("id").split("-")[1];
-  var name;
+  // var index = $checkbox.attr("id").split("-")[1];
+  // var name;
 
   if($checkbox.is(":checked")) {
     $hiddenInput.attr("disabled", false);

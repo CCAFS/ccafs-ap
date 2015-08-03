@@ -1626,8 +1626,7 @@ h1.simpleTitle span {
 }
 
 .textArea textarea{
-  width: 99%
-;
+  width: 99%;
 }
 
 .readPrivileges {
@@ -1641,22 +1640,26 @@ h1.simpleTitle span {
 }
 
 .searchUser {
-    width: 91px;
-    padding: 2px 0px 4px 0;
-    text-align: center;
-    background: #668FDA;
-    color: #fff;
-    border-radius: 4px;
-    margin: 2px 1px;
-    float: right;
-    cursor: pointer;
-    position: absolute;
-    bottom: 0.65em;
-    right: 1.1em;
+  width: 91px;
+  padding: 2px 0px 4px 0;
+  text-align: center;
+  background: #668FDA;
+  color: #fff;
+  border-radius: 4px;
+  margin: 2px 1px;
+  float: right;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0.65em;
+  right: 1.1em;
+}
+
+input.userName {
+  cursor: pointer;
 }
 
 .searchUser:hover { 
-    background: #5980C7; 
+  background: #5980C7; 
 }
 
 

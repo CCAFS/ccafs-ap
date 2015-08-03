@@ -6,6 +6,15 @@ $(document).ready(function() {
     "#justification"
   ]);
 
+  $('#mogsTabs').tabs({
+      show: {
+          effect: "fadeIn",
+          duration: 800
+      },
+      hide: {
+          effect: "fadeOut",
+          duration: 500
+      }
+  });
   applyWordCounter($textAreas, limitWords);
-  $textAreas.autoGrow();
 });
