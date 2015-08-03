@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.LocationTypeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.ClimateSmartVillage;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
@@ -40,8 +39,9 @@ import org.slf4j.LoggerFactory;
 
 public class ProjectLocationsPlanningAction extends BaseAction {
 
+  private static final long serialVersionUID = 1958577179378224020L;
+
   public static Logger LOG = LoggerFactory.getLogger(ProjectLocationsPlanningAction.class);
-  private static final long serialVersionUID = -3960647459588960260L;
 
   // Managers
   private LocationManager locationManager;
@@ -52,7 +52,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
   // Model
   private List<LocationType> locationTypes;
-  private Activity activity;
   private List<Country> countries;
   private List<Region> regions;
   private List<Location> climateSmartVillages;
@@ -159,7 +158,9 @@ public class ProjectLocationsPlanningAction extends BaseAction {
    * As we receive the project locations in several lists,
    * we need to re-organize the locations elements in order to save them
    * in the same order entered by the user
-   */
+   * 
+   * @return a list with the locations organized
+   **/
   public List<Location> organizeProjectLocations() {
     locationsOrganized = new ArrayList<>();
     int maxSizeList, totalLocations;
@@ -228,9 +229,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      boolean added =
-        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
-          this.getJustification());
+      boolean added = locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+        this.getJustification());
       if (!added) {
         success = false;
       }
@@ -247,8 +247,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         this.addActionError(this.getText("planning.project.locations.saving.problem"));
         return BaseAction.INPUT;
       }
-      this.addActionMessage(this.getText("saving.success",
-        new String[] {this.getText("planning.project.locations.title")}));
+      this.addActionMessage(
+        this.getText("saving.success", new String[] {this.getText("planning.project.locations.title")}));
 
       return BaseAction.SUCCESS;
     } else {

@@ -16,9 +16,15 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -29,39 +35,50 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego B.
  * @author Héctor Fabio Tobón R.
+ * @author Carlos Alberto Martínez M.
  */
 public class ActivitiesListAction extends BaseAction {
 
-  private static final long serialVersionUID = 6131146898077781801L;
-
-  // Manager
-  private ActivityManager activityManager;
+  private static final long serialVersionUID = -5425536924161465111L;
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ActivitiesListAction.class);
 
-  // Model for the back-end
-  private List<Activity> activities;
+  // Managers
+  private ActivityManager activityManager;
+  private ProjectManager projectManager;
+  private ProjectPartnerManager projectPartnerManager;
+  // private HistoryManager historyManager;
 
+  // Model for the back-end
+  private List<ProjectPartner> projectPartners;
 
   // Model for the front-end
+  private Project project;
   private int projectID;
   private int activityID;
 
+  // validator
+  private ActivitiesListValidator validator;
+
 
   @Inject
-  public ActivitiesListAction(APConfig config, ActivityManager activityManager) {
+  public ActivitiesListAction(APConfig config, ActivityManager activityManager, ProjectManager projectManager,
+    ProjectPartnerManager projectPartnerManager, ActivitiesListValidator validator) {
     super(config);
     this.activityManager = activityManager;
+    this.projectManager = projectManager;
+    this.projectPartnerManager = projectPartnerManager;
+    this.validator = validator;
   }
-
 
   @Override
   public String add() {
     // Create new activity and redirect to activity description using the new activityID assigned by the database.
-    activityID = activityManager.saveActivity(projectID, new Activity(-1));
+    activityID =
+      activityManager.saveActivity(projectID, new Activity(-1), this.getCurrentUser(), this.getJustification());
     if (activityID > 0) {
-      addActionMessage(getText("saving.add.new", new String[] {getText("planning.activity")}));
+      this.addActionMessage(this.getText("saving.add.new", new String[] {this.getText("planning.activity")}));
       // Let's redirect the user to the Activity Description section.
       return BaseAction.SUCCESS;
     }
@@ -69,17 +86,40 @@ public class ActivitiesListAction extends BaseAction {
     return BaseAction.ERROR;
   }
 
-
-  public List<Activity> getActivities() {
-    return activities;
+  /**
+   * This method validates if an activity can be deleted or not.
+   * Keep in mind that an activity can be deleted if it was created in the current planning cycle.
+   * 
+   * @param activityID is the activity identifier.
+   * @return true if the activity can be deleted, false otherwise.
+   */
+  public boolean canDelete(int activityID) {
+    // First, loop all projects that the user is able to edit.
+    for (Activity activity : project.getActivities()) {
+      if (activity.getId() == activityID) {
+        if (activity.isNew(this.config.getCurrentPlanningStartDate())) {
+          return true;
+        }
+      }
+    }
+    // If nothing found, return false.
+    return false;
   }
 
   public int getActivityID() {
     return activityID;
   }
 
+  public Project getProject() {
+    return project;
+  }
+
   public int getProjectID() {
     return projectID;
+  }
+
+  public List<ProjectPartner> getProjectPartners() {
+    return projectPartners;
   }
 
   public String getProjectRequest() {
@@ -90,12 +130,76 @@ public class ActivitiesListAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    activities = activityManager.getActivitiesByProject(projectID);
+    project = projectManager.getProject(projectID);
+    project.setActivities(activityManager.getActivitiesByProject(projectID));
+    projectPartners = projectPartnerManager.getProjectPartners(projectID);
+
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getActivities() != null) {
+        project.getActivities().clear();
+      }
+    }
+
+  }
+
+  @Override
+  public String save() {
+    if (securityContext.canUpdateProjectActivities()) {
+      // Update only the values to which the user is authorized to modify
+      boolean success = true;
+
+      // Getting previous activities to identify those that need to be deleted.
+      List<Activity> previousActivities = activityManager.getActivitiesByProject(projectID);
+
+      // Deleting activities
+      boolean deleted;
+      for (Activity previousActivity : previousActivities) {
+        if (!project.getActivities().contains(previousActivity)) {
+          deleted =
+            activityManager.deleteActivity(previousActivity.getId(), this.getCurrentUser(), this.getJustification());
+          if (!deleted) {
+            success = false;
+          }
+        }
+      }
+      // Saving new and old Activities
+      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+        this.getJustification());
+
+      if (!saved) {
+        success = false;
+      }
+      if (!success) {
+        this.addActionError(this.getText("saving.problem"));
+        LOG.warn("There was a problem saving the activity list.");
+        return BaseAction.INPUT;
+      }
+
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
+      return SUCCESS;
+    }
+    return NOT_AUTHORIZED;
   }
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
 
+  @Override
+  public void validate() {
+    if (save) {
+      // validator.validate(this, project);
+      // HT TODO
+    }
+  }
 
 }

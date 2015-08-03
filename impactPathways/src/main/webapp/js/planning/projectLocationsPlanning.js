@@ -10,6 +10,7 @@ function init() {
   attachEvents();
   if($("#isGlobal").exists()) {
     $("input.globalCheck").trigger("change");
+    $("#locationsBlock").fadeOut("slow");
   } else {
     loadMap();
     setLocationsMarkers();

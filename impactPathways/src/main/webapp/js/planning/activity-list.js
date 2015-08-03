@@ -40,6 +40,7 @@ function addElement(e) {
   setActivitiesIndexes();
   addChosen();
   datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));
+  $elementsBlock.find('p.emptyText').fadeOut();
 }
 
 function setActivitiesIndexes() {
@@ -52,8 +53,7 @@ function setActivitiesIndexes() {
     $(element).find(".description").attr("name", name + "description");
     $(element).find(".startDate").attr("name", name + "startDate").attr("id", name + "startDate");
     $(element).find(".endDate").attr("name", name + "endDate").attr("id", name + "endDate");
-    $(element).find(".leaderInstitution").attr("name", name + "leader.institution");
-    $(element).find(".userId").attr("name", name + "leader");
+    $(element).find(".leader").attr("name", name + "leader");
   });
 }
 

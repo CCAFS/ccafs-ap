@@ -6,6 +6,7 @@
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "activities" /]
 [#assign currentStage = "activities" /]
+[#assign currentSubStage = "activities" /]
 
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
@@ -14,7 +15,7 @@
 ]/]
 
 [#assign params = {
-  "activities": {"id":"activitiesName", "name":"activities"}
+  "activities": {"id":"activitiesName", "name":"project.activities"}
   }
 /] 
 
@@ -23,6 +24,7 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
 [#import "/WEB-INF/global/macros/usersPopup.ftl" as usersForm/]
 [#import "/WEB-INF/planning/macros/projectActivitiesTemplate.ftl" as activitiesForms /]
+[#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
   <div class="helpMessage">
@@ -42,27 +44,32 @@
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
       [/#if]
       [@s.form action="activities" cssClass="pure-form"]
-      <div id="activitiesList" class="">
         <h1 class="contentTitle">[@s.text name="planning.activities.title" /]</h1> 
         [#-- Validating amount of activities to be listed --]
-        [#if activities?size > 0]
-          [#list activities as activity] 
-            [#-- Activity --]
-            [@activitiesForms.activityMacro activity=activity activity_name=params.activities.name activity_index=activity_index editable=editable canEdit=canEdit /]
-          [/#list] 
+        <div id="activitiesList" class="">
+        [#if project.activities?size > 0]
+            [#list project.activities as activity] 
+              [#-- Activity --]
+              [@activitiesForms.activityMacro activity=activity activity_name=params.activities.name activity_index=activity_index editable=editable canEdit=canEdit /]
+            [/#list] 
         [#else]
+          <p class="emptyText simpleBox center">
           [#if editable]
-            <p>[@s.text name="planning.activities.message.empty" /] [@s.text name="planning.activities.message.addNew" /]</p>
-            <div class="buttons">[@s.submit type="button" name="add"][@s.text name="planning.activities.button.add" /][/@s.submit]</div>
+            [@s.text name="planning.activities.message.addNew" /]
           [#else]
-            <p>[@s.text name="planning.activities.message.empty" /]</p>
+            [@s.text name="planning.activities.message.empty" /]
+            [#if canEdit]
+              <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+            [/#if]
           [/#if]
+          </p>
         [/#if]
-      </div><!-- End Activities list -->
-      [#-- Add activity button --]
-      [#if editable && canEdit]
-        <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
-      [/#if]
+        </div><!-- End Activities list -->
+        [#-- Add activity button --]
+        [#if editable && canEdit]
+          <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
+        [/#if]
+      
       [#if editable]
       <div class="borderBox">
         [#-- Project identifier --]

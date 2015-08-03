@@ -51,6 +51,9 @@ public class APConfig {
   private static final String UPLOADS_BASE_FOLDER = "file.uploads.baseFolder";
   private static final String LOCATIONS_TEMPLATE_FOLDER = "file.uploads.locationsTemplateFolder";
   private static final String CASE_STUDIES_FOLDER = "file.uploads.caseStudiesImagesFolder";
+  private static final String PROJECTS_BASE_FOLDER = "file.uploads.projectsFolder";
+  private static final String PROJECT_WORKPLAN_FOLDER = "file.uploads.project.WorkplanFolder";
+  private static final String PROJECT_BILATERAL_PROPOSAL_FOLDER = "file.uploads.project.bilateralProposalFolder";
   private static final String FILE_DOWNLOADS = "file.downloads";
 
   // Logging.
@@ -85,6 +88,20 @@ public class APConfig {
     return base;
   }
 
+
+  /**
+   * Get the folder where the bilateral project contract proposal should be loaded
+   * 
+   * @return a string with the path
+   */
+  public String getBilateralProjectContractProposalFolder() {
+    try {
+      return properties.getPropertiesAsString(PROJECT_BILATERAL_PROPOSAL_FOLDER);
+    } catch (Exception e) {
+      LOG.error("there is not a base folder to save the uploaded files configured.");
+    }
+    return null;
+  }
 
   /**
    * Get the folder where the case studies images uploaded should be saved
@@ -273,6 +290,34 @@ public class APConfig {
       LOG.error("There is not a current year configured for the planning section.");
     }
     return -1;
+  }
+
+  /**
+   * Get the folder that contains all the files related to a project
+   * 
+   * @return a string with the path
+   */
+  public String getProjectsBaseFolder() {
+    try {
+      return properties.getPropertiesAsString(PROJECTS_BASE_FOLDER);
+    } catch (Exception e) {
+      LOG.error("there is not a base folder to upload the project files configured.");
+    }
+    return null;
+  }
+
+  /**
+   * Get the folder where the project work plan should be uploaded
+   * 
+   * @return a string with the path
+   */
+  public String getProjectWorkplanFolder() {
+    try {
+      return properties.getPropertiesAsString(PROJECT_WORKPLAN_FOLDER);
+    } catch (Exception e) {
+      LOG.error("there is not a base folder to save the uploaded files configured.");
+    }
+    return null;
   }
 
   /**

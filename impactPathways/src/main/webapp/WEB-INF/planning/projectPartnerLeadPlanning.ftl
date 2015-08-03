@@ -26,8 +26,7 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectPartners.help1" /] <a href="[@s.url namespace="/" action='glossary'][/@s.url]#partners">[@s.text name="planning.projectPartners.partners" /]</a> [@s.text name="planning.projectPartners.help2" /]</p>
-    <p> [@s.text name="planning.projectPartners.help3" /] <a href="[@s.url namespace="/" action='glossary'][/@s.url]#managementLiaison">[@s.text name="planning.projectPartners.managementLiaison" /]</a> [@s.text name="planning.projectPartners.help4" /]</p>
+    <p>[@s.text name="planning.projectPartners.leader.help" /]</p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
@@ -45,15 +44,15 @@
       </p>
     [/#if]
     
-    <div id="PartnersTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all"> 
+    <div id="PartnersTabs" class=""> 
       [#-- Project Partners Sub-menu --]
       [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-      <div id="partnerTables-partnerLead" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">  
-        [#if !editable]
+      <div id="partnerTables-partnerLead" class="partnerTable borderBox clearfix">  
+        [#if !editable && canEdit]
           <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]  
         [#-- Displaying partner leader from partnersTemplate.ftl --]  
-        [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator editable=editable /] 
+        [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator showResponsabilities=true editable=editable /] 
       </div>
     </div>
     
@@ -80,8 +79,7 @@
     [/#if]
   </article>
   [/@s.form] 
-  [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+
   [#-- Search users Interface Popup --]
   [@usersForm.searchUsers isActive=true/]
   

@@ -24,7 +24,9 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.projectImpactPathways.help" /] </p>
+    <p> [@s.text name="planning.projectImpactPathways.help" /] 
+    <a href= [@s.url namespace="/" action='glossary'][/@s.url]>[@s.text name="planning.projectImpactPathways.help.glossary" /]</a>
+    </p>
   </div>
 
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]

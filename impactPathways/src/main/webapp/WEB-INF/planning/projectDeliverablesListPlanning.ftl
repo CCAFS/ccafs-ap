@@ -46,13 +46,15 @@
           [@deliverableTemplate.deliverablesList deliverables=project.deliverables canEdit=canEdit /]
         [#else]
           [#-- Just show this empty message to those users who are not able to modify this section --]
-          [#if !canEdit]<p>[@s.text name="planning.deliverables.empty"/]</p>[/#if]
+          <p class="simpleBox center">[@s.text name="planning.deliverables.empty"/]</p> 
         [/#if]   
+        [#if canEdit]
         <div class="buttons"> 
           <a class="addButton" href="[@s.url namespace="/planning/projects" action='addNewDeliverable'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
             [@s.text name="planning.projectDeliverables.addNewDeliverable" /]
           </a>
         </div>
+        [/#if]
       </div>
     </div>     
   </article>

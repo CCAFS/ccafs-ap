@@ -120,6 +120,29 @@ public class MySQLHistoryDAO implements HistoryDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectBudgetByMogHistory(int projectID) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("t.active_since, t.modification_justification ");
+    query.append("FROM ");
+    query.append(dbName);
+    query.append("_history.project_mog_budgets t ");
+    query.append("INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" GROUP BY u.email, t.action, t.modification_justification, ");
+    // This line group the results that have the value of active_since in a range of +/- 2 seconds
+    query.append(" UNIX_TIMESTAMP(t.active_since) DIV 2 ");
+    query.append(" ORDER BY t.active_since DESC, t.action DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
+
+  }
+
+  @Override
   public List<Map<String, String>> getProjectBudgetHistory(int projectID) {
     String dbName = this.getDatabaseName();
 

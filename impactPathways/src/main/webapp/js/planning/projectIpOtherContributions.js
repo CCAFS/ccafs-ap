@@ -1,9 +1,12 @@
+var textAreaLimitWords = 100;
+
 $(document).ready(init);
 
 function init() {
   initGraph();
   addChosen();
   initItemListEvents();
+  applyWordCounter($("div#otherContributions textarea"), textAreaLimitWords);
 }
 
 // Items list functions
@@ -55,6 +58,7 @@ function addItemList($option) {
   $option.remove();
   $select.trigger("liszt:updated");
   setIndexes($list, $('#crpsName').val());
+  $list.find('.emptyText').fadeOut();
 }
 
 function setIndexes($element,elementName) {

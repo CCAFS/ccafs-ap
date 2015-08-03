@@ -34,6 +34,7 @@ public interface ActivityManager {
    * 
    * @param projectID is the project identifier.
    * @return true if the set of activities were successfully deleted, false otherwise.
+   *         TODO HT to review
    */
   public boolean deleteActivitiesByProject(int projectID);
 
@@ -41,9 +42,11 @@ public interface ActivityManager {
    * This method removes a specific activity value from the database.
    * 
    * @param activityId is the activity identifier.
+   * @param user is the person who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the activity was successfully deleted, false otherwise.
    */
-  public boolean deleteActivity(int activityId);
+  public boolean deleteActivity(int activityId, User user, String justification);
 
   /**
    * This method delete the relation between the activity and the output
@@ -52,6 +55,7 @@ public interface ActivityManager {
    * @param activityID - activity identifier
    * @param outputID - output identifier
    * @return true if the relation was successfully removed. False otherwise.
+   *         TODO HT to review
    */
   public boolean deleteActivityOutput(int activityID, int outputID);
 
@@ -62,6 +66,7 @@ public interface ActivityManager {
    * @param activityID - activity identifier
    * @param indicatorID - indicator identifier
    * @return true if the relation was successfully removed. False otherwise.
+   *         TODO HT to review
    */
   public boolean deleteIndicator(int activityID, int indicatorID);
 
@@ -70,6 +75,7 @@ public interface ActivityManager {
    * 
    * @param activityID is an activity identifier.
    * @return true if the activity exists, false otherwise.
+   *         TODO HT to review
    */
   public boolean existActivity(int activityID);
 
@@ -86,6 +92,7 @@ public interface ActivityManager {
    * 
    * @param activityID is the activity identifier.
    * @return a List of activities objects.
+   *         TODO HT to review
    */
   public Activity getActivityById(int activityID);
 
@@ -94,6 +101,7 @@ public interface ActivityManager {
    * 
    * @param user is the user who belongs to a specific CCAFS program.
    * @return a list of activities identifiers.
+   *         TODO HT to review
    */
   public List<Integer> getActivityIdsEditable(User user);
 
@@ -102,6 +110,7 @@ public interface ActivityManager {
    * 
    * @param activityID - activity identifier
    * @return a list of IPIndicator objects
+   *         TODO HT to review
    */
   public List<IPIndicator> getActivityIndicators(int activityID);
 
@@ -110,6 +119,7 @@ public interface ActivityManager {
    * 
    * @param activityID is the activity identifier.
    * @return a User object representing the activity leader, or null if the activity leader was not found.
+   *         TODO HT to review
    */
   public User getActivityLeader(int activityID);
 
@@ -119,6 +129,7 @@ public interface ActivityManager {
    * 
    * @param activityID - Activity identifier
    * @return an string with the activity outcome.
+   *         TODO HT to review
    */
   public String getActivityOutcome(int activityID);
 
@@ -126,8 +137,9 @@ public interface ActivityManager {
    * This method gets all the outputs related with the activity identified by the value
    * received as parameter.
    * 
-   * @param activityID - activity identifer
+   * @param activityID - activity identifier
    * @return a list of IPElement objects
+   *         TODO HT to review
    */
   public List<IPElement> getActivityOutputs(int activityID);
 
@@ -135,16 +147,9 @@ public interface ActivityManager {
    * This method returns all the activities that are entered in the system.
    * 
    * @return an Array of Activity objects.
+   *         TODO HT to review
    */
   public List<Activity> getAllActivities();
-
-  /**
-   * This method gets all the information of an Expected Activity Leader of a given activity
-   * 
-   * @param activityID - is the activity identifier
-   * @return an user object representing the expected activity leader, or null if no information was found.
-   */
-  public User getExpectedActivityLeader(int activityID);
 
   /**
    * This method returns a all the activity identifiers from the activities that the user was assigned as Activity
@@ -152,27 +157,21 @@ public interface ActivityManager {
    * 
    * @param currentUser is the current user object representation.
    * @return a List with activity identifiers or an empty list if nothing found.
+   *         TODO HT to review
    */
   public List<Integer> getLedActivityIds(User currentUser);
 
   /**
-   * This method lets you know if the Project Leader wants to create or not an account for the specified Activity
-   * Leader.
+   * This method saves the information of the given activity that belongs to a specific project into the database.
    * 
-   * @param activityID - is the activity identifier
-   * @return true if the expected Activity Leader needs to be created, or false otherwise.
-   */
-  public boolean isOfficialExpectedLeader(int activityID);
-
-  /**
-   * This method saves the information of the given activity that belong to a specific activity into the database.
-   * 
-   * @param projectID
-   * @param activity
+   * @param projectID - project identifier
+   * @param activity - the activity to be saved
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
    * @return A number greater than zero representing the new ID assigned by the database for the activity, 0 if the
    *         activity was updated or -1 if some error occurred.
    */
-  public int saveActivity(int projectID, Activity activity);
+  public int saveActivity(int projectID, Activity activity, User user, String justification);
 
   /**
    * This method save into the database the relation between an activity and
@@ -181,23 +180,28 @@ public interface ActivityManager {
    * @param indicators - List of indicators objects
    * @param activityID - activity identifier
    * @return true if ALL the indicators were saved successfully. False otherwise
+   *         TODO HT to review
    */
   public boolean saveActivityIndicators(List<IPIndicator> indicators, int activityID);
 
   /**
-   * This method updates the activity, with the give activity Leader.
+   * This method saves a set of Activities related to the project identified by the
+   * value received as parameter
    * 
-   * @param user is the activity leader.
-   * @param projectID is the activity identifier.
-   * @return true if the activity leader was successfully saved, false otherwise.
+   * @param projectID - the project identifier
+   * @param activityArray - the list of activities to be saved
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
+   * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveActivityLeader(int projectID, User user);
+  public boolean saveActivityList(int projectID, List<Activity> activityArray, User user, String justification);
 
   /**
    * This method save the outcome related to the activity received as parameter
    * 
    * @param activity - the activity to save
    * @return true if the information was saved successfully, false otherwise.
+   *         TODO HT to review
    */
   public boolean saveActivityOutcome(Activity activity);
 
@@ -208,17 +212,7 @@ public interface ActivityManager {
    * @param outputs - A list of ipElmenet objects
    * @param activityID - activity identifier
    * @return true if ALL the relations were saved successfully. False otherwise.
+   *         TODO HT to review
    */
   public boolean saveActivityOutputs(List<IPElement> outputs, int activityID);
-
-  /**
-   * This method saves the information of a given expected activity leader
-   * 
-   * @param expectedActivityLeader is the user to be saved.
-   * @param activityID is the activity identifier
-   * @param isOfficialLeader is true when the user wants to create a profile of this leader into the system.
-   * @return a number greater than zero with the new identifier assigned by the database, 0 if the information was
-   *         updated or -1 if some error occurred.
-   */
-  public int saveExpectedActivityLeader(int activityID, User expectedActivityLeader, boolean isOfficialLeader);
 }

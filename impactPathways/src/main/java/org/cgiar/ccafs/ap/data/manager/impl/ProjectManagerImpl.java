@@ -77,8 +77,16 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public boolean deleteProject(int projectID) {
-    return projectDAO.deleteProject(projectID);
+  public boolean deleteProject(int projectID, User user, String justification) {
+    boolean result = true;
+    boolean deleted;
+
+    // Deleting project.
+    deleted = projectDAO.deleteProject(projectID, user.getId(), justification);
+    if (!deleted) {
+      result = false;
+    }
+    return result;
   }
 
   @Override
@@ -214,6 +222,8 @@ public class ProjectManagerImpl implements ProjectManager {
         }
       }
 
+      project.setWorkplanName(projectData.get("workplan_name"));
+      project.setBilateralContractProposalName(projectData.get("bilateral_contract_name"));
       // Getting the project Owner.
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("liaison_user_id"))));
       // Getting the creation date timestamp.
@@ -232,11 +242,9 @@ public class ProjectManagerImpl implements ProjectManager {
   @Override
   public Project getProjectBasicInfo(int projectID) {
     Map<String, String> projectData = projectDAO.getProjectBasicInfo(projectID);
-
-
     Project project = new Project(Integer.parseInt(projectData.get("id")));
     project.setTitle(projectData.get("title"));
-
+    project.setType(projectData.get("type"));
     Budget totalBudget = new Budget();
     List<Budget> budgets = new ArrayList<>(1);
     if (projectData.get("total_budget_amount") != null) {
@@ -244,7 +252,6 @@ public class ProjectManagerImpl implements ProjectManager {
       budgets.add(totalBudget);
     }
     project.setBudgets(budgets);
-
     project.setCreated(Long.parseLong(projectData.get("created")));
 
     // Getting Project Focuses - Regions
@@ -303,8 +310,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-  public
-  List<IPIndicator> getProjectIndicators(int projectID) {
+  public List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
 
@@ -364,12 +370,12 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
-      project.setBudgets(budgetManager.getCCAFSBudgets(Integer.parseInt(elementData.get("id"))));
+      project.setBudgets(budgetManager.getBudgetsByProject(project));
 
       // Adding project to the list
       projectsList.add(project);
@@ -422,6 +428,8 @@ public class ProjectManagerImpl implements ProjectManager {
         projectData.put("end_date", format.format(project.getEndDate()));
       }
       projectData.put("requires_workplan_upload", project.isWorkplanRequired());
+      projectData.put("workplan_name", project.getWorkplanName());
+      projectData.put("bilateral_contract_name", project.getBilateralContractProposalName());
       projectData.put("user_id", project.getOwner().getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
       projectData.put("modified_by", user.getId());
@@ -434,8 +442,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-  public
-  boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -468,8 +475,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-  public
-  boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

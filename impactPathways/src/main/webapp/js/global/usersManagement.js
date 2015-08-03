@@ -6,6 +6,7 @@ $(document).ready(function() {
   var timeoutID;
   var $elementSelected;
   var $dialogContent = $("#dialog-searchUsers");
+  var $searchInput = $('.search-input .input input');
   var dialogOptions = {
       autoOpen: false,
       height: 400,
@@ -17,9 +18,9 @@ $(document).ready(function() {
           $(this).dialog("close");
         }
       },
-      close: function(event,ui) {
+      open: function(event,ui) {
         $dialogContent.find("form")[0].reset();
-        $dialogContent.find("#search-users").trigger('click');
+        // $dialogContent.find("#search-users").trigger('click');
         $dialogContent.find(".tickBox-toggle").hide();
         $dialogContent.find('.warning-info').hide();
         getData('');
@@ -37,7 +38,9 @@ $(document).ready(function() {
   // Event for manage the accordion function
   $dialogContent.find(".accordion").on('click', function() {
     $(this).parent().find('.accordion span').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-    $(this).siblings('.accordion-block').hide('slow');
+    $(this).siblings('.accordion-block').slideUp('slow');
+    $(this).siblings('.accordion').addClass('active');
+    $(this).removeClass('active');
     $(this).next().slideToggle();
     $(this).find('span').addClass('ui-icon-triangle-1-s');
   });
@@ -46,7 +49,7 @@ $(document).ready(function() {
   $(".searchUser").on("click", openSearchDialog);
 
   // Event when the user select the contact person
-  $dialogContent.find("span.select").on("click", function() {
+  $dialogContent.find("span.select, span.name").on("click", function() {
     var userId = $(this).parent().find(".contactId").text();
     var composedName = $(this).parent().find(".name").text();
     // Add user
@@ -58,7 +61,7 @@ $(document).ready(function() {
 
   // Event to search users clicking in "Search" button
   $dialogContent.find(".search-button").on("click", function() {
-    getData($('.search-input .input').val());
+    getData($searchInput.val());
   });
 
   // Trigger to open create user section
@@ -119,7 +122,7 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
-  /** Functions */
+  /** Functions * */
 
   function openSearchDialog(e) {
     e.preventDefault();

@@ -19,6 +19,7 @@ package org.cgiar.ccafs.ap.data.dao;
  * @author Hernán David Carvajal
  */
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLActivityDAO;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -39,10 +40,12 @@ public interface ActivityDAO {
   /**
    * Deletes the information of a Activity associated by a given id
    * 
-   * @param activityId - is the Id of an Activity
+   * @param activityID - is the Id of an Activity
+   * @param userID is the identifier of the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteActivity(int activityId);
+  public boolean deleteActivity(int activityID, int userID, String justification);
 
 
   /**
@@ -142,14 +145,6 @@ public interface ActivityDAO {
   public List<Map<String, String>> getAllActivities();
 
   /**
-   * This method gets the information of the Expected Activity Leader by a given Activity ID
-   * 
-   * @param activityID - is the id of the activity
-   * @return a Map of the Expected Activity leader Information related with the Activity ID
-   */
-  public Map<String, String> getExpectedActivityLeader(int activityID);
-
-  /**
    * This methods gets the list of activity identifiers that correspond to the activities where the user was assigned as
    * Activity Leader.
    * 
@@ -158,25 +153,16 @@ public interface ActivityDAO {
    */
   public List<Integer> getLedActivities(int employeeId);
 
-
-  /**
-   * This method lets you know if the Project Leader wants to create or not an account for the specified Activity
-   * Leader. The information is saved in the column is_official from the expected_activity_leaders table.
-   * 
-   * @param activityID - is the activity identifier
-   * @return true if is_official is true, or false otherwise.
-   */
-  public boolean isOfficialExpectedLeader(int activityID);
-
-
   /**
    * This method saves the Activity information
    * 
    * @param activityData - is a Map with the information of the activity to be saved
    * @param projectID - is the Id of the project
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
-  public int saveActivity(int projectID, Map<String, Object> activityData);
+  public int saveActivity(int projectID, Map<String, Object> activityData, User user, String justification);
 
 
   /**
@@ -188,7 +174,6 @@ public interface ActivityDAO {
    */
   public boolean saveActivityIndicators(Map<String, String> indicatorData);
 
-
   /**
    * This method updates the activity, with the activity Leader by the given employee ID
    * 
@@ -197,6 +182,19 @@ public interface ActivityDAO {
    * @return 0 if the record was updated or -1 if any error happened.
    */
   public int saveActivityLeader(int activityID, int employeeID);
+
+  /**
+   * This method saves the Activity list related to the project identified by the
+   * value received as parameter
+   * 
+   * @param activityArrayMap - information of the activities list to be saved
+   * @param projectID - the project identifier
+   * @param user - the user that makes changes to the information
+   * @param justification - the justification for the changes made
+   * @return true if the information was saved successfully, false otherwise.
+   */
+  public boolean saveActivityList(int projectID, List<Map<String, Object>> activityArrayMap, User user,
+    String justification);
 
   /**
    * This method save the outcome related to the activity identified by the
@@ -218,15 +216,5 @@ public interface ActivityDAO {
    */
   public int saveActivityOutput(Map<String, String> outputData);
 
-  /**
-   * This method saves the Expected Activity Leader information
-   * 
-   * @param activityID
-   * @param activityLeaderData - is a Map with information of the Activity Leader to be saved
-   * @param isOfficialLeader - is true when the user wants to create a profile of this leader into the system.
-   * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
-   */
-  public int
-    saveExpectedActivityLeader(int activityID, Map<String, Object> activityLeaderData, boolean isOfficialLeader);
 
 }

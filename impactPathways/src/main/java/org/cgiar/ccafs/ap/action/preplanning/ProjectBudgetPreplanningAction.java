@@ -516,7 +516,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
 
     // Getting the project identified with the id parameter.
     project = projectManager.getProject(projectID);
-    project.setBudgets(budgetManager.getCCAFSBudgets(projectID));
+    project.setBudgets(budgetManager.getBudgetsByProject(project));
 
 
     // Getting all the years of the project.
@@ -554,12 +554,12 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
         if (project.getLeader() != null) {
 
           // Getting the Total Overall Project Budget
-          totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
-          totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
-          totalW1W2W3BilateralBudget = budgetManager.calculateProjectW1W2W3BilateralBudget(projectID);
-          totalW1W2W3BilateralBudgetByYear = budgetManager.calculateProjectW1W2W3BilateralBudgetByYear(projectID, year);
-          totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
-          totalW1W2BudgetByYear = budgetManager.calculateTotalProjectW1W2ByYear(projectID, year);
+          // totalBudget = budgetManager.calculateTotalOverallBudget(projectID);
+          // totalBudgetByYear = budgetManager.calculateTotalOverallBudgetByYear(projectID, year);
+          totalW1W2W3BilateralBudget = budgetManager.calculateTotalCCAFSBudget(projectID);
+          totalW1W2W3BilateralBudgetByYear = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
+          // totalW1W2Budget = budgetManager.calculateTotalProjectW1W2(projectID);
+          // totalW1W2BudgetByYear = budgetManager.calculateTotalProjectW1W2ByYear(projectID, year);
           // leveragedBudgetByYear = budgetManager.calculateProjectLeveragedBudgetByYear(projectID, year);
           // totalLeveragedBudget = budgetManager.calculateProjectTotalLeveragedBudget(projectID);
 
@@ -604,8 +604,8 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
       this.addActionError(this.getText("saving.problem"));
       return BaseAction.INPUT;
     } else {
-      this.addActionMessage(this.getText("saving.success",
-        new String[] {this.getText("preplanning.projectBudget.title")}));
+      this.addActionMessage(
+        this.getText("saving.success", new String[] {this.getText("preplanning.projectBudget.title")}));
       return BaseAction.SUCCESS;
     }
   }

@@ -10,6 +10,13 @@
       <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
     </action>
     
+    <action name="deleteProject" method="delete" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
+      <result name="success" type="redirectAction">
+        <param name="actionName">projectsList</param>
+        <param name="namespace">/planning</param>
+      </result>
+    </action>
+    
     <action name="addNewCoreProject" method="addCoreProject" class="org.cgiar.ccafs.ap.action.planning.ProjectsListPlanningAction">
       <result name="input">/WEB-INF/planning/projectsListPlanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -39,18 +46,7 @@
     <!-- Sections -->
     
     <!-- Section: Projects  -->
-    
-    <action name="deleteProject" class="org.cgiar.ccafs.ap.action.planning.ProjectDeletionPlanningAction">
-      <result name="input" type="redirectAction">
-        <param name="actionName">projectsList</param>
-        <param name="namespace">/planning</param>
-      </result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">projectsList</param>
-        <param name="namespace">/planning</param>
-      </result>
-    </action>
-    
+   
     <action name="description" class="org.cgiar.ccafs.ap.action.planning.ProjectDescriptionPlanningAction">
       <result name="input">/WEB-INF/planning/projectDescriptionPlanning.ftl</result>
       <result name="success" type="redirectAction">
@@ -118,7 +114,7 @@
     </action>
 
     <action name="locations" class="org.cgiar.ccafs.ap.action.planning.ProjectLocationsPlanningAction">
-      <result name="input">/WEB-INF/planning/projectlocationsPlanning.ftl</result> 
+      <result name="input">/WEB-INF/planning/projectLocationsPlanning.ftl</result> 
       <result name="success" type="redirectAction">
         <param name="actionName">locations</param>
         <param name="projectID">${project.id}</param>
@@ -268,9 +264,8 @@
     <action name="activities" class="org.cgiar.ccafs.ap.action.planning.ActivitiesListAction">
       <result name="input">/WEB-INF/planning/projectActivitiesListPlanning.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="namespace">/planning/projects/activities</param>
         <param name="actionName">activities</param>
-        <param name="activityID">${activityID}</param>
+        <param name="projectID">${project.id}</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">budget</param>
@@ -301,7 +296,7 @@
       </result>
     </action>
     
-    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.planning.ProjectBudgetByMogPlanningAction">
+    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.planning.ProjectBudgetByMOGPlanningAction">
       <result name="input">/WEB-INF/planning/projectBudgetByMogPlanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">budgetByMog</param>

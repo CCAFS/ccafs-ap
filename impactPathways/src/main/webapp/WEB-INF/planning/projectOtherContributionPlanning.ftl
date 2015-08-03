@@ -20,10 +20,6 @@
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
-  <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.impactPathways.otherContributions.help" /] </p>
-  </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="otherContributions" cssClass="pure-form"]  
@@ -53,7 +49,7 @@
       </div>
       [#-- Contribution to another center activity --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.additionalcontribution" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable /]  
       </div>
       
       [#-- Collaborating with other CRPs --]
@@ -62,7 +58,8 @@
         <div class="crpContribution panel tertiary">
           <div class="panel-head">[@customForm.text name="planning.impactPathways.otherContributions.collaboratingCRPs" readText=!editable /]</div> 
           <div class="panel-body"> 
-            <ul class="list">  
+            <ul class="list">
+            [#if project.crpContributions?has_content]  
               [#list project.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
                   <input class="id" type="hidden" name="project.crpContributions" value="${crp.id}" />
@@ -70,6 +67,9 @@
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
               [/#list] 
+            [#else]
+              <p class="emptyText"> [@s.text name="planning.impactPathways.otherContributions.crpsEmpty" /] </p>  
+            [/#if]  
             </ul>
             [#if editable]
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="crps" keyFieldName="id"  displayFieldName="name" className="crpsSelect" value="" /]

@@ -15,16 +15,20 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +60,15 @@ public class ProjectsListPlanningAction extends BaseAction {
     this.totalBudget = 0;
   }
 
+  // TODO - If you see this, PLEASE DELETE ME INMEDIATELLY.
+  public static void main(String[] args) {
+    Injector in = Guice.createInjector(new APModule());
+    DAOManager databaseManager = in.getInstance(DAOManager.class);
+
+    boolean deleted = databaseManager.deleteOnCascade("projects", "id", "1", 1, "Deleting on cascade");
+    System.out.println(deleted);
+  }
+
   public String addBilateralProject() {
     if (!securityContext.canAddBilateralProject()) {
       return NOT_AUTHORIZED;
@@ -76,6 +89,36 @@ public class ProjectsListPlanningAction extends BaseAction {
     return (projectID > 0) ? SUCCESS : ERROR;
   }
 
+  /**
+   * This method validates if a project can be deleted or not.
+   * Keep in mind that a project can be deleted if it was created in the current planning cycle.
+   * 
+   * @param projectID is the project identifier.
+   * @return true if the project can be deleted, false otherwise.
+   */
+  public boolean canDelete(int projectID) {
+    // First, loop all projects that the user is able to edit.
+    for (Project project : this.getProjects()) {
+      if (project.getId() == projectID) {
+        if (project.isNew(this.config.getCurrentPlanningStartDate())) {
+          return true;
+        }
+      }
+    }
+
+    // If nothing returned yet, we need to loop the second list which is the list of projects that the user is not able
+    // to edit.
+    for (Project project : this.getAllProjects()) {
+      if (project.getId() == projectID) {
+        if (project.isNew(this.config.getCurrentPlanningStartDate())) {
+          return true;
+        }
+      }
+    }
+    // If nothing found, return false.
+    return false;
+  }
+
   private int createNewProject(boolean isCoreProject) {
     Project newProject = new Project(-1);
 
@@ -90,13 +133,32 @@ public class ProjectsListPlanningAction extends BaseAction {
     if (liaisonInstitution != null) {
       newProject.setLiaisonInstitution(liaisonInstitution);
     } else {
-      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!", this
-        .getCurrentUser().getId());
+      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!",
+        this.getCurrentUser().getId());
       return -1;
     }
 
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());
+  }
+
+  @Override
+  public String delete() {
+    // Deleting project.
+    if (this.canDelete(projectID)) {
+      boolean deleted = projectManager.deleteProject(projectID, this.getCurrentUser(),
+        this.getJustification() == null ? "Project deleted" : this.getJustification());
+      if (deleted) {
+        this.addActionMessage(
+          this.getText("deleting.success", new String[] {this.getText("planning.project").toLowerCase()}));
+      } else {
+        this.addActionError(
+          this.getText("deleting.problem", new String[] {this.getText("planning.project").toLowerCase()}));
+      }
+    } else {
+      this.addActionError(this.getText("planning.projects.cannotDelete"));
+    }
+    return SUCCESS;
   }
 
   public List<Project> getAllProjects() {

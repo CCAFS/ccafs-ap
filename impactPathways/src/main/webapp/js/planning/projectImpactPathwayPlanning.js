@@ -1,10 +1,11 @@
 // Global vars
-var $midOutcomesList;
+var $midOutcomesList, $targetValue;
 
 $(document).ready(init);
 
 function init() {
   $midOutcomesList = $('#ccafsOutcomes_midOutcomesList');
+  $targetValue = $('.projectIndicatorTarget');
   setIndicatorIndexes();
   setMogsIndexes();
   attachEvents();
@@ -20,7 +21,7 @@ function attachEvents() {
   $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
-  $(".targetValue").on("keydown", function(event) {
+  $targetValue.on("keydown", function(event) {
     isNumber(event);
   });
   validateEvent('[name=save], [name=next]', [

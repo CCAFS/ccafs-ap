@@ -34,7 +34,7 @@ public abstract class DAOManager {
 
   public DAOManager(PropertiesManager properties) {
     this.properties = properties;
-    registerDriver();
+    this.registerDriver();
   }
 
   /**
@@ -77,6 +77,28 @@ public abstract class DAOManager {
    */
   public int delete(String preparedUpdateQuery, Object[] values) {
     return -1;
+  }
+
+  /**
+   * This method deletes all the records (is_active = 0) that have foreign keys relations to a specific table and column
+   * name.
+   * ****** PLEASE USE THIS METHOD CAREFULLY *******
+   * It uses the following Query in SQL:
+   * SELECT * FROM information_schema.KEY_COLUMN_USAGE
+   * WHERE REFERENCED_TABLE_NAME = 'tableName'
+   * AND REFERENCED_COLUMN_NAME = 'columnValue';
+   * 
+   * @param tableName - the table name.
+   * @param columnName - the column name
+   * @param columnValue - is the value of the record that is going to be deleted.
+   * @param userID - is the user who is making the change.
+   * @param justification - is the justification statement
+   * @return true if the deletion process finished successfully, false otherwise.
+   */
+  public boolean deleteOnCascade(String tableName, String columnName, Object columnValue, int userID,
+    String justification) {
+    // This method is defined in MySQLDAOManager.
+    return true;
   }
 
   /**

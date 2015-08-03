@@ -49,11 +49,11 @@
         <div class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" editable=editable/]
+            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" required=true editable=editable/]
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" editable=editable/]
+            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" required=true editable=editable/]
           </div> 
         </div>  
         <div class="fullBlock">  
@@ -75,27 +75,27 @@
         </div> 
 
         [#-- Project upload work plan --]
-        [#if project.coreProject]
+        [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
           [#if securityContext.canAllowProjectWorkplanUpload() ]
-            [@customForm.checkbox name="project.workplanRequired" value=""  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
+            [@customForm.checkbox name="project.workplanRequired" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
-          <div class="tickBox-toggle uploadContainer" [#if (editable && !project.workplanRequired )]style="display:none"[/#if]>
+          <div class="tickBox-toggle uploadContainer" [#if (!project.workplanRequired )]style="display:none"[/#if]>
             <div class="halfPartBlock fileUpload projectWorkplan"> 
               [#if project.workplanName?has_content]
-                <p> ${project.workplanName}  [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+                  <p> ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> [#if editable]<span id="remove-projectWorkplan" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
               [#else]
-                [#if (editable && !project.workplanRequired )]
-                  [@customForm.inputFile name="project.projectWorkplan"  /]
+                [#if editable]
+                  [@customForm.inputFile name="file"  /]
                 [/#if] 
               [/#if] 
             </div> 
           </div>  
         </div>
         [/#if]
-        
+
         [#-- Project upload bilateral contract --]
-        [#if (!project.coreProject && securityContext.canUploadBilateralContract())]
+        [#if (project.bilateralProject && securityContext.canUploadBilateralContract())]
         <div class="fullBlock fileUpload bilateralContract">
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
           <div class="uploadContainer">
@@ -103,7 +103,7 @@
               <p>${project.bilateralContractProposalName}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
-                [@customForm.inputFile name="project.bilateralContract"  /]
+                [@customForm.inputFile name="file"  /]
               [#else]  
                 [@s.text name="form.values.notFileUploaded" /]
               [/#if] 
@@ -163,6 +163,7 @@
         <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
         <div id="bilateralProjectsList" class="panel-body"> 
           <ul class="list">
+          [#if project.linkedProjects?has_content]
             [#list project.linkedProjects as element]
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
@@ -170,6 +171,9 @@
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
             [/#list]
+          [#else]
+            <p class="emptyText"> [@s.text name="planning.projectDescription.bilateralProjects.emptyText" /]</p>
+          [/#if]  
           </ul>
           [#if editable]
              [#-- The values of this list are loaded via ajax --]
