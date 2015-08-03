@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Outcomes" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom", "autogrow"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
@@ -26,9 +26,7 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p> [@s.text name="planning.projectImpactPathways.help2" /] </p>
   </div>
-
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
-
   [@s.form action="ccafsOutcomes" cssClass="pure-form"]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
@@ -46,11 +44,9 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
-
       <h1 class="contentTitle">[@s.text name="planning.projectOutcome.contribution" /] </h1> 
       [#if contributingPrograms?has_content]
         <p><b>[@s.text name="planning.projectImpactPathways.contributingTo" /]</b> ${contributingPrograms}</p>
-      
         [#-- Contributions Block --]
         <div id="contributionsBlock" class="">  
           [#if midOutcomesSelected?has_content]
@@ -225,6 +221,14 @@
       [#else]
         <p class="emptyText">[@s.text name="planning.projectImpactPathways.contributionsEmpty" /]</p> 
       [/#if]   
+    </div>
+    <div id="lessons" class="borderBox">
+      [#if (!editable && canEdit)]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]
+      <div class="fullBlock">
+        [@customForm.textArea name="project.ccafsOutcomesLessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=true editable=editable /]
+      </div>
     </div>
     
     [#if editable] 

@@ -47,14 +47,19 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public boolean deleteActivitiesByProject(int projectID) {
+  public boolean deleteActivitiesByProject(int projectID, int userID, String justification) {
     LOG.debug(">> deleteActivitiesByProject(projectId={})", projectID);
 
     StringBuilder query = new StringBuilder();
-    query.append("DELETE a FROM activities a ");
-    query.append("WHERE a.project_id = ? ");
+    query.append("UPDATE FROM activities SET is_active = 0, modified_by = ?, modification_justification = ?");
+    query.append("WHERE project_id = ? ");
 
-    int rowsDeleted = databaseManager.delete(query.toString(), new Object[] {projectID});
+    Object[] values = new Object[3];
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = projectID;
+
+    int rowsDeleted = databaseManager.saveData(query.toString(), values);
     if (rowsDeleted >= 0) {
       LOG.debug("<< deleteActivitiesByProject():{}", true);
       return true;
@@ -77,38 +82,6 @@ public class MySQLActivityDAO implements ActivityDAO {
       return true;
     }
     LOG.debug("<< deleteActivity:{}", false);
-    return false;
-  }
-
-  @Override
-  public boolean deleteActivityIndicator(int activityID, int indicatorID) {
-    LOG.debug(">> deleteActivityIndicator(activityID={}, indicatorID={})", activityID, indicatorID);
-
-    String query = "DELETE FROM ip_activity_indicators WHERE activity_id = ? AND id = ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID, indicatorID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteActivityIndicator():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteActivityIndicator:{}", false);
-    return false;
-  }
-
-  @Override
-  public boolean deleteActivityOutput(int activityID, int outputID) {
-    LOG.debug(">> deleteActivityOutput(activityID={}, outputID={})", activityID, outputID);
-
-    String query = "DELETE FROM ip_activity_contributions WHERE activity_id = ? AND mog_id = ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID, outputID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteActivityOutput():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteActivityOutput:{}", false);
     return false;
   }
 

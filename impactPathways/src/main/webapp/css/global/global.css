@@ -33,7 +33,6 @@ a.disabled {
 
 .select .selectList {
   /* margin: 6px 0; */
-  z-index: 999;
 }
 
 .select.button, .textArea.button {
@@ -410,6 +409,18 @@ input.target {
 .fileUpload .remove{
     float: left;
     margin-right: 7px;
+    background-image: url(../../images/global/icon-remove.png);
+    background-color: initial;
+    width: 16px;
+    height: 15px;
+}
+
+.fileUpload .file{
+  float: left;
+  margin-right: 7px;
+  background-image: url(../../images/global/icon-file.png);
+  width: 16px;
+  height: 18px;
 }
 
 .fileUpload h6{
@@ -1343,7 +1354,7 @@ a.currentReportingSection li #i-additionalInformation{
   width: 845px;
   vertical-align: top;
   position: relative;
-  margin-top: 39px;
+  margin-top: 45px;
 }
 
 
@@ -1626,8 +1637,7 @@ h1.simpleTitle span {
 }
 
 .textArea textarea{
-  width: 99%
-;
+  width: 99%;
 }
 
 .readPrivileges {
@@ -1641,22 +1651,26 @@ h1.simpleTitle span {
 }
 
 .searchUser {
-    width: 91px;
-    padding: 2px 0px 4px 0;
-    text-align: center;
-    background: #668FDA;
-    color: #fff;
-    border-radius: 4px;
-    margin: 2px 1px;
-    float: right;
-    cursor: pointer;
-    position: absolute;
-    bottom: 0.65em;
-    right: 1.1em;
+  width: 91px;
+  padding: 2px 0px 4px 0;
+  text-align: center;
+  background: #668FDA;
+  color: #fff;
+  border-radius: 4px;
+  margin: 2px 1px;
+  float: right;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0.65em;
+  right: 0.7em;
+}
+
+input.userName {
+  cursor: pointer;
 }
 
 .searchUser:hover { 
-    background: #5980C7; 
+  background: #5980C7; 
 }
 
 
@@ -2197,7 +2211,8 @@ textarea[id$='summary'] {
 }
 
 #uploadWorkPlan p   { 
-    margin: 0px 0px 5px 0;
+    margin: 0px 0px 5px 14px;
+    line-height: 15px;
 }
 
 #projects .note {

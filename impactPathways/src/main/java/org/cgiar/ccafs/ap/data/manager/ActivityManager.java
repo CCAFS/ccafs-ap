@@ -33,10 +33,11 @@ public interface ActivityManager {
    * This method removes a set of activities that belongs to a specific project.
    * 
    * @param projectID is the project identifier.
+   * @param user is the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the set of activities were successfully deleted, false otherwise.
-   *         TODO HT to review
    */
-  public boolean deleteActivitiesByProject(int projectID);
+  public boolean deleteActivitiesByProject(int projectID, User user, String justification);
 
   /**
    * This method removes a specific activity value from the database.
@@ -47,28 +48,6 @@ public interface ActivityManager {
    * @return true if the activity was successfully deleted, false otherwise.
    */
   public boolean deleteActivity(int activityId, User user, String justification);
-
-  /**
-   * This method delete the relation between the activity and the output
-   * received.
-   * 
-   * @param activityID - activity identifier
-   * @param outputID - output identifier
-   * @return true if the relation was successfully removed. False otherwise.
-   *         TODO HT to review
-   */
-  public boolean deleteActivityOutput(int activityID, int outputID);
-
-  /**
-   * This method delete the relation between the activity and the indicator
-   * received.
-   * 
-   * @param activityID - activity identifier
-   * @param indicatorID - indicator identifier
-   * @return true if the relation was successfully removed. False otherwise.
-   *         TODO HT to review
-   */
-  public boolean deleteIndicator(int activityID, int indicatorID);
 
   /**
    * This method validate if the activity identify with the given id exists in the system.

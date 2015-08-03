@@ -65,23 +65,13 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public boolean deleteActivitiesByProject(int projectID) {
-    return activityDAO.deleteActivitiesByProject(projectID);
+  public boolean deleteActivitiesByProject(int projectID, User user, String justification) {
+    return activityDAO.deleteActivitiesByProject(projectID, user.getId(), justification);
   }
 
   @Override
   public boolean deleteActivity(int activityId, User user, String justification) {
     return activityDAO.deleteActivity(activityId, user.getId(), justification);
-  }
-
-  @Override
-  public boolean deleteActivityOutput(int activityID, int outputID) {
-    return activityDAO.deleteActivityOutput(activityID, outputID);
-  }
-
-  @Override
-  public boolean deleteIndicator(int activityID, int indicatorID) {
-    return activityDAO.deleteActivityIndicator(activityID, indicatorID);
   }
 
   @Override
@@ -119,7 +109,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -157,7 +147,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -261,7 +251,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));

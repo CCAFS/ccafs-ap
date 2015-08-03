@@ -32,10 +32,12 @@ public interface ActivityDAO {
   /**
    * Deletes the information of the Activities related by a given project id
    * 
-   * @param projectID
+   * @param projectID is the project identifier.
+   * @param userID is the identifier of the user who is making the deletion.
+   * @param justification is the justification statement.
    * @return true if the elements were deleted successfully. False otherwise
    */
-  public boolean deleteActivitiesByProject(int projectID);
+  public boolean deleteActivitiesByProject(int projectID, int userID, String justification);
 
   /**
    * Deletes the information of a Activity associated by a given id
@@ -46,27 +48,6 @@ public interface ActivityDAO {
    * @return true if the elements were deleted successfully. False otherwise
    */
   public boolean deleteActivity(int activityID, int userID, String justification);
-
-
-  /**
-   * This method deletes from the database the relation between the activity and the indicator
-   * received.
-   * 
-   * @param activityID - activity identifier
-   * @param indicatorID - indicator identifier
-   * @return true if the relation was successfully removed. False otherwise.
-   */
-  public boolean deleteActivityIndicator(int activityID, int indicatorID);
-
-  /**
-   * This method deletes from the database the relation between the activity and the output
-   * received.
-   * 
-   * @param activityID - activity identifier
-   * @param outputID - output identifier
-   * @return true if the relation was successfully removed. False otherwise.s
-   */
-  public boolean deleteActivityOutput(int activityID, int outputID);
 
   /**
    * This method validates if the a given activity exists in the database.
