@@ -44,31 +44,41 @@
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
       [/#if]
       [@s.form action="activities" cssClass="pure-form"]
-        <h1 class="contentTitle">[@s.text name="planning.activities.title" /]</h1> 
-        [#-- Validating amount of activities to be listed --]
+      <h1 class="contentTitle">[@s.text name="planning.activities.title" /]</h1> 
+      <div id="" class="simpleBox">  
         <div id="activitiesList" class="">
-        [#if project.activities?size > 0]
-            [#list project.activities as activity] 
-              [#-- Activity --]
-              [@activitiesForms.activityMacro activity=activity activity_name=params.activities.name activity_index=activity_index editable=editable canEdit=canEdit /]
-            [/#list] 
-        [#else]
-          <p class="emptyText simpleBox center">
-          [#if editable]
-            [@s.text name="planning.activities.message.addNew" /]
+          [#-- Validating amount of activities to be listed --]
+          [#if project.activities?size > 0]
+              [#list project.activities as activity] 
+                [#-- Activity --]
+                [@activitiesForms.activityMacro activity=activity activity_name=params.activities.name activity_index=activity_index editable=editable canEdit=canEdit /]
+              [/#list] 
           [#else]
-            [@s.text name="planning.activities.message.empty" /]
-            [#if canEdit]
-              <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+            <p class="emptyText simpleBox center">
+            [#if editable]
+              [@s.text name="planning.activities.message.addNew" /]
+            [#else]
+              [@s.text name="planning.activities.message.empty" /]
+              [#if canEdit]
+                <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+              [/#if]
             [/#if]
+            </p>
           [/#if]
-          </p>
-        [/#if]
         </div><!-- End Activities list -->
         [#-- Add activity button --]
         [#if editable && canEdit]
           <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
         [/#if]
+      </div>
+      <div id="lessons" class="borderBox">
+        [#if (!editable && canEdit)]
+          <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        [/#if]
+        <div class="fullBlock">
+          [@customForm.textArea name="project.projectActivitiesLessons" i18nkey="planning.activities.lessons" required=true editable=editable /]
+        </div>
+      </div>
       
       [#if editable]
       <div class="borderBox">
