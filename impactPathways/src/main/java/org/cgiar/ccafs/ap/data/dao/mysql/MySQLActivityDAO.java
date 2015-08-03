@@ -102,22 +102,6 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
-  public boolean deleteActivityOutput(int activityID, int outputID) {
-    LOG.debug(">> deleteActivityOutput(activityID={}, outputID={})", activityID, outputID);
-
-    String query = "DELETE FROM ip_activity_contributions WHERE activity_id = ? AND mog_id = ?";
-
-    int rowsDeleted = databaseManager.delete(query, new Object[] {activityID, outputID});
-    if (rowsDeleted >= 0) {
-      LOG.debug("<< deleteActivityOutput():{}", true);
-      return true;
-    }
-
-    LOG.debug("<< deleteActivityOutput:{}", false);
-    return false;
-  }
-
-  @Override
   public boolean existActivity(int activityID) {
     LOG.debug(">> existActivity activityID = {} )", activityID);
     StringBuilder query = new StringBuilder();
