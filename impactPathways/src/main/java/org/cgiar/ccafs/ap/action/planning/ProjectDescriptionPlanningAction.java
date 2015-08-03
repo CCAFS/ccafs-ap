@@ -98,16 +98,23 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return allOwners;
   }
 
+  public String getBilateralContractURL() {
+    return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
+  }
+
   /**
    * Return the absolute path where the work plan is or should be located.
    * 
    * @param workplan name
    * @return complete path where the image is stored
    */
-  private String getBilateralProposalAbsolutePath(String workplanName) {
-    return config.getUploadsBaseFolder() + File.separator + config.getProjectsBaseFolder() + File.separator
-      + project.getId() + File.separator + config.getBilateralProjectContractProposalFolder() + File.separator
-      + workplanName;
+  private String getBilateralProposalAbsolutePath() {
+    return config.getUploadsBaseFolder() + this.getBilateralProposalRelativePath();
+  }
+
+  private String getBilateralProposalRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getBilateralProjectContractProposalFolder() + File.separator;
   }
 
   /**
@@ -206,15 +213,23 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return config.getStartYear();
   }
 
+  private String getWorkplanRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getProjectWorkplanFolder() + File.separator;
+  }
+
+  public String getWorkplanURL() {
+    return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
+  }
+
   /**
    * Return the absolute path where the work plan is or should be located.
    * 
    * @param workplan name
    * @return complete path where the image is stored
    */
-  private String getWorplansAbsolutePath(String workplanName) {
-    return config.getUploadsBaseFolder() + File.separator + config.getProjectsBaseFolder() + File.separator
-      + project.getId() + File.separator + config.getProjectWorkplanFolder() + File.separator + workplanName;
+  private String getWorplansAbsolutePath() {
+    return config.getUploadsBaseFolder() + File.separator + this.getWorkplanRelativePath() + File.separator;
   }
 
   @Override
@@ -354,14 +369,14 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       if (!project.isBilateralProject() && previousProject.isWorkplanRequired()) {
         if (file != null) {
           if (previousProject.getWorkplanName() != null) {
-            FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+            FileManager.deleteFile(this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
           }
 
           previousProject.setWorkplanName(fileFileName);
-          FileManager.copyFile(file, this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+          FileManager.copyFile(file, this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
         } else {
           if (project.getWorkplanName().isEmpty()) {
-            FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+            FileManager.deleteFile(this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
             previousProject.setWorkplanName("");
           }
         }
@@ -385,13 +400,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
         if (securityContext.canUploadBilateralContract()) {
           if (file != null) {
-            FileManager.deleteFile(this.getBilateralProposalAbsolutePath(previousProject.getWorkplanName()));
-            FileManager.copyFile(file, this.getBilateralProposalAbsolutePath(previousProject.getWorkplanName()));
+            FileManager.deleteFile(this.getBilateralProposalAbsolutePath() + previousProject.getWorkplanName());
+            FileManager.copyFile(file, this.getBilateralProposalAbsolutePath() + previousProject.getWorkplanName());
             previousProject.setWorkplanName(fileFileName);
           } else {
             if (project.getBilateralContractProposalName().isEmpty()
               && !previousProject.getBilateralContractProposalName().isEmpty()) {
-              FileManager.deleteFile(this.getWorplansAbsolutePath(previousProject.getWorkplanName()));
+              FileManager.deleteFile(this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
             }
           }
         }
@@ -423,8 +438,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved = true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+                this.getJustification());
           }
         }
 
@@ -443,8 +459,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              saved
+                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                  this.getJustification());
           }
         }
 

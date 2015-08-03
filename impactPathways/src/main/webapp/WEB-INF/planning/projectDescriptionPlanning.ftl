@@ -73,7 +73,7 @@
             <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
-
+${bilateralContractURL}
         [#-- Project upload work plan --]
         [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanName?has_content && !editable]display:none[/#if]">
