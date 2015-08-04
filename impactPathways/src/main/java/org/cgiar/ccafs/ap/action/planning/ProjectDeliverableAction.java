@@ -76,6 +76,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<Integer> allYears;
   private List<IPElement> outputs;
   private List<Institution> institutions;
+  private List<ProjectPartner> projectPartners;
 
 
   @Inject
@@ -138,6 +139,10 @@ public class ProjectDeliverableAction extends BaseAction {
     return project;
   }
 
+  public List<ProjectPartner> getProjectPartners() {
+    return this.projectPartners;
+  }
+
   @Override
   public String next() {
     return SUCCESS;
@@ -157,6 +162,7 @@ public class ProjectDeliverableAction extends BaseAction {
     allYears = project.getAllYears();
     outputs = ipElementManager.getProjectOutputs(project.getId());
 
+    // ****************** TODO - To remove this!*********
     // Getting the list of institutions that will be showed in the lists.
     institutions = new ArrayList<>();
     for (ProjectPartner projectPartner : projectPartnerManager.getProjectPartners(project.getId())) {
@@ -164,6 +170,8 @@ public class ProjectDeliverableAction extends BaseAction {
         institutions.add(projectPartner.getInstitution());
       }
     }
+    // ***************************************************
+    projectPartners = projectPartnerManager.getProjectPartners(project.getId());
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
@@ -255,13 +263,13 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     } else
       if (deliverable.getResponsiblePartner().getInstitution() == null
-      && deliverable.getResponsiblePartner().getUser() == null) {
-        saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-          this.getCurrentUser(), this.getJustification());
-        if (!saved) {
-          success = false;
-        }
+        && deliverable.getResponsiblePartner().getUser() == null) {
+      saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+        this.getCurrentUser(), this.getJustification());
+      if (!saved) {
+        success = false;
       }
+    }
 
     // Saving other contributions
 

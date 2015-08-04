@@ -75,6 +75,10 @@
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
     <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
     [#if template]
+      [#-- Partner List --]
+      <div class="fullPartBlock partnerName chosen"> 
+        [@customForm.select name="" value="-1" className="partner" i18nkey="preplanning.projectPartners.partner.name" listName=projectPartners keyFieldName="id"  displayFieldName="composedName" editable=editable /]
+      </div>
       [#-- Partner Institution Name --]
       <div class="fullPartBlock partnerName chosen"> 
         [@customForm.select name="" value="-1" className="institution" i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="name" editable=editable /]
@@ -86,7 +90,12 @@
         [@customForm.input name="" value="" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
         <div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>
       </div>
-    [#else] 
+    [#else]
+      [#-- Partner Name --]
+      [#assign partnerId][#if dp.partner??]${dp.partner.id}[#else]-1[/#if][/#assign]
+      <div class="fullPartBlock partnerName chosen"> 
+        [@customForm.select name="leader" className="leader" label="" i18nkey="planning.projectDeliverable.partner" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+      </div>
       [#assign institutionId][#if dp.institution??]${dp.institution.id}[#else]-1[/#if][/#assign]
       [#-- Partner Institution Name --]
       <div class="fullPartBlock partnerName chosen">
