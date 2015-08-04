@@ -36,12 +36,14 @@ function attachEvents() {
       });
 
   $budgetInputs.on("keyup", function(e) {
+    isPercentage(e);
     setPercentageCurrency($(this), budgetByYear);
     checkPercentages($(this), $budgetInputs, budgetByYear);
 
   });
 
   $genderBudgetInputs.on("keyup", function(e) {
+    isPercentage(e);
     setPercentageCurrency($(this), genderBudgetByYear);
     checkPercentages($(e.target), $genderBudgetInputs, genderBudgetByYear);
   });
@@ -68,9 +70,6 @@ function BudgetRemaining(budget) {
 
 function setPercentageCurrency(inputTarget,remainBudget) {
   var percentage = removePercentageFormat($(inputTarget).val());
-  if(percentage > 100) {
-    percentage = 100;
-  }
   var value = (remainBudget.initValue / 100) * percentage;
   $(inputTarget).parents('.budget').find('span').text(setCurrencyFormat(value));
 }
@@ -90,13 +89,6 @@ function checkPercentages(inputTarget,inputList,remainBudget) {
 
 function setPercentage(event) {
   var $input = $(event.target);
-  var value = $input.val();
-  if(value < 0) {
-    $input.val(0);
-  }
-  if(value > 100) {
-    $input.val(100);
-  }
   if($input.val().length == 0) {
     $input.val(0);
   }

@@ -61,6 +61,7 @@ function addNextUserEvent(e) {
 function addPartnerEvent(e) {
   e.preventDefault();
   var $newElement = $("#deliverablePartnerTemplate").clone(true).removeAttr("id");
+  $(e.target).parent().parent().find('.emptyText').hide();
   $(e.target).parent().before($newElement);
   $newElement.fadeIn("slow");
   addChosen();

@@ -46,7 +46,7 @@ $(document).ready(function() {
   });
 
   // Event to open dialog box and search an contact person
-  $(".searchUser").on("click", openSearchDialog);
+  $(".searchUser, input.userName").on("click", openSearchDialog);
 
   // Event when the user select the contact person
   $dialogContent.find("span.select, span.name").on("click", function() {

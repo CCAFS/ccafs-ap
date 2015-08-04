@@ -96,6 +96,19 @@ public class ProjectDeliverableAction extends BaseAction {
   }
 
 
+  /**
+   * This method validates if this deliverable can be deleted or not.
+   * Keep in mind that a deliverable can be deleted if it was created in the current planning cycle.
+   * 
+   * @param deliverableID is the deliverable identifier.
+   * @return true if the deliverable can be deleted, false otherwise.
+   */
+  public boolean canDelete() {
+    // Loop all the deliverables that are in the interface.
+    return deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
+  }
+
+
   public List<Integer> getAllYears() {
     return allYears;
   }
@@ -104,7 +117,6 @@ public class ProjectDeliverableAction extends BaseAction {
   public Deliverable getDeliverable() {
     return deliverable;
   }
-
 
   public List<DeliverableType> getDeliverableSubTypes() {
     return deliverableSubTypes;
@@ -243,13 +255,13 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     } else
       if (deliverable.getResponsiblePartner().getInstitution() == null
-        && deliverable.getResponsiblePartner().getUser() == null) {
-      saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-        this.getCurrentUser(), this.getJustification());
-      if (!saved) {
-        success = false;
+      && deliverable.getResponsiblePartner().getUser() == null) {
+        saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+          this.getCurrentUser(), this.getJustification());
+        if (!saved) {
+          success = false;
+        }
       }
-    }
 
     // Saving other contributions
 

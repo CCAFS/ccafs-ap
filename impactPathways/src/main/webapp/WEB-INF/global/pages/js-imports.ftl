@@ -67,15 +67,15 @@
       [#if libraryName="slidr"] 
         <script src="${baseUrl}/js/libs/slidr/slidr.min.js"></script>
       [/#if]
-      [#if libraryName="autogrow"] 
-        <script src="${baseUrl}/js/libs/autogrow-3.0/jquery.autogrowtextarea.min.js"></script>
-      [/#if]
       
    [/#list]
   [/#if]
 
   [#-- Second, import global javascripts and templates. --]
   <input type="hidden" id="baseURL" value="${baseUrl}" />
+  [#-- Library for textareas --]
+  <script src="${baseUrl}/js/libs/autogrow-3.0/jquery.autogrowtextarea.min.js"></script>
+  [#-- Global Javascript --]
   <script type="text/javascript" src="${baseUrl}/js/global/global.js" ></script>
 
   [#-- import the custom JS and CSS --]
