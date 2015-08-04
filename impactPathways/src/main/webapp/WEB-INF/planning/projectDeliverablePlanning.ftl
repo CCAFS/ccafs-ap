@@ -87,12 +87,12 @@
           [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          
         </div> 
       </div>
-      [#if canEdit]
+      [#if canEdit && !action.canDelete()]
         <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
       [/#if]
     </div>
     
-    [#-- Deliverable Next Users block  --] 
+    [#-- Deliverable Next Users block  --]
     <div id="deliverable-nextUsers" class="borderBox clearfix">
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.edit" /]</a></div>
@@ -104,7 +104,7 @@
             [@deliverableTemplate.nextUserTemplate nu_name=params.nextUsers.name nu_index="${nu_index}" nextUserValue="${nu.id}" editable=editable canEdit=canEdit /]
           [/#list]
         [#else]
-          <p class="emptyText">[@s.text name="planning.projectDeliverable.nextUsers.emptyText" /]</p>  
+          [@deliverableTemplate.nextUserTemplate nu_name=params.nextUsers.name nu_index="0" nextUserValue="-1" editable=editable canEdit=canEdit /] 
         [/#if]
         [#if editable && canEdit]
           <div id="addNextUserBlock" class="addLink"><a href=""  class="addNextUser addButton">[@s.text name="planning.deliverables.addNewUser" /]</a></div>
@@ -125,18 +125,28 @@
           [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
         </div>
         [#-- Other contact person that will contribute --]
-        <div class="fullBlock">
-          <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
+        <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
+        <div class="simpleBox">
           [#if deliverable.otherPartners?has_content]
             [#list deliverable.otherPartners as dp]  
               [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="institutions" editable=editable /]
             [/#list]
+          [#else]
+            <p class="emptyText center"> [@s.text name="planning.projectDeliverable.partnership.emptyText" /]</p>
           [/#if]
           [#if editable && canEdit]
             <div id="addPartnerBlock" class="addLink"><a href=""  class="addPartner addButton">[@s.text name="planning.deliverables.addPartner" /]</a></div>
           [/#if]
         </div>
       </div>
+      [#if editable]
+      <div class="partnerListMsj note">
+        [@s.text name="preplanning.projectBudget.partnerNotList" /]
+        <a href="[@s.url action='partners' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
+          [@s.text name="preplanning.projectBudget.partnersLink" /] 
+        </a>
+      </div>
+      [/#if]
     </div>
     
     <div id="lessons" class="borderBox">

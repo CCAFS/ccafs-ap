@@ -89,7 +89,6 @@ function checkPercentages(inputTarget,inputList,remainBudget) {
 
 function setPercentage(event) {
   var $input = $(event.target);
-  var value = $input.val();
   if($input.val().length == 0) {
     $input.val(0);
   }

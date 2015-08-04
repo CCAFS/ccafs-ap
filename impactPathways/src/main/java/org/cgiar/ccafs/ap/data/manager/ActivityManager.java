@@ -22,8 +22,7 @@ import java.util.List;
 import com.google.inject.ImplementedBy;
 
 /**
- * @author Javier Andrés Gallego.
- * @author Carlos Alberto Martínez M.
+ * @author Javier Andrés Gallego
  */
 @ImplementedBy(ActivityManagerImpl.class)
 public interface ActivityManager {

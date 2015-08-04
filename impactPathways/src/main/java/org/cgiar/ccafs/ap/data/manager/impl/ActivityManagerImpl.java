@@ -16,12 +16,8 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
-import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
@@ -51,37 +47,22 @@ public class ActivityManagerImpl implements ActivityManager {
   private ActivityDAO activityDAO;
 
   // Managers
-  private InstitutionManager institutionManager;
-  private UserManager userManager;
   private ProjectPartnerManager projectPartnerManager;
 
   @Inject
-  public ActivityManagerImpl(ActivityDAO activityDAO, InstitutionManager institutionManager,
-    ProjectPartnerManager projectPartnerManager, UserManager userManager) {
+  public ActivityManagerImpl(ActivityDAO activityDAO, ProjectPartnerManager projectPartnerManager) {
     this.activityDAO = activityDAO;
-    this.institutionManager = institutionManager;
     this.projectPartnerManager = projectPartnerManager;
-    this.userManager = userManager;
   }
 
   @Override
-  public boolean deleteActivitiesByProject(int projectID) {
-    return activityDAO.deleteActivitiesByProject(projectID);
+  public boolean deleteActivitiesByProject(int projectID, User user, String justification) {
+    return activityDAO.deleteActivitiesByProject(projectID, user.getId(), justification);
   }
 
   @Override
   public boolean deleteActivity(int activityId, User user, String justification) {
     return activityDAO.deleteActivity(activityId, user.getId(), justification);
-  }
-
-  @Override
-  public boolean deleteActivityOutput(int activityID, int outputID) {
-    return activityDAO.deleteActivityOutput(activityID, outputID);
-  }
-
-  @Override
-  public boolean deleteIndicator(int activityID, int indicatorID) {
-    return activityDAO.deleteActivityIndicator(activityID, indicatorID);
   }
 
   @Override
@@ -202,73 +183,6 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public List<Integer> getActivityIdsEditable(User user) {
-    return activityDAO.getActivityIdsEditable(user.getCurrentInstitution().getProgram().getId());
-  }
-
-  @Override
-  public List<IPIndicator> getActivityIndicators(int activityID) {
-    List<IPIndicator> indicators = new ArrayList<>();
-    List<Map<String, String>> indicatorsData = activityDAO.getActivityIndicators(activityID);
-
-    for (Map<String, String> iData : indicatorsData) {
-      IPIndicator indicator = new IPIndicator();
-      indicator.setId(Integer.parseInt(iData.get("id")));
-      indicator.setDescription(iData.get("description"));
-      indicator.setTarget(iData.get("target"));
-
-      // Parent indicator
-      IPIndicator parent = new IPIndicator(Integer.parseInt(iData.get("parent_id")));
-      parent.setDescription(iData.get("parent_description"));
-      parent.setTarget(iData.get("parent_target"));
-      indicator.setParent(parent);
-
-      indicators.add(indicator);
-    }
-
-    return indicators;
-  }
-
-  @Override
-  public User getActivityLeader(int activityID) {
-    int activityLeaderId = activityDAO.getActivityLeaderId(activityID);
-    if (activityLeaderId != -1) {
-      User activityLeader = userManager.getOwner(activityLeaderId);
-      return activityLeader;
-    }
-    return null;
-  }
-
-  @Override
-  public String getActivityOutcome(int activityID) {
-    return activityDAO.getActivityOutcome(activityID);
-  }
-
-  @Override
-  public List<IPElement> getActivityOutputs(int activityID) {
-    List<IPElement> outputs = new ArrayList<>();
-    List<Map<String, String>> outputsData = activityDAO.getActivityOutputs(activityID);
-
-    for (Map<String, String> oData : outputsData) {
-      IPElement output = new IPElement();
-      output.setId(Integer.parseInt(oData.get("id")));
-      output.setDescription(oData.get("description"));
-
-      IPElement parent = new IPElement();
-      parent.setId(Integer.parseInt(oData.get("parent_id")));
-      parent.setDescription(oData.get("parent_description"));
-
-      List<IPElement> parentList = new ArrayList<>();
-      parentList.add(parent);
-      output.setContributesTo(parentList);
-
-      outputs.add(output);
-    }
-
-    return outputs;
-  }
-
-  @Override
   public List<Activity> getAllActivities() {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     List<Activity> activityList = new ArrayList<>();
@@ -309,11 +223,6 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public List<Integer> getLedActivityIds(User user) {
-    return activityDAO.getLedActivities(user.getId());
-  }
-
-  @Override
   public int saveActivity(int projectID, Activity activity, User user, String justification) {
     Map<String, Object> activityData = new HashMap<>();
     if (activity.getId() > 0) {
@@ -336,33 +245,6 @@ public class ActivityManagerImpl implements ActivityManager {
   }
 
   @Override
-  public boolean saveActivityIndicators(List<IPIndicator> indicators, int activityID) {
-    Map<String, String> indicatorData;
-    boolean saved = true;
-
-    for (IPIndicator indicator : indicators) {
-      if (indicator == null) {
-        continue;
-      }
-      indicatorData = new HashMap<>();
-      if (indicator.getId() == -1) {
-        indicatorData.put("id", null);
-      } else {
-        indicatorData.put("id", String.valueOf(indicator.getId()));
-      }
-
-      indicatorData.put("description", indicator.getDescription());
-      indicatorData.put("target", indicator.getTarget());
-      indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
-      indicatorData.put("activity_id", String.valueOf(activityID));
-
-      saved = activityDAO.saveActivityIndicators(indicatorData) && saved;
-    }
-
-    return saved;
-  }
-
-  @Override
   public boolean saveActivityList(int projectID, List<Activity> activityList, User user, String justification) {
     boolean allSaved = true;
     int result;
@@ -373,31 +255,6 @@ public class ActivityManagerImpl implements ActivityManager {
       }
     }
     return allSaved;
-  }
-
-  @Override
-  public boolean saveActivityOutcome(Activity activity) {
-    return activityDAO.saveActivityOutcome(activity.getId(), activity.getOutcome());
-  }
-
-  @Override
-  public boolean saveActivityOutputs(List<IPElement> outputs, int activityID) {
-    Map<String, String> outputData;
-    boolean saved = true;
-
-    for (IPElement output : outputs) {
-      if (output == null) {
-        continue;
-      }
-      outputData = new HashMap<>();
-      outputData.put("activity_id", String.valueOf(activityID));
-      outputData.put("mog_id", String.valueOf(output.getId()));
-      outputData.put("midOutcome_id", String.valueOf(output.getContributesTo().get(0).getId()));
-
-      int relationID = activityDAO.saveActivityOutput(outputData);
-      saved = (relationID != -1) && saved;
-    }
-    return saved;
   }
 
 }

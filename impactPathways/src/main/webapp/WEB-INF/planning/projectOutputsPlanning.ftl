@@ -81,7 +81,7 @@
         <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
-        [@customForm.textArea name="project.outputsOverview[${index}].lessons" i18nkey="planning.projectOutputs.lessons" required=true editable=editable /]
+        [@customForm.textArea name="project.outputsOverviewLessons" i18nkey="planning.projectOutputs.lessons" required=true editable=editable /]
       </div>
     </div>
     
