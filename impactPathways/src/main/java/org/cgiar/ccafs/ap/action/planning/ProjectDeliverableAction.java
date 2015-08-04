@@ -31,7 +31,6 @@ import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -171,30 +170,54 @@ public class ProjectDeliverableAction extends BaseAction {
       }
     }
     // ***************************************************
+
     projectPartners = projectPartnerManager.getProjectPartners(project.getId());
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
 
+    // **************************** TEMPORAL
+    DeliverablePartner dp = new DeliverablePartner(1);
+    ProjectPartner pp = new ProjectPartner(projectPartners.get(0).getId());
+    pp.setInstitution(institutions.get(0));
+    pp.setUser(this.getCurrentUser());
+    dp.setPartner(pp);
+    dp.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+    deliverable.setResponsiblePartner(dp);
+
+    List<DeliverablePartner> dpList = new ArrayList<>();
+    for (int c = 0; c < 10; c++) {
+      DeliverablePartner dpOther = new DeliverablePartner((c + 1));
+      ProjectPartner ppOther = new ProjectPartner(projectPartners.get(c).getId());
+      ppOther.setInstitution(institutions.get(1));
+      ppOther.setUser(this.getCurrentUser());
+      dpOther.setPartner(ppOther);
+      dpOther.setType(APConstants.DELIVERABLE_PARTNER_OTHER);
+      dpList.add(dpOther);
+    }
+    deliverable.setOtherPartners(dpList);
+
+    // *************************************
+
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
     // Getting the responsible partner.
-    List<DeliverablePartner> partners =
-      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_RESP);
-    if (partners.size() > 0) {
-      deliverable.setResponsiblePartner(partners.get(0));
-    } else {
-      DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-      responsiblePartner.setInstitution(new Institution(-1));
-      responsiblePartner.setUser(new User(-1));
-      responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-      deliverable.setResponsiblePartner(responsiblePartner);
-    }
+    // List<DeliverablePartner> partners =
+    // deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_RESP);
+    // if (partners.size() > 0) {
+    // deliverable.setResponsiblePartner(partners.get(0));
+    // } else {
+    // DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
+    // responsiblePartner.setInstitution(new Institution(-1));
+    // responsiblePartner.setUser(new User(-1));
+    // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+    // deliverable.setResponsiblePartner(responsiblePartner);
+    // }
 
     // Getting the other partners that are contributing to this deliverable.
-    deliverable.setOtherPartners(
-      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
+    // deliverable.setOtherPartners(
+    // deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
 
     super.setHistory(historyManager.getProjectDeliverablesHistory(deliverableID));
 
@@ -255,21 +278,22 @@ public class ProjectDeliverableAction extends BaseAction {
     // ---------- Saving deliverable partners contribution
 
     // Saving responsible deliverable partner
-    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() != null) {
-      result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
-        this.getCurrentUser(), this.getJustification());
-      if (result < 0) {
-        success = false;
-      }
-    } else
-      if (deliverable.getResponsiblePartner().getInstitution() == null
-        && deliverable.getResponsiblePartner().getUser() == null) {
-      saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-        this.getCurrentUser(), this.getJustification());
-      if (!saved) {
-        success = false;
-      }
-    }
+    // if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() != null)
+    // {
+    // result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
+    // this.getCurrentUser(), this.getJustification());
+    // if (result < 0) {
+    // success = false;
+    // }
+    // } else
+    // if (deliverable.getResponsiblePartner().getInstitution() == null
+    // && deliverable.getResponsiblePartner().getUser() == null) {
+    // saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+    // this.getCurrentUser(), this.getJustification());
+    // if (!saved) {
+    // success = false;
+    // }
+    // }
 
     // Saving other contributions
 
