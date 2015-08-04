@@ -49,7 +49,16 @@ public interface ProjectCofinancingLinkageManager {
    * @param projectID
    * @return a list of projects with its basic information.
    */
-  public List<Project> getLinkedProjects(int projectID);
+  public List<Project> getLinkedBilateralProjects(int projectID);
+
+  /**
+   * This method gets the basic information (id, title) of the projects that are linked to the project
+   * identified by the value received by parameter.
+   * 
+   * @param projectID
+   * @return a list of projects with its basic information.
+   */
+  public List<Project> getLinkedCoreProjects(int projectID);
 
   /**
    * This method saves into the database the projects linked to the project received by parameter.

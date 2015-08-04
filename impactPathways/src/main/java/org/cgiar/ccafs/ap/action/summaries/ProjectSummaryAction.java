@@ -185,7 +185,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // Add Linked project
     // If project is CCAFS co_founded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
     }
 
     // Add project locations

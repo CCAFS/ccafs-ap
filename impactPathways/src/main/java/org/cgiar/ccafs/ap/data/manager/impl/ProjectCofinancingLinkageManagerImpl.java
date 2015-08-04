@@ -40,15 +40,28 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
-  public boolean
-    deletedLinkedProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
+  public boolean deletedLinkedProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
     return linkedCoreProjectsDAO.removeLinkedProjects(project.getId(), linkedProjects, user.getId(), justification);
   }
 
   @Override
-  public List<Project> getLinkedProjects(int projectID) {
+  public List<Project> getLinkedBilateralProjects(int projectID) {
     List<Project> projects = new ArrayList<>();
-    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedProjects(projectID);
+    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedBilateralProjects(projectID);
+    for (Map<String, String> projectInfo : projectsInfo) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectInfo.get("id")));
+      project.setTitle(projectInfo.get("title"));
+
+      projects.add(project);
+    }
+    return projects;
+  }
+
+  @Override
+  public List<Project> getLinkedCoreProjects(int projectID) {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedCoreProjects(projectID);
     for (Map<String, String> projectInfo : projectsInfo) {
       Project project = new Project();
       project.setId(Integer.parseInt(projectInfo.get("id")));

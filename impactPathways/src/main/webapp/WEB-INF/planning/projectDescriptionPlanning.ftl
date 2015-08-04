@@ -73,7 +73,7 @@
             <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
-${bilateralContractURL}
+
         [#-- Project upload work plan --]
         [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanRequired && !project.workplanName?has_content && !editable]display:none[/#if]">
@@ -152,6 +152,7 @@ ${bilateralContractURL}
           </div> 
         </div> 
       </fieldset> 
+
       [#-- Bilateral contributing to CCAFS Project(s) --]
       [#if project.bilateralProject]
         <h1 class="contentTitle"> [@s.text name="planning.projectDescription.cofinancingProject" /] </h1> 
@@ -159,31 +160,32 @@ ${bilateralContractURL}
           [@customForm.checkbox name="project.cofinancing" checked=project.cofinancing value="true" i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable editable=editable/]  
         </div> 
       [/#if]
+
       [#-- Bilateral projects only for CCAFS Projects --]
       [#if !project.bilateralProject]
-      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
-      <div class="panel tertiary">
-        <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
-        <div id="bilateralProjectsList" class="panel-body"> 
-          <ul class="list">
-          [#if project.linkedProjects?has_content]
-            [#list project.linkedProjects as element]
-              <li class="clearfix [#if !element_has_next]last[/#if]">
-                <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
-                <span class="name">${element.id} - ${element.title}</span> 
-                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
-              </li>
-            [/#list]
-          [#else]
-            <p class="emptyText"> [@s.text name="planning.projectDescription.bilateralProjects.emptyText" /]</p>
-          [/#if]  
-          </ul>
-          [#if editable]
-             [#-- The values of this list are loaded via ajax --]
-            [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
-          [/#if] 
+        <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
+        <div class="panel tertiary">
+          <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
+          <div id="bilateralProjectsList" class="panel-body"> 
+            <ul class="list">
+            [#if project.linkedProjects?has_content]
+              [#list project.linkedProjects as element]
+                <li class="clearfix [#if !element_has_next]last[/#if]">
+                  <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
+                  <span class="name">${element.id} - ${element.title}</span> 
+                  [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+                </li>
+              [/#list]
+            [#else]
+              <p class="emptyText"> [@s.text name="planning.projectDescription.bilateralProjects.emptyText" /]</p>
+            [/#if]  
+            </ul>
+            [#if editable]
+               [#-- The values of this list are loaded via ajax --]
+              [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
+            [/#if] 
+          </div>
         </div>
-      </div>
       [/#if]
       
       

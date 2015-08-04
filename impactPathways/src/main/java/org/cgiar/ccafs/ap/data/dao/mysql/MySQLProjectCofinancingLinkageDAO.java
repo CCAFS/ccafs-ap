@@ -45,13 +45,42 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
   }
 
   @Override
-  public List<Map<String, String>> getLinkedProjects(int projectID) {
-    List<Map<String, String>> coreProjects = new ArrayList<>();
+  public List<Map<String, String>> getLinkedBilateralProjects(int projectID) {
+    List<Map<String, String>> bilateralProjects = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects p ");
     query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.bilateral_project_id ");
     query.append("WHERE lcp.core_project_id = ");
+    query.append(projectID);
+    query.append(" AND lcp.is_active = TRUE");
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectInfo = new HashMap<>();
+        projectInfo.put("id", rs.getString("id"));
+        projectInfo.put("title", rs.getString("title"));
+
+        bilateralProjects.add(projectInfo);
+      }
+    } catch (SQLException e) {
+      LOG
+        .error(
+          "getLinkedBilateralProjects() > Exception raised trying to get the bilateral projects linked to the project {} ",
+          projectID, e);
+    }
+    return bilateralProjects;
+  }
+
+  @Override
+  public List<Map<String, String>> getLinkedCoreProjects(int projectID) {
+    List<Map<String, String>> coreProjects = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.id, p.title ");
+    query.append("FROM projects p ");
+    query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.core_project_id ");
+    query.append("WHERE lcp.bilateral_project_id = ");
     query.append(projectID);
     query.append(" AND lcp.is_active = TRUE");
 
