@@ -119,7 +119,43 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+      }
+      activity.setCreated(Long.parseLong(activityData.get("created")));
+
+      // adding information of the object to the array
+      activityList.add(activity);
+    }
+    return activityList;
+  }
+
+  @Override
+  public List<Activity> getActivitiesByProjectPartner(int projectPartnerID) {
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    List<Activity> activityList = new ArrayList<>();
+    List<Map<String, String>> activityDataList = activityDAO.getActivitiesByProjectPartner(projectPartnerID);
+    for (Map<String, String> activityData : activityDataList) {
+      Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activityData.get("id")));
+      activity.setTitle(activityData.get("title"));
+      activity.setDescription(activityData.get("description"));
+
+      // Format the date of the activity
+      if (activityData.get("startDate") != null) {
+        try {
+          Date startDate = dateformatter.parse(activityData.get("startDate"));
+          activity.setStartDate(startDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the start date", e);
+        }
+      }
+      if (activityData.get("endDate") != null) {
+        try {
+          Date endDate = dateformatter.parse(activityData.get("endDate"));
+          activity.setEndDate(endDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the end date", e);
+        }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -157,7 +193,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -261,7 +297,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));

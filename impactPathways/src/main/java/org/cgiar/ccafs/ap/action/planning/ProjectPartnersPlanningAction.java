@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Hernán Carvajal
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Carlos Alberto Martínez M
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
 
@@ -201,7 +202,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
       partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));

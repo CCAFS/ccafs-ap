@@ -15,8 +15,9 @@
 package org.cgiar.ccafs.ap.data.dao;
 
 /**
- * @author Javier Andrés Gallego
- * @author Hernán David Carvajal
+ * @author Javier Andrés Gallego.
+ * @author Hernán David Carvajal.
+ * @author Carlos Alberto Martínez M.
  */
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLActivityDAO;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -83,6 +84,14 @@ public interface ActivityDAO {
    * @return a List of Map of the Activities Information related with the project
    */
   public List<Map<String, String>> getActivitiesByProject(int projectID);
+
+  /**
+   * This method gets all the Activities information by a given Project Partner Id
+   * 
+   * @param projectPartnerID - is the Id of the project partner
+   * @return a List of Map of the Activities Information related to the project partner
+   */
+  public List<Map<String, String>> getActivitiesByProjectPartner(int projectPartnerID);
 
   /**
    * This method gets all the Activity information by a given Id

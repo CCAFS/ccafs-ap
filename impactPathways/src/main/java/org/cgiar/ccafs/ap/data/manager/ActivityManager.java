@@ -24,7 +24,8 @@ import java.util.List;
 import com.google.inject.ImplementedBy;
 
 /**
- * @author Javier Andrés Gallego
+ * @author Javier Andrés Gallego.
+ * @author Carlos Alberto Martínez M.
  */
 @ImplementedBy(ActivityManagerImpl.class)
 public interface ActivityManager {
@@ -86,6 +87,14 @@ public interface ActivityManager {
    * @return a List of activities with the activity Information related with the project
    */
   public List<Activity> getActivitiesByProject(int projectID);
+
+  /**
+   * This method gets all the activities information by a given Project Partner Id
+   * 
+   * @param projectPartnerID - is the Id of the project partner related to the activities
+   * @return a List of activities related to the project partner id given as parameter
+   */
+  public List<Activity> getActivitiesByProjectPartner(int projectPartnerID);
 
   /**
    * This method gets all the activity information by a given activity ID.

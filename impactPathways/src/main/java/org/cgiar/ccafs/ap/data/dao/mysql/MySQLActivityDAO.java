@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego B.
  * @author Hernán David Carvajal B.
+ * @author Carlos Alberto Martínez M.
  */
 public class MySQLActivityDAO implements ActivityDAO {
 
@@ -145,6 +146,21 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(" AND a.is_active = 1");
 
     LOG.debug("-- getActivitiesByProject() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getActivitiesByProjectPartner(int projectPartnerID) {
+    LOG.debug(">> getActivitiesByProjectPartner projectPartnerID = {} )", projectPartnerID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT a.*   ");
+    query.append("FROM activities as a ");
+    query.append("WHERE a.leader_id =  ");
+    query.append(projectPartnerID);
+    query.append(" AND a.is_active = 1");
+
+    LOG.debug("-- getActivitiesByProjectPartner() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
 
@@ -466,7 +482,8 @@ public class MySQLActivityDAO implements ActivityDAO {
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
-      LOG.warn(
+      LOG
+      .warn(
         "-- saveActivityIndicators() > A problem happened trying to add a new activity indicator. Data tried to save was: {}",
         indicatorData);
       LOG.debug("<< saveActivityIndicators(): {}", false);
