@@ -24,8 +24,8 @@
       <div id="loginFormContainer">  
           <div class="loginForm instructions">
             [#-- @s.text name="home.login.message.nonCgiar" / --]
-            <p>Thank you for being part of the <strong>exclusive group of testers</strong>, you are in the right place. Please enter your credentials below.</p>
-            <p>Otherwise, please go to the temporary CCAFS P&R by clicking <a href="http://davinci.ciat.cgiar.org/ip">here</a></p>
+            <p>Thank you for being part of the <strong>exclusive group of testers</strong>; you are in the right place! Please enter your credentials below.</p>
+            <p>Should you not be part of the group of testers, please go to the temporary CCAFS P&R by clicking <a href="http://davinci.ciat.cgiar.org/ip">here</a></p>
           </div>
         [@s.form method="POST" action="login" cssClass="loginForm pure-form"]
           [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]
