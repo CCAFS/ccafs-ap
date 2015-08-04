@@ -1677,8 +1677,38 @@ input.userName {
 
 
 /************* LOGIN *****************/
+#loginContainer .leftSide {
+  width: 60%;
+  float: left;
+}
+
+#loginContainer .leftSide .introduction {
+  text-align: justify;
+}
+
+#loginContainer .leftSide {
+  width: 50%;
+  float: left;
+}
+
+#loginContainer .rightSide {
+  width: 50%;
+  float: right;
+}
+
+#loginContainer .disclaimer {
+  text-align: center;
+  font-size: 1.1em;
+}
+
+#loginContainer .disclaimer #imgModal {
+  box-shadow: none;
+  text-align: center;
+  width: 65%;
+}
+
 #loginFormContainer {
-  margin: 10px 0;
+  margin: 20px 0 30px 0px;
   text-align: center;
 }
 
@@ -1690,12 +1720,19 @@ input.userName {
   border-radius: 7px;
   border: 2px solid #F3F3F3;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+  margin-top: 10px;
+}
+
+#loginFormContainer .loginForm p {
+    text-align: justify;
+  
+    margin: 5px;
 }
 
 #loginFormContainer .loginForm .fieldError {
-  margin-top: 10px;
   font-weight: bold;
-  margin-left: 60px;
+  text-align: center;
+  padding: 0;
 }
 
 #loginFormContainer .loginForm div {
@@ -1703,9 +1740,13 @@ input.userName {
   margin: 15px 0;
   text-align: left;
 }
+#loginFormContainer .loginForm h6 {
+    margin: 0px; 
+}
 
 #loginFormContainer .loginForm div label {
   display: block;
+  font-size: 13px;
 }
 
 #loginFormContainer .loginForm div input {
