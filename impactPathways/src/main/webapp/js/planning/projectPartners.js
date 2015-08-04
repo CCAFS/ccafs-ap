@@ -60,6 +60,21 @@ $(document).ready(function() {
   function removePartnerEvent(e) {
     e.preventDefault();
     var $parent = $(e.target).parent().parent();
+    $.ajax({
+        method: "GET",
+        url: baseURL + "/json/projectPartnersDelete.do",
+        data: {
+          partnerId: $parent.find('.partnerId').val()
+        },
+        beforeSend: function() {
+        },
+        success: function(data) {
+          console.log(data);
+        },
+        complete: function() {
+        }
+    });
+
     $parent.hide("slow", function() {
       $parent.remove();
       setProjectPartnersIndexes();

@@ -22,7 +22,7 @@
       <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#projectPartner-${ap.id}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
     [#-- Partner identifier --]
-    <input id="id" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />
+    <input id="id" class="partnerId" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />
     [#assign nameLegend]${isPPA?string("preplanning.projectPartners.ppaPartner", "preplanning.projectPartners.partner")}[/#assign]
     <legend>[@s.text name=nameLegend][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
     [#if editable]
