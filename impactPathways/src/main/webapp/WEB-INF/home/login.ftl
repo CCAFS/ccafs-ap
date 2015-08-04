@@ -38,4 +38,10 @@
     <br>
   </div> <!-- End content -->
 </article>
+[#-- Show P&R proccess workflow --]
+<div id="showPandRWorkflowDialog" style="display:none; height:100%;  width: 100%;" title="[@s.text name="home.dashboard.workflow" /]"> 
+  <div sytle="height:100%;  width: 100%;">
+    <img id="imgBigModal" src="${baseUrl}/images/global/pandrWorkflow.png"/>
+  </div>
+</div> 
 [#include "/WEB-INF/global/pages/footer-logos.ftl"]
