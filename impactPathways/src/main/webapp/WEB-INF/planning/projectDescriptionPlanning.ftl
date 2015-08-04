@@ -73,7 +73,7 @@
             <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
-${bilateralContractURL}
+
         [#-- Project upload work plan --]
         [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanRequired && !project.workplanName?has_content && !editable]display:none[/#if]">
@@ -85,7 +85,7 @@ ${bilateralContractURL}
               [#if project.workplanName?has_content]
                 <p> 
                   [#if editable]<span id="remove-projectWorkplan" class="remove"></span>[#else]<span id="" class="file"></span>[/#if] 
-                  ${project.workplanName} <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
+                  <a href="${workplanURL}">${project.workplanName}</a>  <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
                 </p>
               [#else]
                 [#if editable]
@@ -103,7 +103,7 @@ ${bilateralContractURL}
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
-              <p>${project.bilateralContractProposalName}  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+              <p> <a href="bilateralContractURL">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
                 [@customForm.inputFile name="file"  /]
