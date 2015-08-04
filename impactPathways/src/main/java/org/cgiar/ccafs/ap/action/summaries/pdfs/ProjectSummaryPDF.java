@@ -561,7 +561,7 @@ public class ProjectSummaryPDF extends BasePDF {
             deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
             deliverableBlock.add(this.getText("summaries.project.deliverable.partnership.organization") + " : ");
             deliverableBlock.setFont(BODY_TEXT_FONT);
-            stringBuilder.append(deliverablePartner.getInstitution().getName());
+            stringBuilder.append(deliverablePartner.getPartner().getInstitution().getName());
             deliverableBlock.add(stringBuilder.toString());
             deliverableBlock.add(Chunk.NEWLINE);;
             this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
@@ -572,7 +572,7 @@ public class ProjectSummaryPDF extends BasePDF {
             deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
             deliverableBlock.add(this.getText("summaries.project.deliverable.partnership.email") + " : ");
             deliverableBlock.setFont(BODY_TEXT_FONT);
-            stringBuilder.append(deliverablePartner.getUser().getEmail());
+            stringBuilder.append(deliverablePartner.getPartner().getUser().getEmail());
             deliverableBlock.add(stringBuilder.toString());
             deliverableBlock.add(Chunk.NEWLINE);
             this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);

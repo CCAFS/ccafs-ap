@@ -75,8 +75,6 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
         Map<String, String> deliverablePartnerData = new HashMap<String, String>();
         deliverablePartnerData.put("id", rs.getString("id"));
         deliverablePartnerData.put("deliverable_id", rs.getString("deliverable_id"));
-        deliverablePartnerData.put("institution_id", rs.getString("institution_id"));
-        deliverablePartnerData.put("user_id", rs.getString("user_id"));
         deliverablePartnerData.put("partner_type", rs.getString("partner_type"));
 
         deliverablePartnerList.add(deliverablePartnerData);
@@ -103,7 +101,7 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
     query.append("WHERE dp.deliverable_id = ");
     query.append(deliverableID);
     query.append(" AND dp.is_active = 1 ");
-    query.append("ORDER BY dp.institution_id, dp.partner_type");
+    query.append("ORDER BY dp.partner_type");
 
     LOG.debug("-- getDeliverablePartners() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
@@ -111,8 +109,8 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
 
   @Override
   public List<Map<String, String>> getDeliverablePartners(int deliverableID, String deliverablePartnerType) {
-    LOG.debug(">> getDeliverablePartners deliverableID = {},  deliverablePartnerType = {})",
-      new Object[] {deliverableID, deliverablePartnerType});
+    LOG.debug(">> getDeliverablePartners deliverableID = {},  deliverablePartnerType = {})", new Object[] {
+      deliverableID, deliverablePartnerType});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT *   ");
@@ -123,7 +121,7 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
     query.append(deliverablePartnerType);
     query.append("'");
     query.append(" AND is_active = 1 ");
-    query.append("ORDER BY institution_id");
+    query.append("ORDER BY partner_type");
 
     LOG.debug("-- getDeliverablePartners() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
@@ -137,31 +135,29 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
     Object[] values;
     if (deliverablePartnerData.get("id") == null) {
       // Insert new record
-      query.append(
-        "INSERT INTO deliverable_partnerships (id, deliverable_id, institution_id, user_id, partner_type, created_by, modified_by, modification_justification) ");
-      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
-      values = new Object[8];
+      query
+      .append("INSERT INTO deliverable_partnerships (id, deliverable_id, partner_id, partner_type, created_by, modified_by, modification_justification) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
+      values = new Object[7];
       values[0] = deliverablePartnerData.get("id");
       values[1] = deliverablePartnerData.get("deliverable_id");
-      values[2] = deliverablePartnerData.get("institution_id");
-      values[3] = deliverablePartnerData.get("user_id");
-      values[4] = deliverablePartnerData.get("partner_type");
-      values[5] = deliverablePartnerData.get("created_by");
-      values[6] = deliverablePartnerData.get("modified_by");
-      values[7] = deliverablePartnerData.get("modification_justification");
+      values[2] = deliverablePartnerData.get("partner_id");
+      values[3] = deliverablePartnerData.get("partner_type");
+      values[4] = deliverablePartnerData.get("created_by");
+      values[5] = deliverablePartnerData.get("modified_by");
+      values[6] = deliverablePartnerData.get("modification_justification");
     } else {
       // update record
-      query.append(
-        "UPDATE deliverable_partnerships SET deliverable_id = ?, institution_id = ?, user_id = ?, partner_type = ?, modified_by = ?, modification_justification = ? ");
+      query
+      .append("UPDATE deliverable_partnerships SET deliverable_id = ?, partner_id = ?, partner_type = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[7];
+      values = new Object[6];
       values[0] = deliverablePartnerData.get("deliverable_id");
-      values[1] = deliverablePartnerData.get("institution_id");
-      values[2] = deliverablePartnerData.get("user_id");
-      values[3] = deliverablePartnerData.get("partner_type");
-      values[4] = deliverablePartnerData.get("modified_by");
-      values[5] = deliverablePartnerData.get("modification_justification");
-      values[6] = deliverablePartnerData.get("id");
+      values[1] = deliverablePartnerData.get("partner_id");
+      values[2] = deliverablePartnerData.get("partner_type");
+      values[3] = deliverablePartnerData.get("modified_by");
+      values[4] = deliverablePartnerData.get("modification_justification");
+      values[5] = deliverablePartnerData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);

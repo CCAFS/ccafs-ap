@@ -25,7 +25,7 @@ public interface DeliverablePartnerDAO {
   /**
    * This method deletes a deliverable partner from the database.
    *
-   * @param id of the delierable partner to be deleted.
+   * @param id of the deliverable partner to be deleted.
    * @param userID is the user identifier that is deleting it.
    * @param justification is the justification statement.
    * @return true if the record could be successfully deleted, false otherwise.

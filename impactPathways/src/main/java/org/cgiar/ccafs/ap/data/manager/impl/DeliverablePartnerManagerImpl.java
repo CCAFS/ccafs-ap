@@ -10,8 +10,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.DeliverablePartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -36,16 +34,11 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
   // DAO's
   private DeliverablePartnerDAO deliverablePartnerDAO;
 
-  // Managers
-  private InstitutionManager institutionManager;
-  private UserManager userManager;
 
   @Inject
-  public DeliverablePartnerManagerImpl(DeliverablePartnerDAO deliverablePartnerDAO,
-    InstitutionManager institutionManager, UserManager userManager) {
+  public DeliverablePartnerManagerImpl(DeliverablePartnerDAO deliverablePartnerDAO) {
     this.deliverablePartnerDAO = deliverablePartnerDAO;
-    this.institutionManager = institutionManager;
-    this.userManager = userManager;
+
   }
 
   @Override
@@ -75,13 +68,6 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartner.setId(Integer.parseInt(dData.get("id")));
       // Partner type (PPA, PL, PP, etc.)
       deliverablePartner.setType(dData.get("partner_type"));
-      // User as user_id
-      if (dData.get("user_id") != null) {
-        deliverablePartner.setUser(userManager.getUser(Integer.parseInt(dData.get("user_id"))));
-      }
-      // Institution as partner_id
-      deliverablePartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);
     }
@@ -98,19 +84,6 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartner.setId(Integer.parseInt(dData.get("id")));
       // Partner type (Resp, Other)
       deliverablePartner.setType(dData.get("partner_type"));
-      // User as user_id
-      if (dData.get("user_id") != null) {
-        deliverablePartner.setUser(userManager.getUser(Integer.parseInt(dData.get("user_id"))));
-      } else {
-        User user = new User();
-        user.setId(-1);
-        deliverablePartner.setUser(user);
-      }
-
-      // Institution as partner_id
-      deliverablePartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(dData.get("institution_id"))));
-
       // adding information of the object to the array
       deliverablePartners.add(deliverablePartner);
     }
@@ -122,11 +95,6 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
     String justification) {
     Map<String, Object> deliverablePartnerData = new HashMap<>();
 
-    // Deliverable partners must have an institution associated.
-    if (deliverablePartner.getInstitution() == null || deliverablePartner.getInstitution().getId() == -1) {
-      return -1;
-    }
-
     // if this is a new deliverable partner, do not assign an id.
     if (deliverablePartner.getId() > 0) {
       deliverablePartnerData.put("id", deliverablePartner.getId());
@@ -135,10 +103,6 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartnerData.put("created_by", user.getId());
     }
     deliverablePartnerData.put("deliverable_id", deliverableID);
-    deliverablePartnerData.put("institution_id", deliverablePartner.getInstitution().getId());
-    if (deliverablePartner.getUser() != null && deliverablePartner.getUser().getId() != -1) {
-      deliverablePartnerData.put("user_id", deliverablePartner.getUser().getId());
-    }
     deliverablePartnerData.put("partner_type", deliverablePartner.getType());
     // Logs data
     deliverablePartnerData.put("modified_by", user.getId());
@@ -150,7 +114,8 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
     } else if (result == 0) {
       LOG.debug("saveDeliverablePartner > Deliverable partner with id={} was updated", deliverablePartner.getId());
     } else {
-      LOG.error(
+      LOG
+      .error(
         "saveDeliverablePartner > There was an error trying to save/update a deliverable partner from deliverableID={}",
         deliverableID);
     }

@@ -34,6 +34,8 @@ public interface DeliverablePartnerManager {
 
 
   /**
+   * this method deletes all the deliverable partners that belong to a specific deliverable.
+   * 
    * @param deliverableID is the id of the deliverable
    * @param user is the user that is deleting the deliverable partners.
    * @param justification is the justification statement.
@@ -75,7 +77,7 @@ public interface DeliverablePartnerManager {
 
 
   /**
-   * This method save the deliverable partner of a specific deliverable
+   * This method saves the deliverable partner of a specific deliverable
    *
    * @param deliverableID is the deliverable identifier in which these partners belong to.
    * @param partners is the information to be saved
