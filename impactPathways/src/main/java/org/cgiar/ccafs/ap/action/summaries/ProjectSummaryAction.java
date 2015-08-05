@@ -249,11 +249,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // *************************Budgets ******************************
 
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));
-
-    // totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
-    // totalBilateralBudget =
-    // budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
-
   }
 
 }
