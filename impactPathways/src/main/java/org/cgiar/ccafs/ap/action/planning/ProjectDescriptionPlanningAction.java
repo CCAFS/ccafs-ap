@@ -55,7 +55,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private UserManager userManager;
   private BudgetManager budgetManager;
   private HistoryManager historyManager;
-
   private ProjectCofinancingLinkageManager linkedCoreProjectManager;
 
   // Model for the front-end
@@ -318,9 +317,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     if (this.isHttpPost()) {
       if (project.getLinkedProjects() != null) {
         project.getLinkedProjects().clear();
-        project.setWorkplanName("");
-        project.setBilateralContractProposalName("");
       }
+      project.setWorkplanName("");
+      project.setBilateralContractProposalName("");
     }
   }
 
