@@ -90,16 +90,6 @@ public interface ProjectDAO {
   public List<Map<String, String>> getAllProjectsBasicInfo();
 
   /**
-   * This method returns the bilateral projects that contributes with the flagship and the regions received by
-   * parameter.
-   * Only the projects marked as financing are returned.
-   * If the parameters are '-1' they are not used to filter the list.
-   * 
-   * @return a list of maps with the information.
-   */
-  public List<Map<String, String>> getBilateralCofinancingProjects(int flagshipID, int regionID);
-
-  /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
    * 
@@ -279,4 +269,23 @@ public interface ProjectDAO {
    * @return true id the update process was successful. False otherwise.
    */
   public boolean updateProjectIndicators(Map<String, String> indicatorData);
+
+  /**
+   * This method updates the project type into the database according to the values received by parameter.
+   * 
+   * @param projectID - project identifier
+   * @param type - project type
+   * @return true if the change was made successfully. False otherwise.
+   */
+  public boolean updateProjectType(int projectID, String type);
+
+  /**
+   * This method updates the type of all the core projects following the steps below:
+   * 1- Set the projects co-founded as core
+   * 2- Check all the "core" projects that have at least one link with a bilateral project and update its type to
+   * co-founded
+   * 
+   * @return true if the changes was made successfully. False otherwise.
+   */
+  public boolean updateProjectTypes();
 }

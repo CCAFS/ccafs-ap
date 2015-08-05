@@ -45,7 +45,6 @@ public class Project {
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private boolean isGlobal;
-  private boolean isCofinancing;
   private User owner;
   private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
@@ -482,10 +481,6 @@ public class Project {
     return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL_STANDALONE) : false;
   }
 
-  public boolean isCofinancing() {
-    return isCofinancing;
-  }
-
   public boolean isCoFundedProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_CCAFS_COFUNDED) : false;
   }
@@ -523,10 +518,6 @@ public class Project {
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
-  }
-
-  public void setCofinancing(boolean isCofinancing) {
-    this.isCofinancing = isCofinancing;
   }
 
   public void setCoordinator(ProjectPartner coordinator) {

@@ -81,15 +81,6 @@ public interface ProjectManager {
   public List<Project> getAllProjectsBasicInfo();
 
   /**
-   * This method returns the bilateral projects that contributes with the flagship and the regions received by
-   * parameter. Only the projects marked as co-financing are returned. *
-   * If the parameters are '-1' they are not used to filter the list.
-   * 
-   * @return a list of projects that only contains the id and title.
-   */
-  public List<Project> getBilateralCofinancingProjects(int flagshipID, int regionID);
-
-  /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
    * 
@@ -204,4 +195,23 @@ public interface ProjectManager {
    * @return true if ALL the relations were saved successfully. False otherwise.
    */
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
+
+  /**
+   * This method updates the project type into the database accordign to the values contained in the project received by
+   * parameter.
+   * 
+   * @param project - Project object to update the type
+   * @return true if the type was updated successfully. False otherwise.
+   */
+  public boolean updateProjectType(Project project);
+
+  /**
+   * This method updates the type of all the core projects following the steps below:
+   * 1- Set the projects co-founded as core
+   * 2- Check all the "core" projects that have at least one link with a bilateral project and update its type to
+   * co-founded
+   * 
+   * @return true if the changes was made succesfully. False otherwise.
+   */
+  public boolean updateProjectTypes();
 }

@@ -152,7 +152,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // If project is CCAFS cofounded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
     }
 
     // Getting the Project Leader.

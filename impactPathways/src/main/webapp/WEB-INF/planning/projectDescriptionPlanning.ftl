@@ -152,14 +152,7 @@
           </div> 
         </div> 
       </fieldset> 
-      [#-- Bilateral contributing to CCAFS Project(s) 
-      [#if project.bilateralProject]
-        <h1 class="contentTitle"> [@s.text name="planning.projectDescription.cofinancingProject" /] </h1> 
-        <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">
-          [@customForm.checkbox name="project.cofinancing" checked=project.cofinancing value="true" i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable editable=editable/]  
-        </div> 
-      [/#if]
-      --]
+
       [#-- Bilateral/Core projects only for CCAFS Projects --]
       <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}" /] </h1> 
       <div class="panel tertiary">
@@ -186,8 +179,7 @@
           [/#if] 
         </div>
       </div>
-      
-      
+
     </div> 
     [#if editable]
       [#-- Project identifier --]
