@@ -85,6 +85,15 @@
       
     </div> <!-- End otherContributions -->
     
+    <div id="lessons" class="borderBox">
+      [#if (!editable && canEdit)]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]
+      <div class="fullBlock">
+        [@customForm.textArea name="project.ipOtherContributionLessons" i18nkey="planning.impactPathways.otherContributions.lessons" required=true editable=editable /]
+      </div>
+    </div>
+    
     [#if project.ipOtherContribution?has_content]
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>
     [/#if]

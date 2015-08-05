@@ -158,6 +158,10 @@ table.default a{
     text-decoration: none;
 }
 
+label.readOnly {
+  cursor: initial;
+}
+
 p.fieldError{
   color: #F52626;
   font-weight: bold;
@@ -174,6 +178,11 @@ p.warning-info {
 p.inputTitle {
   color: #777;
   line-height: 1.3em;
+}
+
+p.username-message {
+  margin: -3px 0 12px 2px;
+  color: #6B6969;
 }
 
 p.checked, label.checked {
@@ -229,6 +238,7 @@ textarea#justification {
   width: 98%;
   font-size: 1.07em;
   margin-top: -1px;
+  word-wrap: break-word;
 }
 
 input[type="radio"] {
@@ -399,6 +409,18 @@ input.target {
 .fileUpload .remove{
     float: left;
     margin-right: 7px;
+    background-image: url(../../images/global/icon-remove.png);
+    background-color: initial;
+    width: 16px;
+    height: 15px;
+}
+
+.fileUpload .file{
+  float: left;
+  margin-right: 7px;
+  background-image: url(../../images/global/icon-file.png);
+  width: 16px;
+  height: 18px;
 }
 
 .fileUpload h6{
@@ -811,6 +833,7 @@ header {
 .popup_container .content {
   width: 90%;
   padding-top: 0;
+  margin: 0 auto;
 }
 
 .popup_container h1 {
@@ -1331,7 +1354,7 @@ a.currentReportingSection li #i-additionalInformation{
   width: 845px;
   vertical-align: top;
   position: relative;
-  margin-top: 39px;
+  margin-top: 45px;
 }
 
 
@@ -1614,8 +1637,7 @@ h1.simpleTitle span {
 }
 
 .textArea textarea{
-  width: 99%
-;
+  width: 99%;
 }
 
 .readPrivileges {
@@ -1629,30 +1651,64 @@ h1.simpleTitle span {
 }
 
 .searchUser {
-    width: 91px;
-    padding: 2px 0px 4px 0;
-    text-align: center;
-    background: #668FDA;
-    color: #fff;
-    border-radius: 4px;
-    margin: 2px 1px;
-    float: right;
-    cursor: pointer;
-    position: absolute;
-    bottom: 0.65em;
-    right: 1.1em;
+  width: 91px;
+  padding: 2px 0px 4px 0;
+  text-align: center;
+  background: #668FDA;
+  color: #fff;
+  border-radius: 4px;
+  margin: 2px 1px;
+  float: right;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0.65em;
+  right: 0.7em;
+}
+
+input.userName {
+  cursor: pointer;
 }
 
 .searchUser:hover { 
-    background: #5980C7; 
+  background: #5980C7; 
 }
 
 
 
 
 /************* LOGIN *****************/
+#loginContainer .leftSide {
+  width: 60%;
+  float: left;
+}
+
+#loginContainer .leftSide .introduction {
+  text-align: justify;
+}
+
+#loginContainer .leftSide {
+  width: 50%;
+  float: left;
+}
+
+#loginContainer .rightSide {
+  width: 50%;
+  float: right;
+}
+
+#loginContainer .disclaimer {
+  text-align: center;
+  font-size: 1.1em;
+}
+
+#loginContainer .disclaimer #imgModal {
+  box-shadow: none;
+  text-align: center;
+  width: 65%;
+}
+
 #loginFormContainer {
-  margin: 10px 0;
+  margin: 20px 0 30px 0px;
   text-align: center;
 }
 
@@ -1664,12 +1720,19 @@ h1.simpleTitle span {
   border-radius: 7px;
   border: 2px solid #F3F3F3;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+  margin-top: 10px;
+}
+
+#loginFormContainer .loginForm p {
+    text-align: justify;
+  
+    margin: 5px;
 }
 
 #loginFormContainer .loginForm .fieldError {
-  margin-top: 10px;
   font-weight: bold;
-  margin-left: 60px;
+  text-align: center;
+  padding: 0;
 }
 
 #loginFormContainer .loginForm div {
@@ -1677,9 +1740,13 @@ h1.simpleTitle span {
   margin: 15px 0;
   text-align: left;
 }
+#loginFormContainer .loginForm h6 {
+    margin: 0px; 
+}
 
 #loginFormContainer .loginForm div label {
   display: block;
+  font-size: 13px;
 }
 
 #loginFormContainer .loginForm div input {
@@ -2181,11 +2248,12 @@ textarea[id$='summary'] {
 }
 
 #uploadWorkPlan .checkbox   { 
-    margin: 0px 0px 10px 0;
+    margin: 0px 0px 3px 0;
 }
 
 #uploadWorkPlan p   { 
-    margin: 0px 0px 5px 0;
+    margin: 0px 0px 5px 2px;
+    line-height: 15px;
 }
 
 #projects .note {
@@ -3162,7 +3230,7 @@ font-size: 1.05em;
     border: 1px solid #E7E7E7;    
     padding: 12px 20px 10px 20px;    
     border-radius: 3px;   
-    margin: 0 0px 17px 0;    
+    margin: 2px 0px 17px 0;    
     position: relative;
     background: #FFF;
 }

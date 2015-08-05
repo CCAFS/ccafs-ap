@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Outcomes" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom", "autogrow"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
@@ -81,6 +81,15 @@
           </div>
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
+      </div>
+    </div>
+    
+    <div id="lessons" class="borderBox">
+      [#if (!editable && canEdit)]
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+      [/#if]
+      <div class="fullBlock">
+        [@customForm.textArea name="project.outcomes[${midOutcomeYear}].lessons" i18nkey="planning.projectOutcomes.lessons" required=true editable=editable /]
       </div>
     </div>
     

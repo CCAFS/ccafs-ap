@@ -100,7 +100,7 @@ public class ProjectPartner {
   @Override
   public int hashCode() {
     int hash = 425;
-    hash = (institution.getId() + user.getId()) * hash;
+    hash = (institution.getId() + (user != null ? user.getId() : 1)) * hash;
     return hash;
   }
 

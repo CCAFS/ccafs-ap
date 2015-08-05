@@ -36,11 +36,9 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.InputStream;
@@ -220,9 +218,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
         deliverable.setResponsiblePartner(partners.get(0));
       } else {
         DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-        responsiblePartner.setInstitution(new Institution(-1));
-        responsiblePartner.setUser(new User(-1));
-        responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+        // responsiblePartner.setInstitution(new Institution(-1));
+        // responsiblePartner.setUser(new User(-1));
+        // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
         deliverable.setResponsiblePartner(responsiblePartner);
       }
 

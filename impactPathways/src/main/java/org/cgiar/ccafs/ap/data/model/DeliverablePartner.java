@@ -23,9 +23,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class DeliverablePartner {
 
   private int id;
-  private Institution institution;
-  private User user;
+  private ProjectPartner partner;
   private String type; // Resp, Other.
+
 
   public DeliverablePartner() {
     super();
@@ -49,16 +49,12 @@ public class DeliverablePartner {
     return id;
   }
 
-  public Institution getInstitution() {
-    return institution;
+  public ProjectPartner getPartner() {
+    return partner;
   }
 
   public String getType() {
     return type;
-  }
-
-  public User getUser() {
-    return user;
   }
 
   @Override
@@ -70,16 +66,12 @@ public class DeliverablePartner {
     this.id = id;
   }
 
-  public void setInstitution(Institution institution) {
-    this.institution = institution;
+  public void setPartner(ProjectPartner partner) {
+    this.partner = partner;
   }
 
   public void setType(String type) {
     this.type = type;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
   }
 
   @Override

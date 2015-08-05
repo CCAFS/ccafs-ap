@@ -61,6 +61,9 @@
           <span class="contactId" style="display:none">{userId}</span>
         </li> 
       </ul>  
+      
+      [#-- Messages for javascript --]
+      <input type="hidden" id="created-message" value="[@s.text name="users.createUser.message" /]" />
     </div>  
   </div>
   

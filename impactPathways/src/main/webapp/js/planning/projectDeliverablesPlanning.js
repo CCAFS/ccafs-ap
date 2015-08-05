@@ -61,6 +61,7 @@ function addNextUserEvent(e) {
 function addPartnerEvent(e) {
   e.preventDefault();
   var $newElement = $("#deliverablePartnerTemplate").clone(true).removeAttr("id");
+  $(e.target).parent().parent().find('.emptyText').hide();
   $(e.target).parent().before($newElement);
   $newElement.fadeIn("slow");
   addChosen();
@@ -85,8 +86,7 @@ function setDeliverablesIndexes() {
     $(element).find("span.index").html(i + 1);
     $(element).find(".id").attr("name", elementName + "id");
     $(element).find(".type").attr("name", elementName + "type");
-    $(element).find(".institution").attr("name", elementName + "institution");
-    $(element).find(".userId").attr("name", elementName + "user");
+    $(element).find(".partner").attr("name", elementName + "partner");
   });
 }
 

@@ -22,7 +22,7 @@
       <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#projectPartner-${ap.id}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
     [#-- Partner identifier --]
-    <input id="id" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />
+    <input id="id" class="partnerId" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />
     [#assign nameLegend]${isPPA?string("preplanning.projectPartners.ppaPartner", "preplanning.projectPartners.partner")}[/#assign]
     <legend>[@s.text name=nameLegend][@s.param name="0"] <span id="partnerIndex">${ap_index+1}</span>[/@s.param] [/@s.text]</legend>
     [#if editable]
@@ -80,6 +80,7 @@
             <p>[@s.text name="planning.projectPartners.noSelectedCCAFSPartners" /] </p>
           [/#if]
           <ul class="list"> 
+          [#if ppaPartner?has_content]
             [#list ap.contributeInstitutions as ppaPartner]
               <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
                 <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
@@ -87,6 +88,7 @@
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]
+            [/#if]
           </ul>
           [#if editable]
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="projectPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]

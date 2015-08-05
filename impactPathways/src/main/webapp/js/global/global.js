@@ -11,10 +11,13 @@ $(document).ready(function() {
   showNotificationMessages();
   showHelpText();
   applyWordCounter($("#justification"), justificationLimitWords);
+  $("textarea[id!='justification']").autoGrow();
 
   // hash url animation
   setTimeout(function() {
-    $(window.location.hash).addClass('animated pulse');
+    $(window.location.hash).addClass('animated flipInX').css({
+      'z-index': '9999'
+    });
   }, 300);
 
   function showHelpText() {
@@ -129,10 +132,6 @@ function validateEvent(button,fields) {
                 'click'
               ]
           });
-          /*
-           * var $msj = $('<p class="msj">Nothing changed</p>'); $(button).parent().after($msj.hide());
-           * $msj.fadeIn(1000, function() { $msj.fadeOut(1000, "easeInExpo", function() { $(this).remove(); }); });
-           */
         }
       });
     });
@@ -152,7 +151,7 @@ function getFormHash() {
 }
 
 function validateField($input) {
-  var valid = ($input.val().length > 0) ? true : false;
+  var valid = ($.trim($input.val()).length > 0) ? true : false;
   return valid;
 }
 
