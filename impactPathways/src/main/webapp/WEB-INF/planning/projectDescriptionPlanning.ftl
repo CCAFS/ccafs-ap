@@ -152,15 +152,15 @@
           </div> 
         </div> 
       </fieldset> 
-      [#-- Bilateral contributing to CCAFS Project(s) --]
+      [#-- Bilateral contributing to CCAFS Project(s) 
       [#if project.bilateralProject]
         <h1 class="contentTitle"> [@s.text name="planning.projectDescription.cofinancingProject" /] </h1> 
         <div id="projectCoreProjects" class="isLinked tickBox-wrapper fullBlock">
           [@customForm.checkbox name="project.cofinancing" checked=project.cofinancing value="true" i18nkey="planning.projectDescription.isLinkedCoreProjects" disabled=!editable editable=editable/]  
         </div> 
       [/#if]
+      --]
       [#-- Bilateral projects only for CCAFS Projects --]
-      [#if !project.bilateralProject]
       <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
       <div class="panel tertiary">
         <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
@@ -171,20 +171,19 @@
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
                 <span class="name">${element.id} - ${element.title}</span> 
-                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+                [#if editable && project.bilateralProject]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
             [/#list]
           [#else]
             <p class="emptyText"> [@s.text name="planning.projectDescription.bilateralProjects.emptyText" /]</p>
           [/#if]  
           </ul>
-          [#if editable]
+          [#if editable && project.bilateralProject]
              [#-- The values of this list are loaded via ajax --]
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
           [/#if] 
         </div>
       </div>
-      [/#if]
       
       
     </div> 
