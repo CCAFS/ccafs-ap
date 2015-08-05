@@ -165,7 +165,7 @@
             [#list project.linkedProjects as element]
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
-                <span class="name">${element.id} - ${element.title}</span> 
+                <a href="[@s.url action='description'][@s.param name='projectID']${element.id}[/@s.param][/@s.url]"><span class="name">${element.id} - ${element.title}</span> </a>
                 [#if editable && project.bilateralProject]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
             [/#list]
@@ -203,7 +203,7 @@
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
   <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
-  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
+  <input id="projectsAction" type="hidden" value="coreProjects.do" />
   
   [#-- Core project list template --]
   <ul style="display:none">

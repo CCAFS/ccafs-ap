@@ -18,7 +18,10 @@
     display: none !important;
 }
 
-a,a:active,a:visited,a:hover {
+a,a:active,a:visited {
+  color: #C1C1C1;
+}
+a:hover {
   color: #A9A9A9;
 }
 
@@ -723,6 +726,10 @@ select#partnerSave_activityPartner_partner_type_id {
     width: 89%;
     display: block;
     float: left;
+}
+
+.panel-body a {
+    color: #444;
 }
 
 .panel span.listButton {
