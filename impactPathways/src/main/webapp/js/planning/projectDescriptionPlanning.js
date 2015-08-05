@@ -36,8 +36,8 @@ $(document).ready(function() {
    * CORE-Projects
    */
 
-  var $coreSelect = $('#bilateralProjectsList select');
-  var $coreProjects = $('#bilateralProjectsList .list');
+  var $coreSelect = $('#projectsList select');
+  var $coreProjects = $('#projectsList .list');
 
   loadInitialCoreProjects();
 
@@ -58,9 +58,9 @@ $(document).ready(function() {
   // Function to load all core projects with ajax
   function loadInitialCoreProjects() {
     $.ajax({
-        'url': '../../coreProjects.do',
+        'url': '../../' + $('#projectsAction').val(),
         beforeSend: function() {
-          $coreSelect.empty().append(setOption(-1, "Please select a bilateral project"));
+          $coreSelect.empty().append(setOption(-1, "Please select a project"));
         },
         success: function(data) {
           // Getting core projects previously selected

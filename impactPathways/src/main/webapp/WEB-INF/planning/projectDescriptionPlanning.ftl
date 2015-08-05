@@ -153,11 +153,13 @@
         </div> 
       </fieldset> 
 
-      [#-- Bilateral projects only for CCAFS Projects --]
-      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.bilateralProjects" /] </h1> 
+      [#-- Bilateral/Core projects only for CCAFS Projects --]
+      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}" /] </h1> 
       <div class="panel tertiary">
-        <div class="panel-head">[@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:</div>
-        <div id="bilateralProjectsList" class="panel-body"> 
+        [#if project.bilateralProject]
+        <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
+        [/#if]
+        <div id="projectsList" class="panel-body"> 
           <ul class="list">
           [#if project.linkedProjects?has_content]
             [#list project.linkedProjects as element]
@@ -168,7 +170,7 @@
               </li>
             [/#list]
           [#else]
-            <p class="emptyText"> [@s.text name="planning.projectDescription.bilateralProjects.emptyText" /]</p>
+            <p class="emptyText"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}.emptyText" /]</p>
           [/#if]  
           </ul>
           [#if editable && project.bilateralProject]
@@ -201,6 +203,7 @@
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
   <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
+  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
   
   [#-- Core project list template --]
   <ul style="display:none">
