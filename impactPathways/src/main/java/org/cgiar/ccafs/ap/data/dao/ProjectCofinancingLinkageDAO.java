@@ -57,10 +57,11 @@ public interface ProjectCofinancingLinkageDAO {
    * @param justification
    * @return true if all the core projects were removed successfully. False otherwise.
    */
-  public boolean removeLinkedProjects(int projectID, List<Integer> linkedProjects, int userID, String justification);
+  public boolean
+    removeLinkedCoreProjects(int projectID, List<Integer> linkedProjects, int userID, String justification);
 
   /**
-   * This method saves into the database the bilateral projects linked to the core project identified by the value
+   * This method saves into the database the core projects linked to the bilateral project identified by the value
    * received by parameter.
    * 
    * @param coreProjectID
@@ -69,6 +70,6 @@ public interface ProjectCofinancingLinkageDAO {
    * @param justification
    * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveLinkedProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
+  public boolean saveLinkedCoreProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
     String justification);
 }

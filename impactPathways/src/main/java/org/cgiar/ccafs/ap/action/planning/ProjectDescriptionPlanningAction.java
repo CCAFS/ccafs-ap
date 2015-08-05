@@ -385,14 +385,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       // TODO - Update the type and all the implications
       // previousProject.setType(project.getType());
 
-      // Bilateral projects can create linkages with some core projects.
       if (project.isBilateralProject()) {
-        if (project.getLinkedProjects() != null && !project.getLinkedProjects().isEmpty()) {
-          previousProject.setType(APConstants.PROJECT_CCAFS_COFUNDED);
-        } else {
-          previousProject.setType(APConstants.PROJECT_CORE);
-        }
-
         if (securityContext.canUploadBilateralContract()) {
           if (file != null) {
             FileManager.deleteFile(this.getBilateralProposalAbsolutePath() + previousProject.getWorkplanName());
@@ -469,7 +462,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       // Save the contributing core projects if any
-      if (!project.isBilateralProject()) {
+      if (project.isBilateralProject()) {
         // First delete the core projects un-selected
         List<Integer> linkedProjectsToDelete = new ArrayList<>();
         for (Project p : previousProject.getLinkedProjects()) {
@@ -478,25 +471,18 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
         }
         if (!linkedProjectsToDelete.isEmpty()) {
-          linkedCoreProjectManager.deletedLinkedProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
-            this.getJustification());
+          linkedCoreProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete,
+            this.getCurrentUser(), this.getJustification());
         }
 
         // Then save the new core projects linked
         if (!project.getLinkedProjects().isEmpty()) {
-          linkedCoreProjectManager.saveLinkedProjects(project, this.getCurrentUser(), this.getJustification());
-        }
-      } else {
-        // If the project is 'Bilateral', it should not have relations to other bilateral projects.
-        if (project.getLinkedProjects() != null && !project.getLinkedProjects().isEmpty()) {
-          List<Integer> coreProjectsToDelete = new ArrayList<>();
-          for (Project p : project.getLinkedProjects()) {
-            coreProjectsToDelete.add(p.getId());
-          }
-          linkedCoreProjectManager.deletedLinkedProjects(project, coreProjectsToDelete, this.getCurrentUser(),
-            this.getJustification());
+          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
         }
       }
+
+      // Adjust the type of all projects according to their links with other projects.
+      projectManager.updateProjectTypes();
 
       // Get the validation messages and append them to the save message
       Collection<String> messages = this.getActionMessages();

@@ -934,4 +934,26 @@ public class MySQLProjectDAO implements ProjectDAO {
     return true;
   }
 
+  @Override
+  public boolean updateProjectType(int projectID, String type) {
+    int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE id = ?", new Object[] {projectID, type});
+    return !(result == -1);
+  }
+
+  @Override
+  public boolean updateProjectTypes() {
+
+    int result =
+      databaseManager.saveData("UPDATE projects SET type = ? WHERE type = ?", new Object[] {APConstants.PROJECT_CORE,
+        APConstants.PROJECT_CCAFS_COFUNDED});
+
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE projects p ");
+    query.append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id ");
+    query.append("SET p.type = ?");
+
+    result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
+
+    return result != -1;
+  }
 }

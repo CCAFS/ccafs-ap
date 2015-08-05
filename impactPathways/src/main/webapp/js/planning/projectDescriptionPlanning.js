@@ -58,7 +58,7 @@ $(document).ready(function() {
   // Function to load all core projects with ajax
   function loadInitialCoreProjects() {
     $.ajax({
-        'url': '../../bilateralCoFinancingProjects.do',
+        'url': '../../coreProjects.do',
         beforeSend: function() {
           $coreSelect.empty().append(setOption(-1, "Please select a bilateral project"));
         },

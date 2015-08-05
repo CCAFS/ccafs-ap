@@ -40,8 +40,8 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
-  public boolean deletedLinkedProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
-    return linkedCoreProjectsDAO.removeLinkedProjects(project.getId(), linkedProjects, user.getId(), justification);
+  public boolean deletedLinkedBilateralProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
+    return linkedCoreProjectsDAO.removeLinkedCoreProjects(project.getId(), linkedProjects, user.getId(), justification);
   }
 
   @Override
@@ -73,13 +73,13 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
-  public boolean saveLinkedProjects(Project project, User user, String justification) {
+  public boolean saveLinkedCoreProjects(Project project, User user, String justification) {
     List<Integer> bilateralProjectsIDs = new ArrayList<>();
     for (Project bilateralProject : project.getLinkedProjects()) {
       bilateralProjectsIDs.add(bilateralProject.getId());
     }
 
-    return linkedCoreProjectsDAO.saveLinkedProjects(project.getId(), bilateralProjectsIDs, user.getId(), justification);
+    return linkedCoreProjectsDAO.saveLinkedCoreProjects(project.getId(), bilateralProjectsIDs, user.getId(), justification);
   }
 
 }

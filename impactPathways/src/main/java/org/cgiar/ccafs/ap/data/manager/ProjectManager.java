@@ -195,4 +195,23 @@ public interface ProjectManager {
    * @return true if ALL the relations were saved successfully. False otherwise.
    */
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
+
+  /**
+   * This method updates the project type into the database accordign to the values contained in the project received by
+   * parameter.
+   * 
+   * @param project - Project object to update the type
+   * @return true if the type was updated successfully. False otherwise.
+   */
+  public boolean updateProjectType(Project project);
+
+  /**
+   * This method updates the type of all the core projects following the steps below:
+   * 1- Set the projects co-founded as core
+   * 2- Check all the "core" projects that have at least one link with a bilateral project and update its type to
+   * co-founded
+   * 
+   * @return true if the changes was made succesfully. False otherwise.
+   */
+  public boolean updateProjectTypes();
 }

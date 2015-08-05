@@ -480,4 +480,14 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return saved;
   }
+
+  @Override
+  public boolean updateProjectType(Project project) {
+    return projectDAO.updateProjectType(project.getId(), project.getType());
+  }
+
+  @Override
+  public boolean updateProjectTypes() {
+    return projectDAO.updateProjectTypes();
+  }
 }
