@@ -66,6 +66,14 @@ public interface ActivityDAO {
   public List<Map<String, String>> getActivitiesByProject(int projectID);
 
   /**
+   * This method gets all the Activities information by a given Project Partner Id
+   * 
+   * @param projectPartnerID - is the Id of the project partner
+   * @return a List of Map of the Activities Information related to the project partner
+   */
+  public List<Map<String, String>> getActivitiesByProjectPartner(int projectPartnerID);
+
+  /**
    * This method gets all the Activity information by a given Id
    * 
    * @param activityID - is the ID of the activity
