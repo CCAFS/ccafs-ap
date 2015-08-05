@@ -103,6 +103,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartnerData.put("created_by", user.getId());
     }
     deliverablePartnerData.put("deliverable_id", deliverableID);
+    deliverablePartnerData.put("partner_id", deliverablePartner.getPartner().getId());
     deliverablePartnerData.put("partner_type", deliverablePartner.getType());
     // Logs data
     deliverablePartnerData.put("modified_by", user.getId());
@@ -115,9 +116,9 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       LOG.debug("saveDeliverablePartner > Deliverable partner with id={} was updated", deliverablePartner.getId());
     } else {
       LOG
-      .error(
-        "saveDeliverablePartner > There was an error trying to save/update a deliverable partner from deliverableID={}",
-        deliverableID);
+        .error(
+          "saveDeliverablePartner > There was an error trying to save/update a deliverable partner from deliverableID={}",
+          deliverableID);
     }
     return result;
   }
