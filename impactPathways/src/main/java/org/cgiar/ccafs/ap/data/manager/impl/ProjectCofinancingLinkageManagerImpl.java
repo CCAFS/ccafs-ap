@@ -40,15 +40,14 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
-  public boolean
-    deletedLinkedProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
-    return linkedCoreProjectsDAO.removeLinkedProjects(project.getId(), linkedProjects, user.getId(), justification);
+  public boolean deletedLinkedBilateralProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
+    return linkedCoreProjectsDAO.removeLinkedCoreProjects(project.getId(), linkedProjects, user.getId(), justification);
   }
 
   @Override
-  public List<Project> getLinkedProjects(int projectID) {
+  public List<Project> getLinkedBilateralProjects(int projectID) {
     List<Project> projects = new ArrayList<>();
-    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedProjects(projectID);
+    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedBilateralProjects(projectID);
     for (Map<String, String> projectInfo : projectsInfo) {
       Project project = new Project();
       project.setId(Integer.parseInt(projectInfo.get("id")));
@@ -60,13 +59,27 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
-  public boolean saveLinkedProjects(Project project, User user, String justification) {
+  public List<Project> getLinkedCoreProjects(int projectID) {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsInfo = linkedCoreProjectsDAO.getLinkedCoreProjects(projectID);
+    for (Map<String, String> projectInfo : projectsInfo) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectInfo.get("id")));
+      project.setTitle(projectInfo.get("title"));
+
+      projects.add(project);
+    }
+    return projects;
+  }
+
+  @Override
+  public boolean saveLinkedCoreProjects(Project project, User user, String justification) {
     List<Integer> bilateralProjectsIDs = new ArrayList<>();
     for (Project bilateralProject : project.getLinkedProjects()) {
       bilateralProjectsIDs.add(bilateralProject.getId());
     }
 
-    return linkedCoreProjectsDAO.saveLinkedProjects(project.getId(), bilateralProjectsIDs, user.getId(), justification);
+    return linkedCoreProjectsDAO.saveLinkedCoreProjects(project.getId(), bilateralProjectsIDs, user.getId(), justification);
   }
 
 }

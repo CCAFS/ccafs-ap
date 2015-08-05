@@ -29,6 +29,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetPlanningValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -68,6 +69,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private boolean invalidYear;
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
+  private Project previousProject;
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
@@ -143,6 +145,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    previousProject = new Project();
     // Getting the project id from the URL parameter
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -152,8 +155,19 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // If project is CCAFS cofounded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
+    } else {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
     }
+
+    if (project.getLinkedProjects() != null) {
+      List<Project> linkedProjects = new ArrayList<>();
+      for (Project p : project.getLinkedProjects()) {
+        linkedProjects.add(new Project(p.getId()));
+      }
+      previousProject.setLinkedProjects(linkedProjects);
+    }
+
 
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
@@ -219,6 +233,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       // Clear out the list if it has some element
       if (project.getBudgets() != null) {
         project.getBudgets().clear();
+      }
+
+      if (project.getLinkedProjects() != null) {
+        project.getLinkedProjects().clear();
       }
     }
   }

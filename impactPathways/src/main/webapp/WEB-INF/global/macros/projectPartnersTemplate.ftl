@@ -11,9 +11,13 @@
       [#if canEdit]
         <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
       [/#if]
+    </p>  
     [/#if]
   [/#if]
-  </p>  
+  [#-- Remove Partner Dialog --]
+  <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+  </div>
 [/#macro]
 
 [#macro partner ap ap_index ap_name  editable=false isPPA=false isBilateral=true responsabilities=false   ]
@@ -21,6 +25,7 @@
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#projectPartner-${ap.id}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
+    <div class="loading" style="display:none"></div>
     [#-- Partner identifier --]
     <input id="id" class="partnerId" type="hidden" name="${ap_name}[${ap_index}].id" value="${ap.id?c}" />
     [#assign nameLegend]${isPPA?string("preplanning.projectPartners.ppaPartner", "preplanning.projectPartners.partner")}[/#assign]
