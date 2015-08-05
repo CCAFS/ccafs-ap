@@ -156,22 +156,6 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getBilateralCofinancingProjects(int flagshipID, int regionID) {
-    List<Project> projects = new ArrayList<>();
-    List<Map<String, String>> projectsData = projectDAO.getBilateralCofinancingProjects(flagshipID, regionID);
-
-    for (Map<String, String> projectData : projectsData) {
-      Project project = new Project();
-      project.setId(Integer.parseInt(projectData.get("id")));
-      project.setTitle(projectData.get("title"));
-
-      projects.add(project);
-    }
-
-    return projects;
-  }
-
-  @Override
   public List<Project> getCoreProjects(int flagshipID, int regionID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsData = projectDAO.getCoreProjects(flagshipID, regionID);
@@ -202,7 +186,6 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
       project.setWorkplanRequired(projectData.get("requires_workplan_upload").equals("1"));
-      project.setCofinancing(projectData.get("is_cofinancing").equals("1"));
       project.setGlobal(projectData.get("is_global").equals("1"));
       // Format to the Dates of the project
       if (projectData.get("start_date") != null) {
@@ -310,7 +293,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-  public List<IPIndicator> getProjectIndicators(int projectID) {
+    public
+    List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
 
@@ -370,10 +354,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getBudgetsByProject(project));
 
@@ -419,7 +403,6 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("title", project.getTitle());
       projectData.put("summary", project.getSummary());
       projectData.put("is_core", project.isCoreProject());
-      projectData.put("is_cofinancing", project.isCofinancing());
       SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
       if (project.getStartDate() != null) {
         projectData.put("start_date", format.format(project.getStartDate()));
@@ -442,7 +425,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
+    public
+    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -475,7 +459,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+    public
+    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

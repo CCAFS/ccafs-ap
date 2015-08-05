@@ -273,13 +273,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
       // Getting the information of the Regions Program associated with the project
       project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
-      // Getting the information of the Cross Cutting Theme associated with the project
-      // project.setCrossCuttings(ipCrossCuttingManager.getIPCrossCuttingByProject(projectID));
     }
 
     // If project is CCAFS cofounded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
+    } else {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
     }
 
     projectTypes = new HashMap<>();
@@ -385,18 +385,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       // TODO - Update the type and all the implications
       // previousProject.setType(project.getType());
 
-      // Core projects can create linkages with some bilateral projects.
-      if (!project.isBilateralProject()) {
-
+      // Bilateral projects can create linkages with some core projects.
+      if (project.isBilateralProject()) {
         if (project.getLinkedProjects() != null && !project.getLinkedProjects().isEmpty()) {
           previousProject.setType(APConstants.PROJECT_CCAFS_COFUNDED);
         } else {
           previousProject.setType(APConstants.PROJECT_CORE);
         }
-
-      } else {
-        // The bilateral projects can co-finance some core projects
-        previousProject.setCofinancing(project.isCofinancing());
 
         if (securityContext.canUploadBilateralContract()) {
           if (file != null) {

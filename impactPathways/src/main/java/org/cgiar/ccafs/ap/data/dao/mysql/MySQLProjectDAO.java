@@ -167,13 +167,15 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, String>> projectList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    String regionsSubquery = "SELECT GROUP_CONCAT(ipp.acronym) "
-      + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-      + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
+    String regionsSubquery =
+      "SELECT GROUP_CONCAT(ipp.acronym) "
+        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
 
-    String flagshipsSubquery = "SELECT GROUP_CONCAT(ipp.acronym) "
-      + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-      + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
+    String flagshipsSubquery =
+      "SELECT GROUP_CONCAT(ipp.acronym) "
+        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
     query.append("SELECT p.id, p.title, p.type, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
@@ -209,48 +211,6 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     LOG.debug("-- getAllProjectsBasicInfo() : projectList.size={} ", projectList.size());
     return projectList;
-  }
-
-
-  @Override
-  public List<Map<String, String>> getBilateralCofinancingProjects(int flagshipID, int regionID) {
-    LOG.debug(">> getBilateralCofinancingProjects (flagshipID={}, regionID={})", flagshipID, regionID);
-    List<Map<String, String>> coreProjects = new ArrayList<>();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT p.id, p.title ");
-    query.append("FROM projects as p ");
-    query.append("WHERE p.type = '");
-    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
-    query.append("' AND is_cofinancing = TRUE ");
-
-    if (flagshipID != -1) {
-      query.append(" AND p.id IN (SELECT project_id FROM project_focuses WHERE program_id = ");
-      query.append(flagshipID);
-      query.append(") ");
-    }
-
-    if (regionID != -1) {
-      query.append(" AND p.id IN (SELECT project_id FROM project_focuses WHERE program_id = ");
-      query.append(regionID);
-      query.append(") ");
-    }
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> projectData = new HashMap<>();
-        projectData.put("id", rs.getString("id"));
-        projectData.put("title", rs.getString("title"));
-
-        coreProjects.add(projectData);
-      }
-
-    } catch (SQLException e) {
-      LOG.error("getCoreProjects() > Exception raised trying to get the core projects.", e);
-    }
-
-    return coreProjects;
   }
 
   @Override
@@ -407,7 +367,6 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("title", rs.getString("title"));
         projectData.put("type", rs.getString("type"));
         projectData.put("summary", rs.getString("summary"));
-        projectData.put("is_cofinancing", rs.getString("is_cofinancing"));
         projectData.put("is_global", rs.getString("is_global"));
         if (rs.getDate("start_date") != null) {
           projectData.put("start_date", rs.getDate("start_date").toString());
@@ -572,8 +531,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG.error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID,
-        e);
+      LOG
+        .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
     return projectIds;
@@ -765,8 +724,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     int newId = -1;
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
-      query.append(
-        "INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+      query
+        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -798,8 +757,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
     } else {
       // UPDATE the record into the database.
-      query.append(
-        "UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
+      query
+        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -841,25 +800,25 @@ public class MySQLProjectDAO implements ProjectDAO {
     } else {
       // Update project.
       query.append("UPDATE projects SET title = ?, summary = ?, start_date = ?, end_date = ?, ");
-      query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), is_cofinancing = ?, ");
+      query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), ");
       query.append("requires_workplan_upload = ?, liaison_institution_id = ?, type = ?, workplan_name = ?, ");
       query.append("bilateral_contract_name = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ?");
-      Object[] values = new Object[14];
+
+      Object[] values = new Object[13];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
       values[3] = projectData.get("end_date");
       values[4] = projectData.get("user_id");
-      values[5] = projectData.get("is_cofinancing");
-      values[6] = projectData.get("requires_workplan_upload");
-      values[7] = projectData.get("liaison_institution_id");
-      values[8] = projectData.get("type");
-      values[9] = projectData.get("workplan_name");
-      values[10] = projectData.get("bilateral_contract_name");
-      values[11] = projectData.get("modified_by");
-      values[12] = projectData.get("justification");
-      values[13] = projectData.get("id");
+      values[5] = projectData.get("requires_workplan_upload");
+      values[6] = projectData.get("liaison_institution_id");
+      values[7] = projectData.get("type");
+      values[8] = projectData.get("workplan_name");
+      values[9] = projectData.get("bilateral_contract_name");
+      values[10] = projectData.get("modified_by");
+      values[11] = projectData.get("justification");
+      values[12] = projectData.get("id");
       result = databaseManager.saveData(query.toString(), values);
     }
     LOG.debug(">> saveProject(projectData={})", projectData);
@@ -896,9 +855,10 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
-      LOG.warn(
-        "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
-        indicatorData);
+      LOG
+        .warn(
+          "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
+          indicatorData);
       LOG.debug("<< saveProjectIndicators(): {}", false);
       return false;
     }
