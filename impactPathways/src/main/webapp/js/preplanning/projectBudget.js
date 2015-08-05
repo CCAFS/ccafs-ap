@@ -10,7 +10,7 @@ function init() {
   // Setting Global vars
   $allBudgetInputs = $("input.projectBudget");
   $genderBudgetInputs = $('input.projectGenderBudget');
-  $overheadInputs = $("input[name$=isfullyInstitutionalCost]");
+  $overheadInputs = $("input[name$='bilateralCostRecovered']");
   
   projectType = "."+$('#projectType').val();
   
@@ -66,7 +66,7 @@ function attachEvents() {
   // Overhead (for bilateral projects) radio buttons event
   $overheadInputs.on("change", function(e) {
     var $content = $(e.target).parents('#overhead').find('.overhead-block');
-    if($(e.target).val() === "0") {
+    if($(e.target).val() === "false") {
       $content.slideDown('slow');
     } else {
       $content.slideUp('slow');
