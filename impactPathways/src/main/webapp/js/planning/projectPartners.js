@@ -34,6 +34,7 @@ function attachEvents() {
 
 function updateOrganizationsList(e) {
   var $parent = $(e.target).parents('.projectPartner');
+  var partner = new PartnerObject($parent);
   var $selectInstitutions = $parent.find("select[name$='institution']"); // Institutions list
   var optionSelected = $selectInstitutions.find('option:selected').val(); // Institution selected
   var source = baseURL + "/json/institutionsByTypeAndCountry.do";
@@ -45,6 +46,7 @@ function updateOrganizationsList(e) {
   $.ajax({
       url: source,
       beforeSend: function() {
+        partner.startLoader();
         $selectInstitutions.empty().append(setOption(-1, "Select an option"));
       },
       success: function(data) {
@@ -53,6 +55,7 @@ function updateOrganizationsList(e) {
         });
       },
       complete: function() {
+        partner.stopLoader();
         $selectInstitutions.val(optionSelected);
         $selectInstitutions.trigger("liszt:updated");
       }
@@ -74,6 +77,7 @@ function removePartnerEvent(e) {
         partner.startLoader();
       },
       success: function(data) {
+        partner.stopLoader();
         if(!$.isEmptyObject(data)) {
           $('#partnerRemove-dialog').find('p').text(data.message);
           $('#partnerRemove-dialog').dialog({
@@ -92,9 +96,6 @@ function removePartnerEvent(e) {
         } else {
           partner.remove();
         }
-      },
-      complete: function() {
-        partner.stopLoader();
       }
   });
 
