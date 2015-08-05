@@ -174,7 +174,7 @@
           [/#if]  
           </ul>
           [#if editable && project.bilateralProject]
-             [#-- The values of this list are loaded via ajax --]
+            [#-- The values of this list are loaded via ajax --]
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
           [/#if] 
         </div>

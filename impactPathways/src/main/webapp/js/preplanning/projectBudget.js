@@ -1,5 +1,5 @@
 // Global VARS
-var $allBudgetInputs, $overheadInputs, $CCAFSBudgetInputs;
+var $allBudgetInputs, $overheadInputs, $CCAFSBudgetInputs, $selectAddProject;
 var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
 var projectType;
 var editable = true;
@@ -11,6 +11,7 @@ function init() {
   $allBudgetInputs = $("input.projectBudget");
   $genderBudgetInputs = $('input.projectGenderBudget');
   $overheadInputs = $("input[name$=isfullyInstitutionalCost]");
+  $selectAddProject = $("select.addProject");
   
   projectType = "."+$('#projectType').val();
   
@@ -24,6 +25,9 @@ function init() {
 
   // Attach events
   attachEvents();
+  
+  // Loading projects to be added
+  loadInitialCoreProjects();
 
   // Show table when page is loaded
   $("#budgetTables").fadeIn("slow");
@@ -116,6 +120,35 @@ function attachEvents() {
     return;
   });
 }
+
+// Function to load all core projects with ajax
+function loadInitialCoreProjects() {
+  $selectAddProject.chosen({
+    search_contains: true
+  });
+  $.ajax({
+      'url': '../../coreProjects.do',
+      beforeSend: function() {
+        $selectAddProject.empty().append(setOption(-1, "Please select a project"));
+      },
+      success: function(data) {
+        // Getting core projects previously selected
+        var coreProjectsIds = [];
+        $('#linkedProjects .budget input.budgetId').each(function(i_id,id) {
+          coreProjectsIds.push($(id).val().toString());
+        });
+        // Setting core projects allowed to select
+        $.each(data.projects, function(i,project) {
+          if($.inArray(project.id.toString(), coreProjectsIds) == -1) {
+            $selectAddProject.append(setOption(project.id, project.id + " - " + project.title));
+          }
+        });
+      },
+      complete: function() {
+        $selectAddProject.trigger("liszt:updated");
+      }
+  });
+} 
 
 function BudgetObject(budget, type, byYear) {    
   this.obj = $(budget);
