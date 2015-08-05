@@ -78,12 +78,12 @@
           <h6>[@s.text name="planning.projectBudget.overhead" /]</h6> 
           <p>[@s.text name="planning.projectBudget.fullyInstitutionalCost" /]</p>
           <div class="radios">
-            <input type="radio" name="project.bilateralCostRecovered" value="true" id="isfullyInstitutionalCost_1" checked/><label for="isfullyInstitutionalCost_1">[@s.text name="form.options.yes" /]</label>
-            <input type="radio" name="project.bilateralCostRecovered" value="false" id="isfullyInstitutionalCost_0" /><label for="isfullyInstitutionalCost_0" >[@s.text name="form.options.no" /]</label>
+            <input type="radio" name="project.overhead.bilateralCostRecovered" value="true" id="isfullyInstitutionalCost_1" checked/><label for="isfullyInstitutionalCost_1">[@s.text name="form.options.yes" /]</label>
+            <input type="radio" name="project.overhead.bilateralCostRecovered" value="false" id="isfullyInstitutionalCost_0" /><label for="isfullyInstitutionalCost_0" >[@s.text name="form.options.no" /]</label>
           </div>
           <div class="overhead-block" style="display:none">
             <div class="fullPartBlock">
-              [@customForm.input name="project.contractedOverhead" i18nkey="planning.projectBudget.whatIsTheContracted" value="" editable=editable/]
+              [@customForm.input name="project.overhead.contractedOverhead"  i18nkey="planning.projectBudget.whatIsTheContracted" editable=editable/]
             </div>
             [#if canEdit]
             <div class="note fullPartBlock">

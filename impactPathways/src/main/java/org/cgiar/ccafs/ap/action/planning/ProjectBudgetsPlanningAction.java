@@ -254,6 +254,27 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         }
       }
 
+      // Save the contributing core projects if any
+      if (project.isBilateralProject()) {
+        // First delete the core projects un-selected
+        List<Integer> linkedProjectsToDelete = new ArrayList<>();
+        for (Project p : previousProject.getLinkedProjects()) {
+          if (!project.getLinkedProjects().contains(p)) {
+            linkedProjectsToDelete.add(p.getId());
+          }
+        }
+
+        if (!linkedProjectsToDelete.isEmpty()) {
+          linkedCoreProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete,
+            this.getCurrentUser(), this.getJustification());
+        }
+
+        // Then save the new core projects linked
+        if (!project.getLinkedProjects().isEmpty()) {
+          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+        }
+      }
+
       if (!success) {
         this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
