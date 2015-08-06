@@ -127,7 +127,7 @@ $(document).ready(function() {
 
   function openSearchDialog(e) {
     e.preventDefault();
-    $elementSelected = $(this).parent();
+    $elementSelected = $(this).parents('.borderBox').find('.searchUser').parent();
     dialog.dialog("open");
     $dialogContent.find(".search-loader").fadeOut("slow");
   }

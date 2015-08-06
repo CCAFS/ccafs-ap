@@ -50,6 +50,7 @@ public class Project {
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<Budget> budgets;
+  private BudgetOverhead overhead;
   private Map<String, ProjectOutcome> outcomes;
   private List<Location> locations; // Project locations.
   private List<Activity> activities;
@@ -388,6 +389,10 @@ public class Project {
     return outputsOverview;
   }
 
+  public BudgetOverhead getOverhead() {
+    return overhead;
+  }
+
   public User getOwner() {
     return owner;
   }
@@ -598,6 +603,10 @@ public class Project {
 
   public void setOutputsOverview(List<OutputOverview> outpusOverview) {
     this.outputsOverview = outpusOverview;
+  }
+
+  public void setOverhead(BudgetOverhead overhead) {
+    this.overhead = overhead;
   }
 
   public void setOwner(User owner) {

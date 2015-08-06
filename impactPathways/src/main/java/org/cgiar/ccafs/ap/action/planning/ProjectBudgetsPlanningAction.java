@@ -29,6 +29,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetPlanningValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -68,6 +69,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private boolean invalidYear;
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
+  private Project previousProject;
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
@@ -143,6 +145,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    previousProject = new Project();
     // Getting the project id from the URL parameter
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -153,7 +156,18 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     // If project is CCAFS cofounded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
       project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
+    } else {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
     }
+
+    if (project.getLinkedProjects() != null) {
+      List<Project> linkedProjects = new ArrayList<>();
+      for (Project p : project.getLinkedProjects()) {
+        linkedProjects.add(new Project(p.getId()));
+      }
+      previousProject.setLinkedProjects(linkedProjects);
+    }
+
 
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
@@ -220,6 +234,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       if (project.getBudgets() != null) {
         project.getBudgets().clear();
       }
+
+      if (project.getLinkedProjects() != null) {
+        project.getLinkedProjects().clear();
+      }
     }
   }
 
@@ -233,6 +251,27 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
         if (!saved) {
           success = false;
+        }
+      }
+
+      // Save the contributing core projects if any
+      if (project.isBilateralProject()) {
+        // First delete the core projects un-selected
+        List<Integer> linkedProjectsToDelete = new ArrayList<>();
+        for (Project p : previousProject.getLinkedProjects()) {
+          if (!project.getLinkedProjects().contains(p)) {
+            linkedProjectsToDelete.add(p.getId());
+          }
+        }
+
+        if (!linkedProjectsToDelete.isEmpty()) {
+          linkedCoreProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete,
+            this.getCurrentUser(), this.getJustification());
+        }
+
+        // Then save the new core projects linked
+        if (!project.getLinkedProjects().isEmpty()) {
+          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
         }
       }
 
