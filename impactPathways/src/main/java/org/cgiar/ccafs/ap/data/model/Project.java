@@ -50,8 +50,7 @@ public class Project {
   private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<Budget> budgets;
-  private boolean bilateralCostRecovered;
-  private double contractedOverhead;
+  private BudgetOverhead overhead;
   private Map<String, ProjectOutcome> outcomes;
   private List<Location> locations; // Project locations.
   private List<Activity> activities;
@@ -222,10 +221,6 @@ public class Project {
     return null;
   }
 
-  public double getContractedOverhead() {
-    return contractedOverhead;
-  }
-
   public ProjectPartner getCoordinator() {
     return coordinator;
   }
@@ -394,6 +389,10 @@ public class Project {
     return outputsOverview;
   }
 
+  public BudgetOverhead getOverhead() {
+    return overhead;
+  }
+
   public User getOwner() {
     return owner;
   }
@@ -483,10 +482,6 @@ public class Project {
     return this.getId();
   }
 
-  public boolean isBilateralCostRecovered() {
-    return bilateralCostRecovered;
-  }
-
   public boolean isBilateralProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL_STANDALONE) : false;
   }
@@ -526,16 +521,8 @@ public class Project {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
 
-  public void setBilateralCostRecovered(boolean bilateralCostRecovered) {
-    this.bilateralCostRecovered = bilateralCostRecovered;
-  }
-
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
-  }
-
-  public void setContractedOverhead(double contractedOverhead) {
-    this.contractedOverhead = contractedOverhead;
   }
 
   public void setCoordinator(ProjectPartner coordinator) {
@@ -616,6 +603,10 @@ public class Project {
 
   public void setOutputsOverview(List<OutputOverview> outpusOverview) {
     this.outputsOverview = outpusOverview;
+  }
+
+  public void setOverhead(BudgetOverhead overhead) {
+    this.overhead = overhead;
   }
 
   public void setOwner(User owner) {
