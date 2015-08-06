@@ -81,7 +81,7 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidLeader(ProjectPartner leader) {
-    return false;
+    return (leader != null) ? true : false;
   }
 
   public boolean isValidLeaderResponsabilities(String leaderResponsabilities) {
