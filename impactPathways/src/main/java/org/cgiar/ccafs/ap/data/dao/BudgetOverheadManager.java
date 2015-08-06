@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.data.dao;
 import org.cgiar.ccafs.ap.data.manager.impl.BudgetOverheadManagerImpl;
 import org.cgiar.ccafs.ap.data.model.BudgetOverhead;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import com.google.inject.ImplementedBy;
 
@@ -41,5 +42,5 @@ public interface BudgetOverheadManager {
    * @param project - A project with the information to save.
    * @return - True if the information was saved successfully. False otherwise.
    */
-  public boolean saveProjectBudgetOverhead(Project project);
+  public boolean saveProjectBudgetOverhead(Project project, User user, String justification);
 }

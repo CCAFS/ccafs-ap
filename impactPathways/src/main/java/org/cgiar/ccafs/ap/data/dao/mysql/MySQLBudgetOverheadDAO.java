@@ -46,7 +46,7 @@ public class MySQLBudgetOverheadDAO implements BudgetOverheadDAO {
   @Override
   public Map<String, String> getProjectBudgetOverhead(int projectID) {
     Map<String, String> overheadData = new HashMap<>();
-    String query = "SELECT * FROM project_budget_overheads WHERE project_id = ? AND is_active = TRUE";
+    String query = "SELECT * FROM project_budget_overheads WHERE project_id = " + projectID + " AND is_active = TRUE";
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query, con);
