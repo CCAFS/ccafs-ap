@@ -186,6 +186,7 @@ function LinkedProjectObject(project){
     $(project).find('.budgetCofinancingProjectId').val(id);
     $(project).find('.linkedId').val(id);
     $(project).find('.title a').text(name);
+    $(project).find('.budgetAmount').val(setCurrencyFormat(0));
   };
   this.setIndex = function (index){
     console.log(index);
