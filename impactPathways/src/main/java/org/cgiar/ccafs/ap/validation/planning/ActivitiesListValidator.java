@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -46,13 +47,13 @@ public class ActivitiesListValidator extends BaseValidator {
   public void validate(BaseAction action, Project project) {
     if (project != null) {
       this.validateProjectJustification(action, project);
-
+      this.validateLeader(action, project.getActivities());
       // The projects will be validated according to their type
-      if (project.isCoreProject()) {
-        this.validateCoreProject(action, project);
-      } else {
-        this.validateBilateralProject(action, project);
-      }
+      // if (project.isCoreProject()) {
+      // this.validateCoreProject(action, project);
+      // } else {
+      // this.validateBilateralProject(action, project);
+      // }
 
       if (validationMessage.length() > 0) {
         action
@@ -99,6 +100,14 @@ public class ActivitiesListValidator extends BaseValidator {
   public void validateFlagships(BaseAction action, List<IPProgram> flagships) {
     if (!projectValidator.isValidFlagships(flagships)) {
       this.addMessage(this.getText("preplanning.projectDescription.flagships").toLowerCase());
+    }
+  }
+
+  public void validateLeader(BaseAction action, List<Activity> activities) {
+    for (int i = 0; i < activities.size(); i++) {
+      if (!projectValidator.isValidLeader(activities.get(i).getLeader())) {
+        this.addMessage(this.getText("preplanning.projectDescription.leader").toLowerCase());
+      }
     }
   }
 
