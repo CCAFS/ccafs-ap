@@ -130,13 +130,13 @@
                 </div>
                 [/#if]
               </div> <!-- End Budget by year  -->
-              <div class="ccafsBudget fullPartBlock clearfix">
+              <div class="ccafsBudget fullPartBlock ${project.type}">
                 [@s.set var="counter" value="0"/]
                 [#-- Project Leader --]
                 [#if project.leader?has_content]
                   [@partnerBudget institution=project.leader.institution budget=project.getBudget(project.leader.institution.id, project.bilateralProject?string(2, 1)?number, year )! isPL=true cofinancing_budgets=project.getCofinancingBudgets()! editable=editable /]
                 [/#if]
-                [#-- Project PPA Partners --]
+                [#-- Project CCAFS Partners --]
                 [#if projectPPAPartners?has_content] 
                   [#list projectPPAPartners as partnerInstitution ]
                     [@partnerBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! pp_index="${partnerInstitution_index+1}" editable=editable /]
@@ -150,7 +150,7 @@
                 </a>
               </div>
            </div>
-        </div> <!-- End budget -->
+        </div> 
       [#else]
         [#-- If project leader is not defined --] 
         <p class="simpleBox center">[@s.text name="preplanning.projectBudget.message.leaderUndefined" /]</p>
@@ -231,28 +231,30 @@
       </div>
     </div>
   </div><!-- End budget -->
-  [#if project.linkedProjects?has_content && isPL ]
   [#-- Project budget per linked project --]
-  <hr />
-  <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
-  <br />
-  <div id="linkedProjects">
-    [#-- List of linkeds Projects --]
-    [#list project.linkedProjects as linkedProject]
-      [@projectBudget institution=institution linkedProject=linkedProject editable=editable /]
-      [@s.set var="counter" value="${counter+1}"/]
-    [/#list]
-  </div><!-- End linked projects -->
-  [/#if]
-  [#if project.bilateralProject && isPL && editable]
-    [#-- The values of this list are loaded via ajax --]
-    [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="addProject" value="" /]
+  [#if isPL]
+    <hr />
+    <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
+    <br />
+    <div id="linkedProjects">
+    [#if project.linkedProjects?has_content]
+      [#-- List of linkeds Projects --]
+      [#list project.linkedProjects as linkedProject]
+        [@projectBudget institution=institution linkedProject=linkedProject editable=editable /]
+        [@s.set var="counter" value="${counter+1}"/]
+      [/#list]
+    [/#if]
+    </div><!-- End linked projects -->
+    [#if project.bilateralProject && isPL && editable]
+      [#-- The values of this list are loaded via ajax --]
+      [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="addProject" value="" /]
+    [/#if]
   [/#if]
 </div>
 [/#macro]
 
 [#macro projectBudget institution linkedProject editable=true]
-  <div id="projectBudget-${(linkedProject.id)!'template'}" class="projectBudget budget clearfix" style="display:${linkedProject?has_content?string('block','none')}">
+  <div id="projectBudget-${(linkedProject.id)!'template'}" class="projectBudget budget" style="display:${linkedProject?has_content?string('block','none')}">
     [#assign budgetName = "project.budgets[${counter}]" /]
     [#if linkedProject?has_content]
       [#if project.bilateralProject]
@@ -279,7 +281,8 @@
       [/#if]
       </div>
     </div>
-  </div><!-- End project budget -->
+    <div class="clearfix"></div>
+  </div><!-- End project-${(linkedProject.id)!''} budget -->
 [/#macro]
 
 

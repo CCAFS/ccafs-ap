@@ -1796,7 +1796,7 @@ input.userName {
 #leftSide{
   float: left;
   padding: 0px 12px 0px 15px;
-  width: 61%;
+  width: 60%;
   vertical-align: top;
 }
 
@@ -2319,7 +2319,7 @@ textarea[id$='summary'] {
   border-left: 2px solid #FFFFFF;
 }
 .budget:hover {
-  border-left: 2px solid #D8D8D8; 
+  border-left: 2px solid #D8D8D8 !important; 
 }
 .budget .title {
   /* width: 98%; */
@@ -2354,22 +2354,29 @@ textarea[id$='summary'] {
   margin-top: 12px;
 }
 
-div#linkedProjects .budget {
+.BILATERAL #linkedProjects .budget {
+    background-color: #F9F9F9;
+    padding: 9px 16px;
+    border: 1px solid #DCDCDC;
+    border-radius: 4px;
+}
+
+#linkedProjects .budget {
     background-color: #F5F5F5;
     padding: 9px 16px;
     border-radius: 4px;
 }
-div#linkedProjects .budget .title {
+#linkedProjects .budget .title {
   padding-right: 88px;
 }
  
 
-div#linkedProjects a {
+#linkedProjects a {
     text-decoration: none;
     color: #444;
 }
 
-div#linkedProjects a:hover { 
+#linkedProjects a:hover { 
     color:#777;
 }
 
@@ -2459,7 +2466,7 @@ span.projectType {
   float: right;
   background-color: #2ecc71;
   color: #fff;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
   padding: 0px 8px 2px 8px;
   border-radius: 3px;
 }
