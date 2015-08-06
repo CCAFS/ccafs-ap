@@ -249,9 +249,31 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   @Override
   public String save() {
     if (securityContext.canUpdateProjectBudget()) {
-      boolean success = true;
+      boolean success = true, saved = false;
+
       for (Budget budget : project.getBudgets()) {
-        boolean saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
+        if (budget.getCofinancingProject() == null) {
+          saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
+        } else {
+          Project cofinancingProject = budget.getCofinancingProject();
+          // Getting the Project Leader.
+          List<ProjectPartner> ppArray =
+            projectPartnerManager.getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
+          if (!ppArray.isEmpty()) {
+            cofinancingProject.setLeader(ppArray.get(0));
+
+            // The co-financing budget belongs to the project which receive it.
+            budget.setCofinancingProject(project);
+            budget.setInstitution(cofinancingProject.getLeader().getInstitution());
+            saved =
+              budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
+                this.getJustification());
+          } else {
+            String projectID = "2014-" + cofinancingProject.getId();
+            this
+              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+          }
+        }
 
         if (!saved) {
           success = false;
@@ -260,7 +282,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
       if (project.isBilateralProject()) {
         // Save the budget overhead
-        overheadManager.saveProjectBudgetOverhead(project);
+        overheadManager.saveProjectBudgetOverhead(project, this.getCurrentUser(), this.getJustification());
 
         // First delete the core projects un-selected
         List<Integer> linkedProjectsToDelete = new ArrayList<>();
@@ -299,7 +321,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
     return NOT_AUTHORIZED;
   }
-
 
   public void setProject(Project project) {
     this.project = project;
