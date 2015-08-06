@@ -448,8 +448,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           if (!previousRegions.contains(region)) {
             saved =
               saved
-                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-                  this.getJustification());
+              && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                this.getJustification());
           }
         }
 
