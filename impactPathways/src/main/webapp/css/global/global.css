@@ -88,8 +88,8 @@ input.disabled {
 }
 
 .fieldset {
-  padding: 8px 13px;
-  margin: 10px 0px;
+  padding: 7px 13px;
+  margin: 13px 0px;
   border: 1px dotted #9B9B9B;
   border-radius: 15px 0px;
 }
@@ -289,8 +289,8 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   right: 0;
   top: 0;
   background: url(../../images/global/icon-edit.png) #8B8B8B no-repeat 11px 5px;
-  background-size: 19%;
-  padding: 4px 0px 6px 0px;
+  background-size: 18%;
+  padding: 3px 0px 4px 0px;
   
   cursor:pointer;
   font-size: 1.1em;
@@ -732,7 +732,7 @@ select#partnerSave_activityPartner_partner_type_id {
     color: #444;
 }
 
-.panel span.listButton {
+.panel span.listButton, .budget span.listButton {
   float:right;
   padding: 2px 8px;
   cursor: pointer;
@@ -746,10 +746,13 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 
 .remove {
-    background-color: #D5504C;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
+  background-color: #D5504C;
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.remove:hover {
+  background-color: #B72E2A; 
 }
 
 .panel span.listButton.remove:hover {
@@ -2311,21 +2314,21 @@ textarea[id$='summary'] {
 
 .budget {
   margin-top: 0px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   padding-left: 9px;
-  border-left: 2px solid #F9F9F9;
+  border-left: 2px solid #FFFFFF;
 }
 .budget:hover {
   border-left: 2px solid #E5E5E5; 
 }
 .budget .title {
-  width: 98%;
-  padding: 5px 0;
-  float: left;
+  /* width: 98%; */
+  /* padding: 5px 0; */
+  /* float: left; */
   /* height: 56px; */
-  line-height: 7px;
-  border-radius: 2px;
-  position: relative;
+  /* line-height: 7px; */
+  /* border-radius: 2px; */
+  /* position: relative; */
 }
 
 .budget .content {
@@ -2349,6 +2352,25 @@ textarea[id$='summary'] {
 
 #overhead {
   margin-top: 12px;
+}
+
+div#linkedProjects .budget {
+    background-color: #F5F5F5;
+    padding: 9px 16px;
+    border-radius: 4px;
+}
+div#linkedProjects .budget .title {
+  padding-right: 88px;
+}
+ 
+
+div#linkedProjects a {
+    text-decoration: none;
+    color: #444;
+}
+
+div#linkedProjects a:hover { 
+    color:#777;
 }
 
 #leveraged h6,#bilateral h6 { 

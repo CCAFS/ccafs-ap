@@ -18,7 +18,9 @@ import org.cgiar.ccafs.ap.data.dao.BudgetOverheadDAO;
 import org.cgiar.ccafs.ap.data.dao.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.model.BudgetOverhead;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -52,9 +54,14 @@ public class BudgetOverheadManagerImpl implements BudgetOverheadManager {
   }
 
   @Override
-  public boolean saveProjectBudgetOverhead(Project project) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+  public boolean saveProjectBudgetOverhead(Project project, User user, String justification) {
+    Map<String, Object> overheadData = new HashMap<>();
+    overheadData.put("project_id", project.getId());
+    overheadData.put("cost_recovered", project.getOverhead().isBilateralCostRecovered());
+    overheadData.put("contracted_overhead", project.getOverhead().getContractedOverhead());
+    overheadData.put("user_id", user.getId());
+    overheadData.put("justification", justification);
 
+    return overheadDAO.saveProjectBudgetOverhead(overheadData);
+  }
 }
