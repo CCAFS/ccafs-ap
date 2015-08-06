@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
@@ -55,6 +56,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
   private ProjectCofinancingLinkageManager linkedCoreProjectManager;
+  private BudgetOverheadManager overheadManager;
   private HistoryManager historyManager;
 
   private ProjectBudgetPlanningValidator validator;
@@ -73,15 +75,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
-    ProjectBudgetPlanningValidator validator, ProjectPartnerManager projectPartnerManager,
-    ProjectCofinancingLinkageManager linkedCoreProjectManager, ProjectManager projectManager,
-    HistoryManager historyManager) {
+    BudgetOverheadManager overheadManager, ProjectBudgetPlanningValidator validator,
+    ProjectPartnerManager projectPartnerManager, ProjectCofinancingLinkageManager linkedCoreProjectManager,
+    ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
     this.linkedCoreProjectManager = linkedCoreProjectManager;
     this.historyManager = historyManager;
+    this.overheadManager = overheadManager;
     this.validator = validator;
   }
 
@@ -158,6 +161,8 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
     } else {
       project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
+
+      project.setOverhead(overheadManager.getProjectBudgetOverhead(projectID));
     }
 
     if (project.getLinkedProjects() != null) {
@@ -167,7 +172,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       }
       previousProject.setLinkedProjects(linkedProjects);
     }
-
 
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
@@ -254,8 +258,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         }
       }
 
-      // Save the contributing core projects if any
       if (project.isBilateralProject()) {
+        // Save the budget overhead
+        overheadManager.saveProjectBudgetOverhead(project);
+
         // First delete the core projects un-selected
         List<Integer> linkedProjectsToDelete = new ArrayList<>();
         for (Project p : previousProject.getLinkedProjects()) {
