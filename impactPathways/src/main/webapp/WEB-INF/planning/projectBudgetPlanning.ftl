@@ -59,7 +59,7 @@
           </p>
         </div> 
         [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
-        [#if project.linkedProjects?has_content]
+        [#if project.coFundedProject]
           <div class="thirdPartBlock">
             <h6 class="subTitle">[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]</h6>
             <p id="totalBilateralBudget">
@@ -227,16 +227,17 @@
       </div>
     </div>
   </div><!-- End budget -->
+  [#if project.linkedProjects?has_content && isPL ]
   [#-- Project budget per linked project --]
   <hr />
   <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
   <br />
-  [#if project.linkedProjects?has_content && isPL ]
   <div id="linkedProjects">
     [#list project.linkedProjects as linkedProject]
       [#assign cofinancingBudget = project.getCofinancingBudget(linkedProject.id, year)! /]
-      <div class="fullPartBlock budget clearfix">
-        <p class="checked" >P${linkedProject.id} -  ${linkedProject.title}</p>
+      <div class="budget clearfix">
+        [#if editable && project.bilateralProject]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+        <p class="title checked" ><a href="[@s.url action='description'][@s.param name='projectID']${linkedProject.id}[/@s.param][/@s.url]">P${linkedProject.id} -  ${linkedProject.title}</a></p>
         <input type="hidden" class="budgetId" name="project.budgets[${counter}].id" value="${cofinancingBudget.id!"-1"}" />
         <input type="hidden" class="budgetYear" name="project.budgets[${counter}].year" value="${year}" />
         <input type="hidden" class="budgetInstitutionId" name="project.budgets[${counter}].institution.id" value="${(cofinancingBudget.institution.id)!institution.id}" />
