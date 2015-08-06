@@ -182,12 +182,13 @@ public class BasePDF {
 
     // Set alignment
     cell.setHorizontalAlignment(alignment);
-    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    cell.setVerticalAlignment(Element.ALIGN_LEFT);
     cell.setBackgroundColor(cellColor);
 
     // Set padding
     cell.setUseBorderPadding(true);
-    cell.setPadding(5);
+    cell.setPaddingBottom(5);
+
 
     // Set border color
     if (showBorder) {
