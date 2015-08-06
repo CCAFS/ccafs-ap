@@ -92,6 +92,19 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return allYears;
   }
 
+  public Budget getBilateralCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+    List<Budget> budgets = budgetManager.getBudgetsByYear(projectID, year);
+
+    for (Budget budget : budgets) {
+      if (budget.getCofinancingProject() != null) {
+        if (budget.getCofinancingProject().getId() == cofinanceProjectID) {
+          return budget;
+        }
+      }
+    }
+    return null;
+  }
+
   public Project getProject() {
     return project;
   }
@@ -135,6 +148,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   public int getYear() {
     return year;
   }
+
 
   public boolean isHasLeader() {
     return hasLeader;
@@ -244,7 +258,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       }
     }
   }
-
 
   @Override
   public String save() {

@@ -256,7 +256,7 @@
     [#assign budgetName = "project.budgets[${counter}]" /]
     [#if linkedProject?has_content]
       [#if project.bilateralProject]
-        [#assign cofinancingBudget = project.getCofinancingBudget(project.id, year)! /]
+        [#assign cofinancingBudget = action.getBilateralCofinancingBudget(linkedProject.id, project.id, year)! /]
       [#else]
         [#assign cofinancingBudget = project.getCofinancingBudget(linkedProject.id, year)! /]
       [/#if]
