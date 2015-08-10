@@ -27,7 +27,9 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
@@ -66,9 +68,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // Model for the view
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
-  private List<Institution> allPartners; // Is used to list all the partners that have the system.
-  private List<Institution> allPPAPartners; // Is used to list all the PPA partners
-  private List<Institution> projectPPAPartners; // Is used to list all the PPA partners selected in the current project.
+  private List<Institution> allPartners; // Is used to list all the partner institutions that have the system.
+  private List<Institution> allPPAPartners; // Is used to list all the PPA partners institutions
+  private Set<Institution> projectPPAPartners; // Is used to list all the PPA partner institutions selected in the
+  // current project.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
   private List<Institution> contributionPartners; // this would get the partners contributing to others
 
@@ -120,7 +123,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return projectID;
   }
 
-  public List<Institution> getProjectPPAPartners() {
+  public Set<Institution> getProjectPPAPartners() {
     return projectPPAPartners;
   }
 
@@ -199,15 +202,15 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
 
-    // Getting the list of PPA Partner institutions
-    projectPPAPartners = new ArrayList<Institution>();
+    // Getting the list of PPA Partner institutions (not repeated).
+    projectPPAPartners = new HashSet<Institution>();
     for (ProjectPartner ppaPartner : project.getPPAPartners()) {
       projectPPAPartners.add(ppaPartner.getInstitution());
     }
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
       partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
