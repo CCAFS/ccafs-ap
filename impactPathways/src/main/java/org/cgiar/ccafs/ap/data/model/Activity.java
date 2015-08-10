@@ -221,8 +221,10 @@ public class Activity {
 
   public double getTotalActivitiesBudget() {
     double totalBudget = 0.0;
-    for (Budget budget : this.getBudgets()) {
-      totalBudget += budget.getAmount();
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += budget.getAmount();
+      }
     }
     return totalBudget;
   }
