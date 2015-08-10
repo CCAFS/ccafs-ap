@@ -216,7 +216,7 @@
         [#if !editable]<strong>US$ ${((budget.amount)!0)?number?string(",##0.00")}</strong>[/#if]
         </p>
         [#if editable] 
-          [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget ${projectType}" showTitle=false value="${(budget.amount)!0}"/] 
+          [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget plBudget ${projectType}" showTitle=false value="${(budget.amount)!0}"/] 
         [/#if]
       </div>
     </div>

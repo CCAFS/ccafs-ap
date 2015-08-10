@@ -1,6 +1,7 @@
 var baseURL;
 var formBefore;
 var justificationLimitWords = 100;
+var errorMessage = "";
 jQuery.fn.exists = function() {
   return this.length > 0;
 };
@@ -95,6 +96,23 @@ function validateEvent(button,fields) {
     $.each(fields, function(i,val) {
       $(val).each(function() {
         $(this).removeClass(errorClass);
+        if(errorMessage) {
+          e.preventDefault();
+          noty({
+              text: errorMessage,
+              layout: 'bottomRight',
+              theme: 'relax',
+              timeout: 5000,
+              animation: {
+                  open: 'animated bounceInRight',
+                  close: 'animated bounceOutRight'
+              },
+              type: 'error',
+              closeWith: [
+                'click'
+              ]
+          });
+        }
         if(isChanged()) {
           if(!validateField($(this))) {
             e.preventDefault();
@@ -105,8 +123,8 @@ function validateEvent(button,fields) {
                 theme: 'relax',
                 timeout: 5000,
                 animation: {
-                    open: 'animated bounceInRight', // Animate.css class names
-                    close: 'animated bounceOutRight' // Animate.css class names
+                    open: 'animated bounceInRight',
+                    close: 'animated bounceOutRight'
                 },
                 type: 'error',
                 closeWith: [
@@ -122,8 +140,8 @@ function validateEvent(button,fields) {
               theme: 'relax',
               timeout: 2500,
               animation: {
-                  open: 'animated bounceInRight', // Animate.css class names
-                  close: 'animated bounceOutRight' // Animate.css class names
+                  open: 'animated bounceInRight',
+                  close: 'animated bounceOutRight'
               },
               type: 'alert',
               closeWith: [
