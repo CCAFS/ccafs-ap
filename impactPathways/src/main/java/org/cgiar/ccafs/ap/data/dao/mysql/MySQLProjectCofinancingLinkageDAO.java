@@ -125,16 +125,16 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
   }
 
   @Override
-  public boolean saveLinkedCoreProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
+  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listcoreProjectsIDs, int userID,
     String justification) {
     boolean saved = false;
-    Object[] values = new Object[listBilateralProjectsIDs.size() * 5];
+    Object[] values = new Object[listcoreProjectsIDs.size() * 5];
     StringBuilder query = new StringBuilder();
     query.append("INSERT IGNORE INTO project_cofinancing_linkages ");
     query.append("(bilateral_project_id, core_project_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES ");
 
-    for (int i = 0; i < listBilateralProjectsIDs.size(); i++) {
+    for (int i = 0; i < listcoreProjectsIDs.size(); i++) {
       if (i == 0) {
         query.append(" (?, ?, ?, ?, ?) ");
       } else {
@@ -142,8 +142,8 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
       }
 
       int c = i * 5;
-      values[c] = coreProjectID;
-      values[c + 1] = listBilateralProjectsIDs.get(i);
+      values[c] = bilateralProjectID;
+      values[c + 1] = listcoreProjectsIDs.get(i);
       values[c + 2] = userID;
       values[c + 3] = userID;
       values[c + 4] = justification;

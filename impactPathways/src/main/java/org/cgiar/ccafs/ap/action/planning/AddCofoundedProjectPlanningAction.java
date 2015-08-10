@@ -103,12 +103,15 @@ public class AddCofoundedProjectPlanningAction extends BaseAction {
 
     // Change the type of the core project to cofounded
     coreProject.setType(APConstants.PROJECT_CCAFS_COFUNDED);
-    projectManager.saveProjectDescription(coreProject, this.getCurrentUser(), this.getJustification());
+    String justification = (this.getJustification() == null) ? "" : this.getJustification();
+    projectManager.saveProjectDescription(coreProject, this.getCurrentUser(), justification);
 
     // Mark the bilateral project as co-financing
     bilateralProject.setCofinancing(true);
-    projectManager.saveProjectDescription(bilateralProject, this.getCurrentUser(), this.getJustification());
+    justification = (this.getJustification() == null) ? "" : this.getJustification();
+    projectManager.saveProjectDescription(bilateralProject, this.getCurrentUser(), justification);
 
+    this.addActionMessage(this.getText("planning.projectDescription.createdCofoundedProject"));
     return SUCCESS;
   }
 
