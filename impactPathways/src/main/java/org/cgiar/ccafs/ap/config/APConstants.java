@@ -35,6 +35,8 @@ public final class APConstants {
   public static final String IP_ELEMENT_TYPE_REQUEST_ID = "elementTypeId";
   public static final String IP_ELEMENT_REQUEST_ID = "elementID";
   public static final String PROJECT_REQUEST_ID = "projectID";
+  public static final String CORE_PROJECT_REQUEST_ID = "coreProjectID";
+  public static final String BILATERAL_PROJECT_REQUEST_ID = "bilateralProjectID";
   public static final String PROJECT_PARTNER_REQUEST_ID = "projectPartnerID";
   public static final String INSTITUTION_REQUEST_ID = "institutionID";
   public static final String INSTITUTION_TYPE_REQUEST_ID = "institutionTypeID";
