@@ -100,6 +100,13 @@ public interface ProjectDAO {
   public List<Map<String, String>> getBilateralCofinancingProjects(int flagshipID, int regionID);
 
   /**
+   * This method returns a list with all the bilateral projects.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getBilateralProjects();
+
+  /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
    * 

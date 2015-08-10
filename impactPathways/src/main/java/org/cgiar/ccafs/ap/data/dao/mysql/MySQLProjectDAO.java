@@ -255,6 +255,35 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Map<String, String>> getBilateralProjects() {
+    LOG.debug(">> getCoreProjects ()");
+    List<Map<String, String>> bilateralProjects = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.id, p.title ");
+    query.append("FROM projects as p ");
+    query.append("WHERE p.type = '");
+    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+    query.append("' ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+
+        bilateralProjects.add(projectData);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getCoreProjects() > Exception raised trying to get the core projects.", e);
+    }
+
+    return bilateralProjects;
+  }
+
+  @Override
   public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID) {
     LOG.debug(">> getCoreProjects (flagshipID={}, regionID={})", flagshipID, regionID);
     List<Map<String, String>> coreProjects = new ArrayList<>();
@@ -262,8 +291,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects as p ");
-    query.append("WHERE p.type = '");
-    query.append(APConstants.PROJECT_CORE);
+    query.append("WHERE p.type != '");
+    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
     query.append("' ");
 
     if (flagshipID != -1) {

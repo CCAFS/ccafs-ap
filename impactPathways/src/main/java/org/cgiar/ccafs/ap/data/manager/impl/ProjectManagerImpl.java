@@ -171,6 +171,22 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getBilateralProjects() {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsData = projectDAO.getBilateralProjects();
+
+    for (Map<String, String> projectData : projectsData) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectData.get("id")));
+      project.setTitle(projectData.get("title"));
+
+      projects.add(project);
+    }
+
+    return projects;
+  }
+
+  @Override
   public List<Project> getCoreProjects(int flagshipID, int regionID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsData = projectDAO.getCoreProjects(flagshipID, regionID);
@@ -301,11 +317,11 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
+
   @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getId());
   }
-
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
@@ -337,6 +353,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
     return indicators;
   }
+
 
   @Override
   public List<Project> getProjectsByProgram(int programId) {
@@ -382,7 +399,6 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return projectsList;
   }
-
 
   @Override
   public List<Project> getProjectsList(String[] values) {
