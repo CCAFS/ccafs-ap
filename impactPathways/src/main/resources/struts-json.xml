@@ -95,14 +95,21 @@
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
-    
-        <action name="projectPartnersDelete" class="org.cgiar.ccafs.ap.action.json.planning.ProjectPartnersDeleteAction">
+
+    <action name="bilateralProjects" class="org.cgiar.ccafs.ap.action.json.planning.BilateralProjectsAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
-    
+
+    <action name="projectPartnersDelete" class="org.cgiar.ccafs.ap.action.json.planning.ProjectPartnersDeleteAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+
     <action name="bilateralCoFinancingProjects" class="org.cgiar.ccafs.ap.action.json.planning.BilateralCofinancingProjectsAction">
       <result type="json">        
         <param name="noCache">true</param>

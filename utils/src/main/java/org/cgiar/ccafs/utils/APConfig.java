@@ -45,8 +45,10 @@ public class APConfig {
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
-  private static final String GMAIL_USER = "gmail.user";
-  private static final String GMAIL_PASSWORD = "gmail.password";
+  private static final String EMAIL_USER = "email.user";
+  private static final String EMAIL_PASSWORD = "email.password";
+  private static final String EMAIL_HOST = "email.host";
+  private static final String EMAIL_PORT = "email.port";
   private static final String MAX_CASE_STUDY_TYPES = "ccafsap.reporting.caseStudy.types.max";
   private static final String UPLOADS_BASE_FOLDER = "file.uploads.baseFolder";
   private static final String LOCATIONS_TEMPLATE_FOLDER = "file.uploads.locationsTemplateFolder";
@@ -176,6 +178,42 @@ public class APConfig {
     return downloadsURL;
   }
 
+  public String getEmailHost() {
+    try {
+      return properties.getPropertiesAsString(EMAIL_HOST);
+    } catch (Exception e) {
+      LOG.error("there is not an email host configured.");
+    }
+    return null;
+  }
+
+  public String getEmailPassword() {
+    try {
+      return properties.getPropertiesAsString(EMAIL_PASSWORD);
+    } catch (Exception e) {
+      LOG.error("there is not an email password configured.");
+    }
+    return null;
+  }
+
+  public int getEmailPort() {
+    try {
+      return properties.getPropertiesAsInt(EMAIL_PORT);
+    } catch (Exception e) {
+      LOG.error("there is not an email port configured.");
+    }
+    return -1;
+  }
+
+  public String getEmailUsername() {
+    try {
+      return properties.getPropertiesAsString(EMAIL_USER);
+    } catch (Exception e) {
+      LOG.error("there is not an email user configured.");
+    }
+    return null;
+  }
+
   /**
    * Get the end year value that is in the configuration file.
    * 
@@ -216,24 +254,6 @@ public class APConfig {
       LOG.error("There is not a number of future years that an user can plan.");
     }
     return -1;
-  }
-
-  public String getGmailPassword() {
-    try {
-      return properties.getPropertiesAsString(GMAIL_PASSWORD);
-    } catch (Exception e) {
-      LOG.error("there is not a Gmail password configured.");
-    }
-    return null;
-  }
-
-  public String getGmailUsername() {
-    try {
-      return properties.getPropertiesAsString(GMAIL_USER);
-    } catch (Exception e) {
-      LOG.error("there is not a Gmail user configured.");
-    }
-    return null;
   }
 
   /**
