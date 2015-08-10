@@ -21,9 +21,9 @@
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" /> 
     <p> [@s.text name="planning.projectBudget.help1" /] 
-    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#budget">[@s.text name="planning.projectBudget.budget" /]</a> [@s.text name="planning.projectBudget.help2" /]
-    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#partners">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
-    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#managementLiaison"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.projectBudget.budget" /]</a> [@s.text name="planning.projectBudget.help2" /]
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
     <div class="quote">
       <p><strong>[@s.text name="preplanning.projectBudget.w1" /]: </strong> [@s.text name="preplanning.projectBudget.w1.tooltip" /]</p>
       <p><strong>[@s.text name="preplanning.projectBudget.w2" /]: </strong> [@s.text name="preplanning.projectBudget.w2.tooltip" /]</p>
@@ -73,7 +73,7 @@
         [#if project.bilateralProject || project.linkedProjects?has_content]
         <div id="overhead" class="simpleBox">
           [#if (!editable && canEdit)]
-            <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#overhead">[@s.text name="form.buttons.edit" /]</a></div>
+            <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
           [/#if]
           <h6>[@s.text name="planning.projectBudget.overhead" /]</h6> 
           <p>[@s.text name="planning.projectBudget.fullyInstitutionalCost" /]</p>
@@ -107,7 +107,7 @@
             [#-- Project budget content by year --]
             <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
               [#if (!editable && canEdit)]
-                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#partnerTables-${year?c}">[@s.text name="form.buttons.edit" /]</a></div>
+                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
               [/#if]
               <div class="fieldset clearfix">
                 [#-- Accumulative total project budget By year --]
