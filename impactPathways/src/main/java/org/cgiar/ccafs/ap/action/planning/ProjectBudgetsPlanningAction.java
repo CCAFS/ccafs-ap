@@ -265,6 +265,15 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       boolean success = true, saved = false;
 
       for (Budget budget : project.getBudgets()) {
+        // Only can save the budgets to which the user is authorized
+        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget()) {
+          continue;
+        }
+
+        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget()) {
+          continue;
+        }
+
         if (budget.getCofinancingProject() == null) {
           saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
         } else {
