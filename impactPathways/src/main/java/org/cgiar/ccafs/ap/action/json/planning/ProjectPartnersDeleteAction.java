@@ -17,7 +17,11 @@ package org.cgiar.ccafs.ap.action.json.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;
@@ -37,28 +41,66 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   private static Logger LOG = LoggerFactory.getLogger(ProjectPartnersDeleteAction.class);
   private static final long serialVersionUID = 2947868791705570456L;
 
+  // Managers
   private ActivityManager activityManager;
+  private DeliverableManager deliverableManager;
+  private ProjectPartnerManager projectPartnerManager;
+
   private List<Activity> activitiesList;
   private int projectPartnerID;
+
   private String message = "", warning;
+  private List<Activity> linkedActivities;
+  private List<Deliverable> linkedDeliverables;
+  private List<ProjectPartner> linkedProjectPartners;
 
   @Inject
-  public ProjectPartnersDeleteAction(APConfig config, ActivityManager activityManager) {
+  public ProjectPartnersDeleteAction(APConfig config, ActivityManager activityManager,
+    DeliverableManager deliverableManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
     this.activityManager = activityManager;
+    this.deliverableManager = deliverableManager;
+    this.projectPartnerManager = projectPartnerManager;
   }
+
 
   @Override
   public String execute() {
     activitiesList = activityManager.getActivitiesByProjectPartner(projectPartnerID);
+
+    // ------------- TODO: TEST -------------
+    linkedActivities.add(activityManager.getActivityById(3));
+    linkedActivities.add(activityManager.getActivityById(5));
+    linkedActivities.add(activityManager.getActivityById(6));
+
+    linkedDeliverables.add(deliverableManager.getDeliverableById(5));
+    linkedDeliverables.add(deliverableManager.getDeliverableById(6));
+    linkedDeliverables.add(deliverableManager.getDeliverableById(7));
+
+    linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(678));
+    linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(679));
+    linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(680));
+    // ----------------------------------
+
     LOG.info("They were loaded {} activities", activitiesList.size());
 
     for (int i = 0; i < activitiesList.size(); i++) {
-      message +=
-        "\n activity ID = " + activitiesList.get(i).getId() + ", " + "activity title = "
-          + activitiesList.get(i).getTitle();
+      message += "\n activity ID = " + activitiesList.get(i).getId() + ", " + "activity title = "
+        + activitiesList.get(i).getTitle();
     }
     return SUCCESS;
+  }
+
+  public List<Activity> getLinkedActivities() {
+    return linkedActivities;
+  }
+
+  public List<Deliverable> getLinkedDeliverables() {
+    return linkedDeliverables;
+  }
+
+  public List<ProjectPartner> getLinkedProjectPartners() {
+    return linkedProjectPartners;
   }
 
   public String getMessage() {
