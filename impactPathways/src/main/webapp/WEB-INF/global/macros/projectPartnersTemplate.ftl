@@ -85,15 +85,15 @@
             <p>[@s.text name="planning.projectPartners.noSelectedCCAFSPartners" /] </p>
           [/#if]
           <ul class="list"> 
-          [#if ppaPartner?has_content]
+          [#if ap.contributeInstitutions?has_content]
             [#list ap.contributeInstitutions as ppaPartner]
               <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
                 <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
-                <span class="name">${ppaPartner.getComposedName()}</span> 
+                <span class="name">${ppaPartner.composedName}</span> 
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]
-            [/#if]
+          [/#if]
           </ul>
           [#if editable]
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="projectPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
