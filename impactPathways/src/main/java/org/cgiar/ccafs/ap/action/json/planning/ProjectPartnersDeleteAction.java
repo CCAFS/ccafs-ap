@@ -65,20 +65,50 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   }
 
 
+  /**
+   * This method gets all the activities where the activity leaders are linked to this partner.
+   */
+  private void checkActivityLeaders() {
+    activitiesList = activityManager.getActivitiesByProjectPartner(projectPartnerID);
+  }
+
+  /**
+   * This method gets all the deliverables that are being contributed by this project partner
+   */
+  private void checkDeliverableContributions() {
+    linkedDeliverables = deliverableManager.getDeliverablesByProjectPartnerID(projectPartnerID);
+  }
+
+  /**
+   * This method gets all the Project Partners that are being contributed by this project partner.
+   */
+  private void checkProjectPartnerContributions() {
+    // TODO Auto-generated method stub
+  }
+
+
   @Override
   public String execute() {
-    activitiesList = activityManager.getActivitiesByProjectPartner(projectPartnerID);
+
+    // checking activity leaders.
+    this.checkActivityLeaders();
+
+    // Checking contribution to the deliverables.
+    this.checkDeliverableContributions();
+
+    // Checking project partner contributions.
+    this.checkProjectPartnerContributions();
 
     // ------------- TODO: TEST -------------
-    linkedActivities = new ArrayList<>();
-    linkedActivities.add(activityManager.getActivityById(3));
-    linkedActivities.add(activityManager.getActivityById(5));
-    linkedActivities.add(activityManager.getActivityById(6));
+    // linkedActivities = new ArrayList<>();
+    // linkedActivities.add(activityManager.getActivityById(3));
+    // linkedActivities.add(activityManager.getActivityById(5));
+    // linkedActivities.add(activityManager.getActivityById(6));
 
-    linkedDeliverables = new ArrayList<>();
-    linkedDeliverables.add(deliverableManager.getDeliverableById(5));
-    linkedDeliverables.add(deliverableManager.getDeliverableById(6));
-    linkedDeliverables.add(deliverableManager.getDeliverableById(7));
+    // linkedDeliverables = new ArrayList<>();
+    // linkedDeliverables.add(deliverableManager.getDeliverableById(5));
+    // linkedDeliverables.add(deliverableManager.getDeliverableById(6));
+    // linkedDeliverables.add(deliverableManager.getDeliverableById(7));
 
     linkedProjectPartners = new ArrayList<>();
     linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(678));
@@ -95,6 +125,7 @@ public class ProjectPartnersDeleteAction extends BaseAction {
     return SUCCESS;
   }
 
+
   public List<Activity> getLinkedActivities() {
     return linkedActivities;
   }
@@ -108,11 +139,6 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   }
 
   public String getMessage() {
-    if (activitiesList.size() <= 0) {
-      message = null;
-    } else {
-      message = warning + message;
-    }
     return message;
   }
 
@@ -120,14 +146,15 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   public void prepare() throws Exception {
 
     // setting a general message
-    warning = this.getText("planning.projectPartners.activities");
+    message = this.getText("planning.projectPartners.activities");
 
-    // Getting the project partner ID
-    String _partnerID = StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_PARTNER_REQUEST_ID));
+    // Getting the project partner ID from the URL parameter.
+    String partnerIDParameter =
+      StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_PARTNER_REQUEST_ID));
     try {
-      projectPartnerID = (_partnerID != null) ? Integer.parseInt(_partnerID) : -1;
+      projectPartnerID = (partnerIDParameter != null) ? Integer.parseInt(partnerIDParameter) : -1;
     } catch (NumberFormatException e) {
-      LOG.warn("There was an exception trying to convert to int the parameter {}", _partnerID);
+      LOG.warn("There was an exception trying to convert to int the parameter {}", partnerIDParameter);
       projectPartnerID = -1;
     }
 

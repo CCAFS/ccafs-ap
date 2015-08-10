@@ -169,7 +169,7 @@
         </div>
         [#-- Project Leader contact --] 
         <div class="fullPartBlock clearfix">
-          [@customForm.input name="contact-person" value="${(leader.user.composedName?html)!''}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
+          [@customForm.input name="contact-person-leader" value="${(leader.user.composedName?html)!''}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectLeader" required=true readOnly=true editable=editable/]
           <input class="userId" type="hidden" name="project.leader.user" value="${(leader.user.id)!"-1"}">
           <input class="partnerId" type="hidden" name="project.leader.id" value="${(leader.id)!"-1"}">
           <input class="type" type="hidden" name="project.leader.type" value="${typeProjectLeader}"> 
@@ -179,7 +179,7 @@
         [#-- Project Coordinator --]
         <div class="fullPartBlock clearfix">  
           [#assign coordinatorUserValue][#if coordinator.user?has_content ]${coordinator.user.id}[#else]-1[/#if][/#assign] 
-          [@customForm.input name="" value="${(coordinator.user.composedName?html)!''}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
+          [@customForm.input name="contact-person-coordinator" value="${(coordinator.user.composedName?html)!''}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.projectCoordinator"  readOnly=true editable=editable/]
           <input class="partnerId" type="hidden" name="project.coordinator.id" value="${(coordinator.id)!'-1'}">
           <input class="type" type="hidden" name="project.coordinator.type" value="${typeProjectCoordinator}">
           <input class="userId" type="hidden" name="project.coordinator.user" value="${coordinatorUserValue}">

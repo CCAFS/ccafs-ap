@@ -89,6 +89,15 @@ public interface DeliverableManager {
   public List<Deliverable> getDeliverablesByProject(int projectID);
 
   /**
+   * This method gets the list of deliverables that are being contributed by the given project partner.
+   * 
+   * @param projectPartnerID is the project partner identifier that is contributing to the deliverables.
+   * @return a list of Deliverable objects with the information requested, an empty list if nothing found or null
+   *         if some problem occurred.
+   */
+  public List<Deliverable> getDeliverablesByProjectPartnerID(int projectPartnerID);
+
+  /**
    * This method saves the information of the given deliverable that belong to a specific project into the database.
    * 
    * @param projectID is the project id where the deliverable belongs to.

@@ -151,6 +151,25 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
+  public List<Deliverable> getDeliverablesByProjectPartnerID(int projectPartnerID) {
+    List<Deliverable> deliverableList = new ArrayList<>();
+    List<Map<String, String>> deliverableDataList = deliverableDAO.getDeliverablesByProjectPartnerID(projectPartnerID);
+    for (Map<String, String> deliverableData : deliverableDataList) {
+      Deliverable deliverable = new Deliverable();
+      deliverable.setId(Integer.parseInt(deliverableData.get("id")));
+      deliverable.setTitle(deliverableData.get("title"));
+      deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
+      deliverable
+        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      deliverable.setTypeOther(deliverableData.get("type_other"));
+      deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
+      // adding information of the object to the array
+      deliverableList.add(deliverable);
+    }
+    return deliverableList;
+  }
+
+  @Override
   public int saveDeliverable(int projectID, Deliverable deliverable, User user, String justification) {
     Map<String, Object> deliverableData = new HashMap<>();
     if (deliverable.getId() != -1) {
