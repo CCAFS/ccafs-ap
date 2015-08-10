@@ -70,6 +70,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<Institution> allPPAPartners; // Is used to list all the PPA partners
   private List<Institution> projectPPAPartners; // Is used to list all the PPA partners selected in the current project.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
+  private List<Institution> contributionPartners; // this would get the partners contributing to others
 
   @Inject
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
@@ -97,6 +98,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   public List<User> getAllProjectLeaders() {
     return allProjectLeaders;
+  }
+
+  public List<Institution> getContributionPartners() {
+    return contributionPartners;
   }
 
   public List<Country> getCountries() {
@@ -207,6 +212,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     for (ProjectPartner partner : project.getProjectPartners()) {
       partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
     }
+
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
