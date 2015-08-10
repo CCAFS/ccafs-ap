@@ -31,6 +31,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if can add co-founded projects in the planning section
+   * 
+   * @return
+   */
+  public boolean canAddCofoundedProject() {
+    return this.hasPermission(Permission.PLANNING_COFUNDED_PROJECT_BUTTON);
+  }
+
+  /**
    * Verify if can add core projects in the planning section
    * 
    * @return
