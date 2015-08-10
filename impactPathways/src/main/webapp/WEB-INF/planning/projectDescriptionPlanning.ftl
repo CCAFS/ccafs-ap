@@ -38,7 +38,7 @@
     <div id="projectDescription" class="borderBox">
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name="projectID"]${projectID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>  
       <fieldset class="fullBlock">
