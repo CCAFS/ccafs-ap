@@ -81,6 +81,23 @@ public interface ProjectManager {
   public List<Project> getAllProjectsBasicInfo();
 
   /**
+   * This method returns the bilateral projects that contributes with the flagship and the regions received by
+   * parameter.
+   * Only the projects marked as financing are returned.
+   * If the parameters are '-1' they are not used to filter the list.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Project> getBilateralCofinancingProjects(int flagshipID, int regionID);
+
+  /**
+   * This method returns the list of all the bilateral projects.
+   * 
+   * @return a list of projects that only contains the id and title.
+   */
+  public List<Project> getBilateralProjects();
+
+  /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
    * 

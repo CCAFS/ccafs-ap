@@ -172,7 +172,7 @@ public class PartnersSaveAction extends BaseAction {
     message.append(".\n");
     message.append("\n");
     SendMail sendMail = new SendMail(this.config);
-    sendMail.send(config.getGmailUsername(), null, subject, message.toString());
+    sendMail.send(config.getEmailUsername(), null, subject, message.toString());
     messageSent = true;
 
     LOG.info("The user {} send a message requesting add partners to the activity {}", this.getCurrentUser().getEmail(),

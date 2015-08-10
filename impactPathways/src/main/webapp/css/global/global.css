@@ -82,6 +82,12 @@ input.disabled {
 .center {
   text-align: center !important;
 }
+.right {
+  text-align: right !important;
+}
+.left {
+  text-align: left !important;
+}
 
 .red {
   color: red;
@@ -1339,7 +1345,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 /*************** BODY ****************/
 .content {
-  margin: 0px 0px 40px 0; 
+  margin: 0px 0px 45px 0; 
 }
 .content:before,.content:after {
   content: "";
@@ -2359,7 +2365,7 @@ textarea[id$='summary'] {
 }
 
 .BILATERAL #linkedProjects .budget {
-    background-color: #F9F9F9;
+    background-color: #FFFFFF;
     padding: 9px 16px;
     border: 1px solid #DCDCDC;
     border-radius: 4px;

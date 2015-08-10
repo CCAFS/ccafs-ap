@@ -235,7 +235,7 @@ public class ManageUsersAction extends BaseAction {
     // To
     String toEmail = newUser.getEmail();
     // CC
-    String ccEmails = this.getCurrentUser().getEmail() + " " + this.config.getGmailUsername();
+    String ccEmails = this.getCurrentUser().getEmail() + " " + this.config.getEmailUsername();
     sendMail.send(toEmail, ccEmails, this.getText("planning.manageUsers.email.arrangement.credentials"),
       message.toString());
 

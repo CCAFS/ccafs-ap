@@ -189,7 +189,6 @@ function LinkedProjectObject(project){
     $(project).find('.budgetAmount').val(setCurrencyFormat(0));
   };
   this.setIndex = function (index){
-    console.log(index);
     var elementName= "project.budget["+index+"].";
     $(project).find('.budgetId').attr('name', elementName+"id");
     $(project).find('.budgetYear').attr('name', elementName+"year");

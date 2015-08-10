@@ -75,7 +75,6 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectDAO.deleteProjectIndicator(projectID, indicatorID, user.getId(), justification);
   }
 
-
   @Override
   public boolean deleteProject(int projectID, User user, String justification) {
     boolean result = true;
@@ -94,11 +93,11 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectDAO.deleteProjectOutput(projectID, outputID, outcomeID, userID, justification);
   }
 
-
   @Override
   public boolean existProject(int projectId) {
     return projectDAO.existProject(projectId);
   }
+
 
   @Override
   public List<Project> getAllProjectsBasicInfo() {
@@ -156,6 +155,38 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getBilateralCofinancingProjects(int flagshipID, int regionID) {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsData = projectDAO.getBilateralCofinancingProjects(flagshipID, regionID);
+
+    for (Map<String, String> projectData : projectsData) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectData.get("id")));
+      project.setTitle(projectData.get("title"));
+
+      projects.add(project);
+    }
+
+    return projects;
+  }
+
+  @Override
+  public List<Project> getBilateralProjects() {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsData = projectDAO.getBilateralProjects();
+
+    for (Map<String, String> projectData : projectsData) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectData.get("id")));
+      project.setTitle(projectData.get("title"));
+
+      projects.add(project);
+    }
+
+    return projects;
+  }
+
+  @Override
   public List<Project> getCoreProjects(int flagshipID, int regionID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsData = projectDAO.getCoreProjects(flagshipID, regionID);
@@ -186,6 +217,7 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
       project.setWorkplanRequired(projectData.get("requires_workplan_upload").equals("1"));
+      project.setCofinancing(projectData.get("is_cofinancing").equals("1"));
       project.setGlobal(projectData.get("is_global").equals("1"));
       // Format to the Dates of the project
       if (projectData.get("start_date") != null) {
@@ -285,11 +317,11 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
+
   @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getId());
   }
-
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
@@ -321,6 +353,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
     return indicators;
   }
+
 
   @Override
   public List<Project> getProjectsByProgram(int programId) {
@@ -367,7 +400,6 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectsList;
   }
 
-
   @Override
   public List<Project> getProjectsList(String[] values) {
     List<Project> projects = new ArrayList<>();
@@ -403,6 +435,7 @@ public class ProjectManagerImpl implements ProjectManager {
       projectData.put("title", project.getTitle());
       projectData.put("summary", project.getSummary());
       projectData.put("is_core", project.isCoreProject());
+      projectData.put("is_cofinancing", project.isCofinancing());
       SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
       if (project.getStartDate() != null) {
         projectData.put("start_date", format.format(project.getStartDate()));
