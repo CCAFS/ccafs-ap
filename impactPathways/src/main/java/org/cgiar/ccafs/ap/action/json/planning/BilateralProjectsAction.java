@@ -37,7 +37,6 @@ public class BilateralProjectsAction extends BaseAction {
 
   private ProjectManager projectManager;
   private List<Project> projects;
-  private int flagshipID, regionID;
 
   @Inject
   public BilateralProjectsAction(APConfig config, ProjectManager projectManager) {

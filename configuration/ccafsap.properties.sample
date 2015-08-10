@@ -69,9 +69,10 @@ file.downloads=localhost/ccafspr_ip/
 # ------------------------------------------------
 
 # Mail configuration
-gmail.user=
-gmail.password=
-
+email.user=
+email.password=
+email.host=
+email.port=
 
 # ------------------------------------------------
 #             Logger properties

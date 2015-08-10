@@ -67,8 +67,8 @@ public class SendMail {
 
     properties.put("mail.smtp.auth", "true");
     properties.put("mail.smtp.starttls.enable", "true");
-    properties.put("mail.smtp.host", "smtp.gmail.com");
-    properties.put("mail.smtp.port", "587");
+    properties.put("mail.smtp.host", config.getEmailHost());
+    properties.put("mail.smtp.port", config.getEmailPort());
 
     // Un-comment this line to watch javaMail debug
     // properties.put("mail.debug", "true");
@@ -78,7 +78,7 @@ public class SendMail {
 
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(config.getGmailUsername(), config.getGmailPassword());
+        return new PasswordAuthentication(config.getEmailUsername(), config.getEmailPassword());
       }
     });
 
@@ -87,8 +87,7 @@ public class SendMail {
 
     // Set the FROM and TO fields
     try {
-      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername()
-        : config.getGmailUsername() + "@gmail.com"));
+      msg.setFrom(new InternetAddress(config.getEmailUsername()));
       msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
       if (ccEmail != null) {
         msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccEmail, false));
@@ -104,7 +103,6 @@ public class SendMail {
     }
   }
 
-
   public void sendMailWithAttachment(String toEmail, String subject, String messageContent, String filePath,
     String fileName) {
 
@@ -113,8 +111,8 @@ public class SendMail {
 
     properties.put("mail.smtp.auth", "true");
     properties.put("mail.smtp.starttls.enable", "true");
-    properties.put("mail.smtp.host", "smtp.gmail.com");
-    properties.put("mail.smtp.port", "587");
+    properties.put("mail.smtp.host", config.getEmailHost());
+    properties.put("mail.smtp.port", config.getEmailPort());
 
     // Un-comment this line to watch javaMail debug
     // properties.put("mail.debug", "true");
@@ -124,7 +122,7 @@ public class SendMail {
 
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(config.getGmailUsername(), config.getGmailPassword());
+        return new PasswordAuthentication(config.getEmailUsername(), config.getEmailPassword());
       }
     });
 
@@ -134,8 +132,7 @@ public class SendMail {
     // Set the FROM and TO fields
     try {
       // Headers
-      msg.setFrom(new InternetAddress(config.getGmailUsername().contains("@") ? config.getGmailUsername()
-        : config.getGmailUsername() + "@gmail.com"));
+      msg.setFrom(new InternetAddress(config.getEmailUsername()));
       msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
       msg.setSubject(subject);
       msg.setSentDate(new Date());
