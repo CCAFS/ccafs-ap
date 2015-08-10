@@ -105,6 +105,7 @@ public class ProjectPartnersValidator extends BaseValidator {
   private boolean validatePartners(Project project) {
     boolean problem = false;
     boolean duplicated = false;
+    boolean contributionEmpty = false;
     List<ProjectPartner> allProjectPartners = new ArrayList<ProjectPartner>();
     allProjectPartners.add(project.getLeader());
     allProjectPartners.addAll(project.getPPAPartners());
@@ -114,16 +115,8 @@ public class ProjectPartnersValidator extends BaseValidator {
       this.addFieldError("project.leader.institution", this.getText("planning.projectPartners.selectInstitution"));
       problem = true;
     }
+
     // validating null fields on institution
-    for (int c = 0; c < project.getProjectPartners().size(); c++) {
-      if (project.getProjectPartners().get(c).getInstitution() == null
-        || project.getProjectPartners().get(c).getInstitution().getId() == -1) {
-        // Indicate problem in the missing field.
-        this.addFieldError("project.projectPartners[" + c + "].institution",
-          this.getText("planning.projectPartners.selectInstitution"));
-        problem = true;
-      }
-    }
     for (int c = 0; c < project.getPPAPartners().size(); c++) {
       if (project.getPPAPartners().get(c).getInstitution() == null
         || project.getPPAPartners().get(c).getInstitution().getId() == -1) {
@@ -133,22 +126,17 @@ public class ProjectPartnersValidator extends BaseValidator {
         problem = true;
       }
     }
-    // Validating repeated partners
-    for (int i = 0; i < project.getProjectPartners().size(); i++) {
-      for (int j = i + 1; j < project.getProjectPartners().size(); j++) {
-        if (project.getProjectPartners().get(i).getUser() != null
-          && project.getProjectPartners().get(j).getUser() != null) {
-          if (project.getProjectPartners().get(i).getInstitution().getId() == project.getProjectPartners().get(j)
-            .getInstitution().getId()
-            && project.getProjectPartners().get(i).getUser().getId() == project.getProjectPartners().get(j).getUser()
-            .getId()) {
-            problem = true;
-            duplicated = true;
-          }
-        }
+
+    for (int c = 0; c < project.getProjectPartners().size(); c++) {
+      if (project.getProjectPartners().get(c).getInstitution() == null
+        || project.getProjectPartners().get(c).getInstitution().getId() == -1) {
+        // Indicate problem in the missing field.
+        this.addFieldError("project.projectPartners[" + c + "].institution",
+          this.getText("planning.projectPartners.selectInstitution"));
+        problem = true;
       }
     }
-
+    // Validating repeated partners
     for (int i = 0; i < project.getPPAPartners().size(); i++) {
       for (int j = i + 1; j < project.getPPAPartners().size(); j++) {
         if (project.getPPAPartners().get(i).getUser() != null && project.getPPAPartners().get(j).getUser() != null) {
@@ -161,6 +149,21 @@ public class ProjectPartnersValidator extends BaseValidator {
         }
       }
     }
+    for (int i = 0; i < project.getProjectPartners().size(); i++) {
+      for (int j = i + 1; j < project.getProjectPartners().size(); j++) {
+        if (project.getProjectPartners().get(i).getUser() != null
+          && project.getProjectPartners().get(j).getUser() != null) {
+          if (project.getProjectPartners().get(i).getInstitution().getId() == project.getProjectPartners().get(j)
+            .getInstitution().getId()
+            && project.getProjectPartners().get(i).getUser().getId() == project.getProjectPartners().get(j).getUser()
+              .getId()) {
+            problem = true;
+            duplicated = true;
+          }
+        }
+      }
+    }
+
     // Validating with all partners
     for (int i = 0; i < allProjectPartners.size(); i++) {
       for (int j = i + 1; j < allProjectPartners.size(); j++) {
@@ -173,9 +176,22 @@ public class ProjectPartnersValidator extends BaseValidator {
         }
       }
     }
+    // validate contribution partners
+    for (int j = 0; j < allProjectPartners.size(); j++) {
+      if (project.getPPAPartners().size() > 0) {
+        if (allProjectPartners.get(j).getContributeInstitutions() == null) {
+          contributionEmpty = true;
+          problem = true;
+        }
+      }
+    }
 
     if (duplicated) {
       this.addFieldError("Project partners, duplicated records", this.getText("planning.projectPartners.duplicated"));
+    }
+    if (contributionEmpty) {
+      this.addFieldError("Project Partners, contribute Institutions empty",
+        this.getText("planning.projectPartners.contributingInstitutions"));
     }
 
     return problem;
