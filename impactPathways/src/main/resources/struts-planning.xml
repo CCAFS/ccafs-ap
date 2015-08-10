@@ -36,14 +36,14 @@
         <param name="edit">true</param>
       </result>
     </action>
-    
-    <action name="addCoFundedProject" class="org.cgiar.ccafs.ap.action.BaseAction">
+
+    <action name="addCoFundedProject" class="org.cgiar.ccafs.ap.action.planning.AddCofoundedProjectPlanningAction">
       <result name="input">/WEB-INF/global/pages/addCoFundedProject.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">addCoFundedProject</param>
       </result>
     </action>
-    
+
   </package>
   
   <package name="planningProjects" namespace="/planning/projects" extends="ccafsap-default">
