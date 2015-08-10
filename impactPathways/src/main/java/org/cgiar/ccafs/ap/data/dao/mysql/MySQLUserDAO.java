@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
-import org.cgiar.ccafs.security.Role;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -92,15 +91,8 @@ public class MySQLUserDAO implements UserDAO {
       StringBuilder query = new StringBuilder();
       query.append("SELECT u.id, u.first_name, u.last_name, u.email ");
       query.append("FROM users u ");
-      query.append("INNER JOIN user_roles ur ON u.id = ur.user_id ");
-      query.append("INNER JOIN roles ro ON ur.role_id = ro.id ");
-      query.append("WHERE ro.acronym = '");
-      query.append(Role.FPL);
-      query.append("' OR ro.acronym = '");
-      query.append(Role.RPL);
-      query.append("' OR ro.acronym = '");
-      query.append(Role.CU);
-      query.append("' GROUP BY u.id ");
+      query.append("INNER JOIN liaison_users lu ON u.id = lu.user_id ");
+      query.append("GROUP BY u.id ");
       query.append("ORDER BY u.last_name ");
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
@@ -220,8 +212,8 @@ public class MySQLUserDAO implements UserDAO {
 
   @Override
   public int getEmployeeID(int userId, int institutionId, int roleId) {
-    LOG.debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})",
-      new Object[] {userId, institutionId, roleId});
+    LOG
+      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
     int result = -1;
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
@@ -413,8 +405,8 @@ public class MySQLUserDAO implements UserDAO {
     Object[] values;
     if (userData.get("id") == null) {
       // Insert new record
-      query.append(
-        "INSERT INTO users (id, first_name, last_name, username, email, password, is_ccafs_user, created_by, is_active) ");
+      query
+        .append("INSERT INTO users (id, first_name, last_name, username, email, password, is_ccafs_user, created_by, is_active) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[9];
       values[0] = userData.get("id");
@@ -428,8 +420,8 @@ public class MySQLUserDAO implements UserDAO {
       values[8] = userData.get("is_active");
     } else {
       // update record
-      query.append(
-        "UPDATE users SET first_name = ?, last_name = ?, username = ?, email = ?, password = ?, is_ccafs_user = ?, is_active = ? ");
+      query
+        .append("UPDATE users SET first_name = ?, last_name = ?, username = ?, email = ?, password = ?, is_ccafs_user = ?, is_active = ? ");
       query.append("WHERE id = ? ");
       values = new Object[8];
       values[0] = userData.get("first_name");
