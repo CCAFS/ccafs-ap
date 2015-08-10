@@ -32,10 +32,9 @@
     <p>
       [@s.text name="planning.activities.help1" /] 
       <a href="[@s.url namespace="/" action='glossary'][/@s.url]#activity">[@s.text name="planning.activities.activities" /]</a>
-      [@s.text name="planning.activities.help2" /] 
-      <a href="[@s.url namespace="/" action='glossary'][/@s.url]#activity">[@s.text name="planning.activities.activityLeader" /]</a> 
+      [@s.text name="planning.activities.help2" /]
     </p>
-    <p>[@s.text name="planning.activities.help3" /]</p>
+    
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
     <article class="halfContent" id="activities">
