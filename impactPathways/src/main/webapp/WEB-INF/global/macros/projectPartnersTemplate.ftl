@@ -77,7 +77,7 @@
     [/#if]
     [#-- Indicate which PPA Partners for second level partners --]
     [#if !isPPA && !isBilateral]
-    <div class="fullPartBlock">      
+    <div class="fullPartBlock">
       <div class="ppaPartnersList panel tertiary">
         <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
         <div class="panel-body">
