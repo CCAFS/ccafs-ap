@@ -47,6 +47,11 @@ public class Permission {
   public static final String PLANNING_PROJECT_LIST_ALL = "planning:projects:projectList:*";
 
   /**
+   * Can use all the functions adding a Co-Funded Project
+   */
+  public static final String PLANNING_ADD_COFUNDED_PROJECT = "planning:projects:addCoFundedProject:*";
+
+  /**
    * Can use the "add core project" button in the planning projects list section
    */
   public static final String PLANNING_CORE_PROJECT_BUTTON = "planning:projects:projectList:coreProjectButton:*";
