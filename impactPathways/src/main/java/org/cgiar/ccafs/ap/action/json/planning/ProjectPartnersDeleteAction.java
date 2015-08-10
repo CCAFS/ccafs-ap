@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -69,14 +70,17 @@ public class ProjectPartnersDeleteAction extends BaseAction {
     activitiesList = activityManager.getActivitiesByProjectPartner(projectPartnerID);
 
     // ------------- TODO: TEST -------------
+    linkedActivities = new ArrayList<>();
     linkedActivities.add(activityManager.getActivityById(3));
     linkedActivities.add(activityManager.getActivityById(5));
     linkedActivities.add(activityManager.getActivityById(6));
 
+    linkedDeliverables = new ArrayList<>();
     linkedDeliverables.add(deliverableManager.getDeliverableById(5));
     linkedDeliverables.add(deliverableManager.getDeliverableById(6));
     linkedDeliverables.add(deliverableManager.getDeliverableById(7));
 
+    linkedProjectPartners = new ArrayList<>();
     linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(678));
     linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(679));
     linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(680));
