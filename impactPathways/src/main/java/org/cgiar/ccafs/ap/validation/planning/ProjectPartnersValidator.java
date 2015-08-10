@@ -113,10 +113,14 @@ public class ProjectPartnersValidator extends BaseValidator {
         problem = true;
       }
 
-      // TODO validate project leader and coordinator repeated.
+      // Validate project leader and coordinator are not repeated.
+      result = this.validateLeaderAndCoordinator(action, project);
+      if (result) {
+        problem = true;
+      }
 
-      // Validating repeated partners.
-      if (problem) {
+      // Validating repeated partners if there is not empty fields.
+      if (!problem) {
         // Do not validate repeated partners until the empty fields are filled.
         result = this.validateRepeatedPartners(action, project);
       }
@@ -177,6 +181,17 @@ public class ProjectPartnersValidator extends BaseValidator {
     return problem;
   }
 
+  private boolean validateLeaderAndCoordinator(BaseAction action, Project project) {
+    if (project.getLeader() != null && project.getCoordinator() != null
+      && project.getLeader().getId() == project.getCoordinator().getId()) {
+      action.addActionError(this.getText("planning.projectPartners.duplicated.PLPC"));
+      action.addFieldError("contact-person-leader", this.getText("validation.duplicated"));
+      action.addFieldError("contact-person-coordinator", this.getText("validation.duplicated"));
+      return true;
+    }
+    return false;
+  }
+
   private boolean validatePartners(BaseAction action, Project project) {
     boolean problem = false;
     boolean contributionEmpty = false;
@@ -219,7 +234,6 @@ public class ProjectPartnersValidator extends BaseValidator {
     allPartners.addAll(project.getProjectPartners());
 
     boolean problem = false;
-    boolean duplicated = false;
 
     // Validating repeated partners for each section.
     if (ActionContext.getContext().getName().equals("partnerLead")) {
@@ -232,7 +246,7 @@ public class ProjectPartnersValidator extends BaseValidator {
             problem = true;
             action.addActionError(this.getText("planning.projectPartners.duplicated"));
             action.addFieldError("project.leader.institution", this.getText("validation.duplicated"));
-            action.addFieldError("contact-person", this.getText("validation.duplicated"));
+            action.addFieldError("contact-person-leader", this.getText("validation.duplicated"));
           }
         }
       }
