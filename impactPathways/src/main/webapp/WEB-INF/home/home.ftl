@@ -21,20 +21,14 @@
         <div id="dashboardTitle" class="homeTitle"><b>[@s.text name="home.dashboard.name" /]</b></div> 
         <div id="dashboard">
           <ul class="dashboardHeaders">
-            <li class="">
-              <a href="#projects">[@s.text name="home.dashboard.projects" /]</a>
-            </li>
-            <li class="">
-               <a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a>
-            </li>
+            <li class=""><a href="#projects">[@s.text name="home.dashboard.projects" /]</a></li>
+            <li class=""><a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a></li>
           </ul> <!-- End dashboardHeaders -->
           <div id="projects"> 
             [#if projects?has_content]
               [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
             [#else]
-              <p class="emptyMessage">
-                [@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projects" /][/@s.param][/@s.text]
-              <p>
+              <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projects" /][/@s.param][/@s.text]<p>
             [/#if]
           </div>
           <div id="ipGraph-content" style="position: relative;">
@@ -43,7 +37,7 @@
             </div>
           </div>
         </div> <!-- End dashboard -->
-      </div><!-- End Ajax loader -->
+      </div><!-- End loader div -->
       [#-- Deadline --]
       <div id="deadlineTitle"  class="homeTitle">
         <b>[@s.text name="home.dashboard.deadline.title" /]</b>
@@ -56,18 +50,10 @@
           <div class="point inactive">4</div>
         </div>
         <div id="deadlineGraph">
-          <div class="textPoint">
-            [@s.text name="home.dashboard.deadline.planning" /] 
-          </div>
-          <div class="textPoint">
-            [@s.text name="home.dashboard.deadline.summaries" /] 
-          </div>
-          <div class="textPoint">
-            [@s.text name="home.dashboard.deadline.reporting" /]
-          </div>
-          <div class="textPoint">
-            [@s.text name="home.dashboard.deadline.learnValidation" /] 
-          </div>
+          <div class="textPoint">[@s.text name="home.dashboard.deadline.planning" /] </div>
+          <div class="textPoint">[@s.text name="home.dashboard.deadline.summaries" /] </div>
+          <div class="textPoint">[@s.text name="home.dashboard.deadline.reporting" /]</div>
+          <div class="textPoint">[@s.text name="home.dashboard.deadline.learnValidation" /] </div>
         </div>
         <div id="deadlineDates">
           <table>
@@ -84,7 +70,6 @@
       </div> <!-- End deadline -->
       
     </div> <!-- End leftSide -->
-    
     <div id="rightSide">
       [#-- P&R Description --]
       <div id="pandrDescription">
@@ -97,8 +82,8 @@
         </div>
       </div> <!-- End pandrDescription -->
     </div> <!-- End rightSide -->
+    
   </div> <!-- End content -->
-
 </article>
 [#-- Show P&R proccess workflow --]
 <div id="showPandRWorkflowDialog" style="display:none; height:100%;  width: 100%;" title="[@s.text name="home.dashboard.workflow" /]"> 

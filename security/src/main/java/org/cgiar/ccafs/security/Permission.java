@@ -47,6 +47,11 @@ public class Permission {
   public static final String PLANNING_PROJECT_LIST_ALL = "planning:projects:projectList:*";
 
   /**
+   * Can use all the functions adding a Co-Funded Project
+   */
+  public static final String PLANNING_ADD_COFUNDED_PROJECT = "planning:projects:addCoFundedProject:*";
+
+  /**
    * Can use the "add core project" button in the planning projects list section
    */
   public static final String PLANNING_CORE_PROJECT_BUTTON = "planning:projects:projectList:coreProjectButton:*";
@@ -234,6 +239,18 @@ public class Permission {
   public static final String PLANNING_PROJECT_BUDGET_UPDATE = "planning:projects:budget:update";
 
   /**
+   * Can update the W1/W2 budget in the planning project budget section
+   */
+  public static final String PLANNING_PROJECT_BUDGET_ANNUAL_W1W2_UPDATE = "planning:projects:budget:annualW1w2:update";
+
+  /**
+   * Can update the W3/Bilateral budget in the planning project budget section
+   */
+  public static final String PLANNING_PROJECT_ANNUAL_BUDGET_W3BILATERAL_UPDATE =
+    "planning:projects:budget:annualBilateral:update";
+
+
+  /**
    * Can update the planning project budget by MOG section
    */
   public static final String PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE = "planning:projects:budgetByMog:update";
@@ -377,6 +394,16 @@ public class Permission {
    * Can update the project budget section of some specific project
    */
   public static final String PROJECT_BUDGET_UPDATE = "project:budget:update";
+
+  /**
+   * Can update the W1/W2 budget in the project budget section of some specific project
+   */
+  public static final String PROJECT_BUDGET_ANNUAL_W1W2_UPDATE = "project:budget:annualW1w2:update";
+
+  /**
+   * Can update the W3/Bilateral budget in the project budget section of some specific project
+   */
+  public static final String PROJECT_ANNUAL_BUDGET_W3BILATERAL_UPDATE = "projects:budget:annualBilateral:update";
 
   /**
    * Can update the project budget section of some specific project

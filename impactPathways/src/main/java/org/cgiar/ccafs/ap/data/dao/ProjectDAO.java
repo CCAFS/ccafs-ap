@@ -62,7 +62,6 @@ public interface ProjectDAO {
    */
   public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification);
 
-
   /**
    * This method validate if the project exists in the database.
    * 
@@ -70,6 +69,7 @@ public interface ProjectDAO {
    * @return true if the project exists or false otherwise.
    */
   public boolean existProject(int projectId);
+
 
   /**
    * This method return all the Projects
@@ -88,6 +88,16 @@ public interface ProjectDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getAllProjectsBasicInfo();
+
+  /**
+   * This method returns the bilateral projects that contributes with the flagship and the regions received by
+   * parameter.
+   * Only the projects marked as financing are returned.
+   * If the parameters are '-1' they are not used to filter the list.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getBilateralCofinancingProjects(int flagshipID, int regionID);
 
   /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.

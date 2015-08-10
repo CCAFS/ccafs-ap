@@ -82,6 +82,12 @@ input.disabled {
 .center {
   text-align: center !important;
 }
+.right {
+  text-align: right !important;
+}
+.left {
+  text-align: left !important;
+}
 
 .red {
   color: red;
@@ -1339,7 +1345,7 @@ a.currentReportingSection li #i-additionalInformation{
 
 /*************** BODY ****************/
 .content {
-  margin: 0px 0px 40px 0; 
+  margin: 0px 0px 45px 0; 
 }
 .content:before,.content:after {
   content: "";
@@ -1692,8 +1698,17 @@ input.userName {
   float: left;
 }
 
-#loginContainer .leftSide .introduction {
+#loginContainer .introduction {
   text-align: justify;
+  font-style: italic;
+}
+
+#loginContainer .disclaimer {
+  padding: 10px;
+  margin-top: 15px;
+  /* background-color: #F7F7D5; */
+  font-weight: 600;
+  color: #663300;
 }
 
 #loginContainer .leftSide {
@@ -1706,12 +1721,7 @@ input.userName {
   float: right;
 }
 
-#loginContainer .disclaimer {
-  text-align: center;
-  font-size: 1.1em;
-}
-
-#loginContainer .disclaimer #imgModal {
+#loginContainer #imgModal {
   box-shadow: none;
   text-align: center;
   width: 65%;
@@ -2355,7 +2365,7 @@ textarea[id$='summary'] {
 }
 
 .BILATERAL #linkedProjects .budget {
-    background-color: #F9F9F9;
+    background-color: #FFFFFF;
     padding: 9px 16px;
     border: 1px solid #DCDCDC;
     border-radius: 4px;
