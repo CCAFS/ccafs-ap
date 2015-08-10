@@ -167,15 +167,13 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, String>> projectList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    String regionsSubquery =
-      "SELECT GROUP_CONCAT(ipp.acronym) "
-        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
+    String regionsSubquery = "SELECT GROUP_CONCAT(ipp.acronym) "
+      + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+      + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
 
-    String flagshipsSubquery =
-      "SELECT GROUP_CONCAT(ipp.acronym) "
-        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
+    String flagshipsSubquery = "SELECT GROUP_CONCAT(ipp.acronym) "
+      + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
+      + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
     query.append("SELECT p.id, p.title, p.type, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
@@ -420,7 +418,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.*, u.id as 'owner_id', i.id as 'owner_institution_id'");
+    query.append("SELECT p.*, u.id as 'owner_id', i.id as 'owner_institution_id' ");
     query.append("FROM projects as p ");
     query.append("INNER JOIN liaison_users lu ON p.liaison_user_id = lu.id ");
     query.append("INNER JOIN users u ON lu.user_id = u.id ");
@@ -602,8 +600,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
       rs.close();
     } catch (SQLException e) {
-      LOG
-        .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
+      LOG.error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID,
+        e);
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
     return projectIds;
@@ -795,8 +793,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     int newId = -1;
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
-      query
-        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+      query.append(
+        "INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -828,8 +826,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
     } else {
       // UPDATE the record into the database.
-      query
-        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
+      query.append(
+        "UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
       query.append("WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -927,10 +925,9 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
-      LOG
-        .warn(
-          "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
-          indicatorData);
+      LOG.warn(
+        "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
+        indicatorData);
       LOG.debug("<< saveProjectIndicators(): {}", false);
       return false;
     }
@@ -1015,9 +1012,8 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public boolean updateProjectTypes() {
 
-    int result =
-      databaseManager.saveData("UPDATE projects SET type = ? WHERE type = ?", new Object[] {APConstants.PROJECT_CORE,
-        APConstants.PROJECT_CCAFS_COFUNDED});
+    int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE type = ?",
+      new Object[] {APConstants.PROJECT_CORE, APConstants.PROJECT_CCAFS_COFUNDED});
 
     StringBuilder query = new StringBuilder();
     query.append("UPDATE projects p ");
