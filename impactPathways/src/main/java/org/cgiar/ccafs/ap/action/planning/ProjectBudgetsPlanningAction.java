@@ -222,15 +222,15 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       // Getting the year from the URL parameters.
       try {
         String parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
-        year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : allYears.get(0);
+        year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : config.getPlanningCurrentYear();
       } catch (NumberFormatException e) {
         LOG.warn("-- prepare() > There was an error parsing the year '{}'.", year);
-        // Set the first year of the project as current
-        year = allYears.get(0);
+        // Set the current year as default
+        year = config.getPlanningCurrentYear();
       }
 
       if (!allYears.contains(new Integer(year))) {
-        year = allYears.get(0);
+        year = config.getPlanningCurrentYear();
       }
 
       if (project.getLeader() != null) {
