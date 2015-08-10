@@ -10,14 +10,13 @@
 
 <article>
   <div id="loginContainer" class="content">
+      [#-- Login introduction  --]
       <h1>[@s.text name="home.login.title" /]</h1>
       <p class="introduction">[@s.text name="home.login.introduction" /]</p>
+      <p class="disclaimer">[@s.text name="home.login.disclaimer" /]</p>
     <div class="leftSide">
-      [#-- Login introduction  --]
-      <div class="disclaimer">
-        <div id="imgPandR">
-          <a href="#" onClick="workflowModal()"><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
-        </div>
+      <div id="imgPandR">
+        <a href="#" onClick="workflowModal()"><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
       </div>
     </div> <!-- End Left Side -->
     <div class="rightSide">

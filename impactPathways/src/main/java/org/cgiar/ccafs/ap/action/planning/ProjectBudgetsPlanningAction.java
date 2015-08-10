@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
@@ -55,6 +56,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
   private ProjectCofinancingLinkageManager linkedCoreProjectManager;
+  private BudgetOverheadManager overheadManager;
   private HistoryManager historyManager;
 
   private ProjectBudgetPlanningValidator validator;
@@ -73,20 +75,34 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
-    ProjectBudgetPlanningValidator validator, ProjectPartnerManager projectPartnerManager,
-    ProjectCofinancingLinkageManager linkedCoreProjectManager, ProjectManager projectManager,
-    HistoryManager historyManager) {
+    BudgetOverheadManager overheadManager, ProjectBudgetPlanningValidator validator,
+    ProjectPartnerManager projectPartnerManager, ProjectCofinancingLinkageManager linkedCoreProjectManager,
+    ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
     this.linkedCoreProjectManager = linkedCoreProjectManager;
     this.historyManager = historyManager;
+    this.overheadManager = overheadManager;
     this.validator = validator;
   }
 
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  public Budget getBilateralCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+    List<Budget> budgets = budgetManager.getBudgetsByYear(projectID, year);
+
+    for (Budget budget : budgets) {
+      if (budget.getCofinancingProject() != null) {
+        if (budget.getCofinancingProject().getId() == cofinanceProjectID) {
+          return budget;
+        }
+      }
+    }
+    return null;
   }
 
   public Project getProject() {
@@ -133,6 +149,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return year;
   }
 
+
   public boolean isHasLeader() {
     return hasLeader;
   }
@@ -158,6 +175,8 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
     } else {
       project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
+
+      project.setOverhead(overheadManager.getProjectBudgetOverhead(projectID));
     }
 
     if (project.getLinkedProjects() != null) {
@@ -167,7 +186,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       }
       previousProject.setLinkedProjects(linkedProjects);
     }
-
 
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
@@ -241,21 +259,44 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
   }
 
-
   @Override
   public String save() {
     if (securityContext.canUpdateProjectBudget()) {
-      boolean success = true;
+      boolean success = true, saved = false;
+
       for (Budget budget : project.getBudgets()) {
-        boolean saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
+        if (budget.getCofinancingProject() == null) {
+          saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
+        } else {
+          Project cofinancingProject = budget.getCofinancingProject();
+          // Getting the Project Leader.
+          List<ProjectPartner> ppArray =
+            projectPartnerManager.getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
+          if (!ppArray.isEmpty()) {
+            cofinancingProject.setLeader(ppArray.get(0));
+
+            // The co-financing budget belongs to the project which receive it.
+            budget.setCofinancingProject(project);
+            budget.setInstitution(cofinancingProject.getLeader().getInstitution());
+            saved =
+              budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
+                this.getJustification());
+          } else {
+            String projectID = "2014-" + cofinancingProject.getId();
+            this
+              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+          }
+        }
 
         if (!saved) {
           success = false;
         }
       }
 
-      // Save the contributing core projects if any
       if (project.isBilateralProject()) {
+        // Save the budget overhead
+        overheadManager.saveProjectBudgetOverhead(project, this.getCurrentUser(), this.getJustification());
+
         // First delete the core projects un-selected
         List<Integer> linkedProjectsToDelete = new ArrayList<>();
         for (Project p : previousProject.getLinkedProjects()) {
@@ -293,7 +334,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
     return NOT_AUTHORIZED;
   }
-
 
   public void setProject(Project project) {
     this.project = project;
