@@ -67,6 +67,7 @@ public class SendMail {
 
     properties.put("mail.smtp.auth", "true");
     properties.put("mail.smtp.starttls.enable", "true");
+    properties.put("mail.smtp.ssl.trust", config.getEmailHost());
     properties.put("mail.smtp.host", config.getEmailHost());
     properties.put("mail.smtp.port", config.getEmailPort());
 
