@@ -289,9 +289,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("INNER JOIN budget_types bt ON pb.budget_type = bt.id ");
     query.append("INNER JOIN institutions i ON pb.institution_id = i.id ");
     query.append("LEFT JOIN projects p ON pb.cofinance_project_id = p.id ");
-    query.append("WHERE pb.project_id=  ");
+    query.append("WHERE ( pb.project_id=  ");
     query.append(projectID);
-    query.append(" AND pb.year=  ");
+    query.append(" OR pb.cofinance_project_id =  ");
+    query.append(projectID);
+    query.append(" ) AND pb.year=  ");
     query.append(year);
 
     try (Connection con = databaseManager.getConnection()) {

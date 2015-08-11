@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
@@ -29,6 +30,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetPlanningValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +56,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
   private ProjectCofinancingLinkageManager linkedCoreProjectManager;
+  private BudgetOverheadManager overheadManager;
   private HistoryManager historyManager;
 
   private ProjectBudgetPlanningValidator validator;
@@ -68,23 +71,38 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private boolean invalidYear;
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
+  private Project previousProject;
 
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
-    ProjectBudgetPlanningValidator validator, ProjectPartnerManager projectPartnerManager,
-    ProjectCofinancingLinkageManager linkedCoreProjectManager, ProjectManager projectManager,
-    HistoryManager historyManager) {
+    BudgetOverheadManager overheadManager, ProjectBudgetPlanningValidator validator,
+    ProjectPartnerManager projectPartnerManager, ProjectCofinancingLinkageManager linkedCoreProjectManager,
+    ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
     this.linkedCoreProjectManager = linkedCoreProjectManager;
     this.historyManager = historyManager;
+    this.overheadManager = overheadManager;
     this.validator = validator;
   }
 
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  public Budget getBilateralCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+    List<Budget> budgets = budgetManager.getBudgetsByYear(projectID, year);
+
+    for (Budget budget : budgets) {
+      if (budget.getCofinancingProject() != null) {
+        if (budget.getCofinancingProject().getId() == cofinanceProjectID) {
+          return budget;
+        }
+      }
+    }
+    return null;
   }
 
   public Project getProject() {
@@ -131,6 +149,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return year;
   }
 
+
   public boolean isHasLeader() {
     return hasLeader;
   }
@@ -143,6 +162,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    previousProject = new Project();
     // Getting the project id from the URL parameter
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -152,7 +172,19 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // If project is CCAFS cofounded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
+    } else {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
+
+      project.setOverhead(overheadManager.getProjectBudgetOverhead(projectID));
+    }
+
+    if (project.getLinkedProjects() != null) {
+      List<Project> linkedProjects = new ArrayList<>();
+      for (Project p : project.getLinkedProjects()) {
+        linkedProjects.add(new Project(p.getId()));
+      }
+      previousProject.setLinkedProjects(linkedProjects);
     }
 
     // Getting the Project Leader.
@@ -190,15 +222,15 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       // Getting the year from the URL parameters.
       try {
         String parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
-        year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : allYears.get(0);
+        year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : config.getPlanningCurrentYear();
       } catch (NumberFormatException e) {
         LOG.warn("-- prepare() > There was an error parsing the year '{}'.", year);
-        // Set the first year of the project as current
-        year = allYears.get(0);
+        // Set the current year as default
+        year = config.getPlanningCurrentYear();
       }
 
       if (!allYears.contains(new Integer(year))) {
-        year = allYears.get(0);
+        year = config.getPlanningCurrentYear();
       }
 
       if (project.getLeader() != null) {
@@ -220,19 +252,76 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       if (project.getBudgets() != null) {
         project.getBudgets().clear();
       }
+
+      if (project.getLinkedProjects() != null) {
+        project.getLinkedProjects().clear();
+      }
     }
   }
-
 
   @Override
   public String save() {
     if (securityContext.canUpdateProjectBudget()) {
-      boolean success = true;
+      boolean success = true, saved = false;
+
       for (Budget budget : project.getBudgets()) {
-        boolean saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
+        // Only can save the budgets to which the user is authorized
+        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget()) {
+          continue;
+        }
+
+        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget()) {
+          continue;
+        }
+
+        if (budget.getCofinancingProject() == null) {
+          saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
+        } else {
+          Project cofinancingProject = budget.getCofinancingProject();
+          // Getting the Project Leader.
+          List<ProjectPartner> ppArray =
+            projectPartnerManager.getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
+          if (!ppArray.isEmpty()) {
+            cofinancingProject.setLeader(ppArray.get(0));
+
+            // The co-financing budget belongs to the project which receive it.
+            budget.setCofinancingProject(project);
+            budget.setInstitution(cofinancingProject.getLeader().getInstitution());
+            saved =
+              budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
+                this.getJustification());
+          } else {
+            String projectID = "2014-" + cofinancingProject.getId();
+            this
+              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+          }
+        }
 
         if (!saved) {
           success = false;
+        }
+      }
+
+      if (project.isBilateralProject()) {
+        // Save the budget overhead
+        overheadManager.saveProjectBudgetOverhead(project, this.getCurrentUser(), this.getJustification());
+
+        // First delete the core projects un-selected
+        List<Integer> linkedProjectsToDelete = new ArrayList<>();
+        for (Project p : previousProject.getLinkedProjects()) {
+          if (!project.getLinkedProjects().contains(p)) {
+            linkedProjectsToDelete.add(p.getId());
+          }
+        }
+
+        if (!linkedProjectsToDelete.isEmpty()) {
+          linkedCoreProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete,
+            this.getCurrentUser(), this.getJustification());
+        }
+
+        // Then save the new core projects linked
+        if (!project.getLinkedProjects().isEmpty()) {
+          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
         }
       }
 
@@ -254,7 +343,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     }
     return NOT_AUTHORIZED;
   }
-
 
   public void setProject(Project project) {
     this.project = project;

@@ -1,6 +1,7 @@
 var baseURL;
 var formBefore;
 var justificationLimitWords = 100;
+var errorMessages = [];
 jQuery.fn.exists = function() {
   return this.length > 0;
 };
@@ -15,9 +16,7 @@ $(document).ready(function() {
 
   // hash url animation
   setTimeout(function() {
-    $(window.location.hash).addClass('animated flipInX').css({
-      'z-index': '9999'
-    });
+    // $(window.location.hash).addClass('animated flipInX').css({'z-index': '9999'});
   }, 300);
 
   function showHelpText() {
@@ -97,8 +96,43 @@ function validateEvent(button,fields) {
     $.each(fields, function(i,val) {
       $(val).each(function() {
         $(this).removeClass(errorClass);
-        if(isChanged()) {
-          if(!validateField($(this))) {
+        if(!isChanged()) {
+          // If something is changed
+          e.preventDefault();
+          noty({
+              text: 'Nothing changed',
+              layout: 'bottomRight',
+              theme: 'relax',
+              timeout: 2500,
+              animation: {
+                  open: 'animated bounceInRight',
+                  close: 'animated bounceOutRight'
+              },
+              type: 'alert',
+              closeWith: [
+                'click'
+              ]
+          });
+        } else {
+          if(errorMessages.length != 0) {
+            // If there is an error message
+            e.preventDefault();
+            noty({
+                text: errorMessages.join(),
+                layout: 'bottomRight',
+                theme: 'relax',
+                timeout: 5000,
+                animation: {
+                    open: 'animated bounceInRight',
+                    close: 'animated bounceOutRight'
+                },
+                type: 'error',
+                closeWith: [
+                  'click'
+                ]
+            });
+          } else if(!validateField($(this))) {
+            // If field is not valid
             e.preventDefault();
             $(this).addClass(errorClass);
             noty({
@@ -107,8 +141,8 @@ function validateEvent(button,fields) {
                 theme: 'relax',
                 timeout: 5000,
                 animation: {
-                    open: 'animated bounceInRight', // Animate.css class names
-                    close: 'animated bounceOutRight' // Animate.css class names
+                    open: 'animated bounceInRight',
+                    close: 'animated bounceOutRight'
                 },
                 type: 'error',
                 closeWith: [
@@ -116,22 +150,6 @@ function validateEvent(button,fields) {
                 ]
             });
           }
-        } else {
-          e.preventDefault();
-          noty({
-              text: 'Nothing changed',
-              layout: 'bottomRight',
-              theme: 'relax',
-              timeout: 2500,
-              animation: {
-                  open: 'animated bounceInRight', // Animate.css class names
-                  close: 'animated bounceOutRight' // Animate.css class names
-              },
-              type: 'alert',
-              closeWith: [
-                'click'
-              ]
-          });
         }
       });
     });

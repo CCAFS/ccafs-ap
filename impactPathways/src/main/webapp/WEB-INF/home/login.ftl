@@ -10,22 +10,21 @@
 
 <article>
   <div id="loginContainer" class="content">
+      [#-- Login introduction  --]
       <h1>[@s.text name="home.login.title" /]</h1>
       <p class="introduction">[@s.text name="home.login.introduction" /]</p>
+      <p class="disclaimer">[@s.text name="home.login.disclaimer" /]</p>
     <div class="leftSide">
-      [#-- Login introduction  --]
-      <div class="disclaimer">
-        <div id="imgPandR">
-          <a href="#" onClick="workflowModal()"><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
-        </div>
+      <div id="imgPandR">
+        <a href="#" onClick="workflowModal()"><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
       </div>
     </div> <!-- End Left Side -->
     <div class="rightSide">
       <div id="loginFormContainer">  
           <div class="loginForm instructions">
             [#-- @s.text name="home.login.message.nonCgiar" / --]
-            <p>Thank you for being part of the <strong>exclusive group of testers</strong>, you are in the right place. Please enter your credentials below.</p>
-            <p>Otherwise, please go to the temporary CCAFS P&R by clicking <a href="http://davinci.ciat.cgiar.org/ip">here</a></p>
+            <p>Thank you for being part of the <strong>exclusive group of testers</strong>; you are in the right place! Please enter your credentials below.</p>
+            <p>Should you not be part of the group of testers, please go to the temporary CCAFS P&R by clicking <a href="http://davinci.ciat.cgiar.org/ip">here</a></p>
           </div>
         [@s.form method="POST" action="login" cssClass="loginForm pure-form"]
           [@s.fielderror cssClass="fieldError" fieldName="loginMesage"/]

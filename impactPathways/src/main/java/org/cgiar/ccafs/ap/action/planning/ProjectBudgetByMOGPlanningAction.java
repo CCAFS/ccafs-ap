@@ -134,7 +134,6 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     // Getting the project information
     project = projectManager.getProject(projectID);
     project.setOutputs(ipElementManager.getProjectOutputs(projectID));
-    project.setOutputsBudgets(budgetByMogManager.getProjectOutputsBudget(projectID));
 
     // Remove the outputs duplicated
     Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
@@ -147,13 +146,13 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
       // Getting the year from the URL parameters.
       try {
         String parameter = this.getRequest().getParameter(APConstants.YEAR_REQUEST);
-        year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : allYears.get(0);
+        year = (parameter != null) ? Integer.parseInt(StringUtils.trim(parameter)) : config.getPlanningCurrentYear();
       } catch (NumberFormatException e) {
         LOG.warn("-- prepare() > There was an error parsing the year '{}'.", year);
-        // Set the first year of the project as current
-        year = allYears.get(0);
+        year = config.getPlanningCurrentYear();
       }
 
+      project.setOutputsBudgets(budgetByMogManager.getProjectOutputsBudgetByYear(projectID, year));
       totalBudget = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
       budgetPercentageToGender = budgetManager.calculateTotalGenderBudgetByYear(projectID, year);
 

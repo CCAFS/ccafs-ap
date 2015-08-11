@@ -31,6 +31,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if can add co-founded projects in the planning section
+   * 
+   * @return
+   */
+  public boolean canAddCofoundedProject() {
+    return this.hasPermission(Permission.PLANNING_COFUNDED_PROJECT_BUTTON);
+  }
+
+  /**
    * Verify if can add core projects in the planning section
    * 
    * @return
@@ -147,6 +156,24 @@ public class SecurityContext extends BaseSecurityContext {
    */
   public boolean canEditStartDateActivities() {
     return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE);
+  }
+
+  /**
+   * Verify if can update the annual W3/Bilateral budget in project budgets section
+   * 
+   * @return
+   */
+  public boolean canUpdateAnnualBilateralBudget() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ANNUAL_BUDGET_W3BILATERAL_UPDATE);
+  }
+
+  /**
+   * Verify if can update the annual W1/W2 budget in project budgets section
+   * 
+   * @return
+   */
+  public boolean canUpdateAnnualW1W2Budget() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_BUDGET_ANNUAL_W1W2_UPDATE);
   }
 
   /**

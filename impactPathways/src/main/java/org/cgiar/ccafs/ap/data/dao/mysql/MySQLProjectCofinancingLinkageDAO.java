@@ -45,13 +45,42 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
   }
 
   @Override
-  public List<Map<String, String>> getLinkedProjects(int projectID) {
-    List<Map<String, String>> coreProjects = new ArrayList<>();
+  public List<Map<String, String>> getLinkedBilateralProjects(int projectID) {
+    List<Map<String, String>> bilateralProjects = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects p ");
     query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.bilateral_project_id ");
     query.append("WHERE lcp.core_project_id = ");
+    query.append(projectID);
+    query.append(" AND lcp.is_active = TRUE");
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectInfo = new HashMap<>();
+        projectInfo.put("id", rs.getString("id"));
+        projectInfo.put("title", rs.getString("title"));
+
+        bilateralProjects.add(projectInfo);
+      }
+    } catch (SQLException e) {
+      LOG
+        .error(
+          "getLinkedBilateralProjects() > Exception raised trying to get the bilateral projects linked to the project {} ",
+          projectID, e);
+    }
+    return bilateralProjects;
+  }
+
+  @Override
+  public List<Map<String, String>> getLinkedCoreProjects(int projectID) {
+    List<Map<String, String>> coreProjects = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.id, p.title ");
+    query.append("FROM projects p ");
+    query.append("INNER JOIN project_cofinancing_linkages lcp ON p.id = lcp.core_project_id ");
+    query.append("WHERE lcp.bilateral_project_id = ");
     query.append(projectID);
     query.append(" AND lcp.is_active = TRUE");
 
@@ -72,13 +101,14 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
   }
 
   @Override
-  public boolean removeLinkedProjects(int projectID, List<Integer> linkedProjects, int userID, String justification) {
+  public boolean
+    removeLinkedCoreProjects(int projectID, List<Integer> linkedProjects, int userID, String justification) {
     Object[] values = new Object[3 + linkedProjects.size()];
     StringBuilder query = new StringBuilder();
     query.append("UPDATE project_cofinancing_linkages ");
     query.append("SET is_active = FALSE, modified_by = ?, modification_justification = ? ");
-    query.append("WHERE core_project_id = ? ");
-    query.append("AND bilateral_project_id IN (");
+    query.append("WHERE bilateral_project_id = ? ");
+    query.append("AND core_project_id IN (");
 
     values[0] = userID;
     values[1] = justification;
@@ -95,16 +125,16 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
   }
 
   @Override
-  public boolean saveLinkedProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
+  public boolean saveLinkedCoreProjects(int bilateralProjectID, List<Integer> listcoreProjectsIDs, int userID,
     String justification) {
     boolean saved = false;
-    Object[] values = new Object[listBilateralProjectsIDs.size() * 5];
+    Object[] values = new Object[listcoreProjectsIDs.size() * 5];
     StringBuilder query = new StringBuilder();
     query.append("INSERT IGNORE INTO project_cofinancing_linkages ");
-    query.append("(core_project_id, bilateral_project_id, created_by, modified_by, modification_justification) ");
+    query.append("(bilateral_project_id, core_project_id, created_by, modified_by, modification_justification) ");
     query.append("VALUES ");
 
-    for (int i = 0; i < listBilateralProjectsIDs.size(); i++) {
+    for (int i = 0; i < listcoreProjectsIDs.size(); i++) {
       if (i == 0) {
         query.append(" (?, ?, ?, ?, ?) ");
       } else {
@@ -112,8 +142,8 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
       }
 
       int c = i * 5;
-      values[c] = coreProjectID;
-      values[c + 1] = listBilateralProjectsIDs.get(i);
+      values[c] = bilateralProjectID;
+      values[c + 1] = listcoreProjectsIDs.get(i);
       values[c + 2] = userID;
       values[c + 3] = userID;
       values[c + 4] = justification;

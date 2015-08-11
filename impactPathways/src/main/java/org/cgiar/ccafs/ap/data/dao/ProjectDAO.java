@@ -62,7 +62,6 @@ public interface ProjectDAO {
    */
   public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification);
 
-
   /**
    * This method validate if the project exists in the database.
    * 
@@ -70,6 +69,7 @@ public interface ProjectDAO {
    * @return true if the project exists or false otherwise.
    */
   public boolean existProject(int projectId);
+
 
   /**
    * This method return all the Projects
@@ -98,6 +98,13 @@ public interface ProjectDAO {
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getBilateralCofinancingProjects(int flagshipID, int regionID);
+
+  /**
+   * This method returns a list with all the bilateral projects.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getBilateralProjects();
 
   /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
@@ -167,6 +174,14 @@ public interface ProjectDAO {
    * @return an integer representing the project id, or -1 if the deliverable identifier does not belong to any project.
    */
   public int getProjectIdFromDeliverableId(int deliverableID);
+
+  /**
+   * This method gets the project ID where the given partner belongs to.
+   * 
+   * @param projectPartnerID is a partner identifier.
+   * @return a integer representing the id of the project, or -1 if no project was found.
+   */
+  public int getProjectIDFromProjectPartnerID(int projectPartnerID);
 
   /**
    * This method returns a list of project identifiers that can be edited by the user identified with the value received
@@ -279,4 +294,23 @@ public interface ProjectDAO {
    * @return true id the update process was successful. False otherwise.
    */
   public boolean updateProjectIndicators(Map<String, String> indicatorData);
+
+  /**
+   * This method updates the project type into the database according to the values received by parameter.
+   * 
+   * @param projectID - project identifier
+   * @param type - project type
+   * @return true if the change was made successfully. False otherwise.
+   */
+  public boolean updateProjectType(int projectID, String type);
+
+  /**
+   * This method updates the type of all the core projects following the steps below:
+   * 1- Set the projects co-founded as core
+   * 2- Check all the "core" projects that have at least one link with a bilateral project and update its type to
+   * co-founded
+   * 
+   * @return true if the changes was made successfully. False otherwise.
+   */
+  public boolean updateProjectTypes();
 }

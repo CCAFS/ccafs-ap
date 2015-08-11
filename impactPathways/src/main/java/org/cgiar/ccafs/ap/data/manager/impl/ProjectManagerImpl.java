@@ -42,7 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Hernán David Carvajal.
  * @author Javier Andrés Gallego.
  */
@@ -75,7 +75,6 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectDAO.deleteProjectIndicator(projectID, indicatorID, user.getId(), justification);
   }
 
-
   @Override
   public boolean deleteProject(int projectID, User user, String justification) {
     boolean result = true;
@@ -94,11 +93,11 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectDAO.deleteProjectOutput(projectID, outputID, outcomeID, userID, justification);
   }
 
-
   @Override
   public boolean existProject(int projectId) {
     return projectDAO.existProject(projectId);
   }
+
 
   @Override
   public List<Project> getAllProjectsBasicInfo() {
@@ -159,6 +158,22 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getBilateralCofinancingProjects(int flagshipID, int regionID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsData = projectDAO.getBilateralCofinancingProjects(flagshipID, regionID);
+
+    for (Map<String, String> projectData : projectsData) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectData.get("id")));
+      project.setTitle(projectData.get("title"));
+
+      projects.add(project);
+    }
+
+    return projects;
+  }
+
+  @Override
+  public List<Project> getBilateralProjects() {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsData = projectDAO.getBilateralProjects();
 
     for (Map<String, String> projectData : projectsData) {
       Project project = new Project();
@@ -302,6 +317,16 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
+
+  @Override
+  public Project getProjectFromProjectPartnerID(int projectPartnerID) {
+    int projectID = projectDAO.getProjectIDFromProjectPartnerID(projectPartnerID);
+    if (projectID != -1) {
+      return this.getProject(projectID);
+    }
+    return null;
+  }
+
   @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getId());
@@ -382,7 +407,6 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return projectsList;
   }
-
 
   @Override
   public List<Project> getProjectsList(String[] values) {
@@ -494,5 +518,15 @@ public class ProjectManagerImpl implements ProjectManager {
       saved = (relationID != -1) && saved;
     }
     return saved;
+  }
+
+  @Override
+  public boolean updateProjectType(Project project) {
+    return projectDAO.updateProjectType(project.getId(), project.getType());
+  }
+
+  @Override
+  public boolean updateProjectTypes() {
+    return projectDAO.updateProjectTypes();
   }
 }

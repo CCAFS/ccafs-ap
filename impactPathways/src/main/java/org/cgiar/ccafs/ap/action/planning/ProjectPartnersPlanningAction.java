@@ -27,7 +27,9 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
@@ -40,6 +42,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Hernán Carvajal
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Carlos Alberto Martínez M.
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
 
@@ -65,10 +68,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // Model for the view
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
-  private List<Institution> allPartners; // Is used to list all the partners that have the system.
-  private List<Institution> allPPAPartners; // Is used to list all the PPA partners
-  private List<Institution> projectPPAPartners; // Is used to list all the PPA partners selected in the current project.
+  private List<Institution> allPartners; // Is used to list all the partner institutions that have the system.
+  private List<Institution> allPPAPartners; // Is used to list all the PPA partners institutions
+  private Set<Institution> projectPPAPartners; // Is used to list all the PPA partner institutions selected in the
+  // current project.
   private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
+  private List<Institution> contributionPartners; // this would get the partners contributing to others
 
   @Inject
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
@@ -98,6 +103,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return allProjectLeaders;
   }
 
+  public List<Institution> getContributionPartners() {
+    return contributionPartners;
+  }
+
   public List<Country> getCountries() {
     return countries;
   }
@@ -114,7 +123,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return projectID;
   }
 
-  public List<Institution> getProjectPPAPartners() {
+  public Set<Institution> getProjectPPAPartners() {
     return projectPPAPartners;
   }
 
@@ -193,15 +202,19 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
 
-    // Getting the list of PPA Partner institutions
-    projectPPAPartners = new ArrayList<Institution>();
+    // Getting the list of PPA Partner institutions (not repeated), PLUS the PL institution, as this institution will
+    // receive funds as well.
+    projectPPAPartners = new HashSet<Institution>();
+    if (project.getLeader() != null) {
+      projectPPAPartners.add(project.getLeader().getInstitution());
+    }
     for (ProjectPartner ppaPartner : project.getPPAPartners()) {
       projectPPAPartners.add(ppaPartner.getInstitution());
     }
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
       partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
@@ -214,23 +227,24 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     previousProject.setPPAPartners(project.getPPAPartners());
 
     if (actionName.equals("partnerLead")) {
-      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(), new String[] {
-        APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
+      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
+        new String[] {APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
     } else if (actionName.equals("ppaPartners")) {
-      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
-        new String[] {APConstants.PROJECT_PARTNER_PPA}));
+      super.setHistory(
+        historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PPA}));
     } else if (actionName.equals("partners")) {
-      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
-        new String[] {APConstants.PROJECT_PARTNER_PP}));
+      super.setHistory(
+        historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PP}));
     }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
-      if (project.getProjectPartners() != null) {
-        project.getProjectPartners().clear();
-      }
-      if (project.getPPAPartners() != null) {
+      if (ActionContext.getContext().getName().equals("ppaPartners") && project.getPPAPartners() != null) {
         project.getPPAPartners().clear();
+      }
+
+      if (ActionContext.getContext().getName().equals("partners") && project.getProjectPartners() != null) {
+        project.getProjectPartners().clear();
       }
     }
 
@@ -269,9 +283,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     boolean success = true;
 
     // Saving Project leader
-    int id =
-      projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
-        this.getJustification());
+    int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
+      this.getJustification());
     if (id < 0) {
       success = false;
     }
@@ -279,9 +292,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Saving Project Coordinator
     // Setting the same institution that was selected for the Project Leader.
     project.getCoordinator().setInstitution(project.getLeader().getInstitution());
-    id =
-      projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
-        this.getJustification());
+    id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
+      this.getJustification());
     if (id < 0) {
       success = false;
     }
@@ -313,9 +325,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Deleting project partners
     for (ProjectPartner previousPartner : previousPartners) {
       if (!partners.contains(previousPartner)) {
-        boolean deleted =
-          projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
-            this.getJustification());
+        boolean deleted = projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
+          this.getJustification());
         if (!deleted) {
           success = false;
         }
@@ -340,9 +351,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (Institution previousPartnerContribution : previousPartnerContributions) {
           if (projectPartner.getContributeInstitutions() == null
             || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
-            boolean deleted =
-              institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
-                previousPartnerContribution.getId());
+            boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+              previousPartnerContribution.getId());
             if (!deleted) {
               success = false;
             }
@@ -352,9 +362,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // if the project partner has contribute institutions.
         if (projectPartner.getContributeInstitutions() != null) {
           // Saving new and old Project Partner Contributions
-          saved =
-            institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
-              projectPartner.getContributeInstitutions());
+          saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+            projectPartner.getContributeInstitutions());
           if (!saved) {
             saved = false;
           }

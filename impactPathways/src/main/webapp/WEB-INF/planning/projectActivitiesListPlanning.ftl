@@ -31,11 +31,11 @@
     <img src="${baseUrl}/images/global/icon-help.png" />
     <p>
       [@s.text name="planning.activities.help1" /] 
-      <a href="[@s.url namespace="/" action='glossary'][/@s.url]#activity">[@s.text name="planning.activities.activities" /]</a>
+      <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.activities.activities" /]</a>
       [@s.text name="planning.activities.help2" /] 
-      <a href="[@s.url namespace="/" action='glossary'][/@s.url]#activity">[@s.text name="planning.activities.activityLeader" /]</a> 
+      <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.activities.activityLeader" /]</a> 
     </p>
-    <p>[@s.text name="planning.activities.help3" /]</p>
+    
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
     <article class="halfContent" id="activities">
@@ -60,7 +60,7 @@
             [#else]
               [@s.text name="planning.activities.message.empty" /]
               [#if canEdit]
-                <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+                <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
               [/#if]
             [/#if]
             </p>
@@ -73,7 +73,7 @@
       </div>
       <div id="lessons" class="borderBox">
         [#if (!editable && canEdit)]
-          <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+          <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]
         <div class="fullBlock">
           [@customForm.textArea name="project.projectActivitiesLessons" i18nkey="planning.activities.lessons" required=true editable=editable /]

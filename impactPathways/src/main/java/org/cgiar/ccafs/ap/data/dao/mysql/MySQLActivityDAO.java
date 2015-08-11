@@ -123,6 +123,21 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public List<Map<String, String>> getActivitiesByProjectPartner(int projectPartnerID) {
+    LOG.debug(">> getActivitiesByProjectPartner projectPartnerID = {} )", projectPartnerID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT a.* ");
+    query.append("FROM activities as a ");
+    query.append("WHERE a.leader_id =  ");
+    query.append(projectPartnerID);
+    query.append(" AND a.is_active = 1");
+
+    LOG.debug("-- getActivitiesByProjectPartner() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
+  }
+
+  @Override
   public Map<String, String> getActivityById(int activityID) {
     Map<String, String> activityData = new HashMap<String, String>();
     LOG.debug(">> getActivityById( activityID = {} )", activityID);

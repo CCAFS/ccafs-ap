@@ -36,7 +36,17 @@
         <param name="edit">true</param>
       </result>
     </action>
-    
+
+    <action name="addCoFundedProject" class="org.cgiar.ccafs.ap.action.planning.AddCofoundedProjectPlanningAction">
+      <result name="input">/WEB-INF/global/pages/addCoFundedProject.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/planning/projects</param>
+        <param name="actionName">description</param>
+        <param name="projectID">${coreProjectID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+
   </package>
   
   <package name="planningProjects" namespace="/planning/projects" extends="ccafsap-default">

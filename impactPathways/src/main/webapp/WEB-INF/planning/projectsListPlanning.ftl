@@ -38,7 +38,8 @@
         [/#if]
       </div>
     [/#if]
-    [#if securityContext.RPL || securityContext.FPL || securityContext.CU || securityContext.admin]
+
+    [#if securityContext.canAddCoreProject() || securityContext.canAddBilateralProject()]
       <div class="buttons">
         [#if securityContext.canAddCoreProject()]
           <a class="addButton" href="[@s.url namespace="/planning" action='addNewCoreProject'/]">[@s.text name="preplanning.projects.addCoreProject" /]</a>
@@ -46,8 +47,12 @@
         [#if securityContext.canAddBilateralProject()]
           <a class="addButton" href="[@s.url namespace="/planning" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
         [/#if]
+        [#if securityContext.canAddCofoundedProject()]
+          <a class="addButton" href="[@s.url namespace="/planning" action='addCoFundedProject'/]">[@s.text name="preplanning.projects.addCofoundedProject" /]</a>
+        [/#if]
       </div>
     [/#if]
+
     <div class="clearfix"></div>  
     <hr/>
     [#-- Projects List (Other Projects) --]

@@ -31,9 +31,7 @@ public class ProjectPartner {
   private User user;
   private String responsabilities;
   private String type;
-  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating
-
-  // with.
+  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating.
 
   public ProjectPartner() {
     super();
@@ -48,22 +46,35 @@ public class ProjectPartner {
   public boolean equals(Object obj) {
     if (obj instanceof ProjectPartner) {
       ProjectPartner o = (ProjectPartner) obj;
-      return o.getInstitution().getId() == this.institution.getId() && o.getUser().getId() == this.user.getId();
+      // return o.getInstitution().getId() == this.institution.getId() && o.getUser().getId() == this.user.getId();
+      return this.getId() == o.getId();
     }
     return false;
   }
 
   /**
-   * This method returns a composed way to show a User.
+   * This method returns a composed way to show a Project Partner.
+   * E.g. Rincon, Silvia <silirincon@madre.lov> CLO - Santiago de Cali
    * 
-   * @return a String that represents a User.
+   * @return a String that represents a Project Partner.
    */
   public String getComposedName() {
-
     if (this.id == -1) {
       return "";
     }
-    return user.getLastName() + ", " + user.getFirstName() + " <" + user.getEmail() + ">, " + institution.getName();
+    StringBuilder str = new StringBuilder();
+    str.append(user.getLastName());
+    str.append(", ");
+    str.append(user.getFirstName());
+    str.append(" <");
+    str.append(user.getEmail());
+    str.append(">, ");
+    if (institution.getAcronym() != null) {
+      str.append(institution.getAcronym());
+      str.append(" - ");
+    }
+    str.append(institution.getName());
+    return str.toString();
 
   }
 
@@ -98,9 +109,10 @@ public class ProjectPartner {
 
   @Override
   public int hashCode() {
-    int hash = 425;
-    hash = (institution.getId() + user.getId()) * hash;
-    return hash;
+    // int hash = 425;
+    // hash = (institution.getId() + (user != null ? user.getId() : 1)) * hash;
+    // return hash;
+    return this.getId();
   }
 
   /**

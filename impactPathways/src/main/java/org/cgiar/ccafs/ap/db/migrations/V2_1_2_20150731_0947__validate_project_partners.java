@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * @author Carlos Alberto Martínez M.
+ * @author Carlos Alberto Martínez M. - CIAT/CCAFS
  */
 
 public class V2_1_2_20150731_0947__validate_project_partners implements JdbcMigration {

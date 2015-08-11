@@ -1,6 +1,8 @@
 package org.cgiar.ccafs.ap.action.summaries.pdfs;
 
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
@@ -17,7 +19,8 @@ import com.lowagie.text.pdf.PdfWriter;
 public class HeaderFooterPDF extends PdfPageEventHelper {
 
   private final static Font HEADER_FONT = new Font(FontFactory.getFont("Arial", 12, Color.WHITE));
-  private final static Font FOOTER_FONT = new Font(FontFactory.getFont("Arial", 12, Color.WHITE));
+  private final static Font SUB_HEADER_FONT = new Font(FontFactory.getFont("Arial", 10, Color.GRAY));
+  private final static Font FOOTER_FONT = new Font(FontFactory.getFont("Arial", 12, Color.BLACK));
 
   private String headerText;
   private int pagenumber;
@@ -55,7 +58,24 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, phrase, rect.getRight(), rect.getTop(),
       0);
 
-    // Footer
+    // Submit Pending
+    phrase = new Phrase();
+    phrase.setFont(HEADER_FONT);
+    phrase.add("Submit pending ");
+    ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(),
+      rect.getTop() - 20, 0);
+
+    // Date
+    phrase = new Phrase();
+    phrase.setFont(SUB_HEADER_FONT);
+    String date = (new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
+    phrase.add("This report was generated on " + date);
+
+    ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(), rect.getBottom(),
+      0);
+
+
+    // Footer Number
     phrase = new Phrase();
     phrase.setFont(FOOTER_FONT);
     phrase.add(String.valueOf(pagenumber));

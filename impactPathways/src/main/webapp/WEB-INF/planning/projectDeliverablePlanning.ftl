@@ -122,14 +122,16 @@
         [#-- Partner who is responsible --]
         <div class="fullBlock">
           <p>[@customForm.text name="planning.projectDeliverable.indicateResponsablePartner" readText=!editable/]</p>
+          [#if deliverable.deliverablePartners?has_content]
           [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
+        [/#if]
         </div>
         [#-- Other contact person that will contribute --]
         <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
         <div class="simpleBox">
           [#if deliverable.otherPartners?has_content]
             [#list deliverable.otherPartners as dp]  
-              [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index institutionList="institutions" editable=editable /]
+              [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index editable=editable /]
             [/#list]
           [#else]
             <p class="emptyText center"> [@s.text name="planning.projectDeliverable.partnership.emptyText" /]</p>

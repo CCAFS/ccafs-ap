@@ -72,7 +72,7 @@ public class UnhandledExceptionAction extends BaseAction {
     message.append(writer.toString());
 
     SendMail sendMail = new SendMail(this.config);
-    sendMail.send(config.getGmailUsername(), null, subject, message.toString());
+    sendMail.send(config.getEmailUsername(), null, subject, message.toString());
     LOG.info("sendExceptionMessage() > The platform has sent a message reporting a exception.",
       this.getCurrentUser().getEmail());
   }

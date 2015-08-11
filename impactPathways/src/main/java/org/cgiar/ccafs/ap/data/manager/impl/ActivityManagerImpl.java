@@ -16,9 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -49,17 +47,12 @@ public class ActivityManagerImpl implements ActivityManager {
   private ActivityDAO activityDAO;
 
   // Managers
-  private InstitutionManager institutionManager;
-  private UserManager userManager;
   private ProjectPartnerManager projectPartnerManager;
 
   @Inject
-  public ActivityManagerImpl(ActivityDAO activityDAO, InstitutionManager institutionManager,
-    ProjectPartnerManager projectPartnerManager, UserManager userManager) {
+  public ActivityManagerImpl(ActivityDAO activityDAO, ProjectPartnerManager projectPartnerManager) {
     this.activityDAO = activityDAO;
-    this.institutionManager = institutionManager;
     this.projectPartnerManager = projectPartnerManager;
-    this.userManager = userManager;
   }
 
   @Override
@@ -107,7 +100,43 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+      }
+      activity.setCreated(Long.parseLong(activityData.get("created")));
+
+      // adding information of the object to the array
+      activityList.add(activity);
+    }
+    return activityList;
+  }
+
+  @Override
+  public List<Activity> getActivitiesByProjectPartner(int projectPartnerID) {
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    List<Activity> activityList = new ArrayList<>();
+    List<Map<String, String>> activityDataList = activityDAO.getActivitiesByProjectPartner(projectPartnerID);
+    for (Map<String, String> activityData : activityDataList) {
+      Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activityData.get("id")));
+      activity.setTitle(activityData.get("title"));
+      activity.setDescription(activityData.get("description"));
+
+      // Format the date of the activity
+      if (activityData.get("startDate") != null) {
+        try {
+          Date startDate = dateformatter.parse(activityData.get("startDate"));
+          activity.setStartDate(startDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the start date", e);
+        }
+      }
+      if (activityData.get("endDate") != null) {
+        try {
+          Date endDate = dateformatter.parse(activityData.get("endDate"));
+          activity.setEndDate(endDate);
+        } catch (ParseException e) {
+          LOG.error("There was an error formatting the end date", e);
+        }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -145,7 +174,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -182,7 +211,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-            .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));

@@ -52,6 +52,7 @@ public class BudgetByMogManagerImpl implements BudgetByMogManager {
       oBudget.setId(Integer.parseInt(data.get("id")));
       oBudget.setTotalContribution(Double.parseDouble(data.get("total_contribution")));
       oBudget.setGenderContribution(Double.parseDouble(data.get("gender_contribution")));
+      oBudget.setYear(Integer.parseInt(data.get("year")));
 
       IPElement output = new IPElement();
       output.setId(Integer.parseInt(data.get("output_id")));
@@ -62,6 +63,30 @@ public class BudgetByMogManagerImpl implements BudgetByMogManager {
     }
 
     return outputBudgets;
+  }
+
+  @Override
+  public List<OutputBudget> getProjectOutputsBudgetByYear(int projectID, int year) {
+    List<OutputBudget> outputBudgets = new ArrayList<>();
+    List<Map<String, String>> budgetByMogData = budgetByMogDAO.getProjectOutputsBudgetByYear(projectID, year);
+
+    for (Map<String, String> data : budgetByMogData) {
+      OutputBudget oBudget = new OutputBudget();
+      oBudget.setId(Integer.parseInt(data.get("id")));
+      oBudget.setTotalContribution(Double.parseDouble(data.get("total_contribution")));
+      oBudget.setGenderContribution(Double.parseDouble(data.get("gender_contribution")));
+      oBudget.setYear(Integer.parseInt(data.get("year")));
+
+      IPElement output = new IPElement();
+      output.setId(Integer.parseInt(data.get("output_id")));
+      output.setDescription(data.get("output_description"));
+      oBudget.setOutput(output);
+
+      outputBudgets.add(oBudget);
+    }
+
+    return outputBudgets;
+
   }
 
   @Override

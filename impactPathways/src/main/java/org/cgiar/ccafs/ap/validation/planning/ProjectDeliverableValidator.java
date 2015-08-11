@@ -55,10 +55,10 @@ public class ProjectDeliverableValidator extends BaseValidator {
     }
 
     // Deliverable responsible partner - contact name.
-    if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getUser() == null
-      || deliverable.getResponsiblePartner().getUser().getId() == -1)) {
-      this.addMessage(this.getText("planning.projectDeliverable.responsible.contactEmail"));
-    }
+    // if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getUser() == null
+    // || deliverable.getResponsiblePartner().getUser().getId() == -1)) {
+    // this.addMessage(this.getText("planning.projectDeliverable.responsible.contactEmail"));
+    // }
 
     // Next Users - TODO
     // for (int c = 0; c < deliverable.getNextUsers().size(); c++) {
@@ -68,13 +68,13 @@ public class ProjectDeliverableValidator extends BaseValidator {
     // }
 
     // Deliverable partnerships - contact name
-    for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
-      if (deliverable.getOtherPartners().get(c).getUser() == null
-        || deliverable.getOtherPartners().get(c).getUser().getId() == -1) {
-        this.addMessage(
-          this.getText("planning.deliverables.otherPartner.contactEmail", new String[] {String.valueOf(c)}));
-      }
-    }
+    // for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
+    // if (deliverable.getOtherPartners().get(c).getUser() == null
+    // || deliverable.getOtherPartners().get(c).getUser().getId() == -1) {
+    // this.addMessage(
+    // this.getText("planning.deliverables.otherPartner.contactEmail", new String[] {String.valueOf(c)}));
+    // }
+    // }
 
     if (this.validationMessage.length() > 0) {
       action.addActionWarning(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
@@ -106,18 +106,19 @@ public class ProjectDeliverableValidator extends BaseValidator {
     }
 
     // Validating institutions in the partnerships section as they are required.
-    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() == null) {
-      action.addFieldError("deliverable.responsiblePartner.institution", this.getText("validation.field.required"));
-      problem = true;
-    }
-
-    for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
-      if (deliverable.getOtherPartners().get(c).getInstitution() == null) {
-        action.addFieldError("deliverable.otherPartners[" + c + "].institution",
-          this.getText("validation.field.required"));
-        problem = true;
-      }
-    }
+    // if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() == null)
+    // {
+    // action.addFieldError("deliverable.responsiblePartner.institution", this.getText("validation.field.required"));
+    // problem = true;
+    // }
+    //
+    // for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
+    // if (deliverable.getOtherPartners().get(c).getInstitution() == null) {
+    // action.addFieldError("deliverable.otherPartners[" + c + "].institution",
+    // this.getText("validation.field.required"));
+    // problem = true;
+    // }
+    // }
 
     return problem;
   }

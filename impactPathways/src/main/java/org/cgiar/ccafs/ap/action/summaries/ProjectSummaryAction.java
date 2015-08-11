@@ -36,11 +36,9 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.InputStream;
@@ -185,9 +183,10 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // Add Linked project
     // If project is CCAFS co_founded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedProjects(projectID));
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
+    } else {
+      project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
     }
-
     // Add project locations
     project.setLocations(locationManager.getProjectLocations(projectID));
 
@@ -220,9 +219,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
         deliverable.setResponsiblePartner(partners.get(0));
       } else {
         DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-        responsiblePartner.setInstitution(new Institution(-1));
-        responsiblePartner.setUser(new User(-1));
-        responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+        // responsiblePartner.setInstitution(new Institution(-1));
+        // responsiblePartner.setUser(new User(-1));
+        // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
         deliverable.setResponsiblePartner(responsiblePartner);
       }
 
@@ -249,11 +248,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // *************************Budgets ******************************
 
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));
-
-    // totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
-    // totalBilateralBudget =
-    // budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
-
   }
 
 }

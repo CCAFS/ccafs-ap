@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Javier Andrés Gallego.
  * @author Hernán David Carvajal B.
  */
@@ -96,7 +96,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     return false;
   }
 
-
   @Override
   public boolean deleteProjectOutput(int projectID, int outputID, int outcomeID, int userID, String justification) {
     LOG.debug(">> deleteProjectOutput(projectID={}, outputID={})", projectID, outputID);
@@ -145,6 +144,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("-- existProject() > Calling method executeQuery to get the results");
     return exists;
   }
+
 
   @Override
   public List<Map<String, String>> getAllProjects() {
@@ -211,7 +211,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectList;
   }
 
-
   @Override
   public List<Map<String, String>> getBilateralCofinancingProjects(int flagshipID, int regionID) {
     LOG.debug(">> getBilateralCofinancingProjects (flagshipID={}, regionID={})", flagshipID, regionID);
@@ -254,6 +253,35 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Map<String, String>> getBilateralProjects() {
+    LOG.debug(">> getCoreProjects ()");
+    List<Map<String, String>> bilateralProjects = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.id, p.title ");
+    query.append("FROM projects as p ");
+    query.append("WHERE p.type = '");
+    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+    query.append("' ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+
+        bilateralProjects.add(projectData);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getCoreProjects() > Exception raised trying to get the core projects.", e);
+    }
+
+    return bilateralProjects;
+  }
+
+  @Override
   public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID) {
     LOG.debug(">> getCoreProjects (flagshipID={}, regionID={})", flagshipID, regionID);
     List<Map<String, String>> coreProjects = new ArrayList<>();
@@ -261,8 +289,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects as p ");
-    query.append("WHERE p.type = '");
-    query.append(APConstants.PROJECT_CORE);
+    query.append("WHERE p.type != '");
+    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
     query.append("' ");
 
     if (flagshipID != -1) {
@@ -390,7 +418,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> getProject projectID = {} )", projectID);
     Map<String, String> projectData = new HashMap<String, String>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT p.*, u.id as 'owner_id', i.id as 'owner_institution_id'");
+    query.append("SELECT p.*, u.id as 'owner_id', i.id as 'owner_institution_id' ");
     query.append("FROM projects as p ");
     query.append("INNER JOIN liaison_users lu ON p.liaison_user_id = lu.id ");
     query.append("INNER JOIN users u ON lu.user_id = u.id ");
@@ -550,6 +578,27 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public int getProjectIDFromProjectPartnerID(int projectPartnerID) {
+    LOG.debug(">> getProjectIDFromProjectPartnerID(projectPartnerID={})", new Object[] {projectPartnerID});
+    int projectID = -1;
+    try (Connection connection = databaseManager.getConnection()) {
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT pp.project_id FROM project_partners pp WHERE pp.id = ");
+      query.append(projectPartnerID);
+      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
+      if (rs.next()) {
+        projectID = rs.getInt(1);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      LOG.error("-- getProjectIDFromProjectPartnerID() > There was an error getting the data for projectPartnerID={}.",
+        new Object[] {projectPartnerID}, e.getMessage());
+    }
+    LOG.debug("<< getProjectIDFromProjectPartnerID(): projectPartnerID={}", projectPartnerID);
+    return projectID;
+  }
+
+  @Override
   public List<Integer> getProjectIdsEditables(int userID) {
     LOG.debug(">> getProjectIdsEditables(projectID={}, ownerId={})", userID);
     List<Integer> projectIds = new ArrayList<>();
@@ -565,6 +614,14 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("' AND project_id = p.id AND user_id = ");
       query.append(userID);
       query.append(") ");
+      // If the project is bilateral and the user is a focal point of the lead institution
+      query.append("OR ( p.type = '");
+      query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+      query.append("' AND ( SELECT institution_id FROM liaison_institutions WHERE id = p.liaison_institution_id) = ");
+      query.append(" ( SELECT li.institution_id FROM liaison_institutions li ");
+      query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
+      query.append(userID);
+      query.append(" ) ) ");
       query.append("AND p.is_active = TRUE ");
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -845,6 +902,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("requires_workplan_upload = ?, liaison_institution_id = ?, type = ?, workplan_name = ?, ");
       query.append("bilateral_contract_name = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ?");
+
       Object[] values = new Object[14];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
@@ -974,4 +1032,25 @@ public class MySQLProjectDAO implements ProjectDAO {
     return true;
   }
 
+  @Override
+  public boolean updateProjectType(int projectID, String type) {
+    int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE id = ?", new Object[] {projectID, type});
+    return !(result == -1);
+  }
+
+  @Override
+  public boolean updateProjectTypes() {
+
+    int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE type = ?",
+      new Object[] {APConstants.PROJECT_CORE, APConstants.PROJECT_CCAFS_COFUNDED});
+
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE projects p ");
+    query.append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id ");
+    query.append("SET p.type = ?");
+
+    result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
+
+    return result != -1;
+  }
 }

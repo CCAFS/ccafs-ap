@@ -1,5 +1,5 @@
 // Global VARS
-var $allBudgetInputs, $overheadInputs, $CCAFSBudgetInputs;
+var $allBudgetInputs, $overheadInputs, $CCAFSBudgetInputs, $linkedProjects, $selectAddProject, $plBudget;
 var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
 var projectType;
 var editable = true;
@@ -10,7 +10,10 @@ function init() {
   // Setting Global vars
   $allBudgetInputs = $("input.projectBudget");
   $genderBudgetInputs = $('input.projectGenderBudget');
-  $overheadInputs = $("input[name$=isfullyInstitutionalCost]");
+  $overheadInputs = $("input[name$='bilateralCostRecovered']");
+  $linkedProjects = $('#linkedProjects');
+  $selectAddProject = $("select.addProject");
+  $plBudget = $('.partnerLeader input.plBudget');
   
   projectType = "."+$('#projectType').val();
   
@@ -24,21 +27,22 @@ function init() {
 
   // Attach events
   attachEvents();
-
+  
+  // Loading projects to be added
+  loadInitialCoreProjects();
+  
   // Show table when page is loaded
   $("#budgetTables").fadeIn("slow");
 
   // Active initial currency format to all inputs
-  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
-  $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout").trigger("keyup");
+  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
+  $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
 
   // Validate justification and information
   validateEvent('[name=save], [name=next]', [
     "#justification"
   ]);
-
-  // Regenerating hash from form information
-  setFormHash();
+  
 }
 
 function attachEvents() {
@@ -52,6 +56,7 @@ function attachEvents() {
         bilateralBudget.calculateBudget();
         bilateralBudgetByYear.calculateBudget();
         calculateGenderBudget($(e.target).parents('.partnerBudget'));
+        calculateProjectsBudgetRemaining(e);
   });
   
   // Events for percentage inputs
@@ -66,12 +71,17 @@ function attachEvents() {
   // Overhead (for bilateral projects) radio buttons event
   $overheadInputs.on("change", function(e) {
     var $content = $(e.target).parents('#overhead').find('.overhead-block');
-    if($(e.target).val() === "0") {
+    if($(e.target).val() === "false") {
       $content.slideDown('slow');
     } else {
       $content.slideUp('slow');
     }
   });
+  
+  $selectAddProject.on('change', addLinkedProject);
+  
+  // Event to remove a linked project
+  $('.remove').on('click', removeLinkedProject);
   
   // Enable save with tabs when is saveable and exist an target
   if($("#targetYear").exists()) {
@@ -117,6 +127,102 @@ function attachEvents() {
   });
 }
 
+// Function to load all core projects with ajax
+function loadInitialCoreProjects() {
+  $selectAddProject.chosen({
+    search_contains: true
+  });
+  $.ajax({
+      'url': '../../coreProjects.do',
+      beforeSend: function() {
+        $selectAddProject.empty().append(setOption(-1, "Please select a project"));
+      },
+      success: function(data) {
+        // Getting projects previously selected
+        var coreProjectsIds = [];
+        $('#linkedProjects .budget input.budgetId').each(function(i_id,id) {
+          coreProjectsIds.push($(id).val().toString());
+        });
+        // Setting projects allowed to select
+        $.each(data.projects, function(i,project) {
+          if($.inArray(project.id.toString(), coreProjectsIds) == -1) {
+            $selectAddProject.append(setOption(project.id, "P"+project.id + " - " + project.title));
+          }
+        });
+      },
+      complete: function() {
+        $selectAddProject.trigger("liszt:updated");
+        // Regenerating hash from form information
+        setFormHash();
+      }
+  });
+} 
+
+function addLinkedProject(e){
+  var $newItem = $('#projectBudget-template').clone(true).removeAttr('id');
+  var item = new LinkedProjectObject($newItem);
+  var $optionSelected = $(e.target).find('option:selected');
+  item.setInfo($optionSelected.val(), $optionSelected.text());
+  item.show();
+  $optionSelected.remove();
+  $selectAddProject.trigger("liszt:updated"); 
+}
+
+function removeLinkedProject(e){
+  var item = new LinkedProjectObject($(e.target).parent());
+  $selectAddProject.append(setOption(item.id, item.name)).trigger("liszt:updated");
+  item.remove();
+}
+
+function setProjectsIndexes(){
+  $linkedProjects.find('.budget').each(function(i,projectBudget){
+    var item = new LinkedProjectObject($(projectBudget));
+    item.setIndex(i+1);
+  });
+}
+
+function calculateProjectsBudgetRemaining(e){
+  $plBudget.removeClass('fieldError');
+  $(e.target).removeClass('fieldError');
+  errorMessages = [];
+  var totalProjectBudget = totalBudget($linkedProjects.find('input.budgetAmount'));
+  if (totalProjectBudget >  removeCurrencyFormat($plBudget.val()) ){
+    $plBudget.addClass('fieldError');
+    $(e.target).addClass('fieldError');
+    errorMessages.push($('#budgetCanNotExcced').val());
+  }
+}
+
+function LinkedProjectObject(project){
+  this.id= $(project).find('.budgetCofinancingProjectId').val();
+  this.name= $(project).find('.title').text();
+  this.setInfo= function(id,name){
+    $(project).find('.budgetCofinancingProjectId').val(id);
+    $(project).find('.linkedId').val(id);
+    $(project).find('.title a').text(name);
+    $(project).find('.budgetAmount').val(setCurrencyFormat(0));
+  };
+  this.setIndex = function (index){
+    var elementName= "project.budget["+index+"].";
+    $(project).find('.budgetId').attr('name', elementName+"id");
+    $(project).find('.budgetYear').attr('name', elementName+"year");
+    $(project).find('.budgetInstitutionId').attr('name', elementName+"institution.id");
+    $(project).find('.budgetCofinancingProjectId').attr('name', elementName+"cofinancingProject");
+    $(project).find('.budgetType').attr('name', elementName+"type");
+    $(project).find('.budgetAmount').attr('name', elementName+"amount"); 
+  };
+  this.remove = function (){
+    $(project).slideUp("slow", function(){
+      $(project).remove();
+      setProjectsIndexes();
+    });
+  };
+  this.show = function (){
+    $(project).appendTo($linkedProjects).hide().show('slow');
+    setProjectsIndexes();
+  };
+}
+
 function BudgetObject(budget, type, byYear) {    
   this.obj = $(budget);
   this.span =$(this.obj).find('span');  
@@ -137,7 +243,7 @@ function BudgetObject(budget, type, byYear) {
 }
 
 function calculateGenderBudget(partnerBudget){
-  var percentage = removePercentageFormat($(partnerBudget).find('input.projectGenderBudget').val())||0;
+  var percentage = removePercentageFormat($(partnerBudget).find('input.projectGenderBudget').val())|| "0";
   var value = removeCurrencyFormat($(partnerBudget).find('input.projectBudget').val())||0;
   var result = (value/100)*percentage;
   $(partnerBudget).find('input.projectGenderBudget').parents('.budget').find('.inputTitle span').text(setCurrencyFormat(result));

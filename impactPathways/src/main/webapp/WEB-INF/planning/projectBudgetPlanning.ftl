@@ -21,9 +21,9 @@
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" /> 
     <p> [@s.text name="planning.projectBudget.help1" /] 
-    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#budget">[@s.text name="planning.projectBudget.budget" /]</a> [@s.text name="planning.projectBudget.help2" /]
-    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#partners">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
-    <a href="[@s.url namespace="/" action='glossary'][/@s.url]#managementLiaison"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.projectBudget.budget" /]</a> [@s.text name="planning.projectBudget.help2" /]
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
+    <a href="[@s.url namespace="/" action='glossary'][/@s.url]"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
     <div class="quote">
       <p><strong>[@s.text name="preplanning.projectBudget.w1" /]: </strong> [@s.text name="preplanning.projectBudget.w1.tooltip" /]</p>
       <p><strong>[@s.text name="preplanning.projectBudget.w2" /]: </strong> [@s.text name="preplanning.projectBudget.w2.tooltip" /]</p>
@@ -59,7 +59,7 @@
           </p>
         </div> 
         [#-- The co-founded projects are CCAFS core, then we should show the bilateral budget --]
-        [#if project.linkedProjects?has_content]
+        [#if project.coFundedProject]
           <div class="thirdPartBlock">
             <h6 class="subTitle">[@s.text name="preplanning.projectBudget.totalBudget"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]</h6>
             <p id="totalBilateralBudget">
@@ -73,17 +73,17 @@
         [#if project.bilateralProject || project.linkedProjects?has_content]
         <div id="overhead" class="simpleBox">
           [#if (!editable && canEdit)]
-            <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#overhead">[@s.text name="form.buttons.edit" /]</a></div>
+            <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
           [/#if]
           <h6>[@s.text name="planning.projectBudget.overhead" /]</h6> 
           <p>[@s.text name="planning.projectBudget.fullyInstitutionalCost" /]</p>
           <div class="radios">
-            <input type="radio" name="isfullyInstitutionalCost" value="1" id="isfullyInstitutionalCost_1" checked/><label for="isfullyInstitutionalCost_1">[@s.text name="form.options.yes" /]</label>
-            <input type="radio" name="isfullyInstitutionalCost" value="0" id="isfullyInstitutionalCost_0" /><label for="isfullyInstitutionalCost_0" >[@s.text name="form.options.no" /]</label>
+            <input type="radio" name="project.overhead.bilateralCostRecovered" value="true" id="isfullyInstitutionalCost_1" checked/><label for="isfullyInstitutionalCost_1">[@s.text name="form.options.yes" /]</label>
+            <input type="radio" name="project.overhead.bilateralCostRecovered" value="false" id="isfullyInstitutionalCost_0" /><label for="isfullyInstitutionalCost_0" >[@s.text name="form.options.no" /]</label>
           </div>
           <div class="overhead-block" style="display:none">
             <div class="fullPartBlock">
-              [@customForm.input name="project.budgets.amount" i18nkey="planning.projectBudget.whatIsTheContracted" value="" editable=editable/]
+              [@customForm.input name="project.overhead.contractedOverhead"  i18nkey="planning.projectBudget.whatIsTheContracted" editable=editable/]
             </div>
             [#if canEdit]
             <div class="note fullPartBlock">
@@ -107,7 +107,7 @@
             [#-- Project budget content by year --]
             <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
               [#if (!editable && canEdit)]
-                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#partnerTables-${year?c}">[@s.text name="form.buttons.edit" /]</a></div>
+                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
               [/#if]
               <div class="fieldset clearfix">
                 [#-- Accumulative total project budget By year --]
@@ -130,16 +130,16 @@
                 </div>
                 [/#if]
               </div> <!-- End Budget by year  -->
-              <div class="ccafsBudget fullPartBlock clearfix">
+              <div class="ccafsBudget fullPartBlock ${project.type}">
                 [@s.set var="counter" value="0"/]
                 [#-- Project Leader --]
                 [#if project.leader?has_content]
-                  [@projectBudget institution=project.leader.institution budget=project.getBudget(project.leader.institution.id, project.bilateralProject?string(2, 1)?number, year )! project=project isPL=true cofinancing_budgets=project.getCofinancingBudgets()! editable=editable /]
+                  [@partnerBudget institution=project.leader.institution budget=project.getBudget(project.leader.institution.id, project.bilateralProject?string(2, 1)?number, year )! isPL=true cofinancing_budgets=project.getCofinancingBudgets()! editable=editable /]
                 [/#if]
-                [#-- Project PPA Partners --]
+                [#-- Project CCAFS Partners --]
                 [#if projectPPAPartners?has_content] 
                   [#list projectPPAPartners as partnerInstitution ]
-                    [@projectBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! project=project pp_index="${partnerInstitution_index+1}" editable=editable /]
+                    [@partnerBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! pp_index="${partnerInstitution_index+1}" editable=editable /]
                   [/#list]  
                 [/#if]
               </div>
@@ -150,7 +150,7 @@
                 </a>
               </div>
            </div>
-        </div> <!-- End budget -->
+        </div> 
       [#else]
         [#-- If project leader is not defined --] 
         <p class="simpleBox center">[@s.text name="preplanning.projectBudget.message.leaderUndefined" /]</p>
@@ -180,87 +180,118 @@
     [/#if]
   </article>
   [/@s.form]
+  
+  [#-- Message: The budget allocated to the core projects can not exceed the total annual budget --]
+  <input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceed" /]" />
+  
+  [#-- Linked Project Template --]
+  [@projectBudget institution=project.leader.institution linkedProject={} /]
+  
+  [#-- Dialog save confirmation --]
+  <div id="dialog-confirm" title="[@s.text name="planning.projectBudget.dialogConfirmation.title" /]" style="text-align:left;display:none">
+    <div class="fullPartBlock">
+      <p>[@s.text name="planning.projectBudget.dialogConfirmation.message" /]</p>
+    </div>
+    <div class="fullPartBlock pure-form">
+      [@customForm.textArea name="" i18nkey="saving.justification" required=true className="justification"/]
+    </div>
+  </div>
 </section>
 
-[#-- Dialog save confirmation --]
-<div id="dialog-confirm" title="[@s.text name="planning.projectBudget.dialogConfirmation.title" /]" style="text-align:left;display:none">
-  <div class="fullPartBlock">
-    <p>[@s.text name="planning.projectBudget.dialogConfirmation.message" /]</p>
-  </div>
-  <div class="fullPartBlock pure-form">
-    [@customForm.textArea name="" i18nkey="saving.justification" required=true className="justification"/]
-  </div>
-</div>
 
-[#macro projectBudget institution budget project isPL=false pp_index="0" cofinancing_budgets="" editable=true]
-<div id="partnerBudget-${pp_index}" class="partnerBudget simpleBox row clearfix">
+[#macro partnerBudget institution budget isPL=false pp_index="0" cofinancing_budgets="" editable=true]
+<div id="partnerBudget-${pp_index}" class="partnerBudget ${isPL?string('partnerLeader','ccafsPartner')} simpleBox row clearfix">
   <h6 class="title">${institution.composedName} <span class="projectType ${isPL?string('pl','ppa')}">${isPL?string('Project Leader','CCAFS Partner')}</span> </h6>
-  [#-- Hidden values --]
-  <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
-  <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
-  <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(budget.institution.id)!institution.id}" />
-  <input type="hidden" name="project.budgets[${counter}].type" value="${projectType}" />
-  [#-- Project Budget --]
-  <div class="halfPartBlock budget clearfix">
-    <div class="title"><h6 class="subTitle">[@s.text name="planning.projectBudget.annualBudget" /]:</h6></div>
-    <div class="content">
-      <p class="inputTitle">[@s.text name="planning.projectBudget.totalAmount"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:
-      [#if !editable]<br /><strong>US$ ${((budget.amount)!0)?number?string(",##0.00")}</strong>[/#if]
-      </p>
-      [#if editable] 
-        [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget ${projectType}" showTitle=false value="${(budget.amount)!0}"/] 
-      [/#if]
+  <div class="budget">
+    [#-- Hidden values --]
+    <input type="hidden" name="project.budgets[${counter}].id" value="${budget.id!"-1"}" />
+    <input type="hidden" name="project.budgets[${counter}].year" value="${(budget.year)!year}" />
+    <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(budget.institution.id)!institution.id}" />
+    <input type="hidden" name="project.budgets[${counter}].type" value="${projectType}" />
+    [#-- Project Budget --]
+    <div class="halfPartBlock clearfix">
+      <div class="title">
+        <h6 class="subTitle">
+          [@s.text name="planning.projectBudget.annualBudget"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:
+        </h6>
+      </div>
+      <div class="content">
+        <p class="inputTitle">
+        [#if !editable]<strong>US$ ${((budget.amount)!0)?number?string(",##0.00")}</strong>[/#if]
+        </p>
+        [#if editable] 
+          [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget plBudget ${projectType}" showTitle=false value="${(budget.amount)!0}"/] 
+        [/#if]
+      </div>
+    </div>
+    [#-- Project Gender Budget --]
+    <div class="halfPartBlock clearfix">
+      <div class="title"><h6 class="subTitle">[@s.text name="planning.projectBudget.genderPercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]</h6></div>
+      <div class="content">
+        <p class="inputTitle">
+        [#if !editable]<strong> (${((budget.genderPercentage)!0)}%) </strong> [/#if] US$ <span>${(((budget.amount/100)*budget.genderPercentage)!0)?string(",##0.00")}</span> 
+        </p>
+        [#if editable]
+          [@customForm.input name="project.budgets[${counter}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}"/]
+        [/#if]
+        [@s.set var="counter" value="${counter+1}"/]
+      </div>
     </div>
   </div><!-- End budget -->
-  [#-- Project Gender Budget --]
-  <div class="halfPartBlock budget clearfix">
-    <div class="title"><h6 class="subTitle">[@s.text name="planning.projectBudget.genderPercentage" /]</h6></div>
-    <div class="content">
-      <p class="inputTitle">[@s.text name="planning.projectBudget.totalGendePercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:  
-      [#if !editable]<br /><strong> (${((budget.genderPercentage)!0)}%) </strong> [/#if] US$ <span>${(((budget.amount/100)*budget.genderPercentage)!0)?string(",##0.00")}</span> 
-      </p>
-      [#if editable]
-        [@customForm.input name="project.budgets[${counter}].genderPercentage" className="projectGenderBudget" showTitle=false value="${(budget.genderPercentage)!0}"/]
-      [/#if]
-      [@s.set var="counter" value="${counter+1}"/]
-    </div>
-  </div><!-- End budget -->
-  [#-- Project budget per bilateral linked project --]
-  [#if project.linkedProjects?has_content && isPL ]
+  [#-- Project budget per linked project --]
+  [#if isPL]
     <hr />
-    <h6 class="subTitle">[@s.text name="planning.projectBudget.annualBudgetPerBilateralComponent" /]:</h6>
+    <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
     <br />
-    [#list project.linkedProjects as bilateralProject]
-      [#assign cofinancingBudget = project.getCofinancingBudget(bilateralProject.id, year)! /]
-      <div class="fullPartBlock budget clearfix">
-        <p class="checked" >P${bilateralProject.id} -  ${bilateralProject.title}</p>
-        <input type="hidden" name="project.budgets[${counter}].id" value="${cofinancingBudget.id!"-1"}" />
-        <input type="hidden" name="project.budgets[${counter}].year" value="${year}" />
-        <input type="hidden" name="project.budgets[${counter}].institution.id" value="${(cofinancingBudget.institution.id)!institution.id}" />
-        <input type="hidden" name="project.budgets[${counter}].cofinancingProject.id" value="${bilateralProject.id}" />
-        <input type="hidden" name="project.budgets[${counter}].type" value="W3_BILATERAL" />
-        <div class="halfPartBlock">
-          <div class="content">
-          <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:
-            [#if !editable]<strong>US$ ${((cofinancingBudget.amount)!0)?number?string(",##0.00")}</strong> [/#if]
-          </p>
-          [#if editable]
-            [@customForm.input name="project.budgets[${counter}].amount" value="${cofinancingBudget.amount!0}" className="projectBudget W3_BILATERAL" showTitle=false/]
-          [/#if]
-          [@s.set var="counter" value="${counter+1}"/]
-          </div>
-        </div>
-      </div><!-- End budget -->
-    [/#list]
-  [/#if]
-  [#if !project.bilateralProject && isPL]
-    <div class="note center">[@s.text name="planning.projectBudget.addBilateralProject" /] 
-      <a href="[@s.url action='description' includeParams='get'][@s.param name='projectID']${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#bilateralProjects">
-        [@s.text name="form.buttons.clickingHere" /]
-      </a>
-    </div>
+    <div id="linkedProjects">
+    [#if project.linkedProjects?has_content]
+      [#-- List of linkeds Projects --]
+      [#list project.linkedProjects as linkedProject]
+        [@projectBudget institution=institution linkedProject=linkedProject editable=editable /]
+        [@s.set var="counter" value="${counter+1}"/]
+      [/#list]
+    [/#if]
+    </div><!-- End linked projects -->
+    [#if project.bilateralProject && isPL && editable]
+      [#-- The values of this list are loaded via ajax --]
+      [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="addProject" value="" /]
+    [/#if]
   [/#if]
 </div>
 [/#macro]
+
+[#macro projectBudget institution linkedProject editable=true]
+  <div id="projectBudget-${(linkedProject.id)!'template'}" class="projectBudget budget" style="display:${linkedProject?has_content?string('block','none')}">
+    [#assign budgetName = "project.budgets[${counter}]" /]
+    [#if linkedProject?has_content]
+      [#if project.bilateralProject]
+        [#assign cofinancingBudget = action.getBilateralCofinancingBudget(linkedProject.id, project.id, year)! /]
+      [#else]
+        [#assign cofinancingBudget = project.getCofinancingBudget(linkedProject.id, year)! /]
+      [/#if]
+    [/#if]
+    [#if editable && project.bilateralProject]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+    <p class="title checked" ><a href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a></p>
+    <input type="hidden" class="linkedId"  name="project.linkedProjects" value="${(linkedProject.id)!'-1'}" />
+    <input type="hidden" class="budgetId" name="${budgetName}.id" value="${(cofinancingBudget.id)!"-1"}" />
+    <input type="hidden" class="budgetYear" name="${budgetName}.year" value="${year}" />
+    <input type="hidden" class="budgetInstitutionId" name="${budgetName}.institution.id" value="${(cofinancingBudget.institution.id)!institution.id}" />
+    <input type="hidden" class="budgetCofinancingProjectId" name="${budgetName}.cofinancingProject.id" value="${(linkedProject.id)!'-1'}" />
+    <input type="hidden" class="budgetType" name="${budgetName}.type" value="W3_BILATERAL" />
+    <div class="halfPartBlock">
+      <div class="content">
+      <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:
+        [#if !editable || !project.bilateralProject]<strong>US$ ${((cofinancingBudget.amount)!0)?number?string(",##0.00")}</strong> [/#if]
+      </p>
+      [#if editable && project.bilateralProject]
+        [@customForm.input name="${budgetName}.amount" value="${(cofinancingBudget.amount)!0}" className="budgetAmount projectBudget W3_BILATERAL" showTitle=false /]
+      [/#if]
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div><!-- End project-${(linkedProject.id)!''} budget -->
+[/#macro]
+
+
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
