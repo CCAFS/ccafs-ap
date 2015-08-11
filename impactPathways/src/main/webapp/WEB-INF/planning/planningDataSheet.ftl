@@ -2,7 +2,7 @@
 <div id="top-quote">
   [#if project?has_content]
     <div id="projectID-quote" class="quote-id" title="[#if project.title?has_content][@s.text name="planning.project" /]: ${project.title}[/#if]">
-      <a href="[@s.url namespace="/planning/projects" action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
+      <a href="[@s.url namespace="/planning/projects" action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
         <p>ID: <span>${project.composedId}</span></p>
         <p>[@s.text name="${project.type}" /]</p>
       </a>

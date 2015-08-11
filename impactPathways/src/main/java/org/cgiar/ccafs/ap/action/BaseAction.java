@@ -90,6 +90,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.config = config;
     this.saveable = true;
     this.fullEditable = true;
+    this.justification = "";
   }
 
   /* Override this method depending of the save action. */

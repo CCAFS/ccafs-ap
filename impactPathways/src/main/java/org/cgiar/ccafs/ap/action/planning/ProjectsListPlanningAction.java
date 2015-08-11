@@ -15,20 +15,16 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
-import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,15 +54,6 @@ public class ProjectsListPlanningAction extends BaseAction {
     super(config);
     this.projectManager = projectManager;
     this.totalBudget = 0;
-  }
-
-  // TODO - If you see this, PLEASE DELETE ME INMEDIATELLY.
-  public static void main(String[] args) {
-    Injector in = Guice.createInjector(new APModule());
-    DAOManager databaseManager = in.getInstance(DAOManager.class);
-
-    boolean deleted = databaseManager.deleteOnCascade("projects", "id", "1", 1, "Deleting on cascade");
-    System.out.println(deleted);
   }
 
   public String addBilateralProject() {
@@ -133,8 +120,8 @@ public class ProjectsListPlanningAction extends BaseAction {
     if (liaisonInstitution != null) {
       newProject.setLiaisonInstitution(liaisonInstitution);
     } else {
-      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!",
-        this.getCurrentUser().getId());
+      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!", this
+        .getCurrentUser().getId());
       return -1;
     }
 
@@ -146,14 +133,15 @@ public class ProjectsListPlanningAction extends BaseAction {
   public String delete() {
     // Deleting project.
     if (this.canDelete(projectID)) {
-      boolean deleted = projectManager.deleteProject(projectID, this.getCurrentUser(),
-        this.getJustification() == null ? "Project deleted" : this.getJustification());
+      boolean deleted =
+        projectManager.deleteProject(projectID, this.getCurrentUser(), this.getJustification() == null
+          ? "Project deleted" : this.getJustification());
       if (deleted) {
-        this.addActionMessage(
-          this.getText("deleting.success", new String[] {this.getText("planning.project").toLowerCase()}));
+        this.addActionMessage(this.getText("deleting.success", new String[] {this.getText("planning.project")
+          .toLowerCase()}));
       } else {
-        this.addActionError(
-          this.getText("deleting.problem", new String[] {this.getText("planning.project").toLowerCase()}));
+        this.addActionError(this.getText("deleting.problem", new String[] {this.getText("planning.project")
+          .toLowerCase()}));
       }
     } else {
       this.addActionError(this.getText("planning.projects.cannotDelete"));
@@ -192,19 +180,25 @@ public class ProjectsListPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     projects = new ArrayList<>();
-    allProjects = projectManager.getAllProjectsBasicInfo();
 
-    List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
+    if (securityContext.isAdmin()) {
+      projects = projectManager.getAllProjectsBasicInfo();
+      allProjects = new ArrayList<>();
+    } else {
+      allProjects = projectManager.getAllProjectsBasicInfo();
+      List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
 
-    // We should remove from the allProjects list the project
-    // led by the user and also we should add them to a another list
-    for (Integer projectId : editableProjectsIds) {
-      Project temp = new Project(projectId);
-      int index = allProjects.indexOf(temp);
-      if (index != -1) {
-        projects.add(allProjects.remove(index));
+      // We should remove from the allProjects list the project
+      // led by the user and also we should add them to a another list
+      for (Integer projectId : editableProjectsIds) {
+        Project temp = new Project(projectId);
+        int index = allProjects.indexOf(temp);
+        if (index != -1) {
+          projects.add(allProjects.remove(index));
+        }
       }
     }
+
 
   }
 

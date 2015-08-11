@@ -18,9 +18,12 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -46,22 +49,24 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   private ActivityManager activityManager;
   private DeliverableManager deliverableManager;
   private ProjectPartnerManager projectPartnerManager;
+  private ProjectManager projectManager;
 
   private List<Activity> activitiesList;
   private int projectPartnerID;
 
-  private String message = "", warning;
+  private String message = "";
   private List<Activity> linkedActivities;
   private List<Deliverable> linkedDeliverables;
   private List<ProjectPartner> linkedProjectPartners;
 
   @Inject
   public ProjectPartnersDeleteAction(APConfig config, ActivityManager activityManager,
-    DeliverableManager deliverableManager, ProjectPartnerManager projectPartnerManager) {
+    DeliverableManager deliverableManager, ProjectPartnerManager projectPartnerManager, ProjectManager projectManager) {
     super(config);
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
     this.projectPartnerManager = projectPartnerManager;
+    this.projectManager = projectManager;
   }
 
 
@@ -80,10 +85,53 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   }
 
   /**
-   * This method gets all the Project Partners that are being contributed by this project partner.
+   * This method gets all the Project Partners where some institution will stop contributing if this partner got
+   * deleted.
+   * What this method does is to get the list of all the PPA institutions, and validate if the institution of the
+   * current project partner is repeated. If so, nothing happen.
+   * However, if the institution of this partner is not repeated on another partner, we need know which other Project
+   * Partners are being contributed by this institution.
    */
   private void checkProjectPartnerContributions() {
-    // TODO Auto-generated method stub
+    // First, we need to get the list of all the CCAFS Partners of the project.
+    // To do that, we need to know the project where this project partner belongs to.
+    Project project = projectManager.getProjectFromProjectPartnerID(projectPartnerID);
+    if (project != null) {
+      // Getting the partner information.
+      ProjectPartner partnerToDelete = projectPartnerManager.getProjectPartnerById(projectPartnerID);
+
+      // Getting the list of partners that are contributing to this project.
+      List<ProjectPartner> partners = projectPartnerManager.getProjectPartners(project.getId());
+      boolean institutionFound = false;
+      for (ProjectPartner partner : partners) {
+        // validate that the partner is not the same as the one we are going to delete.
+        if (partner.getId() != partnerToDelete.getId()) {
+          // Let's find if there is another institution same as the institution of the partner that wants to be deleted.
+          // The validation is:
+          // If the institution of the partner that is going to be deleted is the same as the institution of the loop,
+          // then we found another institution, so we can stop the loop.
+          if (partnerToDelete.getInstitution().equals(partner.getInstitution())) {
+            institutionFound = true;
+            break; // stop the loop.
+          }
+        }
+      }
+      // If no institution was found, we need get all the project partners that will be affected.
+      if (institutionFound == false) {
+        // Looping the list of partners.
+        linkedProjectPartners = new ArrayList<>();
+        for (ProjectPartner partner : partners) {
+          // Looping the list of "contribute institutions".
+          for (Institution institution : partner.getContributeInstitutions()) {
+            if (institution.equals(partnerToDelete.getInstitution())) {
+              // Populate the array.
+              linkedProjectPartners.add(partner);
+              break; // stop the loop.
+            }
+          }
+        }
+      }
+    }
   }
 
 
@@ -99,29 +147,9 @@ public class ProjectPartnersDeleteAction extends BaseAction {
     // Checking project partner contributions.
     this.checkProjectPartnerContributions();
 
-    // ------------- TODO: TEST -------------
-    // linkedActivities = new ArrayList<>();
-    // linkedActivities.add(activityManager.getActivityById(3));
-    // linkedActivities.add(activityManager.getActivityById(5));
-    // linkedActivities.add(activityManager.getActivityById(6));
-
-    // linkedDeliverables = new ArrayList<>();
-    // linkedDeliverables.add(deliverableManager.getDeliverableById(5));
-    // linkedDeliverables.add(deliverableManager.getDeliverableById(6));
-    // linkedDeliverables.add(deliverableManager.getDeliverableById(7));
-
-    linkedProjectPartners = new ArrayList<>();
-    linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(678));
-    linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(679));
-    linkedProjectPartners.add(projectPartnerManager.getProjectPartnerById(680));
-    // ----------------------------------
-
     LOG.info("They were loaded {} activities", activitiesList.size());
 
-    for (int i = 0; i < activitiesList.size(); i++) {
-      message += "\n activity ID = " + activitiesList.get(i).getId() + ", " + "activity title = "
-        + activitiesList.get(i).getTitle();
-    }
+    // TODO Work in the message.
     return SUCCESS;
   }
 

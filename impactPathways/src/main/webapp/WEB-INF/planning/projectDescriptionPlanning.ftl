@@ -32,13 +32,13 @@
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit ]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param name ="projectID"]${project.id}[/@s.param][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
       </p>
     [/#if] 
     <div id="projectDescription" class="borderBox">
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name="projectID"]${projectID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>  
       <fieldset class="fullBlock">
@@ -49,27 +49,27 @@
         <div class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" required=true editable=editable/]
+            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" required=true editable=( editable && securityContext.canEditManagementLiaison() ) /]
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" required=true editable=editable/]
+            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" required=true editable=( editable && securityContext.canEditManagementLiaison() ) /]
           </div> 
         </div>  
         <div class="fullBlock">  
           [#-- Start Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.startDate" type="text" disabled=( !editable || !securityContext.canEditStartDate() ) i18nkey="preplanning.projectDescription.startDate" required=true editable=editable /]
+            [@customForm.input name="project.startDate" type="text" disabled=( !editable || !securityContext.canEditStartDate() ) i18nkey="preplanning.projectDescription.startDate" required=true editable=( editable && securityContext.canEditStartDate() ) /]
           </div> 
           [#-- End Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=editable /]
+            [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=( editable && securityContext.canEditEndDate() ) /]
           </div>
         </div>
         <div class="fullBlock">
           [#-- Project Type --]
           <div class="halfPartBlock"> 
-            [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" disabled=true /]
+            [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" editable=editable disabled=true /]
             <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
@@ -89,6 +89,9 @@
                 </p>
               [#else]
                 [#if editable]
+                  [#if !securityContext.canAllowProjectWorkplanUpload() ]
+                    <h6>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</h6>
+                  [/#if]
                   [@customForm.inputFile name="file"  /]
                 [/#if] 
               [/#if] 
@@ -126,7 +129,7 @@
           <div id="projectFlagshipsBlock" class="grid_5">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
-              [#if editable]
+              [#if editable && securityContext.canEditProjectFlagships()]
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
                 [@s.checkboxlist name="project.flagships" disabled=!securityContext.canEditProjectFlagships() list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
               [#else] 
@@ -140,7 +143,7 @@
           <div id="projectRegionsBlock" class="grid_4">
             <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
             <div class="checkboxGroup">
-              [#if editable]
+              [#if editable && securityContext.canEditProjectRegions()]
                 [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
                 [@s.checkboxlist name="project.regions" disabled=!securityContext.canEditProjectRegions()  list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
               [#else]  
@@ -183,15 +186,19 @@
     </div> 
     [#if editable]
       [#-- Project identifier --]
-      <div class="borderBox">
-        <input name="projectID" type="hidden" value="${project.id?c}" />
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
-        <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      
+        <div [#if !newProject] class="borderBox" [/#if]>
+          [#if !newProject] 
+            [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+          [/#if]
+  
+          <div class="buttons">
+            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+          </div>
         </div>
-      </div>
     [#else]
         [#-- Display Log History --]
         [#if history??][@log.logList list=history /][/#if] 
@@ -203,7 +210,7 @@
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
   <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
-  <input id="projectsAction" type="hidden" value="coreProjects.do" />
+  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
   
   [#-- Core project list template --]
   <ul style="display:none">

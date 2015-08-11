@@ -42,7 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Hernán David Carvajal.
  * @author Javier Andrés Gallego.
  */
@@ -319,9 +319,19 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
+  public Project getProjectFromProjectPartnerID(int projectPartnerID) {
+    int projectID = projectDAO.getProjectIDFromProjectPartnerID(projectPartnerID);
+    if (projectID != -1) {
+      return this.getProject(projectID);
+    }
+    return null;
+  }
+
+  @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getId());
   }
+
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
@@ -352,7 +362,6 @@ public class ProjectManagerImpl implements ProjectManager {
 
     return indicators;
   }
-
 
   @Override
   public List<Project> getProjectsByProgram(int programId) {
