@@ -2397,6 +2397,10 @@ textarea[id$='summary'] {
 
 /* Project Partners*/
 
+#partnerRemove-dialog {
+  text-align: left;
+}
+
 #projectLeader {
     /* padding: 10px 0px; */
 }

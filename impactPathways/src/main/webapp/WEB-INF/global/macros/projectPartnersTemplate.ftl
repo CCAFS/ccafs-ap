@@ -16,7 +16,22 @@
   [/#if]
   [#-- Remove Partner Dialog --]
   <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+    <p class="message"></p>
+    <br />
+    <div class="activities">
+      <h3>Activities</h3>
+      <ul></ul>
+    </div>
+    <br />
+    <div class="deliverables">
+      <h3>Deliverables</h3>
+      <ul></ul>
+    </div>
+    <br />
+    <div class="projectPartners">
+      <h3>Project partners</h3>
+      <ul></ul>
+    </div>
   </div>
 [/#macro]
 
