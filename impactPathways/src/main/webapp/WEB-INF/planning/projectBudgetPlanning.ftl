@@ -181,6 +181,10 @@
   </article>
   [/@s.form]
   
+  [#-- Hidden values used by js --]
+  <input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceed" /]" />
+  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
+  
   [#-- Linked Project Template --]
   [@projectBudget institution=project.leader.institution linkedProject={} /]
   
@@ -213,6 +217,7 @@
         </h6>
       </div>
       <div class="content">
+        <p class="inputTitle">
         [#if !editable]<strong>US$ ${((budget.amount)!0)?number?string(",##0.00")}</strong>[/#if]
         </p>
         [#if editable] 
@@ -224,6 +229,7 @@
     <div class="halfPartBlock clearfix">
       <div class="title"><h6 class="subTitle">[@s.text name="planning.projectBudget.genderPercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]</h6></div>
       <div class="content">
+        <p class="inputTitle">
         [#if !editable]<strong> (${((budget.genderPercentage)!0)}%) </strong> [/#if] US$ <span>${(((budget.amount/100)*budget.genderPercentage)!0)?string(",##0.00")}</span> 
         </p>
         [#if editable]
@@ -247,7 +253,7 @@
       [/#list]
     [/#if]
     </div><!-- End linked projects -->
-    [#if project.bilateralProject && isPL && editable]
+    [#if isPL && editable]
       [#-- The values of this list are loaded via ajax --]
       [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="addProject" value="" /]
     [/#if]

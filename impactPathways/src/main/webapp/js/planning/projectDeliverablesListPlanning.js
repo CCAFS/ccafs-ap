@@ -33,13 +33,15 @@ function addJustificationPopUp() {
       },
   });
   // Event to open dialog to remove deliverable
-  $("a.removeDeliverable").on("click", function(e) {
-    e.preventDefault();
-    $dialogContent.find("#justification").val('').removeClass('fieldError');
-    // Getting deliverable ID and setting input hidden to remove that deliverable
-    $dialogContent.find('input[name$=deliverableID]').val($(e.target).parent().attr('id').split('-')[1]);
-    dialog.dialog("open");
-  });
+  $("a.removeDeliverable").on("click", removeDeliverable);
+}
+
+function removeDeliverable(e) {
+  e.preventDefault();
+  $dialogContent.find("#justification").val('').removeClass('fieldError');
+  // Getting deliverable ID and setting input hidden to remove that deliverable
+  $dialogContent.find('input[name$=deliverableID]').val($(e.target).parent().attr('id').split('-')[1]);
+  dialog.dialog("open");
 }
 
 function addDataTable() {
@@ -51,5 +53,8 @@ function addDataTable() {
       "bAutoWidth": false, // This option enables the auto adjust columns width
       "iDisplayLength": 10
   // Number of rows to show on the table
+  });
+  $('table#projectDeliverables').on('draw.dt', function() {
+    $("a.removeDeliverable").on("click", removeDeliverable);
   });
 }

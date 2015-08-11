@@ -133,7 +133,7 @@ function loadInitialCoreProjects() {
     search_contains: true
   });
   $.ajax({
-      'url': '../../coreProjects.do',
+    'url': '../../' + $('#projectsAction').val(),
       beforeSend: function() {
         $selectAddProject.empty().append(setOption(-1, "Please select a project"));
       },
@@ -183,11 +183,13 @@ function setProjectsIndexes(){
 
 function calculateProjectsBudgetRemaining(e){
   $plBudget.removeClass('fieldError');
-  errorMessage= "";
+  $(e.target).removeClass('fieldError');
+  errorMessages = [];
   var totalProjectBudget = totalBudget($linkedProjects.find('input.budgetAmount'));
   if (totalProjectBudget >  removeCurrencyFormat($plBudget.val()) ){
     $plBudget.addClass('fieldError');
-    errorMessage= "You can not exceed the partner budget";
+    $(e.target).addClass('fieldError');
+    errorMessages.push($('#budgetCanNotExcced').val());
   }
 }
 

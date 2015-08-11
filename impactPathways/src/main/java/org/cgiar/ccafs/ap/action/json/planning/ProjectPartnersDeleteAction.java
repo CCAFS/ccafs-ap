@@ -51,7 +51,6 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
 
-  private List<Activity> activitiesList;
   private int projectPartnerID;
 
   private String message = "";
@@ -74,7 +73,7 @@ public class ProjectPartnersDeleteAction extends BaseAction {
    * This method gets all the activities where the activity leaders are linked to this partner.
    */
   private void checkActivityLeaders() {
-    activitiesList = activityManager.getActivitiesByProjectPartner(projectPartnerID);
+    linkedActivities = activityManager.getActivitiesByProjectPartner(projectPartnerID);
   }
 
   /**
@@ -146,8 +145,6 @@ public class ProjectPartnersDeleteAction extends BaseAction {
 
     // Checking project partner contributions.
     this.checkProjectPartnerContributions();
-
-    LOG.info("They were loaded {} activities", activitiesList.size());
 
     // TODO Work in the message.
     return SUCCESS;

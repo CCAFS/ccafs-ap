@@ -14,6 +14,9 @@ $(document).ready(function() {
         }
       }
   });
+  $('table.projectsList').on('draw.dt', function() {
+    $("a.removeProject").on("click", removeProject);
+  });
 
   $("#submitForm").on("submit", function(evt) {
     if(confirm($("#beforeSubmitMessage").val())) {
@@ -57,11 +60,13 @@ function addJustificationPopUp() {
       },
   });
   // Event to open dialog to remove deliverable
-  $("a.removeProject").on("click", function(e) {
-    e.preventDefault();
-    $dialogContent.find("#justification").val('').removeClass('fieldError');
-    // Getting deliverable ID and setting input hidden to remove that deliverable
-    $dialogContent.find('input[name$=projectID]').val($(e.target).parent().attr('id').split('-')[1]);
-    dialog.dialog("open");
-  });
+  $("a.removeProject").on("click", removeProject);
+}
+
+function removeProject(e) {
+  e.preventDefault();
+  $dialogContent.find("#justification").val('').removeClass('fieldError');
+  // Getting deliverable ID and setting input hidden to remove that deliverable
+  $dialogContent.find('input[name$=projectID]').val($(e.target).parent().attr('id').split('-')[1]);
+  dialog.dialog("open");
 }

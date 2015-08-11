@@ -122,9 +122,7 @@
         [#-- Partner who is responsible --]
         <div class="fullBlock">
           <p>[@customForm.text name="planning.projectDeliverable.indicateResponsablePartner" readText=!editable/]</p>
-          [#if deliverable.deliverablePartners?has_content]
-          [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
-        [/#if]
+          [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index isResponsable=true editable=editable /]
         </div>
         [#-- Other contact person that will contribute --]
         <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
@@ -189,7 +187,7 @@
 [@deliverableTemplate.nextUserTemplate template=true /]
 
 [#-- Deliverable Partner Template--]
-[@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index institutionList="institutions" template=true /]
+[@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index template=true /]
 
 [#-- Search users Interface Popup --]
 [@usersForm.searchUsers isActive=false/]
