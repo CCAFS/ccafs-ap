@@ -15,20 +15,16 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.config.APModule;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
-import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,15 +54,6 @@ public class ProjectsListPlanningAction extends BaseAction {
     super(config);
     this.projectManager = projectManager;
     this.totalBudget = 0;
-  }
-
-  // TODO - If you see this, PLEASE DELETE ME INMEDIATELLY.
-  public static void main(String[] args) {
-    Injector in = Guice.createInjector(new APModule());
-    DAOManager databaseManager = in.getInstance(DAOManager.class);
-
-    boolean deleted = databaseManager.deleteOnCascade("projects", "id", "1", 1, "Deleting on cascade");
-    System.out.println(deleted);
   }
 
   public String addBilateralProject() {

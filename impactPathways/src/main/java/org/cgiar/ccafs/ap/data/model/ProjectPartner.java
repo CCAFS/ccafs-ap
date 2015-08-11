@@ -31,9 +31,7 @@ public class ProjectPartner {
   private User user;
   private String responsabilities;
   private String type;
-  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating
-
-  // with.
+  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating.
 
   public ProjectPartner() {
     super();

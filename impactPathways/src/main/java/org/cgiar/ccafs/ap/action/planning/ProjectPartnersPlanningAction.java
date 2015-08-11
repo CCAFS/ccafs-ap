@@ -202,15 +202,19 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting PPA Partners
     project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
 
-    // Getting the list of PPA Partner institutions (not repeated).
+    // Getting the list of PPA Partner institutions (not repeated), PLUS the PL institution, as this institution will
+    // receive funds as well.
     projectPPAPartners = new HashSet<Institution>();
+    if (project.getLeader() != null) {
+      projectPPAPartners.add(project.getLeader().getInstitution());
+    }
     for (ProjectPartner ppaPartner : project.getPPAPartners()) {
       projectPPAPartners.add(ppaPartner.getInstitution());
     }
 
     // Getting 2-level Project Partners
     project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
       partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
