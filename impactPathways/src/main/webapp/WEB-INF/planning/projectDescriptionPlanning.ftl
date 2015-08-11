@@ -32,13 +32,13 @@
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit ]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param name ="projectID"]${project.id}[/@s.param][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
       </p>
     [/#if] 
     <div id="projectDescription" class="borderBox">
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name="projectID"]${projectID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>  
       <fieldset class="fullBlock">
@@ -210,7 +210,7 @@
   <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
   <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
-  <input id="projectsAction" type="hidden" value="coreProjects.do" />
+  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
   
   [#-- Core project list template --]
   <ul style="display:none">
