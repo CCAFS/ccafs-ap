@@ -181,6 +181,9 @@
   </article>
   [/@s.form]
   
+  [#-- Message: The budget allocated to the core projects can not exceed the total annual budget --]
+  <input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceed" /]" />
+  
   [#-- Linked Project Template --]
   [@projectBudget institution=project.leader.institution linkedProject={} /]
   
@@ -213,6 +216,7 @@
         </h6>
       </div>
       <div class="content">
+        <p class="inputTitle">
         [#if !editable]<strong>US$ ${((budget.amount)!0)?number?string(",##0.00")}</strong>[/#if]
         </p>
         [#if editable] 
@@ -224,6 +228,7 @@
     <div class="halfPartBlock clearfix">
       <div class="title"><h6 class="subTitle">[@s.text name="planning.projectBudget.genderPercentage"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]</h6></div>
       <div class="content">
+        <p class="inputTitle">
         [#if !editable]<strong> (${((budget.genderPercentage)!0)}%) </strong> [/#if] US$ <span>${(((budget.amount/100)*budget.genderPercentage)!0)?string(",##0.00")}</span> 
         </p>
         [#if editable]
