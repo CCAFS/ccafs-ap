@@ -52,7 +52,7 @@
     [#--  Deliverable Information --] 
     <div id="deliverable-information" class="borderBox clearfix"> 
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-information">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1>  
       <div class="fullBlock">
@@ -95,7 +95,7 @@
     [#-- Deliverable Next Users block  --]
     <div id="deliverable-nextUsers" class="borderBox clearfix">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.nextUsers" /] </h1> 
@@ -115,16 +115,14 @@
     [#-- Deliverable partnership  --]
     <div id="deliverable-partnership" class="borderBox clearfix">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
       <div class="fullBlock">
         [#-- Partner who is responsible --]
         <div class="fullBlock">
           <p>[@customForm.text name="planning.projectDeliverable.indicateResponsablePartner" readText=!editable/]</p>
-          [#if deliverable.deliverablePartners?has_content]
-          [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index institutionList="institutions" isResponsable=true editable=editable /]
-        [/#if]
+          [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index isResponsable=true editable=editable /]
         </div>
         [#-- Other contact person that will contribute --]
         <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
@@ -153,7 +151,7 @@
     
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         [@customForm.textArea name="project.projectDeliverableLessons" i18nkey="planning.projectDeliverable.lessons" required=true editable=editable /]
@@ -189,7 +187,7 @@
 [@deliverableTemplate.nextUserTemplate template=true /]
 
 [#-- Deliverable Partner Template--]
-[@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index institutionList="institutions" template=true /]
+[@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index template=true /]
 
 [#-- Search users Interface Popup --]
 [@usersForm.searchUsers isActive=false/]
