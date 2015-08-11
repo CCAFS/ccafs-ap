@@ -49,7 +49,7 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
     List<Map<String, String>> outputBudgets = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT pmb.id, pmb.total_contribution, pmb.gender_contribution, ");
+    query.append("SELECT pmb.id, pmb.total_contribution, pmb.gender_contribution, pmb.year, ");
     query.append("ie.id as 'output_id', ie.description as 'output_description' ");
     query.append("FROM project_mog_budgets pmb ");
     query.append("INNER JOIN ip_elements ie ON pmb.mog_id = ie.id ");
@@ -63,6 +63,42 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
         outputBudget.put("id", rs.getString("id"));
         outputBudget.put("total_contribution", rs.getString("total_contribution"));
         outputBudget.put("gender_contribution", rs.getString("gender_contribution"));
+        outputBudget.put("year", rs.getString("year"));
+        outputBudget.put("output_id", rs.getString("output_id"));
+        outputBudget.put("output_description", rs.getString("output_description"));
+
+        outputBudgets.add(outputBudget);
+      }
+    } catch (SQLException e) {
+      LOG.error("-- getProjectOutputsBudget() > Exception raised trying to get the budgets by mog for project {}.",
+        projectID, e);
+    }
+
+    return outputBudgets;
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectOutputsBudgetByYear(int projectID, int year) {
+    List<Map<String, String>> outputBudgets = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT pmb.id, pmb.total_contribution, pmb.gender_contribution, pmb.year, ");
+    query.append("ie.id as 'output_id', ie.description as 'output_description' ");
+    query.append("FROM project_mog_budgets pmb ");
+    query.append("INNER JOIN ip_elements ie ON pmb.mog_id = ie.id ");
+    query.append("WHERE pmb.project_id = ");
+    query.append(projectID);
+    query.append(" AND pmb.year = ");
+    query.append(year);
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> outputBudget = new HashMap<>();
+        outputBudget.put("id", rs.getString("id"));
+        outputBudget.put("total_contribution", rs.getString("total_contribution"));
+        outputBudget.put("gender_contribution", rs.getString("gender_contribution"));
+        outputBudget.put("year", rs.getString("year"));
         outputBudget.put("output_id", rs.getString("output_id"));
         outputBudget.put("output_description", rs.getString("output_description"));
 

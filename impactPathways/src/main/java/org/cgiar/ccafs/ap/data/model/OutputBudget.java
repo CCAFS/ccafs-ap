@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class OutputBudget {
 
   private int id;
+  private int year;
   private double totalContribution;
   private double genderContribution;
   private IPElement output;
@@ -44,6 +45,10 @@ public class OutputBudget {
     return totalContribution;
   }
 
+  public int getYear() {
+    return year;
+  }
+
   public void setGenderContribution(double genderContribution) {
     this.genderContribution = genderContribution;
   }
@@ -58,6 +63,10 @@ public class OutputBudget {
 
   public void setTotalContribution(double totalContribution) {
     this.totalContribution = totalContribution;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
   @Override

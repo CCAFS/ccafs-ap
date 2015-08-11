@@ -38,6 +38,15 @@ public interface BudgetByMogDAO {
   public List<Map<String, String>> getProjectOutputsBudget(int projectID);
 
   /**
+   * This method returns the budget contributions assigned for each project's output in a given year
+   * 
+   * @param projectID - Project identifier
+   * @param year
+   * @return a list maps with the information to save.
+   */
+  public List<Map<String, String>> getProjectOutputsBudgetByYear(int projectID, int year);
+
+  /**
    * This method saves the budget contributions assigned to each project's output.
    * 
    * @param project - A project object containing the budget by outputs info.
