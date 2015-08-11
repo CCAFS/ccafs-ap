@@ -53,17 +53,28 @@ public class ProjectPartner {
   }
 
   /**
-   * This method returns a composed way to show a User.
+   * This method returns a composed way to show a Project Partner.
+   * E.g. Rincon, Silvia <silirincon@madre.lov> CLO - Santiago de Cali
    * 
-   * @return a String that represents a User.
+   * @return a String that represents a Project Partner.
    */
   public String getComposedName() {
-
     if (this.id == -1) {
       return "";
     }
-    return user.getLastName() + ", " + user.getFirstName() + " <" + user.getEmail() + ">, " + institution.getAcronym()
-    + " - " + institution.getName();
+    StringBuilder str = new StringBuilder();
+    str.append(user.getLastName());
+    str.append(", ");
+    str.append(user.getFirstName());
+    str.append(" <");
+    str.append(user.getEmail());
+    str.append(">, ");
+    if (institution.getAcronym() != null) {
+      str.append(institution.getAcronym());
+      str.append(" - ");
+    }
+    str.append(institution.getName());
+    return str.toString();
 
   }
 

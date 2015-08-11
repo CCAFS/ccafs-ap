@@ -127,7 +127,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     LOG.debug(">> getActivitiesByProjectPartner projectPartnerID = {} )", projectPartnerID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT a.*   ");
+    query.append("SELECT a.* ");
     query.append("FROM activities as a ");
     query.append("WHERE a.leader_id =  ");
     query.append(projectPartnerID);
