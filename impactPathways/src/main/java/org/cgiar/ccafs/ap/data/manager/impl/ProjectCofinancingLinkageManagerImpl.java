@@ -73,13 +73,13 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
-  public boolean saveLinkedCoreProjects(Project project, User user, String justification) {
-    List<Integer> bilateralProjectsIDs = new ArrayList<>();
-    for (Project bilateralProject : project.getLinkedProjects()) {
-      bilateralProjectsIDs.add(bilateralProject.getId());
+  public boolean saveLinkedCoreProjects(Project bilateralProject, User user, String justification) {
+    List<Integer> coreProjectsIDs = new ArrayList<>();
+    for (Project coreProject : bilateralProject.getLinkedProjects()) {
+      coreProjectsIDs.add(coreProject.getId());
     }
 
-    return linkedCoreProjectsDAO.saveLinkedCoreProjects(project.getId(), bilateralProjectsIDs, user.getId(), justification);
+    return linkedCoreProjectsDAO.saveLinkedCoreProjects(bilateralProject.getId(), coreProjectsIDs, user.getId(), justification);
   }
 
 }

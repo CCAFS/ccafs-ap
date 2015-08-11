@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Create Co-Funded Project" /]
-[#assign globalLibs = ["jquery", "noty"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/planning/addCofundedProject.js"] /]
 [#assign currentSection = "planning" /]
 
@@ -23,7 +23,7 @@
       [@s.form action="addCoFundedProject" cssClass="pure-form"]
         [#-- Bilateral Projects List--]
         <div id="" class="fullPartBlock ">
-          [@customForm.select name="addCoFunded.bilateralProject" label="" i18nkey="projects.addCoFundedProject.selectBilateralProject" listName="bilateralsProjects" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="bilateralProjectID" label="" i18nkey="projects.addCoFundedProject.selectBilateralProject" listName="bilateralProjects" keyFieldName="id"  displayFieldName="title" /]
         </div> 
         <p>[@s.text name="projects.addCoFundedProject.ifBilateralProjectIsNotListed" /] 
           [#if securityContext.canAddBilateralProject()]<a href="[@s.url namespace="/planning" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>[/#if]
@@ -31,7 +31,7 @@
         <br />
         [#-- Core Projects list --]
         <div id="" class="fullPartBlock ">
-          [@customForm.select name="addCoFunded.coreProject" label="" i18nkey="projects.addCoFundedProject.selectCoreProject" listName="institutionTypesList" keyFieldName="id"  displayFieldName="name" /]
+          [@customForm.select name="coreProjectID" label="" i18nkey="projects.addCoFundedProject.selectCoreProject" listName="coreProjects" keyFieldName="id"  displayFieldName="title" /]
         </div>
         <br />
         [#-- Add project --]

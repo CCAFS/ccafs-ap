@@ -51,7 +51,7 @@
         [#if !editable && canEdit]
           <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]  
-        [#-- Displaying partner leader from partnersTemplate.ftl --]  
+        [#-- Displaying partner leader from projectPartnersTemplate.ftl --]  
         [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator showResponsabilities=true editable=editable /] 
       </div>
     </div>

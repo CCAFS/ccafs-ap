@@ -176,6 +176,14 @@ public interface ProjectDAO {
   public int getProjectIdFromDeliverableId(int deliverableID);
 
   /**
+   * This method gets the project ID where the given partner belongs to.
+   * 
+   * @param projectPartnerID is a partner identifier.
+   * @return a integer representing the id of the project, or -1 if no project was found.
+   */
+  public int getProjectIDFromProjectPartnerID(int projectPartnerID);
+
+  /**
    * This method returns a list of project identifiers that can be edited by the user identified with the value received
    * by parameter.
    * 

@@ -1,5 +1,5 @@
 // Global VARS
-var $allBudgetInputs, $overheadInputs, $CCAFSBudgetInputs, $linkedProjects, $selectAddProject;
+var $allBudgetInputs, $overheadInputs, $CCAFSBudgetInputs, $linkedProjects, $selectAddProject, $plBudget;
 var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
 var projectType;
 var editable = true;
@@ -13,6 +13,7 @@ function init() {
   $overheadInputs = $("input[name$='bilateralCostRecovered']");
   $linkedProjects = $('#linkedProjects');
   $selectAddProject = $("select.addProject");
+  $plBudget = $('.partnerLeader input.plBudget');
   
   projectType = "."+$('#projectType').val();
   
@@ -55,6 +56,7 @@ function attachEvents() {
         bilateralBudget.calculateBudget();
         bilateralBudgetByYear.calculateBudget();
         calculateGenderBudget($(e.target).parents('.partnerBudget'));
+        calculateProjectsBudgetRemaining(e);
   });
   
   // Events for percentage inputs
@@ -177,6 +179,16 @@ function setProjectsIndexes(){
     var item = new LinkedProjectObject($(projectBudget));
     item.setIndex(i+1);
   });
+}
+
+function calculateProjectsBudgetRemaining(e){
+  $plBudget.removeClass('fieldError');
+  errorMessage= "";
+  var totalProjectBudget = totalBudget($linkedProjects.find('input.budgetAmount'));
+  if (totalProjectBudget >  removeCurrencyFormat($plBudget.val()) ){
+    $plBudget.addClass('fieldError');
+    errorMessage= "You can not exceed the partner budget";
+  }
 }
 
 function LinkedProjectObject(project){

@@ -87,6 +87,15 @@ public interface DeliverableDAO {
   public List<Map<String, String>> getDeliverablesByProject(int projectID);
 
   /**
+   * This method get a list of deliverables that are being contributed by the given project partner id.
+   * 
+   * @param projectPartnerID is the project partner identifier that is contributing to the deliverables.
+   * @return a list of Maps with the information requested, an empty list if nothing found or null if some problem
+   *         occurred.
+   */
+  public List<Map<String, String>> getDeliverablesByProjectPartnerID(int projectPartnerID);
+
+  /**
    * This method saves the Deliverable information
    * 
    * @param deliverableData - is a Map with the information of the deliverable to be saved
