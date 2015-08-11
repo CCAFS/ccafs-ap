@@ -1,3 +1,6 @@
 $(document).ready(function() {
-  console.log('Add Cofunded Project');
+  console.log("asa");
+  $("select").chosen({
+    search_contains: true
+  });
 });
