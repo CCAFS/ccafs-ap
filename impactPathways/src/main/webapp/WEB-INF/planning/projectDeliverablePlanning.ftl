@@ -115,7 +115,7 @@
     [#-- Deliverable partnership  --]
     <div id="deliverable-partnership" class="borderBox clearfix">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
       <div class="fullBlock">
@@ -142,7 +142,7 @@
       [#if editable]
       <div class="partnerListMsj note">
         [@s.text name="preplanning.projectBudget.partnerNotList" /]
-        <a href="[@s.url action='partners' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
+        <a href="[@s.url action='partners'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
           [@s.text name="preplanning.projectBudget.partnersLink" /] 
         </a>
       </div>

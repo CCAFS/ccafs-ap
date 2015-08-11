@@ -21,7 +21,7 @@
           <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
           <td class="removeDeliverable-row">
             [#if action.canDelete(dl.id)]
-              <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="#" title="" >
+              <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="deliverableID${dl.id}" title="" >
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="planning.deliverables.removeDeliverable" /]" /> 
               </a>
             [#else]
@@ -73,7 +73,7 @@
     [/#if]
     [#if !isResponsable]<span class="index">${dp_index+1}</span>[/#if]
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
-    <input class="type" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
+    <input class="id" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
     <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
     [#if template]
       [#-- Partner Name --]
