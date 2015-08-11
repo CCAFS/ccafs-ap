@@ -66,6 +66,32 @@ input.disabled {
   opacity: 0.6;
 }
 
+div.disabled {
+  /* Required for IE 5, 6, 7 */
+  /* ...or something to trigger hasLayout, like zoom: 1; */
+  width: 100%; 
+
+  /* Theoretically for IE 8 & 9 (more valid) */	
+  /* ...but not required as filter works too */
+  /* should come BEFORE filter */
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+
+  /* This works in IE 8 & 9 too */
+  /* ... but also 5, 6, 7 */
+  filter: alpha(opacity=40);
+
+  /* Older than Firefox 0.9 */
+  -moz-opacity:0.4;
+
+  /* Safari 1.x (pre WebKit!) */
+  -khtml-opacity: 0.4;
+
+  /* Modern!
+  /* Firefox 0.9+, Safari 2?, Chrome any?
+  /* Opera 9+, IE 9+ */
+  opacity: 0.3;
+}
+
 .clearfix:before,.clearfix:after {
   content: "";
   display: table;
@@ -1805,10 +1831,86 @@ input.userName {
 
 #leftSide{
   float: left;
-  padding: 0px 12px 0px 15px;
-  width: 60%;
+  padding: 3px 12px 0px 0px;
+  width: 42%;
   vertical-align: top;
 }
+
+#decisionTree {
+  font-family: 'Open Sans';
+}
+
+#decisionTree .title {
+    color: #444;
+  
+    border: none;
+    font-size: 1.8em;
+    margin-bottom: 18px;
+}
+
+#decisionTree .option {
+  width: 33%;
+  float: left;
+  text-align: center;
+  background-position: 50% 0;
+  background-repeat: no-repeat;
+  height: 130px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+#decisionTree .option p{
+  color: #fff;
+  font-size: 1.3em;
+  text-align: center;
+  width: 41%;
+  position: absolute;
+  top: 33%;
+  left: 29%;
+}
+
+#newProject{
+  cursor: pointer;
+  background-image: url(../../images/global/decision-tree-1.png);
+}
+#updatePlanning{
+  background-image: url(../../images/global/decision-tree-2.png);
+}
+#reportProject{
+  background-image: url(../../images/global/decision-tree-3.png);
+}
+
+
+
+#decisionTree .addProjectButtons{
+  width: 27%;
+  padding: 0px 36px;
+  margin-bottom: 20px;
+}
+
+#decisionTree .addProjectButtons .title{
+  font-size: 1.1em
+;text-align: center;
+  margin-bottom: 8px;
+}
+
+#decisionTree .addProjectButtons .addProject{
+    width: 29%;
+    float: left;
+    text-align: center;
+    background-color: #56C4CF;
+    border-bottom: 3px solid #55BCBC;
+    color: #fff;
+    padding: 6px 2px 0px 2px;
+    margin: 0 3px;
+    height: 36px;
+    font-size: 1.05em;
+}
+
+#decisionTree .addProjectButtons .addProject:hover{
+  background-color: #55BCBC;
+}
+
 
 #dashboard {
   margin-bottom: 15px;
@@ -1826,8 +1928,8 @@ input.userName {
 
 #dashboard #rightSide{
   float: right;
-  padding: 12px 0;
-  width: 35%;
+  padding: 0px 0;
+  width: 56%;
   vertical-align: top;
 }
 
@@ -1892,7 +1994,7 @@ input.userName {
 }
 
 #dashboard #deadline .point {
-  margin: 0px 25px;
+  margin: 0px 23px;
 }
 
 #dashboard #deadline .active {
@@ -1923,7 +2025,7 @@ input.userName {
 #dashboard #deadline .textPoint {
   display: inline-block;
   text-align: center;
-  width: 105px;
+  width: 102px;
 }
 
 #deadlineLine { 

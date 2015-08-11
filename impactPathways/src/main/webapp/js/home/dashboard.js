@@ -1,5 +1,13 @@
 $.fn.dataTableExt.sErrMode = 'throw';
 $(document).ready(function() {
+
+  $('#newProject').on('click', function(e) {
+    console.log(e.target);
+    $('#decisionTree .addProjectButtons').show(0, function() {
+      $(this).addClass('animated flipInX');
+    });
+  });
+
   $('.loadingBlock').hide().next().fadeIn(500);
   initTabs();
   // initSlidr();
@@ -25,7 +33,6 @@ var graphStarted = false;
 function initTabs() {
   $("#dashboard").tabs({
     activate: function(event,ui) {
-
       if(ui.newTab.index() == 1) {
         if(!graphStarted) {
           callCytos(baseURL + "/json/prePlanningIpGraph.do", "ipGraph-content");

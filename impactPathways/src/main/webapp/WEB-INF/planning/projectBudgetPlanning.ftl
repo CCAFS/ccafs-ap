@@ -186,7 +186,9 @@
   <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
   
   [#-- Linked Project Template --]
-  [@projectBudget institution=project.leader.institution linkedProject={} /]
+  [#if project.leader?has_content]
+    [@projectBudget institution=project.leader.institution linkedProject={} /]
+  [/#if]
   
   [#-- Dialog save confirmation --]
   <div id="dialog-confirm" title="[@s.text name="planning.projectBudget.dialogConfirmation.title" /]" style="text-align:left;display:none">
