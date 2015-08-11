@@ -15,7 +15,7 @@
         <th id="projectDownload"></th>
         <th id="projectDelete"></th>
         [#if isPlanning]
-        <th id="projectBudget">[@s.text name="planning.projects.completion" /]</th>
+          <th id="projectBudget">[@s.text name="planning.projects.completion" /]</th>
         [/#if]
       </tr>
     </thead>
@@ -82,19 +82,19 @@
           [/#if]
           [#-- Summary download --]
           <td> 
-              <a href="[@s.url namespace="/summaries" action='project' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" target="__BLANK">
-                <img src="${baseUrl}/images/global/download-summary.png" height="25" alt="[@s.text name="summaries.project.download" /]" title="[@s.text name="summaries.project.download" /]" />
-              </a> 
+            <a href="[@s.url namespace="/summaries" action='project' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" target="__BLANK">
+              <img src="${baseUrl}/images/global/download-summary.png" height="25" alt="[@s.text name="summaries.project.download" /]" title="[@s.text name="summaries.project.download" /]" />
+            </a> 
           </td>
           [#-- Delete Project--]
           <td>
-              [#if securityContext.canDeleteProject() && project.isNew(currentPlanningStartDate) ]
-                <a id="removeProject-${project.id}" class="removeProject" href="#" title="">
-                  <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
-                </a>
-              [#else]
-                <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="preplanning.projects.cantDeleteProject" /]" />
-              [/#if]
+            [#if securityContext.canDeleteProject() && project.isNew(currentPlanningStartDate) ]
+              <a id="removeProject-${project.id}" class="removeProject" href="#" title="">
+                <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
+              </a>
+            [#else]
+              <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="preplanning.projects.cantDeleteProject" /]" />
+            [/#if]
           </td>
         </tr>  
       [/#list]

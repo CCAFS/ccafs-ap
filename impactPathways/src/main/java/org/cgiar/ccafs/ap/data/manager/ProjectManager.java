@@ -116,8 +116,8 @@ public interface ProjectManager {
   /**
    * This method gets all the Project information given by a previous project selected
    * 
-   * @param projectID
-   * @return an Project Object.
+   * @param projectID is a project identifier.
+   * @return a Project Object with the information requested.
    */
   public Project getProject(int projectId);
 
@@ -146,6 +146,14 @@ public interface ProjectManager {
    * @return a Project object representing the project.
    */
   public Project getProjectFromDeliverableId(int deliverableID);
+
+  /**
+   * This method gets the Project where the project partner identifier belongs to.
+   * 
+   * @param projectPartnerID is a project partner identifier (PL, PC, PPA or PP).
+   * @return a Project object with the information requested.
+   */
+  public Project getProjectFromProjectPartnerID(int projectPartnerID);
 
   /**
    * This method returns the list of project identifiers that the given user is able to edit.

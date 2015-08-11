@@ -42,7 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Hernán David Carvajal.
  * @author Javier Andrés Gallego.
  */
@@ -319,14 +319,23 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
+  public Project getProjectFromProjectPartnerID(int projectPartnerID) {
+    int projectID = projectDAO.getProjectIDFromProjectPartnerID(projectPartnerID);
+    if (projectID != -1) {
+      return this.getProject(projectID);
+    }
+    return null;
+  }
+
+  @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getId());
   }
 
+
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-    public
-    List<IPIndicator> getProjectIndicators(int projectID) {
+  public List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
 
@@ -353,7 +362,6 @@ public class ProjectManagerImpl implements ProjectManager {
 
     return indicators;
   }
-
 
   @Override
   public List<Project> getProjectsByProgram(int programId) {
@@ -387,10 +395,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getBudgetsByProject(project));
 
@@ -458,8 +466,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectIndicatorManager
-    public
-    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
     Map<String, String> indicatorData;
     boolean saved = true;
 
@@ -492,8 +499,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

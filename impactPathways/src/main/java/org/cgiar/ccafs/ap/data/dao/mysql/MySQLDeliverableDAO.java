@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego B.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class MySQLDeliverableDAO implements DeliverableDAO {
 
@@ -237,6 +238,22 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append(" AND d.is_active = 1");
 
     LOG.debug("-- getDeliverablesByProject() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getDeliverablesByProjectPartnerID(int projectPartnerID) {
+    LOG.debug(">> getDeliverablesByProjectPartnerID projectPartnerID = {} )", projectPartnerID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT d.* ");
+    query.append("FROM deliverables d ");
+    query.append("INNER JOIN deliverable_partnerships dp ON dp.deliverable_id = d.id ");
+    query.append("WHERE dp.partner_id = ");
+    query.append(projectPartnerID);
+    query.append(" AND d.is_active = 1 AND dp.is_active = 1");
+
+    LOG.debug("-- getDeliverablesByProjectPartnerID() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
 

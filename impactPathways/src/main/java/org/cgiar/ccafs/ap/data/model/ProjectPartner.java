@@ -31,9 +31,7 @@ public class ProjectPartner {
   private User user;
   private String responsabilities;
   private String type;
-  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating
-
-  // with.
+  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating.
 
   public ProjectPartner() {
     super();
@@ -48,7 +46,8 @@ public class ProjectPartner {
   public boolean equals(Object obj) {
     if (obj instanceof ProjectPartner) {
       ProjectPartner o = (ProjectPartner) obj;
-      return o.getInstitution().getId() == this.institution.getId() && o.getUser().getId() == this.user.getId();
+      // return o.getInstitution().getId() == this.institution.getId() && o.getUser().getId() == this.user.getId();
+      return this.getId() == o.getId();
     }
     return false;
   }
@@ -64,7 +63,7 @@ public class ProjectPartner {
       return "";
     }
     return user.getLastName() + ", " + user.getFirstName() + " <" + user.getEmail() + ">, " + institution.getAcronym()
-      + " - " + institution.getName();
+    + " - " + institution.getName();
 
   }
 
@@ -99,9 +98,10 @@ public class ProjectPartner {
 
   @Override
   public int hashCode() {
-    int hash = 425;
-    hash = (institution.getId() + (user != null ? user.getId() : 1)) * hash;
-    return hash;
+    // int hash = 425;
+    // hash = (institution.getId() + (user != null ? user.getId() : 1)) * hash;
+    // return hash;
+    return this.getId();
   }
 
   /**

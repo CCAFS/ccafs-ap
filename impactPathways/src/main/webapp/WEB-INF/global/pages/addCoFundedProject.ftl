@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Create Co-Funded Project" /]
-[#assign globalLibs = ["jquery", "noty"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/planning/addCofundedProject.js"] /]
 [#assign currentSection = "planning" /]
 
