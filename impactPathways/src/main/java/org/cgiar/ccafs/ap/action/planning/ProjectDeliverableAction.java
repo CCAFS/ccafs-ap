@@ -187,7 +187,6 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
-    System.out.println();
     // Getting the responsible partner.
     List<DeliverablePartner> deliverablePartners =
       deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_RESP);
@@ -258,22 +257,13 @@ public class ProjectDeliverableAction extends BaseAction {
     // ---------- Saving deliverable partners contribution
 
     // Saving responsible deliverable partner
-    // if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() != null)
-    // {
-    // result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
-    // this.getCurrentUser(), this.getJustification());
-    // if (result < 0) {
-    // success = false;
-    // }
-    // } else
-    // if (deliverable.getResponsiblePartner().getInstitution() == null
-    // && deliverable.getResponsiblePartner().getUser() == null) {
-    // saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-    // this.getCurrentUser(), this.getJustification());
-    // if (!saved) {
-    // success = false;
-    // }
-    // }
+    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getPartner() != null) {
+      result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
+        this.getCurrentUser(), this.getJustification());
+      if (result < 0) {
+        success = false;
+      }
+    }
 
     // Saving other contributions
 
