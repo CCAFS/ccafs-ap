@@ -66,7 +66,7 @@
   [/#if]
 [/#macro]
 
-[#macro deliverablePartner dp dp_name="" dp_index="" institutionList="" isResponsable=false template=false editable=true]
+[#macro deliverablePartner dp={} dp_name="" dp_index="" isResponsable=false template=false editable=true]
   <div id="${template?string('deliverablePartnerTemplate','')}" class="${isResponsable?string('responsiblePartner','deliverablePartner')} ${isResponsable?string('simpleBox','borderBox')}" style="${template?string('display:none','')}">
     [#if editable && !isResponsable]
       <div class="removeElement removeLink" title="[@s.text name="planning.deliverables.removePartnerContribution" /]"></div> 
@@ -77,7 +77,7 @@
     [#if template]
       [#-- Partner List --]
       <div class="fullPartBlock partnerName chosen"> 
-        [@customForm.select name="" value="-1" className="partner" i18nkey="preplanning.projectPartners.partner.name" listName=projectPartners keyFieldName="id"  displayFieldName="composedName" editable=editable /]
+        [@customForm.select name="" value="-1" className="partner" i18nkey="preplanning.projectPartners.partner.name" listName="projectPartners" keyFieldName="id"  displayFieldName="composedName" editable=editable /]
       </div>
     [#else]
       [#-- Partner Name --]
