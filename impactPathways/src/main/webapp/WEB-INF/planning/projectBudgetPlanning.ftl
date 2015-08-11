@@ -73,7 +73,7 @@
         [#if project.bilateralProject || project.linkedProjects?has_content]
         <div id="overhead" class="simpleBox">
           [#if (!editable && canEdit)]
-            <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+            <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
           [/#if]
           <h6>[@s.text name="planning.projectBudget.overhead" /]</h6> 
           <p>[@s.text name="planning.projectBudget.fullyInstitutionalCost" /]</p>
@@ -99,7 +99,7 @@
           <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
             [#list allYears as yearMenu]
               <li id="year-${yearMenu}" class="yearTab ui-state-default ui-corner-top [#if yearMenu == year ]ui-tabs-active ui-state-active ui-state-hover[/#if]">
-                <a href="[@s.url action='budget' includeParams='get'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
+                <a href="[@s.url action='budget'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][@s.param name='year']${yearMenu?c}[/@s.param][/@s.url]"> ${yearMenu?c} </a>
               </li>
             [/#list]
           </ul>
@@ -107,7 +107,7 @@
             [#-- Project budget content by year --]
             <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
               [#if (!editable && canEdit)]
-                <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+                <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
               [/#if]
               <div class="fieldset clearfix">
                 [#-- Accumulative total project budget By year --]
@@ -145,7 +145,7 @@
               </div>
               <div class="partnerListMsj">
                 [@s.text name="preplanning.projectBudget.partnerNotList" /]
-                <a href="[@s.url action='partners' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
+                <a href="[@s.url action='partners'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
                   [@s.text name="preplanning.projectBudget.partnersLink" /] 
                 </a>
               </div>

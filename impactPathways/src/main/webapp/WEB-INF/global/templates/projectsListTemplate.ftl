@@ -24,14 +24,14 @@
         <tr>
         [#-- ID --]
         <td class="projectId">
-          <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+          <a href="[@s.url namespace=namespace action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
             P${project.id}
           </a>
         </td>
           [#-- Project Title --]
           <td class="left"> 
                 [#if project.title?has_content]
-                  <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
+                  <a href="[@s.url namespace=namespace action='description'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
                   title="${project.title}">
                   [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
                 [#else]
@@ -82,7 +82,7 @@
           [/#if]
           [#-- Summary download --]
           <td> 
-            <a href="[@s.url namespace="/summaries" action='project' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" target="__BLANK">
+            <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" target="__BLANK">
               <img src="${baseUrl}/images/global/download-summary.png" height="25" alt="[@s.text name="summaries.project.download" /]" title="[@s.text name="summaries.project.download" /]" />
             </a> 
           </td>

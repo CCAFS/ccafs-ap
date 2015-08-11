@@ -13,7 +13,7 @@
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
   {"label":"description", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
-  {"label":"partners", "nameSpace":"planning/projects", "action":"partnerLead", "param":"projectID=${project.id}"}
+  {"label":"leadPartner", "nameSpace":"planning/projects", "action":"partnerLead", "param":"projectID=${project.id}"}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
