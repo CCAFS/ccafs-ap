@@ -73,7 +73,7 @@
     [/#if]
     [#if !isResponsable]<span class="index">${dp_index+1}</span>[/#if]
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
-    <input class="type" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
+    <input class="id" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
     <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
     [#if template]
       [#-- Partner Name --]
