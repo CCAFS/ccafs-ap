@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -50,6 +51,7 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   private DeliverableManager deliverableManager;
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
+  private InstitutionManager institutionManager;
 
   private int projectPartnerID;
 
@@ -60,12 +62,14 @@ public class ProjectPartnersDeleteAction extends BaseAction {
 
   @Inject
   public ProjectPartnersDeleteAction(APConfig config, ActivityManager activityManager,
-    DeliverableManager deliverableManager, ProjectPartnerManager projectPartnerManager, ProjectManager projectManager) {
+    DeliverableManager deliverableManager, ProjectPartnerManager projectPartnerManager, ProjectManager projectManager,
+    InstitutionManager institutionManager) {
     super(config);
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
+    this.institutionManager = institutionManager;
   }
 
 
@@ -91,7 +95,7 @@ public class ProjectPartnersDeleteAction extends BaseAction {
    * However, if the institution of this partner is not repeated on another partner, we need know which other Project
    * Partners are being contributed by this institution.
    */
-  private void checkProjectPartnerContributions() {
+  public void checkProjectPartnerContributions() {
     // First, we need to get the list of all the CCAFS Partners of the project.
     // To do that, we need to know the project where this project partner belongs to.
     Project project = projectManager.getProjectFromProjectPartnerID(projectPartnerID);
@@ -101,22 +105,10 @@ public class ProjectPartnersDeleteAction extends BaseAction {
 
       // Getting the list of partners that are contributing to this project.
       List<ProjectPartner> partners = projectPartnerManager.getProjectPartners(project.getId());
-      boolean institutionFound = false;
-      for (ProjectPartner partner : partners) {
-        // validate that the partner is not the same as the one we are going to delete.
-        if (partner.getId() != partnerToDelete.getId()) {
-          // Let's find if there is another institution same as the institution of the partner that wants to be deleted.
-          // The validation is:
-          // If the institution of the partner that is going to be deleted is the same as the institution of the loop,
-          // then we found another institution, so we can stop the loop.
-          if (partnerToDelete.getInstitution().equals(partner.getInstitution())) {
-            institutionFound = true;
-            break; // stop the loop.
-          }
-        }
-      }
-      // If no institution was found, we need get all the project partners that will be affected.
-      if (institutionFound == false) {
+      boolean lastInstitution = institutionManager.validateLastOneInstitution(projectPartnerID);
+
+      // If the institution is the last one, we need to get all the project partners that will be affected.
+      if (lastInstitution) {
         // Looping the list of partners.
         linkedProjectPartners = new ArrayList<>();
         for (ProjectPartner partner : partners) {
