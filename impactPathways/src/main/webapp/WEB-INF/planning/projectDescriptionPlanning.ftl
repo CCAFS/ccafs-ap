@@ -183,15 +183,19 @@
     </div> 
     [#if editable]
       [#-- Project identifier --]
-      <div class="borderBox">
-        <input name="projectID" type="hidden" value="${project.id?c}" />
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
-        <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      
+        <div [#if !newProject] class="borderBox" [/#if]>
+          [#if !newProject] 
+            [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+          [/#if]
+  
+          <div class="buttons">
+            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+          </div>
         </div>
-      </div>
     [#else]
         [#-- Display Log History --]
         [#if history??][@log.logList list=history /][/#if] 
