@@ -61,7 +61,7 @@
     
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         [@customForm.textArea name="project.partnershipsLessons" i18nkey="planning.projectPartners.lessons" required=true editable=editable /]

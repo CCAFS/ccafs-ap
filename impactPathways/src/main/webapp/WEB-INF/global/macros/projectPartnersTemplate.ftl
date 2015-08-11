@@ -9,7 +9,7 @@
     <p class="simpleBox center">
       [@s.text name="planning.projectPartners.emptyPartners" /].
       [#if canEdit]
-        <a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+        <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
       [/#if]
     </p>  
     [/#if]
@@ -23,7 +23,7 @@
 [#macro partner ap ap_index ap_name  editable=false isPPA=false isBilateral=true responsabilities=false   ]
   <div id="projectPartner-${ap.id}" class="projectPartner borderBox">
     [#if (!editable && canEdit)]
-      <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
     <div class="loading" style="display:none"></div>
     [#-- Partner identifier --]
