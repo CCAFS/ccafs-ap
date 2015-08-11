@@ -108,9 +108,9 @@ public class ProjectPartnersDeleteAction extends BaseAction {
       boolean lastInstitution = institutionManager.validateLastOneInstitution(projectPartnerID);
 
       // If the institution is the last one, we need to get all the project partners that will be affected.
+      linkedProjectPartners = new ArrayList<>();
       if (lastInstitution) {
         // Looping the list of partners.
-        linkedProjectPartners = new ArrayList<>();
         for (ProjectPartner partner : partners) {
           // Looping the list of "contribute institutions".
           for (Institution institution : partner.getContributeInstitutions()) {
