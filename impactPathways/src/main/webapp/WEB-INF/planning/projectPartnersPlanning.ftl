@@ -12,7 +12,8 @@
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"partners", "nameSpace":"planning/projects", "action":""}
+  {"label":"description", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
+  {"label":"projectPartners", "nameSpace":"planning/projects", "action":"partners", "param":"projectID=${project.id}"}
 ]/]
 
 

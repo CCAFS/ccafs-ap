@@ -52,7 +52,7 @@
     [#--  Deliverable Information --] 
     <div id="deliverable-information" class="borderBox clearfix"> 
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-information">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1>  
       <div class="fullBlock">
@@ -95,7 +95,7 @@
     [#-- Deliverable Next Users block  --]
     <div id="deliverable-nextUsers" class="borderBox clearfix">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.nextUsers" /] </h1> 
@@ -115,7 +115,7 @@
     [#-- Deliverable partnership  --]
     <div id="deliverable-partnership" class="borderBox clearfix">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
       <div class="fullBlock">
@@ -153,7 +153,7 @@
     
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         [@customForm.textArea name="project.projectDeliverableLessons" i18nkey="planning.projectDeliverable.lessons" required=true editable=editable /]
