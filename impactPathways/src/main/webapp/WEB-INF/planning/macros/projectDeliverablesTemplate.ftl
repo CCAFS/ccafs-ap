@@ -73,9 +73,10 @@
     [/#if]
     [#if !isResponsable]<span class="index">${dp_index+1}</span>[/#if]
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
+    <input class="type" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
     <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
     [#if template]
-      [#-- Partner List --]
+      [#-- Partner Name --]
       <div class="fullPartBlock partnerName chosen"> 
         [@customForm.select name="" value="-1" className="partner" i18nkey="preplanning.projectPartners.partner.name" listName="projectPartners" keyFieldName="id"  displayFieldName="composedName" editable=editable /]
       </div>
