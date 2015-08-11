@@ -82,6 +82,10 @@ public class AddCofoundedProjectPlanningAction extends BaseAction {
   public String save() {
     boolean success = false;
 
+    if (!securityContext.canAddCofoundedProject()) {
+      return NOT_AUTHORIZED;
+    }
+
     if (coreProjectID == -1 || bilateralProjectID == -1) {
       return NOT_FOUND;
     }
@@ -104,15 +108,17 @@ public class AddCofoundedProjectPlanningAction extends BaseAction {
     // Change the type of the core project to cofounded
     coreProject.setType(APConstants.PROJECT_CCAFS_COFUNDED);
     String justification = (this.getJustification() == null) ? "" : this.getJustification();
-    projectManager.saveProjectDescription(coreProject, this.getCurrentUser(), justification);
+    int result = projectManager.saveProjectDescription(coreProject, this.getCurrentUser(), justification);
+    success = success && (result != -1);
 
     // Mark the bilateral project as co-financing
     bilateralProject.setCofinancing(true);
     justification = (this.getJustification() == null) ? "" : this.getJustification();
-    projectManager.saveProjectDescription(bilateralProject, this.getCurrentUser(), justification);
+    result = projectManager.saveProjectDescription(bilateralProject, this.getCurrentUser(), justification);
+    success = success && (result != -1);
 
     this.addActionMessage(this.getText("planning.projectDescription.createdCofoundedProject"));
-    return SUCCESS;
+    return (success) ? SUCCESS : ERROR;
   }
 
   public void setBilateralProjectID(int bilateralProjectID) {
