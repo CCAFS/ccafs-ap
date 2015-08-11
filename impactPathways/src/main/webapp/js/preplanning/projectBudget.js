@@ -183,11 +183,13 @@ function setProjectsIndexes(){
 
 function calculateProjectsBudgetRemaining(e){
   $plBudget.removeClass('fieldError');
-  errorMessage= "";
+  $(e.target).removeClass('fieldError');
+  errorMessages = [];
   var totalProjectBudget = totalBudget($linkedProjects.find('input.budgetAmount'));
   if (totalProjectBudget >  removeCurrencyFormat($plBudget.val()) ){
     $plBudget.addClass('fieldError');
-    errorMessage= "You can not exceed the partner budget";
+    $(e.target).addClass('fieldError');
+    errorMessages.push($('#budgetCanNotExcced').val());
   }
 }
 
