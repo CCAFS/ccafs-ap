@@ -599,9 +599,17 @@ span.logType.insert {
 }
 
 /* Data Sheet*/
-
+#organizationID-quote p{
+  line-height: 31px;
+}
 #projectID-quote {
   background-image: url(../../images/global/project-icon.png);
+}
+#projectID-quote p{
+  line-height: 31px;
+}
+#projectType-quote p{
+  line-height: 31px;
 }
 #deliverableID-quote {
   background-image: url(../../images/global/deliverable-icon.png);
@@ -2670,19 +2678,45 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
     color: #5F5F5F;
 }
 
-.quote-id { 
+#top-quote .quote-id { 
  float:left;
  padding: 2px 7px;
- margin-left: 0.5em;
+ margin-left: 0.1em;
  border: 1px dotted #BEBEBE;
  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
  border-radius: 5px;
- padding-left: 35px;
- font-size: 0.9em;
+ padding-left: 30px;
+ font-size: 1.0em;
  background-size: 27px;
  background-repeat: no-repeat;
  background-position: 4px;
  min-height: 33px;
+}
+
+#top-quote .aux-quote-id { 
+ float:left;
+ padding: 2px 7px;
+ margin-left: 0em;
+ margin-right: 0em;
+ border: 1px dotted #BEBEBE;
+ box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+ border-radius: 5px;
+ padding-left: 6px;
+ font-size: 0.9em;
+ background-size: 27px;
+ background-repeat: no-repeat;
+ background-position: 1px;
+ min-height: 33px;
+}
+
+#top-quote .org-quote-id {
+  float: left;
+  padding: 2px 7px;
+  margin-left: 0em;
+  margin-right: 0.1em;
+  padding-left: 6px;
+  color: #AFABAB;
+  font-size: 0.9em;
 }
 
 /***************** PLANNING ******************/
