@@ -35,58 +35,60 @@
     [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
-    [#if !canEdit]
-      <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="preplanning.project"/][/@s.param]
-        [/@s.text]
-      </p>
-    [/#if]
-    
-    [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-    <div id="PartnersTabs" class="simpleBox"> 
-      [#-- Project Partners Sub-menu --]
-      <div id="partnerTables-partnerLead" class="partnerTable clearfix"> 
-        [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.PPAPartners ap_name='project.PPAPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=true responsabilities=true /]
-        [#if (editable && canEdit)] 
-          <div id="addProjectPartner" class="addLink">
-            <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-          </div>
-        [/#if]  
-      </div>
-    </div>
-    
-    <div id="lessons" class="borderBox">
-      [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+    [#if !project.bilateralProject]
+      [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
+      [#if !canEdit]
+        <p class="readPrivileges">
+          [@s.text name="saving.read.privileges"]
+            [@s.param][@s.text name="preplanning.project"/][/@s.param]
+          [/@s.text]
+        </p>
       [/#if]
-      <div class="fullBlock">
-        [@customForm.textArea name="project.partnershipsLessons" i18nkey="planning.projectPartners.lessons" required=true editable=editable /]
-      </div>
-    </div>
-    
-    [#if editable]  
-      [#-- Project identifier --]
-      <input name="projectID" type="hidden" value="${project.id?c}" />
-      <div class="clearfix [#if !newProject]borderBox[/#if]" >
-        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
-        <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+      [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
+      <div id="PartnersTabs" class="simpleBox"> 
+        [#-- Project Partners Sub-menu --]
+        <div id="partnerTables-partnerLead" class="partnerTable clearfix"> 
+          [#-- Listing partners from partnersTemplate.ftl --]
+          [@partnersTemplate.partnerSection projectPartners=project.PPAPartners ap_name='project.PPAPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=true responsabilities=true /]
+          [#if (editable && canEdit)] 
+            <div id="addProjectPartner" class="addLink">
+              <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
+            </div>
+          [/#if]  
         </div>
       </div>
-      <p id="addPartnerText" class="helpMessage">
-        [@s.text name="preplanning.projectPartners.addPartnerMessage.first" /]
-        <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]">
-          [@s.text name="preplanning.projectPartners.addPartnerMessage.second" /]
-        </a>
-      </p>
+      <div id="lessons" class="borderBox">
+        [#if (!editable && canEdit)]
+          <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        [/#if]
+        <div class="fullBlock">
+          [@customForm.textArea name="project.partnershipsLessons" i18nkey="planning.projectPartners.lessons" required=true editable=editable /]
+        </div>
+      </div>
+      
+      [#if editable]  
+        [#-- Project identifier --]
+        <input name="projectID" type="hidden" value="${project.id?c}" />
+        <div class="clearfix [#if !newProject]borderBox[/#if]" >
+          [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
+          <div class="buttons">
+            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+          </div>
+        </div>
+        <p id="addPartnerText" class="helpMessage">
+          [@s.text name="preplanning.projectPartners.addPartnerMessage.first" /]
+          <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]">
+            [@s.text name="preplanning.projectPartners.addPartnerMessage.second" /]
+          </a>
+        </p>
+      [#else]
+        [#-- Display Log History --]
+        [#if history??][@log.logList list=history /][/#if]  
+      [/#if]
     [#else]
-      [#-- Display Log History --]
-      [#if history??][@log.logList list=history /][/#if]  
+      <p class="simpleBox center">[@s.text name="planning.projectPartners.cantAllowCCAFSPartners" /]</p>  
     [/#if]
   </article>
   [/@s.form] 

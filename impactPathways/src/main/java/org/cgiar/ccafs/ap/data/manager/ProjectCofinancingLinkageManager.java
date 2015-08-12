@@ -31,6 +31,20 @@ import com.google.inject.ImplementedBy;
 public interface ProjectCofinancingLinkageManager {
 
   /**
+   * This method remove from the database the link between the core project and the bilateral projects received by
+   * parameter.
+   * 
+   * @param coreProject - Core project identifier
+   * @param linkedBilateralProjects - A list with the identifiers of the bilateral projects to be un-linked of the
+   *        project.
+   * @param user
+   * @param justification
+   * @return True if the links were deleted from the database. False otherwise.
+   */
+  public boolean deletedLinkedBilateralProjects(Project coreProject, List<Integer> linkedBilateralProjects, User user,
+    String justification);
+
+  /**
    * This method remove from the database the link between the bilateral project and the core projects received by
    * parameter.
    * 
@@ -40,7 +54,7 @@ public interface ProjectCofinancingLinkageManager {
    * @param justification
    * @return
    */
-  public boolean deletedLinkedBilateralProjects(Project project, List<Integer> linkedProjects, User user,
+  public boolean deletedLinkedCoreProjects(Project project, List<Integer> linkedProjects, User user,
     String justification);
 
   /**
@@ -62,12 +76,23 @@ public interface ProjectCofinancingLinkageManager {
   public List<Project> getLinkedCoreProjects(int projectID);
 
   /**
-   * This method saves into the database the projects linked to the project received by parameter.
+   * This method saves into the database the bilateral projects linked to the core project received in the first
+   * parameter.
    * 
-   * @param project - Bilateral project that will be linked to some core project(s)
+   * @param coreProject - project that will be linked to some core project(s)
    * @param user - User who is making the change
    * @param justification
    * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveLinkedCoreProjects(Project project, User user, String justification);
+  public boolean saveLinkedBilateralProjects(Project coreProject, User user, String justification);
+
+  /**
+   * This method saves into the database the core projects linked to the bilateral project received by parameter.
+   * 
+   * @param bilateralProject - Core project that will be linked to some bilateral project(s)
+   * @param user - User who is making the change
+   * @param justification
+   * @return true if the information was saved successfully, false otherwise.
+   */
+  public boolean saveLinkedCoreProjects(Project bilateralProject, User user, String justification);
 }

@@ -7,7 +7,6 @@ mysql.host=localhost
 mysql.user=root
 mysql.password=123
 mysql.database=database_name
-mysql.url=jdbc:mysql://localhost:3306/database_name
 
 mysql.port=3306
 
@@ -73,6 +72,7 @@ email.user=
 email.password=
 email.host=
 email.port=
+email.notification=
 
 # ------------------------------------------------
 #             Logger properties

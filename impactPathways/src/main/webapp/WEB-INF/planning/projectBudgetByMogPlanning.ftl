@@ -84,6 +84,7 @@
                   [#-- Hidden inputs --]
                   <input type="hidden" name="project.outputsBudgets[${output_index}].id" value="${mogBudget.id!"-1"}" />
                   <input type="hidden" name="project.outputsBudgets[${output_index}].output.id" value="${output.id}" />
+                  <input type="hidden" name="project.outputsBudgets[${output_index}].year" value="${year}" />
   
                   [#-- Total contribution --]
                   <div class="halfPartBlock budget clearfix">
@@ -142,5 +143,8 @@
   </article>
   [/@s.form]
 </section>
+
+[#-- Hidden values used by js --]
+<input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceedPercentage" /]" />
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
