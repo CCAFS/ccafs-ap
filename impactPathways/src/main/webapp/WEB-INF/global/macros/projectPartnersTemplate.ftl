@@ -16,7 +16,22 @@
   [/#if]
   [#-- Remove Partner Dialog --]
   <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+    <p class="message"></p>
+    <br />
+    <div class="activities">
+      <h3>Activities</h3>
+      <ul></ul>
+    </div>
+    <br />
+    <div class="deliverables">
+      <h3>Deliverables</h3>
+      <ul></ul>
+    </div>
+    <br />
+    <div class="projectPartners">
+      <h3>Project partners</h3>
+      <ul></ul>
+    </div>
   </div>
 [/#macro]
 
@@ -39,7 +54,7 @@
     [#-- Partner Name --]
     <div class="fullPartBlock partnerName chosen">
       [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${ap.institution.id?c}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
+      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${(ap.institution.id)!'-1'}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
     </div>
     [#-- Filters --]
     [#if editable && !isPPA]
@@ -64,9 +79,9 @@
     [#-- Contact Person --]
     <div class="fullPartBlock clearfix">
       [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-      [@customForm.input name="contact-person-${ap_index}" value="${ap.user.composedName?html}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
+      [@customForm.input name="contact-person-${ap_index}" value="${(ap.user.composedName?html)!''}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable/]
       <input class="type" type="hidden" name="${ap_name}[${ap_index}].type" value="${isPPA?string(typeProjectPPA, typeProjectPartner)}">
-      <input class="userId" type="hidden" name="${ap_name}[${ap_index}].user" value="${ap.user.id}">   
+      <input class="userId" type="hidden" name="${ap_name}[${ap_index}].user" value="${(ap.user.id)!'-1'}">   
       [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if] 
     </div>  
     [#-- Responsibilities --]
@@ -89,7 +104,7 @@
             [#list ap.contributeInstitutions as ppaPartner]
               <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
                 <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
-                <span class="name">${ppaPartner.composedName}</span> 
+                <span class="name">${(ppaPartner.composedName)!''}</span> 
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]

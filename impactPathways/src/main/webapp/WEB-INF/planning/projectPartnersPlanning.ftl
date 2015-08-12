@@ -46,9 +46,9 @@
       </p>
     [/#if]
     
-    <div id="PartnersTabs" class=""> 
+    [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
+    <div id="PartnersTabs" class="simpleBox"> 
       [#-- Project Partners Sub-menu --]
-      [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
       <div id="partnerTables-partnerLead" class="partnerTable clearfix"> 
         [#-- Listing partners from partnersTemplate.ftl --]
         [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false isBilateral=project.bilateralProject responsabilities=true  /]
@@ -71,9 +71,9 @@
     
     [#if editable]  
       [#-- Project identifier --]
-      <div class="borderBox">
-        <input name="projectID" type="hidden" value="${project.id?c}" />
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      <div class="clearfix [#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

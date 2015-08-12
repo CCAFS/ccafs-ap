@@ -46,6 +46,7 @@ public class APConfig {
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String EMAIL_USER = "email.user";
+  private static final String EMAIL_NOTIFICATION = "email.notification";
   private static final String EMAIL_PASSWORD = "email.password";
   private static final String EMAIL_HOST = "email.host";
   private static final String EMAIL_PORT = "email.port";
@@ -183,6 +184,15 @@ public class APConfig {
       return properties.getPropertiesAsString(EMAIL_HOST);
     } catch (Exception e) {
       LOG.error("there is not an email host configured.");
+    }
+    return null;
+  }
+
+  public String getEmailNotification() {
+    try {
+      return properties.getPropertiesAsString(EMAIL_NOTIFICATION);
+    } catch (Exception e) {
+      LOG.error("there is not an email user configured.");
     }
     return null;
   }

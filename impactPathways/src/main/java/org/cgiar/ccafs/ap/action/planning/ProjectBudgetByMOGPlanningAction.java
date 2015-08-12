@@ -127,6 +127,10 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     return year;
   }
 
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
+  }
+
   @Override
   public void prepare() throws Exception {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));

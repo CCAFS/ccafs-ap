@@ -14,34 +14,32 @@
 
   <div class="content">
     <h1>[@s.text name="home.dashboard.title" /]</h1>
-    <div id="leftSide">
-      [#-- DashBoard --]
-      <div class="loadingBlock"></div>
-      <div style="display:none">
-        <div id="dashboardTitle" class="homeTitle"><b>[@s.text name="home.dashboard.name" /]</b></div> 
-        <div id="dashboard">
-          <ul class="dashboardHeaders">
-            <li class=""><a href="#projects">[@s.text name="home.dashboard.projects" /]</a></li>
-            <li class=""><a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a></li>
-          </ul> <!-- End dashboardHeaders -->
-          <div id="projects"> 
-            [#if projects?has_content]
-              [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
-            [#else]
-              <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projects" /][/@s.param][/@s.text]<p>
-            [/#if]
-          </div>
-          <div id="ipGraph-content" style="position: relative;">
-            <div id="loading-ipGraph-content" style="display:none;position: absolute;top: 45%;right: 45%;">
-                <img style="display: block; margin: 0 auto;" src="./images/global/loading.gif" alt="Loader" />
-            </div>
-          </div>
-        </div> <!-- End dashboard -->
-      </div><!-- End loader div -->
-      [#-- Deadline --]
-      <div id="deadlineTitle"  class="homeTitle">
-        <b>[@s.text name="home.dashboard.deadline.title" /]</b>
+    <div class="homeTitle"><b>Decision Tree</b></div>
+    <div id="decisionTree" class="borderBox">
+      <h1 class="title center">What do you want to do ?</h1>
+      <div id="newProject" class="option animated flipInX"><p>Enter a new project</p></div>
+      <a href="[@s.url namespace="/planning" action='projectsList'/]"><div id="updatePlanning" class="option animated flipInX"><p>Update planning of an ongoing project</p></div></a>
+      <div id="reportProject" class="option disabled animated flipInX" title="This link is disabled"><p>Report on an ongoing project</p></div>
+      <div class="clearfix"></div>
+      <div class="addProjectButtons clearfix" style="display:none">
+        <p class="title">What type of project do you want to enter?</p>
+        [#if securityContext.canAddCoreProject()]
+          <a href="[@s.url namespace="/planning" action='addNewCoreProject'/]"><div class="addProject"><p>CCAFS <br />Core</p></div></a>
+        [/#if]
+        [#if securityContext.canAddCofoundedProject()]
+          <a href="[@s.url namespace="/planning" action='addCoFundedProject'/]"><div class="addProject"><p>CCAFS <br />Co-funded</p></div></a>
+        [/#if]
+        [#if securityContext.canAddBilateralProject()]
+          <a href="[@s.url namespace="/planning" action='addNewBilateralProject'/]"><div class="addProject"><p>Bilateral <br />Project</p></div></a>
+        [/#if]
+        [#if !securityContext.canAddCoreProject() && !securityContext.canAddBilateralProject() && !securityContext.canAddCofoundedProject()]
+          <p>You don't have sufficient permissions to add a project</p>
+        [/#if]
       </div>
+    </div>
+    <div id="leftSide">
+      [#-- Deadline --]
+      <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.deadline.title" /]</b></div>
       <div id="deadline" class="borderBox">
         <div id="deadlineGraph" >
           <div class="point active">1</div>
@@ -67,23 +65,35 @@
             </tr>
           </table>
         </div>
-      </div> <!-- End deadline -->
-      
+      </div>
     </div> <!-- End leftSide -->
     <div id="rightSide">
-      [#-- P&R Description --]
-      <div id="pandrDescription">
-        <div id="pandrTitle" class="homeTitle">
-          <b>[@s.text name="home.dashboard.description.title" /]</b>
+      [#-- DashBoard --]
+      <div class="loadingBlock"></div>
+      <div style="display:none">
+        <div id="dashboardTitle" class="homeTitle"><b>[@s.text name="home.dashboard.name" /]</b></div> 
+        <div id="dashboard">
+          <ul class="dashboardHeaders">
+            <li class=""><a href="#projects">[@s.text name="home.dashboard.projects" /]</a></li>
+            <li class=""><a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a></li>
+          </ul> <!-- End dashboardHeaders -->
+          <div id="projects"> 
+            [#if projects?has_content]
+              [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
+            [#else]
+              <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projects" /][/@s.param][/@s.text]<p>
+            [/#if]
+          </div>
+          <div id="ipGraph-content" style="position: relative;">
+            <div id="loading-ipGraph-content" style="display:none;position: absolute;top: 45%;right: 45%;">
+                <img style="display: block; margin: 0 auto;" src="./images/global/loading.gif" alt="Loader" />
+            </div>
+          </div>
         </div>
-        <p>[@s.text name="home.dashboard.description.text" /]</p>
-        <div id="imgPandR">
-          <a href="#" onClick="workflowModal()"><img id="imgModal" src="${baseUrl}/images/global/pandrWorkflow.png"/></a>
-        </div>
-      </div> <!-- End pandrDescription -->
+      </div>
     </div> <!-- End rightSide -->
     
-  </div> <!-- End content -->
+  </div>
 </article>
 [#-- Show P&R proccess workflow --]
 <div id="showPandRWorkflowDialog" style="display:none; height:100%;  width: 100%;" title="[@s.text name="home.dashboard.workflow" /]"> 

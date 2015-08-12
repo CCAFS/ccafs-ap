@@ -17,11 +17,11 @@
         <tr>
           <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
           <td class="name"><a href="${dlurl}">${dl.title!"Untitled"}</a></td>
-          <td class="type"><a href="${dlurl}">${dl.type.name}</a></td> 
+          <td class="type"><a href="${dlurl}">${(dl.type.name)!"Not defined"}</a></td> 
           <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
           <td class="removeDeliverable-row">
             [#if action.canDelete(dl.id)]
-              <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="#" title="" >
+              <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="deliverableID${dl.id}" title="" >
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="planning.deliverables.removeDeliverable" /]" /> 
               </a>
             [#else]
@@ -73,9 +73,10 @@
     [/#if]
     [#if !isResponsable]<span class="index">${dp_index+1}</span>[/#if]
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
+    <input class="id" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
     <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
     [#if template]
-      [#-- Partner List --]
+      [#-- Partner Name --]
       <div class="fullPartBlock partnerName chosen"> 
         [@customForm.select name="" value="-1" className="partner" i18nkey="preplanning.projectPartners.partner.name" listName="projectPartners" keyFieldName="id"  displayFieldName="composedName" editable=editable /]
       </div>

@@ -69,7 +69,7 @@
         <div class="fullBlock">
           [#-- Project Type --]
           <div class="halfPartBlock"> 
-            [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" editable=editable disabled=true /]
+            [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" required=true disabled=true /]
             <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
@@ -90,7 +90,9 @@
               [#else]
                 [#if editable]
                   [#if !securityContext.canAllowProjectWorkplanUpload() ]
-                    <h6>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]</h6>
+                    <h6>
+                      [@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /][#if project.workplanRequired ]<span class="red"> *</span>[/#if]
+                    </h6>
                   [/#if]
                   [@customForm.inputFile name="file"  /]
                 [/#if] 
@@ -103,7 +105,7 @@
         [#-- Project upload bilateral contract --]
         [#if (project.bilateralProject && securityContext.canUploadBilateralContract())]
         <div class="fullBlock fileUpload bilateralContract">
-          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
+          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /][#if project.bilateralProject ]<span class="red"> *</span>[/#if]:</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
               <p> <a href="bilateralContractURL">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
@@ -123,7 +125,7 @@
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
         </div>
         
-        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]: </h6> 
+        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /][#if !project.bilateralProject ]<span class="red"> *</span>[/#if]: </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
@@ -160,7 +162,7 @@
       <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}" /] </h1> 
       <div class="panel tertiary">
         [#if project.bilateralProject]
-        <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
+          <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
         [/#if]
         <div id="projectsList" class="panel-body"> 
           <ul class="list">
@@ -187,21 +189,17 @@
     [#if editable]
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
-      
-        <div [#if !newProject] class="borderBox" [/#if]>
-          [#if !newProject] 
-            [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
-          [/#if]
-  
-          <div class="buttons">
-            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-            [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-          </div>
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
+      </div>
     [#else]
-        [#-- Display Log History --]
-        [#if history??][@log.logList list=history /][/#if] 
+      [#-- Display Log History --]
+      [#if history??][@log.logList list=history /][/#if] 
     [/#if]
      
   </article>

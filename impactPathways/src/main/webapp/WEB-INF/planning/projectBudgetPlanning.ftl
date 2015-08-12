@@ -161,13 +161,13 @@
     [/#if] 
     
     [#if editable]
-      <div class="borderBox"> 
-        [#-- Project identifier --]
-        <input name="projectID" type="hidden" value="${project.id?c}" />
-        <input name="year" id="year" type="hidden" value="${year?c}" /> 
-        <input name="targetYear" type="hidden" id="targetYear" value="${year?c}" />
-        <input type="hidden" id="projectType" value="${projectType}"/>
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      [#-- Project identifier --]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      <input name="year" id="year" type="hidden" value="${year?c}" /> 
+      <input name="targetYear" type="hidden" id="targetYear" value="${year?c}" />
+      <input type="hidden" id="projectType" value="${projectType}"/>
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
@@ -186,7 +186,9 @@
   <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
   
   [#-- Linked Project Template --]
-  [@projectBudget institution=project.leader.institution linkedProject={} /]
+  [#if project.leader?has_content]
+    [@projectBudget institution=project.leader.institution linkedProject={} /]
+  [/#if]
   
   [#-- Dialog save confirmation --]
   <div id="dialog-confirm" title="[@s.text name="planning.projectBudget.dialogConfirmation.title" /]" style="text-align:left;display:none">

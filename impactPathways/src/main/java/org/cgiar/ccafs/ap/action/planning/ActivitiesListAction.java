@@ -126,6 +126,10 @@ public class ActivitiesListAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();

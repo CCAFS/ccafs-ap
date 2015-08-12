@@ -73,6 +73,7 @@ email.user=
 email.password=
 email.host=
 email.port=
+email.notification=
 
 # ------------------------------------------------
 #             Logger properties
