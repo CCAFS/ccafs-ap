@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Carlos Alberto Martínez M - CIAT/CCAFS
  */
 
 public class HistoryManagerImpl implements HistoryManager {
@@ -47,6 +48,12 @@ public class HistoryManagerImpl implements HistoryManager {
     this.historyDAO = historyDAO;
   }
 
+
+  @Override
+  public List<LogHistory> getActivitiesHistory(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getActivitiesHistory(projectID);
+    return this.getData(logHistoryData);
+  }
 
   @Override
   public List<LogHistory> getCCAFSOutcomesHistory(int projectID) {

@@ -2430,7 +2430,7 @@ textarea[id$='summary'] {
 
 .budget {
   margin-top: 0px;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
   padding-left: 9px;
   border-left: 2px solid #FFFFFF;
 }
@@ -2445,6 +2445,12 @@ textarea[id$='summary'] {
   /* line-height: 7px; */
   /* border-radius: 2px; */
   /* position: relative; */
+  margin-bottom: 4px;
+}
+
+.budget span.inputTitle {
+  font-weight: normal;
+  font-size: 0.95em;
 }
 
 .budget .content {

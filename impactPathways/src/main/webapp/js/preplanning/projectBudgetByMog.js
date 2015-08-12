@@ -76,11 +76,13 @@ function setPercentageCurrency(inputTarget,remainBudget) {
 
 function checkPercentages(inputTarget,inputList,remainBudget) {
   var totalPercentage = 0;
+  errorMessages = [];
   $(inputList).removeClass('fieldError');
   $(inputList).each(function(i,input) {
     totalPercentage += parseFloat(removePercentageFormat($(input).val() || 0));
   });
   if(totalPercentage > 100) {
+    errorMessages.push($('#budgetCanNotExcced').val());
     $(inputTarget).addClass('fieldError');
   } else {
     remainBudget.calculateRemain(totalPercentage);
