@@ -88,13 +88,32 @@ function removePartnerEvent(e) {
       },
       success: function(data) {
         partner.stopLoader();
-        if(!$.isEmptyObject(data)) {
+        if(data.message) {
+          var dialogOptions = {
+              width: 500,
+              modal: true,
+              buttons: {
+                Cancel: function() {
+                  $(this).dialog("close");
+                }
+              }
+          };
           $removePartnerDialog.find('p.message').text(data.message);
           if(data.linkedActivities.length > 0) {
             $removePartnerDialog.find('.activities').show();
             $.each(data.linkedActivities, function(i,activity) {
               $removePartnerDialog.find('.activities ul').append("<li>" + activity.title + "</li>");
             });
+          } else {
+            dialogOptions.buttons = {
+                Cancel: function() {
+                  $(this).dialog("close");
+                },
+                "Remove partner": function() {
+                  $(this).dialog("close");
+                  partner.remove();
+                }
+            };
           }
           if(data.linkedDeliverables.length > 0) {
             $removePartnerDialog.find('.deliverables').show();
@@ -108,19 +127,8 @@ function removePartnerEvent(e) {
               $removePartnerDialog.find('.projectPartners ul').append("<li>" + projectPartner.title + "</li>");
             });
           }
-          $removePartnerDialog.dialog({
-              width: 500,
-              modal: true,
-              buttons: {
-                  Cancel: function() {
-                    $(this).dialog("close");
-                  },
-                  "Remove partner": function() {
-                    $(this).dialog("close");
-                    partner.remove();
-                  }
-              }
-          });
+
+          $removePartnerDialog.dialog(dialogOptions);
         } else {
           partner.remove();
         }

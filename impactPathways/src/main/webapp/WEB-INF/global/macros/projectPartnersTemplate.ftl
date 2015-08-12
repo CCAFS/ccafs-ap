@@ -54,7 +54,7 @@
     [#-- Partner Name --]
     <div class="fullPartBlock partnerName chosen">
       [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${ap.institution.id?c}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
+      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${(ap.institution.id)!'-1'}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
     </div>
     [#-- Filters --]
     [#if editable && !isPPA]
@@ -104,7 +104,7 @@
             [#list ap.contributeInstitutions as ppaPartner]
               <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
                 <input class="id" type="hidden" name="${ap_name}[${ap_index}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
-                <span class="name">${ppaPartner.composedName}</span> 
+                <span class="name">${(ppaPartner.composedName)!''}</span> 
                 [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
               </li>
             [/#list]
