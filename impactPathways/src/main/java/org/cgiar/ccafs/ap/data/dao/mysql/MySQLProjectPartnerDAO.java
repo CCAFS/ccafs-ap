@@ -126,7 +126,11 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
-    return this.getData(query.toString()).get(0);
+    List<Map<String, String>> data = this.getData(query.toString());
+    if (data.size() > 0) {
+      return data.get(0);
+    }
+    return new HashMap<String, String>();
   }
 
   @Override
@@ -148,8 +152,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
   @Override
   public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
-    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})", new Object[] {projectID,
-      projectPartnerType});
+    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})",
+      new Object[] {projectID, projectPartnerType});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT *   ");
@@ -174,8 +178,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     Object[] values;
     if (projectPartnerData.get("id") == null) {
       // Insert new record
-      query
-        .append("INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
+      query.append(
+        "INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[9];
       values[0] = projectPartnerData.get("id");
@@ -189,8 +193,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       values[8] = projectPartnerData.get("modification_justification");
     } else {
       // update record
-      query
-        .append("UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, partner_type = ?, responsabilities = ?, modified_by = ?, modification_justification = ? ");
+      query.append(
+        "UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, partner_type = ?, responsabilities = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[8];
       values[0] = projectPartnerData.get("project_id");
