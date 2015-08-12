@@ -164,7 +164,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
     projectPartnerData.put("project_id", projectId);
     projectPartnerData.put("partner_id", projectPartner.getInstitution().getId());
-    projectPartnerData.put("user_id", projectPartner.getUser().getId() == -1 ? null : projectPartner.getUser().getId());
+    projectPartnerData.put("user_id", (projectPartner.getUser() == null || projectPartner.getUser().getId() == -1)
+      ? null : projectPartner.getUser().getId());
     projectPartnerData.put("partner_type", projectPartner.getType());
     projectPartnerData.put("responsabilities", projectPartner.getResponsabilities());
     // Logs data
