@@ -38,6 +38,11 @@ public class ProjectDeliverableValidator extends BaseValidator {
   public void validate(BaseAction action, Deliverable deliverable) {
     if (deliverable != null) {
       boolean problem = this.validateRequiredFields(action, deliverable);
+
+      // Responsible is not required.
+      if (deliverable.getResponsiblePartner().getPartner() == null) {
+        deliverable.setResponsiblePartner(null);
+      }
       // Adding general error.
       if (problem) {
         action.addActionError(this.getText("saving.fields.required"));
