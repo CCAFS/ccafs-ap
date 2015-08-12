@@ -14,9 +14,8 @@
 
   <div class="content">
     <h1>[@s.text name="home.dashboard.title" /]</h1>
-    <div class="homeTitle"><b>Decision Tree</b></div>
+    <div class="homeTitle"><b>What do you want to do ?</b></div>
     <div id="decisionTree" class="borderBox">
-      <h1 class="title center">What do you want to do ?</h1>
       <div id="newProject" class="option animated flipInX"><p>Enter a new project</p></div>
       <a href="[@s.url namespace="/planning" action='projectsList'/]"><div id="updatePlanning" class="option animated flipInX"><p>Update planning of an ongoing project</p></div></a>
       <div id="reportProject" class="option disabled animated flipInX" title="This link is disabled"><p>Report on an ongoing project</p></div>
@@ -81,7 +80,7 @@
             [#if projects?has_content]
               [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
             [#else]
-              <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projects" /][/@s.param][/@s.text]<p>
+              <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projectsList" /][/@s.param][/@s.text]<p>
             [/#if]
           </div>
           <div id="ipGraph-content" style="position: relative;">
