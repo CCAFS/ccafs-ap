@@ -69,7 +69,7 @@ public class ProjectDeliverablesListAction extends BaseAction {
   @Override
   public String add() {
     Deliverable newDeliverable = new Deliverable(-1);
-    newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
+    // newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
     newDeliverable.setYear(project.getAllYears().get(0));
 
     deliverableID = deliverableManager.saveDeliverable(project.getId(), newDeliverable, this.getCurrentUser(),

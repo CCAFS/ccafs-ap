@@ -106,8 +106,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setId(deliverableID);
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
-      deliverable
-      .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      if (deliverableData.get("type_id") != null) {
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
       deliverable.setOutput(this.getDeliverableOutput(deliverableID));
@@ -138,8 +140,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setId(Integer.parseInt(deliverableData.get("id")));
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
-      deliverable
+      if (deliverableData.get("type_id") != null) {
+        deliverable
         .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
@@ -159,8 +163,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setId(Integer.parseInt(deliverableData.get("id")));
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
-      deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      if (deliverableData.get("type_id") != null) {
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // adding information of the object to the array
@@ -180,7 +186,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     }
     deliverableData.put("project_id", projectID);
     deliverableData.put("title", deliverable.getTitle());
-    deliverableData.put("type_id", deliverable.getType().getId());
+    deliverableData.put("type_id", deliverable.getType() != null ? deliverable.getType().getId() : null);
     deliverableData.put("type_other", deliverable.getTypeOther());
     deliverableData.put("year", deliverable.getYear());
     // Logs
