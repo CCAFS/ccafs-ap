@@ -40,7 +40,15 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
-  public boolean deletedLinkedBilateralProjects(Project project, List<Integer> linkedProjects, User user, String justification) {
+  public boolean deletedLinkedBilateralProjects(Project project, List<Integer> linkedProjects, User user,
+    String justification) {
+    return linkedCoreProjectsDAO.removeLinkedBilateralProjects(project.getId(), linkedProjects, user.getId(),
+      justification);
+  }
+
+  @Override
+  public boolean deletedLinkedCoreProjects(Project project, List<Integer> linkedProjects, User user,
+    String justification) {
     return linkedCoreProjectsDAO.removeLinkedCoreProjects(project.getId(), linkedProjects, user.getId(), justification);
   }
 
@@ -73,13 +81,24 @@ public class ProjectCofinancingLinkageManagerImpl implements ProjectCofinancingL
   }
 
   @Override
+  public boolean saveLinkedBilateralProjects(Project coreProject, User user, String justification) {
+    List<Integer> bilateralProjectsIDs = new ArrayList<>();
+    for (Project bilateralProject : coreProject.getLinkedProjects()) {
+      bilateralProjectsIDs.add(bilateralProject.getId());
+    }
+
+    return linkedCoreProjectsDAO.saveLinkedBilateralProjects(coreProject.getId(), bilateralProjectsIDs, user.getId(),
+      justification);
+  }
+
+  @Override
   public boolean saveLinkedCoreProjects(Project bilateralProject, User user, String justification) {
     List<Integer> coreProjectsIDs = new ArrayList<>();
     for (Project coreProject : bilateralProject.getLinkedProjects()) {
       coreProjectsIDs.add(coreProject.getId());
     }
 
-    return linkedCoreProjectsDAO.saveLinkedCoreProjects(bilateralProject.getId(), coreProjectsIDs, user.getId(), justification);
+    return linkedCoreProjectsDAO.saveLinkedCoreProjects(bilateralProject.getId(), coreProjectsIDs, user.getId(),
+      justification);
   }
-
 }
