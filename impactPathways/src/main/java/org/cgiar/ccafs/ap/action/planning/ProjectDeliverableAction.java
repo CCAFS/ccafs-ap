@@ -169,26 +169,6 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
 
-    // **************************** TEMPORAL
-    // DeliverablePartner dp = new DeliverablePartner(1);
-    // ProjectPartner pp = new ProjectPartner(projectPartners.get(0).getId());
-    // pp.setUser(this.getCurrentUser());
-    // dp.setPartner(pp);
-    // dp.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-    // deliverable.setResponsiblePartner(dp);
-    //
-    // List<DeliverablePartner> dpList = new ArrayList<>();
-    // for (int c = 0; c < 10; c++) {
-    // DeliverablePartner dpOther = new DeliverablePartner((c + 1));
-    // ProjectPartner ppOther = new ProjectPartner(projectPartners.get(c).getId());
-    // dpOther.setPartner(ppOther);
-    // dpOther.setType(APConstants.DELIVERABLE_PARTNER_OTHER);
-    // dpList.add(dpOther);
-    // }
-    // deliverable.setOtherPartners(dpList);
-
-    // *************************************
-
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 

@@ -17,7 +17,7 @@
         <tr>
           <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
           <td class="name"><a href="${dlurl}">${dl.title!"Untitled"}</a></td>
-          <td class="type"><a href="${dlurl}">${dl.type.name}</a></td> 
+          <td class="type"><a href="${dlurl}">${(dl.type.name)!"Not defined"}</a></td> 
           <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
           <td class="removeDeliverable-row">
             [#if action.canDelete(dl.id)]
