@@ -475,7 +475,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           }
         }
         if (!linkedProjectsToDelete.isEmpty()) {
-          linkedCoreProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete,
+          linkedCoreProjectManager.deletedLinkedCoreProjects(project, linkedProjectsToDelete,
             this.getCurrentUser(), this.getJustification());
         }
 
