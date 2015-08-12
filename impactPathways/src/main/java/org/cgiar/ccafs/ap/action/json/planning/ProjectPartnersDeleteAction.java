@@ -138,7 +138,15 @@ public class ProjectPartnersDeleteAction extends BaseAction {
     // Checking project partner contributions.
     this.checkProjectPartnerContributions();
 
-    // TODO Work in the message.
+    if (linkedActivities.size() == 0) {
+      if (linkedDeliverables.size() > 0 || linkedProjectPartners.size() > 0) {
+        message = this.getText("planning.projectPartners.delete.relationships");
+      } else {
+        message = "";
+      }
+    } else {
+      message = this.getText("planning.projectPartners.delete.activities");
+    }
     return SUCCESS;
   }
 
@@ -163,7 +171,7 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   public void prepare() throws Exception {
 
     // setting a general message
-    message = this.getText("planning.projectPartners.activities");
+    message = "";
 
     // Getting the project partner ID from the URL parameter.
     String partnerIDParameter =
