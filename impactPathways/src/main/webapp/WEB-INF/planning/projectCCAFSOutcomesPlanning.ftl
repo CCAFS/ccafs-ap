@@ -42,7 +42,7 @@
     <div class="borderBox">
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectOutcome.contribution" /] </h1> 
       [#if contributingPrograms?has_content]
@@ -224,7 +224,7 @@
     </div>
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         [@customForm.textArea name="project.ccafsOutcomesLessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=true editable=editable /]
@@ -233,9 +233,9 @@
     
     [#if editable] 
       [#-- Project identifier --]
-      <div class="borderBox">
-        <input name="projectID" type="hidden" value="${project.id?c}" />
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

@@ -15,7 +15,6 @@ $(document).ready(function() {
       }
   });
   $('table.projectsList').on('draw.dt', function() {
-    console.log('Table redrawn');
     $("a.removeProject").on("click", removeProject);
   });
 

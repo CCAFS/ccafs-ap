@@ -133,8 +133,7 @@ public class PartnersSaveAction extends BaseAction {
     // Message content
     message.append(this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " ");
     message.append("(" + this.getCurrentUser().getEmail() + ") ");
-    message.append("who is the user in charge of \"" + this.getCurrentUser().getCurrentInstitution().getName()
-      + "\" is requesting to add the following partner information:");
+    message.append("is requesting to add the following partner information:");
     message.append("\n\n");
     message.append("Partner Name: ");
     message.append(institutionName);
@@ -172,7 +171,7 @@ public class PartnersSaveAction extends BaseAction {
     message.append(".\n");
     message.append("\n");
     SendMail sendMail = new SendMail(this.config);
-    sendMail.send(config.getEmailUsername(), null, subject, message.toString());
+    sendMail.send(config.getEmailNotification(), null, subject, message.toString());
     messageSent = true;
 
     LOG.info("The user {} send a message requesting add partners to the activity {}", this.getCurrentUser().getEmail(),

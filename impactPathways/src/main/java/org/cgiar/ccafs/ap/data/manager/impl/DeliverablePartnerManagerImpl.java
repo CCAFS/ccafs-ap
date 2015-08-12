@@ -10,6 +10,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.DeliverablePartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -34,11 +35,14 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
   // DAO's
   private DeliverablePartnerDAO deliverablePartnerDAO;
 
+  // Managers
+  private ProjectPartnerManager projectPartnerManager;
 
   @Inject
-  public DeliverablePartnerManagerImpl(DeliverablePartnerDAO deliverablePartnerDAO) {
+  public DeliverablePartnerManagerImpl(DeliverablePartnerDAO deliverablePartnerDAO,
+    ProjectPartnerManager projectPartnerManager) {
     this.deliverablePartnerDAO = deliverablePartnerDAO;
-
+    this.projectPartnerManager = projectPartnerManager;
   }
 
   @Override
@@ -82,6 +86,9 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
     for (Map<String, String> dData : deliverablePartnerDataList) {
       DeliverablePartner deliverablePartner = new DeliverablePartner();
       deliverablePartner.setId(Integer.parseInt(dData.get("id")));
+      // project partner
+      deliverablePartner
+      .setPartner(projectPartnerManager.getProjectPartnerById(Integer.parseInt(dData.get("partner_id"))));
       // Partner type (Resp, Other)
       deliverablePartner.setType(dData.get("partner_type"));
       // adding information of the object to the array
@@ -115,10 +122,9 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
     } else if (result == 0) {
       LOG.debug("saveDeliverablePartner > Deliverable partner with id={} was updated", deliverablePartner.getId());
     } else {
-      LOG
-        .error(
-          "saveDeliverablePartner > There was an error trying to save/update a deliverable partner from deliverableID={}",
-          deliverableID);
+      LOG.error(
+        "saveDeliverablePartner > There was an error trying to save/update a deliverable partner from deliverableID={}",
+        deliverableID);
     }
     return result;
   }

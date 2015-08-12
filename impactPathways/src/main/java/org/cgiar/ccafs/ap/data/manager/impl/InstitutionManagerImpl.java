@@ -57,6 +57,11 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
 
   @Override
+  public boolean deleteProjectPartnerContributeInstitution(ProjectPartner projectPartner, Institution institution) {
+    return institutionDAO.deleteProjectPartnerContributeInstitution(projectPartner.getId(), institution.getId());
+  }
+
+  @Override
   public List<Institution> getAllInstitutions() {
     List<Institution> institutions = new ArrayList<>();
     List<Map<String, String>> institutionDataList = institutionDAO.getAllInstitutions();
@@ -113,6 +118,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return institutiontypes;
   }
 
+
   @Override
   public List<Institution> getAllPPAInstitutions() {
     List<Institution> institutions = new ArrayList<>();
@@ -149,19 +155,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
         institution.setCountry(country);
       }
 
-      // Adding object to the array.
-      institutions.add(institution);
-    }
-    return institutions;
-  }
-
-
-  @Override
-  public List<Institution> getDeliverablePartnerships(int deliverableID) {
-    List<Institution> institutions = new ArrayList<>();
-    List<Map<String, String>> institutionDataList = institutionDAO.getDeliverablePartnerships(deliverableID);
-    for (Map<String, String> iData : institutionDataList) {
-      Institution institution = this.getInstitutionData(iData);
       // Adding object to the array.
       institutions.add(institution);
     }
@@ -310,7 +303,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return institutions;
   }
 
-
   @Override
   public InstitutionType getInstitutionType(int institutionTypeId) {
     Map<String, String> iData = institutionDAO.getInstitutionType(institutionTypeId);
@@ -407,6 +399,11 @@ public class InstitutionManagerImpl implements InstitutionManager {
       }
     }
     return allSaved;
+  }
+
+  @Override
+  public boolean validateLastOneInstitution(int projectPartnerID) {
+    return institutionDAO.validateLastOneInstitution(projectPartnerID);
   }
 
 }

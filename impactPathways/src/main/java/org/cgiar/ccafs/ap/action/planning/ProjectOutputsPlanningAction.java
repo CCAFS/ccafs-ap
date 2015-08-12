@@ -101,6 +101,10 @@ public class ProjectOutputsPlanningAction extends BaseAction {
     return projectID;
   }
 
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
+  }
+
   @Override
   public void prepare() throws Exception {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));

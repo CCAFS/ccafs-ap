@@ -133,7 +133,7 @@ function loadInitialCoreProjects() {
     search_contains: true
   });
   $.ajax({
-      'url': '../../coreProjects.do',
+    'url': '../../' + $('#projectsAction').val(),
       beforeSend: function() {
         $selectAddProject.empty().append(setOption(-1, "Please select a project"));
       },

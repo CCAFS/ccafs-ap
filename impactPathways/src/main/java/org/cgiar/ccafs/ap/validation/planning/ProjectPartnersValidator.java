@@ -103,17 +103,14 @@ public class ProjectPartnersValidator extends BaseValidator {
       boolean problem = false;
       boolean result;
 
-      // Initializing empty fields
-      // this.initializeEmptyFields(project);
-
-      // Validating empty fields and showing red messages.
+      // Validating empty fields and show red messages when something required is missing.
       result = this.validateEmptyFields(action, project);
-      if (!result) {
-        // marking that there is a problem.
+      if (result) {
+        // letting know that there is a problem.
         problem = true;
       }
 
-      // Validate project leader and coordinator are not repeated.
+      // Validate that the project leader and project coordinator are not the same person.
       result = this.validateLeaderAndCoordinator(action, project);
       if (result) {
         problem = true;
@@ -124,6 +121,9 @@ public class ProjectPartnersValidator extends BaseValidator {
         // Do not validate repeated partners until the empty fields are filled.
         result = this.validateRepeatedPartners(action, project);
       }
+
+      // Validating that the partners can be deleted.
+
 
       // problem = this.validatePartners(project);
 
@@ -173,51 +173,20 @@ public class ProjectPartnersValidator extends BaseValidator {
     }
 
     // Validate justification always.
-    if (action.getJustification().trim().isEmpty()) {
-      action.addFieldError("justification",
-        this.getText("validation.required", new String[] {this.getText("saving.justification")}));
-      problem = true;
-    }
+    this.validateProjectJustification(action, project);
+
     return problem;
   }
 
   private boolean validateLeaderAndCoordinator(BaseAction action, Project project) {
-    if (project.getLeader() != null && project.getCoordinator() != null
-      && project.getLeader().getId() == project.getCoordinator().getId()) {
+    if (project.getLeader() != null && project.getCoordinator() != null && project.getLeader().getId() != -1
+      && project.getCoordinator().getId() != -1 && project.getLeader().getId() == project.getCoordinator().getId()) {
       action.addActionError(this.getText("planning.projectPartners.duplicated.PLPC"));
       action.addFieldError("contact-person-leader", this.getText("validation.duplicated"));
       action.addFieldError("contact-person-coordinator", this.getText("validation.duplicated"));
       return true;
     }
     return false;
-  }
-
-  private boolean validatePartners(BaseAction action, Project project) {
-    boolean problem = false;
-    boolean contributionEmpty = false;
-    List<ProjectPartner> allProjectPartners = new ArrayList<ProjectPartner>();
-    allProjectPartners.add(project.getLeader());
-    allProjectPartners.addAll(project.getPPAPartners());
-    allProjectPartners.addAll(project.getProjectPartners());
-
-
-    // validate contribution partners
-    for (int j = 0; j < allProjectPartners.size(); j++) {
-      if (project.getPPAPartners().size() > 0) {
-        if (allProjectPartners.get(j).getContributeInstitutions() == null) {
-          contributionEmpty = true;
-          problem = true;
-        }
-      }
-    }
-
-
-    if (contributionEmpty) {
-      this.addFieldError("Project Partners, contribute Institutions empty",
-        this.getText("planning.projectPartners.contributingInstitutions"));
-    }
-
-    return problem;
   }
 
   /**

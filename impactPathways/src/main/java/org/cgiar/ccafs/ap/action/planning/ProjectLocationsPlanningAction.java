@@ -115,11 +115,9 @@ public class ProjectLocationsPlanningAction extends BaseAction {
     return locationTypes;
   }
 
-
   public List<OtherLocation> getOtherLocationsSaved() {
     return otherLocationsSaved;
   }
-
 
   public Project getProject() {
     return project;
@@ -135,13 +133,18 @@ public class ProjectLocationsPlanningAction extends BaseAction {
     return regions;
   }
 
+
   public List<Region> getRegionsSaved() {
     return regionsSaved;
   }
 
-
   public int getRegionTypeID() {
     return APConstants.LOCATION_ELEMENT_TYPE_REGION;
+  }
+
+
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
   }
 
   @Override
@@ -229,8 +232,9 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      boolean added = locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
-        this.getJustification());
+      boolean added =
+        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+          this.getJustification());
       if (!added) {
         success = false;
       }
@@ -247,8 +251,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         this.addActionError(this.getText("planning.project.locations.saving.problem"));
         return BaseAction.INPUT;
       }
-      this.addActionMessage(
-        this.getText("saving.success", new String[] {this.getText("planning.project.locations.title")}));
+      this.addActionMessage(this.getText("saving.success",
+        new String[] {this.getText("planning.project.locations.title")}));
 
       return BaseAction.SUCCESS;
     } else {

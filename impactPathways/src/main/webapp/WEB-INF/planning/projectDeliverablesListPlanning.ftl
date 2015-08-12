@@ -39,6 +39,7 @@
     [/#if]
     <div id="projectDeliverables" class="clearfix">
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1> 
+      [#if allYears?has_content]
       [#-- Planned Deliverables --]
       <div class="fullBlock clearfix">
         <h3 class="projectSubTitle">[@s.text name="planning.projectDeliverables.plannedDeliverables" /]</h3>
@@ -56,6 +57,10 @@
         </div>
         [/#if]
       </div>
+      [#else]
+        [#-- If the project has not an start date and/or end date defined --]
+        <p class="simpleBox center">[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
+      [/#if]
     </div>     
   </article>
   

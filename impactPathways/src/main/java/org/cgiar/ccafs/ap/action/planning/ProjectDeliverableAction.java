@@ -27,7 +27,6 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -42,7 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Javier Andrés Galllego B.
+ * @author Javier Andrés Gallego B.
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class ProjectDeliverableAction extends BaseAction {
@@ -73,7 +72,6 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
   private List<IPElement> outputs;
-  private List<Institution> institutions;
   private List<ProjectPartner> projectPartners;
   private List<DeliverablePartner> deliverablePartners;
 
@@ -131,10 +129,6 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverableTypes;
   }
 
-  public List<Institution> getInstitutions() {
-    return institutions;
-  }
-
   public List<IPElement> getOutputs() {
     return outputs;
   }
@@ -145,6 +139,10 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public List<ProjectPartner> getProjectPartners() {
     return this.projectPartners;
+  }
+
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
   }
 
   @Override
@@ -170,49 +168,20 @@ public class ProjectDeliverableAction extends BaseAction {
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
-    deliverable.setResponsiblePartner(deliverable.getResponsiblePartner());
-    deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverableID,
-      APConstants.DELIVERABLE_PARTNER_OTHER));
-
-    // **************************** TEMPORAL
-    // DeliverablePartner dp = new DeliverablePartner(1);
-    // ProjectPartner pp = new ProjectPartner(projectPartners.get(0).getId());
-    // pp.setUser(this.getCurrentUser());
-    // dp.setPartner(pp);
-    // dp.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-    // deliverable.setResponsiblePartner(dp);
-    //
-    // List<DeliverablePartner> dpList = new ArrayList<>();
-    // for (int c = 0; c < 10; c++) {
-    // DeliverablePartner dpOther = new DeliverablePartner((c + 1));
-    // ProjectPartner ppOther = new ProjectPartner(projectPartners.get(c).getId());
-    // dpOther.setPartner(ppOther);
-    // dpOther.setType(APConstants.DELIVERABLE_PARTNER_OTHER);
-    // dpList.add(dpOther);
-    // }
-    // deliverable.setOtherPartners(dpList);
-    //
-    // // *************************************
 
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
     // Getting the responsible partner.
-    // List<DeliverablePartner> partners =
-    // deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_RESP);
-    // if (partners.size() > 0) {
-    // deliverable.setResponsiblePartner(partners.get(0));
-    // } else {
-    // DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-    // responsiblePartner.setInstitution(new Institution(-1));
-    // responsiblePartner.setUser(new User(-1));
-    // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-    // deliverable.setResponsiblePartner(responsiblePartner);
-    // }
+    List<DeliverablePartner> deliverablePartners =
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_RESP);
+    if (deliverablePartners.size() > 0) {
+      deliverable.setResponsiblePartner(deliverablePartners.get(0));
+    }
 
     // Getting the other partners that are contributing to this deliverable.
-    // deliverable.setOtherPartners(
-    // deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
+    deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverableID,
+      APConstants.DELIVERABLE_PARTNER_OTHER));
 
     super.setHistory(historyManager.getProjectDeliverablesHistory(deliverableID));
 
@@ -274,22 +243,14 @@ public class ProjectDeliverableAction extends BaseAction {
     // ---------- Saving deliverable partners contribution
 
     // Saving responsible deliverable partner
-    // if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() != null)
-    // {
-    // result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
-    // this.getCurrentUser(), this.getJustification());
-    // if (result < 0) {
-    // success = false;
-    // }
-    // } else
-    // if (deliverable.getResponsiblePartner().getInstitution() == null
-    // && deliverable.getResponsiblePartner().getUser() == null) {
-    // saved = deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
-    // this.getCurrentUser(), this.getJustification());
-    // if (!saved) {
-    // success = false;
-    // }
-    // }
+    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getPartner() != null) {
+      result =
+        deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
+          this.getCurrentUser(), this.getJustification());
+      if (result < 0) {
+        success = false;
+      }
+    }
 
     // Saving other contributions
 
@@ -327,11 +288,6 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
-  }
-
-
-  public void setInstitutions(List<Institution> institutions) {
-    this.institutions = institutions;
   }
 
   @Override

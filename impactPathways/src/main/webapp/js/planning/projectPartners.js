@@ -1,6 +1,9 @@
+var $removePartnerDialog;
+
 $(document).ready(init);
 
 function init() {
+  $removePartnerDialog = $('#partnerRemove-dialog');
   attachEvents();
   // This function enables launch the pop up window
   popups();
@@ -75,24 +78,57 @@ function removePartnerEvent(e) {
       },
       beforeSend: function() {
         partner.startLoader();
+        $removePartnerDialog.find('.activities').hide();
+        $removePartnerDialog.find('.deliverables').hide();
+        $removePartnerDialog.find('.projectPartners').hide();
+
+        $removePartnerDialog.find('.activities ul').empty();
+        $removePartnerDialog.find('.deliverables ul').empty();
+        $removePartnerDialog.find('.projectPartners ul').empty();
       },
       success: function(data) {
         partner.stopLoader();
-        if(!$.isEmptyObject(data)) {
-          $('#partnerRemove-dialog').find('p').text(data.message);
-          $('#partnerRemove-dialog').dialog({
+        if(data.message) {
+          var dialogOptions = {
               width: 500,
               modal: true,
               buttons: {
-                  "Remove partner": function() {
-                    $(this).dialog("close");
-                    partner.remove();
-                  },
-                  Cancel: function() {
-                    $(this).dialog("close");
-                  }
+                Cancel: function() {
+                  $(this).dialog("close");
+                }
               }
-          });
+          };
+          $removePartnerDialog.find('p.message').text(data.message);
+          if(data.linkedActivities.length > 0) {
+            $removePartnerDialog.find('.activities').show();
+            $.each(data.linkedActivities, function(i,activity) {
+              $removePartnerDialog.find('.activities ul').append("<li>" + activity.title + "</li>");
+            });
+          } else {
+            dialogOptions.buttons = {
+                Cancel: function() {
+                  $(this).dialog("close");
+                },
+                "Remove partner": function() {
+                  $(this).dialog("close");
+                  partner.remove();
+                }
+            };
+          }
+          if(data.linkedDeliverables.length > 0) {
+            $removePartnerDialog.find('.deliverables').show();
+            $.each(data.linkedDeliverables, function(i,deliverable) {
+              $removePartnerDialog.find('.deliverables ul').append("<li>" + deliverable.title + "</li>");
+            });
+          }
+          if(data.linkedProjectPartners.length > 0) {
+            $removePartnerDialog.find('.projectPartners').show();
+            $.each(data.linkedProjectPartners, function(i,projectPartner) {
+              $removePartnerDialog.find('.projectPartners ul').append("<li>" + projectPartner.title + "</li>");
+            });
+          }
+
+          $removePartnerDialog.dialog(dialogOptions);
         } else {
           partner.remove();
         }

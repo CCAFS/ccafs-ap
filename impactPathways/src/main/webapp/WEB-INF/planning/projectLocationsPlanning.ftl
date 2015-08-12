@@ -40,7 +40,7 @@
     <div id="" class="borderBox"> 
       [#-- Can edit button --]
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]  
       [#-- Title --]
       <h1 class="contentTitle">
@@ -158,7 +158,7 @@
     
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         [@customForm.textArea name="project.locationsLessons" i18nkey="planning.project.locations.lessons" required=true editable=editable /]
@@ -166,17 +166,17 @@
     </div>
     
     [#if editable] 
-      <div class="borderBox">
-        <!-- internal parameter --> 
-        [#-- Project identifier --]
-        <input type="hidden" name="projectID" value="${project.id?c}">
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      <!-- internal parameter --> 
+      [#-- Project identifier --]
+      <input type="hidden" name="projectID" value="${project.id?c}">
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
-      </div>  
+      </div>
     [#else]
       [#-- Display Log History --]
       [#if history??][@log.logList list=history /][/#if] 

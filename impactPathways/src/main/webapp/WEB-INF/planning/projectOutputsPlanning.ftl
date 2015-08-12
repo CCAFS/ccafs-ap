@@ -36,7 +36,7 @@
     <div id="projectOutputs" class="borderBox">
       <h1 class="contentTitle">[@s.text name="planning.projectOutputs.title" /]</h1> 
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#projectOutputs">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       [#if project.outputs?has_content]
         <div id="mogsTabs">
@@ -78,7 +78,7 @@
     </div>
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         [@customForm.textArea name="project.outputsOverviewLessons" i18nkey="planning.projectOutputs.lessons" required=true editable=editable /]
@@ -88,8 +88,8 @@
     [#if editable]  
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
-      <div class="borderBox">
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
