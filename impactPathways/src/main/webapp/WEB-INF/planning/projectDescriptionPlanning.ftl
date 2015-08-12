@@ -159,7 +159,7 @@
       </fieldset> 
 
       [#-- Bilateral/Core projects only for CCAFS Projects --]
-      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}" /] </h1> 
+      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.projectsContributing" /] </h1> 
       <div class="panel tertiary">
         [#if project.bilateralProject]
           <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
