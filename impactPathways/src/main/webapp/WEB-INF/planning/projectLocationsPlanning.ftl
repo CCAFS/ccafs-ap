@@ -166,17 +166,17 @@
     </div>
     
     [#if editable] 
-      <div class="borderBox">
-        <!-- internal parameter --> 
-        [#-- Project identifier --]
-        <input type="hidden" name="projectID" value="${project.id?c}">
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      <!-- internal parameter --> 
+      [#-- Project identifier --]
+      <input type="hidden" name="projectID" value="${project.id?c}">
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
-      </div>  
+      </div>
     [#else]
       [#-- Display Log History --]
       [#if history??][@log.logList list=history /][/#if] 

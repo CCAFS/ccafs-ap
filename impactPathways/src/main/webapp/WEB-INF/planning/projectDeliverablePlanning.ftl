@@ -159,10 +159,10 @@
     </div>
     
     [#if editable] 
-      <div class="borderBox"> 
-        <input name="projectID" type="hidden" value="${project.id?c}" />
-        <input name="deliverableID"type="hidden" value="${deliverable.id}">
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      <input name="deliverableID"type="hidden" value="${deliverable.id}">
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
