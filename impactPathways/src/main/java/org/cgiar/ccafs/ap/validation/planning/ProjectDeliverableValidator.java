@@ -50,9 +50,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
   private void validateOptionalFields(BaseAction action, Deliverable deliverable) {
     // Deliverable Title.
-    if (!this.isValidString(deliverable.getTitle())) {
-      this.addMessage(this.getText("planning.deliverables.title"));
-    }
+
 
     // Deliverable responsible partner - contact name.
     // if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getUser() == null
@@ -83,6 +81,24 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
   private boolean validateRequiredFields(BaseAction action, Deliverable deliverable) {
     boolean problem = false;
+
+    // Validating the title
+    if (!this.isValidString(deliverable.getTitle())) {
+      action.addFieldError("deliverable.title", this.getText("validation.field.required"));
+      problem = true;
+    }
+
+    // Validating that a MOG is selected.
+    if (deliverable.getOutput() == null) {
+      action.addFieldError("deliverable.output", this.getText("validation.field.required"));
+      problem = true;
+    }
+
+    // Validating that a year is selected.
+    if (deliverable.getYear() == -1) {
+      action.addFieldError("deliverable.year", this.getText("validation.field.required"));
+      problem = true;
+    }
 
     // Validating that some sub-type is selected.
     if (deliverable.getType() == null) {

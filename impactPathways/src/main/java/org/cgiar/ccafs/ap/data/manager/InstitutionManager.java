@@ -42,6 +42,15 @@ public interface InstitutionManager {
   public boolean deleteProjectPartnerContributeInstitution(int projectPartnerID, int institutionID);
 
   /**
+   * This method deletes a project partner contribution from a given project partner and institution.
+   * 
+   * @param projectPartner is a project partner
+   * @param institution is an institution.
+   * @return true if the records could be successfully deleted, false otherwise.
+   */
+  public boolean deleteProjectPartnerContributeInstitution(ProjectPartner projectPartner, Institution institution);
+
+  /**
    * Return all the institutions.
    * 
    * @return an Institution object or null if the id does not exist in the database.
@@ -61,14 +70,6 @@ public interface InstitutionManager {
    * @return the list of PPA institutions or an empty list if nothing found.
    */
   public List<Institution> getAllPPAInstitutions();
-
-  /**
-   * This method gets the list of partners that are contributing to a specific deliverable.
-   * 
-   * @param deliverableID is the deliverable identifier.
-   * @return a list of Institution objects, an empty list if nothing found or null if some error occurred.
-   */
-  public List<Institution> getDeliverablePartnerships(int deliverableID);
 
   /**
    * Get an institution identified with the given id.
@@ -139,4 +140,13 @@ public interface InstitutionManager {
    */
   public boolean saveProjectPartnerContributeInstitutions(int projectPartnerID,
     List<Institution> contributeInstitutions);
+
+  /**
+   * This method validates if the institution of the given projectPartner is the lastone institution of all the other
+   * partners.
+   * 
+   * @param projectPartnerID is the project partner identifier.
+   * @return true if is the last one, false otherwise.
+   */
+  public boolean validateLastOneInstitution(int projectPartnerID);
 }

@@ -261,6 +261,10 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     return projectID;
   }
 
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
+  }
+
   public boolean isRegionalOutcome(IPElement outcome) {
     return !outcome.getTranslatedOf().isEmpty();
   }

@@ -61,15 +61,6 @@ public interface InstitutionDAO {
   public List<Map<String, String>> getAllPPAInstitutions();
 
   /**
-   * This method gets the list of institutions that are contributing to a specific deliverable.
-   * 
-   * @param deliverableID is the deliverable identifier.
-   * @return a list of Map with the information of institutions, an empty list if nothing found or null if some error
-   *         occurred.
-   */
-  public List<Map<String, String>> getDeliverablePartnerships(int deliverableID);
-
-  /**
    * This method returns the information from Institution given by an institutionID
    * 
    * @param institutionID, identifier of the institution
@@ -130,4 +121,13 @@ public interface InstitutionDAO {
    * @return 0 if the record was added or if the record already exists, or -1 if some error occurred.
    */
   public int saveProjectPartnerContributeInstitution(Map<String, Object> contributionData);
+
+  /**
+   * This method validates if the institution of the given projectPartner is the last one institution of all the other
+   * partners.
+   * 
+   * @param projectPartnerID is the project partner identifier.
+   * @return true if is the last one, false otherwise.
+   */
+  public boolean validateLastOneInstitution(int projectPartnerID);
 }

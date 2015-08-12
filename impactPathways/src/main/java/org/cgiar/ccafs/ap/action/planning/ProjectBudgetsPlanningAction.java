@@ -149,7 +149,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return year;
   }
 
-
   public boolean isHasLeader() {
     return hasLeader;
   }
@@ -157,6 +156,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   public boolean isInvalidYear() {
     return invalidYear;
+  }
+
+
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
   }
 
 

@@ -87,6 +87,10 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     return projectID;
   }
 
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
+  }
+
   @Override
   public String next() {
     String result = this.save();

@@ -11,6 +11,8 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
@@ -18,6 +20,8 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -56,6 +60,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private UserManager userManager;
   private BudgetManager budgetManager;
+  private DeliverablePartnerManager deliverablePartnerManager;
+  private DeliverableManager deliverableManager;
+
   private HistoryManager historyManager;
   private ProjectPartnersValidator projectPartnersValidator;
 
@@ -79,7 +86,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, HistoryManager historyManager,
-    ProjectPartnersValidator projectPartnersValidator) {
+    ProjectPartnersValidator projectPartnersValidator, DeliverablePartnerManager deliverablePartnerManager,
+    DeliverableManager deliverableManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
@@ -89,6 +97,55 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.budgetManager = budgetManager;
     this.historyManager = historyManager;
     this.projectPartnersValidator = projectPartnersValidator;
+    this.deliverablePartnerManager = deliverablePartnerManager;
+    this.deliverableManager = deliverableManager;
+  }
+
+  private boolean deletePartner(ProjectPartner partnerToDelete, List<ProjectPartner> partners) {
+
+    // Before deleting the project partner, we have to delete the deliverable partner contributions.
+
+    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProjectPartnerID(partnerToDelete.getId());
+
+    for (Deliverable deliverable : deliverables) {
+      // Deleting partner in case it is selected in the responsible.
+      if (deliverable.getResponsiblePartner() != null
+        && deliverable.getResponsiblePartner().getPartner().equals(partnerToDelete)) {
+        deliverablePartnerManager.deleteDeliverablePartner(deliverable.getResponsiblePartner().getId(),
+          this.getCurrentUser(), this.getJustification());
+      }
+      // Deleting partner in case it is selected in other parter contributions.
+      for (DeliverablePartner deliverablePartner : deliverable.getOtherPartners()) {
+        if (deliverablePartner.getPartner().equals(partnerToDelete)) {
+          deliverablePartnerManager.deleteDeliverablePartner(deliverablePartner.getId(), this.getCurrentUser(),
+            this.getJustification());
+        }
+      }
+    }
+
+    // Deleting all the project partners contributions.
+
+    // we need to validate that it is the only institution that is entered in the system.
+    boolean lastInstitution = institutionManager.validateLastOneInstitution(partnerToDelete.getId());
+    // If the institution is the last one, we need to get all the project partners that will be affected.
+    if (lastInstitution) {
+      for (ProjectPartner partner : partners) {
+        // Looping the list of "contribute institutions".
+        for (Institution institution : partner.getContributeInstitutions()) {
+          if (institution.equals(partnerToDelete.getInstitution())) {
+            // delete the project partner contribution
+            institutionManager.deleteProjectPartnerContributeInstitution(partner, partnerToDelete.getInstitution());
+            break; // stop the loop.
+          }
+        }
+      }
+    }
+
+    // Now it is ok to delete the current project partner.
+    boolean deleted =
+      projectPartnerManager.deleteProjectPartner(partnerToDelete.getId(), this.getCurrentUser(),
+        this.getJustification());
+    return deleted;
   }
 
   public List<Institution> getAllPartners() {
@@ -147,6 +204,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return APConstants.PROJECT_PARTNER_PPA;
   }
 
+
+  public boolean isNewProject() {
+    return project.isNew(config.getCurrentPlanningStartDate());
+  }
 
   @Override
   public String next() {
@@ -227,14 +288,14 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     previousProject.setPPAPartners(project.getPPAPartners());
 
     if (actionName.equals("partnerLead")) {
-      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
-        new String[] {APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
+      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(), new String[] {
+        APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
     } else if (actionName.equals("ppaPartners")) {
-      super.setHistory(
-        historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PPA}));
+      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
+        new String[] {APConstants.PROJECT_PARTNER_PPA}));
     } else if (actionName.equals("partners")) {
-      super.setHistory(
-        historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PP}));
+      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
+        new String[] {APConstants.PROJECT_PARTNER_PP}));
     }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -283,8 +344,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     boolean success = true;
 
     // Saving Project leader
-    int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
-      this.getJustification());
+    int id =
+      projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
+        this.getJustification());
     if (id < 0) {
       success = false;
     }
@@ -292,8 +354,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Saving Project Coordinator
     // Setting the same institution that was selected for the Project Leader.
     project.getCoordinator().setInstitution(project.getLeader().getInstitution());
-    id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
-      this.getJustification());
+    id =
+      projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
+        this.getJustification());
     if (id < 0) {
       success = false;
     }
@@ -325,8 +388,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Deleting project partners
     for (ProjectPartner previousPartner : previousPartners) {
       if (!partners.contains(previousPartner)) {
-        boolean deleted = projectPartnerManager.deleteProjectPartner(previousPartner.getId(), this.getCurrentUser(),
-          this.getJustification());
+        boolean deleted = this.deletePartner(previousPartner, partners);
         if (!deleted) {
           success = false;
         }
@@ -351,8 +413,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         for (Institution previousPartnerContribution : previousPartnerContributions) {
           if (projectPartner.getContributeInstitutions() == null
             || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
-            boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
-              previousPartnerContribution.getId());
+            boolean deleted =
+              institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+                previousPartnerContribution.getId());
             if (!deleted) {
               success = false;
             }
@@ -362,8 +425,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // if the project partner has contribute institutions.
         if (projectPartner.getContributeInstitutions() != null) {
           // Saving new and old Project Partner Contributions
-          saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
-            projectPartner.getContributeInstitutions());
+          saved =
+            institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+              projectPartner.getContributeInstitutions());
           if (!saved) {
             saved = false;
           }

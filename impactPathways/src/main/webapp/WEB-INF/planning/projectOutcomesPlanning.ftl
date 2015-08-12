@@ -43,7 +43,7 @@
     [/#if]
     <div id="projectOutcomes" class="borderBox">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#projectOutcomes">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]  
       [#-- Project  outcome block --]
       <div class="fullPartBlock clearfix">
@@ -64,7 +64,7 @@
     </div>  
     <div id="gender-contribution" class="borderBox">
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#gender-contribution">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if] 
       [#-- Gender contribution block --]
       <div class="fullPartBlock">
@@ -86,7 +86,7 @@
     
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url includeParams='get'][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         [@customForm.textArea name="project.outcomes[${midOutcomeYear}].lessons" i18nkey="planning.projectOutcomes.lessons" required=true editable=editable /]
@@ -95,9 +95,9 @@
     
     [#if editable] 
       [#-- Project identifier --]
-      <div class="borderBox">
-        <input name="projectID" type="hidden" value="${project.id?c}" />
-        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
+      <input name="projectID" type="hidden" value="${project.id?c}" />
+      <div class="[#if !newProject]borderBox[/#if]" >
+        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
