@@ -143,4 +143,7 @@
   [/@s.form]
 </section>
 
+[#-- Hidden values used by js --]
+<input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceedPercentage" /]" />
+
 [#include "/WEB-INF/global/pages/footer.ftl"]
