@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -48,7 +49,7 @@ public class ActivitiesListAction extends BaseAction {
   private ActivityManager activityManager;
   private ProjectManager projectManager;
   private ProjectPartnerManager projectPartnerManager;
-  // private HistoryManager historyManager;
+  private HistoryManager historyManager;
 
   // Model for the back-end
   private List<ProjectPartner> projectPartners;
@@ -64,12 +65,13 @@ public class ActivitiesListAction extends BaseAction {
 
   @Inject
   public ActivitiesListAction(APConfig config, ActivityManager activityManager, ProjectManager projectManager,
-    ProjectPartnerManager projectPartnerManager, ActivitiesListValidator validator) {
+    ProjectPartnerManager projectPartnerManager, ActivitiesListValidator validator, HistoryManager historyManager) {
     super(config);
     this.activityManager = activityManager;
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
     this.validator = validator;
+    this.historyManager = historyManager;
   }
 
   @Override
@@ -144,7 +146,7 @@ public class ActivitiesListAction extends BaseAction {
         project.getActivities().clear();
       }
     }
-
+    super.setHistory(historyManager.getActivitiesHistory(project.getId()));
   }
 
   @Override

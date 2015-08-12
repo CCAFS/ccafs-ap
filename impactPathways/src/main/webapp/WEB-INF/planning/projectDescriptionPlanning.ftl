@@ -32,7 +32,7 @@
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit ]
       <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param name ="projectID"]${project.id}[/@s.param][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
       </p>
     [/#if] 
     <div id="projectDescription" class="borderBox">
@@ -159,7 +159,7 @@
       </fieldset> 
 
       [#-- Bilateral/Core projects only for CCAFS Projects --]
-      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}" /] </h1> 
+      <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.projectsContributing" /] </h1> 
       <div class="panel tertiary">
         [#if project.bilateralProject]
           <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
