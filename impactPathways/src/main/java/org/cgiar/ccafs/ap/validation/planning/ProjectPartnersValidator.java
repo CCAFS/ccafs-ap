@@ -102,7 +102,7 @@ public class ProjectPartnersValidator extends BaseValidator {
     if (project != null) {
       boolean problem = false;
       boolean result;
-      System.out.println();
+
       // Validating empty fields and show red messages when something required is missing.
       result = this.validateEmptyFields(action, project);
       if (result) {
@@ -173,11 +173,8 @@ public class ProjectPartnersValidator extends BaseValidator {
     }
 
     // Validate justification always.
-    if (action.getJustification().trim().isEmpty()) {
-      action.addFieldError("justification",
-        this.getText("validation.required", new String[] {this.getText("saving.justification")}));
-      problem = true;
-    }
+    this.validateProjectJustification(action, project);
+
     return problem;
   }
 
@@ -241,7 +238,7 @@ public class ProjectPartnersValidator extends BaseValidator {
             if (project.getPPAPartners().get(i).getInstitution().getId() == project.getPPAPartners().get(j)
               .getInstitution().getId()
               && project.getPPAPartners().get(i).getUser().getId() == project.getPPAPartners().get(j).getUser()
-                .getId()) {
+              .getId()) {
               problem = true;
               action.addActionError(this.getText("planning.projectPartners.duplicated"));
               action.addFieldError("project.PPAPartners[" + i + "].institution", this.getText("validation.duplicated"));
@@ -261,7 +258,7 @@ public class ProjectPartnersValidator extends BaseValidator {
         if (project.getProjectPartners().get(i).getUser() != null
           && project.getLeader() != null & project.getLeader().getUser() != null
           && project.getProjectPartners().get(i).getUser().getId() == project.getLeader().getUser().getId() && project
-          .getProjectPartners().get(i).getInstitution().getId() == project.getLeader().getInstitution().getId()) {
+            .getProjectPartners().get(i).getInstitution().getId() == project.getLeader().getInstitution().getId()) {
           problem = true;
           action.addActionError(this.getText("planning.projectPartners.duplicated.leader"));
           action.addFieldError("project.projectPartners[" + i + "].institution", this.getText("validation.duplicated"));
@@ -274,7 +271,7 @@ public class ProjectPartnersValidator extends BaseValidator {
             if (project.getProjectPartners().get(i).getInstitution().getId() == project.getProjectPartners().get(j)
               .getInstitution().getId()
               && project.getProjectPartners().get(i).getUser().getId() == project.getProjectPartners().get(j).getUser()
-                .getId()) {
+              .getId()) {
               problem = true;
               action.addActionError(this.getText("planning.projectPartners.duplicated"));
               action.addFieldError("project.projectPartners[" + i + "].institution",
