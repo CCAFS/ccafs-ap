@@ -99,7 +99,8 @@ public interface DeliverableManager {
   public List<Deliverable> getDeliverablesByProjectPartnerID(int projectPartnerID);
 
   /**
-   * This method returns the project identifier whether using composed codification (that is with the organization IATI
+   * This method returns the deliverable identifier whether using composed codification (that is with the organization
+   * IATI
    * standard id) or a simple id.
    * 
    * @param project , the project to get the standard identifier from.
