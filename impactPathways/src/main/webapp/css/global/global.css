@@ -2681,19 +2681,33 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 #top-quote .quote-id { 
  float:left;
  padding: 2px 7px;
- margin-left: 0.1em;
+ margin-left: 0.3em;
  border: 1px dotted #BEBEBE;
  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
  border-radius: 5px;
  padding-left: 30px;
- font-size: 1.0em;
+ font-size: 1.1em;
  background-size: 27px;
  background-repeat: no-repeat;
  background-position: 4px;
  min-height: 33px;
 }
 
-#top-quote .aux-quote-id { 
+#top-quote .aux-quote { 
+    float: left;
+    padding: 2px 2px;
+    margin-left: 0.3em;
+    border-radius: 5px;
+    font-size: 1.0em;
+    background-size: 27px;
+    background-repeat: no-repeat;
+    background-position: 4px;
+    min-height: 33px;
+    line-height: 31px;
+}
+
+
+#top-quote .aux-quote-bilateral { 
  float:left;
  padding: 2px 7px;
  margin-left: 0em;
@@ -2703,7 +2717,51 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
  border-radius: 5px;
  padding-left: 6px;
  font-size: 0.9em;
+ position: static;
+ left:740px;
+ top:307px;
  background-size: 27px;
+ background-color: #FFD2D2;
+ background-repeat: no-repeat;
+ background-position: 1px;
+ min-height: 33px;
+}
+
+#top-quote .aux-quote-core { 
+ float:left;
+ padding: 2px 7px;
+ margin-left: 0em;
+ margin-right: 0em;
+ border: 1px dotted #BEBEBE;
+ box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+ border-radius: 5px;
+ padding-left: 6px;
+ font-size: 0.9em;
+ position: static;
+ left:740px;
+ top:307px;
+ background-size: 27px;
+ background-color: #BFDFFC;
+ background-repeat: no-repeat;
+ background-position: 1px;
+ min-height: 33px;
+}
+
+#top-quote .aux-quote-cofunded { 
+ float:left;
+ padding: 2px 7px;
+ margin-left: 0em;
+ margin-right: 0em;
+ border: 1px dotted #BEBEBE;
+ box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+ border-radius: 5px;
+ padding-left: 6px;
+ font-size: 0.9em;
+ position: static;
+ left:740px;
+ top:307px;
+ background-size: 27px;
+ background-color: #D7F6DE;
  background-repeat: no-repeat;
  background-position: 1px;
  min-height: 33px;
