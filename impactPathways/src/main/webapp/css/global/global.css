@@ -66,6 +66,11 @@ input.disabled {
   opacity: 0.6;
 }
 
+.inputSelected {
+  border-radius:4px;
+  background-color: #f5f5f5 !important;
+}
+
 div.disabled {
   /* Required for IE 5, 6, 7 */
   /* ...or something to trigger hasLayout, like zoom: 1; */
@@ -2439,7 +2444,7 @@ textarea[id$='summary'] {
 .budget {
   margin-top: 0px;
   margin-bottom: 3px;
-  padding-left: 9px;
+  padding: 5px 0 5px 8px;
   border-left: 2px solid #FFFFFF;
 }
 .budget:hover {
@@ -2573,8 +2578,8 @@ table tr.row:hover{
 
 .BudgetByYear {
   float: left;
-  padding: 0 70px 0px 0;
-  /* width: 33%; */
+  padding: 0 2% 8px 2%;
+  width: 45%;
 }
 
 .partnerBudget.row {

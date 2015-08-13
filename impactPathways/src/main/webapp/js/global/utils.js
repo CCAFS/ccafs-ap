@@ -34,7 +34,7 @@ function isNumber(e) {
 function isPercentage(e) {
   // Ensure that is a percentage value
   var value = e.target.value;
-  if(value > 100) {
+  if(value >= 100) {
     e.target.value = 100;
   }
   if(value < 0) {
