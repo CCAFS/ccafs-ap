@@ -53,8 +53,7 @@
     [/#if] 
     [#-- Partner Name --]
     <div class="fullPartBlock partnerName chosen">
-      [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${(ap.institution.id)!'-1'}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
+      [@customForm.select name="${ap_name}[${ap_index}].institution" value="${(ap.institution.id)!'-1'}" label=""  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
     </div>
     [#-- Filters --]
     [#if editable && !isPPA]
@@ -132,8 +131,7 @@
         </div>
         [#-- Partner Name --]
         <div class="fullPartBlock partnerName chosen">
-        [#assign institutionList]${isPPA?string("allPPAPartners", "allPartners")}[/#assign]
-          [@customForm.select name="institution" className="institution" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName=institutionList keyFieldName="id"  displayFieldName="getComposedName()" /]
+          [@customForm.select name="institution" className="institution" label=""  disabled=!canEdit i18nkey="preplanning.projectPartners.partner.name" listName=allInstitutions keyFieldName="id"  displayFieldName="getComposedName()" /]
         </div>
         <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
         <div class="filters-content">
@@ -180,7 +178,7 @@
     <div id="projectLeader" class="projectLeader clearfix">        
         [#-- Lead List --]
         <div class="fullPartBlock organizationName chosen">   
-          [@customForm.select name="project.leader.institution" value="${(leader.institution.id)!'-1'}" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allPartners" keyFieldName="id"  displayFieldName="getComposedName()"  editable=editable /]
+          [@customForm.select name="project.leader.institution" value="${(leader.institution.id)!'-1'}" disabled=!canEdit i18nkey="preplanning.projectPartners.leader.institutionName" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()"  editable=editable /]
         </div>
         [#-- Project Leader contact --] 
         <div class="fullPartBlock clearfix">
