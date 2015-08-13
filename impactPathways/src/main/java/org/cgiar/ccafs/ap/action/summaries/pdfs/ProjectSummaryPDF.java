@@ -1050,14 +1050,16 @@ public class ProjectSummaryPDF extends BasePDF {
     try {
       document.add(cell);
 
+      cell = new Paragraph();
+      cell.add(Chunk.NEWLINE);
       List<IPElement> outputsList = project.getOutputs();
       if (outputsList.isEmpty()) {
-
-        cell = new Paragraph();
         cell.setFont(BODY_TEXT_FONT);
         cell.add(this.getText("summaries.project.empty"));
         document.add(cell);
       }
+      cell.add(Chunk.NEWLINE);
+      document.add(cell);
 
 
       int year;
@@ -1081,8 +1083,6 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
         cell = new Paragraph();
-        cell.add(Chunk.NEWLINE);
-        cell.add(Chunk.NEWLINE);
         budgetLabel = new StringBuffer();
         cell.setFont(TABLE_BODY_FONT);
         budgetLabel.append(mog.getProgram().getAcronym());
@@ -2206,29 +2206,6 @@ public class ProjectSummaryPDF extends BasePDF {
     return null;
   }
 
-  private String getProjectID() {
-    StringBuilder projectID = new StringBuilder();
-    projectID.append(this.getText("summaries.project.project"));
-    projectID.append(" ");
-    projectID.append("P" + project.getId());
-
-    for (IPProgram flagship : project.getFlagships()) {
-      projectID.append("-");
-      projectID.append(flagship.getAcronym().replace(" ", ""));
-    }
-
-    for (IPProgram region : project.getRegions()) {
-      if (region.getRegion().getCode() != null) {
-        projectID.append("-");
-        projectID.append(region.getRegion().getCode());
-      }
-    }
-
-    projectID.append("-");
-    projectID.append(project.getLeader().getInstitution().getAcronym());
-
-    return projectID.toString();
-  }
 
   private BudgetType getTypeBudget() {
     if (project.isBilateralProject()) {
@@ -2240,7 +2217,7 @@ public class ProjectSummaryPDF extends BasePDF {
   }
 
 
-  public boolean isRepeatedLocation(Location location, List<Location> listLocation, int index) {
+  private boolean isRepeatedLocation(Location location, List<Location> listLocation, int index) {
     for (int a = index; a < listLocation.size(); a++) {
       if (listLocation.get(a).getName().trim().equals(location.getName().trim())) {
         return true;
