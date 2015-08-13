@@ -55,7 +55,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private UserManager userManager;
   private BudgetManager budgetManager;
   private HistoryManager historyManager;
-  private ProjectCofinancingLinkageManager linkedCoreProjectManager;
+  private ProjectCofinancingLinkageManager linkedProjectManager;
 
   // Model for the front-end
   private List<IPProgram> ipProgramRegions;
@@ -88,7 +88,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     this.userManager = userManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
-    this.linkedCoreProjectManager = linkedCoreProjectManager;
+    this.linkedProjectManager = linkedCoreProjectManager;
     this.historyManager = historyManager;
     this.validator = validator;
   }
@@ -281,9 +281,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
     // If project is CCAFS cofounded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
+      project.setLinkedProjects(linkedProjectManager.getLinkedBilateralProjects(projectID));
     } else {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
+      project.setLinkedProjects(linkedProjectManager.getLinkedCoreProjects(projectID));
     }
 
     projectTypes = new HashMap<>();
@@ -466,24 +466,32 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       // Save the contributing core projects if any
-      if (project.isBilateralProject()) {
-        // First delete the core projects un-selected
-        List<Integer> linkedProjectsToDelete = new ArrayList<>();
-        for (Project p : previousProject.getLinkedProjects()) {
-          if (!project.getLinkedProjects().contains(p)) {
-            linkedProjectsToDelete.add(p.getId());
-          }
-        }
-        if (!linkedProjectsToDelete.isEmpty()) {
-          linkedCoreProjectManager.deletedLinkedCoreProjects(project, linkedProjectsToDelete,
-            this.getCurrentUser(), this.getJustification());
-        }
-
-        // Then save the new core projects linked
-        if (!project.getLinkedProjects().isEmpty()) {
-          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+      List<Integer> linkedProjectsToDelete = new ArrayList<>();
+      for (Project p : previousProject.getLinkedProjects()) {
+        if (!project.getLinkedProjects().contains(p)) {
+          linkedProjectsToDelete.add(p.getId());
         }
       }
+
+      if (!linkedProjectsToDelete.isEmpty()) {
+        if (project.isBilateralProject()) {
+          linkedProjectManager.deletedLinkedCoreProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
+            this.getJustification());
+        } else {
+          linkedProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
+            this.getJustification());
+        }
+      }
+
+      // Then save the new core projects linked
+      if (!project.getLinkedProjects().isEmpty()) {
+        if (project.isBilateralProject()) {
+          linkedProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+        } else {
+          linkedProjectManager.saveLinkedBilateralProjects(project, this.getCurrentUser(), this.getJustification());
+        }
+      }
+
 
       // Adjust the type of all projects according to their links with other projects.
       projectManager.updateProjectTypes();

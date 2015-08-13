@@ -55,7 +55,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private BudgetManager budgetManager;
   private ProjectPartnerManager projectPartnerManager;
   private ProjectManager projectManager;
-  private ProjectCofinancingLinkageManager linkedCoreProjectManager;
+  private ProjectCofinancingLinkageManager linkedProjectManager;
   private BudgetOverheadManager overheadManager;
   private HistoryManager historyManager;
 
@@ -76,13 +76,13 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   @Inject
   public ProjectBudgetsPlanningAction(APConfig config, BudgetManager budgetManager,
     BudgetOverheadManager overheadManager, ProjectBudgetPlanningValidator validator,
-    ProjectPartnerManager projectPartnerManager, ProjectCofinancingLinkageManager linkedCoreProjectManager,
+    ProjectPartnerManager projectPartnerManager, ProjectCofinancingLinkageManager linkedProjectManager,
     ProjectManager projectManager, HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectManager = projectManager;
-    this.linkedCoreProjectManager = linkedCoreProjectManager;
+    this.linkedProjectManager = linkedProjectManager;
     this.historyManager = historyManager;
     this.overheadManager = overheadManager;
     this.validator = validator;
@@ -176,9 +176,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // If project is CCAFS cofounded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedBilateralProjects(projectID));
+      project.setLinkedProjects(linkedProjectManager.getLinkedBilateralProjects(projectID));
     } else {
-      project.setLinkedProjects(linkedCoreProjectManager.getLinkedCoreProjects(projectID));
+      project.setLinkedProjects(linkedProjectManager.getLinkedCoreProjects(projectID));
 
       project.setOverhead(overheadManager.getProjectBudgetOverhead(projectID));
     }
@@ -309,25 +309,37 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       if (project.isBilateralProject()) {
         // Save the budget overhead
         overheadManager.saveProjectBudgetOverhead(project, this.getCurrentUser(), this.getJustification());
+      }
 
-        // First delete the core projects un-selected
-        List<Integer> linkedProjectsToDelete = new ArrayList<>();
-        for (Project p : previousProject.getLinkedProjects()) {
-          if (!project.getLinkedProjects().contains(p)) {
-            linkedProjectsToDelete.add(p.getId());
-          }
-        }
-
-        if (!linkedProjectsToDelete.isEmpty()) {
-          linkedCoreProjectManager.deletedLinkedCoreProjects(project, linkedProjectsToDelete,
-            this.getCurrentUser(), this.getJustification());
-        }
-
-        // Then save the new core projects linked
-        if (!project.getLinkedProjects().isEmpty()) {
-          linkedCoreProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+      // Save the linked projects
+      List<Integer> linkedProjectsToDelete = new ArrayList<>();
+      for (Project p : previousProject.getLinkedProjects()) {
+        if (!project.getLinkedProjects().contains(p)) {
+          linkedProjectsToDelete.add(p.getId());
         }
       }
+
+      if (!linkedProjectsToDelete.isEmpty()) {
+        if (project.isBilateralProject()) {
+          linkedProjectManager.deletedLinkedCoreProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
+            this.getJustification());
+        } else {
+          linkedProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
+            this.getJustification());
+        }
+      }
+
+      // Then save the new core projects linked
+      if (!project.getLinkedProjects().isEmpty()) {
+        if (project.isBilateralProject()) {
+          linkedProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
+        } else {
+          linkedProjectManager.saveLinkedBilateralProjects(project, this.getCurrentUser(), this.getJustification());
+        }
+      }
+
+      // Adjust the type of all projects according to their links with other projects.
+      projectManager.updateProjectTypes();
 
       if (!success) {
         this.addActionError(this.getText("saving.problem"));
