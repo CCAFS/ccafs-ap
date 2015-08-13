@@ -47,7 +47,7 @@
       [@s.text name="planning.project" /]: ${project.composedId} - [@s.text name="planning.project.locations.title" /] 
       </h1>  
       <div id="locationsGlobalBlock" class="clearfix">
-        [@customForm.checkbox className="globalCheck" name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
+        [@customForm.checkbox className="globalCheck" name="project.global" value="true" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
         [#-- [@customForm.checkbox name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global value="true" /]  --] 
       </div>
       <div id="projectLocations-map">
