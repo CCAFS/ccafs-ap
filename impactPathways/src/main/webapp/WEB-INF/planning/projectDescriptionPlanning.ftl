@@ -161,9 +161,13 @@
       [#-- Bilateral/Core projects only for CCAFS Projects --]
       <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.projectsContributing" /] </h1> 
       <div class="panel tertiary">
-        [#if project.bilateralProject]
-          <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
-        [/#if]
+        <div class="panel-head">
+          [#if project.bilateralProject]
+            [@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:
+          [#else]
+            [@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:
+          [/#if]
+        </div>
         <div id="projectsList" class="panel-body"> 
           <ul class="list">
           [#if project.linkedProjects?has_content]
@@ -171,14 +175,14 @@
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
                 <a href="[@s.url action='description'][@s.param name='projectID']${element.id}[/@s.param][/@s.url]"><span class="name">${element.id} - ${element.title}</span> </a>
-                [#if editable && project.bilateralProject]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
             [/#list]
           [#else]
             <p class="emptyText"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}.emptyText" /]</p>
           [/#if]  
           </ul>
-          [#if editable && project.bilateralProject]
+          [#if editable ]
             [#-- The values of this list are loaded via ajax --]
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
           [/#if] 

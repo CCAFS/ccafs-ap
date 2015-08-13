@@ -2,6 +2,20 @@ var baseURL;
 var formBefore;
 var justificationLimitWords = 100;
 var errorMessages = [];
+var notyDefaultOptions = {
+    text: '',
+    layout: 'bottomRight',
+    type: 'error',
+    theme: 'relax',
+    timeout: 5000,
+    animation: {
+        open: 'animated bounceInRight',
+        close: 'animated bounceOutRight'
+    },
+    closeWith: [
+      'click'
+    ]
+};
 jQuery.fn.exists = function() {
   return this.length > 0;
 };
@@ -93,66 +107,38 @@ $(document).ready(function() {
 function validateEvent(button,fields) {
   var errorClass = 'fieldError';
   $(button).on('click', function(e) {
-    $.each(fields, function(i,val) {
-      $(val).each(function() {
-        $(this).removeClass(errorClass);
-        if(!isChanged()) {
-          // If something is changed
+    var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length;
+    $('#justification').removeClass(errorClass);
+    if(fieldErrors != 0) {
+      e.preventDefault();
+      var notyOptions = jQuery.extend({}, notyDefaultOptions);
+      notyOptions.text = 'Something is wrong in this section, please fix it then save';
+      noty(notyOptions);
+    } else {
+      if(!isChanged()) {
+        // If something is changed
+        e.preventDefault();
+        var notyOptions = jQuery.extend({}, notyDefaultOptions);
+        notyOptions.text = 'Nothing changed';
+        notyOptions.type = 'alert';
+        noty(notyOptions);
+      } else {
+        if(errorMessages.length != 0) {
+          // If there is an error message
           e.preventDefault();
-          noty({
-              text: 'Nothing changed',
-              layout: 'bottomRight',
-              theme: 'relax',
-              timeout: 2500,
-              animation: {
-                  open: 'animated bounceInRight',
-                  close: 'animated bounceOutRight'
-              },
-              type: 'alert',
-              closeWith: [
-                'click'
-              ]
-          });
-        } else {
-          if(errorMessages.length != 0) {
-            // If there is an error message
-            e.preventDefault();
-            noty({
-                text: errorMessages.join(),
-                layout: 'bottomRight',
-                theme: 'relax',
-                timeout: 5000,
-                animation: {
-                    open: 'animated bounceInRight',
-                    close: 'animated bounceOutRight'
-                },
-                type: 'error',
-                closeWith: [
-                  'click'
-                ]
-            });
-          } else if(!validateField($(this))) {
-            // If field is not valid
-            e.preventDefault();
-            $(this).addClass(errorClass);
-            noty({
-                text: 'The ' + val.replace("#", "") + ' field need to be filled',
-                layout: 'bottomRight',
-                theme: 'relax',
-                timeout: 5000,
-                animation: {
-                    open: 'animated bounceInRight',
-                    close: 'animated bounceOutRight'
-                },
-                type: 'error',
-                closeWith: [
-                  'click'
-                ]
-            });
-          }
+          var notyOptions = jQuery.extend({}, notyDefaultOptions);
+          notyOptions.text = errorMessages.join();
+          noty(notyOptions);
+        } else if(!validateField($('#justification'))) {
+          // If field is not valid
+          e.preventDefault();
+          $('#justification').addClass(errorClass);
+          var notyOptions = jQuery.extend({}, notyDefaultOptions);
+          notyOptions.text = 'The justification field need to be filled';
+          noty(notyOptions);
         }
-      });
-    });
+      }
+    }
   });
 }
 
@@ -169,8 +155,13 @@ function getFormHash() {
 }
 
 function validateField($input) {
-  var valid = ($.trim($input.val()).length > 0) ? true : false;
-  return valid;
+  if($input.length) {
+    var valid = ($.trim($input.val()).length > 0) ? true : false;
+    return valid;
+  } else {
+    return true;
+  }
+
 }
 
 function getHash(str) {

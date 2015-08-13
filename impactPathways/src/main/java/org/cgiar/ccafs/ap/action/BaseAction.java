@@ -183,6 +183,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
+  public String getOrganizationIdentifier() {
+    return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
+  }
+
   public HttpServletRequest getRequest() {
     return request;
   }

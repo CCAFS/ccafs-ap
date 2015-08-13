@@ -371,10 +371,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
       query.append(budgetData.get("year"));
       query.append(" AND pb.project_id = ");
       query.append(projectID);
+      query.append(" AND pb.cofinance_project_id = ");
 
       if (budgetData.get("cofinance_project_id") != null) {
-        query.append(" AND pb.cofinance_project_id = ");
         query.append(budgetData.get("cofinance_project_id"));
+      } else {
+        query.append("NULL");
       }
 
       try (Connection con = databaseManager.getConnection()) {

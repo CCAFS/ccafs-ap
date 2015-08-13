@@ -1,16 +1,16 @@
 [#ftl]
 <div id="top-quote">
   [#if project?has_content]
-    <div id="projectID-quote" class="quote-id" title="[#if project.title?has_content][@s.text name="planning.project" /]: ${project.title}[/#if]">
-      <a href="[@s.url namespace="/planning/projects" action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
-        <p>ID: <span>${project.composedId}</span></p>
-        <p>[@s.text name="${project.type}" /]</p>
+    <div id="projectID-quote" class="quote-id" title="[#if project.title?has_content]${project.title}[/#if]">
+      <a href="[@s.url namespace="/planning/projects" action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+        <p><span>&nbsp${project.id}</span></p>
       </a>
     </div>
   [/#if]
   [#if deliverable?has_content]
+    <div class= "aux-quote"><b> - </b></div>
     <div id="deliverableID-quote" class="quote-id" title="[#if deliverable.title?has_content]${deliverable.title}[/#if]">
-      <p>ID: <span>${deliverable.id}</span></p>
+      <p><span>&nbsp${deliverable.id}</span></p>
     </div>
   [/#if]
   [#if activity?has_content]

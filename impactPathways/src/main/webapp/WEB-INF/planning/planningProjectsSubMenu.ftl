@@ -1,8 +1,25 @@
 [#ftl] 
 [#assign currCss= "class='currentSection'"]
 [#assign projectId=(project.id)!""]
-<nav id="secondaryMenu"> 
-  <h3> <a class="goBack"  href="[@s.url namespace='/planning' action='projectsList'][/@s.url]"> [@s.text name="planning.project" /] Menu</a></h3>
+<nav id="secondaryMenu" class="${(project.type)!''}">
+<h1><center> 
+  [#if project.coreProject]
+    <div id="projectType-quote" class="aux-quote-core" title="[@s.text name="planning.projects.type.ccafs_core" /] project">
+      <p><b>[@s.text name="planning.projects.type.ccafs_core" /]</b></p>
+    </div>
+  [/#if]
+  [#if project.bilateralProject]
+    <div id="projectType-quote" class="aux-quote-bilateral" title="[@s.text name="planning.projects.type.bilateral" /] project">
+      <p><b>[@s.text name="planning.projects.type.bilateral" /]</b></p>
+    </div>
+  [/#if]
+  [#if project.coFundedProject]
+    <div id="projectType-quote" class="aux-quote-cofunded" title="[@s.text name="planning.projects.type.ccafs_coFunded" /] project">
+      <p><b>[@s.text name="planning.projects.type.ccafs_cofunded" /]</b></p>
+    </div>
+  [/#if]
+</h1></center>
+  [#--]<h3> <a class="goBack"  href="[@s.url namespace='/planning' action='projectsList'][/@s.url]"> [@s.text name="planning.project" /] Menu</a></h3>--]
   <ul> 
     <li [#if currentStage == "description"]${currCss}[/#if]>
       <p>[@s.text name="menu.secondary.planning.project.description" /]</p>

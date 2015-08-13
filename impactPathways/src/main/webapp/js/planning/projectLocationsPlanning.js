@@ -316,8 +316,8 @@ function makeMarker(data) {
   });
   // Event when marker is dragged
   google.maps.event.addListener(marker, 'dragend', function() {
-    $("#location-" + marker.id).find("input.longitude").val(marker.position.F).trigger("change");
-    $("#location-" + marker.id).find("input.latitude").val(marker.position.A).trigger("change");
+    $("#location-" + marker.id).find("input.longitude").val(marker.position.K).trigger("change");
+    $("#location-" + marker.id).find("input.latitude").val(marker.position.G).trigger("change");
   });
 
   markers[data.id] = marker;

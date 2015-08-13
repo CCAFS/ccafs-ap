@@ -45,6 +45,7 @@ public final class APConstants {
   public static final String DELIVERABLE_TYPE_REQUEST_ID = "deliverableTypeID";
   public static final String EDITABLE_REQUEST = "edit";
   public static final String DELIVERABLE_REQUEST_ID = "deliverableID";
+  public static final String CCAFS_ORGANIZATION_IDENTIFIER = "XM-DAC-47015-CRP7";
 
   // Identifiers for element types which come from the database
   public static final int ELEMENT_TYPE_IDOS = 1;

@@ -43,8 +43,6 @@
     [#if !canEdit]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
     [/#if] 
-    [#-- Project Title --]
-    <h1 class="contentTitle">[@s.text name="preplanning.projectBudget.title" /]</h1> 
     [#if allYears?has_content]
       [#if project.leader?has_content]
         [#-- Accumulative total project budget --]
@@ -84,9 +82,7 @@
               [@customForm.input name="project.overhead.contractedOverhead"  i18nkey="planning.projectBudget.whatIsTheContracted" editable=editable/]
             </div>
             [#if canEdit]
-            <div class="note fullPartBlock">
-              <p>[@s.text name="planning.projectBudget.yourInstitutionalOverhead" /] <span>13%</span></p>
-            </div>
+            <div class="note fullPartBlock"><p>[@s.text name="planning.projectBudget.yourInstitutionalOverhead" /] <span>13%</span></p></div>
             [/#if]
           </div>
         </div>
@@ -129,6 +125,7 @@
                 [/#if]
               </div> <!-- End Budget by year  -->
               <div class="ccafsBudget fullPartBlock ${project.type}">
+                <h1 class="contentTitle">[@s.text name="planning.projectBudget.annualPartnerBudget" /]</h1> 
                 [@s.set var="counter" value="0"/]
                 [#-- Project Leader --]
                 [#if project.leader?has_content]
@@ -142,7 +139,7 @@
                 [/#if]
                 [#-- Project budget per linked project --]
                 <hr />
-                <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
+                <h1 class="contentTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]</h1> 
                 <br />
                 <div id="linkedProjects">
                   [#if project.linkedProjects?has_content]
@@ -275,11 +272,13 @@
     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
     <p class="title checked" ><a href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a></p>
     <input type="hidden" class="linkedId"  name="project.linkedProjects" value="${(linkedProject.id)!'-1'}" />
+    [#if project.bilateralProject]
     <input type="hidden" class="budgetId" name="${budgetName}.id" value="${(cofinancingBudget.id)!"-1"}" />
     <input type="hidden" class="budgetYear" name="${budgetName}.year" value="${year}" />
     <input type="hidden" class="budgetInstitutionId" name="${budgetName}.institution.id" value="${(cofinancingBudget.institution.id)!institution.id}" />
     <input type="hidden" class="budgetCofinancingProjectId" name="${budgetName}.cofinancingProject.id" value="${(linkedProject.id)!'-1'}" />
     <input type="hidden" class="budgetType" name="${budgetName}.type" value="W3_BILATERAL" />
+    [/#if]
     <div class="halfPartBlock">
       <div class="content">
       <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:

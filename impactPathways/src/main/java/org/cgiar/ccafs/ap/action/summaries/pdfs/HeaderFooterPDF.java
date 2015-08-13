@@ -61,7 +61,11 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     // Submit Pending
     phrase = new Phrase();
     phrase.setFont(HEADER_FONT);
-    phrase.add("Submit pending ");
+    phrase.add("Submission: ");
+
+
+    phrase.setFont(new Font(FontFactory.getFont("Arial", 12, Font.ITALIC, Color.WHITE)));
+    phrase.add("<pending>");
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(),
       rect.getTop() - 20, 0);
 

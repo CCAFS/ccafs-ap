@@ -51,8 +51,15 @@ function addDataTable() {
       "bFilter": true, // This option enable the search
       "bSort": true, // this option enable the sort of contents by columns
       "bAutoWidth": false, // This option enables the auto adjust columns width
-      "iDisplayLength": 10
-  // Number of rows to show on the table
+      "iDisplayLength": 10,// Number of rows to show on the table
+      aoColumnDefs: [
+        {
+            bSortable: false,
+            aTargets: [
+              -1
+            ]
+        }
+      ]
   });
   $('table#projectDeliverables').on('draw.dt', function() {
     $("a.removeDeliverable").on("click", removeDeliverable);
