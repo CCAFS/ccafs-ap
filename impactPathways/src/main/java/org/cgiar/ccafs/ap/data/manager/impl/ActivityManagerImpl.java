@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.text.DateFormat;
@@ -220,6 +221,24 @@ public class ActivityManagerImpl implements ActivityManager {
       activityList.add(activity);
     }
     return activityList;
+  }
+
+  @Override
+  public String getStandardIdentifier(Project project, Activity activity, boolean useComposedCodification) {
+    StringBuilder result = new StringBuilder();
+    if (useComposedCodification) {
+      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
+      result.append("-P");
+      result.append(project.getId());
+      result.append("-A");
+      result.append(activity.getId());
+    } else {
+      result.append("P");
+      result.append(project.getId());
+      result.append("-A");
+      result.append(activity.getId());
+    }
+    return result.toString();
   }
 
   @Override

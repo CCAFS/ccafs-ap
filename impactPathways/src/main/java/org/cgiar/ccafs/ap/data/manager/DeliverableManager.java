@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.DeliverableManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -96,6 +97,18 @@ public interface DeliverableManager {
    *         if some problem occurred.
    */
   public List<Deliverable> getDeliverablesByProjectPartnerID(int projectPartnerID);
+
+  /**
+   * This method returns the project identifier whether using composed codification (that is with the organization IATI
+   * standard id) or a simple id.
+   * 
+   * @param project , the project to get the standard identifier from.
+   * @param deliverable, the deliverable related to get the standard identifier from.
+   * @param useComposedCodification , true if you want to get the full IATI standard codification or false for simple
+   *        form.
+   * @return a String with the standard identifier.
+   */
+  public String getStandardIdentifier(Project project, Deliverable deliverable, boolean useComposedCodification);
 
   /**
    * This method saves the information of the given deliverable that belong to a specific project into the database.
