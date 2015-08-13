@@ -119,9 +119,13 @@ function calculateGenderAmount(outputBudget) {
   var totalAmount = removeCurrencyFormat($totalContribution.find('span').text());
   var genderAmount = removeCurrencyFormat($genderBudgetInput.find('span').text());
 
+  $totalContribution.removeClass('fieldError');
   $genderBudgetInput.removeClass('fieldError');
+  $genderBudgetInput.parents('.budget').find('input').removeClass('fieldError');
   if(genderAmount > totalAmount) {
+    $totalContribution.addClass('fieldError');
     $genderBudgetInput.addClass('fieldError');
+    $genderBudgetInput.parents('.budget').find('input').addClass('fieldError');
   }
 }
 

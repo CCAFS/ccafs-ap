@@ -72,7 +72,7 @@
                 </p>
               </div>
               [#if project.coFundedProject]
-              <hr />
+              
               [#-- Total budget amount (W3/Bilateral) for Co-funded projects --]
               <div class="BudgetByYear"> 
                 [#assign totalCoFundedBudgetByYear="100000" /]
@@ -151,8 +151,8 @@
                     [#-- Total contribution --]
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
-                        <p class="totalContribution"><strong>[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: </strong>
-                        US$ <span>${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></p>
+                        <p class="totalContribution">[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: 
+                        <strong>US$ <span>${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
                       [#if editable]
@@ -165,8 +165,8 @@
                     [#-- Gender contribution --]
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
-                        <p class="genderContribution"><strong> [#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: </strong>
-                        US$ <span>${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></p>
+                        <p class="genderContribution">[#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: 
+                        <strong>US$ <span>${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
                       [#if editable]
