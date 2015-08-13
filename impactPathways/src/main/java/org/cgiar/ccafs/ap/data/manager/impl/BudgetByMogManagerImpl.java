@@ -97,6 +97,7 @@ public class BudgetByMogManagerImpl implements BudgetByMogManager {
       Map<String, Object> data = new HashMap<>();
       data.put("project_id", project.getId());
       data.put("mog_id", ob.getOutput().getId());
+      data.put("year", ob.getYear());
       data.put("total_contribution", ob.getTotalContribution());
       data.put("gender_contribution", ob.getGenderContribution());
 

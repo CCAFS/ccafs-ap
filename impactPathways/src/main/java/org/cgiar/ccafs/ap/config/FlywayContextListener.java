@@ -25,14 +25,16 @@ public class FlywayContextListener implements ServletContextListener {
   Logger LOG = LoggerFactory.getLogger(FlywayContextListener.class);
   private PropertiesManager properties;
 
+  @Override
   public void contextDestroyed(ServletContextEvent sce) {
   }
 
+  @Override
   public void contextInitialized(ServletContextEvent sce) {
     Flyway flyway = new Flyway();
     properties = new PropertiesManager();
 
-    flyway.setDataSource(getDataSource());
+    flyway.setDataSource(this.getDataSource());
     flyway.setLocations(SQL_MIGRATIONS_PATH, JAVA_MIGRATIONS_PATH);
 
     // Placeholders configuration
@@ -65,7 +67,16 @@ public class FlywayContextListener implements ServletContextListener {
 
   private DataSource getDataSource() {
     MysqlDataSource dataSource = new MysqlDataSource();
-    dataSource.setUrl(properties.getPropertiesAsString("mysql.url"));
+
+    StringBuilder url = new StringBuilder();
+    url.append("jdbc:mysql://");
+    url.append(properties.getPropertiesAsString("mysql.host"));
+    url.append(":");
+    url.append(properties.getPropertiesAsString("mysql.port"));
+    url.append("/");
+    url.append(properties.getPropertiesAsString("mysql.database"));
+
+    dataSource.setUrl(url.toString());
     dataSource.setUser(properties.getPropertiesAsString("mysql.user"));
     dataSource.setPassword(properties.getPropertiesAsString("mysql.password"));
 

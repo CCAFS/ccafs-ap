@@ -140,13 +140,30 @@
                     [@partnerBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! pp_index="${partnerInstitution_index+1}" editable=editable /]
                   [/#list]  
                 [/#if]
+                [#-- Project budget per linked project --]
+                <hr />
+                <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
+                <br />
+                <div id="linkedProjects">
+                  [#if project.linkedProjects?has_content]
+                    [#-- List of linkeds Projects --]
+                    [#list project.linkedProjects as linkedProject]
+                      [@projectBudget institution=project.leader.institution linkedProject=linkedProject editable=editable /]
+                      [@s.set var="counter" value="${counter+1}"/]
+                    [/#list]
+                  [/#if]
+                </div><!-- End linked projects -->
+                [#if editable]
+                  [#-- The values of this list are loaded via ajax --]
+                  [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="addProject" value="" /]
+                [/#if]
               </div>
-              <div class="partnerListMsj">
-                [@s.text name="preplanning.projectBudget.partnerNotList" /]
-                <a href="[@s.url action='partners'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
-                  [@s.text name="preplanning.projectBudget.partnersLink" /] 
-                </a>
-              </div>
+              [#if canEdit]
+                <div class="partnerListMsj">
+                  [@s.text name="preplanning.projectBudget.partnerNotList" /]
+                  <a href="[@s.url action='partners'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> [@s.text name="preplanning.projectBudget.partnersLink" /] </a>
+                </div>
+              [/#if]
            </div>
         </div> 
       [#else]
@@ -221,7 +238,7 @@
       </div>
       <div class="content">
         [#if editable] 
-          [@customForm.input name="project.budgets[${counter}].amount" className="projectBudget plBudget ${projectType}" showTitle=false value="${(budget.amount)!0}"/] 
+          [@customForm.input name="project.budgets[${counter}].amount" className="partnerBudget plBudget ${projectType}" showTitle=false value="${(budget.amount)!0}"/] 
         [/#if]
       </div>
     </div>
@@ -242,25 +259,6 @@
       </div>
     </div>
   </div><!-- End budget -->
-  [#-- Project budget per linked project --]
-  [#if isPL]
-    <hr />
-    <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
-    <br />
-    <div id="linkedProjects">
-    [#if project.linkedProjects?has_content]
-      [#-- List of linkeds Projects --]
-      [#list project.linkedProjects as linkedProject]
-        [@projectBudget institution=institution linkedProject=linkedProject editable=editable /]
-        [@s.set var="counter" value="${counter+1}"/]
-      [/#list]
-    [/#if]
-    </div><!-- End linked projects -->
-    [#if isPL && editable]
-      [#-- The values of this list are loaded via ajax --]
-      [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="addProject" value="" /]
-    [/#if]
-  [/#if]
 </div>
 [/#macro]
 
@@ -295,7 +293,5 @@
     <div class="clearfix"></div>
   </div><!-- End project-${(linkedProject.id)!''} budget -->
 [/#macro]
-
-
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

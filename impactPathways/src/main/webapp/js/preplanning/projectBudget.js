@@ -8,7 +8,8 @@ $(document).ready(init);
 
 function init() {
   // Setting Global vars
-  $allBudgetInputs = $("input.projectBudget");
+  $partnerBudgetInputs = $("input.partnerBudget");
+  $projectBudgetInputs = $("input.projectBudget");
   $genderBudgetInputs = $('input.projectGenderBudget');
   $overheadInputs = $("input[name$='bilateralCostRecovered']");
   $linkedProjects = $('#linkedProjects');
@@ -35,7 +36,8 @@ function init() {
   $("#budgetTables").fadeIn("slow");
 
   // Active initial currency format to all inputs
-  $allBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
+  $projectBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
+  $partnerBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
   $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
 
   // Validate justification and information
@@ -47,7 +49,7 @@ function init() {
 
 function attachEvents() {
   // Events for amount inputs
-  $allBudgetInputs.on("keydown", isNumber).on("focusout", setCurrency).on("focus", removeCurrency).on("click",
+  $partnerBudgetInputs.on("keydown", isNumber).on("focusout", setCurrency).on("focus", removeCurrency).on("click",
       function() {
         $(this).select();
       }).on("keyup", function(e) {
@@ -56,6 +58,16 @@ function attachEvents() {
         bilateralBudget.calculateBudget();
         bilateralBudgetByYear.calculateBudget();
         calculateGenderBudget($(e.target).parents('.partnerBudget'));
+        calculateProjectsBudgetRemaining(e);
+  });
+  
+  // Events for amount inputs
+  $projectBudgetInputs.on("keydown", isNumber).on("focusout", setCurrency).on("focus", removeCurrency).on("click",
+      function() {
+        $(this).select();
+      }).on("keyup", function(e) {
+        bilateralBudget.calculateBudget();
+        bilateralBudgetByYear.calculateBudget();
         calculateProjectsBudgetRemaining(e);
   });
   
@@ -117,7 +129,7 @@ function attachEvents() {
   
   // Get out format for amount and percentage inputs on submit
   $("form").submit(function(event) {
-    $allBudgetInputs.each(function() {
+    $partnerBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
     $genderBudgetInputs.each(function() {
@@ -243,8 +255,8 @@ function BudgetObject(budget, type, byYear) {
 }
 
 function calculateGenderBudget(partnerBudget){
-  var percentage = removePercentageFormat($(partnerBudget).find('input.projectGenderBudget').val())|| "0";
-  var value = removeCurrencyFormat($(partnerBudget).find('input.projectBudget').val())||0;
+  var percentage = removePercentageFormat($(partnerBudget).find('input.projectGenderBudget').val())|| 0;
+  var value = removeCurrencyFormat($(partnerBudget).find('input.partnerBudget').val())||0;
   var result = (value/100)*percentage;
   $(partnerBudget).find('input.projectGenderBudget').parents('.budget').find('.inputTitle span').text(setCurrencyFormat(result));
 }

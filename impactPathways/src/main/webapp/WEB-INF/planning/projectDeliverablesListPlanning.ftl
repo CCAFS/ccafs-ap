@@ -32,11 +32,6 @@
     [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
-    [#if !canEdit]
-      <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
-      </p>
-    [/#if]
     <div id="projectDeliverables" class="clearfix">
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1> 
       [#if allYears?has_content]

@@ -101,6 +101,30 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
   }
 
   @Override
+  public boolean removeLinkedBilateralProjects(int coreProjectID, List<Integer> corelinkedProjects, int userID,
+    String justification) {
+    Object[] values = new Object[3 + corelinkedProjects.size()];
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_cofinancing_linkages ");
+    query.append("SET is_active = FALSE, modified_by = ?, modification_justification = ? ");
+    query.append("WHERE core_project_id = ? ");
+    query.append("AND bilateral_project_id IN (");
+
+    values[0] = userID;
+    values[1] = justification;
+    values[2] = coreProjectID;
+
+    for (int c = 0; c < corelinkedProjects.size(); c++) {
+      query.append((c == 0) ? " ?" : ", ?");
+      values[3 + c] = corelinkedProjects.get(c);
+    }
+    query.append("); ");
+
+    int result = daoManager.delete(query.toString(), values);
+    return (result == -1) ? false : true;
+  }
+
+  @Override
   public boolean
     removeLinkedCoreProjects(int projectID, List<Integer> linkedProjects, int userID, String justification) {
     Object[] values = new Object[3 + linkedProjects.size()];
@@ -122,6 +146,38 @@ public class MySQLProjectCofinancingLinkageDAO implements ProjectCofinancingLink
 
     int result = daoManager.delete(query.toString(), values);
     return (result == -1) ? false : true;
+  }
+
+  @Override
+  public boolean saveLinkedBilateralProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
+    String justification) {
+    boolean saved = false;
+    Object[] values = new Object[listBilateralProjectsIDs.size() * 5];
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT IGNORE INTO project_cofinancing_linkages ");
+    query.append("(core_project_id, bilateral_project_id, created_by, modified_by, modification_justification) ");
+    query.append("VALUES ");
+
+    for (int i = 0; i < listBilateralProjectsIDs.size(); i++) {
+      if (i == 0) {
+        query.append(" (?, ?, ?, ?, ?) ");
+      } else {
+        query.append(", (?, ?, ?, ?, ?) ");
+      }
+
+      int c = i * 5;
+      values[c] = coreProjectID;
+      values[c + 1] = listBilateralProjectsIDs.get(i);
+      values[c + 2] = userID;
+      values[c + 3] = userID;
+      values[c + 4] = justification;
+    }
+
+    query.append(" ON DUPLICATE KEY UPDATE is_active = TRUE; ");
+
+    int result = daoManager.saveData(query.toString(), values);
+    saved = (result == -1) ? false : true;
+    return saved;
   }
 
   @Override

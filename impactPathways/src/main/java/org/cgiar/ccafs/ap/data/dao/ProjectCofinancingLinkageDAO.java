@@ -48,6 +48,19 @@ public interface ProjectCofinancingLinkageDAO {
   public List<Map<String, String>> getLinkedCoreProjects(int projectID);
 
   /**
+   * This method remove from the database the link between the core project identified by the first parameter and the
+   * bilateral projects listed in the second parameter.
+   * 
+   * @param projectID - Core project identifier
+   * @param linkedProjects - List of bilateral projects
+   * @param userID - User identifier
+   * @param justification
+   * @return true if all the bilateral projects were removed successfully. False otherwise.
+   */
+  public boolean removeLinkedBilateralProjects(int projectID, List<Integer> linkedProjects, int userID,
+    String justification);
+
+  /**
    * This method remove from the database the link between the project identified by the first parameter and the
    * projects listed in the second parameter.
    * 
@@ -59,6 +72,19 @@ public interface ProjectCofinancingLinkageDAO {
    */
   public boolean
     removeLinkedCoreProjects(int projectID, List<Integer> linkedProjects, int userID, String justification);
+
+  /**
+   * This method saves into the database the bilateral projects linked to the core project identified by the value
+   * received by parameter.
+   * 
+   * @param bilateralProjectID -
+   * @param listCoreProjectsIDs - a list of core projects' IDs
+   * @param user - Identifier of the user who is making the change
+   * @param justification
+   * @return true if the information was saved successfully, false otherwise.
+   */
+  public boolean saveLinkedBilateralProjects(int coreProjectID, List<Integer> listBilateralProjectsIDs, int userID,
+    String justification);
 
   /**
    * This method saves into the database the core projects linked to the bilateral project identified by the value
