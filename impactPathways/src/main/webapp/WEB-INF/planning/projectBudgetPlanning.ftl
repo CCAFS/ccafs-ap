@@ -275,11 +275,13 @@
     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
     <p class="title checked" ><a href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a></p>
     <input type="hidden" class="linkedId"  name="project.linkedProjects" value="${(linkedProject.id)!'-1'}" />
+    [#if project.bilateralProject]
     <input type="hidden" class="budgetId" name="${budgetName}.id" value="${(cofinancingBudget.id)!"-1"}" />
     <input type="hidden" class="budgetYear" name="${budgetName}.year" value="${year}" />
     <input type="hidden" class="budgetInstitutionId" name="${budgetName}.institution.id" value="${(cofinancingBudget.institution.id)!institution.id}" />
     <input type="hidden" class="budgetCofinancingProjectId" name="${budgetName}.cofinancingProject.id" value="${(linkedProject.id)!'-1'}" />
     <input type="hidden" class="budgetType" name="${budgetName}.type" value="W3_BILATERAL" />
+    [/#if]
     <div class="halfPartBlock">
       <div class="content">
       <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]:
