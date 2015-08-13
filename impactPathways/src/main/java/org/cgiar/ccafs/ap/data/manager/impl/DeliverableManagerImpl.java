@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
@@ -21,6 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
@@ -87,11 +89,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
     return deliverableDAO.deleteDeliverableOutput(deliverableID);
   }
 
-
   @Override
   public boolean deleteDeliverablesByProject(int projectID) {
     return deliverableDAO.deleteDeliverablesByProject(projectID);
   }
+
 
   @Override
   public boolean existDeliverable(int deliverableID) {
@@ -107,8 +109,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       if (deliverableData.get("type_id") != null) {
-        deliverable
-          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
+          .get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverableID));
@@ -141,8 +143,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       if (deliverableData.get("type_id") != null) {
-        deliverable
-        .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
+          .get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
@@ -164,8 +166,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       if (deliverableData.get("type_id") != null) {
-        deliverable
-          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
+          .get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
@@ -173,6 +175,24 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverableList.add(deliverable);
     }
     return deliverableList;
+  }
+
+  @Override
+  public String getStandardIdentifier(Project project, Deliverable deliverable, boolean useComposedCodification) {
+    StringBuilder result = new StringBuilder();
+    if (useComposedCodification) {
+      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
+      result.append("-P");
+      result.append(project.getId());
+      result.append("-D");
+      result.append(deliverable.getId());
+    } else {
+      result.append("P");
+      result.append(project.getId());
+      result.append("-D");
+      result.append(deliverable.getId());
+    }
+    return result.toString();
   }
 
   @Override
@@ -200,8 +220,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else if (result == 0) {
       LOG.debug("saveDeliverable > Deliverable with id={} was updated", deliverable.getId());
     } else {
-      LOG.error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}",
-        projectID);
+      LOG
+        .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
     }
 
     return result;
