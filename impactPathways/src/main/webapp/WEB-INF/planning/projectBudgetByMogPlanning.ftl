@@ -57,7 +57,7 @@
             <div class="fieldset clearfix">
               [#-- Total budget amount (W1/W2 or W3/Bilateral) --]
               <div class="BudgetByYear"> 
-                <h6 class="subTitle">Total ${year} budget: US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span>:</h6> 
+                <h6 class="subTitle">Total ${year} ${projectTypeLabel} budget: US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span>:</h6> 
                 <p id="budgetByYear">
                   ${projectTypeLabel} budget remaining: US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalBudgetByYear?number}" />
@@ -65,7 +65,7 @@
               </div>
               [#-- Total gender budget amount --]
               <div class="BudgetByYear"> 
-                <h6 class="subTitle">Total ${year} Gender budget: US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
+                <h6 class="subTitle">Total ${year} ${projectTypeLabel} Gender budget: US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
                 <p id="genderBudgetByYear">
                   ${projectTypeLabel} budget remaining: US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalGenderBudgetByYear?number}" />
@@ -76,7 +76,7 @@
               [#-- Total budget amount (W3/Bilateral) for Co-funded projects --]
               <div class="BudgetByYear"> 
                 [#assign totalCoFundedBudgetByYear="100000" /]
-                <h6 class="subTitle">Total ${year} budget: US$ <span>${totalCoFundedBudgetByYear?number?string(",##0.00")}</span>:</h6> 
+                <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${totalCoFundedBudgetByYear?number?string(",##0.00")}</span>:</h6> 
                 <p id="coFundedBudgetByYear">
                   [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: US$ <span>${totalCoFundedBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalCoFundedBudgetByYear?number}" />
@@ -85,7 +85,7 @@
               [#-- Total gender budget amount (W3/Bilateral) for Co-funded projects --]
               <div class="BudgetByYear"> 
                 [#assign totalCoFundedGenderBudgetByYear="50000" /]
-                <h6 class="subTitle">Total ${year} Gender budget : US$ <span>${totalCoFundedGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
+                <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] Gender budget : US$ <span>${totalCoFundedGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
                 <p id="coFundedGenderBudgetByYear">
                   [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: US$ <span>${totalCoFundedGenderBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalCoFundedGenderBudgetByYear?number}" />

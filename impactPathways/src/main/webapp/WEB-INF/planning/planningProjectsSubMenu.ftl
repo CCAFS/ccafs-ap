@@ -1,21 +1,21 @@
 [#ftl] 
 [#assign currCss= "class='currentSection'"]
 [#assign projectId=(project.id)!""]
-<nav id="secondaryMenu">
+<nav id="secondaryMenu" class="${(project.type)!''}">
 <h1><center> 
-  [#if project.type?string?matches("CCAFS_CORE")]
-    <div id="projectType-quote" class="aux-quote-core" title="CCAFS Core project">
-      <p><b>CCAFS Core</b></p>
+  [#if project.coreProject]
+    <div id="projectType-quote" class="aux-quote-core" title="[@s.text name="planning.projects.type.ccafs_core" /] project">
+      <p><b>[@s.text name="planning.projects.type.ccafs_core" /]</b></p>
     </div>
   [/#if]
-  [#if project.type?string?matches("BILATERAL")]
-    <div id="projectType-quote" class="aux-quote-bilateral" title="Bilateral project">
-      <p><b>Bilateral</b></p>
+  [#if project.bilateralProject]
+    <div id="projectType-quote" class="aux-quote-bilateral" title="[@s.text name="planning.projects.type.bilateral" /] project">
+      <p><b>[@s.text name="planning.projects.type.bilateral" /]</b></p>
     </div>
   [/#if]
-  [#if project.type?string?matches("CCAFS_COFUNDED")]
-    <div id="projectType-quote" class="aux-quote-cofunded" title="CCAFS Co-Funded project">
-      <p><b>CCAFS Co-Funded</b></p>
+  [#if project.coFundedProject]
+    <div id="projectType-quote" class="aux-quote-cofunded" title="[@s.text name="planning.projects.type.ccafs_coFunded" /] project">
+      <p><b>[@s.text name="planning.projects.type.ccafs_cofunded" /]</b></p>
     </div>
   [/#if]
 </h1></center>

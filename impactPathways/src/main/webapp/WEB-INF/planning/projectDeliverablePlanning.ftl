@@ -62,7 +62,7 @@
       <div class="fullBlock">
         [#-- MOG  --]
         <div class="${editable?string('halfPartBlock','fullBlock')} chosen"> 
-          [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
         </div> 
         [#-- Year  --]
         <div class="halfPartBlock chosen">
@@ -75,12 +75,12 @@
         [#assign deliverableSubType][#if deliverable.type??]${deliverable.type.id}[#else]-1[/#if][/#assign]
         [#-- Main Type --]
         <div class="halfPartBlock chosen"> 
-          [@customForm.select name="mainType" value="${deliverableType}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" editable=editable /]
+          [@customForm.select name="mainType" value="${deliverableType}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
           [#if !editable]${deliverable.type.category.name}[/#if]
         </div> 
         [#-- Sub Type --]
         <div class="halfPartBlock chosen"> 
-          [@customForm.select name="${params.deliverable.name}.type" value="${deliverableSubType}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.type" value="${deliverableSubType}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" required=true editable=editable /]
           [#if !editable][#if deliverable.typeOther??]${(deliverable.typeOther)!}[#else]${deliverable.type.name}[/#if][/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverableSubType}" />
           [#-- Specify other deliverable type--] 
