@@ -170,9 +170,8 @@ public class ActivitiesListAction extends BaseAction {
         }
       }
       // Saving new and old Activities
-      boolean saved =
-        activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
-          this.getJustification());
+      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+        this.getJustification());
 
       if (!saved) {
         success = false;
@@ -205,7 +204,6 @@ public class ActivitiesListAction extends BaseAction {
   public void validate() {
     if (save) {
       validator.validate(this, project);
-      // HT TODO
     }
   }
 
