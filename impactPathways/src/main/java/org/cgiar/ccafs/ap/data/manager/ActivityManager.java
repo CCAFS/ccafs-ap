@@ -15,6 +15,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ActivityManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -86,6 +87,18 @@ public interface ActivityManager {
    * @return an Array of Activity objects.
    */
   public List<Activity> getAllActivities();
+
+  /**
+   * This method returns the activity identifier whether using composed codification (that is with the organization IATI
+   * standard id) or a simple id.
+   * 
+   * @param project , the project to get the standard identifier from.
+   * @param activity, the activity related to get the standard identifier from.
+   * @param useComposedCodification , true if you want to get the full IATI standard codification or false for simple
+   *        form.
+   * @return a String with the standard identifier.
+   */
+  public String getStandardIdentifier(Project project, Activity activity, boolean useComposedCodification);
 
   /**
    * This method saves the information of the given activity that belongs to a specific project into the database.
