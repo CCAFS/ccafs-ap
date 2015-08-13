@@ -1046,19 +1046,24 @@ public class ProjectSummaryPDF extends BasePDF {
     cell.setFont(HEADING3_FONT);
     cell.add(Chunk.NEWLINE);
     cell.add("7.2 " + this.getText("summaries.project.budget.mog"));
-    try {
 
-      cell.add(Chunk.NEWLINE);
-      cell.add(Chunk.NEWLINE);
+    try {
       document.add(cell);
 
       List<IPElement> outputsList = project.getOutputs();
+      if (outputsList.isEmpty()) {
+
+        cell = new Paragraph();
+        cell.setFont(BODY_TEXT_FONT);
+        cell.add(this.getText("summaries.project.empty"));
+        document.add(cell);
+      }
+
 
       int year;
 
       StringBuffer budgetLabel;
       int[] widths;
-      // this.budgetByMogManager.getProjectOutputsBudgetByYear(project.getId(), year);
       for (IPElement mog : outputsList) {
 
         if (project.isCoFundedProject()) {
@@ -1076,6 +1081,8 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
         cell = new Paragraph();
+        cell.add(Chunk.NEWLINE);
+        cell.add(Chunk.NEWLINE);
         budgetLabel = new StringBuffer();
         cell.setFont(TABLE_BODY_FONT);
         budgetLabel.append(mog.getProgram().getAcronym());
@@ -1275,7 +1282,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -1559,7 +1566,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     // body.setFont(BODY_TEXT_FONT);
 
-    if (project.getOutcomes() == null
+    if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(midOutcomeYear)) == null
       || project.getOutcomes().get(String.valueOf(midOutcomeYear)).getStatement() == null
       || project.getOutcomes().get(String.valueOf(midOutcomeYear)).getStatement().equals("")) {
       body.add(": ");
@@ -1588,7 +1595,7 @@ public class ProjectSummaryPDF extends BasePDF {
       outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
       outcomesBlock.add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
 
-      if (project.getOutcomes().get(String.valueOf(year)) == null
+      if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null
         || project.getOutcomes().get(String.valueOf(year)).getStatement() == null
         || project.getOutcomes().get(String.valueOf(year)).getStatement().equals("")) {
         outcomesBlock.add(": ");
@@ -1914,10 +1921,6 @@ public class ProjectSummaryPDF extends BasePDF {
         partnersBlock.add(Chunk.NEWLINE);
         c++;
       }
-    } else {
-      partnersBlock.add(this.getText("summaries.project.empty"));
-      partnersBlock.add(Chunk.NEWLINE);
-      partnersBlock.add(Chunk.NEWLINE);
     }
 
     // Get Project Partners PP
@@ -1954,10 +1957,6 @@ public class ProjectSummaryPDF extends BasePDF {
         partnersBlock.add(Chunk.NEWLINE);
       }
 
-    } else {
-      partnersBlock.add(this.getText("summaries.project.empty"));
-      partnersBlock.add(Chunk.NEWLINE);
-      partnersBlock.add(Chunk.NEWLINE);
     }
     partnersBlock.add(Chunk.NEWLINE);
     partnersBlock.add(Chunk.NEWLINE);
@@ -2123,15 +2122,15 @@ public class ProjectSummaryPDF extends BasePDF {
     document.open();
 
     // Summary content
-    // this.addProjectTitle();
-    // this.addMainInformationTable();
-    // this.addProjectContributions();
-    // this.addSummary();
-    // this.addProjectPartners();
-    // this.addProjectLocations();
-    // this.addProjectOutcomes();
-    // this.addProjectOutputs();
-    // this.addActivities();
+    this.addProjectTitle();
+    this.addMainInformationTable();
+    this.addProjectContributions();
+    this.addSummary();
+    this.addProjectPartners();
+    this.addProjectLocations();
+    this.addProjectOutcomes();
+    this.addProjectOutputs();
+    this.addActivities();
     this.addProjectBudgets();
 
     // Close document
@@ -2142,18 +2141,6 @@ public class ProjectSummaryPDF extends BasePDF {
     inputStream = new ByteArrayInputStream(outputStream.toByteArray());
   }
 
-  private int[] getBudgetTableColumnWidths(int startYear, int endYear) {
-    int[] columnWidths = new int[endYear - startYear + 2];
-    for (int i = 0; i < columnWidths.length; i++) {
-      if (i == 0) {
-        columnWidths[i] = 8;
-      } else {
-        columnWidths[i] = 4;
-      }
-    }
-
-    return columnWidths;
-  }
 
   public int getContentLength() {
     return contentLength;
