@@ -57,7 +57,7 @@
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1>  
       <div class="fullBlock">
         [#-- Title --] 
-        [@customForm.input name="${params.deliverable.name}.title" i18nkey="planning.deliverables.title" required=true editable=editable /]
+        [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle" i18nkey="planning.deliverables.title" required=true editable=editable /]
       </div>
       <div class="fullBlock">
         [#-- MOG  --]

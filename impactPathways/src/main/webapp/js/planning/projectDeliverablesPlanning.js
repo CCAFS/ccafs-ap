@@ -1,5 +1,6 @@
 // Limits for textarea input
-var lWordsElemetDesc = 300;
+var lWordsDTitle = 15;
+var lWordsLessons = 100;
 var $deliverablesTypes, $deliverablesSubTypes;
 var hashRegenerated = false;
 
@@ -10,7 +11,8 @@ function init() {
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
   attachEvents();
   addChosen();
-  applyWordCounter($('textarea[id!="justification"]'), lWordsElemetDesc);
+  applyWordCounter($(".deliverableTitle"), lWordsDTitle);
+  applyWordCounter($("#lessons textarea"), lWordsLessons);
   $deliverablesTypes.trigger('change');
 
   validateEvent([

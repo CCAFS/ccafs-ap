@@ -45,11 +45,11 @@
       
       [#-- How are contributing to other CCAFS IP --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.contribution" i18nkey="planning.impactPathways.otherContributions.contribution" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.contribution" className="contribution" i18nkey="planning.impactPathways.otherContributions.contribution" editable=editable /]  
       </div>
       [#-- Contribution to another center activity --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" className="additionalContribution" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable /]  
       </div>
       
       [#-- Collaborating with other CRPs --]
@@ -80,7 +80,7 @@
       
       [#-- CRP Collaboration nature --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.crpCollaborationNature" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
       </div>
       
     </div> <!-- End otherContributions -->
