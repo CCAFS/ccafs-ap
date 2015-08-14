@@ -41,7 +41,7 @@ function init() {
   $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
 
   // Validate justification and information
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
   

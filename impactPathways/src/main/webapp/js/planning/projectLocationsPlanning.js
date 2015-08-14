@@ -36,7 +36,7 @@ function attachEvents() {
   $(".locationType, .latitude, .longitude, .locationName").on("change", updateLocationInput);
 
   // Validate changes in form information
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 }
