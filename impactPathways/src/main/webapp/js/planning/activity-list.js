@@ -13,7 +13,7 @@ function init() {
   // Add events for activities section
   attachEvents();
 
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 }

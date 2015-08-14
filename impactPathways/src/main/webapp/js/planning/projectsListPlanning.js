@@ -12,7 +12,15 @@ $(document).ready(function() {
         if($(table).attr("id") == "currentActivities") {
           $("#currentActivities_filter").prepend($("#addActivity"));
         }
-      }
+      },
+      aoColumnDefs: [
+        {
+            bSortable: false,
+            aTargets: [
+                -1, -2
+            ]
+        }
+      ]
   });
   $('table.projectsList').on('draw.dt', function() {
     $("a.removeProject").on("click", removeProject);

@@ -104,9 +104,9 @@ $(document).ready(function() {
 /**
  * Validate fields length when click to any button
  */
-function validateEvent(button,fields) {
+function validateEvent(fields) {
   var errorClass = 'fieldError';
-  $(button).on('click', function(e) {
+  $('[name=save], [name=next]').on('click', function(e) {
     var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length;
     $('#justification').removeClass(errorClass);
     if(fieldErrors != 0) {

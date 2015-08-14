@@ -4,10 +4,12 @@ var markers = [];
 var countID;
 var excelTemplate;
 $(document).ready(init);
+var lWordsLessons = 100;
 
 function init() {
   countID = $("#locationsBlock .location").length;
   attachEvents();
+  $('.loadingBlock').hide().next().fadeIn(500);
   if($("#isGlobal").exists()) {
     $("input.globalCheck").trigger("change");
     $("#locationsBlock").fadeOut("slow");
@@ -15,6 +17,7 @@ function init() {
     loadMap();
     setLocationsMarkers();
   }
+  applyWordCounter($("#lessons textarea"), lWordsLessons);
 }
 
 function attachEvents() {
@@ -36,7 +39,7 @@ function attachEvents() {
   $(".locationType, .latitude, .longitude, .locationName").on("change", updateLocationInput);
 
   // Validate changes in form information
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 }
