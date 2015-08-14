@@ -24,7 +24,7 @@ function attachEvents() {
   $targetValue.on("keydown", function(event) {
     isNumber(event);
   });
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 }

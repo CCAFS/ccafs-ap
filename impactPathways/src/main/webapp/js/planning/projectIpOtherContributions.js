@@ -1,12 +1,15 @@
 var textAreaLimitWords = 100;
-
+var lWordsLessons = 100;
+var lWordsCollaboration = 50;
 $(document).ready(init);
 
 function init() {
   initGraph();
   addChosen();
   initItemListEvents();
-  applyWordCounter($("div#otherContributions textarea"), textAreaLimitWords);
+  applyWordCounter($("textarea.contribution, textarea.additionalContribution"), textAreaLimitWords);
+  applyWordCounter($("textarea.crpCollaborationNature"), lWordsCollaboration);
+  applyWordCounter($("#lessons textarea"), lWordsLessons);
 }
 
 // Items list functions
@@ -19,7 +22,7 @@ function initItemListEvents() {
     removeItemList($(this).parents('li'));
   });
 
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 

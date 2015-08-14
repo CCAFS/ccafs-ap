@@ -87,7 +87,7 @@
     [#-- Responsibilities --]
     [#if responsabilities]  
     <div class="fullPartBlock partnerResponsabilities chosen"> 
-      [@customForm.textArea name="${ap_name}[${ap_index}].responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true editable=editable /]
+      [@customForm.textArea name="${ap_name}[${ap_index}].responsabilities" className="resp" i18nkey="preplanning.projectPartners.responsabilities" required=true editable=editable /]
     </div>
     [/#if]
     [#-- Indicate which PPA Partners for second level partners --]
@@ -158,7 +158,7 @@
         [#-- Responsabilities --]
         [#if showResponsabilities]
         <div class="fullPartBlock partnerResponsabilities chosen">        
-          [@customForm.textArea name="responsabilities" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
+          [@customForm.textArea name="responsabilities" className="resp" i18nkey="preplanning.projectPartners.responsabilities" required=true /]
         </div>
         [/#if]
         [#-- Indicate which PPA Partners for second level partners --]
@@ -203,7 +203,7 @@
         [#-- Responsibilities --]
         [#if showResponsabilities]
         <div class="fullBlock leaderResponsabilities chosen">
-          [@customForm.textArea name="project.leader.responsabilities" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true editable=editable/]
+          [@customForm.textArea name="project.leader.responsabilities" className="resp" i18nkey="preplanning.projectPartners.leader.responsabilities" required=true editable=editable/]
         </div>
         [/#if] 
     </div> <!-- End projectLeader -->   
