@@ -569,6 +569,14 @@ img.icon {
     width: 100%;
 }
 
+.log-table .type {
+    width: 12px;
+}
+
+.log-table .date {
+    width: 173px;
+}
+
 .log-table tr th {
     font-weight: bold;
     border-bottom: 2px solid #444;
@@ -585,13 +593,24 @@ img.icon {
 /* Log Histoy type colors */
 
 span.logType {
-    width: 5px;
-    display: block;
+  width: 6px;
+  padding: 0 0px;
+  display: block;
+}
+
+.legend span.logType {
+  display: inline;
+  padding: 0 6px;
+  margin-right: 3px;
+  border-radius: 50%;
+}
+.legend .action {
+  float:left;
+  margin-right: 24px;
 }
 
 span.logType.update {
     background-color: #CCC;
- 
 }
 
 span.logType.delete { 
@@ -662,7 +681,7 @@ padding: 1px 10px;
 }
 
 .quote {
-  font-weight: lighter;
+  /* font-weight: lighter; */
   font-size: 0.9em;
   margin: 0 40px;
   padding: 5px;
