@@ -13,7 +13,7 @@ function init() {
   applyWordCounter($('textarea[id!="justification"]'), lWordsElemetDesc);
   $deliverablesTypes.trigger('change');
 
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 

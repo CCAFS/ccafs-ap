@@ -23,6 +23,12 @@
         [/#list]
       </tbody>
     </table>
+    <br />
+    <div class="legend">
+      <div class="action"><span class="logType insert">&nbsp;</span> [@s.text name="logHistory.action.insert" /]</div>
+      <div class="action"><span class="logType update">&nbsp;</span> [@s.text name="logHistory.action.update" /]</div>
+      <div class="action"><span class="logType delete">&nbsp;</span> [@s.text name="logHistory.action.delete" /]</div>
+    </div>
   </div>
 [/#if]
 [/#macro]

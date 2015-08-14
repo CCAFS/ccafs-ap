@@ -43,8 +43,6 @@
     [#if !canEdit]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
     [/#if] 
-    [#-- Project Title --]
-    <h1 class="contentTitle">[@s.text name="preplanning.projectBudget.title" /]</h1> 
     [#if allYears?has_content]
       [#if project.leader?has_content]
         [#-- Accumulative total project budget --]
@@ -84,9 +82,7 @@
               [@customForm.input name="project.overhead.contractedOverhead"  i18nkey="planning.projectBudget.whatIsTheContracted" editable=editable/]
             </div>
             [#if canEdit]
-            <div class="note fullPartBlock">
-              <p>[@s.text name="planning.projectBudget.yourInstitutionalOverhead" /] <span>13%</span></p>
-            </div>
+            <div class="note fullPartBlock"><p>[@s.text name="planning.projectBudget.yourInstitutionalOverhead" /] <span>13%</span></p></div>
             [/#if]
           </div>
         </div>
@@ -129,6 +125,7 @@
                 [/#if]
               </div> <!-- End Budget by year  -->
               <div class="ccafsBudget fullPartBlock ${project.type}">
+                <h1 class="contentTitle">[@s.text name="planning.projectBudget.annualPartnerBudget" /]</h1> 
                 [@s.set var="counter" value="0"/]
                 [#-- Project Leader --]
                 [#if project.leader?has_content]
@@ -142,7 +139,7 @@
                 [/#if]
                 [#-- Project budget per linked project --]
                 <hr />
-                <h6 class="subTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]:</h6>
+                <h1 class="contentTitle">[@s.text name="planning.projectBudget.${(!project.bilateralProject)?string('annualBudgetPerBilateralComponent', 'annualBudgetPerCoreComponent')}" /]</h1> 
                 <br />
                 <div id="linkedProjects">
                   [#if project.linkedProjects?has_content]

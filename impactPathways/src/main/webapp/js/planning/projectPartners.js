@@ -14,7 +14,7 @@ function init() {
   }
   setInitialPPAPartners();
   initItemListEvents();
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 }
