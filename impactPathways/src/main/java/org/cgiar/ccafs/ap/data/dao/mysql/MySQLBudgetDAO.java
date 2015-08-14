@@ -180,6 +180,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(projectID);
     query.append(" AND budget_type = ");
     query.append(budgetTypeID);
+    query.append(" AND is_active = 1");
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
@@ -262,6 +264,64 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
+  public boolean deleteBudgetsFromUnexistentYears(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_budgets pb ");
+    query.append("INNER JOIN projects p ON pb.project_id = p.id ");
+    query.append("SET pb.is_active = FALSE ");
+    query.append("WHERE pb.year < YEAR(p.start_date) OR pb.year > YEAR(p.end_date) ");
+    query.append("AND pb.project_id =  ");
+    query.append(projectID);
+
+    int result = databaseManager.saveData(query.toString(), new Object[] {});
+    return (result != -1);
+  }
+
+  @Override
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_budgets pb ");
+    query.append("SET pb.is_active = 0 ");
+    query.append("WHERE pb.institution_id NOT IN ");
+    query.append("( SELECT partner_id FROM project_partners WHERE project_id = pb.project_id )");
+    query.append(" AND pb.project_id = ");
+    query.append(projectID);
+
+    int result = databaseManager.saveData(query.toString(), new Object[] {});
+    return (result != -1);
+  }
+
+  @Override
+  public boolean deleteBudgetsWithUnactiveInstitutions(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT pb.* ");
+    query.append("FROM project_budgets pb ");
+    query.append("INNER JOIN project_partners pp ON pb.project_id = pp.project_id ");
+    query.append("  AND pb.institution_id = pp.partner_id ");
+    query.append("WHERE pcl.is_active = 0;");
+    query.append(" AND project_id = ");
+    query.append(projectID);
+
+    int result = databaseManager.saveData(query.toString(), new Object[] {});
+    return (result != -1);
+  }
+
+  @Override
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_budgets pb ");
+    query.append("INNER JOIN project_cofinancing_linkages pcl ON pb.project_id = pcl.core_project_id  ");
+    query.append("  AND pb.cofinance_project_id = pcl.bilateral_project_id ");
+    query.append("SET pb.is_active = 0 ");
+    query.append("WHERE pcl.is_active = 0 ");
+    query.append("AND project_id = ");
+    query.append(projectID);
+
+    int result = databaseManager.saveData(query.toString(), new Object[] {});
+    return (result != -1);
+  }
+
+  @Override
   public List<Map<String, String>> getBudgetsByProject(int projectID) {
     LOG.debug(">> getBudgetsByProject projectID = {} )", projectID);
 
@@ -295,6 +355,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(projectID);
     query.append(" ) AND pb.year=  ");
     query.append(year);
+    query.append(" AND pb.is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);

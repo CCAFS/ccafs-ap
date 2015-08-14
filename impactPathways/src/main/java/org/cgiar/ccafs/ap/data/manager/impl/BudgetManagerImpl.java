@@ -90,6 +90,12 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public boolean deactiveInvalidBudgets() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
   public boolean deleteBudget(int budgetId, User user, String justification) {
     return budgetDAO.deleteBudget(budgetId, user.getId(), justification);
   }
@@ -105,8 +111,27 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public List<Budget> getBudgetsByProject(Project project) {
+  public boolean deleteBudgetsFromUnexistentYears(int projectID) {
+    return budgetDAO.deleteBudgetsFromUnexistentYears(projectID);
+  }
 
+  @Override
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
+    return budgetDAO.deleteBudgetsWithNoLinkToInstitutions(projectID);
+  }
+
+  @Override
+  public boolean deleteBudgetsWithUnactiveInstitutions(int projectID) {
+    return budgetDAO.deleteBudgetsWithUnactiveInstitutions(projectID);
+  }
+
+  @Override
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID) {
+    return budgetDAO.deleteCofoundedBudgetsWithNoLink(projectID);
+  }
+
+  @Override
+  public List<Budget> getBudgetsByProject(Project project) {
     List<Integer> allYears = project.getAllYears();
 
     List<Budget> budgets = new ArrayList<>();
