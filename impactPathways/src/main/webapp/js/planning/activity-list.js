@@ -1,3 +1,6 @@
+var lWordsTitle = 15;
+var lWordsDesc = 150;
+var lWordsLessons = 150;
 $(document).ready(init);
 
 function init() {
@@ -13,7 +16,11 @@ function init() {
   // Add events for activities section
   attachEvents();
 
-  validateEvent('[name=save], [name=next]', [
+  applyWordCounter($(".activity .title"), lWordsTitle);
+  applyWordCounter($(".activity .description"), lWordsDesc);
+  applyWordCounter($("#lessons textarea"), lWordsLessons);
+
+  validateEvent([
     "#justification"
   ]);
 }

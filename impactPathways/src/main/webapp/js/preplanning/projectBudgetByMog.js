@@ -24,13 +24,14 @@ function init() {
 
   // Active initial currency format to all inputs
   $percentageInputs.attr("autocomplete", "off").trigger("focusout");
+  // Executing initial functions
   $budgetInputs.trigger("keyup");
   $genderBudgetInputs.trigger("keyup");
   $budgetCoFundedInputs.trigger("keyup");
   $genderCoFundedBudgetInputs.trigger("keyup");
 
   // Validate justification and information
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 
@@ -88,14 +89,29 @@ function addKeyUpEvent(inputs,remaining) {
 function BudgetRemaining(budget) {
   this.element = $(budget).parents('.BudgetByYear');
   this.initValue = $(budget).find('input').val();
-  this.setValue = function(value) {
-    $(budget).find('span').text(setCurrencyFormat(value));
-  };
+  this.setValue =
+      function(value) {
+        $(budget).find('span.amount').text(setCurrencyFormat(value));
+        $(budget).find('span').addClass('animated flipInY').removeClass('animated flipInX');
+        $(budget).find('span').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function() {
+              $(this).removeClass('animated flipInY');
+            });
+      };
+  this.setPercentage =
+      function(percentage) {
+        $(budget).find('span.percentage').text(setPercentageFormat(percentage));
+        $(budget).find('span').addClass('animated flipInY');
+        $(budget).find('span').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function() {
+              $(this).removeClass('animated flipInY');
+            });
+      };
   this.calculateRemain = function(percentage) {
     var result = (this.initValue / 100) * percentage;
     var value = this.initValue - result;
     this.setValue(Math.round(value * 100) / 100);
-
+    this.setPercentage(100 - percentage);
   };
   this.setError = function() {
     $(budget).addClass('fieldError');
@@ -108,16 +124,15 @@ function BudgetRemaining(budget) {
 function setPercentageCurrency(inputTarget,remainBudget) {
   var percentage = removePercentageFormat($(inputTarget).val() || "0");
   var value = (remainBudget.initValue / 100) * percentage;
-  $(inputTarget).parents('.budget').find('span').text(setCurrencyFormat(value));
-  // $(inputTarget).parents('.outputBudget').find('input.genderBudgetInput').trigger("keyup");
+  $(inputTarget).parents('.budget').find('span.amount').text(setCurrencyFormat(value));
 }
 
 function calculateGenderAmount(outputBudget) {
   var $totalContribution = $(outputBudget).find('p.totalContribution');
   var $genderBudgetInput = $(outputBudget).find('p.genderContribution');
 
-  var totalAmount = removeCurrencyFormat($totalContribution.find('span').text());
-  var genderAmount = removeCurrencyFormat($genderBudgetInput.find('span').text());
+  var totalAmount = removeCurrencyFormat($totalContribution.find('span.amount').text());
+  var genderAmount = removeCurrencyFormat($genderBudgetInput.find('span.amount').text());
 
   $totalContribution.removeClass('fieldError');
   $genderBudgetInput.removeClass('fieldError');

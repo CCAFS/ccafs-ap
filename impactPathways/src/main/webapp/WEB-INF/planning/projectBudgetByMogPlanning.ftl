@@ -52,14 +52,14 @@
           [#-- Project budget content by year and MOG --]
           <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
             [#if (!editable && canEdit)]
-              <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+              <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
             [/#if]
             <div class="fieldset clearfix">
               [#-- Total budget amount (W1/W2 or W3/Bilateral) --]
               <div class="BudgetByYear"> 
-                <h6 class="subTitle">Total ${year} ${projectTypeLabel} budget: US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span>:</h6> 
+                <h6 class="subTitle">Total ${year} ${projectTypeLabel} budget: US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span></h6> 
                 <p id="budgetByYear">
-                  ${projectTypeLabel} budget remaining: US$ <span>${totalBudgetByYear?number?string(",##0.00")}</span>
+                  ${projectTypeLabel} budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${totalBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalBudgetByYear?number}" />
                 </p>
               </div>
@@ -67,18 +67,17 @@
               <div class="BudgetByYear"> 
                 <h6 class="subTitle">Total ${year} ${projectTypeLabel} Gender budget: US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
                 <p id="genderBudgetByYear">
-                  ${projectTypeLabel} budget remaining: US$ <span>${totalGenderBudgetByYear?number?string(",##0.00")}</span>
+                  ${projectTypeLabel} budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${totalGenderBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalGenderBudgetByYear?number}" />
                 </p>
               </div>
               [#if project.coFundedProject]
-              
               [#-- Total budget amount (W3/Bilateral) for Co-funded projects --]
               <div class="BudgetByYear"> 
                 [#assign totalCoFundedBudgetByYear="100000" /]
-                <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${totalCoFundedBudgetByYear?number?string(",##0.00")}</span>:</h6> 
+                <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${totalCoFundedBudgetByYear?number?string(",##0.00")}</span></h6> 
                 <p id="coFundedBudgetByYear">
-                  [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: US$ <span>${totalCoFundedBudgetByYear?number?string(",##0.00")}</span>
+                  [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${totalCoFundedBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalCoFundedBudgetByYear?number}" />
                 </p>
               </div>
@@ -87,7 +86,7 @@
                 [#assign totalCoFundedGenderBudgetByYear="50000" /]
                 <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] Gender budget : US$ <span>${totalCoFundedGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
                 <p id="coFundedGenderBudgetByYear">
-                  [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: US$ <span>${totalCoFundedGenderBudgetByYear?number?string(",##0.00")}</span>
+                  [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${totalCoFundedGenderBudgetByYear?number?string(",##0.00")}</span>
                   <input type="hidden" value="${totalCoFundedGenderBudgetByYear?number}" />
                 </p>
               </div>
@@ -114,7 +113,7 @@
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
                         <p class="totalContribution">[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: 
-                        <strong>US$ <span>${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></strong></p>
+                        <strong>US$ <span class="amount">${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
                       [#if editable]
@@ -128,7 +127,7 @@
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
                         <p class="genderContribution">[#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: 
-                        <strong>US$ <span>${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></strong></p>
+                        <strong>US$ <span class="amount">${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
                       [#if editable]
@@ -152,13 +151,13 @@
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
                         <p class="totalContribution">[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: 
-                        <strong>US$ <span>${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></strong></p>
+                        <strong>US$ <span class="amount">${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
                       [#if editable]
                         [@customForm.input name="project.outputsBudgets[${counter}].totalContribution" className="percentage budgetCoFundedInput" value="${(mogBudget.totalContribution)!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget"/] 
                       [#else]
-                        <input type="hidden" class="budgetInput"  value="${(mogBudget.totalContribution)!0}" />
+                        <input type="hidden" class="budgetCoFundedInput"  value="${(mogBudget.totalContribution)!0}" />
                       [/#if]
                       </div>
                     </div>
@@ -166,13 +165,13 @@
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
                         <p class="genderContribution">[#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: 
-                        <strong>US$ <span>${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></strong></p>
+                        <strong>US$ <span class="amount">${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
                       [#if editable]
                         [@customForm.input name="project.outputsBudgets[${counter}].genderContribution" className="percentage genderCoFundedBudgetInput" value="${mogBudget.genderContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"/] 
                       [#else]
-                        <input type="hidden" class="genderBudgetInput"  value="${(mogBudget.genderContribution)!0}" />
+                        <input type="hidden" class="genderCoFundedBudgetInput"  value="${(mogBudget.genderContribution)!0}" />
                       [/#if]
                       </div>
                     </div>

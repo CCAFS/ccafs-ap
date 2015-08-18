@@ -47,7 +47,8 @@
     [/#if]
     
     [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-    <div id="PartnersTabs" class="simpleBox"> 
+    <div class="loadingBlock"></div>
+    <div id="PartnersTabs" class="simpleBox" style="display:none"> 
       [#-- Project Partners Sub-menu --]
       <div id="partnerTables-partnerLead" class="partnerTable clearfix"> 
         [#-- Listing partners from partnersTemplate.ftl --]

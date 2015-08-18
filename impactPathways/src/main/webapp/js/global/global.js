@@ -2,6 +2,7 @@ var baseURL;
 var formBefore;
 var justificationLimitWords = 100;
 var errorMessages = [];
+var forceChange = false;
 var notyDefaultOptions = {
     text: '',
     layout: 'bottomRight',
@@ -104,22 +105,23 @@ $(document).ready(function() {
 /**
  * Validate fields length when click to any button
  */
-function validateEvent(button,fields) {
+function validateEvent(fields) {
   var errorClass = 'fieldError';
-  $(button).on('click', function(e) {
-    var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length;
+  $('[name=save], [name=next]').on('click', function(e) {
+    var isNext = (e.target.name == 'next');
     $('#justification').removeClass(errorClass);
+    var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length;
     if(fieldErrors != 0) {
       e.preventDefault();
       var notyOptions = jQuery.extend({}, notyDefaultOptions);
       notyOptions.text = 'Something is wrong in this section, please fix it then save';
       noty(notyOptions);
     } else {
-      if(!isChanged()) {
-        // If something is changed
+      if(!isChanged() && !forceChange && !isNext) {
+        // If there isn't any changes
         e.preventDefault();
         var notyOptions = jQuery.extend({}, notyDefaultOptions);
-        notyOptions.text = 'Nothing changed';
+        notyOptions.text = 'Nothing has changed';
         notyOptions.type = 'alert';
         noty(notyOptions);
       } else {
@@ -129,16 +131,21 @@ function validateEvent(button,fields) {
           var notyOptions = jQuery.extend({}, notyDefaultOptions);
           notyOptions.text = errorMessages.join();
           noty(notyOptions);
-        } else if(!validateField($('#justification'))) {
+        } else if(!validateField($('#justification')) && (isChanged() || forceChange)) {
           // If field is not valid
           e.preventDefault();
           $('#justification').addClass(errorClass);
           var notyOptions = jQuery.extend({}, notyDefaultOptions);
-          notyOptions.text = 'The justification field need to be filled';
+          notyOptions.text = 'The justification field needs to be filled';
           noty(notyOptions);
         }
       }
     }
+  });
+
+  // Force change when an file input is changed
+  $("input:file").on('change', function() {
+    forceChange = true;
   });
 }
 

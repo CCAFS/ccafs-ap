@@ -50,7 +50,6 @@ public interface BudgetManager {
    */
   public double calculateTotalCCAFSBudget(int projectID);
 
-
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) in a given year
    * 
@@ -64,10 +63,12 @@ public interface BudgetManager {
    * This method calculates the total of the Gender Budget which is the addition of W1+W2+W3+BILATERAL for ALL years
    * 
    * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total Gender percentage for that specific project, if no data
+   * @return a decimal number representing the amount of the total Gender percentage for that specific project, if no
+   *         data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalGenderBudget(int projectID);
+
 
   /**
    * This method calculates the total of the Gender Budget which is the percentage of the amount in a given year
@@ -86,6 +87,13 @@ public interface BudgetManager {
    * @return a double representing this value, or -1 if some error found.
    */
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
+
+  /**
+   * This method deactives all the budgets due to several conditions.
+   * 
+   * @return false if any error occurres, true otherwise.
+   */
+  public boolean deactiveInvalidBudgets();
 
   /**
    * This method removes a specific budget value from the database.
@@ -118,6 +126,36 @@ public interface BudgetManager {
    * @return true if the set of budgets were successfully deleted, false otherwise.
    */
   public boolean deleteBudgetsByYear(int projectID, int year, User user, String justification);
+
+  /**
+   * This method deletes all the budgets that were declared for a year in which the project it is not active.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsFromUnexistentYears(int projectID);
+
+  /**
+   * This method deletes all the budgets that belong to some institution which has NOT link with the project to which
+   * the budget belongs to.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID);
+
+  /**
+   * This method deletes all the budgets that belong to an institution linked to the project (as partner or leader)
+   * but where this link its inactive.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsWithUnactiveInstitutions(int projectID);
+
+  /**
+   * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID);
 
   /**
    * This method gets all the budget information by a given Project Id in ALL years.

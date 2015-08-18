@@ -63,7 +63,8 @@ public interface BudgetDAO {
    * This method calculates the total gender percentage which is the addition of W1+W2+W3+BILATERAL for ALL years.
    * 
    * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total gender percentage for that specific project, if no data
+   * @return a decimal number representing the amount of the total gender percentage for that specific project, if no
+   *         data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalGenderBudget(int projectID);
@@ -118,6 +119,35 @@ public interface BudgetDAO {
    */
   public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification);
 
+  /**
+   * This method deletes all the budgets that were declared for a year in which the project it is not active.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsFromUnexistentYears(int projectID);
+
+  /**
+   * This method deletes all the budgets that belong to some institution which has NOT link with the project to which
+   * the budget belongs to.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID);
+
+  /**
+   * This method deletes all the budgets that belong to an institution linked to the project (as partner or leader)
+   * but where this link its inactive.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsWithUnactiveInstitutions(int projectID);
+
+  /**
+   * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID);
 
   /**
    * This method gets all the budget information by a given Project Id
@@ -143,8 +173,6 @@ public interface BudgetDAO {
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveBudget(int projectID, Map<String, Object> budgetData);
-
-
 
 
 }
