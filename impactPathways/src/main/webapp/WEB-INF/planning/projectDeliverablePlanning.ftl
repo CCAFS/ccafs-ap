@@ -76,12 +76,12 @@
         [#-- Main Type --]
         <div class="halfPartBlock chosen"> 
           [@customForm.select name="mainType" value="${deliverableType}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
-          [#if !editable]${deliverable.type.category.name}[/#if]
+          [#if !editable]${(deliverable.type.category.name)!}[/#if]
         </div> 
         [#-- Sub Type --]
         <div class="halfPartBlock chosen"> 
           [@customForm.select name="${params.deliverable.name}.type" value="${deliverableSubType}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" required=true editable=editable /]
-          [#if !editable][#if deliverable.typeOther??]${(deliverable.typeOther)!}[#else]${deliverable.type.name}[/#if][/#if]
+          [#if !editable][#if deliverable.typeOther??]${(deliverable.typeOther)!}[#else]${(deliverable.type.name)!}[/#if][/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverableSubType}" />
           [#-- Specify other deliverable type--] 
           [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          

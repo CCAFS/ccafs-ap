@@ -125,7 +125,7 @@
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
         </div>
         
-        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /][#if !project.bilateralProject ]<span class="red"> *</span>[/#if]: </h6> 
+        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /][#if !project.bilateralProject ]:<span class="red"> *</span>[/#if] </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
