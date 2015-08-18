@@ -24,6 +24,7 @@ function init() {
 
   // Active initial currency format to all inputs
   $percentageInputs.attr("autocomplete", "off").trigger("focusout");
+  // Executing initial functions
   $budgetInputs.trigger("keyup");
   $genderBudgetInputs.trigger("keyup");
   $budgetCoFundedInputs.trigger("keyup");
@@ -124,7 +125,6 @@ function setPercentageCurrency(inputTarget,remainBudget) {
   var percentage = removePercentageFormat($(inputTarget).val() || "0");
   var value = (remainBudget.initValue / 100) * percentage;
   $(inputTarget).parents('.budget').find('span.amount').text(setCurrencyFormat(value));
-  // $(inputTarget).parents('.outputBudget').find('input.genderBudgetInput').trigger("keyup");
 }
 
 function calculateGenderAmount(outputBudget) {

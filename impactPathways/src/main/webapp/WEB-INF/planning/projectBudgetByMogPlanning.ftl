@@ -72,7 +72,6 @@
                 </p>
               </div>
               [#if project.coFundedProject]
-              
               [#-- Total budget amount (W3/Bilateral) for Co-funded projects --]
               <div class="BudgetByYear"> 
                 [#assign totalCoFundedBudgetByYear="100000" /]
@@ -158,7 +157,7 @@
                       [#if editable]
                         [@customForm.input name="project.outputsBudgets[${counter}].totalContribution" className="percentage budgetCoFundedInput" value="${(mogBudget.totalContribution)!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalBudget"/] 
                       [#else]
-                        <input type="hidden" class="budgetInput"  value="${(mogBudget.totalContribution)!0}" />
+                        <input type="hidden" class="budgetCoFundedInput"  value="${(mogBudget.totalContribution)!0}" />
                       [/#if]
                       </div>
                     </div>
@@ -172,7 +171,7 @@
                       [#if editable]
                         [@customForm.input name="project.outputsBudgets[${counter}].genderContribution" className="percentage genderCoFundedBudgetInput" value="${mogBudget.genderContribution!0}" showTitle=false i18nkey="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"/] 
                       [#else]
-                        <input type="hidden" class="genderBudgetInput"  value="${(mogBudget.genderContribution)!0}" />
+                        <input type="hidden" class="genderCoFundedBudgetInput"  value="${(mogBudget.genderContribution)!0}" />
                       [/#if]
                       </div>
                     </div>

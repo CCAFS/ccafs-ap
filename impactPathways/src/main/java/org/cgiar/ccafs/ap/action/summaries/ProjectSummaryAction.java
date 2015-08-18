@@ -150,6 +150,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // Get all the information to add in the pdf file
     project = projectManager.getProject(projectID);
 
+
     // Getting the information of the Regions program
     project.setRegions(ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE));
 
@@ -249,5 +250,4 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));
   }
-
 }

@@ -13,7 +13,7 @@
           <a href="#" />
         [/#if]
         [@s.text name="breadCrumb.menu.${item.label}" /]
-        </a>
+        </a>[#if item_has_next]>[/#if]
       </li> 
     [/#list]
   [/#if]

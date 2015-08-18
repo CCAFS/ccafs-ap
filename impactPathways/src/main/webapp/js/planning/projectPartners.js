@@ -1,4 +1,5 @@
 var $removePartnerDialog;
+var lWordsResp = 100;
 
 $(document).ready(init);
 
@@ -9,6 +10,8 @@ function init() {
   popups();
   // Activate the chosen plugin to the existing partners
   addChosen();
+  applyWordCounter($("textarea.resp"), lWordsResp);
+  applyWordCounter($("#lessons textarea"), lWordsResp);
   if(!$("div.projectPartner").length) {
     $("a.addProjectPartner").trigger("click");
   }
@@ -17,6 +20,7 @@ function init() {
   validateEvent([
     "#justification"
   ]);
+  $('.loadingBlock').hide().next().fadeIn(500);
 }
 
 function attachEvents() {
@@ -148,7 +152,6 @@ function addPartnerEvent(e) {
       no_results_text: $("#noResultText").val(),
       search_contains: true
   });
-
   setProjectPartnersIndexes();
 }
 

@@ -36,8 +36,9 @@
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
-    [/#if] 
-    <div id="" class="borderBox"> 
+    [/#if]
+    <div class="loadingBlock"></div>
+    <div id="" class="borderBox" style="display:none"> 
       [#-- Can edit button --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
@@ -50,7 +51,7 @@
         [@customForm.checkbox className="globalCheck" name="project.global" value="true" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
         [#-- [@customForm.checkbox name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global value="true" /]  --] 
       </div>
-      <div id="projectLocations-map">
+      <div id="projectLocations-map" >
       [#if project.global && !editable]
         <img id="global" src="${baseUrl}/images/global/global-map.png">
         <p class="global">[@s.text name="planning.project.locations.map.isGlobal" /]</p>

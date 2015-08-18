@@ -1,3 +1,6 @@
+var lWordsTitle = 15;
+var lWordsDesc = 150;
+var lWordsLessons = 150;
 $(document).ready(init);
 
 function init() {
@@ -12,6 +15,10 @@ function init() {
   setDatadatePicker();
   // Add events for activities section
   attachEvents();
+
+  applyWordCounter($(".activity .title"), lWordsTitle);
+  applyWordCounter($(".activity .description"), lWordsDesc);
+  applyWordCounter($("#lessons textarea"), lWordsLessons);
 
   validateEvent([
     "#justification"
