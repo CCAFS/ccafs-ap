@@ -111,8 +111,6 @@ function validateEvent(fields) {
     var isNext = (e.target.name == 'next');
     $('#justification').removeClass(errorClass);
     var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length;
-    console.log(forceChange);
-    console.log(isChanged());
     if(fieldErrors != 0) {
       e.preventDefault();
       var notyOptions = jQuery.extend({}, notyDefaultOptions);

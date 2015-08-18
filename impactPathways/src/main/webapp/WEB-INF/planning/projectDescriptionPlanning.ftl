@@ -85,7 +85,7 @@
               [#if project.workplanName?has_content]
                 <p> 
                   [#if editable]<span id="remove-file" class="remove"></span>[#else]<span id="" class="file"></span>[/#if] 
-                  <a href="${workplanURL}">${project.workplanName}</a>  <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
+                  <a href="${workplanURL}${project.workplanName}">${project.workplanName}</a>  <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
                 </p>
               [#else]
                 [#if editable]
@@ -108,7 +108,7 @@
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /][#if project.bilateralProject ]<span class="red"> *</span>[/#if]:</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
-              <p> <a href="bilateralContractURL">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-file" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+              <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-file" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
                 [@customForm.inputFile name="file"  /]
