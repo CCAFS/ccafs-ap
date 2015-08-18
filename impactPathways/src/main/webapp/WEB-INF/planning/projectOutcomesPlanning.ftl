@@ -50,13 +50,18 @@
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.narrative" /] </h1> 
         [#-- Project Outcome statement --]
         <div class="fullPartBlock" id="projectOutcomeStatement">
-          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" className="limitWords-150" i18nkey="planning.projectOutcome.statement" editable=editable/]
+          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" className="limitWords-150" i18nkey="planning.projectOutcome.statement" editable=editable /]
         </div>
         [#-- Annual progress --]
-        [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
-          <div class="fullPartBlock"> 
-            <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].statement" className="limitWords-80" showTitle=false editable=editable /]
+        [#list project.startDate?string.yyyy?number..midOutcomeYear?number-1 as year]
+          <div class="fullPartBlock">
+            [#if year lte (project.startDate?string.yyyy)?number]
+              <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=true param="${year}" /]</h6>
+              [@customForm.textArea name="project.outcomes[${year?string}].statement" className="limitWords-80" showTitle=false editable=false /]
+            [#else]
+              <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /]</h6>
+              [@customForm.textArea name="project.outcomes[${year?string}].statement" className="limitWords-80" showTitle=false editable=editable /]
+            [/#if]
           </div>
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
@@ -74,7 +79,7 @@
           [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderDimension" className="limitWords-150" i18nkey="planning.projectOutcome.genderAndSocialStatement" editable=editable /]
         </div>
         [#-- Annual for the expected Gender and Social contribution --]
-        [#list currentPlanningYear?number..midOutcomeYear?number-1 as year]
+        [#list project.startDate?string.yyyy?number..midOutcomeYear?number-1 as year]
           <div class="fullPartBlock">
             <h6>[@customForm.text name="planning.projectOutcome.genderAndSocialAnnualProgress" readText=!editable param="${year}" /]</h6>
             [@customForm.textArea name="project.outcomes[${year?string}].genderDimension" className="limitWords-100" showTitle=false editable=editable /]
