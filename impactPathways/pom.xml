@@ -190,13 +190,6 @@
     </dependency>
   </dependencies>
   
-  <repositories>
-    <repository>
-      <id>Internal project repo</id>
-      <url>file://${basedir}/src/main/resources/libs/</url>
-    </repository>
-  </repositories>
-
   <build>
     <finalName>${project.artifactId}</finalName>
     <defaultGoal>jetty:run</defaultGoal>

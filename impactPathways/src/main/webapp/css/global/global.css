@@ -279,6 +279,7 @@ textarea#justification {
   font-size: 1.07em;
   margin-top: -1px;
   word-wrap: break-word;
+  color: #636363;
 }
 
 input[type="radio"] {
@@ -1818,6 +1819,45 @@ h1.simpleTitle span {
   margin-bottom: 5px;
 }
 
+.helpMessage2 { 
+  position: relative;
+  /* -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3); */
+  -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
+  -webkit-border-radius:2px;
+  -moz-border-radius:2px;
+  border-radius:2px;
+  padding: 5px;
+  border: 1.0px dashed #c0c0c0;
+  background: #FFFFFF;  
+  margin: 5px 250px 5px 250px;;
+}
+
+.helpMessage2:before,.helpMessage:after {
+  content: "";
+  display: table;
+}
+
+.helpMessage2:after {
+  clear: both;
+}
+
+.helpMessage2 {
+  *zoom: 1;
+}
+
+
+.helpMessage2 img {
+  float: left;
+  padding: 5px;
+  width: 27px;
+}
+
+.helpMessage2 p {
+  padding: 1px;
+  color: #636368;
+  margin-bottom: 5px;
+}
+
 .textArea textarea{
   width: 99%;
 }
@@ -2416,6 +2456,10 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectReportStatus {
+  width: 89px;
+}
+
+.projectsList #projectActionStatus {
   width: 89px;
 }
 
