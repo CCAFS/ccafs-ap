@@ -52,7 +52,7 @@
           [#-- Project budget content by year and MOG --]
           <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
             [#if (!editable && canEdit)]
-              <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+              <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
             [/#if]
             <div class="fieldset clearfix">
               [#-- Total budget amount (W1/W2 or W3/Bilateral) --]
