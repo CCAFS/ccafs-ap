@@ -11,9 +11,9 @@
         <th id="projectFlagships">[@s.text name="preplanning.projects.projectFlagships" /]</th>
         <th id="projectBudget">[@s.text name="preplanning.projects.projectBudget" /]</th>
         <th id="projectType">[@s.text name="preplanning.projects.projectType" /]</th>
-        [#--<th id="projectReportStatus">[@s.text name="preplanning.projects.projectReportStatus" /]</th>--]
-        <th id="projectDownload"></th>
-        <th id="projectDelete"></th>
+        <th id="projectActionStatus">[@s.text name="preplanning.projects.projectActionStatus" /]</th>
+        <th id="projectDownload">[@s.text name="preplanning.projects.download" /]</th>
+        <th id="projectDelete">[@s.text name="preplanning.projects.delete" /]</th>
         [#if isPlanning]
           <th id="projectBudget">[@s.text name="planning.projects.completion" /]</th>
         [/#if]
@@ -67,13 +67,14 @@
           </td>
           [#-- Project Type --]
           <td>
-            <p id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p>  
+            <p title="[@s.text name="planning.projects.type.explanation.${project.type?lower_case}" /]" id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p>
           </td>
-          [#-- Project Report Status 
+          [#-- Project Action Status --]
           <td> 
-            <a href="#"><p id="">Submit</p> </a>
+ 
+            <button type= "submit" onclick=""> Submit </button>
+            </a>
           </td>
-          --]
           [#-- Track completition of entry --]
           [#if isPlanning]
           <td> 
