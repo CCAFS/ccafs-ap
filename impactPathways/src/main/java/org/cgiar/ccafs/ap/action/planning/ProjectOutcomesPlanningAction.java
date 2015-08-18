@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +105,11 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
 
     // Load the project outcomes
     Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
-    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(project.getStartDate());
+
+    for (int year = calendar.get(Calendar.YEAR); year <= midOutcomeYear; year++) {
       ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
       if (projectOutcome == null) {
         projectOutcome = new ProjectOutcome(-1);
