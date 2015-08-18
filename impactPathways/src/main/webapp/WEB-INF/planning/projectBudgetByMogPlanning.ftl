@@ -72,7 +72,6 @@
                 </p>
               </div>
               [#if project.coFundedProject]
-              
               [#-- Total budget amount (W3/Bilateral) for Co-funded projects --]
               <div class="BudgetByYear"> 
                 [#assign totalCoFundedBudgetByYear="100000" /]

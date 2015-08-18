@@ -99,6 +99,7 @@ table.dataTable td {
 table.dataTable a {
   text-decoration:none;
   color: #444;
+  vertical-align: middle;
 }
 
 /*

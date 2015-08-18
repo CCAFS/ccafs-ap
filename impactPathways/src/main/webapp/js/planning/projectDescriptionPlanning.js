@@ -16,7 +16,7 @@ $(document).ready(function() {
   applyWordCounter($("textarea.project-title"), lWordsElemetTitle);
   applyWordCounter($("textarea.project-description"), lWordsElemetDesc);
 
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 
