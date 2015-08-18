@@ -85,6 +85,16 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID) {
+    return budgetDAO.calculateTotalGenderPercentageByType(projectID, budgetTypeID);
+  }
+
+  @Override
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
+    return budgetDAO.calculateTotalGenderPercentageByYearAndType(projectID, year, budgetTypeID);
+  }
+
+  @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     return budgetDAO.calculateTotalProjectBudgetByType(projectID, budgetTypeID);
   }
@@ -118,11 +128,6 @@ public class BudgetManagerImpl implements BudgetManager {
   @Override
   public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
     return budgetDAO.deleteBudgetsWithNoLinkToInstitutions(projectID);
-  }
-
-  @Override
-  public boolean deleteBudgetsWithUnactiveInstitutions(int projectID) {
-    return budgetDAO.deleteBudgetsWithUnactiveInstitutions(projectID);
   }
 
   @Override

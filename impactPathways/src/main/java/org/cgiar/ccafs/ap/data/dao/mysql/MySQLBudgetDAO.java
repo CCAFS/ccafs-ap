@@ -54,6 +54,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("WHERE project_id = " + projectID);
     query.append(" AND  budget_type = " + budgetTypeID);
     query.append(" AND  year = " + year);
+    query.append(" AND  is_active = TRUE");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -78,6 +79,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
+    query.append(" AND is_active = TRUE");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -104,6 +106,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(projectID);
     query.append(" AND year =  ");
     query.append(year);
+    query.append(" AND is_active = TRUE");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -129,6 +132,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
+    query.append(" WHERE is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -154,6 +158,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("WHERE project_id = ");
     query.append(projectID);
     query.append(" AND year = ");
+    query.append(" AND is_active= TRUE");
     query.append(year);
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -165,6 +170,63 @@ public class MySQLBudgetDAO implements BudgetDAO {
       con.close();
     } catch (SQLException e) {
       LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND is_active = TRUE ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND year = ");
+    query.append(year);
+    query.append(" AND is_active = TRUE");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
       total = -1.0;
     }
     return total;
@@ -217,6 +279,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
+
   @Override
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID, int userID, String justification) {
     LOG.debug(">> deleteBudgetsByInstitution(projectId={}, institutionId={})", projectID, institutionID);
@@ -240,7 +303,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
-
   @Override
   public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification) {
     LOG.debug(">> deleteBudgetsByYear(projectId={}, eyar={})", projectID, year);
@@ -262,7 +324,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
-
   @Override
   public boolean deleteBudgetsFromUnexistentYears(int projectID) {
     StringBuilder query = new StringBuilder();
@@ -281,25 +342,11 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
     StringBuilder query = new StringBuilder();
     query.append("UPDATE project_budgets pb ");
-    query.append("SET pb.is_active = 0 ");
+    query.append("SET pb.is_active = FALSE ");
     query.append("WHERE pb.institution_id NOT IN ");
-    query.append("( SELECT partner_id FROM project_partners WHERE project_id = pb.project_id )");
+    query.append("( SELECT  partner_id FROM project_partners pp ");
+    query.append("  WHERE pp.project_id = pb.project_id AND pp.is_active = 1 GROUP BY pp.partner_id, pp.is_active ) ");
     query.append(" AND pb.project_id = ");
-    query.append(projectID);
-
-    int result = databaseManager.saveData(query.toString(), new Object[] {});
-    return (result != -1);
-  }
-
-  @Override
-  public boolean deleteBudgetsWithUnactiveInstitutions(int projectID) {
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT pb.* ");
-    query.append("FROM project_budgets pb ");
-    query.append("INNER JOIN project_partners pp ON pb.project_id = pp.project_id ");
-    query.append("  AND pb.institution_id = pp.partner_id ");
-    query.append("WHERE pcl.is_active = 0;");
-    query.append(" AND project_id = ");
     query.append(projectID);
 
     int result = databaseManager.saveData(query.toString(), new Object[] {});
