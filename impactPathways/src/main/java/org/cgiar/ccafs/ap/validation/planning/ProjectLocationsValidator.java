@@ -30,11 +30,16 @@ public class ProjectLocationsValidator extends BaseValidator {
 
   private static final long serialVersionUID = -4871185832403702671L;
   private ProjectValidator projectValidator;
+  boolean problem = false;
 
   @Inject
   public ProjectLocationsValidator(ProjectValidator projectValidator) {
     super();
     this.projectValidator = projectValidator;
+  }
+
+  public boolean isValidName(String name) {
+    return (this.isValidString(name)) ? true : false;
   }
 
   public void validate(BaseAction action, Project project) {
@@ -43,13 +48,21 @@ public class ProjectLocationsValidator extends BaseValidator {
       this.validateProjectJustification(action, project);
       // Projects are validated checking if they are not global and their locations are valid ones.
       if ((!project.isGlobal()) && (!projectValidator.isValidLocation(project.getLocations()))) {
-        this.addMessage(this.getText("planning.projectLocations.type").toLowerCase());
+        problem = true;
+      }
+      if (!project.isGlobal()) {
+        this.validateLocations(action, project);
       }
 
-      if (validationMessage.length() > 0) {
-        action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      if (problem) {
+        action.addActionError(this.getText("planning.projectLocations.type"));
       }
+    }
+  }
+
+  public void validateLocations(BaseAction action, Project project) {
+    for (int i = 0; i < project.getLocations().size(); i++) {
+      problem = this.isValidName(project.getLocations().get(i).getName());
     }
   }
 }
