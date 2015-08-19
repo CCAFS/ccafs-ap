@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.LocationDAO;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
@@ -603,10 +604,10 @@ public class MySQLLocationDAO implements LocationDAO {
     int result = -1;
 
     query
-    .append("INSERT IGNORE INTO project_locations (project_id, loc_element_id, modified_by, created_by, modification_justification) ");
+      .append("INSERT IGNORE INTO project_locations (project_id, loc_element_id, modified_by, created_by, modification_justification) ");
     query.append("VALUES (?, ?, ?, ?, ?) ");
     query
-      .append("ON DUPLICATE KEY UPDATE is_active = 1, modified_by = VALUES(modified_by), modification_justification = VALUES(modification_justification) ");
+    .append("ON DUPLICATE KEY UPDATE is_active = 1, modified_by = VALUES(modified_by), modification_justification = VALUES(modification_justification) ");
     Object[] values = new Object[5];
     values[0] = projectLocationData.get("project_id");
     values[1] = projectLocationData.get("loc_element_id");
@@ -620,16 +621,17 @@ public class MySQLLocationDAO implements LocationDAO {
   }
 
   @Override
-  public int updateProjectGlobal(int projectID, User user, String justification) {
-    LOG.debug(">> updateProjectGlobal(projectID={})", projectID);
+  public int updateProjectGlobal(Project project, User user, String justification) {
+    LOG.debug(">> updateProjectGlobal(projectID={})", project.getId());
     int result = -1;
+    boolean isGlobal = project.isGlobal();
     StringBuilder query = new StringBuilder();
 
     try {
       Connection con = databaseManager.getConnection();
       result =
-        databaseManager.makeChange("UPDATE projects SET is_global = 1, modified_by = " + user.getId()
-          + ", modification_justification = '" + justification + "' WHERE id = " + projectID, con);
+        databaseManager.makeChange("UPDATE projects SET is_global = " + isGlobal + ", modified_by = " + user.getId()
+          + ", modification_justification = '" + justification + "' WHERE id = " + project.getId(), con);
 
     } catch (SQLException e) {
       String exceptionMessage = "-- updateProjectGlobal() > Exception raised trying ";

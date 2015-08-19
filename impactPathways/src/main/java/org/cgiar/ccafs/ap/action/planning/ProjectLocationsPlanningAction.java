@@ -241,7 +241,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
 
       // Then, updating projects received
-      boolean updated = locationManager.updateProjectGlobal(projectID, this.getCurrentUser(), this.getJustification());
+      boolean updated = locationManager.updateProjectGlobal(project, this.getCurrentUser(), this.getJustification());
       if (!updated) {
         success = false;
       }

@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLLocationDAO;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -172,9 +173,11 @@ public interface LocationDAO {
   /**
    * This method updates the project received into the database
    * 
-   * @param projectLocationData
+   * @param project - the project to update
+   * @param user - the user executing the action
+   * @param justification - the justification for the changes
    * @return the last inserted id or -1 if any error occurred.
    */
-  public int updateProjectGlobal(int projectID, User user, String justification);
+  public int updateProjectGlobal(Project project, User user, String justification);
 
 }
