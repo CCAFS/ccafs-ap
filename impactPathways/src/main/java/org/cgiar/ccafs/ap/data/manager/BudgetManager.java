@@ -26,9 +26,21 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Héctor Fabio Tobón R.
  * @author Javier Andrés Gallego
+ * @author Jorge leonardo Solis
  */
 @ImplementedBy(BudgetManagerImpl.class)
 public interface BudgetManager {
+
+  /**
+   * This method returns the budget gender of the project depending on the budget type given in the
+   * parameter and in the year specified.
+   * 
+   * @param projectID - Project identifier
+   * @param budgetTypeID - Budget type identifier
+   * @param year - Year
+   * @return a decimal number representing the total amount, 0 if nothing found, or -1 if an error occurred.
+   */
+  public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
   /**
    * This method returns the budget amount of the project depending on the budget type given in the
