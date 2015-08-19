@@ -17,7 +17,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ProjectLessonsDAO;
 import org.cgiar.ccafs.ap.data.dao.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
   }
 
   @Override
-  public boolean saveProjectComponentLesson(ComponentLesson lesson, Project project, User user, String justification) {
+  public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification) {
     Map<String, Object> lessonData = new HashMap<>();
 
     if (lesson.getId() != -1) {
@@ -64,7 +63,7 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
       lessonData.put("id", null);
     }
 
-    lessonData.put("project_id", project.getId());
+    lessonData.put("project_id", projectID);
     lessonData.put("component_name", lesson.getComponentName());
     lessonData.put("lessons", lesson.getLessons());
     lessonData.put("year", lesson.getYear());
