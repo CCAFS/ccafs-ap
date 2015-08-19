@@ -311,10 +311,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
+    super.getProjectLessons(projectID, config.getPlanningCurrentYear());
+
   }
 
   @Override
   public String save() {
+    super.saveProjectLessons(projectID);
     switch (actionName) {
       case "partnerLead":
         if (securityContext.canUpdateProjectLeader()) {

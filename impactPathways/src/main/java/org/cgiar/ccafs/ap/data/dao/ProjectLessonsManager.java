@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectLessonsManagerImpl;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import com.google.inject.ImplementedBy;
@@ -47,5 +46,5 @@ public interface ProjectLessonsManager {
    * @param justification
    * @return true if the information was saved successfully. False otherwise.
    */
-  public boolean saveProjectComponentLesson(ComponentLesson lesson, Project project, User user, String justification);
+  public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification);
 }
