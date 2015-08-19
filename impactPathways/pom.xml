@@ -181,6 +181,14 @@
 		  <artifactId>itext</artifactId>
 		  <version>${itext.version}</version>
 		</dependency>
+		
+	<!-- Csv Reader -->
+ <dependency>
+     <groupId>com.opencsv</groupId>
+     <artifactId>opencsv</artifactId>
+     <version>3.4</version>
+  </dependency>
+	
 
     <!-- Database version control -->
     <dependency>

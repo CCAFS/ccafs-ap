@@ -46,6 +46,31 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("FROM project_budgets b ");
+    query.append("WHERE project_id = " + projectID);
+    query.append(" AND  budget_type = " + budgetTypeID);
+    query.append(" AND  year = " + year);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -69,6 +94,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
+
 
   @Override
   public double calculateTotalCCAFSBudget(int projectID) {

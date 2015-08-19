@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.action.summaries.csv.DeliverableSummaryCSV;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
@@ -24,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -42,25 +44,30 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
   private DeliverableManager deliverableManager;
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
+  private DeliverableSummaryCSV deliverableCSV;
+  List<InputStream> streams;
 
   @Inject
   public PublicationSummaryAction(APConfig config, DeliverableManager deliverableManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager) {
+    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
+    DeliverableSummaryCSV deliverableCSV) {
     super(config);
     this.deliverableManager = deliverableManager;
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
+    this.deliverableCSV = deliverableCSV;
   }
 
   @Override
   public String execute() throws Exception {
     int currentPlanningYear = this.config.getPlanningCurrentYear();
     int midOutcomeYear = this.config.getMidOutcomeYear();
-    // Generate the pdf file
-    // projectPDF.generatePdf(project, currentPlanningYear, midOutcomeYear);
 
-    // streams = new ArrayList<>();
-    // streams.add(projectPDF.getInputStream());
+    // Generate the csv file
+    deliverableCSV.generateCSV();
+
+    streams = new ArrayList<>();
+    // streams.add(deliverableCSV.getInputStream());
 
     return SUCCESS;
   }
@@ -99,9 +106,6 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
         deliverable.setResponsiblePartner(partners.get(0));
       } else {
         DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-        // responsiblePartner.setInstitution(new Institution(-1));
-        // responsiblePartner.setUser(new User(-1));
-        // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
         deliverable.setResponsiblePartner(responsiblePartner);
       }
 
