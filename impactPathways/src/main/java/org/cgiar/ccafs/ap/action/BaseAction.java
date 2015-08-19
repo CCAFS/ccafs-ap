@@ -208,8 +208,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return projectLessons;
   }
 
-  protected void getProjectLessons(int projectID, int year) {
-    projectLessons = lessonManager.getProjectComponentLesson(projectID, this.getActionName(), year);
+  protected void getProjectLessons(int projectID) {
+    projectLessons =
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
   }
 
   public HttpServletRequest getRequest() {

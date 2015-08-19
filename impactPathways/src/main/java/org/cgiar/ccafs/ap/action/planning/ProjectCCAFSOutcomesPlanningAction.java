@@ -115,6 +115,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     return programs.toString();
   }
 
+  @Override
   public int getCurrentPlanningYear() {
     return config.getPlanningCurrentYear();
   }
@@ -347,6 +348,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     previousIndicators = new ArrayList<>();
     previousIndicators.addAll(project.getIndicators());
 
+    super.getProjectLessons(projectID);
     super.setHistory(historyManager.getCCAFSOutcomesHistory(projectID));
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -375,6 +377,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
     if (securityContext.canUpdateProjectCCAFSOutcomes()) {
       boolean success = true;
+
+      super.saveProjectLessons(projectID);
 
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {

@@ -311,7 +311,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
-    super.getProjectLessons(projectID, config.getPlanningCurrentYear());
+    super.getProjectLessons(projectID);
 
   }
 

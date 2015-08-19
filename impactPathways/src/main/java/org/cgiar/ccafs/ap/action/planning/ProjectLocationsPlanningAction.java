@@ -217,6 +217,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       }
     }
 
+    super.getProjectLessons(projectID);
     super.setHistory(historyManager.getProjectLocationsHistory(project.getId()));
   }
 
@@ -245,6 +246,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       if (!updated) {
         success = false;
       }
+      super.saveProjectLessons(projectID);
 
       // Displaying user messages.
       if (success == false) {

@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -159,6 +160,10 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
       project.setOutputsBudgets(budgetByMogManager.getProjectOutputsBudgetByYear(projectID, year));
       totalBudget = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
       budgetPercentageToGender = budgetManager.calculateTotalGenderBudgetByYear(projectID, year);
+
+      int bdgtTypeid =
+        (project.isBilateralProject()) ? BudgetType.W3_BILATERAL.getValue() : BudgetType.W1_W2.getValue();
+      budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, bdgtTypeid);
 
       if (!allYears.contains(new Integer(year))) {
         year = allYears.get(0);
