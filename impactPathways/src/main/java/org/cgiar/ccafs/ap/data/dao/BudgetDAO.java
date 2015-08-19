@@ -92,6 +92,26 @@ public interface BudgetDAO {
   public double calculateTotalGenderBudgetByYear(int projectID, int year);
 
   /**
+   * This method calculates the gender budget percentage for a given project according to the type received by
+   * parameter.
+   * 
+   * @param projectID - project identifier.
+   * @return a number representing the percentage for that specific project, if if some error happen a -1.0 will be
+   *         returned.
+   */
+  public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID);
+
+  /**
+   * This method calculates the percentage of budget going to gender according to the type, year and type received by
+   * parameter.
+   * 
+   * @param projectID is the project identifier.
+   * @param year is the year.
+   * @return a double representing this value, or -1 if some error found.
+   */
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID);
+
+  /**
    * This method calculates the total budget of some type for a given project.
    * 
    * @param projectID is the project identifier.
@@ -146,14 +166,6 @@ public interface BudgetDAO {
    * @return False if any error occurred. True otherwise.
    */
   public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID);
-
-  /**
-   * This method deletes all the budgets that belong to an institution linked to the project (as partner or leader)
-   * but where this link its inactive.
-   * 
-   * @return False if any error occurred. True otherwise.
-   */
-  public boolean deleteBudgetsWithUnactiveInstitutions(int projectID);
 
   /**
    * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.

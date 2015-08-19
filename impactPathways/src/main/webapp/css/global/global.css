@@ -122,6 +122,7 @@ div.disabled {
 
 .red {
   color: red;
+  font-weight: bold;
 }
 
 .fieldset {
@@ -249,6 +250,7 @@ h6.subTitle {
 }
 
 .hasDatepicker {
+  cursor: pointer;
   background: url(../../images/global/calendar.png) no-repeat scroll 99% 2px;
 }
 
@@ -562,6 +564,11 @@ img.icon {
     width: 100%;        
     min-height: 56px;
     background: url(../../images/global/loading.gif) #FFF no-repeat 50%;        z-index: 99;    opacity: 0.3;
+}
+
+/* Lessons and Implications */
+#lessons {
+  padding-top: 31px;
 }
 
 /* Log History */

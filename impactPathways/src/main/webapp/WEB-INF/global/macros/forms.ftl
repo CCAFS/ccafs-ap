@@ -188,6 +188,12 @@
   [@s.file name="${name}" id="${customId}" cssClass="upload" cssStyle="${template?string('display:none','')}"  /]
 [/#macro] 
 
+[#macro req required=true ]
+  [#if required]
+    <span class="red">*</span>
+  [/#if]
+[/#macro] 
+
 [#macro confirmJustification action="" namespace="/" nameId="" title="" projectID=""]
   <div id="dialog-justification" title="${title}" style="display:none"> 
     <div class="dialog-content"> 

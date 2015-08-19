@@ -24,7 +24,7 @@
   
   [@s.form action="outputs" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
-    [#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
+    [#assign years= [midOutcomeYear, currentPlanningYear-1,currentPlanningYear, currentPlanningYear+1] /]
     [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
@@ -44,7 +44,7 @@
           <ul>
             [#list years as year]
               <li class=""><a href="#mogs-${year}">${year}</a></li> 
-            [/#list]   
+            [/#list]
           </ul>
           [#list years as year]
             [#-- Major Output Group list by year --]
@@ -60,13 +60,23 @@
                   <div class="fullPartBlock">
                     <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
                   </div>
-                  <div class="fullBlock">
-                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:<span class="red">*</span></h6>  
-                    [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
-                  </div>
-                  <div class="fullBlock">
-                    [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=true editable=editable /]
-                  </div> 
+                  [#if (currentPlanningYear == year) || (midOutcomeYear == year)]
+                    <div class="fullBlock">
+                      <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:[@customForm.req required=!project.bilateralProject /]</h6>  
+                      [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=!project.bilateralProject showTitle=false editable=editable /]
+                    </div>
+                    <div class="fullBlock">
+                      [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=!project.bilateralProject editable=editable /]
+                    </div>
+                  [#else]
+                    <div class="fullBlock">
+                      <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:</h6>  
+                      [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
+                    </div>
+                    <div class="fullBlock">
+                      [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" editable=editable /]
+                    </div>
+                  [/#if]
                 </div>
               [/#list] [#-- End Outcomes 2019 list --]
             </div>
@@ -76,14 +86,17 @@
         <p class="simpleBox center">[@s.text name="planning.projectOutputs.empty" /]</p>
       [/#if] 
     </div>
+    
+    [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
-        [@customForm.textArea name="project.outputsOverviewLessons" i18nkey="planning.projectOutputs.lessons" required=true editable=editable /]
+        [@customForm.textArea name="project.outputsOverviewLessons" i18nkey="planning.projectOutputs.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
+    [/#if]
     
     [#if editable]  
       [#-- Project identifier --]

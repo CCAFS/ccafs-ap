@@ -112,7 +112,7 @@
                     [#-- Total contribution --]
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
-                        <p class="totalContribution">[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: 
+                        <p class="totalContribution">[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: [@customForm.req required=true /]
                         <strong>US$ <span class="amount">${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
@@ -126,7 +126,7 @@
                     [#-- Gender contribution --]
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
-                        <p class="genderContribution">[#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: 
+                        <p class="genderContribution">[#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param]${projectTypeLabel}[/@s.param][/@s.text]: [@customForm.req required=true /]
                         <strong>US$ <span class="amount">${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
@@ -150,7 +150,7 @@
                     [#-- Total contribution --]
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
-                        <p class="totalContribution">[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: 
+                        <p class="totalContribution">[#if !editable]${mogBudget.totalContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: [@customForm.req required=true /]
                         <strong>US$ <span class="amount">${((totalBudgetByYear?number/100)*(mogBudget.totalContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">
@@ -164,7 +164,7 @@
                     [#-- Gender contribution --]
                     <div class="halfPartBlock budget clearfix">
                       <div class="title">
-                        <p class="genderContribution">[#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: 
+                        <p class="genderContribution">[#if !editable]${mogBudget.genderContribution!0}[/#if][@s.text name="preplanning.projectBudgetByMog.percentageOfTotalGenderBudget"][@s.param][@s.text name="planning.projectBudget.W3Bilateral" /][/@s.param][/@s.text]: [@customForm.req required=true /]
                         <strong>US$ <span class="amount">${(((totalBudgetByYear?number/100)*((mogBudget.totalContribution)!0)?number/100)*(mogBudget.genderContribution)!0)?number?string(",##0.00")}</span></strong></p>
                       </div>
                       <div class="content">

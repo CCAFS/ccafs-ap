@@ -343,6 +343,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
               this.getJustification());
           }
         }
+
+        budgetManager.deleteBudgetsFromUnexistentYears(projectID);
       }
 
       // Update only the values to which the user is authorized to modify

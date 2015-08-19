@@ -98,6 +98,7 @@ public class ProjectPartnersDeleteAction extends BaseAction {
   public void checkProjectPartnerContributions() {
     // First, we need to get the list of all the CCAFS Partners of the project.
     // To do that, we need to know the project where this project partner belongs to.
+    linkedProjectPartners = new ArrayList<>();
     Project project = projectManager.getProjectFromProjectPartnerID(projectPartnerID);
     if (project != null) {
       // Getting the partner information.
@@ -108,7 +109,6 @@ public class ProjectPartnersDeleteAction extends BaseAction {
       boolean lastInstitution = institutionManager.validateLastOneInstitution(projectPartnerID);
 
       // If the institution is the last one, we need to get all the project partners that will be affected.
-      linkedProjectPartners = new ArrayList<>();
       if (lastInstitution) {
         // Looping the list of partners.
         for (ProjectPartner partner : partners) {
