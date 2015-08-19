@@ -14,10 +14,46 @@
 
 package org.cgiar.ccafs.ap.action.summaries.csv;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.opencsv.CSVWriter;
+
 
 /**
  * @author Your name
  */
 public class DeliverableSummaryCSV {
 
+  private InputStream inputStream;
+
+  public void generateCSV() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    CSVWriter csvOutput;
+
+    try {
+      csvOutput = new CSVWriter(new FileWriter("", true), ',');
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+  }
+
+  /**
+   * @return the inputStream
+   */
+  private InputStream getInputStream() {
+    return inputStream;
+  }
+
+  /**
+   * @param inputStream the inputStream to set
+   */
+  private void setInputStream(InputStream inputStream) {
+    this.inputStream = inputStream;
+  }
 }
