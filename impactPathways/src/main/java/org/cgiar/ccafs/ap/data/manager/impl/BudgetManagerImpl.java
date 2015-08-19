@@ -60,6 +60,11 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
+    return budgetDAO.calculateGenderBudgetByTypeAndYear(projectID, budgetTypeID, year);
+  }
+
+  @Override
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
     return budgetDAO.calculateProjectBudgetByTypeAndYear(projectID, budgetTypeID, year);
   }

@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.LocationManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Location;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -137,11 +138,11 @@ public interface LocationManager {
   /**
    * This method updates the is_global field corresponding to the project received.
    * 
-   * @param projectID - the project identifier
+   * @param project - the project to update
    * @param user - the user executing the action
    * @param justification - the justification for the changes
    * @return true if the information was successfully saved. False otherwise.
    */
-  public boolean updateProjectGlobal(int projectID, User user, String justification);
+  public boolean updateProjectGlobal(Project project, User user, String justification);
 
 }

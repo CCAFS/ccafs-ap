@@ -71,18 +71,23 @@
           <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
         [/#if]
       </div>
+      
+      [#if !newProject]
       <div id="lessons" class="borderBox">
         [#if (!editable && canEdit)]
           <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]
         <div class="fullBlock">
-          [@customForm.textArea name="project.projectActivitiesLessons" i18nkey="planning.activities.lessons" required=true editable=editable /]
+          [@customForm.textArea name="project.projectActivitiesLessons" i18nkey="planning.activities.lessons" required=!project.bilateralProject editable=editable /]
         </div>
       </div>
+      [/#if]
       
       [#if editable]
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${projectID?c}" />
+      <input id="minDateValue" value="${project.startDate?string.yyyy}-01-01" type="hidden"/>
+      <input id="maxDateValue" value="${project.endDate?string.yyyy}-12-31" type="hidden"/> 
       <div class="[#if !newProject]borderBox[/#if]" >
         [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
