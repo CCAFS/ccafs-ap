@@ -163,6 +163,9 @@
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
+        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
+        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
+        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
         [@customForm.textArea name="project.locationsLessons" i18nkey="planning.project.locations.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
