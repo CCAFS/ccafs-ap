@@ -35,11 +35,7 @@
     </div>
     [#-- Project Partner --]
     <div class="fullPartBlock">
-      [#if activity.projectPartners??]
-        [@customForm.select name="${activitiesName}.leader" className="leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
-      [#else]
-        [@customForm.select name="${activitiesName}.leader" className="leader" label="" i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
-      [/#if]
+      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
     </div>  
   </div><!-- End ${activityId} -->
 [/#macro]

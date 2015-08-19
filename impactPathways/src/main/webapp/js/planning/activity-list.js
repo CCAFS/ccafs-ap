@@ -78,8 +78,8 @@ function addChosen() {
 }
 
 function datePickerConfig($startDate,$endDate) {
-  var defaultMinDateValue = "2010-01-01";
-  var defaultMaxDateValue = "2015-12-31";
+  var defaultMinDateValue = $("#minDateValue").val();
+  var defaultMaxDateValue = $("#maxDateValue").val();
   var minDateValue = defaultMinDateValue;
   var maxDateValue = defaultMaxDateValue;
 
@@ -87,7 +87,9 @@ function datePickerConfig($startDate,$endDate) {
   maxDateValue = $endDate.val();
 
   // Add readonly attribute to prevent inappropriate user input
-  // $startDate.attr('readonly', true);
+  $startDate.on('keydown', function(e) {
+    e.preventDefault();
+  });
   var finalMaxDate = (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue;
   $startDate.datepicker({
       dateFormat: "yy-mm-dd",
@@ -107,7 +109,9 @@ function datePickerConfig($startDate,$endDate) {
   minDateValue = $startDate.val();
 
   // Add readonly attribute to prevent inappropriate user input
-  // $endDate.attr('readonly', true);
+  $endDate.on('keydown', function(e) {
+    e.preventDefault();
+  });
   var finalMinDate = (minDateValue != 0) ? minDateValue : defaultMinDateValue;
   $endDate.datepicker({
       dateFormat: "yy-mm-dd",
