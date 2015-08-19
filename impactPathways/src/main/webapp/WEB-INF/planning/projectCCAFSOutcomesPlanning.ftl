@@ -51,7 +51,7 @@
         <div id="contributionsBlock" class="">  
           [#if midOutcomesSelected?has_content]
             [#list midOutcomesSelected as midOutcome]
-              <div class="contribution ">
+              <div class="contribution">
                 [#-- Midoutcome title --]
                 <div class="midOutcomeTitle">
                   <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />

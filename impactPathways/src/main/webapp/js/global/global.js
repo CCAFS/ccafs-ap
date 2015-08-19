@@ -34,6 +34,12 @@ $(document).ready(function() {
     // $(window.location.hash).addClass('animated flipInX').css({'z-index': '9999'});
   }, 300);
 
+  if(window.location.hash) {
+    $('html, body').animate({
+      scrollTop: $(window.location.hash).offset().top
+    }, 2000);
+  }
+
   function showHelpText() {
     $('.helpMessage').addClass('animated flipInX');
   }

@@ -2,9 +2,9 @@
 [#macro activityMacro activity activity_name="" activity_index="0" template=false editable=true canEdit=true]
   [#assign activitiesName]${activity_name}[${activity_index}][/#assign]
   [#assign activityId]${template?string('template',activity_index)}[/#assign]
-  <div id="activity-${activityId}" class="activity borderBox" style="display:${template?string('none','block')}"> 
+  <div id="activity-${(activity.id)!}" class="activity borderBox" style="display:${template?string('none','block')}"> 
     [#if (!editable && canEdit)]
-      <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
     [#if template]
       <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
