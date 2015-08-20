@@ -240,7 +240,8 @@ public class ProjectSummaryPDF extends BasePDF {
 
     currencyFormatter = NumberFormat.getPercentInstance(locale);
 
-    listOutputBudgets = this.budgetByMogManager.getProjectOutputsBudgetByYear(project.getId(), year);
+    // TODO - Jorge please update this method call.
+    listOutputBudgets = this.budgetByMogManager.getProjectOutputsBudgetByTypeAndYear(project.getId(), 9999, year);
     OutputBudget budget_temp = this.getOutputBudgetByMog(listOutputBudgets, mog);
     cell = new Paragraph();
     cell.setFont(TABLE_BODY_FONT);
@@ -460,7 +461,7 @@ public class ProjectSummaryPDF extends BasePDF {
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
       cell =
         new Paragraph("USD "
-          + String.valueOf(currencyFormatter.format(this.budgetManager.calculateTotalCCAFSBudget(project.getId()))),
+          + String.valueOf(currencyFormatter.format(this.budgetManager.calculateTotalBudget(project.getId()))),
           TABLE_BODY_FONT);
 
       if (project.isCoFundedProject()) {
@@ -1337,7 +1338,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -2309,4 +2310,5 @@ public class ProjectSummaryPDF extends BasePDF {
   public void setSummaryTitle(String title) {
     this.summaryTitle = title;
   }
+
 }

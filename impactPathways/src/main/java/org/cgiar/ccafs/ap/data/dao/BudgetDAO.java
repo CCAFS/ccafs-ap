@@ -60,7 +60,16 @@ public interface BudgetDAO {
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
-  public double calculateTotalCCAFSBudget(int projectID);
+  public double calculateTotalBudget(int projectID);
+
+  /**
+   * This method calculates the total CCAFS Budget which is the addition for ALL years depending of type.
+   * 
+   * @param projectID is the project id
+   * @param budgetTypeID is the budget Type
+   * @return
+   */
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
 
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) and a given year
@@ -70,7 +79,7 @@ public interface BudgetDAO {
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
-  public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
+  public double calculateTotalBudgetByYear(int projectID, int year);
 
   /**
    * This method calculates the total gender percentage which is the addition of W1+W2+W3+BILATERAL for ALL years.
@@ -191,6 +200,7 @@ public interface BudgetDAO {
    */
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
 
+
   /**
    * This method saves the Budget and the Project Budget relation
    * 
@@ -198,6 +208,5 @@ public interface BudgetDAO {
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveBudget(int projectID, Map<String, Object> budgetData);
-
 
 }

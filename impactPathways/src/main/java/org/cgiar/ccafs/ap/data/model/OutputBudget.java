@@ -28,6 +28,7 @@ public class OutputBudget {
   private double totalContribution;
   private double genderContribution;
   private IPElement output;
+  private BudgetType type;
 
   public double getGenderContribution() {
     return genderContribution;
@@ -43,6 +44,10 @@ public class OutputBudget {
 
   public double getTotalContribution() {
     return totalContribution;
+  }
+
+  public BudgetType getType() {
+    return type;
   }
 
   public int getYear() {
@@ -63,6 +68,10 @@ public class OutputBudget {
 
   public void setTotalContribution(double totalContribution) {
     this.totalContribution = totalContribution;
+  }
+
+  public void setType(BudgetType type) {
+    this.type = type;
   }
 
   public void setYear(int year) {

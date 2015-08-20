@@ -72,8 +72,11 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     // Date
     phrase = new Phrase();
     phrase.setFont(SUB_HEADER_FONT);
-    String date = (new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()));
+    String date = (new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
     phrase.add("This report was generated on " + date);
+    date = (new SimpleDateFormat("HH:mm").format(new Date()));
+    phrase.add(" at " + date);
+
 
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(), rect.getBottom(),
       0);
