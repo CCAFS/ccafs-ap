@@ -146,12 +146,17 @@ public class ActivitiesListAction extends BaseAction {
         project.getActivities().clear();
       }
     }
+
+    super.getProjectLessons(projectID);
     super.setHistory(historyManager.getActivitiesHistory(project.getId()));
   }
 
   @Override
   public String save() {
     if (securityContext.canUpdateProjectActivities()) {
+
+      super.saveProjectLessons(projectID);
+
       // Update only the values to which the user is authorized to modify
       boolean success = true;
 
@@ -170,8 +175,9 @@ public class ActivitiesListAction extends BaseAction {
         }
       }
       // Saving new and old Activities
-      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
-        this.getJustification());
+      boolean saved =
+        activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+          this.getJustification());
 
       if (!saved) {
         success = false;

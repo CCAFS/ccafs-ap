@@ -50,9 +50,9 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
     query.append("SELECT * FROM project_component_lessons ");
     query.append("WHERE project_id = ");
     query.append(projectID);
-    query.append(" AND component_name = ");
+    query.append(" AND component_name = '");
     query.append(componentName);
-    query.append(" AND year = ");
+    query.append("' AND year = ");
     query.append(year);
 
     try (Connection con = daoManager.getConnection()) {

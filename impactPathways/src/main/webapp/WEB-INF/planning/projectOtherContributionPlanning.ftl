@@ -88,10 +88,13 @@
     [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
-        [@customForm.textArea name="project.ipOtherContributionLessons" i18nkey="planning.impactPathways.otherContributions.lessons" required=!project.bilateralProject editable=editable /]
+        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
+        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
+        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.impactPathways.otherContributions.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
     [/#if]

@@ -122,6 +122,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       previousCRPs.add(new CRP(crp.getId()));
     }
 
+    super.getProjectLessons(projectID);
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
     if (this.isHttpPost()) {
@@ -132,6 +133,9 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   @Override
   public String save() {
     if (securityContext.canUpdateProjectOtherContributions()) {
+
+      super.saveProjectLessons(projectID);
+
       // Saving Activity IP Other Contribution
       boolean saved =
         ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),

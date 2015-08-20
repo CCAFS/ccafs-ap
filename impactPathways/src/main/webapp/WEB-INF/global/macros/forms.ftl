@@ -48,12 +48,11 @@
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
-          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue?html}[/#if]
+          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue}[/#if]
         [#else]
-          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value?html}[/#if] 
+          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value}[/#if] 
         [/#if]
       </p>
-      
     [/#if] 
   </div>
   [#if addButton]
