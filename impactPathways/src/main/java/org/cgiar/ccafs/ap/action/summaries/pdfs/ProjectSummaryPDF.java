@@ -240,20 +240,21 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
     currencyFormatter = NumberFormat.getPercentInstance(locale);
+    currencyFormatter.setMaximumFractionDigits(0);
 
     listOutputBudgets = this.budgetByMogManager.getProjectOutputsBudgetByYear(project.getId(), year);
     OutputBudget budget_temp = this.getOutputBudgetByMog(listOutputBudgets, mog);
     cell = new Paragraph();
     cell.setFont(TABLE_BODY_FONT);
+
+
     if (budget_temp == null) {
 
       cell.add(this.truncate(currencyFormatter.format(0)));
-      currencyFormatter = NumberFormat.getCurrencyInstance(locale);
 
       this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
       cell = new Paragraph();
       cell.setFont(TABLE_BODY_FONT);
-
       cell.add(String.valueOf(currencyFormatter.format(0)));
     } else {
 
@@ -264,22 +265,28 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       cell.add(this.truncate(currencyFormatter.format(budget_temp.getTotalContribution() * 0.01)));
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-      cell.add(" - USD $"
-        + this.truncate(currencyFormatter.format(budget_temp.getTotalContribution() * 0.01
-          * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year))));
+      currencyFormatter.setMaximumFractionDigits(0);
 
+      cell.add(" - USD "
+        + this.truncate(currencyFormatter.format(budget_temp.getTotalContribution() * 0.01
+          * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year))));
+      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
       // Gender
       currencyFormatter = NumberFormat.getPercentInstance(locale);
+
       cell = new Paragraph();
       cell.setFont(TABLE_BODY_FONT);
       cell.add(this.truncate(currencyFormatter.format(budget_temp.getGenderContribution() * 0.01)));
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-      cell.add(" - USD $"
+      currencyFormatter.setMaximumFractionDigits(0);
+
+      cell.add(" - USD "
         + this.truncate(currencyFormatter.format(budget_temp.getGenderContribution() * 0.01
           * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year))));
+      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
     }
-    this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
 
   }
 
@@ -296,6 +303,7 @@ public class ProjectSummaryPDF extends BasePDF {
     BudgetType budgetType) {
     Locale locale = new Locale("en", "US");
     NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+    currencyFormatter.setMaximumFractionDigits(0);
     currencyFormatter.setParseIntegerOnly(true);
     Budget budget;
 
@@ -303,7 +311,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
     if (budget == null) {
       // Annual budget
-      cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(0.0)), TABLE_BODY_FONT);
+      cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(0.0)), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
       // gender percentage
@@ -312,11 +320,12 @@ public class ProjectSummaryPDF extends BasePDF {
       cell = new Paragraph(currencyFormatter.format(0), TABLE_BODY_FONT);
 
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-      cell.add(" - USD $" + this.truncate(currencyFormatter.format(0.0)));
+      currencyFormatter.setMaximumFractionDigits(0);
+      cell.add(" - USD " + this.truncate(currencyFormatter.format(0.0)));
       budget = null;
     } else {
       // Annual budget
-      cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(budget.getAmount())), TABLE_BODY_FONT);
+      cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(budget.getAmount())), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
       // gender percentage
@@ -325,7 +334,8 @@ public class ProjectSummaryPDF extends BasePDF {
       cell = new Paragraph(currencyFormatter.format(budget.getGenderPercentage() * 0.01), TABLE_BODY_FONT);
 
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-      cell.add(" - USD $"
+      currencyFormatter.setMaximumFractionDigits(0);
+      cell.add(" - USD "
         + this.truncate(currencyFormatter.format(budget.getAmount() * budget.getGenderPercentage() * 0.01)));
       budget = null;
     }
@@ -361,6 +371,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       Locale locale = new Locale("en", "US");
       NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+      currencyFormatter.setMaximumFractionDigits(0);
 
       // Add cell with the name summary
       this.addCustomTableCell(table, cell, Element.ALIGN_CENTER, BODY_TEXT_BOLD_FONT, Color.WHITE,
@@ -408,7 +419,7 @@ public class ProjectSummaryPDF extends BasePDF {
       }
 
       double value, genderValue;
-      currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+
       for (int year = startYear; year <= endYear; year++) {
 
 
@@ -421,13 +432,13 @@ public class ProjectSummaryPDF extends BasePDF {
           value =
             this.budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
 
-          cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
+          cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
           // gender w1/w2
           genderValue =
             this.budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
-          cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
+          cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
@@ -435,7 +446,7 @@ public class ProjectSummaryPDF extends BasePDF {
           value =
             this.budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W3_BILATERAL.getValue(),
               year);
-          cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
+          cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
@@ -445,7 +456,7 @@ public class ProjectSummaryPDF extends BasePDF {
             this.budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), BudgetType.W3_BILATERAL.getValue(),
               year);
 
-          cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
+          cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
@@ -454,13 +465,13 @@ public class ProjectSummaryPDF extends BasePDF {
           value =
             this.budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
 
-          cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
+          cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
           // gender w1/w2
           genderValue =
             this.budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
-          cell = new Paragraph("USD $" + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
+          cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
         }
@@ -471,31 +482,30 @@ public class ProjectSummaryPDF extends BasePDF {
       cell = new Paragraph(this.getText("summaries.project.budget.overall.total"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 0);
 
-      currencyFormatter = NumberFormat.getCurrencyInstance(locale);
 
       if (project.isCoFundedProject()) {
         cell =
-          new Paragraph("USD $"
+          new Paragraph("USD "
             + this.truncate(currencyFormatter.format(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
               BudgetType.W1_W2.getValue()))), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
         cell =
-          new Paragraph("USD $"
+          new Paragraph("USD "
             + this.truncate(currencyFormatter.format(budgetManager.calculateTotalGenderPercentageByType(
               project.getId(), BudgetType.W1_W2.getValue()))), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
         cell =
-          new Paragraph("USD $"
+          new Paragraph("USD "
             + this.truncate(currencyFormatter.format(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
               BudgetType.W3_BILATERAL.getValue()))), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
         cell =
-          new Paragraph("USD $"
+          new Paragraph("USD "
             + this.truncate(currencyFormatter.format(budgetManager.calculateTotalGenderPercentageByType(
               project.getId(), BudgetType.W3_BILATERAL.getValue()))), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
@@ -504,13 +514,13 @@ public class ProjectSummaryPDF extends BasePDF {
       else {
 
         cell =
-          new Paragraph("USD $"
+          new Paragraph("USD "
             + this.truncate(currencyFormatter.format(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
               this.getBudgetType().getValue()))), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
         cell =
-          new Paragraph("USD $"
+          new Paragraph("USD "
             + this.truncate(currencyFormatter.format(budgetManager.calculateTotalGenderPercentageByType(
               project.getId(), this.getBudgetType().getValue()))), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
@@ -2348,12 +2358,14 @@ public class ProjectSummaryPDF extends BasePDF {
   }
 
   public String truncate(String moneyString) {
-    if (moneyString.endsWith(".00")) {
-      int centsIndex = moneyString.lastIndexOf(".00");
-      if (centsIndex != -1) {
-        moneyString = moneyString.substring(1, centsIndex);
-      }
-    }
+    //
+    // if (moneyString.endsWith(".00")) {
+    // int centsIndex = moneyString.lastIndexOf(".00");
+    // if (centsIndex != -1) {
+    // moneyString = moneyString.substring(1, centsIndex);
+    // }
+    // }
+
     return moneyString.replace(",", ".");
   }
 }
