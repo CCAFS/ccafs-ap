@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.LocationGeoposition;
 import org.cgiar.ccafs.ap.data.model.LocationType;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Region;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -519,10 +520,10 @@ public class LocationManagerImpl implements LocationManager {
   }
 
   @Override
-  public boolean updateProjectGlobal(int projectID, User user, String justification) {
+  public boolean updateProjectGlobal(Project project, User user, String justification) {
     boolean updated = false;
 
-    int recordUpdated = locationDAO.updateProjectGlobal(projectID, user, justification);
+    int recordUpdated = locationDAO.updateProjectGlobal(project, user, justification);
     updated = (recordUpdated != -1);
     return updated;
   }

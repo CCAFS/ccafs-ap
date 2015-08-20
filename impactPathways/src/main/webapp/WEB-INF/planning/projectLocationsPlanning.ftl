@@ -36,8 +36,9 @@
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
-    [/#if] 
-    <div id="" class="borderBox"> 
+    [/#if]
+    <div class="loadingBlock"></div>
+    <div id="" class="borderBox" style="display:none"> 
       [#-- Can edit button --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
@@ -47,10 +48,10 @@
       [@s.text name="planning.project" /]: ${project.composedId} - [@s.text name="planning.project.locations.title" /] 
       </h1>  
       <div id="locationsGlobalBlock" class="clearfix">
-        [@customForm.checkbox className="globalCheck" name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
+        [@customForm.checkbox className="globalCheck" name="project.global" value="true" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
         [#-- [@customForm.checkbox name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global value="true" /]  --] 
       </div>
-      <div id="projectLocations-map">
+      <div id="projectLocations-map" >
       [#if project.global && !editable]
         <img id="global" src="${baseUrl}/images/global/global-map.png">
         <p class="global">[@s.text name="planning.project.locations.map.isGlobal" /]</p>
@@ -156,14 +157,19 @@
       </div> 
     </div>
     
+    [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
-        [@customForm.textArea name="project.locationsLessons" i18nkey="planning.project.locations.lessons" required=true editable=editable /]
+        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
+        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
+        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.project.locations.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
+    [/#if]
     
     [#if editable] 
       <!-- internal parameter --> 

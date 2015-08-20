@@ -46,10 +46,10 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
+  public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(amount) as total ");
+    query.append("SELECT SUM(gender_percentage) as total ");
     query.append("FROM project_budgets b ");
     query.append("WHERE project_id = " + projectID);
     query.append(" AND  budget_type = " + budgetTypeID);
@@ -71,6 +71,33 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets b ");
+    query.append("WHERE project_id = " + projectID);
+    query.append(" AND  budget_type = " + budgetTypeID);
+    query.append(" AND  year = " + year);
+    query.append(" AND  is_active = TRUE");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
   public double calculateTotalCCAFSBudget(int projectID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -78,6 +105,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
+    query.append(" AND is_active = TRUE");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -104,6 +132,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(projectID);
     query.append(" AND year =  ");
     query.append(year);
+    query.append(" AND is_active = TRUE");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -129,6 +158,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
+    query.append(" WHERE is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -154,6 +184,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("WHERE project_id = ");
     query.append(projectID);
     query.append(" AND year = ");
+    query.append(" AND is_active= TRUE");
     query.append(year);
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -171,6 +202,63 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND is_active = TRUE ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND year = ");
+    query.append(year);
+    query.append(" AND is_active = TRUE");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -180,6 +268,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(projectID);
     query.append(" AND budget_type = ");
     query.append(budgetTypeID);
+    query.append(" AND is_active = 1");
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
@@ -215,6 +305,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
+
   @Override
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID, int userID, String justification) {
     LOG.debug(">> deleteBudgetsByInstitution(projectId={}, institutionId={})", projectID, institutionID);
@@ -238,7 +329,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
-
   @Override
   public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification) {
     LOG.debug(">> deleteBudgetsByYear(projectId={}, eyar={})", projectID, year);
@@ -260,6 +350,49 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return false;
   }
 
+  @Override
+  public boolean deleteBudgetsFromUnexistentYears(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_budgets pb ");
+    query.append("INNER JOIN projects p ON pb.project_id = p.id ");
+    query.append("SET pb.is_active = FALSE ");
+    query.append("WHERE pb.year < YEAR(p.start_date) OR pb.year > YEAR(p.end_date) ");
+    query.append("AND pb.project_id =  ");
+    query.append(projectID);
+
+    int result = databaseManager.saveData(query.toString(), new Object[] {});
+    return (result != -1);
+  }
+
+  @Override
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_budgets pb ");
+    query.append("SET pb.is_active = FALSE ");
+    query.append("WHERE pb.institution_id NOT IN ");
+    query.append("( SELECT  partner_id FROM project_partners pp ");
+    query.append("  WHERE pp.project_id = pb.project_id AND pp.is_active = 1 GROUP BY pp.partner_id, pp.is_active ) ");
+    query.append(" AND pb.project_id = ");
+    query.append(projectID);
+
+    int result = databaseManager.saveData(query.toString(), new Object[] {});
+    return (result != -1);
+  }
+
+  @Override
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("UPDATE project_budgets pb ");
+    query.append("INNER JOIN project_cofinancing_linkages pcl ON pb.project_id = pcl.core_project_id  ");
+    query.append("  AND pb.cofinance_project_id = pcl.bilateral_project_id ");
+    query.append("SET pb.is_active = 0 ");
+    query.append("WHERE pcl.is_active = 0 ");
+    query.append("AND project_id = ");
+    query.append(projectID);
+
+    int result = databaseManager.saveData(query.toString(), new Object[] {});
+    return (result != -1);
+  }
 
   @Override
   public List<Map<String, String>> getBudgetsByProject(int projectID) {
@@ -295,6 +428,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(projectID);
     query.append(" ) AND pb.year=  ");
     query.append(year);
+    query.append(" AND pb.is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -371,10 +505,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
       query.append(budgetData.get("year"));
       query.append(" AND pb.project_id = ");
       query.append(projectID);
+      query.append(" AND pb.cofinance_project_id = ");
 
       if (budgetData.get("cofinance_project_id") != null) {
-        query.append(" AND pb.cofinance_project_id = ");
         query.append(budgetData.get("cofinance_project_id"));
+      } else {
+        query.append("NULL");
       }
 
       try (Connection con = databaseManager.getConnection()) {

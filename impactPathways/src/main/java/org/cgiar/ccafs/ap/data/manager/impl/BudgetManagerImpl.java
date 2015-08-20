@@ -60,6 +60,11 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
+    return budgetDAO.calculateGenderBudgetByTypeAndYear(projectID, budgetTypeID, year);
+  }
+
+  @Override
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
     return budgetDAO.calculateProjectBudgetByTypeAndYear(projectID, budgetTypeID, year);
   }
@@ -85,8 +90,24 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID) {
+    return budgetDAO.calculateTotalGenderPercentageByType(projectID, budgetTypeID);
+  }
+
+  @Override
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
+    return budgetDAO.calculateTotalGenderPercentageByYearAndType(projectID, year, budgetTypeID);
+  }
+
+  @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     return budgetDAO.calculateTotalProjectBudgetByType(projectID, budgetTypeID);
+  }
+
+  @Override
+  public boolean deactiveInvalidBudgets() {
+    // TODO Auto-generated method stub
+    return false;
   }
 
   @Override
@@ -105,8 +126,22 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public List<Budget> getBudgetsByProject(Project project) {
+  public boolean deleteBudgetsFromUnexistentYears(int projectID) {
+    return budgetDAO.deleteBudgetsFromUnexistentYears(projectID);
+  }
 
+  @Override
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
+    return budgetDAO.deleteBudgetsWithNoLinkToInstitutions(projectID);
+  }
+
+  @Override
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID) {
+    return budgetDAO.deleteCofoundedBudgetsWithNoLink(projectID);
+  }
+
+  @Override
+  public List<Budget> getBudgetsByProject(Project project) {
     List<Integer> allYears = project.getAllYears();
 
     List<Budget> budgets = new ArrayList<>();

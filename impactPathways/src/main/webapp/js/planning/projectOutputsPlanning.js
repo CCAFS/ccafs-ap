@@ -1,3 +1,4 @@
+var lWordsLessons = 100;
 var limitWords = 50;
 var $textAreas;
 $(document).ready(function() {
@@ -17,4 +18,5 @@ $(document).ready(function() {
       }
   });
   applyWordCounter($textAreas, limitWords);
+  applyWordCounter($("#lessons textarea"), lWordsLessons);
 });

@@ -14,7 +14,7 @@
   {"label":"projectCCAFSOutcomes", "nameSpace":"planning/projects", "action":"ccafsOutcomes", "param":"projectID=${project.id}"}
 ]/]
 
-[#assign years= [midOutcomeYear, currentPlanningYear, currentPlanningYear+1] /]
+[#assign years= [midOutcomeYear, currentPlanningYear-1,currentPlanningYear, currentPlanningYear+1] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
@@ -51,7 +51,7 @@
         <div id="contributionsBlock" class="">  
           [#if midOutcomesSelected?has_content]
             [#list midOutcomesSelected as midOutcome]
-              <div class="contribution ">
+              <div class="contribution">
                 [#-- Midoutcome title --]
                 <div class="midOutcomeTitle">
                   <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
@@ -108,8 +108,8 @@
                                 
                                 [#-- Indicator target value --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
-                                  [#if editable]
+                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=!project.bilateralProject /]</h6></label>
+                                  [#if editable && (currentPlanningYear lte year)]
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     <p>${projectIndicator.target!}</p>
@@ -118,8 +118,8 @@
                                 
                                 [#-- Indicator target description --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
-                                  [#if editable]
+                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /][@customForm.req required=!project.bilateralProject /]</h6></label>
+                                  [#if editable && (currentPlanningYear lte year)]
                                     <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     ${projectIndicator.description!}
@@ -162,7 +162,7 @@
                               
                               [#-- Target value --]
                               <div class="checkboxGroup vertical indicatorNarrative">
-                                <label>  <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
+                                <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                 [#if editable]
                                   <input type="text" class="projectIndicatorTarget" name="project.indicators.target" />                              
                                 [/#if]
@@ -170,7 +170,7 @@
                               
                               [#-- Target description --]
                               <div class="checkboxGroup vertical indicatorNarrative">
-                                <label>  <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
+                                <label><h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
                                 [#if editable]
                                   <textarea class="projectIndicatorDescription" name="project.indicators.description" ></textarea>
                                 [/#if]
@@ -222,14 +222,20 @@
         <p class="emptyText">[@s.text name="planning.projectImpactPathways.contributionsEmpty" /]</p> 
       [/#if]   
     </div>
+    
+    [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
-        [@customForm.textArea name="project.ccafsOutcomesLessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=true editable=editable /]
+        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
+        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
+        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
+    [/#if]
     
     [#if editable] 
       [#-- Project identifier --]
@@ -287,11 +293,11 @@
             <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome" /> 
             <div class="checkboxGroup vertical indicatorNarrative">
               [#-- Target value --]
-              <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
+              <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=!project.bilateralProject /]</h6></label>
               <input type="text"  class="projectIndicatorTarget" name="project_indicator_target" />
               [#-- Target description --]
-              <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
-              <textarea  class="projectIndicatorDescription" name="project_indicator_description" ></textarea>
+              <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /][@customForm.req required=!project.bilateralProject /]</h6></label>
+              <textarea rows="4" class="projectIndicatorDescription" name="project_indicator_description" ></textarea>
             </div>
           </div>
           [/#list]

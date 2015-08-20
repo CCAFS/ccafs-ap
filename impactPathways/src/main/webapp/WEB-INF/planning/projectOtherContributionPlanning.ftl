@@ -45,11 +45,11 @@
       
       [#-- How are contributing to other CCAFS IP --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.contribution" i18nkey="planning.impactPathways.otherContributions.contribution" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.contribution" className="contribution" i18nkey="planning.impactPathways.otherContributions.contribution" editable=editable /]  
       </div>
       [#-- Contribution to another center activity --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" className="additionalContribution" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable /]  
       </div>
       
       [#-- Collaborating with other CRPs --]
@@ -80,19 +80,24 @@
       
       [#-- CRP Collaboration nature --]
       <div class="fullPartBlock">
-        [@customForm.textArea name="project.ipOtherContribution.crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
+        [@customForm.textArea name="project.ipOtherContribution.crpCollaborationNature" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable /]  
       </div>
       
     </div> <!-- End otherContributions -->
     
+    [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
-        [@customForm.textArea name="project.ipOtherContributionLessons" i18nkey="planning.impactPathways.otherContributions.lessons" required=true editable=editable /]
+        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
+        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
+        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.impactPathways.otherContributions.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
+    [/#if]
     
     [#if project.ipOtherContribution?has_content]
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>

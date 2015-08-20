@@ -84,8 +84,8 @@
             <div class="halfPartBlock fileUpload projectWorkplan"> 
               [#if project.workplanName?has_content]
                 <p> 
-                  [#if editable]<span id="remove-projectWorkplan" class="remove"></span>[#else]<span id="" class="file"></span>[/#if] 
-                  <a href="${workplanURL}">${project.workplanName}</a>  <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
+                  [#if editable]<span id="remove-file" class="remove"></span>[#else]<span id="" class="file"></span>[/#if] 
+                  <a href="${workplanURL}${project.workplanName}">${project.workplanName}</a>  <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
                 </p>
               [#else]
                 [#if editable]
@@ -108,7 +108,7 @@
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /][#if project.bilateralProject ]<span class="red"> *</span>[/#if]:</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
-              <p> <a href="bilateralContractURL">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-bilateralContract" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+              <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-file" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
             [#else]
               [#if editable] 
                 [@customForm.inputFile name="file"  /]
@@ -125,7 +125,7 @@
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
         </div>
         
-        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /][#if !project.bilateralProject ]<span class="red"> *</span>[/#if]: </h6> 
+        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /][#if !project.bilateralProject ]:<span class="red"> *</span>[/#if] </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
@@ -161,9 +161,13 @@
       [#-- Bilateral/Core projects only for CCAFS Projects --]
       <h1 id="bilateralProjects" class="contentTitle"> [@s.text name="planning.projectDescription.projectsContributing" /] </h1> 
       <div class="panel tertiary">
-        [#if project.bilateralProject]
-          <div class="panel-head">[@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:</div>
-        [/#if]
+        <div class="panel-head">
+          [#if project.bilateralProject]
+            [@customForm.text name="planning.projectDescription.selectCoreProject" readText=!editable /]:
+          [#else]
+            [@customForm.text name="planning.projectDescription.selectBilateralProject" readText=!editable /]:
+          [/#if]
+        </div>
         <div id="projectsList" class="panel-body"> 
           <ul class="list">
           [#if project.linkedProjects?has_content]
@@ -171,14 +175,14 @@
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
                 <a href="[@s.url action='description'][@s.param name='projectID']${element.id}[/@s.param][/@s.url]"><span class="name">${element.id} - ${element.title}</span> </a>
-                [#if editable && project.bilateralProject]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
             [/#list]
           [#else]
             <p class="emptyText"> [@s.text name="planning.projectDescription.${project.bilateralProject?string('coreProjects','bilateralProjects')}.emptyText" /]</p>
           [/#if]  
           </ul>
-          [#if editable && project.bilateralProject]
+          [#if editable ]
             [#-- The values of this list are loaded via ajax --]
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id" displayFieldName="" className="" value="" /]
           [/#if] 
@@ -219,11 +223,9 @@
     </li>
   </ul> 
   
-  [#-- File projectWorkplan upload Template--]
-  [@customForm.inputFile name="project.projectWorkplan" template=true /]
   
-  [#-- File bilateralContractTemplate upload Template--] 
-  [@customForm.inputFile name="project.bilateralContract" template=true /] 
+  [#-- File upload Template--] 
+  [@customForm.inputFile name="file" template=true /] 
   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

@@ -1,7 +1,8 @@
-package org.cgiar.ccafs.ap.action.summaries.pdfs;
+package org.cgiar.ccafs.ap.action.summaries.csv;
+
 
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 
@@ -13,23 +14,22 @@ import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
+import com.opencsv.CSVWriter;
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class BasePDF {
+public class BaseCSV {
 
   // Logger
-  private static final Logger LOG = LoggerFactory.getLogger(BasePDF.class);
+  private static final Logger LOG = LoggerFactory.getLogger(BaseCSV.class);
 
   // Page orientation
   public final static int PORTRAIT = 1;
@@ -78,7 +78,7 @@ public class BasePDF {
   // Text provider to read the internationalization file
   TextProvider textProvider;
 
-  public BasePDF() {
+  public BaseCSV() {
   }
 
   /**
@@ -377,22 +377,61 @@ public class BasePDF {
    * @param pageOrientation - Landscape or portrait
    * @return the PdfWriter object.
    */
-  public PdfWriter initializePdf(Document document, ByteArrayOutputStream outputStream, int pageOrientation) {
+  public CSVWriter initializeCsv() {
 
-    // Set the page orientation
-    if (pageOrientation == LANDSCAPE) {
-      document.setPageSize(PageSize.LETTER.rotate());
-    } else {
-      document.setPageSize(PageSize.LETTER);
-    }
 
-    PdfWriter writer = null;
+    CSVWriter writer = null;
+
     try {
-      writer = PdfWriter.getInstance(document, outputStream);
-      writer.setBoxSize("art", this.getBoxSize(pageOrientation));
-    } catch (DocumentException e) {
-      LOG.error("-- initializePdf() > There was an error initializing the pdf file.", e);
+      writer = new CSVWriter(new FileWriter("yourfile.csv"), '\t');
+      String[] entries = "first#second#third".split("#");
+      writer.writeNext(entries);
+      writer.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
+
+
+    //
+    //  List<usuario> usuarios = new ArrayList<usuario>();
+    //          
+    //         usuarios.add(new Usuario("1001","Jose","Ramirez Torres","jramirez89@hotmail.com"));
+    //         usuarios.add(new Usuario("1002","Saul","Gaviria Garcia","sgaviria12@gmail.com"));
+    //         usuarios.add(new Usuario("1003","Maria","Torres Mendoza","mtorres12@yahoo.com"));
+    //          
+    //         String outputFile = "test/usuarios_export.csv";
+    //         boolean alreadyExists = new File(outputFile).exists();
+    //          
+    //         if(alreadyExists){
+    //             File ficheroUsuarios = new File(outputFile);
+    //             ficheroUsuarios.delete();
+    //         }       
+    //          
+    //         try {
+    //          
+    //             CsvWriter csvOutput = new CsvWriter(new FileWriter(outputFile, true), ',');
+    //              
+    //             csvOutput.write("Codigo");
+    //             csvOutput.write("Nombres");
+    //             csvOutput.write("Apellidos");
+    //             csvOutput.write("Correo");
+    //             csvOutput.endRecord();
+    //              
+    //             for(Usuario us : usuarios){
+    //                  
+    //                 csvOutput.write(us.getCodigo());
+    //                 csvOutput.write(us.getNombres());
+    //                 csvOutput.write(us.getApellidos());
+    //                 csvOutput.write(us.getCorreo());
+    //                 csvOutput.endRecord();                  
+    //             }
+    //              
+    //             csvOutput.close();
+    //          
+    //         } catch (IOException e) {
+    //             e.printStackTrace();
+    //         }
 
     return writer;
   }

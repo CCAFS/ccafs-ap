@@ -48,12 +48,11 @@
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
-          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue?html}[/#if]
+          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue}[/#if]
         [#else]
-          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value?html}[/#if] 
+          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value}[/#if] 
         [/#if]
       </p>
-      
     [/#if] 
   </div>
   [#if addButton]
@@ -186,6 +185,12 @@
   [#assign customId][#if template]${name}-template[#else]${name}[/#if][/#assign]
   <!-- Input File ${customId} -->
   [@s.file name="${name}" id="${customId}" cssClass="upload" cssStyle="${template?string('display:none','')}"  /]
+[/#macro] 
+
+[#macro req required=true ]
+  [#if required]
+    <span class="red">*</span>
+  [/#if]
 [/#macro] 
 
 [#macro confirmJustification action="" namespace="/" nameId="" title="" projectID=""]

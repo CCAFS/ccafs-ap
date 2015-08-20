@@ -146,12 +146,17 @@ public class ActivitiesListAction extends BaseAction {
         project.getActivities().clear();
       }
     }
+
+    super.getProjectLessons(projectID);
     super.setHistory(historyManager.getActivitiesHistory(project.getId()));
   }
 
   @Override
   public String save() {
     if (securityContext.canUpdateProjectActivities()) {
+
+      super.saveProjectLessons(projectID);
+
       // Update only the values to which the user is authorized to modify
       boolean success = true;
 
@@ -205,7 +210,6 @@ public class ActivitiesListAction extends BaseAction {
   public void validate() {
     if (save) {
       validator.validate(this, project);
-      // HT TODO
     }
   }
 

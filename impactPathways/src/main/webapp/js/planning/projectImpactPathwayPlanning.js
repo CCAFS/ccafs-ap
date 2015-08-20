@@ -1,9 +1,10 @@
 // Global vars
-var $midOutcomesList, $targetValue;
+var $midOutcomesList, $targetValue, $midOutcomesList;
 
 $(document).ready(init);
 
 function init() {
+  $contributionsBlock = $('#contributionsBlock');
   $midOutcomesList = $('#ccafsOutcomes_midOutcomesList');
   $targetValue = $('.projectIndicatorTarget');
   setWordCounters();
@@ -13,6 +14,9 @@ function init() {
   addChosen();
   addTabs();
   initGraph();
+  checkOutcomes();
+
+  // Regenerating initial hash
   setFormHash();
 }
 
@@ -24,7 +28,7 @@ function attachEvents() {
   $targetValue.on("keydown", function(event) {
     isNumber(event);
   });
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 }
@@ -41,6 +45,14 @@ function setWordCounters() {
     applyWordCounter($(textarea), (cls.join(' ')) || 100);
 
   });
+}
+
+function checkOutcomes() {
+  var outcomes = $midOutcomesList.find('option').length;
+  var contributions = $contributionsBlock.find('.contribution').length;
+  if((outcomes == 2) && (contributions == 0)) {
+    addOutcome($($midOutcomesList.find('option')[1]).val());
+  }
 }
 
 function removeContributionBlock(event) {
@@ -75,13 +87,14 @@ function selectMogEvent(event) {
  * list. Also are loaded the indicators of the midOutcome selected.
  */
 function selectMidOutcomeEvent(event) {
-  var $midOutcomesSelect = $(event.target);
-  var outcomeSelectedVal = $midOutcomesSelect.val();
-  var $optionSelected = $midOutcomesSelect.find("option[value='" + outcomeSelectedVal + "']");
+  addOutcome($midOutcomesList.val());
+}
+
+function addOutcome(outcomeSelectedVal) {
+  var $optionSelected = $midOutcomesList.find("option[value='" + outcomeSelectedVal + "']");
   if(outcomeSelectedVal == -1) {
     return;
   }
-
   // We should separate the identifiers brought in the option value
   // because it comes composed by midOutcomeID-programID
   var midOutcomeID = outcomeSelectedVal.split("-")[0];
@@ -115,7 +128,7 @@ function selectMidOutcomeEvent(event) {
     $newContribution.find(".indicatorTargetsTemplate").removeClass().addClass("indicatorTargets").tabs();
   });
 
-  $midOutcomesSelect.trigger("liszt:updated");
+  $midOutcomesList.trigger("liszt:updated");
 }
 
 /**

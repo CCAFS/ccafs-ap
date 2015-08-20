@@ -57,12 +57,12 @@
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1>  
       <div class="fullBlock">
         [#-- Title --] 
-        [@customForm.input name="${params.deliverable.name}.title" i18nkey="planning.deliverables.title" required=true editable=editable /]
+        [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle" i18nkey="planning.deliverables.title" required=true editable=editable /]
       </div>
       <div class="fullBlock">
         [#-- MOG  --]
         <div class="${editable?string('halfPartBlock','fullBlock')} chosen"> 
-          [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
         </div> 
         [#-- Year  --]
         <div class="halfPartBlock chosen">
@@ -75,13 +75,13 @@
         [#assign deliverableSubType][#if deliverable.type??]${deliverable.type.id}[#else]-1[/#if][/#assign]
         [#-- Main Type --]
         <div class="halfPartBlock chosen"> 
-          [@customForm.select name="mainType" value="${deliverableType}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" editable=editable /]
-          [#if !editable]${deliverable.type.category.name}[/#if]
+          [@customForm.select name="mainType" value="${deliverableType}" i18nkey="planning.deliverables.mainType" listName="deliverableTypes" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+          [#if !editable]${(deliverable.type.category.name)!}[/#if]
         </div> 
         [#-- Sub Type --]
         <div class="halfPartBlock chosen"> 
-          [@customForm.select name="${params.deliverable.name}.type" value="${deliverableSubType}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" editable=editable /]
-          [#if !editable][#if deliverable.typeOther??]${(deliverable.typeOther)!}[#else]${deliverable.type.name}[/#if][/#if]
+          [@customForm.select name="${params.deliverable.name}.type" value="${deliverableSubType}" i18nkey="planning.deliverables.subType" listName="" keyFieldName=""  displayFieldName="" required=true editable=editable /]
+          [#if !editable][#if deliverable.typeOther??]${(deliverable.typeOther)!}[#else]${(deliverable.type.name)!}[/#if][/#if]
           <input type="hidden" id="subTypeSelected" value="${deliverableSubType}" />
           [#-- Specify other deliverable type--] 
           [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          
@@ -149,14 +149,19 @@
       [/#if]
     </div>
     
+    [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]
       <div class="fullBlock">
-        [@customForm.textArea name="project.projectDeliverableLessons" i18nkey="planning.projectDeliverable.lessons" required=true editable=editable /]
+        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
+        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
+        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectDeliverable.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
+    [/#if]
     
     [#if editable] 
       <input name="projectID" type="hidden" value="${project.id?c}" />

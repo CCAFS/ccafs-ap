@@ -1,6 +1,6 @@
 // Limits for textarea input
-var lWordsElemetTitle = 50;
-var lWordsElemetDesc = 300;
+var lWordsElemetTitle = 20;
+var lWordsElemetDesc = 150;
 
 $(document).ready(function() {
 
@@ -16,7 +16,7 @@ $(document).ready(function() {
   applyWordCounter($("textarea.project-title"), lWordsElemetTitle);
   applyWordCounter($("textarea.project-description"), lWordsElemetDesc);
 
-  validateEvent('[name=save], [name=next]', [
+  validateEvent([
     "#justification"
   ]);
 

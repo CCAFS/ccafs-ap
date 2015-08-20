@@ -131,11 +131,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     if (lastInstitution) {
       for (ProjectPartner partner : partners) {
         // Looping the list of "contribute institutions".
-        for (Institution institution : partner.getContributeInstitutions()) {
-          if (institution.equals(partnerToDelete.getInstitution())) {
-            // delete the project partner contribution
-            institutionManager.deleteProjectPartnerContributeInstitution(partner, partnerToDelete.getInstitution());
-            break; // stop the loop.
+        if (partner.getContributeInstitutions() != null) {
+          for (Institution institution : partner.getContributeInstitutions()) {
+            if (institution.equals(partnerToDelete.getInstitution())) {
+              // delete the project partner contribution
+              institutionManager.deleteProjectPartnerContributeInstitution(partner, partnerToDelete.getInstitution());
+              break; // stop the loop.
+            }
           }
         }
       }
@@ -307,10 +309,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
+    super.getProjectLessons(projectID);
+
   }
 
   @Override
   public String save() {
+    super.saveProjectLessons(projectID);
     switch (actionName) {
       case "partnerLead":
         if (securityContext.canUpdateProjectLeader()) {
@@ -357,6 +362,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       success = false;
     }
 
+    budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID);
     if (success) {
       this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;
@@ -429,6 +435,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       } // End loop
     }
 
+    budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID);
     if (success) {
       this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;

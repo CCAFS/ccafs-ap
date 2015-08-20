@@ -2,6 +2,21 @@ var baseURL;
 var formBefore;
 var justificationLimitWords = 100;
 var errorMessages = [];
+var forceChange = false;
+var notyDefaultOptions = {
+    text: '',
+    layout: 'bottomRight',
+    type: 'error',
+    theme: 'relax',
+    timeout: 5000,
+    animation: {
+        open: 'animated bounceInRight',
+        close: 'animated bounceOutRight'
+    },
+    closeWith: [
+      'click'
+    ]
+};
 jQuery.fn.exists = function() {
   return this.length > 0;
 };
@@ -18,6 +33,12 @@ $(document).ready(function() {
   setTimeout(function() {
     // $(window.location.hash).addClass('animated flipInX').css({'z-index': '9999'});
   }, 300);
+
+  if(window.location.hash) {
+    $('html, body').animate({
+      scrollTop: $(window.location.hash).offset().top
+    }, 2000);
+  }
 
   function showHelpText() {
     $('.helpMessage').addClass('animated flipInX');
@@ -90,69 +111,47 @@ $(document).ready(function() {
 /**
  * Validate fields length when click to any button
  */
-function validateEvent(button,fields) {
+function validateEvent(fields) {
   var errorClass = 'fieldError';
-  $(button).on('click', function(e) {
-    $.each(fields, function(i,val) {
-      $(val).each(function() {
-        $(this).removeClass(errorClass);
-        if(!isChanged()) {
-          // If something is changed
+  $('[name=save], [name=next]').on('click', function(e) {
+    var isNext = (e.target.name == 'next');
+    $('#justification').removeClass(errorClass);
+    var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length;
+    if(fieldErrors != 0) {
+      e.preventDefault();
+      var notyOptions = jQuery.extend({}, notyDefaultOptions);
+      notyOptions.text = 'Something is wrong in this section, please fix it then save';
+      noty(notyOptions);
+    } else {
+      if(!isChanged() && !forceChange && !isNext) {
+        // If there isn't any changes
+        e.preventDefault();
+        var notyOptions = jQuery.extend({}, notyDefaultOptions);
+        notyOptions.text = 'Nothing has changed';
+        notyOptions.type = 'alert';
+        noty(notyOptions);
+      } else {
+        if(errorMessages.length != 0) {
+          // If there is an error message
           e.preventDefault();
-          noty({
-              text: 'Nothing changed',
-              layout: 'bottomRight',
-              theme: 'relax',
-              timeout: 2500,
-              animation: {
-                  open: 'animated bounceInRight',
-                  close: 'animated bounceOutRight'
-              },
-              type: 'alert',
-              closeWith: [
-                'click'
-              ]
-          });
-        } else {
-          if(errorMessages.length != 0) {
-            // If there is an error message
-            e.preventDefault();
-            noty({
-                text: errorMessages.join(),
-                layout: 'bottomRight',
-                theme: 'relax',
-                timeout: 5000,
-                animation: {
-                    open: 'animated bounceInRight',
-                    close: 'animated bounceOutRight'
-                },
-                type: 'error',
-                closeWith: [
-                  'click'
-                ]
-            });
-          } else if(!validateField($(this))) {
-            // If field is not valid
-            e.preventDefault();
-            $(this).addClass(errorClass);
-            noty({
-                text: 'The ' + val.replace("#", "") + ' field need to be filled',
-                layout: 'bottomRight',
-                theme: 'relax',
-                timeout: 5000,
-                animation: {
-                    open: 'animated bounceInRight',
-                    close: 'animated bounceOutRight'
-                },
-                type: 'error',
-                closeWith: [
-                  'click'
-                ]
-            });
-          }
+          var notyOptions = jQuery.extend({}, notyDefaultOptions);
+          notyOptions.text = errorMessages.join();
+          noty(notyOptions);
+        } else if(!validateField($('#justification')) && (isChanged() || forceChange)) {
+          // If field is not valid
+          e.preventDefault();
+          $('#justification').addClass(errorClass);
+          var notyOptions = jQuery.extend({}, notyDefaultOptions);
+          notyOptions.text = 'The justification field needs to be filled';
+          noty(notyOptions);
         }
-      });
-    });
+      }
+    }
+  });
+
+  // Force change when an file input is changed
+  $("input:file").on('change', function() {
+    forceChange = true;
   });
 }
 
@@ -169,8 +168,13 @@ function getFormHash() {
 }
 
 function validateField($input) {
-  var valid = ($.trim($input.val()).length > 0) ? true : false;
-  return valid;
+  if($input.length) {
+    var valid = ($.trim($input.val()).length > 0) ? true : false;
+    return valid;
+  } else {
+    return true;
+  }
+
 }
 
 function getHash(str) {
