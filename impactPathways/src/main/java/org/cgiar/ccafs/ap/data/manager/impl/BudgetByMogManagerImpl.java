@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetByMogDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -66,15 +67,17 @@ public class BudgetByMogManagerImpl implements BudgetByMogManager {
   }
 
   @Override
-  public List<OutputBudget> getProjectOutputsBudgetByYear(int projectID, int year) {
+  public List<OutputBudget> getProjectOutputsBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
     List<OutputBudget> outputBudgets = new ArrayList<>();
-    List<Map<String, String>> budgetByMogData = budgetByMogDAO.getProjectOutputsBudgetByYear(projectID, year);
+    List<Map<String, String>> budgetByMogData =
+      budgetByMogDAO.getProjectOutputsBudgetByYear(projectID, budgetTypeID, year);
 
     for (Map<String, String> data : budgetByMogData) {
       OutputBudget oBudget = new OutputBudget();
       oBudget.setId(Integer.parseInt(data.get("id")));
       oBudget.setTotalContribution(Double.parseDouble(data.get("total_contribution")));
       oBudget.setGenderContribution(Double.parseDouble(data.get("gender_contribution")));
+      oBudget.setType(BudgetType.getBudgetType(Integer.parseInt(data.get("budget_type"))));
       oBudget.setYear(Integer.parseInt(data.get("year")));
 
       IPElement output = new IPElement();
@@ -97,6 +100,7 @@ public class BudgetByMogManagerImpl implements BudgetByMogManager {
       Map<String, Object> data = new HashMap<>();
       data.put("project_id", project.getId());
       data.put("mog_id", ob.getOutput().getId());
+      data.put("budget_type", ob.getType().getValue());
       data.put("year", ob.getYear());
       data.put("total_contribution", ob.getTotalContribution());
       data.put("gender_contribution", ob.getGenderContribution());

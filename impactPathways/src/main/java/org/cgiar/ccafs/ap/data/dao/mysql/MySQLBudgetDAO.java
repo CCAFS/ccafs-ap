@@ -98,7 +98,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
-  public double calculateTotalCCAFSBudget(int projectID) {
+  public double calculateTotalBudget(int projectID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
     query.append("SELECT SUM(amount) as total ");
@@ -123,7 +123,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public double calculateTotalCCAFSBudgetByYear(int projectID, int year) {
+  public double calculateTotalBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
     query.append("SELECT SUM(amount) as total ");
@@ -184,8 +184,9 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("WHERE project_id = ");
     query.append(projectID);
     query.append(" AND year = ");
-    query.append(" AND is_active= TRUE");
     query.append(year);
+    query.append(" AND is_active= TRUE");
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
