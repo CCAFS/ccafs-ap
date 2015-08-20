@@ -62,6 +62,8 @@ public interface BudgetManager {
    */
   public double calculateTotalCCAFSBudget(int projectID);
 
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
+
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) in a given year
    * 
@@ -70,6 +72,7 @@ public interface BudgetManager {
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
+
 
   /**
    * This method calculates the total of the Gender Budget which is the addition of W1+W2+W3+BILATERAL for ALL years
@@ -80,7 +83,6 @@ public interface BudgetManager {
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalGenderBudget(int projectID);
-
 
   /**
    * This method calculates the total of the Gender Budget which is the percentage of the amount in a given year

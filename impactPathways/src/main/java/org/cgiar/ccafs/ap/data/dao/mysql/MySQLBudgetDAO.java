@@ -49,7 +49,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("SELECT SUM(gender_percentage * amount * 0.01) as total ");
     query.append("FROM project_budgets b ");
     query.append("WHERE project_id = " + projectID);
     query.append(" AND  budget_type = " + budgetTypeID);
@@ -122,6 +122,35 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
+
+  @Override
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND is_active = TRUE");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+
   @Override
   public double calculateTotalCCAFSBudgetByYear(int projectID, int year) {
     Double total = 0.0;
@@ -158,7 +187,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
-    query.append(" WHERE is_active = TRUE ");
+    query.append(" AND is_active = TRUE ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -179,7 +208,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public double calculateTotalGenderBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("SELECT SUM(gender_percentage * amount * 0.01) as total ");
     query.append("FROM project_budgets ");
     query.append("WHERE project_id = ");
     query.append(projectID);
@@ -205,7 +234,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("SELECT SUM(gender_percentage * amount * 0.01 ) as total ");
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
@@ -233,7 +262,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
   public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(gender_percentage) as total ");
+    query.append("SELECT SUM(gender_percentage * amount * 0.01) as total ");
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);

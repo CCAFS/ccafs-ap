@@ -41,6 +41,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -143,6 +144,28 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     return projectPDF.getInputStream();
   }
 
+
+  private String getWorkplanRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getProjectWorkplanFolder() + File.separator;
+  }
+
+  public String getWorkplanURL() {
+    return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
+  }
+
+
+  /**
+   * Return the absolute path where the work plan is or should be located.
+   * 
+   * @param workplan name
+   * @return complete path where the image is stored
+   */
+  // private String getWorplansAbsolutePath() {
+  // return config.getUploadsBaseFolder() + File.separator + this.getWorkplanRelativePath() + File.separator;
+  // }
+  //
+
   @Override
   public void prepare() throws Exception {
     int projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -150,6 +173,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // Get all the information to add in the pdf file
     project = projectManager.getProject(projectID);
 
+
+    project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
 
     // Getting the information of the Regions program
     project.setRegions(ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE));
