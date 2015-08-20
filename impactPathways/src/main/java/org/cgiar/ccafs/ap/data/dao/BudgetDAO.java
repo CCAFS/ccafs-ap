@@ -63,6 +63,15 @@ public interface BudgetDAO {
   public double calculateTotalBudget(int projectID);
 
   /**
+   * This method calculates the total CCAFS Budget which is the addition for ALL years depending of type.
+   * 
+   * @param projectID is the project id
+   * @param budgetTypeID is the budget Type
+   * @return
+   */
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
+
+  /**
    * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) and a given year
    * 
    * @param projectID is the project id.
@@ -191,6 +200,7 @@ public interface BudgetDAO {
    */
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
 
+
   /**
    * This method saves the Budget and the Project Budget relation
    * 
@@ -198,6 +208,5 @@ public interface BudgetDAO {
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveBudget(int projectID, Map<String, Object> budgetData);
-
 
 }

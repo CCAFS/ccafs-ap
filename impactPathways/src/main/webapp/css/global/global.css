@@ -281,7 +281,7 @@ textarea#justification {
   font-size: 1.07em;
   margin-top: -1px;
   word-wrap: break-word;
-  color: #636363;
+  color: #6D6D6D;
 }
 
 input[type="radio"] {
@@ -2848,7 +2848,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   cursor: pointer;
   position: absolute;
   right: 0;
-  top: -27px;
+  /* top: -27px; */
 }
 
 #top-quote img { 

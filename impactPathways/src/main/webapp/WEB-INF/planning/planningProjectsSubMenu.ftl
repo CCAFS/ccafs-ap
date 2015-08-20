@@ -14,7 +14,7 @@
     </div>
   [/#if]
   [#if project.coFundedProject]
-    <div id="projectType-quote" class="aux-quote-cofunded" title="[@s.text name="planning.projects.type.ccafs_coFunded" /] project">
+    <div id="projectType-quote" class="aux-quote-cofunded" title="[@s.text name="planning.projects.type.ccafs_cofunded" /] project">
       <p><b>[@s.text name="planning.projects.type.ccafs_cofunded" /]</b></p>
     </div>
   [/#if]

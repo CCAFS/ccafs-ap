@@ -80,6 +80,11 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID) {
+    return budgetDAO.calculateTotalCCAFSBudgetByType(projectID, budgetTypeID);
+  }
+
+  @Override
   public double calculateTotalGenderBudget(int projectID) {
     return budgetDAO.calculateTotalGenderBudget(projectID);
   }

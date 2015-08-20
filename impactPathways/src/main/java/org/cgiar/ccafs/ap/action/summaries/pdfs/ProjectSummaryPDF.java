@@ -2310,4 +2310,5 @@ public class ProjectSummaryPDF extends BasePDF {
   public void setSummaryTitle(String title) {
     this.summaryTitle = title;
   }
+
 }

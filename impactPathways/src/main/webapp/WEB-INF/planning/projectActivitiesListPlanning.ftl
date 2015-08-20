@@ -75,7 +75,7 @@
       [#if !newProject]
       <div id="lessons" class="borderBox">
         [#if (!editable && canEdit)]
-          <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+          <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
         [/#if]
         <div class="fullBlock">
           <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
