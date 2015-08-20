@@ -82,7 +82,7 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
     List<Map<String, String>> outputBudgets = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT pmb.id, pmb.total_contribution, pmb.gender_contribution, pmb.year, ");
+    query.append("SELECT pmb.id, pmb.total_contribution, pmb.gender_contribution, pmb.year, pmb.budget_type, ");
     query.append("ie.id as 'output_id', ie.description as 'output_description' ");
     query.append("FROM project_mog_budgets pmb ");
     query.append("INNER JOIN ip_elements ie ON pmb.mog_id = ie.id ");

@@ -32,7 +32,7 @@
       [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
       [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
       [#assign projectTypeLabel][@s.text name="${project.bilateralProject?string('planning.projectBudget.W3Bilateral', 'planning.projectBudget.W1W2')}" /][/#assign]
-      [#assign projectType][@s.text name="${project.bilateralProject?string('W3BILATERAL', 'W1W2')}" /][/#assign]
+      [#assign projectType][@s.text name="${project.bilateralProject?string('W3_BILATERAL', 'W1_W2')}" /][/#assign]
 
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
       [#if !canEdit]
@@ -115,14 +115,13 @@
                   </div>
 
                   [#if !project.bilateralProject]
+                    [#assign mogBudget = action.getOutputBudget(output.id, ccafsBudgetType)!]
                     <div class="outputBudget">
-                      [#assign mogBudget = action.getOutputBudget(output.id)!]
-  
                       [#-- Hidden inputs --]
                       <input type="hidden" name="project.outputsBudgets[${counter}].id" value="${mogBudget.id!"-1"}" />
                       <input type="hidden" name="project.outputsBudgets[${counter}].output.id" value="${output.id}" />
                       <input type="hidden" name="project.outputsBudgets[${counter}].year" value="${year}" />
-                      <input type="hidden" name="project.outputsBudgets[${counter}].type" value="${projectType}" />
+                      <input type="hidden" name="project.outputsBudgets[${counter}].type" value="W1_W2" />
   
                       [#-- Total contribution --]
                       <div class="halfPartBlock budget clearfix">
@@ -157,13 +156,14 @@
                   [/#if]
 
                   [#if project.bilateralProject || project.coFundedProject]
+                    [#assign mogBudget = action.getOutputBudget(output.id, bilateralBudgetType)!]
                     <hr />
                     <div class="outputBudget">
                       [#-- Hidden inputs --]
                       <input type="hidden" name="project.outputsBudgets[${counter}].id" value="${(mogBudget.id)!"-1"}" />
                       <input type="hidden" name="project.outputsBudgets[${counter}].output.id" value="${output.id}" />
                       <input type="hidden" name="project.outputsBudgets[${counter}].year" value="${year}" />
-                      <input type="hidden" name="project.outputsBudgets[${counter}].type" value="W3BILATERAL" />
+                      <input type="hidden" name="project.outputsBudgets[${counter}].type" value="W3_BILATERAL" />
                       [#-- Total contribution --]
                       <div class="halfPartBlock budget clearfix">
                         <div class="title">
