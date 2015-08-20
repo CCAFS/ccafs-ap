@@ -232,7 +232,7 @@
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
         <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="project.ccafsOutcomesLessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
     [/#if]
