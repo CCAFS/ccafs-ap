@@ -1383,7 +1383,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -2194,13 +2194,13 @@ public class ProjectSummaryPDF extends BasePDF {
     // Summary content
     this.addProjectTitle();
     this.addMainInformationTable();
-    // this.addProjectContributions();
-    // this.addSummary();
-    // this.addProjectPartners();
-    // this.addProjectLocations();
-    // this.addProjectOutcomes();
-    // this.addProjectOutputs();
-    // this.addActivities();
+    this.addProjectContributions();
+    this.addSummary();
+    this.addProjectPartners();
+    this.addProjectLocations();
+    this.addProjectOutcomes();
+    this.addProjectOutputs();
+    this.addActivities();
     this.addProjectBudgets();
 
     // Close document
