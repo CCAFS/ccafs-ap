@@ -62,8 +62,6 @@ public interface BudgetManager {
    */
   public double calculateTotalBudget(int projectID);
 
-  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
-
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) in a given year
    * 
@@ -72,6 +70,8 @@ public interface BudgetManager {
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalBudgetByYear(int projectID, int year);
+
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
 
 
   /**
@@ -122,13 +122,6 @@ public interface BudgetManager {
    * @return a double representing this value, or -1 if some error found.
    */
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
-
-  /**
-   * This method deactives all the budgets due to several conditions.
-   * 
-   * @return false if any error occurres, true otherwise.
-   */
-  public boolean deactiveInvalidBudgets();
 
   /**
    * This method removes a specific budget value from the database.
