@@ -21,57 +21,39 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class OutputBudget {
+public class ComponentLesson {
 
   private int id;
   private int year;
-  private double totalContribution;
-  private double genderContribution;
-  private IPElement output;
-  private BudgetType type;
+  private String lessons;
+  private String componentName;
 
-  public double getGenderContribution() {
-    return genderContribution;
+  public String getComponentName() {
+    return componentName;
   }
 
   public int getId() {
     return id;
   }
 
-  public IPElement getOutput() {
-    return output;
-  }
-
-  public double getTotalContribution() {
-    return totalContribution;
-  }
-
-  public BudgetType getType() {
-    return type;
+  public String getLessons() {
+    return lessons;
   }
 
   public int getYear() {
     return year;
   }
 
-  public void setGenderContribution(double genderContribution) {
-    this.genderContribution = genderContribution;
+  public void setComponentName(String componentName) {
+    this.componentName = componentName;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setOutput(IPElement output) {
-    this.output = output;
-  }
-
-  public void setTotalContribution(double totalContribution) {
-    this.totalContribution = totalContribution;
-  }
-
-  public void setType(BudgetType type) {
-    this.type = type;
+  public void setLessons(String lessons) {
+    this.lessons = lessons;
   }
 
   public void setYear(int year) {

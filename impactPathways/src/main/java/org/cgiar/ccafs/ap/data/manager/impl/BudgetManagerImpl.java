@@ -15,9 +15,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -47,16 +45,16 @@ public class BudgetManagerImpl implements BudgetManager {
 
   // Managers
   private InstitutionManager institutionManager;
-  private IPProgramManager ipProgramManager;
-  private LocationManager locationManger;
 
   @Inject
-  public BudgetManagerImpl(BudgetDAO budgetDAO, InstitutionManager institutionManager,
-    IPProgramManager ipProgramManager, LocationManager locationManger) {
+  public BudgetManagerImpl(BudgetDAO budgetDAO, InstitutionManager institutionManager) {
     this.budgetDAO = budgetDAO;
     this.institutionManager = institutionManager;
-    this.locationManger = locationManger;
-    this.ipProgramManager = ipProgramManager;
+  }
+
+  @Override
+  public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year) {
+    return budgetDAO.calculateGenderBudgetByTypeAndYear(projectID, budgetTypeID, year);
   }
 
   @Override
@@ -65,13 +63,18 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double calculateTotalCCAFSBudget(int projectID) {
-    return budgetDAO.calculateTotalCCAFSBudget(projectID);
+  public double calculateTotalBudget(int projectID) {
+    return budgetDAO.calculateTotalBudget(projectID);
   }
 
   @Override
-  public double calculateTotalCCAFSBudgetByYear(int projectID, int year) {
-    return budgetDAO.calculateTotalCCAFSBudgetByYear(projectID, year);
+  public double calculateTotalBudgetByYear(int projectID, int year) {
+    return budgetDAO.calculateTotalBudgetByYear(projectID, year);
+  }
+
+  @Override
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID) {
+    return budgetDAO.calculateTotalCCAFSBudgetByType(projectID, budgetTypeID);
   }
 
   @Override
@@ -82,6 +85,16 @@ public class BudgetManagerImpl implements BudgetManager {
   @Override
   public double calculateTotalGenderBudgetByYear(int projectID, int year) {
     return budgetDAO.calculateTotalGenderBudgetByYear(projectID, year);
+  }
+
+  @Override
+  public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID) {
+    return budgetDAO.calculateTotalGenderPercentageByType(projectID, budgetTypeID);
+  }
+
+  @Override
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
+    return budgetDAO.calculateTotalGenderPercentageByYearAndType(projectID, year, budgetTypeID);
   }
 
   @Override
@@ -105,8 +118,22 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public List<Budget> getBudgetsByProject(Project project) {
+  public boolean deleteBudgetsFromUnexistentYears(int projectID) {
+    return budgetDAO.deleteBudgetsFromUnexistentYears(projectID);
+  }
 
+  @Override
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
+    return budgetDAO.deleteBudgetsWithNoLinkToInstitutions(projectID);
+  }
+
+  @Override
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID) {
+    return budgetDAO.deleteCofoundedBudgetsWithNoLink(projectID);
+  }
+
+  @Override
+  public List<Budget> getBudgetsByProject(Project project) {
     List<Integer> allYears = project.getAllYears();
 
     List<Budget> budgets = new ArrayList<>();

@@ -98,7 +98,7 @@ public class ProjectValidator extends BaseValidator {
 
   // This method validates if the list of locations given as parameter is not empty and different from null
   // If so, it returns true
-  public boolean isValidLocation(List<Location> locations) {
+  public boolean isValidListLocations(List<Location> locations) {
     return (!locations.isEmpty() && (locations != null));
   }
 

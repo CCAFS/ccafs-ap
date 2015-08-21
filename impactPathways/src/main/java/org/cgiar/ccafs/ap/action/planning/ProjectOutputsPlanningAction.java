@@ -72,6 +72,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
     this.validator = validator;
   }
 
+  @Override
   public int getCurrentPlanningYear() {
     return config.getPlanningCurrentYear();
   }
@@ -127,6 +128,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
       previousOverviews.add(new OutputOverview(output.getId()));
     }
 
+    super.getProjectLessons(projectID);
     this.setHistory(historyManager.getProjectOutputsHistory(projectID));
   }
 
@@ -134,6 +136,8 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   public String save() {
     boolean success = true;
     if (securityContext.canUpdateProjectOverviewMOGs()) {
+
+      super.saveProjectLessons(projectID);
 
       // Check if there are output overviews to delete
       for (OutputOverview overview : previousOverviews) {

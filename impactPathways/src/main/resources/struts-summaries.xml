@@ -13,16 +13,15 @@
      </result>
 	 </action>
 	 
-	   <action class="org.cgiar.ccafs.ap.action.summaries.PublicationSummaryAction" name="publication">
-      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+	 
+  <action class="org.cgiar.ccafs.ap.action.summaries.PublicationSummaryAction" name="publication">
+      <result name="input">/WEB-INF/summaries/projectPublicationSummaries.ftl</result>
       <result name="success" type="stream">
-        <param name="inputName">inputStream</param>
-        <param name="contentType">application/pdf</param>
+        <param name="contentType">text/csv</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
      </result>
    </action>
 	 
-
-
+	 
   </package>
 </struts>

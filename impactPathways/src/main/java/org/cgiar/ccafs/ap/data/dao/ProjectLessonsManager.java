@@ -14,10 +14,9 @@
 
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLBudgetByMogDAO;
-
-import java.util.List;
-import java.util.Map;
+import org.cgiar.ccafs.ap.data.manager.impl.ProjectLessonsManagerImpl;
+import org.cgiar.ccafs.ap.data.model.ComponentLesson;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import com.google.inject.ImplementedBy;
 
@@ -25,35 +24,27 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
-
-@ImplementedBy(MySQLBudgetByMogDAO.class)
-public interface BudgetByMogDAO {
-
-  /**
-   * This method returns the budget contributions assigned for each project's output
-   * 
-   * @param projectID - Project identifier
-   * @return a list maps with the information to save.
-   */
-  public List<Map<String, String>> getProjectOutputsBudget(int projectID);
+@ImplementedBy(ProjectLessonsManagerImpl.class)
+public interface ProjectLessonsManager {
 
   /**
-   * This method returns the budget contributions assigned for each project's output in a given year
+   * This method get the lessons on a given component for a specific project.
    * 
+   * @param componentName - The name of the component
    * @param projectID - Project identifier
-   * @param budgetTypeID - Budget type identifier
    * @param year
-   * @return a list maps with the information to save.
+   * @return A ComponentLesson object with the information.
    */
-  public List<Map<String, String>> getProjectOutputsBudgetByYear(int projectID, int budgetTypeID, int year);
+  public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year);
 
   /**
-   * This method saves the budget contributions assigned to each project's output.
+   * This method saves the lessons of a project component in the database.
    * 
-   * @param project - A project object containing the budget by outputs info.
+   * @param lesson - The object with the information to be saved
+   * @param project - The project to which belongs the lesson
    * @param user - The user who is making the change
    * @param justification
-   * @return true if all the information was saved successfully. False otherwise.
+   * @return true if the information was saved successfully. False otherwise.
    */
-  public boolean saveProjectOutputsBudget(Map<String, Object> budgetByMOGData, int userID, String justification);
+  public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification);
 }

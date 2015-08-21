@@ -30,6 +30,18 @@ import com.google.inject.ImplementedBy;
 public interface BudgetDAO {
 
   /**
+   * This method returns the budget gender of the project depending on budget type given as
+   * parameter and the year.
+   * 
+   * @param projectID - Project identifier
+   * @param budgetTypeID - Budget type identifier
+   * @param year - Year
+   * @return a decimal number representing the amount requested, 0 if nothing found and -1 if some error occurred.
+   */
+  public double calculateGenderBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
+
+
+  /**
    * This method returns the budget amount of the project depending on budget type given as
    * parameter and the year.
    * 
@@ -40,6 +52,7 @@ public interface BudgetDAO {
    */
   public double calculateProjectBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
+
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of W1+W2+W3+BILATERAL for ALL years.
    * 
@@ -47,7 +60,16 @@ public interface BudgetDAO {
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project, if no data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
-  public double calculateTotalCCAFSBudget(int projectID);
+  public double calculateTotalBudget(int projectID);
+
+  /**
+   * This method calculates the total CCAFS Budget which is the addition for ALL years depending of type.
+   * 
+   * @param projectID is the project id
+   * @param budgetTypeID is the budget Type
+   * @return
+   */
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
 
   /**
    * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) and a given year
@@ -57,13 +79,14 @@ public interface BudgetDAO {
    * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
-  public double calculateTotalCCAFSBudgetByYear(int projectID, int year);
+  public double calculateTotalBudgetByYear(int projectID, int year);
 
   /**
    * This method calculates the total gender percentage which is the addition of W1+W2+W3+BILATERAL for ALL years.
    * 
    * @param projectID is the project id.
-   * @return a decimal number representing the amount of the total gender percentage for that specific project, if no data
+   * @return a decimal number representing the amount of the total gender percentage for that specific project, if no
+   *         data
    *         found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalGenderBudget(int projectID);
@@ -76,6 +99,26 @@ public interface BudgetDAO {
    * @return a double representing this value, or -1 if some error found.
    */
   public double calculateTotalGenderBudgetByYear(int projectID, int year);
+
+  /**
+   * This method calculates the gender budget percentage for a given project according to the type received by
+   * parameter.
+   * 
+   * @param projectID - project identifier.
+   * @return a number representing the percentage for that specific project, if if some error happen a -1.0 will be
+   *         returned.
+   */
+  public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID);
+
+  /**
+   * This method calculates the percentage of budget going to gender according to the type, year and type received by
+   * parameter.
+   * 
+   * @param projectID is the project identifier.
+   * @param year is the year.
+   * @return a double representing this value, or -1 if some error found.
+   */
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID);
 
   /**
    * This method calculates the total budget of some type for a given project.
@@ -118,6 +161,27 @@ public interface BudgetDAO {
    */
   public boolean deleteBudgetsByYear(int projectID, int year, int userID, String justification);
 
+  /**
+   * This method deletes all the budgets that were declared for a year in which the project it is not active.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsFromUnexistentYears(int projectID);
+
+  /**
+   * This method deletes all the budgets that belong to some institution which has NOT link with the project to which
+   * the budget belongs to.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID);
+
+  /**
+   * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.
+   * 
+   * @return False if any error occurred. True otherwise.
+   */
+  public boolean deleteCofoundedBudgetsWithNoLink(int projectID);
 
   /**
    * This method gets all the budget information by a given Project Id
@@ -136,6 +200,7 @@ public interface BudgetDAO {
    */
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
 
+
   /**
    * This method saves the Budget and the Project Budget relation
    * 
@@ -143,8 +208,5 @@ public interface BudgetDAO {
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveBudget(int projectID, Map<String, Object> budgetData);
-
-
-
 
 }

@@ -83,7 +83,6 @@ function addKeyUpEvent(inputs,remaining) {
     setPercentageCurrency($(this), remaining);
     checkPercentages($(e.target), $(inputs), remaining);
     calculateGenderAmount($(this).parents('.outputBudget'));
-    console.log('asdd');
   });
 }
 

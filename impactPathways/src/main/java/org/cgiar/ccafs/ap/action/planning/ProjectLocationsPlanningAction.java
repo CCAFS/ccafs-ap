@@ -60,6 +60,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   private List<Location> locationsOrganized;
   private int projectID;
   private Project project;
+  private int previousLocationsSize;
 
   // Temporal lists to save the locations
   private List<Region> regionsSaved;
@@ -198,6 +199,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
     project.setLocations(locationManager.getProjectLocations(projectID));
     previousLocations = new ArrayList<>();
     previousLocations.addAll(project.getLocations());
+    previousLocationsSize = previousLocations.size();
 
     locationTypes = locationTypeManager.getLocationTypes();
     countries = locationManager.getAllCountries();
@@ -217,6 +219,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       }
     }
 
+    super.getProjectLessons(projectID);
     super.setHistory(historyManager.getProjectLocationsHistory(project.getId()));
   }
 
@@ -241,19 +244,24 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
 
       // Then, updating projects received
-      boolean updated = locationManager.updateProjectGlobal(projectID, this.getCurrentUser(), this.getJustification());
+      boolean updated = locationManager.updateProjectGlobal(project, this.getCurrentUser(), this.getJustification());
       if (!updated) {
         success = false;
       }
+      super.saveProjectLessons(projectID);
 
       // Displaying user messages.
       if (success == false) {
         this.addActionError(this.getText("planning.project.locations.saving.problem"));
         return BaseAction.INPUT;
+      } else if (project.getLocations().size() > previousLocationsSize
+        || project.getLocations().size() < previousLocationsSize) {
+        this.addActionMessage(this.getText("saving.success",
+          new String[] {this.getText("planning.project.locations.title")}));
       }
-      this.addActionMessage(this.getText("saving.success",
-        new String[] {this.getText("planning.project.locations.title")}));
-
+      if (project.getLocations().size() == previousLocationsSize) {
+        this.addActionWarning(this.getText("planning.project.locations.noChange"));
+      }
       return BaseAction.SUCCESS;
     } else {
       return BaseAction.NOT_AUTHORIZED;

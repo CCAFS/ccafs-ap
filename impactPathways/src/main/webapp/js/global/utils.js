@@ -32,6 +32,12 @@ function isNumber(e) {
 }
 
 function isPercentage(e) {
+  // Use keyup/keydown for add/subtract
+  if(e.keyCode === 38) {
+    e.target.value++;
+  } else if(e.keyCode === 40) {
+    e.target.value--;
+  }
   // Ensure that is a percentage value
   var value = e.target.value;
   if(value >= 100) {

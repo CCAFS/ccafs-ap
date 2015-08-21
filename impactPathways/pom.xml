@@ -181,6 +181,14 @@
 		  <artifactId>itext</artifactId>
 		  <version>${itext.version}</version>
 		</dependency>
+		
+	<!-- Csv Reader -->
+ <dependency>
+     <groupId>com.opencsv</groupId>
+     <artifactId>opencsv</artifactId>
+     <version>3.4</version>
+  </dependency>
+	
 
     <!-- Database version control -->
     <dependency>
@@ -190,13 +198,6 @@
     </dependency>
   </dependencies>
   
-  <repositories>
-    <repository>
-      <id>Internal project repo</id>
-      <url>file://${basedir}/src/main/resources/libs/</url>
-    </repository>
-  </repositories>
-
   <build>
     <finalName>${project.artifactId}</finalName>
     <defaultGoal>jetty:run</defaultGoal>

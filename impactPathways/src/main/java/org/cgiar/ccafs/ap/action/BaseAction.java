@@ -14,8 +14,10 @@
 package org.cgiar.ccafs.ap.action;
 
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
+import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.LogHistory;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.SecurityContext;
@@ -30,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
@@ -74,6 +77,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private List<LogHistory> history;
   private String justification;
 
+  private ComponentLesson projectLessons;
   private Map<String, Object> session;
   private HttpServletRequest request;
 
@@ -84,6 +88,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   @Inject
   private BoardMessageManager boardMessageManager;
+
+  @Inject
+  private ProjectLessonsManager lessonManager;
 
   @Inject
   public BaseAction(APConfig config) {
@@ -134,6 +141,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return INPUT;
   }
 
+  public String getActionName() {
+    return ServletActionContext.getActionMapping().getName();
+  }
+
   public String getBaseUrl() {
     return config.getBaseUrl();
   }
@@ -150,6 +161,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public APConfig getConfig() {
     return config;
   }
+
+  public int getCurrentPlanningYear() {
+    return config.getPlanningCurrentYear();
+  }
+
 
   /**
    * Get the user that is currently saved in the session.
@@ -183,8 +199,18 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
+
   public String getOrganizationIdentifier() {
     return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
+  }
+
+  public ComponentLesson getProjectLessons() {
+    return projectLessons;
+  }
+
+  protected void getProjectLessons(int projectID) {
+    projectLessons =
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
   }
 
   public HttpServletRequest getRequest() {
@@ -268,6 +294,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
+  protected boolean saveProjectLessons(int projectID) {
+    return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification);
+  }
+
   public void setAdd(boolean add) {
     this.add = true;
   }
@@ -276,10 +306,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.cancel = true;
   }
 
-
   public void setCanEdit(boolean canEdit) {
     this.canEdit = canEdit;
   }
+
 
   public void setDataSaved(boolean dataSaved) {
     this.dataSaved = dataSaved;
@@ -307,6 +337,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public void setNext(boolean next) {
     this.next = true;
+  }
+
+  public void setProjectLessons(ComponentLesson projectLessons) {
+    this.projectLessons = projectLessons;
   }
 
   public void setSave(boolean save) {

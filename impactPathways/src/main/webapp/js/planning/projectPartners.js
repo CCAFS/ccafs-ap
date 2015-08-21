@@ -71,9 +71,13 @@ function updateOrganizationsList(e) {
 
 // Partner Events
 function removePartnerEvent(e) {
-  e.preventDefault();
   var $parent = $(e.target).parent().parent();
   var partner = new PartnerObject($parent);
+  if(partner.id == "-1"){
+    partner.remove();
+    return
+  }
+  e.preventDefault();
   $.ajax({
       method: "GET",
       url: baseURL + "/json/projectPartnersDelete.do",

@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
@@ -30,6 +31,8 @@ public class ProjectLocationsValidator extends BaseValidator {
 
   private static final long serialVersionUID = -4871185832403702671L;
   private ProjectValidator projectValidator;
+  boolean problem = false;
+  boolean fields = false;
 
   @Inject
   public ProjectLocationsValidator(ProjectValidator projectValidator) {
@@ -37,18 +40,40 @@ public class ProjectLocationsValidator extends BaseValidator {
     this.projectValidator = projectValidator;
   }
 
+  public boolean isValidLocation(Location location) {
+    boolean result = true;
+    if (location.getName().isEmpty()) {
+      result = false;
+    }
+    return result;
+  }
+
+
   public void validate(BaseAction action, Project project) {
     if (project != null) {
 
       this.validateProjectJustification(action, project);
       // Projects are validated checking if they are not global and their locations are valid ones.
-      if ((!project.isGlobal()) && (!projectValidator.isValidLocation(project.getLocations()))) {
-        this.addMessage(this.getText("planning.projectLocations.type").toLowerCase());
+      if ((!project.isGlobal()) && (!projectValidator.isValidListLocations(project.getLocations()))) {
+        problem = true;
+      }
+      if (!project.isGlobal()) {
+        this.validateLocations(action, project);
       }
 
-      if (validationMessage.length() > 0) {
-        action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      if (problem) {
+        action.addActionError(this.getText("planning.projectLocations.type"));
+      }
+      if (fields) {
+        action.addActionError(this.getText("saving.fields.required"));
+      }
+    }
+  }
+
+  public void validateLocations(BaseAction action, Project project) {
+    for (int i = 0; i < project.getLocations().size(); i++) {
+      if (!this.isValidLocation(project.getLocations().get(i))) {
+        fields = true;
       }
     }
   }
