@@ -66,24 +66,24 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     Map<String, String> projectPartnerData = projecPartnerDAO.getProjectPartnerById(partnerId);
     projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
     // Partner type (PPA, PL, PP, etc.)
-    projectPartner.setType(projectPartnerData.get("partner_type"));
+    // projectPartner.setType(projectPartnerData.get("partner_type"));
     // User as user_id
-    if (projectPartnerData.get("user_id") != null) {
-      projectPartner.setUser(userManager.getUser(Integer.parseInt(projectPartnerData.get("user_id"))));
-    } else {
-      User user = new User();
-      user.setId(-1);
-      projectPartner.setUser(user);
-    }
-    projectPartner.setResponsabilities(projectPartnerData.get("responsabilities"));
+    // if (projectPartnerData.get("user_id") != null) {
+    // projectPartner.setUser(userManager.getUser(Integer.parseInt(projectPartnerData.get("user_id"))));
+    // } else {
+    // User user = new User();
+    // user.setId(-1);
+    // projectPartner.setUser(user);
+    // }
+    // projectPartner.setResponsabilities(projectPartnerData.get("responsabilities"));
 
     // Institution as partner_id
     projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
+    .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
 
     // Getting the institutions which this partner is contributing to.
-    projectPartner
-      .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+    // projectPartner
+    // .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
 
     // adding information of the object to the array
     return projectPartner;
@@ -96,17 +96,17 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     for (Map<String, String> pData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(pData.get("id")));
-      projectPartner.setResponsabilities(pData.get("responsabilities"));
-      // Partner type (PPA, PL, PP, etc.)
-      projectPartner.setType(pData.get("partner_type"));
-      // User as user_id
-      projectPartner
-        .setUser(userManager.getUser(pData.get("user_id") == null ? -1 : Integer.parseInt(pData.get("user_id"))));
-      // Institution as partner_id
-      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
-      // Getting the institutions which this partner is contributing to.
-      projectPartner
-        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+      // projectPartner.setResponsabilities(pData.get("responsabilities"));
+      // // Partner type (PPA, PL, PP, etc.)
+      // projectPartner.setType(pData.get("partner_type"));
+      // // User as user_id
+      // projectPartner
+      // .setUser(userManager.getUser(pData.get("user_id") == null ? -1 : Integer.parseInt(pData.get("user_id"))));
+      // // Institution as partner_id
+      // projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
+      // // Getting the institutions which this partner is contributing to.
+      // projectPartner
+      // .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
       // adding information of the object to the array
       projectPartners.add(projectPartner);
     }
@@ -122,23 +122,23 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(pData.get("id")));
       // Partner type (PPA, PL, PP, etc.)
-      projectPartner.setType(pData.get("partner_type"));
-      // User as user_id
-      if (pData.get("user_id") != null) {
-        projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
-      } else {
-        User user = new User();
-        user.setId(-1);
-        projectPartner.setUser(user);
-      }
-      projectPartner.setResponsabilities(pData.get("responsabilities"));
+      // projectPartner.setType(pData.get("partner_type"));
+      // // User as user_id
+      // if (pData.get("user_id") != null) {
+      // projectPartner.setUser(userManager.getUser(Integer.parseInt(pData.get("user_id"))));
+      // } else {
+      // User user = new User();
+      // user.setId(-1);
+      // projectPartner.setUser(user);
+      // }
+      // projectPartner.setResponsabilities(pData.get("responsabilities"));
 
       // Institution as partner_id
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("partner_id"))));
 
       // Getting the institutions which this partner is contributing to.
-      projectPartner
-        .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
+      // projectPartner
+      // .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
 
       // adding information of the object to the array
       projectPartners.add(projectPartner);
@@ -164,10 +164,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
     projectPartnerData.put("project_id", projectId);
     projectPartnerData.put("partner_id", projectPartner.getInstitution().getId());
-    projectPartnerData.put("user_id", (projectPartner.getUser() == null || projectPartner.getUser().getId() == -1)
-      ? null : projectPartner.getUser().getId());
-    projectPartnerData.put("partner_type", projectPartner.getType());
-    projectPartnerData.put("responsabilities", projectPartner.getResponsabilities());
+    // projectPartnerData.put("user_id", (projectPartner.getUser() == null || projectPartner.getUser().getId() == -1)
+    // ? null : projectPartner.getUser().getId());
+    // projectPartnerData.put("partner_type", projectPartner.getType());
+    // projectPartnerData.put("responsabilities", projectPartner.getResponsabilities());
     // Logs data
     projectPartnerData.put("modified_by", user.getId());
     projectPartnerData.put("modification_justification", justification);

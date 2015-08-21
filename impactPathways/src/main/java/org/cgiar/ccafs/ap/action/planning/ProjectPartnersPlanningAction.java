@@ -131,15 +131,15 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     if (lastInstitution) {
       for (ProjectPartner partner : partners) {
         // Looping the list of "contribute institutions".
-        if (partner.getContributeInstitutions() != null) {
-          for (Institution institution : partner.getContributeInstitutions()) {
-            if (institution.equals(partnerToDelete.getInstitution())) {
-              // delete the project partner contribution
-              institutionManager.deleteProjectPartnerContributeInstitution(partner, partnerToDelete.getInstitution());
-              break; // stop the loop.
-            }
-          }
-        }
+        // if (partner.getContributeInstitutions() != null) {
+        // for (Institution institution : partner.getContributeInstitutions()) {
+        // if (institution.equals(partnerToDelete.getInstitution())) {
+        // // delete the project partner contribution
+        // institutionManager.deleteProjectPartnerContributeInstitution(partner, partnerToDelete.getInstitution());
+        // break; // stop the loop.
+        // }
+        // }
+        // }
       }
     }
 
@@ -275,11 +275,11 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Getting 2-level Project Partners
     project
-      .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
-    // Getting the 2-level Project Partner contributions
-    for (ProjectPartner partner : project.getProjectPartners()) {
-      partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
-    }
+    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+      // Getting the 2-level Project Partner contributions
+      // for (ProjectPartner partner : project.getProjectPartners()) {
+      // partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
+      // }
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -411,27 +411,27 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // Getting previous partner contributions to identify those that need to be deleted.
         List<Institution> previousPartnerContributions =
           institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
-        // Deleting project partner contributions
-        for (Institution previousPartnerContribution : previousPartnerContributions) {
-          if (projectPartner.getContributeInstitutions() == null
-            || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
-            boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
-              previousPartnerContribution.getId());
-            if (!deleted) {
-              success = false;
-            }
-          }
-        }
+          // Deleting project partner contributions
+          // for (Institution previousPartnerContribution : previousPartnerContributions) {
+          // if (projectPartner.getContributeInstitutions() == null
+          // || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
+          // boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+          // previousPartnerContribution.getId());
+          // if (!deleted) {
+          // success = false;
+          // }
+          // }
+          // }
 
         // if the project partner has contribute institutions.
-        if (projectPartner.getContributeInstitutions() != null) {
-          // Saving new and old Project Partner Contributions
-          saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
-            projectPartner.getContributeInstitutions());
-          if (!saved) {
-            saved = false;
-          }
-        }
+        // if (projectPartner.getContributeInstitutions() != null) {
+        // // Saving new and old Project Partner Contributions
+        // saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+        // projectPartner.getContributeInstitutions());
+        // if (!saved) {
+        // saved = false;
+        // }
+        // }
       } // End loop
     }
 

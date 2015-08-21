@@ -203,7 +203,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setProjectPartners(partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
-      partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
+      // partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
     }
 
     // Add Linked project
@@ -252,8 +252,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       }
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables

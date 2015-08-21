@@ -18,7 +18,6 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
 
@@ -62,9 +61,9 @@ public class ProjectPartnersValidator extends BaseValidator {
         project.getLeader().setInstitution(new Institution(-1));
       }
       // If leader user is null, we initialize it empty.
-      if (project.getLeader().getUser() == null) {
-        project.getLeader().setUser(new User(-1));
-      }
+      // if (project.getLeader().getUser() == null) {
+      // project.getLeader().setUser(new User(-1));
+      // }
       // If coordinator is null, we initialize it empty.
       if (project.getCoordinator() == null) {
         project.setCoordinator(new ProjectPartner(-1));
@@ -74,26 +73,26 @@ public class ProjectPartnersValidator extends BaseValidator {
         project.getCoordinator().setInstitution(new Institution(-1));
       }
       // If coordinator user is null, we initialize it empty.
-      if (project.getCoordinator().getUser() == null) {
-        project.getCoordinator().setUser(new User(-1));
-      }
+      // if (project.getCoordinator().getUser() == null) {
+      // project.getCoordinator().setUser(new User(-1));
+      // }
     } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
       for (ProjectPartner ppaPartner : project.getPPAPartners()) {
         if (ppaPartner.getInstitution() == null) {
           ppaPartner.setInstitution(new Institution(-1));
         }
-        if (ppaPartner.getUser() == null) {
-          ppaPartner.setUser(new User(-1));
-        }
+        // if (ppaPartner.getUser() == null) {
+        // ppaPartner.setUser(new User(-1));
+        // }
       }
     } else if (ActionContext.getContext().getName().equals("partners")) {
       for (ProjectPartner partner : project.getProjectPartners()) {
         if (partner.getInstitution() == null) {
           partner.setInstitution(new Institution(-1));
         }
-        if (partner.getUser() == null) {
-          partner.setUser(new User(-1));
-        }
+        // if (partner.getUser() == null) {
+        // partner.setUser(new User(-1));
+        // }
       }
     }
   }
@@ -209,45 +208,47 @@ public class ProjectPartnersValidator extends BaseValidator {
       // Validating that the project leader is not repeated.
       for (int c = 0; c < allPartners.size(); c++) {
         if (allPartners.get(c).getId() != project.getLeader().getId()) {
-          if (allPartners.get(c).getUser() != null
-            && allPartners.get(c).getInstitution().getId() == project.getLeader().getInstitution().getId()
-            && allPartners.get(c).getUser().getId() == project.getLeader().getUser().getId()) {
-            problem = true;
-            action.addActionError(this.getText("planning.projectPartners.duplicated"));
-            action.addFieldError("project.leader.institution", this.getText("validation.duplicated"));
-            action.addFieldError("contact-person-leader", this.getText("validation.duplicated"));
-          }
+          // if (allPartners.get(c).getUser() != null
+          // && allPartners.get(c).getInstitution().getId() == project.getLeader().getInstitution().getId()
+          // && allPartners.get(c).getUser().getId() == project.getLeader().getUser().getId()) {
+          // problem = true;
+          // action.addActionError(this.getText("planning.projectPartners.duplicated"));
+          // action.addFieldError("project.leader.institution", this.getText("validation.duplicated"));
+          // action.addFieldError("contact-person-leader", this.getText("validation.duplicated"));
+          // }
         }
       }
     } else if (ActionContext.getContext().getName().equals("ppaPartners")) {
       // Validating that the CCAFS Partners are not repeated.
       for (int i = 0; i < project.getPPAPartners().size(); i++) {
         // Validating CCAFS Partners against the project leader
-        if (project.getPPAPartners().get(i).getUser() != null
-          && project.getLeader() != null & project.getLeader().getUser() != null
-          && project.getPPAPartners().get(i).getUser().getId() == project.getLeader().getUser().getId()
-          && project.getPPAPartners().get(i).getInstitution().getId() == project.getLeader().getInstitution().getId()) {
-          problem = true;
-          action.addActionError(this.getText("planning.projectPartners.duplicated.leader"));
-          action.addFieldError("project.PPAPartners[" + i + "].institution", this.getText("validation.duplicated"));
-          action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
-        }
+        // if (project.getPPAPartners().get(i).getUser() != null
+        // && project.getLeader() != null & project.getLeader().getUser() != null
+        // && project.getPPAPartners().get(i).getUser().getId() == project.getLeader().getUser().getId()
+        // && project.getPPAPartners().get(i).getInstitution().getId() == project.getLeader().getInstitution().getId())
+        // {
+        // problem = true;
+        // action.addActionError(this.getText("planning.projectPartners.duplicated.leader"));
+        // action.addFieldError("project.PPAPartners[" + i + "].institution", this.getText("validation.duplicated"));
+        // action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
+        // }
         // Validating CCAFS Partners against the other CCAFS Partners.
         for (int j = i + 1; j < project.getPPAPartners().size(); j++) {
-          if (project.getPPAPartners().get(i).getUser() != null && project.getPPAPartners().get(j).getUser() != null) {
-            if (project.getPPAPartners().get(i).getInstitution().getId() == project.getPPAPartners().get(j)
-              .getInstitution().getId()
-              && project.getPPAPartners().get(i).getUser().getId() == project.getPPAPartners().get(j).getUser()
-              .getId()) {
-              problem = true;
-              action.addActionError(this.getText("planning.projectPartners.duplicated"));
-              action.addFieldError("project.PPAPartners[" + i + "].institution", this.getText("validation.duplicated"));
-              action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
-
-              action.addFieldError("project.PPAPartners[" + j + "].institution", this.getText("validation.duplicated"));
-              action.addFieldError("contact-person-" + j, this.getText("validation.duplicated"));
-            }
-          }
+          // if (project.getPPAPartners().get(i).getUser() != null && project.getPPAPartners().get(j).getUser() != null)
+          // {
+          // if (project.getPPAPartners().get(i).getInstitution().getId() == project.getPPAPartners().get(j)
+          // .getInstitution().getId()
+          // && project.getPPAPartners().get(i).getUser().getId() == project.getPPAPartners().get(j).getUser()
+          // .getId()) {
+          // problem = true;
+          // action.addActionError(this.getText("planning.projectPartners.duplicated"));
+          // action.addFieldError("project.PPAPartners[" + i + "].institution", this.getText("validation.duplicated"));
+          // action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
+          //
+          // action.addFieldError("project.PPAPartners[" + j + "].institution", this.getText("validation.duplicated"));
+          // action.addFieldError("contact-person-" + j, this.getText("validation.duplicated"));
+          // }
+          // }
         }
       }
 
@@ -255,34 +256,35 @@ public class ProjectPartnersValidator extends BaseValidator {
       // Validating that the Project Partners are not repeated.
       for (int i = 0; i < project.getProjectPartners().size(); i++) {
         // Validating Project Partners against the project leader
-        if (project.getProjectPartners().get(i).getUser() != null
-          && project.getLeader() != null & project.getLeader().getUser() != null
-          && project.getProjectPartners().get(i).getUser().getId() == project.getLeader().getUser().getId() && project
-            .getProjectPartners().get(i).getInstitution().getId() == project.getLeader().getInstitution().getId()) {
-          problem = true;
-          action.addActionError(this.getText("planning.projectPartners.duplicated.leader"));
-          action.addFieldError("project.projectPartners[" + i + "].institution", this.getText("validation.duplicated"));
-          action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
-        }
+        // if (project.getProjectPartners().get(i).getUser() != null
+        // && project.getLeader() != null & project.getLeader().getUser() != null
+        // && project.getProjectPartners().get(i).getUser().getId() == project.getLeader().getUser().getId() && project
+        // .getProjectPartners().get(i).getInstitution().getId() == project.getLeader().getInstitution().getId()) {
+        // problem = true;
+        // action.addActionError(this.getText("planning.projectPartners.duplicated.leader"));
+        // action.addFieldError("project.projectPartners[" + i + "].institution",
+        // this.getText("validation.duplicated"));
+        // action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
+        // }
         // Validating Project Partners against the other Project Partners.
         for (int j = i + 1; j < project.getProjectPartners().size(); j++) {
-          if (project.getProjectPartners().get(i).getUser() != null
-            && project.getProjectPartners().get(j).getUser() != null) {
-            if (project.getProjectPartners().get(i).getInstitution().getId() == project.getProjectPartners().get(j)
-              .getInstitution().getId()
-              && project.getProjectPartners().get(i).getUser().getId() == project.getProjectPartners().get(j).getUser()
-              .getId()) {
-              problem = true;
-              action.addActionError(this.getText("planning.projectPartners.duplicated"));
-              action.addFieldError("project.projectPartners[" + i + "].institution",
-                this.getText("validation.duplicated"));
-              action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
-
-              action.addFieldError("project.projectPartners[" + j + "].institution",
-                this.getText("validation.duplicated"));
-              action.addFieldError("contact-person-" + j, this.getText("validation.duplicated"));
-            }
-          }
+          // if (project.getProjectPartners().get(i).getUser() != null
+          // && project.getProjectPartners().get(j).getUser() != null) {
+          // if (project.getProjectPartners().get(i).getInstitution().getId() == project.getProjectPartners().get(j)
+          // .getInstitution().getId()
+          // && project.getProjectPartners().get(i).getUser().getId() == project.getProjectPartners().get(j).getUser()
+          // .getId()) {
+          // problem = true;
+          // action.addActionError(this.getText("planning.projectPartners.duplicated"));
+          // action.addFieldError("project.projectPartners[" + i + "].institution",
+          // this.getText("validation.duplicated"));
+          // action.addFieldError("contact-person-" + i, this.getText("validation.duplicated"));
+          //
+          // action.addFieldError("project.projectPartners[" + j + "].institution",
+          // this.getText("validation.duplicated"));
+          // action.addFieldError("contact-person-" + j, this.getText("validation.duplicated"));
+          // }
+          // }
         }
       }
     }

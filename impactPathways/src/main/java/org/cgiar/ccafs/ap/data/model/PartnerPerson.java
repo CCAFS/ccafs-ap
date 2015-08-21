@@ -11,31 +11,28 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.data.model;
 
-import java.util.List;
+package org.cgiar.ccafs.ap.data.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * This class represents a Partner that belongs to a project and includes several contact persons.
+ * This class represents the contact name and responsibilities of a partner person within a project.
  * 
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
-public class ProjectPartner {
+
+public class PartnerPerson {
 
   private int id;
-  private Institution institution;
-  private boolean isActive;
-  private List<PartnerPerson> partnerPersons; // List of people working for this partner.
-  private List<ProjectPartner> partnercontributors; // CCAFS PPA institutions this project partner is collaborating.
+  private User user;
+  private String type;
+  private String responsibilities;
 
-  public ProjectPartner() {
-    super();
+  public PartnerPerson() {
   }
 
-  public ProjectPartner(int id) {
-    super();
+  public PartnerPerson(int id) {
     this.id = id;
   }
 
@@ -48,25 +45,41 @@ public class ProjectPartner {
     return false;
   }
 
+  /**
+   * This method returns a composed way to show a Project Partner.
+   * E.g. Rincon, Silvia <silirincon@madre.lov>
+   * 
+   * @return a String that represents a Project Partner.
+   */
+  public String getComposedName() {
+    if (this.id == -1) {
+      return "";
+    }
+    StringBuilder str = new StringBuilder();
+    str.append(user.getLastName());
+    str.append(", ");
+    str.append(user.getFirstName());
+    str.append(" <");
+    str.append(user.getEmail());
+    str.append(">, ");
+    return str.toString();
+
+  }
+
   public int getId() {
     return id;
   }
 
-  public Institution getInstitution() {
-    return institution;
+  public String getResponsibilities() {
+    return responsibilities;
   }
 
-  /**
-   * Get the list of CCAFS PPA Project Partners that this partner is collaborating with.
-   * 
-   * @return a list of PPA Project Partners
-   */
-  public List<ProjectPartner> getPartnercontributors() {
-    return partnercontributors;
+  public String getType() {
+    return type;
   }
 
-  public List<PartnerPerson> getPartnerPersons() {
-    return partnerPersons;
+  public User getUser() {
+    return user;
   }
 
   @Override
@@ -74,33 +87,26 @@ public class ProjectPartner {
     return this.getId();
   }
 
-  public boolean isActive() {
-    return isActive;
-  }
-
-  public void setActive(boolean isActive) {
-    this.isActive = isActive;
-  }
-
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setInstitution(Institution institution) {
-    this.institution = institution;
+  public void setResponsibilities(String responsibilities) {
+    this.responsibilities = responsibilities;
   }
 
-  public void setPartnercontributors(List<ProjectPartner> partnercontributors) {
-    this.partnercontributors = partnercontributors;
+  public void setType(String type) {
+    this.type = type;
   }
 
-  public void setPartnerPersons(List<PartnerPerson> partnerPersons) {
-    this.partnerPersons = partnerPersons;
+  public void setUser(User user) {
+    this.user = user;
   }
 
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
+
 
 }

@@ -23,7 +23,6 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
@@ -113,13 +112,13 @@ public class ProjectPartnersDeleteAction extends BaseAction {
         // Looping the list of partners.
         for (ProjectPartner partner : partners) {
           // Looping the list of "contribute institutions".
-          for (Institution institution : partner.getContributeInstitutions()) {
-            if (institution.equals(partnerToDelete.getInstitution())) {
-              // Populate the array.
-              linkedProjectPartners.add(partner);
-              break; // stop the loop.
-            }
-          }
+          // for (Institution institution : partner.getContributeInstitutions()) {
+          // if (institution.equals(partnerToDelete.getInstitution())) {
+          // // Populate the array.
+          // linkedProjectPartners.add(partner);
+          // break; // stop the loop.
+          // }
+          // }
         }
       }
     }
