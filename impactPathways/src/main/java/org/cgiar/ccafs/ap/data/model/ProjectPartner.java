@@ -28,7 +28,6 @@ public class ProjectPartner {
 
   private int id;
   private Institution institution;
-  private boolean isLeader;
   private List<PartnerPerson> partnerPersons; // List of people working for this partner.
   private List<ProjectPartner> partnercontributors; // CCAFS PPA institutions this project partner is collaborating.
 
