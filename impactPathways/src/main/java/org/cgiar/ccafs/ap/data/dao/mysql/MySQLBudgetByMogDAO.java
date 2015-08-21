@@ -78,16 +78,18 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjectOutputsBudgetByYear(int projectID, int year) {
+  public List<Map<String, String>> getProjectOutputsBudgetByYear(int projectID, int budgetTypeID, int year) {
     List<Map<String, String>> outputBudgets = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT pmb.id, pmb.total_contribution, pmb.gender_contribution, pmb.year, ");
+    query.append("SELECT pmb.id, pmb.total_contribution, pmb.gender_contribution, pmb.year, pmb.budget_type, ");
     query.append("ie.id as 'output_id', ie.description as 'output_description' ");
     query.append("FROM project_mog_budgets pmb ");
     query.append("INNER JOIN ip_elements ie ON pmb.mog_id = ie.id ");
     query.append("WHERE pmb.project_id = ");
     query.append(projectID);
+    query.append(" AND pmb.budget_type = ");
+    query.append(budgetTypeID);
     query.append(" AND pmb.year = ");
     query.append(year);
 
@@ -99,6 +101,7 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
         outputBudget.put("total_contribution", rs.getString("total_contribution"));
         outputBudget.put("gender_contribution", rs.getString("gender_contribution"));
         outputBudget.put("year", rs.getString("year"));
+        outputBudget.put("budget_type", rs.getString("budget_type"));
         outputBudget.put("output_id", rs.getString("output_id"));
         outputBudget.put("output_description", rs.getString("output_description"));
 
@@ -116,21 +119,22 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
   public boolean saveProjectOutputsBudget(Map<String, Object> budgetByMOGData, int userID, String justification) {
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO project_mog_budgets (project_id, mog_id, total_contribution, gender_contribution,  ");
-    query.append("year, created_by, modified_by, modification_justification) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+    query.append("budget_type, year, created_by, modified_by, modification_justification) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
     query.append("ON DUPLICATE KEY UPDATE is_active=TRUE, total_contribution=VALUES(total_contribution), ");
     query.append("gender_contribution=VALUES(gender_contribution), modified_by=VALUES(modified_by), ");
     query.append("year=VALUES(year), modification_justification=VALUES(modification_justification) ");
 
-    Object[] values = new Object[8];
+    Object[] values = new Object[9];
     values[0] = budgetByMOGData.get("project_id");
     values[1] = budgetByMOGData.get("mog_id");
     values[2] = budgetByMOGData.get("total_contribution");
     values[3] = budgetByMOGData.get("gender_contribution");
-    values[4] = budgetByMOGData.get("year");
-    values[5] = userID;
+    values[4] = budgetByMOGData.get("budget_type");
+    values[5] = budgetByMOGData.get("year");
     values[6] = userID;
-    values[7] = justification;
+    values[7] = userID;
+    values[8] = justification;
 
     int result = daoManager.saveData(query.toString(), values);
     return (result != -1);

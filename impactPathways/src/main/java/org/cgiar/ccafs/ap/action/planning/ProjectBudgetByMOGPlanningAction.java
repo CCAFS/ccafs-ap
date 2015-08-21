@@ -27,6 +27,7 @@ import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -59,8 +60,12 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   private int projectID;
   private List<Integer> allYears;
   private int year;
-  private double totalBudget;
-  private double budgetPercentageToGender;
+  private double ccafsBudgetByYear;
+  private double bilateralBudgetByYear;
+  private double ccafsGenderPercentage;
+  private double bilateralGenderPercentage;
+  private int ccafsBudgetType;
+  private int bilateralBudgetType;
 
   @Inject
   public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
@@ -77,6 +82,31 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     return allYears;
   }
 
+  public double getBilateralBudgetByYear() {
+    return bilateralBudgetByYear;
+  }
+
+  public int getBilateralBudgetType() {
+    return bilateralBudgetType;
+  }
+
+  public double getBilateralGenderPercentage() {
+    return bilateralGenderPercentage;
+  }
+
+  public double getCcafsBudgetByYear() {
+    return ccafsBudgetByYear;
+  }
+
+  public int getCcafsBudgetType() {
+    return ccafsBudgetType;
+  }
+
+  public double getCcafsGenderPercentage() {
+    return ccafsGenderPercentage;
+  }
+
+  @Override
   public int getCurrentPlanningYear() {
     return config.getPlanningCurrentYear();
   }
@@ -98,9 +128,10 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     return index;
   }
 
-  public OutputBudget getOutputBudget(int outputID) {
+
+  public OutputBudget getOutputBudget(int outputID, int budgetType) {
     for (OutputBudget ob : project.getOutputsBudgets()) {
-      if (ob.getOutput().getId() == outputID) {
+      if (ob.getOutput().getId() == outputID && ob.getType().getValue() == budgetType) {
         return ob;
       }
     }
@@ -115,12 +146,13 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     return projectID;
   }
 
-  public double getTotalBudgetByYear() {
-    return totalBudget;
+  public double getTotalBilateralGenderBudgetByYear() {
+    double a = (bilateralGenderPercentage / 100) * bilateralBudgetByYear;
+    return a;
   }
 
-  public double getTotalGenderBudgetByYear() {
-    double a = (budgetPercentageToGender / 100) * totalBudget;
+  public double getTotalCCAFSGenderBudgetByYear() {
+    double a = (ccafsGenderPercentage / 100) * ccafsBudgetByYear;
     return a;
   }
 
@@ -131,6 +163,7 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -157,13 +190,21 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
         year = config.getPlanningCurrentYear();
       }
 
-      project.setOutputsBudgets(budgetByMogManager.getProjectOutputsBudgetByYear(projectID, year));
-      totalBudget = budgetManager.calculateTotalCCAFSBudgetByYear(projectID, year);
-      budgetPercentageToGender = budgetManager.calculateTotalGenderBudgetByYear(projectID, year);
+      bilateralBudgetType = BudgetType.W3_BILATERAL.getValue();
+      ccafsBudgetType = BudgetType.W1_W2.getValue();
 
-      int bdgtTypeid =
-        (project.isBilateralProject()) ? BudgetType.W3_BILATERAL.getValue() : BudgetType.W1_W2.getValue();
-      budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, bdgtTypeid);
+      List<OutputBudget> budgets = new ArrayList<>();
+      budgets.addAll(budgetByMogManager.getProjectOutputsBudgetByTypeAndYear(projectID, ccafsBudgetType, year));
+      budgets.addAll(budgetByMogManager.getProjectOutputsBudgetByTypeAndYear(projectID, bilateralBudgetType, year));
+      project.setOutputsBudgets(budgets);
+
+      ccafsBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(projectID, ccafsBudgetType, year);
+      bilateralBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(projectID, bilateralBudgetType, year);
+
+      ccafsGenderPercentage =
+        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, ccafsBudgetType);
+      bilateralGenderPercentage =
+        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, bilateralBudgetType);
 
       if (!allYears.contains(new Integer(year))) {
         year = allYears.get(0);
@@ -207,14 +248,6 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
-  }
-
-  public void setTotalBudget(double totalBudget) {
-    this.totalBudget = totalBudget;
-  }
-
-  public void setTotalGenderBudget(double totalGenderBudget) {
-    this.budgetPercentageToGender = totalGenderBudget;
   }
 
   public void setYear(int year) {

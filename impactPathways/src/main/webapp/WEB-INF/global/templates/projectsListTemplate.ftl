@@ -24,8 +24,8 @@
         <tr>
         [#-- ID --]
         <td class="projectId">
-          <a href="[@s.url namespace=namespace action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-            P${project.id}
+              <a href="[@s.url namespace=namespace action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+        P${project.id}
           </a>
         </td>
           [#-- Project Title --]

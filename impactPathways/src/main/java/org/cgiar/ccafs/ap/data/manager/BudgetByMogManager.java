@@ -42,10 +42,11 @@ public interface BudgetByMogManager {
    * This method returns the budget contributions assigned for each project's output in a given year.
    * 
    * @param projectID - Project identifier
+   * @param budgetTypeID - Budget type identifier
    * @param year
    * @return a list of projectBudget objects.
    */
-  public List<OutputBudget> getProjectOutputsBudgetByYear(int projectID, int year);
+  public List<OutputBudget> getProjectOutputsBudgetByTypeAndYear(int projectID, int budgetTypeID, int year);
 
   /**
    * This method saves the budget contributions assigned to each project's output.
