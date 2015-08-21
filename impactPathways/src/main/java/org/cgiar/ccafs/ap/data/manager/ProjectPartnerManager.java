@@ -26,6 +26,7 @@ import com.google.inject.ImplementedBy;
 public interface ProjectPartnerManager {
 
   /**
+   * TODO - To Review
    * This method deletes a specific project partner from the database
    *
    * @param id of the project partner that will be deleted.
@@ -33,9 +34,11 @@ public interface ProjectPartnerManager {
    * @param justification is the justification statement.
    * @return true if the project partner was deleted or false otherwise.
    */
-  public boolean deleteProjectPartner(int id, User user, String justifications);
+  @Deprecated
+  public boolean z_old_deleteProjectPartner(int id, User user, String justifications);
 
   /**
+   * TODO - To Review
    * Delete a Project Partners information which belongs to the project Id and Institution Id given
    *
    * @param projectId is the id of the project
@@ -45,28 +48,33 @@ public interface ProjectPartnerManager {
    *             differentiation between partners would be the identifier. Please use deleteProjectPartner(id).
    */
   @Deprecated
-  public boolean deleteProjectPartner(Project project, Institution partner);
+  public boolean z_old_deleteProjectPartner(Project project, Institution partner);
 
 
   /**
+   * TODO - To Review
    * This method is used to get the Project Partner that belongs to a specific project.
    *
    * @param partnerId is the id of the partner.
    * @return The ProjectPartner object that belongs to the project identified with the given id. If no projects
    *         are found, this method will return an empty list.
    */
-  public ProjectPartner getProjectPartnerById(int partnerId);
+  @Deprecated
+  public ProjectPartner z_old_getProjectPartnerById(int partnerId);
 
   /**
+   * TODO - To Review
    * This method is used to get the list of Project Partners that belongs to a specific project.
    *
    * @param projectId is the id of the project.
    * @return a List of ProjectPartner objects that belongs to the project identified with the given id. If no projects
    *         are found, this method will return an empty list.
    */
-  public List<ProjectPartner> getProjectPartners(int projectId);
+  @Deprecated
+  public List<ProjectPartner> z_old_getProjectPartners(int projectId);
 
   /**
+   * TODO - To Review
    * This method is used to get the list of Project Partners that belongs to a specific project and type (PL, PP, PPA,
    * PC, etc.)
    * 
@@ -75,10 +83,13 @@ public interface ProjectPartnerManager {
    *        class APConstants ("Type of Project Partners")
    * @return List of ProjectPartner objects that belongs to the project identified with the given id and type. If no
    *         projects are found, this method will return an empty list.
+   * @deprecated
    */
-  public List<ProjectPartner> getProjectPartners(int projectId, String projectPartnerType);
+  @Deprecated
+  public List<ProjectPartner> z_old_getProjectPartners(int projectId, String projectPartnerType);
 
   /**
+   * TODO - To Review
    * This method saves a Project Partner individually.
    * This method could be used for saving a Project Leader or a Project Coordinator.
    * 
@@ -88,9 +99,11 @@ public interface ProjectPartnerManager {
    * @param justification is the justification for the change made.
    * @return the id of the project partner inserted, 0 if the record was updated and -1 if some error occurred.
    */
-  public int saveProjectPartner(int projectId, ProjectPartner partner, User user, String justification);
+  @Deprecated
+  public int z_old_saveProjectPartner(int projectId, ProjectPartner partner, User user, String justification);
 
   /**
+   * TODO - To Review
    * This method save the project partner of a specific project
    *
    * @param projectId is the project identifier in which these projects partners belong to.
@@ -99,7 +112,9 @@ public interface ProjectPartnerManager {
    * @param justification is the justification for the change made.
    * @return true if all partners were successfully saved; or false otherwise.
    */
-  public boolean saveProjectPartners(int projectId, List<ProjectPartner> partners, User user, String justification);
+  @Deprecated
+  public boolean z_old_saveProjectPartners(int projectId, List<ProjectPartner> partners, User user,
+    String justification);
 
 
 }

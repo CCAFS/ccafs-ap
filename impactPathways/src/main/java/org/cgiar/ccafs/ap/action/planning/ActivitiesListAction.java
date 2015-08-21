@@ -138,7 +138,7 @@ public class ActivitiesListAction extends BaseAction {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
     project.setActivities(activityManager.getActivitiesByProject(projectID));
-    projectPartners = projectPartnerManager.getProjectPartners(projectID);
+    projectPartners = projectPartnerManager.z_old_getProjectPartners(projectID);
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -175,9 +175,8 @@ public class ActivitiesListAction extends BaseAction {
         }
       }
       // Saving new and old Activities
-      boolean saved =
-        activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
-          this.getJustification());
+      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+        this.getJustification());
 
       if (!saved) {
         success = false;

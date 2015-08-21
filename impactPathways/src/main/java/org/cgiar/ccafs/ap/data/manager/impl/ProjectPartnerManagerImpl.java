@@ -51,17 +51,17 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public boolean deleteProjectPartner(int id, User user, String justification) {
+  public boolean z_old_deleteProjectPartner(int id, User user, String justification) {
     return projecPartnerDAO.deleteProjectPartner(id, user.getId(), justification);
   }
 
   @Override
-  public boolean deleteProjectPartner(Project projectId, Institution partnerId) {
+  public boolean z_old_deleteProjectPartner(Project projectId, Institution partnerId) {
     return projecPartnerDAO.deleteProjectPartner(projectId.getId(), partnerId.getId());
   }
 
   @Override
-  public ProjectPartner getProjectPartnerById(int partnerId) {
+  public ProjectPartner z_old_getProjectPartnerById(int partnerId) {
     ProjectPartner projectPartner = new ProjectPartner();
     Map<String, String> projectPartnerData = projecPartnerDAO.getProjectPartnerById(partnerId);
     projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
@@ -79,7 +79,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
     // Institution as partner_id
     projectPartner
-    .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
 
     // Getting the institutions which this partner is contributing to.
     // projectPartner
@@ -90,7 +90,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public List<ProjectPartner> getProjectPartners(int projectId) {
+  public List<ProjectPartner> z_old_getProjectPartners(int projectId) {
     List<ProjectPartner> projectPartners = new ArrayList<>();
     List<Map<String, String>> projectPartnerDataList = projecPartnerDAO.getProjectPartners(projectId);
     for (Map<String, String> pData : projectPartnerDataList) {
@@ -114,7 +114,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public List<ProjectPartner> getProjectPartners(int projectId, String projectPartnerType) {
+  public List<ProjectPartner> z_old_getProjectPartners(int projectId, String projectPartnerType) {
     List<ProjectPartner> projectPartners = new ArrayList<>();
     List<Map<String, String>> projectPartnerDataList =
       projecPartnerDAO.getProjectPartners(projectId, projectPartnerType);
@@ -147,7 +147,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public int saveProjectPartner(int projectId, ProjectPartner projectPartner, User user, String justification) {
+  public int z_old_saveProjectPartner(int projectId, ProjectPartner projectPartner, User user, String justification) {
     Map<String, Object> projectPartnerData = new HashMap<>();
 
     // Project partners must have an institution associated.
@@ -186,12 +186,12 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public boolean saveProjectPartners(int projectId, List<ProjectPartner> projectPartners, User user,
+  public boolean z_old_saveProjectPartners(int projectId, List<ProjectPartner> projectPartners, User user,
     String justification) {
     boolean allSaved = true;
     int result;
     for (ProjectPartner projectPartner : projectPartners) {
-      result = this.saveProjectPartner(projectId, projectPartner, user, justification);
+      result = this.z_old_saveProjectPartner(projectId, projectPartner, user, justification);
       if (result == -1) {
         allSaved = false;
       }

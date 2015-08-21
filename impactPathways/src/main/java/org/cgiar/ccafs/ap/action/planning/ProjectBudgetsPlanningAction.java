@@ -193,7 +193,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
-      projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+      projectPartnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
     if (!ppArray.isEmpty()) {
       project.setLeader(ppArray.get(0));
       hasLeader = true;
@@ -206,7 +206,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
     // Getting PPA Partners
-    project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), "PPA"));
+    project.setPPAPartners(projectPartnerManager.z_old_getProjectPartners(project.getId(), "PPA"));
 
     // Getting the list of PPA Partner institutions
     projectPPAPartners = new HashSet<Institution>();
@@ -284,7 +284,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           Project cofinancingProject = budget.getCofinancingProject();
           // Getting the Project Leader.
           List<ProjectPartner> ppArray =
-            projectPartnerManager.getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
+            projectPartnerManager.z_old_getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
           if (!ppArray.isEmpty()) {
             cofinancingProject.setLeader(ppArray.get(0));
 

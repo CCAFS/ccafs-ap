@@ -144,7 +144,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
 
     // Now it is ok to delete the current project partner.
-    boolean deleted = projectPartnerManager.deleteProjectPartner(partnerToDelete.getId(), this.getCurrentUser(),
+    boolean deleted = projectPartnerManager.z_old_deleteProjectPartner(partnerToDelete.getId(), this.getCurrentUser(),
       this.getJustification());
     return deleted;
   }
@@ -312,26 +312,26 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     super.saveProjectLessons(projectID);
     switch (actionName) {
-        // case "partnerLead":
-        // if (securityContext.canUpdateProjectLeader()) {
-        // return this.savePartnerLead();
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "partnerLead":
+      // if (securityContext.canUpdateProjectLeader()) {
+      // return this.savePartnerLead();
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-        // case "ppaPartners":
-        // if (securityContext.canUpdateProjectPPAPartner()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "ppaPartners":
+      // if (securityContext.canUpdateProjectPPAPartner()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-        // case "partners":
-        // if (securityContext.canUpdateProjectPartners()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "partners":
+      // if (securityContext.canUpdateProjectPartners()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
     }
 
     return NOT_AUTHORIZED;
@@ -342,7 +342,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     boolean success = true;
 
     // Saving Project leader
-    int id = projectPartnerManager.saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
+    int id = projectPartnerManager.z_old_saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
       this.getJustification());
     if (id < 0) {
       success = false;
@@ -351,7 +351,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Saving Project Coordinator
     // Setting the same institution that was selected for the Project Leader.
     project.getCoordinator().setInstitution(project.getLeader().getInstitution());
-    id = projectPartnerManager.saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
+    id = projectPartnerManager.z_old_saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
       this.getJustification());
     if (id < 0) {
       success = false;

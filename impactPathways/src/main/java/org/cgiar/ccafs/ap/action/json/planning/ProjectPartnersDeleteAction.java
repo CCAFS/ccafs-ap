@@ -101,10 +101,10 @@ public class ProjectPartnersDeleteAction extends BaseAction {
     Project project = projectManager.getProjectFromProjectPartnerID(projectPartnerID);
     if (project != null) {
       // Getting the partner information.
-      ProjectPartner partnerToDelete = projectPartnerManager.getProjectPartnerById(projectPartnerID);
+      ProjectPartner partnerToDelete = projectPartnerManager.z_old_getProjectPartnerById(projectPartnerID);
 
       // Getting the list of partners that are contributing to this project.
-      List<ProjectPartner> partners = projectPartnerManager.getProjectPartners(project.getId());
+      List<ProjectPartner> partners = projectPartnerManager.z_old_getProjectPartners(project.getId());
       boolean lastInstitution = institutionManager.validateLastOneInstitution(projectPartnerID);
 
       // If the institution is the last one, we need to get all the project partners that will be affected.

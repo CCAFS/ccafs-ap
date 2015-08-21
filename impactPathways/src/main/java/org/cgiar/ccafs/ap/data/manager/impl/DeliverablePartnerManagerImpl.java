@@ -88,7 +88,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartner.setId(Integer.parseInt(dData.get("id")));
       // project partner
       deliverablePartner
-      .setPartner(projectPartnerManager.getProjectPartnerById(Integer.parseInt(dData.get("partner_id"))));
+      .setPartner(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(dData.get("partner_id"))));
       // Partner type (Resp, Other)
       deliverablePartner.setType(dData.get("partner_type"));
       // adding information of the object to the array

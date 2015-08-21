@@ -77,11 +77,10 @@ public class ProjectDeliverableAction extends BaseAction {
 
 
   @Inject
-  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager,
-    DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
-    ProjectPartnerManager projectPartnerManager, IPElementManager ipElementManager, HistoryManager historyManager,
-    ProjectDeliverableValidator validator) {
+  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
+    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
+    DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager,
+    IPElementManager ipElementManager, HistoryManager historyManager, ProjectDeliverableValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -164,7 +163,7 @@ public class ProjectDeliverableAction extends BaseAction {
     allYears = project.getAllYears();
     outputs = ipElementManager.getProjectOutputs(project.getId());
 
-    projectPartners = projectPartnerManager.getProjectPartners(project.getId());
+    projectPartners = projectPartnerManager.z_old_getProjectPartners(project.getId());
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
@@ -180,8 +179,8 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Getting the other partners that are contributing to this deliverable.
-    deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverableID,
-      APConstants.DELIVERABLE_PARTNER_OTHER));
+    deliverable.setOtherPartners(
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
 
     super.setHistory(historyManager.getProjectDeliverablesHistory(deliverableID));
 
@@ -232,9 +231,8 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Saving new and old Next Users
-    boolean saved =
-      nextUserManager.saveNextUsers(deliverableID, deliverable.getNextUsers(), this.getCurrentUser(),
-        this.getJustification());
+    boolean saved = nextUserManager.saveNextUsers(deliverableID, deliverable.getNextUsers(), this.getCurrentUser(),
+      this.getJustification());
 
     if (!saved) {
       success = false;
@@ -244,9 +242,8 @@ public class ProjectDeliverableAction extends BaseAction {
 
     // Saving responsible deliverable partner
     if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getPartner() != null) {
-      result =
-        deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
-          this.getCurrentUser(), this.getJustification());
+      result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
+        this.getCurrentUser(), this.getJustification());
       if (result < 0) {
         success = false;
       }
@@ -261,9 +258,8 @@ public class ProjectDeliverableAction extends BaseAction {
     // Deleting other contributions
     for (DeliverablePartner previousOtherPartner : previousOtherPartners) {
       if (!deliverable.getOtherPartners().contains(previousOtherPartner)) {
-        boolean deleted =
-          deliverablePartnerManager.deleteDeliverablePartner(previousOtherPartner.getId(), this.getCurrentUser(),
-            this.getJustification());
+        boolean deleted = deliverablePartnerManager.deleteDeliverablePartner(previousOtherPartner.getId(),
+          this.getCurrentUser(), this.getJustification());
         if (!deleted) {
           success = false;
         }
@@ -271,9 +267,8 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Saving new and old Other Deliverable Partners
-    saved =
-      deliverablePartnerManager.saveDeliverablePartners(deliverableID, deliverable.getOtherPartners(),
-        this.getCurrentUser(), this.getJustification());
+    saved = deliverablePartnerManager.saveDeliverablePartners(deliverableID, deliverable.getOtherPartners(),
+      this.getCurrentUser(), this.getJustification());
     if (!saved) {
       success = false;
     }
