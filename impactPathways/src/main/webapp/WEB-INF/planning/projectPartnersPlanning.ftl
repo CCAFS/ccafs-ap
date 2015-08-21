@@ -27,16 +27,13 @@
 
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p>[@s.text name="planning.projectPartners.otherPartners.help" /]</p>
+    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="planning.projectPartners.otherPartners.help" /]</p>
   </div>
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
-  [@s.form action="partners" cssClass="pure-form"]
   <article class="halfContent" id="projectPartners">
-    [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
+  [@s.form action="partners" cssClass="pure-form"]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
-    
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
     [#if !canEdit]
       <p class="readPrivileges">
@@ -45,20 +42,21 @@
         [/@s.text]
       </p>
     [/#if]
-    
-    [#include "/WEB-INF/planning/projectPartners-sub-menu.ftl" /]
-    <div class="loadingBlock"></div>
-    <div id="PartnersTabs" class="simpleBox" style="display:none"> 
-      [#-- Project Partners Sub-menu --]
-      <div id="partnerTables-partnerLead" class="partnerTable clearfix"> 
-        [#-- Listing partners from partnersTemplate.ftl --]
-        [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false isBilateral=project.bilateralProject responsabilities=true  /]
-        [#if (editable && canEdit)]  
-          <div id="addProjectPartner" class="addLink">
-            <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-          </div> 
-        [/#if]  
-      </div>
+     [#-- Displaying partner lead from projectPartnersTemplate.ftl --]  
+    <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partnerLead" /]</h1>
+    <div id="PartnersTabs" class="simpleBox"> 
+      [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator showResponsabilities=true editable=editable /]
+    </div> 
+        
+    [#-- Listing projectPartners from partnersTemplate.ftl --]
+    <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
+    <div id="PartnersTabs" class="simpleBox"> 
+      [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false isBilateral=project.bilateralProject responsabilities=true  /]
+      [#if (editable && canEdit)]  
+        <div id="addProjectPartner" class="addLink">
+          <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
+        </div> 
+      [/#if]  
     </div>
     
     [#if !newProject]
@@ -96,8 +94,8 @@
       [#-- Display Log History --]
       [#if history??][@log.logList list=history /][/#if] 
     [/#if]
-  </article>
   [/@s.form] 
+  </article>
   [#-- Hidden Parameters Interface --]
   <input id="partners-name" type="hidden" value="project.projectPartners" />
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]

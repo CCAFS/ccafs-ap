@@ -29,11 +29,9 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   <article class="halfContent" id="mainInformation"> 
-    [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
+    <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1> 
     <div id="projectDeliverables" class="clearfix">
-      <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1> 
       [#if allYears?has_content]
       [#-- Planned Deliverables --]
       <div class="fullBlock clearfix">

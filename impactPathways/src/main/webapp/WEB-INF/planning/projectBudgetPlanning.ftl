@@ -36,7 +36,6 @@
   
   [@s.form action="budget" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
-    [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#assign projectType=(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL") /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]

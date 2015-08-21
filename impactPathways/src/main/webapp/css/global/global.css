@@ -644,7 +644,7 @@ span.logType.insert {
   background-image: url(../../images/global/project-icon.png);
 }
 #projectID-quote p{
-  line-height: 31px;
+  line-height: 26px;
 }
 #projectType-quote p{
   line-height: 31px;
@@ -2848,7 +2848,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   cursor: pointer;
   position: absolute;
   right: 0;
-  /* top: -27px; */
+  top: -6px;
 }
 
 #top-quote img { 
@@ -2864,7 +2864,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 
 #top-quote .quote-id { 
  float:left;
- padding: 2px 7px;
+ padding: 0px 11px;
  margin-left: 0.3em;
  border: 1px dotted #BEBEBE;
  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
@@ -2874,7 +2874,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
  background-size: 27px;
  background-repeat: no-repeat;
  background-position: 4px;
- min-height: 33px;
+ min-height: 29px;
 }
 
 #top-quote .aux-quote { 

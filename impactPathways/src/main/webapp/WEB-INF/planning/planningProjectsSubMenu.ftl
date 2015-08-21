@@ -30,7 +30,7 @@
           </a>
         </li>
         <li [#if currentSubStage == "partners" ] class="currentSection" [/#if]>
-          <a href="[@s.url action='partnerLead'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
+          <a href="[@s.url action='partners'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.planning.submenu.projectPartners" /]
           </a>
         </li>
