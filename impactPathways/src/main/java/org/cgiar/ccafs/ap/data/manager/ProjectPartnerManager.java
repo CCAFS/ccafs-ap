@@ -26,6 +26,15 @@ import com.google.inject.ImplementedBy;
 public interface ProjectPartnerManager {
 
   /**
+   * This method is used to get a specific Project Partner identified by the given ID.
+   *
+   * @param partnerID is a partner identifier.
+   * @return The ProjectPartner object identified by the given id. If no project partner is found, this method will
+   *         return null value.
+   */
+  public ProjectPartner getProjectPartner(int partnerID);
+
+  /**
    * TODO - To Review
    * This method deletes a specific project partner from the database
    *

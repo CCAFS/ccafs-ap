@@ -93,11 +93,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         Map<String, String> projectPartnerData = new HashMap<String, String>();
         projectPartnerData.put("id", rs.getString("id"));
         projectPartnerData.put("project_id", rs.getString("project_id"));
-        projectPartnerData.put("partner_id", rs.getString("partner_id"));
-        projectPartnerData.put("user_id", rs.getString("user_id"));
-        projectPartnerData.put("partner_type", rs.getString("partner_type"));
-        projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
-
+        projectPartnerData.put("institution_id", rs.getString("institution_id"));
         projectPartnerList.add(projectPartnerData);
       }
       rs.close();
@@ -113,19 +109,17 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  public Map<String, String> getProjectPartnerById(int partnerID) {
+  public Map<String, String> getProjectPartner(int partnerID) {
     LOG.debug(">> getProjectPartner projectID = {} )", partnerID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT pp.*   ");
     query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.id= ");
+    query.append("WHERE pp.id = ");
     query.append(partnerID);
     query.append(" AND pp.is_active = 1 ");
-    query.append("ORDER BY partner_id, partner_type");
 
-
-    LOG.debug("-- getProject() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProjectPartner() > Calling method executeQuery to get the results");
     List<Map<String, String>> data = this.getData(query.toString());
     if (data.size() > 0) {
       return data.get(0);
@@ -150,6 +144,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return this.getData(query.toString());
   }
 
+
   @Override
   public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
     LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})",
@@ -169,7 +164,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
