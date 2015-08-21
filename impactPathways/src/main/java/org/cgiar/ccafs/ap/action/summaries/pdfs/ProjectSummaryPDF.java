@@ -252,13 +252,19 @@ public class ProjectSummaryPDF extends BasePDF {
     if (budget_temp == null) {
 
       cell.add(this.truncate(currencyFormatter.format(0)));
-
+      currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+      currencyFormatter.setMaximumFractionDigits(0);
+      cell.add(" - USD " + this.truncate(currencyFormatter.format(0)));
       this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
       cell = new Paragraph();
       cell.setFont(TABLE_BODY_FONT);
+      currencyFormatter = NumberFormat.getPercentInstance(locale);
       cell.add(this.truncate(currencyFormatter.format(0)));
+      currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+      currencyFormatter.setMaximumFractionDigits(0);
+      cell.add(" - USD " + this.truncate(currencyFormatter.format(0)));
       this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
