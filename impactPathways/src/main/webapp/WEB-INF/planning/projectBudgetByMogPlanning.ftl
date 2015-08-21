@@ -73,10 +73,10 @@
   
                 [#-- Total W1/W2 gender budget amount --]
                 <div class="BudgetByYear"> 
-                  <h6 class="subTitle">Total ${year} ${projectTypeLabel} Gender budget: US$ <span>${totalCCAFSGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
+                  <h6 class="subTitle">Total ${year} ${projectTypeLabel} Gender budget: US$ <span>${ccafsGenderPercentage?number?string(",##0.00")}</span></h6> 
                   <p id="genderBudgetByYear">
-                    ${projectTypeLabel} budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${totalCCAFSGenderBudgetByYear?number?string(",##0.00")}</span>
-                    <input type="hidden" value="${totalCCAFSGenderBudgetByYear?number}" />
+                    ${projectTypeLabel} budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${ccafsGenderPercentage?number?string(",##0.00")}</span>
+                    <input type="hidden" value="${ccafsGenderPercentage?number}" />
                   </p>
                 </div>
               [/#if]
@@ -85,10 +85,10 @@
                 [#-- Total budget amount W3/Bilateral for bilateral and Co-funded projects --]
                 <div class="BudgetByYear"> 
                   [#assign totalCoFundedBudgetByYear="100000" /]
-                  <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${bilateralBudgetByYear?number?string(",##0.00")}</span></h6> 
+                  <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${bilateralGenderPercentage?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedBudgetByYear">
-                    [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${bilateralBudgetByYear?number?string(",##0.00")}</span>
-                    <input type="hidden" value="${bilateralBudgetByYear?number}" />
+                    [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${bilateralGenderPercentage?number?string(",##0.00")}</span>
+                    <input type="hidden" value="${bilateralGenderPercentage?number}" />
                   </p>
                 </div>
 

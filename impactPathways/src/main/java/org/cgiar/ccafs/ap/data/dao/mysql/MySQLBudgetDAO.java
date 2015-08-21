@@ -124,15 +124,15 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
-  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID) {
+  public double calculateTotalBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
     query.append("SELECT SUM(amount) as total ");
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
-    query.append(" AND budget_type = ");
-    query.append(budgetTypeID);
+    query.append(" AND year =  ");
+    query.append(year);
     query.append(" AND is_active = TRUE");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -152,15 +152,15 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
-  public double calculateTotalBudgetByYear(int projectID, int year) {
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
     query.append("SELECT SUM(amount) as total ");
     query.append("FROM project_budgets ");
     query.append(" WHERE project_id = ");
     query.append(projectID);
-    query.append(" AND year =  ");
-    query.append(year);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
     query.append(" AND is_active = TRUE");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -460,7 +460,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(" ) AND pb.year=  ");
     query.append(year);
     query.append(" AND pb.is_active = TRUE ");
-
+    System.out.println();
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
