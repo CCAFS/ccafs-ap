@@ -36,27 +36,33 @@
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
     [#if !canEdit]
-      <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"]
-          [@s.param][@s.text name="preplanning.project"/][/@s.param]
-        [/@s.text]
-      </p>
+      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="preplanning.project"/][/@s.param][/@s.text]</p>
     [/#if]
-     [#-- Displaying partner lead from projectPartnersTemplate.ftl --]  
-    <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partnerLead" /]</h1>
-    <div id="PartnersTabs" class="simpleBox"> 
-      [@partnersTemplate.projectLeader leader=project.leader coordinator=project.coordinator showResponsabilities=true editable=editable /]
-    </div> 
-        
-    [#-- Listing projectPartners from partnersTemplate.ftl --]
+    
+    [#-- Listing Partners from partnersTemplate.ftl --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
-    <div id="PartnersTabs" class="simpleBox"> 
-      [@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false isBilateral=project.bilateralProject responsabilities=true  /]
-      [#if (editable && canEdit)]  
+    <div id="projectPartners"> 
+      [#--@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false isBilateral=project.bilateralProject responsibilities=true  /--]
+      [#if project.projectPartners?has_content]
+        [#list project.projectPartners as projectPartner]
+          [@partnersTemplate.projectPartner projectPartner=projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="${projectPartner_index}" /]
+        [/#list]
+      [#else]
+        [#if !editable]
+        <p class="simpleBox center">
+          [@s.text name="planning.projectPartners.emptyPartners" /].
+          [#if canEdit]
+            <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
+          [/#if]
+        </p>  
+        [/#if]
+      [/#if]
+
+      [#if (editable && canEdit)]
         <div id="addProjectPartner" class="addLink">
           <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
         </div> 
-      [/#if]  
+      [/#if]
     </div>
     
     [#if !newProject]
@@ -96,10 +102,13 @@
     [/#if]
   [/@s.form] 
   </article>
+  
   [#-- Hidden Parameters Interface --]
   <input id="partners-name" type="hidden" value="project.projectPartners" />
+  
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
   [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+  
   [#-- PPA list Template --]
   <ul style="display:none">
     <li id="ppaListTemplate" class="clearfix">
@@ -108,6 +117,27 @@
       [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
     </li>
   </ul>
+  
+  [#-- Remove Partner Dialog --]
+  <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
+    <p class="message"></p>
+    <br />
+    <div class="activities">
+      <h3>Activities</h3>
+      <ul></ul>
+    </div>
+    <br />
+    <div class="deliverables">
+      <h3>Deliverables</h3>
+      <ul></ul>
+    </div>
+    <br />
+    <div class="projectPartners">
+      <h3>Project partners</h3>
+      <ul></ul>
+    </div>
+  </div>
+  
   [#-- Search users Interface --]
   [@usersForm.searchUsers/] 
   
