@@ -206,7 +206,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
     // Getting PPA Partners
-    project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
+    project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), "PPA"));
 
     // Getting the list of PPA Partner institutions
     projectPPAPartners = new HashSet<Institution>();
@@ -291,13 +291,12 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
             // The co-financing budget belongs to the project which receive it.
             budget.setCofinancingProject(project);
             budget.setInstitution(cofinancingProject.getLeader().getInstitution());
-            saved =
-              budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
-                this.getJustification());
+            saved = budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
+              this.getJustification());
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
-              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+            .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
 

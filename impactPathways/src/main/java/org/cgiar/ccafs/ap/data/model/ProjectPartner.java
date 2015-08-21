@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -26,7 +28,7 @@ public class ProjectPartner {
 
   private int id;
   private Institution institution;
-  private boolean isActive;
+  private boolean isLeader;
   private List<PartnerPerson> partnerPersons; // List of people working for this partner.
   private List<ProjectPartner> partnercontributors; // CCAFS PPA institutions this project partner is collaborating.
 
@@ -74,12 +76,32 @@ public class ProjectPartner {
     return this.getId();
   }
 
-  public boolean isActive() {
-    return isActive;
+  /**
+   * This methods validate if the current project partner has a contact person working as coordinator.
+   * 
+   * @return true if this project partner is coordinating the project. false otherwise.
+   */
+  public boolean isCoordinator() {
+    for (PartnerPerson person : partnerPersons) {
+      if (person.getType().equals(APConstants.PROJECT_PARTNER_PC)) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  public void setActive(boolean isActive) {
-    this.isActive = isActive;
+  /**
+   * This methods validate if the current project partner has a contact person working as leader.
+   * 
+   * @return true if this project partner is leading the project. false otherwise.
+   */
+  public boolean isLeader() {
+    for (PartnerPerson person : partnerPersons) {
+      if (person.getType().equals(APConstants.PROJECT_PARTNER_PL)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public void setId(int id) {

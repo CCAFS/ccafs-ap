@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -31,7 +32,6 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -76,10 +76,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<InstitutionType> partnerTypes;
   private List<Country> countries;
   private List<Institution> allInstitutions; // Is used to list all the partner institutions that have the system.
-  private List<Institution> allPPAPartners; // Is used to list all the PPA partners institutions
+  private List<Institution> allPPAInstitutions; // Is used to list all the PPA partners institutions
   private Set<Institution> projectPPAPartners; // Is used to list all the PPA partner institutions selected in the
   // current project.
-  private List<User> allProjectLeaders; // will be used to list all the project leaders that have the system.
+  private List<User> allUsers; // will be used to list all the project leaders that have the system.
   private List<Institution> contributionPartners; // this would get the partners contributing to others
 
   @Inject
@@ -154,11 +154,11 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   }
 
   public List<Institution> getAllPPAPartners() {
-    return allPPAPartners;
+    return allPPAInstitutions;
   }
 
   public List<User> getAllProjectLeaders() {
-    return allProjectLeaders;
+    return allUsers;
   }
 
   public List<Institution> getContributionPartners() {
@@ -189,6 +189,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public String getTypeProjectContactPerson() {
+    return APConstants.PROJECT_PARTNER_CP;
+  }
+
   public String getTypeProjectCoordinator() {
     return APConstants.PROJECT_PARTNER_PC;
   }
@@ -196,15 +200,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String getTypeProjectLeader() {
     return APConstants.PROJECT_PARTNER_PL;
   }
-
-  public String getTypeProjectPartner() {
-    return APConstants.PROJECT_PARTNER_PP;
-  }
-
-  public String getTypeProjectPPA() {
-    return APConstants.PROJECT_PARTNER_PPA;
-  }
-
 
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
@@ -235,8 +230,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     allInstitutions = institutionManager.getAllInstitutions();
 
     // Getting the list of all PPA institutions
-    allPPAPartners = new ArrayList<>();
-    allPPAPartners.addAll(institutionManager.getAllPPAInstitutions());
+    allPPAInstitutions = new ArrayList<>();
+    allPPAInstitutions.addAll(institutionManager.getAllPPAInstitutions());
 
     // Getting all the countries
     countries = locationManager.getInstitutionCountries();
@@ -245,64 +240,60 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     partnerTypes = institutionManager.getAllInstitutionTypes();
 
     // Getting all Project Leaders
-    allProjectLeaders = userManager.getAllUsers();
+    allUsers = userManager.getAllUsers();
 
-    // Getting the Project Leader.
-    List<ProjectPartner> ppArray =
-      projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
-    if (ppArray.size() != 0) {
-      project.setLeader(ppArray.get(0));
+    // Getting the list of Project Partners
+    // ********** SIMULATING FAKE PROJECT PARTNERS ***********
+    for (int c = 1; c <= 10; c++) {
+      ProjectPartner pp = new ProjectPartner(c);
+      pp.setInstitution(allInstitutions.get(c));
+      List<PartnerPerson> persons = new ArrayList<PartnerPerson>();
+      if (c == 5) { // leader
+        pp.setInstitution(allPPAInstitutions.get(c));
+        PartnerPerson per = new PartnerPerson(Integer.parseInt("999"));
+        per.setResponsibilities("Leading the project... ");
+        per.setUser(allUsers.get(0));
+        per.setType(APConstants.PROJECT_PARTNER_PL);
+        persons.add(per);
+      } else if (c % 2 == 1) {
+        pp.setInstitution(allPPAInstitutions.get(c));
+      }
+      for (int i = 1; i <= 3; i++) {
+        PartnerPerson per = new PartnerPerson(Integer.parseInt("1" + c + "" + i));
+        per.setResponsibilities("Responsible for... " + Integer.parseInt("1" + c + "" + i));
+        per.setUser(allUsers.get(Integer.parseInt(c + "" + i)));
+        per.setType(APConstants.PROJECT_PARTNER_CP);
+        persons.add(per);
+      }
     }
 
-    // Getting Project Coordinator
-    ppArray = projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
-    if (ppArray.size() != 0) {
-      project.setCoordinator(ppArray.get(0));
-    }
+    // ***************************************************
+    // project
+    // .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
 
-    // Getting PPA Partners
-    project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
-
-    // Getting the list of PPA Partner institutions (not repeated), PLUS the PL institution, as this institution will
-    // receive funds as well.
-    projectPPAPartners = new HashSet<Institution>();
-    if (project.getLeader() != null) {
-      projectPPAPartners.add(project.getLeader().getInstitution());
-    }
-    for (ProjectPartner ppaPartner : project.getPPAPartners()) {
-      projectPPAPartners.add(ppaPartner.getInstitution());
-    }
-
-    // Getting 2-level Project Partners
-    project
-    .setProjectPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
-      // Getting the 2-level Project Partner contributions
-      // for (ProjectPartner partner : project.getProjectPartners()) {
-      // partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
-      // }
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
-    previousProject = new Project();
-    previousProject.setId(project.getId());
-    previousProject.setPPAPartners(project.getPPAPartners());
+    // previousProject = new Project();
+    // previousProject.setId(project.getId());
+    // previousProject.setPPAPartners(project.getPPAPartners());
 
-    if (actionName.equals("partnerLead")) {
-      super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
-        new String[] {APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
-    } else if (actionName.equals("ppaPartners")) {
-      super.setHistory(
-        historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PPA}));
-    } else if (actionName.equals("partners")) {
-      super.setHistory(
-        historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PP}));
-    }
+    // if (actionName.equals("partnerLead")) {
+    // super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
+    // new String[] {APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
+    // } else if (actionName.equals("ppaPartners")) {
+    // super.setHistory(
+    // historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PPA}));
+    // } else if (actionName.equals("partners")) {
+    // super.setHistory(
+    // historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PP}));
+    // }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
-      if (ActionContext.getContext().getName().equals("ppaPartners") && project.getPPAPartners() != null) {
-        project.getPPAPartners().clear();
-      }
+      // if (ActionContext.getContext().getName().equals("ppaPartners") && project.getPPAPartners() != null) {
+      // project.getPPAPartners().clear();
+      // }
 
       if (ActionContext.getContext().getName().equals("partners") && project.getProjectPartners() != null) {
         project.getProjectPartners().clear();
@@ -317,26 +308,26 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     super.saveProjectLessons(projectID);
     switch (actionName) {
-      case "partnerLead":
-        if (securityContext.canUpdateProjectLeader()) {
-          return this.savePartnerLead();
-        } else {
-          return NOT_AUTHORIZED;
-        }
+      // case "partnerLead":
+      // if (securityContext.canUpdateProjectLeader()) {
+      // return this.savePartnerLead();
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-      case "ppaPartners":
-        if (securityContext.canUpdateProjectPPAPartner()) {
-          return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-        } else {
-          return NOT_AUTHORIZED;
-        }
+      // case "ppaPartners":
+      // if (securityContext.canUpdateProjectPPAPartner()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-      case "partners":
-        if (securityContext.canUpdateProjectPartners()) {
-          return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-        } else {
-          return NOT_AUTHORIZED;
-        }
+      // case "partners":
+      // if (securityContext.canUpdateProjectPartners()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
     }
 
     return NOT_AUTHORIZED;
@@ -374,77 +365,81 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     boolean success = true;
 
     // Getting the partners coming from the view.
-    List<ProjectPartner> partners;
-    if (partnerType.equals(APConstants.PROJECT_PARTNER_PPA)) {
-      partners = project.getPPAPartners();
-    } else if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
-      partners = project.getProjectPartners();
-    } else {
-      partners = new ArrayList<>();
-    }
+    // List<ProjectPartner> partners;
+    // if (partnerType.equals(APConstants.PROJECT_PARTNER_PPA)) {
+    // partners = project.getPPAPartners();
+    // } else if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
+    // partners = project.getProjectPartners();
+    // } else {
+    // partners = new ArrayList<>();
+    // }
 
     // ----------------- PARTNERS ----------------------
     // Getting previous partners to identify those that need to be deleted.
-    List<ProjectPartner> previousPartners = projectPartnerManager.getProjectPartners(projectID, partnerType);
-
-    // Deleting project partners
-    for (ProjectPartner previousPartner : previousPartners) {
-      if (!partners.contains(previousPartner)) {
-        boolean deleted = this.deletePartner(previousPartner, partners);
-        if (!deleted) {
-          success = false;
-        }
-      }
-    }
-
-    // Saving new and old PPA Partners
-    boolean saved =
-      projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
-    if (!saved) {
-      saved = false;
-    }
+    // List<ProjectPartner> previousPartners = projectPartnerManager.getProjectPartners(projectID, partnerType);
+    //
+    // // Deleting project partners
+    // for (ProjectPartner previousPartner : previousPartners) {
+    // if (!partners.contains(previousPartner)) {
+    // boolean deleted = this.deletePartner(previousPartner, partners);
+    // if (!deleted) {
+    // success = false;
+    // }
+    // }
+    // }
+    //
+    // // Saving new and old PPA Partners
+    // boolean saved =
+    // projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
+    // if (!saved) {
+    // saved = false;
+    // }
 
     // Saving project partner contributions
-    if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
-      // iterating each project partner
-      for (ProjectPartner projectPartner : partners) {
-        // Getting previous partner contributions to identify those that need to be deleted.
-        List<Institution> previousPartnerContributions =
-          institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
-          // Deleting project partner contributions
-          // for (Institution previousPartnerContribution : previousPartnerContributions) {
-          // if (projectPartner.getContributeInstitutions() == null
-          // || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
-          // boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
-          // previousPartnerContribution.getId());
-          // if (!deleted) {
-          // success = false;
-          // }
-          // }
-          // }
+    // if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
+    // // iterating each project partner
+    // for (ProjectPartner projectPartner : partners) {
+    // // Getting previous partner contributions to identify those that need to be deleted.
+    // List<Institution> previousPartnerContributions =
+    // institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
+    // // Deleting project partner contributions
+    // // for (Institution previousPartnerContribution : previousPartnerContributions) {
+    // // if (projectPartner.getContributeInstitutions() == null
+    // // || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
+    // // boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
+    // // previousPartnerContribution.getId());
+    // // if (!deleted) {
+    // // success = false;
+    // // }
+    // // }
+    // // }
+    //
+    // // if the project partner has contribute institutions.
+    // // if (projectPartner.getContributeInstitutions() != null) {
+    // // // Saving new and old Project Partner Contributions
+    // // saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
+    // // projectPartner.getContributeInstitutions());
+    // // if (!saved) {
+    // // saved = false;
+    // // }
+    // // }
+    // } // End loop
 
-        // if the project partner has contribute institutions.
-        // if (projectPartner.getContributeInstitutions() != null) {
-        // // Saving new and old Project Partner Contributions
-        // saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
-        // projectPartner.getContributeInstitutions());
-        // if (!saved) {
-        // saved = false;
-        // }
-        // }
-      } // End loop
-    }
+    // }
 
     budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID);
-    if (success) {
+    if (success)
+
+    {
       this.addActionMessage(this.getText("saving.saved"));
       return SUCCESS;
     }
     return INPUT;
+
   }
 
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
-    this.allProjectLeaders = allProjectLeaders;
+    this.allUsers = allProjectLeaders;
   }
 
   public void setProject(Project project) {
