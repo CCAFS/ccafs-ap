@@ -75,3 +75,4 @@ public class V3_0_1__Base_java_migration implements JdbcMigration {
     }
   }
 }
+
