@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.action.summaries.pdfs;
 
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.ActivityPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
@@ -112,8 +111,7 @@ public class ProjectSummaryPDF extends BasePDF {
   // Budget
   @Inject
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
-    ActivityManager activityManager, IPCrossCuttingManager ipCrossCuttingManager,
-    ActivityPartnerManager activityPartnerManager, LocationManager locationManager,
+    ActivityManager activityManager, IPCrossCuttingManager ipCrossCuttingManager, LocationManager locationManager,
     DeliverableManager deliverableManager, NextUserManager nextUserManager,
     ProjectContributionOverviewManager overviewManager, ProjectOutcomeManager projectOutcomeManager,
     BudgetByMogManager budgetByMogManager, ProjectManager projectManager) {
