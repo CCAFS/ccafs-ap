@@ -101,7 +101,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        .setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -175,7 +175,7 @@ public class ActivityManagerImpl implements ActivityManager {
       }
       if (activityData.get("leader_id") != null) {
         activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -212,7 +212,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         if (activityData.get("leader_id") != null) {
           activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          .setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));

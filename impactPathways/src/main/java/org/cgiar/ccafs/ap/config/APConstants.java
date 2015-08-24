@@ -100,8 +100,7 @@ public final class APConstants {
   // Types of Project Partners
   public static final String PROJECT_PARTNER_PL = "PL";
   public static final String PROJECT_PARTNER_PC = "PC";
-  public static final String PROJECT_PARTNER_PPA = "PPA";
-  public static final String PROJECT_PARTNER_PP = "PP";
+  public static final String PROJECT_PARTNER_CP = "CP";
 
   // Types of Deliverable Partners
   public static final String DELIVERABLE_PARTNER_RESP = "Resp";

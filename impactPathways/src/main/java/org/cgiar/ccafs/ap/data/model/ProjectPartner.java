@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * This class represents a Partner that belongs to a project with contact information.
+ * This class represents a Partner that belongs to a project and includes several contact persons.
  * 
  * @author Héctor Fabio Tobón R.
  */
@@ -28,10 +28,8 @@ public class ProjectPartner {
 
   private int id;
   private Institution institution;
-  private User user;
-  private String responsabilities;
-  private String type;
-  private List<Institution> contributeInstitutions; // CCAFS PPA institutions this project partner is collaborating.
+  private List<PartnerPerson> partnerPersons; // List of people working for this partner.
+  private List<ProjectPartner> partnercontributors; // CCAFS PPA institutions this project partner is collaborating.
 
   public ProjectPartner() {
     super();
@@ -46,45 +44,9 @@ public class ProjectPartner {
   public boolean equals(Object obj) {
     if (obj instanceof ProjectPartner) {
       ProjectPartner o = (ProjectPartner) obj;
-      // return o.getInstitution().getId() == this.institution.getId() && o.getUser().getId() == this.user.getId();
       return this.getId() == o.getId();
     }
     return false;
-  }
-
-  /**
-   * This method returns a composed way to show a Project Partner.
-   * E.g. Rincon, Silvia <silirincon@madre.lov> CLO - Santiago de Cali
-   * 
-   * @return a String that represents a Project Partner.
-   */
-  public String getComposedName() {
-    if (this.id == -1) {
-      return "";
-    }
-    StringBuilder str = new StringBuilder();
-    str.append(user.getLastName());
-    str.append(", ");
-    str.append(user.getFirstName());
-    str.append(" <");
-    str.append(user.getEmail());
-    str.append(">, ");
-    if (institution.getAcronym() != null) {
-      str.append(institution.getAcronym());
-      str.append(" - ");
-    }
-    str.append(institution.getName());
-    return str.toString();
-
-  }
-
-  /**
-   * Get the list of CCAFS PPA institutions that this project partner is collaborating with.
-   * 
-   * @return a list of PPA Institutions
-   */
-  public List<Institution> getContributeInstitutions() {
-    return contributeInstitutions;
   }
 
   public int getId() {
@@ -95,37 +57,50 @@ public class ProjectPartner {
     return institution;
   }
 
-  public String getResponsabilities() {
-    return responsabilities;
+  /**
+   * Get the list of CCAFS PPA Project Partners that this partner is collaborating with.
+   * 
+   * @return a list of PPA Project Partners
+   */
+  public List<ProjectPartner> getPartnercontributors() {
+    return partnercontributors;
   }
 
-  public String getType() {
-    return type;
-  }
-
-  public User getUser() {
-    return user;
+  public List<PartnerPerson> getPartnerPersons() {
+    return partnerPersons;
   }
 
   @Override
   public int hashCode() {
-    // int hash = 425;
-    // hash = (institution.getId() + (user != null ? user.getId() : 1)) * hash;
-    // return hash;
     return this.getId();
   }
 
   /**
-   * Validate if a project partner is a PPA Partner.
+   * This methods validate if the current project partner has a contact person working as coordinator.
    * 
-   * @return true if is a PPA Partner, false otherwise.
+   * @return true if this project partner is coordinating the project. false otherwise.
    */
-  public boolean isPPA() {
-    return this.type.equals(APConstants.PROJECT_PARTNER_PPA);
+  public boolean isCoordinator() {
+    for (PartnerPerson person : partnerPersons) {
+      if (person.getType().equals(APConstants.PROJECT_PARTNER_PC)) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  public void setContributeInstitutions(List<Institution> contributeInstitutions) {
-    this.contributeInstitutions = contributeInstitutions;
+  /**
+   * This methods validate if the current project partner has a contact person working as leader.
+   * 
+   * @return true if this project partner is leading the project. false otherwise.
+   */
+  public boolean isLeader() {
+    for (PartnerPerson person : partnerPersons) {
+      if (person.getType().equals(APConstants.PROJECT_PARTNER_PL)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public void setId(int id) {
@@ -136,16 +111,12 @@ public class ProjectPartner {
     this.institution = institution;
   }
 
-  public void setResponsabilities(String responsabilities) {
-    this.responsabilities = responsabilities;
+  public void setPartnercontributors(List<ProjectPartner> partnercontributors) {
+    this.partnercontributors = partnercontributors;
   }
 
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
+  public void setPartnerPersons(List<PartnerPerson> partnerPersons) {
+    this.partnerPersons = partnerPersons;
   }
 
   @Override

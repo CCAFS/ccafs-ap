@@ -19,7 +19,7 @@
 }
 
 a,a:active,a:visited {
-  color: #C1C1C1;
+  color: #2DAAD0;
 }
 a:hover {
   color: #A9A9A9;
@@ -28,6 +28,14 @@ a:hover {
 a.disabled {
   color: #ccc !important;
   cursor: context-menu;
+}
+
+a.addLink {
+  color: #2ABC68;
+  background-image: url(../../images/global/icon-add.png);
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  background-position: 0 1px;
 }
 
 .select, .input {
@@ -279,7 +287,7 @@ textarea#justification {
   text-align: justify;
   width: 98%;
   font-size: 1.07em;
-  margin-top: -1px;
+  margin-top: 1px;
   word-wrap: break-word;
   color: #6D6D6D;
 }
@@ -523,7 +531,10 @@ img.icon {
 
 .removeElement {
   padding: 10px 22px;
-  background: url(../../images/global/icon-remove.png) no-repeat center #D5504C;
+  background-image: url(../../images/global/icon-remove.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #D5504C;
   position: absolute;    top: 0;    right: 0;        border-radius: 0px 3px  0px 8px;
   cursor: pointer;
 }
@@ -722,7 +733,7 @@ select#partnerSave_activityPartner_partner_type_id {
 .panel { 
     border: 1px solid rgba(0,0,0,0.2);
     border-radius: 4px;
-    margin: 8px 0;
+    margin: 10px 0;
 }
 
 .panel.primary{
@@ -738,11 +749,10 @@ select#partnerSave_activityPartner_partner_type_id {
     border: none;
 }
 .panel.tertiary .panel-head{
-  font-size: 1em;
   background: #FFFFFF;
   color: #5D5D5E;
   padding: 2px 0 4px 0;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   text-align: left;
   border-bottom: 1px solid #DBDBDB;
 }
@@ -1694,6 +1704,7 @@ h1.simpleTitle span {
   padding: 0 8px 5px 0;
   width: 47%;
   vertical-align: top;
+  position: relative;
 }
 
 .fullPartBlock {
@@ -1868,6 +1879,7 @@ h1.simpleTitle span {
 
 .textArea textarea{
   width: 99%;
+  height: 4em;
 }
 
 .readPrivileges {
@@ -1891,9 +1903,18 @@ h1.simpleTitle span {
   float: right;
   cursor: pointer;
   position: absolute;
-  bottom: 0.65em;
+  
+}
+
+.fullPartBlock .searchUser{
+  bottom: 0.65em; 
+  right: 0.7em; 
+}
+.halfPartBlock .searchUser{
+  bottom: 0.4em;
   right: 0.7em;
 }
+
 
 input.userName {
   cursor: pointer;
@@ -2617,6 +2638,45 @@ textarea[id$='summary'] {
   display: none;
 }
 
+.projectPartner {
+  padding-top: 30px !important;
+  margin: 25px 0 !important;
+}
+
+.projectPartner .addContact {
+  text-align: right;    margin-top: -5px;
+  font-size: 1.05em;
+}
+
+.contactPerson {
+  font-size: 0.96em;
+  padding: 25px 16px 5px 16px !important;
+}
+
+.contactPerson .partnerPerson-type {
+  width: 30%;
+}
+
+.contactPerson .partnerPerson-email {
+  width: 67%;
+}
+
+.contactPerson .tag {
+  background-color: #f1f1f1;
+  float: left;
+  padding: 3px 12px;
+  margin-top: -6px;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+.contactPerson .tag span {
+    font-weight: bold;
+}
+
+.contactPerson .index {
+  background: #BEC7AB !important;  
+  font-size: 0.95em !important;
+}
 
 /* Project Budget */
 
@@ -3629,10 +3689,10 @@ top: 0px;
 left: 0px;
 background: #CECECE;
 color: #FFF;
-padding: 2px 12px;
+padding: 2px 12px 2px 12px;
 font-weight: bold;
 border-radius: 3px 0px 3px 0px;
-font-size: 1.05em;
+font-size: 13px;
 }
 
 .borderBox >span.elementId, .simpleBox >span.elementId {
@@ -3640,7 +3700,7 @@ font-size: 1.05em;
     background-color: #FBFBF9;
     border-left: none;
     border-top: none;
-    padding: 1px 15px 2px 20px;
+    padding: 1px 29px 2px 28px;
     position: absolute;
     top: 0px;
     left: 26px;

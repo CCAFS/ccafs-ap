@@ -15,9 +15,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetDAO;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -47,16 +45,11 @@ public class BudgetManagerImpl implements BudgetManager {
 
   // Managers
   private InstitutionManager institutionManager;
-  private IPProgramManager ipProgramManager;
-  private LocationManager locationManger;
 
   @Inject
-  public BudgetManagerImpl(BudgetDAO budgetDAO, InstitutionManager institutionManager,
-    IPProgramManager ipProgramManager, LocationManager locationManger) {
+  public BudgetManagerImpl(BudgetDAO budgetDAO, InstitutionManager institutionManager) {
     this.budgetDAO = budgetDAO;
     this.institutionManager = institutionManager;
-    this.locationManger = locationManger;
-    this.ipProgramManager = ipProgramManager;
   }
 
   @Override
@@ -107,12 +100,6 @@ public class BudgetManagerImpl implements BudgetManager {
   @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     return budgetDAO.calculateTotalProjectBudgetByType(projectID, budgetTypeID);
-  }
-
-  @Override
-  public boolean deactiveInvalidBudgets() {
-    // TODO Auto-generated method stub
-    return false;
   }
 
   @Override

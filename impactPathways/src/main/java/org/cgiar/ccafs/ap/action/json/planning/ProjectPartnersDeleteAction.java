@@ -23,7 +23,6 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
@@ -102,10 +101,10 @@ public class ProjectPartnersDeleteAction extends BaseAction {
     Project project = projectManager.getProjectFromProjectPartnerID(projectPartnerID);
     if (project != null) {
       // Getting the partner information.
-      ProjectPartner partnerToDelete = projectPartnerManager.getProjectPartnerById(projectPartnerID);
+      ProjectPartner partnerToDelete = projectPartnerManager.z_old_getProjectPartnerById(projectPartnerID);
 
       // Getting the list of partners that are contributing to this project.
-      List<ProjectPartner> partners = projectPartnerManager.getProjectPartners(project.getId());
+      List<ProjectPartner> partners = projectPartnerManager.z_old_getProjectPartners(project.getId());
       boolean lastInstitution = institutionManager.validateLastOneInstitution(projectPartnerID);
 
       // If the institution is the last one, we need to get all the project partners that will be affected.
@@ -113,13 +112,13 @@ public class ProjectPartnersDeleteAction extends BaseAction {
         // Looping the list of partners.
         for (ProjectPartner partner : partners) {
           // Looping the list of "contribute institutions".
-          for (Institution institution : partner.getContributeInstitutions()) {
-            if (institution.equals(partnerToDelete.getInstitution())) {
-              // Populate the array.
-              linkedProjectPartners.add(partner);
-              break; // stop the loop.
-            }
-          }
+          // for (Institution institution : partner.getContributeInstitutions()) {
+          // if (institution.equals(partnerToDelete.getInstitution())) {
+          // // Populate the array.
+          // linkedProjectPartners.add(partner);
+          // break; // stop the loop.
+          // }
+          // }
         }
       }
     }

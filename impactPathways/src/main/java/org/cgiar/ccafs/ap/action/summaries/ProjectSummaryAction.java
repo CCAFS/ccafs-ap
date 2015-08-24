@@ -184,26 +184,26 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
 
     // Getting the Project Leader.
-    List<ProjectPartner> ppArray = partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+    List<ProjectPartner> ppArray = partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
     if (ppArray.size() != 0) {
       project.setLeader(ppArray.get(0));
     }
 
     // Getting Project Coordinator
-    ppArray = partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
+    ppArray = partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
     if (ppArray.size() != 0) {
       project.setCoordinator(ppArray.get(0));
     }
 
     // Getting PPA Partners
-    project.setPPAPartners(partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
+    project.setPPAPartners(partnerManager.z_old_getProjectPartners(project.getId(), "PPA"));
 
 
     // Getting 2-level Project Partners
-    project.setProjectPartners(partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
+    project.setProjectPartners(partnerManager.z_old_getProjectPartners(project.getId(), "PP"));
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
-      partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
+      // partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
     }
 
     // Add Linked project
@@ -252,8 +252,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       }
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables

@@ -12,9 +12,9 @@ function init() {
   addChosen();
   applyWordCounter($("textarea.resp"), lWordsResp);
   applyWordCounter($("#lessons textarea"), lWordsResp);
-  if(!$("div.projectPartner").length) {
-    $("a.addProjectPartner").trigger("click");
-  }
+  /*
+   * if(!$("div.projectPartner").length) { $("a.addProjectPartner").trigger("click"); }
+   */
   setInitialPPAPartners();
   initItemListEvents();
   validateEvent([

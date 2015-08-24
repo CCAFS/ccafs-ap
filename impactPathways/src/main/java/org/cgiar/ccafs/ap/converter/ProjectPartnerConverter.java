@@ -46,7 +46,7 @@ public class ProjectPartnerConverter extends StrutsTypeConverter {
       String id = values[0];
       try {
         LOG.debug(">> convertFromString > id = {} ", id);
-        return projectPartnerManager.getProjectPartnerById(Integer.parseInt(id));
+        return projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(id));
       } catch (NumberFormatException e) {
         // Do Nothing
         LOG

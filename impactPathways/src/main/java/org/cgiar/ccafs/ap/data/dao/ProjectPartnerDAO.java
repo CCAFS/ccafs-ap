@@ -43,13 +43,14 @@ public interface ProjectPartnerDAO {
   public boolean deleteProjectPartner(int id, int userID, String justification);
 
   /**
-   * This method gets the project partner information given the project Id
+   * This method gets a project partner information identified with the given ID.
    *
-   * @param projectId - is the id of a project
-   * @return The project partner that belongs to the given project; an empty list if nothing was found or NULL if
+   * @param partnerID - is a partner identifier
+   * @return a Map with the information of a project partner identified with the given id; an empty list if nothing was
+   *         found or NULL if
    *         an error occurred.
    */
-  public Map<String, String> getProjectPartnerById(int projectId);
+  public Map<String, String> getProjectPartner(int partnerID);
 
   /**
    * This method gets the project partners information given the project Id

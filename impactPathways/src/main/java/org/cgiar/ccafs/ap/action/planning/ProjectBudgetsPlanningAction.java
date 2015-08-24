@@ -193,7 +193,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // Getting the Project Leader.
     List<ProjectPartner> ppArray =
-      projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+      projectPartnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
     if (!ppArray.isEmpty()) {
       project.setLeader(ppArray.get(0));
       hasLeader = true;
@@ -206,7 +206,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
     // Getting PPA Partners
-    project.setPPAPartners(projectPartnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
+    project.setPPAPartners(projectPartnerManager.z_old_getProjectPartners(project.getId(), "PPA"));
 
     // Getting the list of PPA Partner institutions
     projectPPAPartners = new HashSet<Institution>();
@@ -284,20 +284,19 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           Project cofinancingProject = budget.getCofinancingProject();
           // Getting the Project Leader.
           List<ProjectPartner> ppArray =
-            projectPartnerManager.getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
+            projectPartnerManager.z_old_getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
           if (!ppArray.isEmpty()) {
             cofinancingProject.setLeader(ppArray.get(0));
 
             // The co-financing budget belongs to the project which receive it.
             budget.setCofinancingProject(project);
             budget.setInstitution(cofinancingProject.getLeader().getInstitution());
-            saved =
-              budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
-                this.getJustification());
+            saved = budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
+              this.getJustification());
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
-              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+            .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
 
