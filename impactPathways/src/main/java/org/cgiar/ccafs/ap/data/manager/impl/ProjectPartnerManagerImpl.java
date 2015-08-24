@@ -60,19 +60,27 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
-      // TODO To complete
-      // projectPartner.setPartnercontributors(partnercontributors);
-
-      // Getting the institutions which this partner is contributing to.
-      // projectPartner
-      // .setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(projectPartner));
-
-      // adding information of the object to the array
+      // We just need to get the partner contributors if the institution is not a PPA.
+      if (projectPartner.getInstitution().isPPA() == false) {
+        projectPartner.setPartnerContributors(this.getProjectPartnerContributors(projectPartner));
+      }
       return projectPartner;
     }
     return null;
+  }
+
+  @Override
+  public List<ProjectPartner> getProjectPartnerContributors(ProjectPartner projectPartner) {
+    List<ProjectPartner> partnerContributors = new ArrayList<>();
+    List<Map<String, String>> partnerContributorsDataList =
+      projecPartnerDAO.getProjectPartnerContributors(projectPartner.getId());
+    for (Map<String, String> pData : partnerContributorsDataList) {
+      ProjectPartner partnerContributor = this.getProjectPartner(Integer.parseInt("project_partner_contributor_id"));
+      partnerContributors.add(partnerContributor);
+    }
+    return partnerContributors;
   }
 
   @Override
@@ -118,7 +126,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
     // Institution as partner_id
     projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
+    .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
 
     // Getting the institutions which this partner is contributing to.
     // projectPartner

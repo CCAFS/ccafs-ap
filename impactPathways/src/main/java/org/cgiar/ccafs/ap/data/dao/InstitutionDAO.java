@@ -97,13 +97,6 @@ public interface InstitutionDAO {
    */
   public Map<String, String> getInstitutionType(int institutionTypeID);
 
-  /**
-   * Get the list of institution where a given project partner is contributing to.
-   * 
-   * @param projectPartnerID is the project partner identifier
-   * @return a list of Maps with the information requested, an empty List if nothing found and null if an error ocurred.
-   */
-  public List<Map<String, String>> getProjectPartnerContributeInstitutions(int projectPartnerID);
 
   /**
    * This method returns the information of the institution marked as

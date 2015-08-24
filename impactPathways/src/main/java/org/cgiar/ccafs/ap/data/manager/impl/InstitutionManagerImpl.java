@@ -319,20 +319,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
   }
 
   @Override
-  public List<Institution> getProjectPartnerContributeInstitutions(ProjectPartner projectPartner) {
-    List<Institution> institutions = new ArrayList<>();
-    List<Map<String, String>> institutionDataList =
-      institutionDAO.getProjectPartnerContributeInstitutions(projectPartner.getId());
-    for (Map<String, String> iData : institutionDataList) {
-      Institution institution = this.getInstitutionData(iData);
-
-      // Adding object to the array.
-      institutions.add(institution);
-    }
-    return institutions;
-  }
-
-  @Override
   public Institution getUserMainInstitution(User user) {
     Map<String, String> iData = institutionDAO.getUserMainInstitution(user.getId());
     if (!iData.isEmpty()) {

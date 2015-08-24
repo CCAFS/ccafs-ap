@@ -107,14 +107,6 @@ public interface InstitutionManager {
   public InstitutionType getInstitutionType(int institutionTypeId);
 
   /**
-   * Get the list of institutions which a given partner is contributing to.
-   * 
-   * @param projectPartner is the project partner object.
-   * @return a list of Institutions, an empty list if nothing found and a null reference if an error occurred.
-   */
-  public List<Institution> getProjectPartnerContributeInstitutions(ProjectPartner projectPartner);
-
-  /**
    * This method returns the user's main institution defined in the database.
    * 
    * @param user
@@ -132,7 +124,7 @@ public interface InstitutionManager {
   public int saveProjectPartnerContributeInstitution(int projectPartnerID, int institutionID);
 
   /**
-   * This method add or update a project partner contributions.
+   * This method adds or updates a project partner contributions.
    * 
    * @param projectPartnerID is the project partner id
    * @param contributeInstitutions is the list of institutions that this project partner is contributing to.

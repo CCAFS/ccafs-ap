@@ -53,6 +53,14 @@ public interface ProjectPartnerDAO {
   public Map<String, String> getProjectPartner(int partnerID);
 
   /**
+   * Get the list of project partners that are contributing to a given project partner.
+   * 
+   * @param projectPartnerID is the project partner identifier whose project partners are contributing to
+   * @return a list of Maps with the information requested, an empty List if nothing found and null if an error occur.
+   */
+  public List<Map<String, String>> getProjectPartnerContributors(int projectPartnerID);
+
+  /**
    * This method gets the project partners information given the project Id
    *
    * @param projectId - is the id of a project
@@ -60,6 +68,7 @@ public interface ProjectPartnerDAO {
    *         an error occurred.
    */
   public List<Map<String, String>> getProjectPartners(int projectId);
+
 
   /**
    * This method gets the project partners information given the project Id and type of project partner
@@ -70,7 +79,6 @@ public interface ProjectPartnerDAO {
    *         nothing was found or NULL if an error occurred.
    */
   public List<Map<String, String>> getProjectPartners(int projectId, String projectPartnerType);
-
 
   /**
    * This method saves into the database a new Project Partner
