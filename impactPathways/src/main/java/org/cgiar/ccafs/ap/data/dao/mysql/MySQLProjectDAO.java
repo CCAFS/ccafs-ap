@@ -360,36 +360,6 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public Map<String, String> getExpectedProjectLeader(int projectID) {
-    LOG.debug(">> getExpectedProjectLeader(projectID={})", projectID);
-    Map<String, String> expectedProjectLeaderData = new HashMap<>();
-    try (Connection connection = databaseManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT epl.* ");
-      query.append("FROM expected_project_leaders epl ");
-      query.append("INNER JOIN projects p ON p.expected_project_leader_id = epl.id ");
-      query.append("WHERE p.id= ");
-      query.append(projectID);
-
-      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
-        expectedProjectLeaderData.put("id", rs.getString("id"));
-        expectedProjectLeaderData.put("contact_first_name", rs.getString("contact_first_name"));
-        expectedProjectLeaderData.put("contact_last_name", rs.getString("contact_last_name"));
-        expectedProjectLeaderData.put("contact_email", rs.getString("contact_email"));
-        expectedProjectLeaderData.put("institution_id", rs.getString("institution_id"));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getExpectedProjectLeader() > There was an error getting the data for expeted project leader {}.",
-        projectID, e);
-      return null;
-    }
-    LOG.debug("<< getExpectedProjectLeader():{}", expectedProjectLeaderData);
-    return expectedProjectLeaderData;
-  }
-
-  @Override
   public List<Integer> getPLProjectIds(int userID) {
     LOG.debug(">> getPLProjectIds(employeeId={})", new Object[] {userID});
     List<Integer> projectIds = new ArrayList<>();
