@@ -264,6 +264,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         per.setType(APConstants.PROJECT_PARTNER_CP);
         persons.add(per);
       }
+      pp.setPartnerPersons(persons);
       partners.add(pp);
     }
 
@@ -310,26 +311,26 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     super.saveProjectLessons(projectID);
     switch (actionName) {
-        // case "partnerLead":
-        // if (securityContext.canUpdateProjectLeader()) {
-        // return this.savePartnerLead();
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "partnerLead":
+      // if (securityContext.canUpdateProjectLeader()) {
+      // return this.savePartnerLead();
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-        // case "ppaPartners":
-        // if (securityContext.canUpdateProjectPPAPartner()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "ppaPartners":
+      // if (securityContext.canUpdateProjectPPAPartner()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-        // case "partners":
-        // if (securityContext.canUpdateProjectPartners()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "partners":
+      // if (securityContext.canUpdateProjectPartners()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
     }
 
     return NOT_AUTHORIZED;
