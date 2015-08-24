@@ -47,8 +47,7 @@ public class Project {
   private boolean isGlobal;
   private boolean isCofinancing;
   private User owner;
-  private List<ProjectPartner> projectPartners; // Project partners or 2-level partners.
-  private List<ProjectPartner> ppaPartners; // PPA Partners or CCAFS Program Partners.
+  private List<ProjectPartner> projectPartners; // Project partners.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<Budget> budgets;
   private BudgetOverhead overhead;
@@ -75,6 +74,7 @@ public class Project {
     this.id = id;
   }
 
+  // TODO To document
   public boolean containsOutput(int outputID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -86,6 +86,7 @@ public class Project {
     return false;
   }
 
+  // TODO To document
   public boolean containsOutput(int outputID, int outcomeID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -99,6 +100,7 @@ public class Project {
     return false;
   }
 
+  // TODO To document
   public boolean containsOutput(IPElement output) {
     if (this.outputs != null) {
       for (IPElement projectOutput : this.outputs) {
@@ -158,6 +160,7 @@ public class Project {
     return allYears;
   }
 
+  // TODO To document
   public String getBilateralContractProposalName() {
     if (bilateralContractProposalName == null) {
       return "";
@@ -165,6 +168,7 @@ public class Project {
     return bilateralContractProposalName;
   }
 
+  // TODO To document
   public Budget getBudget(int institutionID, int budgetType, int year) {
     if (budgets != null) {
       for (Budget budget : budgets) {
@@ -181,6 +185,7 @@ public class Project {
     return budgets;
   }
 
+  // TODO To document
   public Budget getCofinancingBudget(int confinancingProjectID, int year) {
     if (this.getBudgets() != null) {
       for (Budget budget : this.getBudgets()) {
@@ -194,6 +199,7 @@ public class Project {
     return null;
   }
 
+  // TODO To document
   public List<Budget> getCofinancingBudgets() {
     List<Budget> budgets = new ArrayList<>();
     if (this.getBudgets() != null) {
@@ -254,9 +260,9 @@ public class Project {
     return flagships;
   }
 
+  // TODO To document
   public String getFlagshipsAcronym() {
     StringBuilder flagshipAcronym = new StringBuilder();
-
     if (flagships != null) {
       for (int i = 0; i < flagships.size(); i++) {
         flagshipAcronym.append(flagships.get(i).getAcronym());
@@ -265,7 +271,6 @@ public class Project {
         }
       }
     }
-
     return flagshipAcronym.toString();
   }
 
@@ -273,9 +278,9 @@ public class Project {
     return id;
   }
 
+  // TODO To document
   public IPIndicator getIndicator(int parentIndicatorID, int outcomeID, int year) {
     IPIndicator emptyIndicator = new IPIndicator(-1);
-
     if (indicators != null) {
       for (IPIndicator indicator : this.indicators) {
         if (indicator.getParent() != null) {
@@ -293,6 +298,7 @@ public class Project {
     return indicators;
   }
 
+  // TODO To document
   public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
     List<IPIndicator> indicators = new ArrayList<>();
     if (indicators != null) {
@@ -358,6 +364,7 @@ public class Project {
     return outcomes;
   }
 
+  // TODO To document
   public IPElement getOutput(int outputID) {
     if (outputs != null) {
       for (IPElement output : outputs) {
@@ -369,6 +376,7 @@ public class Project {
     return null;
   }
 
+  // TODO To document
   public OutputOverview getOutputOverview(int outputID, int year) {
     for (OutputOverview overview : outputsOverview) {
       if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
@@ -398,11 +406,18 @@ public class Project {
     return owner;
   }
 
-  public List<ProjectPartner> getPpaPartners() {
-    return ppaPartners;
-  }
-
+  /**
+   * This method returns the list of partners that have a PPA institution associated.
+   * 
+   * @return a list of ProjectPartner objects.
+   */
   public List<ProjectPartner> getPPAPartners() {
+    List<ProjectPartner> ppaPartners = new ArrayList<>();
+    for (ProjectPartner pp : this.getProjectPartners()) {
+      if (pp.getInstitution().isPPA()) {
+        ppaPartners.add(pp);
+      }
+    }
     return ppaPartners;
   }
 
@@ -414,9 +429,9 @@ public class Project {
     return regions;
   }
 
+  // TODO To document
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
-
     if (regions != null) {
       for (int i = 0; i < regions.size(); i++) {
         regionAcronym.append(regions.get(i).getAcronym());
@@ -440,6 +455,7 @@ public class Project {
     return title;
   }
 
+  // TODO To document
   public double getTotalBilateralBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -450,6 +466,7 @@ public class Project {
     return totalBudget;
   }
 
+  // TODO To document
   public double getTotalBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -460,6 +477,7 @@ public class Project {
     return totalBudget;
   }
 
+  // TODO To document
   public double getTotalCcafsBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -620,10 +638,6 @@ public class Project {
 
   public void setOwner(User owner) {
     this.owner = owner;
-  }
-
-  public void setPPAPartners(List<ProjectPartner> ppaPartners) {
-    this.ppaPartners = ppaPartners;
   }
 
   public void setProjectPartners(List<ProjectPartner> projectPartners) {

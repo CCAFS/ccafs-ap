@@ -205,13 +205,12 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     totalBilateralBudget =
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
-    // Getting PPA Partners
-    project.setPPAPartners(projectPartnerManager.z_old_getProjectPartners(project.getId(), "PPA"));
-
     // Getting the list of PPA Partner institutions
     projectPPAPartners = new HashSet<Institution>();
-    for (ProjectPartner ppaPartner : project.getPPAPartners()) {
-      projectPPAPartners.add(ppaPartner.getInstitution());
+    for (ProjectPartner ppaPartner : project.getProjectPartners()) {
+      if (ppaPartner.getInstitution().isPPA()) {
+        projectPPAPartners.add(ppaPartner.getInstitution());
+      }
     }
 
     // Remove the project leader from the list of PPA partner in case it is present.
@@ -296,7 +295,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
-            .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
 

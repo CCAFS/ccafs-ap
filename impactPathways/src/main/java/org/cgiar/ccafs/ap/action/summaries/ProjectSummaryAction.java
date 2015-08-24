@@ -186,7 +186,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
 
     // Getting the Project Leader.
-    List<ProjectPartner> ppArray = partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+    List<ProjectPartner> ppArray =
+      partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
     if (ppArray.size() != 0) {
       project.setLeader(ppArray.get(0));
     }
@@ -198,7 +199,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
 
     // Getting PPA Partners
-    project.setPPAPartners(partnerManager.z_old_getProjectPartners(project.getId(), "PPA"));
+    // project.setPPAPartners(partnerManager.z_old_getProjectPartners(project.getId(), "PPA"));
 
 
     // Getting 2-level Project Partners

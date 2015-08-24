@@ -71,13 +71,15 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     return null;
   }
 
+
   @Override
   public List<ProjectPartner> getProjectPartnerContributors(ProjectPartner projectPartner) {
     List<ProjectPartner> partnerContributors = new ArrayList<>();
     List<Map<String, String>> partnerContributorsDataList =
       projecPartnerDAO.getProjectPartnerContributors(projectPartner.getId());
     for (Map<String, String> pData : partnerContributorsDataList) {
-      ProjectPartner partnerContributor = this.getProjectPartner(Integer.parseInt("project_partner_contributor_id"));
+      ProjectPartner partnerContributor =
+        this.getProjectPartner(Integer.parseInt(pData.get("project_partner_contributor_id")));
       partnerContributors.add(partnerContributor);
     }
     return partnerContributors;
@@ -85,8 +87,21 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   @Override
   public List<ProjectPartner> getProjectPartners(Project project) {
-    // TODO Auto-generated method stub
-    return null;
+    List<ProjectPartner> partners = new ArrayList<>();
+    List<Map<String, String>> projectPartnerDataList = projecPartnerDAO.getProjectPartners(project.getId());
+    for (Map<String, String> projectPartnerData : projectPartnerDataList) {
+      ProjectPartner projectPartner = new ProjectPartner();
+      projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
+      projectPartner
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
+      // We just need to get the partner contributors if its institution is not a PPA.
+      if (projectPartner.getInstitution().isPPA() == false) {
+        projectPartner.setPartnerContributors(this.getProjectPartnerContributors(projectPartner));
+      }
+      partners.add(projectPartner);
+    }
+    return partners;
   }
 
   public UserManager getUserManager() {
