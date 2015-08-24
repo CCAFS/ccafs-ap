@@ -173,8 +173,10 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // Get all the information to add in the pdf file
     project = projectManager.getProject(projectID);
 
-
-    project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+    // Get a route for the workplan name
+    if (project.isWorkplanRequired()) {
+      project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+    }
 
     // Getting the information of the Regions program
     project.setRegions(ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE));

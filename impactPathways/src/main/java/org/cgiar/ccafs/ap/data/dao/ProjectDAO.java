@@ -115,14 +115,6 @@ public interface ProjectDAO {
   public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID);
 
   /**
-   * This method returns the information of an expected project leader.
-   * 
-   * @param projectId is the project identifier.
-   * @return a Map with the main data of the expected project leader.
-   */
-  public Map<String, String> getExpectedProjectLeader(int projectId);
-
-  /**
    * This method returns a list of project identifiers where the user is assigned as Project Leader or Project
    * Coordinator.
    * 
