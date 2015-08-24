@@ -802,7 +802,7 @@ public class ProjectSummaryPDF extends BasePDF {
   }
 
   private void addEmptyFlashigAndRegion(List<IPProgram> listToAdding, int size) {
-    for (int a = 0; a < size; a++) {
+    for (int a = 0; a <= size; a++) {
       if (a > listToAdding.size()) {
         listToAdding.add(new IPProgram());
       }
@@ -860,7 +860,9 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(this.getText("summaries.project.managementLiaison"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
 
-      cellContent = new Paragraph(this.messageReturn(project.getLiaisonInstitution().getName()), TABLE_BODY_FONT);
+      cellContent =
+        new Paragraph(this.messageReturn(project.getLiaisonInstitution().getAcronym() + " - "
+          + project.getLiaisonInstitution().getName()), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
       cellContent = new Paragraph(this.getText("summaries.project.contactPerson"), TABLE_BODY_BOLD_FONT);
@@ -909,10 +911,14 @@ public class ProjectSummaryPDF extends BasePDF {
       Font hyperLink = new Font(FontFactory.getFont("openSans", 10, Color.BLUE));
       hyperLink.setStyle(Font.UNDERLINE);
 
-      Chunk imdb = new Chunk("Download", hyperLink);
-      // imdb.setAction(new PdfAction(new URL(this.messageReturn("http://www.google.com"))));
+      Chunk imdb;
+      if (project.getWorkplanName() == null) {
+        imdb = new Chunk(this.getText("summaries.project.empty"), hyperLink);
+      } else {
+        imdb = new Chunk("Download", hyperLink);
+        imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
+      }
 
-      imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
 
       cellContent = new Paragraph();
       cellContent.add(imdb);

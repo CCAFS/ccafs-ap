@@ -14,13 +14,11 @@
 
 package org.cgiar.ccafs.ap.action.summaries.csv;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-
-import com.opencsv.CSVWriter;
 
 
 /**
@@ -29,31 +27,55 @@ import com.opencsv.CSVWriter;
 public class DeliverableSummaryCSV {
 
   private InputStream inputStream;
+  int contentLength;
 
   public void generateCSV() {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    CSVWriter csvOutput;
+
+    File file = new File("temporal.txt");
+    FileWriter fileWriter = null;
 
     try {
-      csvOutput = new CSVWriter(new FileWriter("", true), ',');
+      fileWriter = new FileWriter(file, true);
+
+      // Write here.
+
+      fileWriter.flush();
+      fileWriter.close();
+      inputStream = new FileInputStream(file);
+      contentLength = (int) file.length();
+      file.delete();
+
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+
+  }
+
+  public int getContentLength() {
+    return contentLength;
+  }
+
+  public String getFileName() {
+    String fileName;
+
+    fileName = "publication";
+    fileName += ".csv";
+
+    return fileName;
   }
 
   /**
    * @return the inputStream
    */
-  private InputStream getInputStream() {
+  public InputStream getInputStream() {
     return inputStream;
   }
 
   /**
    * @param inputStream the inputStream to set
    */
-  private void setInputStream(InputStream inputStream) {
+  public void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }
 }
