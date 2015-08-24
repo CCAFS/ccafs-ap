@@ -25,12 +25,12 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * @author Hernán David Carvajal
+ * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class V2_1_2_20150610_1508__drop_triggers implements JdbcMigration {
+public class V3_0_1__Base_java_migration implements JdbcMigration {
 
-  private static Logger LOG = LoggerFactory.getLogger(V2_1_2_20150610_1508__drop_triggers.class);
+  private static Logger LOG = LoggerFactory.getLogger(V3_0_1__Base_java_migration.class);
 
   @Override
   public void migrate(Connection connection) throws Exception {
@@ -59,8 +59,8 @@ public class V2_1_2_20150610_1508__drop_triggers implements JdbcMigration {
         query.append("DROP TRIGGER ");
         query.append(triggerName);
 
-        dropTriggerStatement = connection.prepareStatement(query.toString());
-        dropTriggerStatement.executeUpdate();
+        // dropTriggerStatement = connection.prepareStatement(query.toString());
+        // dropTriggerStatement.executeUpdate();
 
         LOG.info("Trigger {} was successfully removed", triggerName);
       }
@@ -68,9 +68,9 @@ public class V2_1_2_20150610_1508__drop_triggers implements JdbcMigration {
       LOG.error("Error running the script.", e);
       throw e;
     } finally {
-      getTablesStatement.close();
+      // getTablesStatement.close();
       if (dropTriggerStatement != null) {
-        dropTriggerStatement.close();
+        // dropTriggerStatement.close();
       }
     }
   }
