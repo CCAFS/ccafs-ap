@@ -35,6 +35,15 @@ public interface ProjectPartnerManager {
   public ProjectPartner getProjectPartner(int partnerID);
 
   /**
+   * TODO To complete
+   * This method returns all the project partners that belong to a specific project.
+   * 
+   * @param project is the project object which we want to get the list of partners.
+   * @return a list of project partners, an empty list if nothing found or null if some error occur.
+   */
+  public List<ProjectPartner> getProjectPartners(Project project);
+
+  /**
    * TODO - To Review
    * This method deletes a specific project partner from the database
    *

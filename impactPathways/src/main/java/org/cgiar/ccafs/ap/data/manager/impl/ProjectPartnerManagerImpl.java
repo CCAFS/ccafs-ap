@@ -10,6 +10,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectPartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -39,15 +40,17 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   private ProjectPartnerDAO projecPartnerDAO;
 
   // Managers
+  private PartnerPersonManager partnerPersonManager;
   private InstitutionManager institutionManager;
   private UserManager userManager;
 
   @Inject
-  public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO, InstitutionManager institutionManager,
-    UserManager userManager) {
+  public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO, PartnerPersonManager partnerPersonManager,
+    InstitutionManager institutionManager, UserManager userManager) {
     this.projecPartnerDAO = projectPartnerDAO;
+    this.partnerPersonManager = partnerPersonManager;
     this.institutionManager = institutionManager;
-    this.userManager = userManager;
+    this.setUserManager(userManager);
   }
 
   @Override
@@ -58,8 +61,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
       .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // TODO To complete
-      // projectPartner.setPartnerPersons(partnerPersons);
       // projectPartner.setPartnercontributors(partnercontributors);
 
       // Getting the institutions which this partner is contributing to.
@@ -70,6 +73,20 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       return projectPartner;
     }
     return null;
+  }
+
+  @Override
+  public List<ProjectPartner> getProjectPartners(Project project) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public UserManager getUserManager() {
+    return userManager;
+  }
+
+  public void setUserManager(UserManager userManager) {
+    this.userManager = userManager;
   }
 
   @Override
@@ -101,7 +118,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
     // Institution as partner_id
     projectPartner
-    .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
 
     // Getting the institutions which this partner is contributing to.
     // projectPartner
