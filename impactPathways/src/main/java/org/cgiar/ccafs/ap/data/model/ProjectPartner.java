@@ -29,7 +29,7 @@ public class ProjectPartner {
   private int id;
   private Institution institution;
   private List<PartnerPerson> partnerPersons; // List of people working for this partner.
-  private List<ProjectPartner> partnercontributors; // CCAFS PPA institutions this project partner is collaborating.
+  private List<ProjectPartner> partnerContributors; // CCAFS PPA institutions this project partner is collaborating.
 
   public ProjectPartner() {
     super();
@@ -62,8 +62,8 @@ public class ProjectPartner {
    * 
    * @return a list of PPA Project Partners
    */
-  public List<ProjectPartner> getPartnercontributors() {
-    return partnercontributors;
+  public List<ProjectPartner> getPartnerContributors() {
+    return partnerContributors;
   }
 
   public List<PartnerPerson> getPartnerPersons() {
@@ -111,8 +111,8 @@ public class ProjectPartner {
     this.institution = institution;
   }
 
-  public void setPartnercontributors(List<ProjectPartner> partnercontributors) {
-    this.partnercontributors = partnercontributors;
+  public void setPartnerContributors(List<ProjectPartner> partnerContributors) {
+    this.partnerContributors = partnerContributors;
   }
 
   public void setPartnerPersons(List<PartnerPerson> partnerPersons) {
