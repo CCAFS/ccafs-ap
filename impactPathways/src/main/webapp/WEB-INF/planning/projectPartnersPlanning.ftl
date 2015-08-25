@@ -25,6 +25,7 @@
 [#import "/WEB-INF/global/macros/projectPartnersTemplate.ftl" as partnersTemplate /]
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
 
+
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="planning.projectPartners.otherPartners.help" /]</p>
@@ -41,23 +42,15 @@
     
     [#-- Listing Partners from partnersTemplate.ftl --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
-    <div id="projectPartners"> 
-      [#--@partnersTemplate.partnerSection projectPartners=project.projectPartners ap_name='project.projectPartners' editable=editable partnerTypes=partnerTypes countries=countries ppaPartner=false isBilateral=project.bilateralProject responsibilities=true  /--]
+    <div class="loadingBlock"></div>
+    <div id="projectPartnersBlock" class="simpleBox" style="display:none"> 
       [#if project.projectPartners?has_content]
         [#list project.projectPartners as projectPartner]
           [@partnersTemplate.projectPartner projectPartner=projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="${projectPartner_index}" /]
         [/#list]
       [#else]
-        [#if !editable]
-        <p class="simpleBox center">
-          [@s.text name="planning.projectPartners.emptyPartners" /].
-          [#if canEdit]
-            <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.activities.message.switchEditingMode" /]
-          [/#if]
-        </p>  
-        [/#if]
-      [/#if]
-
+        [@partnersTemplate.projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="0" /]
+      [/#if] 
       [#if (editable && canEdit)]
         <div id="addProjectPartner" class="addLink">
           <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
@@ -107,7 +100,10 @@
   <input id="partners-name" type="hidden" value="project.projectPartners" />
   
   [#-- Single partner TEMPLATE from partnersTemplate.ftl --]
-  [@partnersTemplate.partnerTemplate showResponsabilities=true /]  
+  [@partnersTemplate.projectPartner projectPartnerName="project.projectPartners" template=true /]
+  
+  [#-- Contact person TEMPLATE from partnersTemplate.ftl --]
+  [@partnersTemplate.contactPerson contactName="contactPerson" template=true /]
   
   [#-- PPA list Template --]
   <ul style="display:none">
@@ -118,22 +114,25 @@
     </li>
   </ul>
   
+  [#-- allPPAInstitutions --]
+  <input type="hidden" id="allPPAInstitutions" value="[[#list allPPAInstitutions as item]${item.id}[#if item_has_next],[/#if][/#list]]"/>
+  
   [#-- Remove Partner Dialog --]
   <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
     <p class="message"></p>
     <br />
     <div class="activities">
-      <h3>Activities</h3>
+      <h3>[@s.text name="planning.activities.title" /]</h3>
       <ul></ul>
     </div>
     <br />
     <div class="deliverables">
-      <h3>Deliverables</h3>
+      <h3>[@s.text name="planning.deliverables" /]</h3>
       <ul></ul>
     </div>
     <br />
     <div class="projectPartners">
-      <h3>Project partners</h3>
+      <h3>[@s.text name="preplanning.projectPartners.title" /]</h3>
       <ul></ul>
     </div>
   </div>

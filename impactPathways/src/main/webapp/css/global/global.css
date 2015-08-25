@@ -79,6 +79,14 @@ input.disabled {
   background-color: #f1f1f1 !important;
 }
 
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
 div.disabled {
   /* Required for IE 5, 6, 7 */
   /* ...or something to trigger hasLayout, like zoom: 1; */
@@ -2639,8 +2647,29 @@ textarea[id$='summary'] {
 }
 
 .projectPartner {
-  padding-top: 30px !important;
-  margin: 25px 0 !important;
+  padding-top: 40px !important;
+  margin-bottom: 40px !important;
+}
+
+span.partnerTag {
+  background-color: #f1f1f1;
+  padding: 0px 50px 2px 50px;
+  border-radius: 3px;
+}
+
+.projectPartner.leader .leftHead .index {
+  background-color: #2ECC71;
+  color: #fff;
+  padding: 2px 35px 3px 35px;
+}
+.projectPartner.leader {
+}
+
+.projectPartner.leader .contactPerson.PL {
+  border-color: #92D0AC;
+}
+.projectPartner.leader .contactPerson.PL .index {
+  background-color: #72D09A !important;
 }
 
 .projectPartner .addContact {
@@ -2665,7 +2694,6 @@ textarea[id$='summary'] {
   background-color: #f1f1f1;
   float: left;
   padding: 3px 12px;
-  margin-top: -6px;
   margin-right: 5px;
   border-radius: 4px;
 }
@@ -2674,8 +2702,9 @@ textarea[id$='summary'] {
 }
 
 .contactPerson .index {
-  background: #BEC7AB !important;  
+  background: #CECECE !important;  
   font-size: 0.95em !important;
+  padding: 2px 10px 2px 10px !important;
 }
 
 /* Project Budget */
@@ -3683,28 +3712,30 @@ ul#deliverablesFilesMessages > li {
   color: #5A5A5A;
 }
 
-.borderBox >span.index, .simpleBox >span.index {
-position: absolute;
-top: 0px;
-left: 0px;
-background: #CECECE;
-color: #FFF;
-padding: 2px 12px 2px 12px;
-font-weight: bold;
-border-radius: 3px 0px 3px 0px;
-font-size: 13px;
+span.index{
+  background: #BEC7AB;
+  color: #FFF;
+  padding: 2px 20px 3px 20px;
+  font-weight: bold;
+  border-radius: 3px 0px 3px 0px;
+  font-size: 13px;
 }
 
-.borderBox >span.elementId, .simpleBox >span.elementId {
-    border: 1px solid #CECECE;
-    background-color: #FBFBF9;
-    border-left: none;
-    border-top: none;
-    padding: 1px 29px 2px 28px;
-    position: absolute;
-    top: 0px;
-    left: 26px;
-    border-radius: 3px 0px 3px 0px;
+span.elementId{
+  border-left: none;
+  border-top: none;
+  padding: 0px 29px 0px 28px; 
+}
+
+.borderBox .leftHead, .simpleBox .leftHead{
+  border-right: 1px solid #CECECE;
+  border-bottom: 1px solid #CECECE;
+  border-radius: 0px 0px 4px 0px;
+  background-color: #FBFBF9;
+  padding: 2px 0px 3px 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 .borderBox:before,.borderBox:after {
