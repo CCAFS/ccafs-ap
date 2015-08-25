@@ -23,6 +23,14 @@ import com.google.inject.ImplementedBy;
 public interface PartnerPersonManager {
 
   /**
+   * This method gets a specific partner person identified with the given ID.
+   * 
+   * @param partnerPersonID is a partner person identifier.
+   * @return a PartnerPerson object with the information requested. Or null if nothing found.
+   */
+  public PartnerPerson getPartnerPerson(int partnerPersonID);
+
+  /**
    * This method gets all the partner persons that are part of a specific project partner.
    * 
    * @param projectPartner is the project partner where the partner persons are contributing.

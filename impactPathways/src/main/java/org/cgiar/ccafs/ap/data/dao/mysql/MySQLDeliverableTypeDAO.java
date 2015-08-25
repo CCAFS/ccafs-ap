@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego B.
+ * @author Carlos Alberto Martínez M.
  */
 public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
 
@@ -69,6 +70,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
         deliverableTypeData.put("id", rs.getString("id"));
         deliverableTypeData.put("name", rs.getString("name"));
         deliverableTypeData.put("parent_id", rs.getString("parent_id"));
+        deliverableTypeData.put("description", rs.getString("description"));
         deliverableTypeData.put("timeline", rs.getString("timeline"));
 
         deliverableTypesList.add(deliverableTypeData);
@@ -95,7 +97,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     query.append("WHERE dt.parent_id IS NOT NULL AND dt.timeline IS NOT NULL ");
 
     LOG.debug("-- getDeliverableSubTypes() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
 
@@ -114,6 +116,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
         deliverableTypeData.put("id", rs.getString("id"));
         deliverableTypeData.put("name", rs.getString("name"));
         deliverableTypeData.put("parent_id", rs.getString("parent_id"));
+        deliverableTypeData.put("description", rs.getString("description"));
         deliverableTypeData.put("timeline", rs.getString("timeline"));
       }
       con.close();
@@ -134,7 +137,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     query.append("WHERE dt.parent_id IS NULL AND dt.timeline IS NULL ");
 
     LOG.debug("-- getDeliverableTypes() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -148,7 +151,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     query.append(typeID);
 
     LOG.debug("-- getDeliverableTypes() > Calling method executeQuery to get the results");
-    return getData(query.toString());
+    return this.getData(query.toString());
   }
 
   @Override
@@ -159,23 +162,25 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     Object[] values;
     if (deliverableTypeData.get("id") == null) {
       // Insert new deliverable type record
-      query.append("INSERT INTO deliverable_types (name, parent_id, timeline) ");
-      query.append("VALUES (?,?,?) ");
-      values = new Object[3];
+      query.append("INSERT INTO deliverable_types (name, parent_id, description, timeline) ");
+      query.append("VALUES (?,?,?,?) ");
+      values = new Object[4];
       values[0] = deliverableTypeData.get("name");
       values[1] = deliverableTypeData.get("parent_id");
-      values[2] = deliverableTypeData.get("timeline");
+      values[2] = deliverableTypeData.get("description");
+      values[3] = deliverableTypeData.get("timeline");
       result = databaseManager.saveData(query.toString(), values);
 
     } else {
       // update deliverable type record
-      query.append("UPDATE deliverable_types SET name = ?, parent_id = ?, timeline = ?");
+      query.append("UPDATE deliverable_types SET name = ?, parent_id = ?, description = ?, timeline = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[4];
+      values = new Object[5];
       values[0] = deliverableTypeData.get("name");
       values[1] = deliverableTypeData.get("parent_id");
-      values[2] = deliverableTypeData.get("timeline");
-      values[3] = deliverableTypeData.get("id");
+      values[2] = deliverableTypeData.get("description");
+      values[3] = deliverableTypeData.get("timeline");
+      values[4] = deliverableTypeData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the deliverable type identified with the id = {}",

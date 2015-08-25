@@ -43,6 +43,20 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
   }
 
   @Override
+  public PartnerPerson getPartnerPerson(int partnerPersonID) {
+    Map<String, String> personsData = partnerPersonDAO.getPartnerPerson(partnerPersonID);
+    if (personsData.size() > 0) {
+      PartnerPerson person = new PartnerPerson();
+      person.setId(Integer.parseInt(personsData.get("id")));
+      person.setType(personsData.get("contact_type"));
+      person.setUser(userManager.getUser(Integer.parseInt(personsData.get("user_id"))));
+      person.setResponsibilities(personsData.get("responsibilities"));
+      return person;
+    }
+    return null;
+  }
+
+  @Override
   public List<PartnerPerson> getPartnerPersons(ProjectPartner projectPartner) {
     List<PartnerPerson> persons = new ArrayList<>();
     List<Map<String, String>> personsDataList = partnerPersonDAO.getPartnerPersonsByPartnerID(projectPartner.getId());

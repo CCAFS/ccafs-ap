@@ -82,7 +82,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * @author Hernán David Carvajal
+ * @author Hernán David Carvajal - CIAT/CCAFS
+ * @author Jorge Solís - CIAT/CCAFS
  */
 
 public class ProjectSummaryPDF extends BasePDF {
@@ -483,27 +484,27 @@ public class ProjectSummaryPDF extends BasePDF {
         cell = new Paragraph(
           "USD " + this.truncate(currencyFormatter
             .format(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), BudgetType.W1_W2.getValue()))),
-          TABLE_BODY_FONT);
+            TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
         cell = new Paragraph(
           "USD " + this.truncate(currencyFormatter
             .format(budgetManager.calculateTotalGenderPercentageByType(project.getId(), BudgetType.W1_W2.getValue()))),
-          TABLE_BODY_FONT);
+            TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
         cell = new Paragraph(
           "USD " + this.truncate(currencyFormatter.format(
             budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), BudgetType.W3_BILATERAL.getValue()))),
-          TABLE_BODY_FONT);
+            TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
         cell = new Paragraph(
           "USD " + this.truncate(currencyFormatter.format(
             budgetManager.calculateTotalGenderPercentageByType(project.getId(), BudgetType.W3_BILATERAL.getValue()))),
-          TABLE_BODY_FONT);
+            TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
       }
 
@@ -512,13 +513,13 @@ public class ProjectSummaryPDF extends BasePDF {
         cell = new Paragraph(
           "USD " + this.truncate(currencyFormatter
             .format(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), this.getBudgetType().getValue()))),
-          TABLE_BODY_FONT);
+            TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
         cell = new Paragraph(
           "USD " + this.truncate(currencyFormatter.format(
             budgetManager.calculateTotalGenderPercentageByType(project.getId(), this.getBudgetType().getValue()))),
-          TABLE_BODY_FONT);
+            TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
       }
 
@@ -770,7 +771,7 @@ public class ProjectSummaryPDF extends BasePDF {
             deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
 
             deliverableBlock
-              .add(this.getText("summaries.project.deliverable.partnership.organization") + " #" + counter + ": ");
+            .add(this.getText("summaries.project.deliverable.partnership.organization") + " #" + counter + ": ");
             deliverableBlock.add("");
 
             deliverableBlock.setFont(TABLE_BODY_FONT);
@@ -858,9 +859,10 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(this.getText("summaries.project.managementLiaison"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
 
-      cellContent =
-        new Paragraph(this.messageReturn(project.getLiaisonInstitution().getAcronym() + " - "
-          + project.getLiaisonInstitution().getName()), TABLE_BODY_FONT);
+      cellContent = new Paragraph(
+        this.messageReturn(
+          project.getLiaisonInstitution().getAcronym() + " - " + project.getLiaisonInstitution().getName()),
+        TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
       cellContent = new Paragraph(this.getText("summaries.project.contactPerson"), TABLE_BODY_BOLD_FONT);
@@ -1373,7 +1375,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -1738,7 +1740,7 @@ public class ProjectSummaryPDF extends BasePDF {
     for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
       outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
       outcomesBlock
-        .add(this.getText("summaries.project.outcome.gender.contributiton", new String[] {String.valueOf(year)}));
+      .add(this.getText("summaries.project.outcome.gender.contributiton", new String[] {String.valueOf(year)}));
 
       if ((project.getOutcomes().get(String.valueOf(year)) == null)
         || (project.getOutcomes().get(String.valueOf(year)).getGenderDimension() == null)) {

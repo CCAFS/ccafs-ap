@@ -1,12 +1,12 @@
+var dialog;
+var timeoutID;
+var $elementSelected, $dialogContent, $searchInput;
 $(document).ready(function() {
 
   /** Initialize */
 
-  var dialog;
-  var timeoutID;
-  var $elementSelected;
-  var $dialogContent = $("#dialog-searchUsers");
-  var $searchInput = $('.search-input .input input');
+  $dialogContent = $("#dialog-searchUsers");
+  $searchInput = $('.search-input .input input');
   var dialogOptions = {
       autoOpen: false,
       height: 400,
@@ -127,7 +127,7 @@ $(document).ready(function() {
 
   function openSearchDialog(e) {
     e.preventDefault();
-    $elementSelected = $(this).parents('.fullPartBlock, .halfPartBlock').find('.searchUser').parent();
+    $elementSelected = $(this).parents('.userField').find('.searchUser').parent();
     dialog.dialog("open");
     $dialogContent.find(".search-loader").fadeOut("slow");
   }

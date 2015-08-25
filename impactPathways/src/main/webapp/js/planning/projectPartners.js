@@ -1,10 +1,13 @@
 var $removePartnerDialog;
+var allPPAInstitutions;
 var lWordsResp = 100;
 
 $(document).ready(init);
 
 function init() {
   $removePartnerDialog = $('#partnerRemove-dialog');
+  $partnersBlock = $('#projectPartnersBlock');
+  allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
   attachEvents();
   // This function enables launch the pop up window
   popups();
@@ -12,21 +15,22 @@ function init() {
   addChosen();
   applyWordCounter($("textarea.resp"), lWordsResp);
   applyWordCounter($("#lessons textarea"), lWordsResp);
-  /*
-   * if(!$("div.projectPartner").length) { $("a.addProjectPartner").trigger("click"); }
-   */
+ 
   setInitialPPAPartners();
   initItemListEvents();
-  validateEvent([
-    "#justification"
-  ]);
+  
+  validateEvent([ "#justification" ]);  
+   
   $('.loadingBlock').hide().next().fadeIn(500);
 }
 
 function attachEvents() {
   // Partners Events
-  $("a.addProjectPartner").click(addPartnerEvent);
-  $(".removePartner").click(removePartnerEvent);
+  $("a.addProjectPartner").on('click',addPartnerEvent);
+  $(".removePartner").on('click',removePartnerEvent);
+  // Contacts Events
+  $(".addContact a.addLink").on('click',addContactEvent);
+  $(".removePerson").on('click',removePersonEvent);
   // Partners filters
   $(".filters-link").click(function(event) {
     var $filterContent = $(event.target).next();
@@ -37,6 +41,23 @@ function attachEvents() {
   });
   // When Partner Type change
   $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
+  
+  // When organization change
+  $("select.institutionsList").on("change",function(e){
+    var partner = new PartnerObject($(e.target).parents('.projectPartner'));
+    if(allPPAInstitutions.indexOf(partner.institutionId) == -1){
+      partner.showPPAs();
+    }else{
+      partner.hidePPAs();
+    }
+  });
+  
+  // When partnerPersonType change
+  $("select.partnerPersonType").on("change",function(e){
+    var optionSelected = $(e.target).val();
+    var contact = new PartnerPersonObject($(e.target).parents('.contactPerson'));
+    contact.changeType(optionSelected);
+  });
 }
 
 function updateOrganizationsList(e) {
@@ -71,8 +92,7 @@ function updateOrganizationsList(e) {
 
 // Partner Events
 function removePartnerEvent(e) {
-  var $parent = $(e.target).parent().parent();
-  var partner = new PartnerObject($parent);
+  var partner = new PartnerObject($(e.target).parent().parent());
   if(partner.id == "-1"){
     partner.remove();
     return
@@ -147,7 +167,7 @@ function removePartnerEvent(e) {
 
 function addPartnerEvent(e) {
   e.preventDefault();
-  var $newElement = $("#projectPartnerTemplate").clone(true).removeAttr("id").addClass("projectPartner");
+  var $newElement = $("#projectPartner-template").clone(true).removeAttr("id");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
 
@@ -159,21 +179,44 @@ function addPartnerEvent(e) {
   setProjectPartnersIndexes();
 }
 
-function setProjectPartnersIndexes() {
-  $("div.projectPartner").each(function(index,element) {
-    var elementName = $('#partners-name').val() + "[" + index + "].";
-    $(element).attr("id", "projectPartner-" + index);
-    // CSS selector div[id$=parent] Get any DIV element where the ID attribute value ends with "parent".
-    $(element).find(".userId").attr("name", elementName + "user");
-    $(element).find("[id$='partnerIndex']").html(index + 1);
-    $(element).find("[id$='id']").attr("name", elementName + "id");
-    $(element).find(".type").attr("name", elementName + "type");
-    $(element).find("[id$='institution']").attr("name", elementName + "institution");
-    $(element).find("[id$='responsabilities']").attr("name", elementName + "responsabilities");
+function addContactEvent(e) {
+  e.preventDefault();
+  var $newElement = $("#contactPerson-template").clone(true).removeAttr("id");
+  $(e.target).parent().before($newElement);
+  $newElement.show("slow");
 
+  // Activate the chosen plugin for new partners created
+  $newElement.find("select").chosen({
+      no_results_text: $("#noResultText").val(),
+      search_contains: true
+  });
+  setProjectPartnersIndexes();
+}
+
+function removePersonEvent(e){
+  e.preventDefault();
+  $(e.target).parent().hide('slow', function(){
+    $(this).remove();
+    setProjectPartnersIndexes();
+  });
+}
+
+function setProjectPartnersIndexes() {
+  $partnersBlock.find(".projectPartner").each(function(index,element) {
+    var elementName = $('#partners-name').val() + "[" + index + "].";
+    $(element).find(".leftHead .index").html(index + 1);
+    $(element).find("[id$='id']").attr("name", elementName + "id");
+    $(element).find("[id$='institution']").attr("name", elementName + "institution");
+    
     // Update index for CCAFS Partners
     $(element).find('.ppaPartnersList ul.list li').each(function(li_index,li) {
       $(li).find('.id').attr("name", elementName + "contributeInstitutions" + "[" + li_index + "].id");
+    });
+    
+    // Update index for partner persons
+    $(element).find('.contactPerson').each(function(i, partnerPerson) {
+      var contact = new PartnerPersonObject($(partnerPerson));
+      contact.setIndex(elementName, i);
     });
   });
 }
@@ -239,18 +282,74 @@ function addChosen() {
  */
 
 function PartnerObject(partner) {
-  this.id = $(partner).find('.partnerId').val();
+  var types = [];
+  this.id = parseInt($(partner).find('.partnerId').val());
+  this.institutionId = parseInt($(partner).find('.institutionsList').val());
+  this.ppaPartnersList = $(partner).find('.ppaPartnersList');
   this.loader = $(partner).find('.loading');
+  this.checkLeader = function(){
+    if ($(partner).find('.contactPerson.PL').length == 0){
+      $(partner).removeClass('leader');
+    }else{
+      types.push('Leader');
+    }
+  };
+  this.checkCoordinator = function(){
+    if ($(partner).find('.contactPerson.PC').length == 0){
+      $(partner).removeClass('coordinator');
+    }else{
+      types.push('Coordinator');
+    }
+  };
+  this.changeType = function(type){
+    if (type == "PL"){
+      $(partner).addClass('leader');
+    }
+    if(type == "PC"){
+      $(partner).addClass('coordinator');
+    }
+    types = [];
+    this.checkLeader();
+    this.checkCoordinator();
+    if (types.length != 0){
+      $(partner).find('strong.type').text(' ('+types.join(", ")+')');
+    }else{
+      $(partner).find('strong.type').text('');
+    }
+  };
   this.remove = function() {
     $(partner).hide("slow", function() {
       $(partner).remove();
       setProjectPartnersIndexes();
     });
   };
+  this.showPPAs = function() {
+   $(this.ppaPartnersList).slideDown();
+  };
+  this.hidePPAs = function() {
+    $(this.ppaPartnersList).slideUp();
+  };
   this.startLoader = function() {
     $(this.loader).fadeIn();
   };
   this.stopLoader = function() {
     $(this.loader).fadeOut();
+  };
+}
+
+function PartnerPersonObject(partnerPerson) {
+  this.id = parseInt($(partnerPerson).find('.partnerPersonId').val());
+  this.changeType = function(type){
+    var partner = new PartnerObject($(partnerPerson).parents('.projectPartner'));
+    $(partnerPerson).removeClass('PC PL CP -1').addClass(type);
+    partner.changeType(type);
+  };
+  this.setIndex = function(name, index) {
+    var elementName = name+"partnerPersons["+index+"].";
+    $(partnerPerson).find(".leftHead .index").html(index + 1);
+    $(partnerPerson).find(".partnerPersonId").attr("name", elementName + "id");
+    $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
+    $(partnerPerson).find(".userId").attr("name", elementName + "user");
+    $(partnerPerson).find(".resp").attr("name", elementName + "responsibilities");
   };
 }
