@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Carlos Alberto Martínez M.
  */
 public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
 
@@ -60,6 +61,7 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
       DeliverableType deliverableType = new DeliverableType();
       deliverableType.setId(Integer.parseInt(deliverableTypeData.get("id")));
       deliverableType.setName(deliverableTypeData.get("name"));
+      deliverableType.setDescription(deliverableTypeData.get("description"));
       if (deliverableTypeData.get("parent_id") != null) {
         deliverableType.setCategory(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableTypeData
           .get("parent_id"))));
@@ -80,6 +82,7 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
       DeliverableType deliverableType = new DeliverableType();
       deliverableType.setId(deliverableTypeID);
       deliverableType.setName(deliverableTypeData.get("name"));
+      deliverableType.setDescription(deliverableTypeData.get("description"));
       if (deliverableTypeData.get("parent_id") != null) {
         deliverableType.setCategory(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableTypeData
           .get("parent_id"))));
@@ -101,6 +104,7 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
       DeliverableType deliverableType = new DeliverableType();
       deliverableType.setId(Integer.parseInt(deliverableTypeData.get("id")));
       deliverableType.setName(deliverableTypeData.get("name"));
+      deliverableType.setDescription(deliverableTypeData.get("description"));
       if (deliverableTypeData.get("timeline") != null) {
         deliverableType.setTimeline(Integer.parseInt(deliverableTypeData.get("timeline")));
       }
@@ -118,6 +122,7 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
       DeliverableType deliverableType = new DeliverableType();
       deliverableType.setId(Integer.parseInt(deliverableTypeData.get("id")));
       deliverableType.setName(deliverableTypeData.get("name"));
+      deliverableType.setDescription(deliverableTypeData.get("description"));
       if (deliverableTypeData.get("parent_id") != null) {
         deliverableType.setCategory(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableTypeData
           .get("parent_id"))));
@@ -140,6 +145,7 @@ public class DeliverableTypeManagerImpl implements DeliverableTypeManager {
     }
     deliverableTypeData.put("name", deliverableType.getName());
     deliverableTypeData.put("parent_id", deliverableType.getCategory().getId());
+    deliverableTypeData.put("description", deliverableType.getDescription());
     deliverableTypeData.put("timeline", deliverableType.getTimeline());
 
     int result = deliverableTypeDAO.saveDeliverableType(deliverableTypeData);

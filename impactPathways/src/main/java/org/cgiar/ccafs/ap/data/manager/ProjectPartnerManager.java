@@ -35,7 +35,14 @@ public interface ProjectPartnerManager {
   public ProjectPartner getProjectPartner(int partnerID);
 
   /**
-   * TODO To complete
+   * Get the list of Project Partner whose a given partner is contributing to.
+   * 
+   * @param projectPartner is the partner object where we want to know which partners are contributing to it.
+   * @return a list of ProjectPartner objects, an empty list if nothing found or a null reference if an error occur.
+   */
+  public List<ProjectPartner> getProjectPartnerContributors(ProjectPartner projectPartner);
+
+  /**
    * This method returns all the project partners that belong to a specific project.
    * 
    * @param project is the project object which we want to get the list of partners.

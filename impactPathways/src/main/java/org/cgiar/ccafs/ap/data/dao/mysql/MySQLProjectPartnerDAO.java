@@ -128,6 +128,44 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectPartnerContributors(int projectPartnerID) {
+    LOG.debug(">> getProjectPartnerContributors( )");
+
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT ppc.* ");
+    query.append("FROM project_partner_contributions ppc ");
+    query.append("WHERE ppc.project_partner_id = ");
+    query.append(projectPartnerID);
+    query.append(" AND ppc.is_active = 1");
+
+
+    LOG.debug(">> executeQuery(query='{}')", query);
+    List<Map<String, String>> partnerContributionsDataList = new ArrayList<>();
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> partnerContributionsData = new HashMap<String, String>();
+        partnerContributionsData.put("id", rs.getString("id"));
+        partnerContributionsData.put("project_partner_id", rs.getString("project_partner_id"));
+        partnerContributionsData.put("project_partner_contributor_id", rs.getString("project_partner_contributor_id"));
+        partnerContributionsDataList.add(partnerContributionsData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query.toString();
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< executeQuery():projectPartnerList.size={}", partnerContributionsDataList.size());
+    return partnerContributionsDataList;
+  }
+
+
+  @Override
   public List<Map<String, String>> getProjectPartners(int projectID) {
     LOG.debug(">> getProjectPartners projectID = {} )", projectID);
 
@@ -143,7 +181,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {

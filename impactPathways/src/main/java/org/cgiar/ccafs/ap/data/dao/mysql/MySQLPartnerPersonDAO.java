@@ -73,6 +73,26 @@ public class MySQLPartnerPersonDAO implements PartnerPersonDAO {
   }
 
   @Override
+  public Map<String, String> getPartnerPerson(int partnerPersonID) {
+    LOG.debug(">> getPartnerPerson partnerPersonID = {} )", partnerPersonID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT *   ");
+    query.append("FROM project_partner_persons ");
+    query.append("WHERE id =  ");
+    query.append(partnerPersonID);
+    query.append(" AND is_active = 1");
+
+
+    LOG.debug("-- getPartnerPerson() > Calling method executeQuery to get the results");
+    List<Map<String, String>> data = this.getData(query.toString());
+    if (data.size() != 0) {
+      return data.get(0);
+    }
+    return new HashMap<String, String>();
+  }
+
+  @Override
   public List<Map<String, String>> getPartnerPersonsByPartnerID(int projectPartnerID) {
     LOG.debug(">> getPartnerPersonsByPartnerID projectPartnerID = {} )", projectPartnerID);
 

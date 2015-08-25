@@ -23,6 +23,14 @@ import com.google.inject.ImplementedBy;
 public interface PartnerPersonDAO {
 
   /**
+   * This method gets a specific partner person identified with the given id.
+   * 
+   * @param partnerPersonID is the partner person identifier.
+   * @return an object PartnerPerson. An empty list if nothing found or null if some error occur.
+   */
+  public Map<String, String> getPartnerPerson(int partnerPersonID);
+
+  /**
    * This method gets the partner persons that belongs to a given partner.
    * 
    * @param projectPartnerID is the project partner identifier.
