@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.MigrationInfo;
+import org.flywaydb.core.api.MigrationVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,18 @@ public class FlywayContextListener implements ServletContextListener {
 
   Logger LOG = LoggerFactory.getLogger(FlywayContextListener.class);
   private PropertiesManager properties;
+
+  private void configurePlaceholders(Flyway flyway) {
+    Map<String, String> placeHolders = new HashMap<>();
+
+    placeHolders.put("database", properties.getPropertiesAsString("mysql.database"));
+    placeHolders.put("user", properties.getPropertiesAsString("mysql.user"));
+
+    flyway.setPlaceholders(placeHolders);
+    flyway.setPlaceholderPrefix("$[");
+    flyway.setPlaceholderSuffix("]");
+    flyway.setPlaceholderReplacement(true);
+  }
 
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
@@ -37,15 +50,13 @@ public class FlywayContextListener implements ServletContextListener {
     flyway.setDataSource(this.getDataSource());
     flyway.setLocations(SQL_MIGRATIONS_PATH, JAVA_MIGRATIONS_PATH);
 
-    // Placeholders configuration
-    Map<String, String> placeHolders = new HashMap<>();
-    placeHolders.put("database", properties.getPropertiesAsString("mysql.database"));
-    placeHolders.put("user", properties.getPropertiesAsString("mysql.user"));
+    this.configurePlaceholders(flyway);
 
-    flyway.setPlaceholders(placeHolders);
-    flyway.setPlaceholderPrefix("$[");
-    flyway.setPlaceholderSuffix("]");
-    flyway.setPlaceholderReplacement(true);
+    if (flyway.info().current() == null) {
+      LOG.info("Setting baseline version 3.0");
+      flyway.setBaselineVersion(MigrationVersion.fromVersion("3.0"));
+      flyway.baseline();
+    }
 
     // Show the changes to be applied
     LOG.info("-------------------------------------------------------------");

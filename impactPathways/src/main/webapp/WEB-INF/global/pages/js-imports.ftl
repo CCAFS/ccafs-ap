@@ -8,6 +8,7 @@
       
       [#if libraryName="dataTable"]
         <script src="${baseUrl}/js/libs/dataTables/jquery.dataTables-1.9.4.min.js"></script>
+        <script src="${baseUrl}/js/libs/dataTables/js-naturalSort.dataTables-1.9.0.js"></script>
       [/#if]
       
       [#if libraryName="googleAPI"]
