@@ -413,12 +413,15 @@ public class Project {
    */
   public List<ProjectPartner> getPPAPartners() {
     List<ProjectPartner> ppaPartners = new ArrayList<>();
-    for (ProjectPartner pp : this.getProjectPartners()) {
-      if (pp.getInstitution().isPPA()) {
-        ppaPartners.add(pp);
+    if (this.getProjectPartners() != null) {
+      for (ProjectPartner pp : this.getProjectPartners()) {
+        if (pp.getInstitution().isPPA()) {
+          ppaPartners.add(pp);
+        }
       }
+      return ppaPartners;
     }
-    return ppaPartners;
+    return null;
   }
 
   public List<ProjectPartner> getProjectPartners() {
