@@ -75,10 +75,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<Country> countries;
   private List<Institution> allInstitutions; // Is used to list all the partner institutions that have the system.
   private List<Institution> allPPAInstitutions; // Is used to list all the PPA partners institutions
-  private List<ProjectPartner> projectPPAPartners; // Is used to list all the PPA partners that belongs to the project.
-  private List<User> allUsers; // will be used to list all the project leaders that have the system.
-  // private List<Institution> contributionPartners; // this would get the partners contributing to others
 
+  private List<ProjectPartner> projectPPAPartners; // Is used to list all the PPA partners that belongs to the project.
+
+  private List<User> allUsers; // will be used to list all the project leaders that have the system.
+
+  // private List<Institution> contributionPartners; // this would get the partners contributing to others
   @Inject
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
@@ -94,6 +96,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // this.projectPartnersValidator = projectPartnersValidator;
     // this.deliverablePartnerManager = deliverablePartnerManager;
     // this.deliverableManager = deliverableManager;
+  }
+
+  public List<Institution> getAllInstitutions() {
+    return allInstitutions;
   }
 
   // private boolean deletePartner(ProjectPartner partnerToDelete, List<ProjectPartner> partners) {
@@ -144,8 +150,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // return deleted;
   // }
 
-  public List<Institution> getAllInstitutions() {
-    return allInstitutions;
+  public List<Institution> getAllPPAInstitutions() {
+    return allPPAInstitutions;
   }
 
   public List<Institution> getAllPPAPartners() {
@@ -322,26 +328,26 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     super.saveProjectLessons(projectID);
     switch (actionName) {
-        // case "partnerLead":
-        // if (securityContext.canUpdateProjectLeader()) {
-        // return this.savePartnerLead();
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+    // case "partnerLead":
+    // if (securityContext.canUpdateProjectLeader()) {
+    // return this.savePartnerLead();
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
 
-        // case "ppaPartners":
-        // if (securityContext.canUpdateProjectPPAPartner()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+    // case "ppaPartners":
+    // if (securityContext.canUpdateProjectPPAPartner()) {
+    // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
 
-        // case "partners":
-        // if (securityContext.canUpdateProjectPartners()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+    // case "partners":
+    // if (securityContext.canUpdateProjectPartners()) {
+    // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
     }
 
     return NOT_AUTHORIZED;
