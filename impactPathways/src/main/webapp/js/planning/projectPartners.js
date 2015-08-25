@@ -8,6 +8,7 @@ function init() {
   $removePartnerDialog = $('#partnerRemove-dialog');
   $partnersBlock = $('#projectPartnersBlock');
   allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
+  updateProjectPPAPartnersLists();
   attachEvents();
   // This function enables launch the pop up window
   popups();
@@ -44,12 +45,7 @@ function attachEvents() {
   
   // When organization change
   $("select.institutionsList").on("change",function(e){
-    var partner = new PartnerObject($(e.target).parents('.projectPartner'));
-    if(allPPAInstitutions.indexOf(partner.institutionId) == -1){
-      partner.showPPAs();
-    }else{
-      partner.hidePPAs();
-    }
+    updateProjectPPAPartnersLists();
   });
   
   // When partnerPersonType change
@@ -87,6 +83,25 @@ function updateOrganizationsList(e) {
         $selectInstitutions.val(optionSelected);
         $selectInstitutions.trigger("liszt:updated");
       }
+  });
+}
+
+function updateProjectPPAPartnersLists(){
+  $('#projectPPAPartners').empty();
+  $partnersBlock.find('.projectPartner').each(function(i,projectPartner){
+    var partner = new PartnerObject($(projectPartner));
+    partner.startLoader();
+    if(allPPAInstitutions.indexOf(partner.institutionId) != -1){
+      partner.hidePPAs();
+      $('#projectPPAPartners').append(setOption(partner.institutionId, partner.institutionName));
+    }else{
+      partner.showPPAs();
+    }
+    partner.stopLoader();
+  });
+  $partnersBlock.find('.projectPartner').each(function(i,partner){
+    $('select.ppaPartnersSelect').empty().append(setOption(-1, "Select an option"));
+    $('select.ppaPartnersSelect').append($('#projectPPAPartners').html()).trigger("liszt:updated");
   });
 }
 
@@ -285,6 +300,7 @@ function PartnerObject(partner) {
   var types = [];
   this.id = parseInt($(partner).find('.partnerId').val());
   this.institutionId = parseInt($(partner).find('.institutionsList').val());
+  this.institutionName = $(partner).find('.institutionsList option[value='+this.institutionId+']').text();
   this.ppaPartnersList = $(partner).find('.ppaPartnersList');
   this.loader = $(partner).find('.loading');
   this.checkLeader = function(){
