@@ -81,9 +81,9 @@ import com.lowagie.text.pdf.draw.LineSeparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * @author Hernán David Carvajal
+ * @author Jorge Leonardo Solis Banguera
  */
 
 public class ProjectSummaryPDF extends BasePDF {
@@ -127,6 +127,9 @@ public class ProjectSummaryPDF extends BasePDF {
     this.projectManager = projectManager;
   }
 
+  /**
+   * This method add Activities for the summary project
+   */
   private void addActivities() {
 
     try {
@@ -232,6 +235,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
   }
 
+  /**
+   * @param year year of Budget
+   * @param cell cell of tge table
+   * @param table table for to represent the budget MOG
+   * @param mog MOG to calculate the budget
+   * @param budgetType type budget
+   */
   private void addBudgetByMog(int year, Paragraph cell, PdfPTable table, IPElement mog, BudgetType budgetType) {
 
     List<OutputBudget> listOutputBudgets = new ArrayList<>();
@@ -299,12 +309,12 @@ public class ProjectSummaryPDF extends BasePDF {
   }
 
   /**
-   * @param cell
+   * @param cell paragraph for write
    * @param institution PPA to calculate your budget
-   * @param startYear
-   * @param endYear
-   * @param table
-   * @param budgetType
+   * @param startYear start year
+   * @param endYear end year to calculate
+   * @param table table to represent the budget
+   * @param budgetType budget type
    * @return
    */
   private void addBudgetsByPartners(Paragraph cell, Institution institution, int year, PdfPTable table,
@@ -353,9 +363,8 @@ public class ProjectSummaryPDF extends BasePDF {
   }
 
   /**
-   * @param startYear
-   * @param endYear
-   * @param currencyFormatter
+   * @param startYear start year to calculate the summary
+   * @param endYear end year to calculate the summary
    */
   private void addBudgetsSummaryByPartners(int startYear, int endYear) {
 
@@ -429,8 +438,6 @@ public class ProjectSummaryPDF extends BasePDF {
       double value, genderValue;
 
       for (int year = startYear; year <= endYear; year++) {
-
-
         cell = new Paragraph(String.valueOf(year), TABLE_BODY_BOLD_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 0);
 
@@ -439,7 +446,6 @@ public class ProjectSummaryPDF extends BasePDF {
           // amount w1/w2
           value =
             this.budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
-
           cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
@@ -449,7 +455,6 @@ public class ProjectSummaryPDF extends BasePDF {
           cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
-
           // amount w3/Bilateral \n
           value =
             this.budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W3_BILATERAL.getValue(),
@@ -457,16 +462,13 @@ public class ProjectSummaryPDF extends BasePDF {
           cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(value)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
-
           // gender w3/Bilateral
-
           genderValue =
             this.budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), BudgetType.W3_BILATERAL.getValue(),
               year);
 
           cell = new Paragraph("USD " + this.truncate(currencyFormatter.format(genderValue)), TABLE_BODY_FONT);
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
 
         } else {
           // amount w1/w2
@@ -490,7 +492,6 @@ public class ProjectSummaryPDF extends BasePDF {
       cell = new Paragraph(this.getText("summaries.project.budget.overall.total"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 0);
 
-
       if (project.isCoFundedProject()) {
         cell =
           new Paragraph("USD "
@@ -503,7 +504,6 @@ public class ProjectSummaryPDF extends BasePDF {
             + this.truncate(currencyFormatter.format(budgetManager.calculateTotalGenderPercentageByType(
               project.getId(), BudgetType.W1_W2.getValue()))), TABLE_BODY_FONT);
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
 
         cell =
           new Paragraph("USD "
@@ -534,7 +534,6 @@ public class ProjectSummaryPDF extends BasePDF {
         this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
       }
 
-
       document.add(table);
       document.add(Chunk.NEWLINE);
 
@@ -543,11 +542,14 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
-  // if value = 0 add to listIPFlagship else adding listIPRegion
+  /**
+   * @param deliverable deliverable to add in the summary
+   * @param counter number of deliverable
+   **/
   private void addDelivable(Deliverable deliverable, int counter) {
     try {
       if (deliverable != null) {
-        //
+
         PdfPTable table = new PdfPTable(2);
         table.setTotalWidth(480);
         table.setLockedWidth(true);
@@ -775,7 +777,6 @@ public class ProjectSummaryPDF extends BasePDF {
               deliverableBlock.add(this.getText("summaries.project.deliverable.partnership") + " #" + counter);
             }
 
-
             // Organization
             stringBuilder = new StringBuilder();
             deliverableBlock = new Paragraph();
@@ -812,6 +813,12 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+  /**
+   * This method is used for equalize the size Flashing list and Region list
+   * 
+   * @param year year of Budget
+   * @param size size list more big
+   */
   private void addEmptyFlashigAndRegion(List<IPProgram> listToAdding, int size) {
     for (int a = 0; a <= size; a++) {
       if (a > listToAdding.size()) {
@@ -821,8 +828,10 @@ public class ProjectSummaryPDF extends BasePDF {
   }
 
 
+  /**
+   * This method is used for add the main information table of project summary
+   */
   private void addMainInformationTable() {
-
 
     String startDate, endDate;
     if (project.getStartDate() != null) {
@@ -831,13 +840,11 @@ public class ProjectSummaryPDF extends BasePDF {
       startDate = this.messageReturn(null);
     }
 
-
     if (project.getEndDate() != null) {
       endDate = new SimpleDateFormat("dd-MM-yyyy").format(project.getEndDate());
     } else {
       endDate = this.messageReturn(null);
     }
-
 
     Paragraph cellContent;
 
@@ -849,8 +856,6 @@ public class ProjectSummaryPDF extends BasePDF {
       table.setLockedWidth(true);
       table.setTotalWidth(480);
       table.setWidths(new int[] {3, 5, 3, 5});
-
-      // Add table
 
       // First row
       cellContent =
@@ -895,7 +900,6 @@ public class ProjectSummaryPDF extends BasePDF {
       }
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 0);
 
-
       cellContent = new Paragraph(this.getText("summaries.project.projectLeader"), TABLE_BODY_BOLD_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 0);
 
@@ -914,10 +918,8 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(this.messageReturn(project.getType().replaceAll("_", " ")), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
-
       cellContent = (new Paragraph(this.getText("summaries.project.detailed"), TABLE_BODY_BOLD_FONT));
       this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
-
 
       Font hyperLink = new Font(FontFactory.getFont("openSans", 10, Color.BLUE));
       hyperLink.setStyle(Font.UNDERLINE);
@@ -930,12 +932,9 @@ public class ProjectSummaryPDF extends BasePDF {
         imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
       }
 
-
       cellContent = new Paragraph();
       cellContent.add(imdb);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
-
-      // this.addTableColSpanCell(table, new Paragraph(), Element.ALIGN_LEFT, 1, 2);
 
       document.add(table);
       document.add(Chunk.NEWLINE);;
@@ -946,6 +945,13 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+  /**
+   * This method is used for add Overview in the project summary
+   * 
+   * @param table table that contain information of overwiew
+   * @param mog IPElement
+   * @param year year of Budget
+   */
   private void addOverview(PdfPTable table, IPElement mog, int year) {
 
     // Paragraph paragraph = new Paragraph();
@@ -1139,8 +1145,6 @@ public class ProjectSummaryPDF extends BasePDF {
               this.addBudgetsByPartners(cell, projectPartner.getInstitution(), year, table, this.getBudgetType());
             }
           }
-
-
           document.add(table);
           cell = new Paragraph(Chunk.NEWLINE);
           document.add(cell);
@@ -1220,7 +1224,6 @@ public class ProjectSummaryPDF extends BasePDF {
                 .name().replace("_", "/")}), TABLE_HEADER_FONT);
             this.addTableHeaderCell(table, cell);
 
-
             cell =
               new Paragraph(this.getText("summaries.project.budget.mog.anual.percentaje",
                 new String[] {BudgetType.W3_BILATERAL.name().replace("_", "/")}), TABLE_HEADER_FONT);
@@ -1230,7 +1233,6 @@ public class ProjectSummaryPDF extends BasePDF {
               new Paragraph(this.getText("summaries.project.budget.mog.anual.gender",
                 new String[] {BudgetType.W3_BILATERAL.name().replace("_", "/")}), TABLE_HEADER_FONT);
             this.addTableHeaderCell(table, cell);
-
 
           } else {
             cell =
@@ -1318,7 +1320,6 @@ public class ProjectSummaryPDF extends BasePDF {
           this.addEmptyFlashigAndRegion(listIPRegions, sizeFlaships);
         }
 
-
         IPProgram program;
         for (int a = 0; a < listIPRegions.size(); a++) {
 
@@ -1337,14 +1338,11 @@ public class ProjectSummaryPDF extends BasePDF {
           program = listIPRegions.get(a);
 
           if (program.getComposedName() == null || program.getComposedName().isEmpty()) {
-
             cell = new Paragraph("", TABLE_BODY_FONT);
           } else {
             cell = new Paragraph(program.getComposedName(), TABLE_BODY_FONT);
           }
-
           this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
         }
         document.add(table);
         document.add(Chunk.NEWLINE);
@@ -1509,14 +1507,11 @@ public class ProjectSummaryPDF extends BasePDF {
             document.add(table);
             document.add(Chunk.NEWLINE);;
           }
-
         }
       } else {
         cell = new Paragraph(this.getText("summaries.project.empty"));
         document.add(cell);
       }
-
-
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
@@ -1639,7 +1634,6 @@ public class ProjectSummaryPDF extends BasePDF {
         }
         title = new Paragraph();
 
-
         title.add(Chunk.NEWLINE);
         title.add(Chunk.NEWLINE);
         document.add(title);
@@ -1658,6 +1652,9 @@ public class ProjectSummaryPDF extends BasePDF {
 
   }
 
+  /**
+   * This method is used for add Outcomes in the project summary
+   */
   private void addProjectOutcomes() {
     String outcomeProgress;
     Paragraph outcomesBlock = new Paragraph();
@@ -1884,7 +1881,9 @@ public class ProjectSummaryPDF extends BasePDF {
 
   }
 
-  // Entering the project outputs in the summary
+  /**
+   * Entering the project outputs in the summary
+   */
   private void addProjectOutputs() {
 
     // **********************************************************************************
@@ -1979,6 +1978,9 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+  /**
+   * Entering the project partners in the summary
+   */
   private void addProjectPartners() {
 
 
@@ -2000,7 +2002,6 @@ public class ProjectSummaryPDF extends BasePDF {
       c++;
       partnersBlock.add(Chunk.NEWLINE);
 
-
       List<ProjectPartner> listPPA = project.getPPAPartners();
 
       if (!listPPA.isEmpty()) {
@@ -2011,7 +2012,6 @@ public class ProjectSummaryPDF extends BasePDF {
           c++;
         }
       }
-
 
       // Get Project partners
       List<ProjectPartner> listPP = project.getProjectPartners();
@@ -2024,7 +2024,6 @@ public class ProjectSummaryPDF extends BasePDF {
           List<Institution> listInstitutionContributing = partner.getContributeInstitutions();
           partnersBlock.setFont(BODY_TEXT_BOLD_FONT);
           partnersBlock.add(this.getText("summaries.project.projectPartners.section.five"));
-
 
           if (listInstitutionContributing.isEmpty()) {
             partnersBlock.add(": ");
@@ -2055,6 +2054,9 @@ public class ProjectSummaryPDF extends BasePDF {
 
   }
 
+  /**
+   * Entering the project title in the summary
+   */
   private void addProjectTitle() {
     LineSeparator line = new LineSeparator(1, 100, null, Element.ALIGN_CENTER, -7);
     Paragraph paragraph = new Paragraph();
@@ -2066,8 +2068,6 @@ public class ProjectSummaryPDF extends BasePDF {
       paragraph.setFont(BODY_TEXT_FONT);
       paragraph.add(this.messageReturn(project.getTitle()));
       paragraph.add(line);
-
-
       document.add(paragraph);
       document.add(Chunk.NEWLINE);;
     } catch (DocumentException e) {
@@ -2075,6 +2075,9 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+  /**
+   * Method used for to add the project summary
+   */
   private void addSummary() {
     Paragraph paragraph = new Paragraph();
     paragraph.setAlignment(Element.ALIGN_LEFT);
@@ -2095,7 +2098,14 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
-  private void auxiliarGetPartners(ProjectPartner partner, int c, Paragraph partnersBlock) {
+  /**
+   * This is an auxiliar method for to get information project partners in the paragrapn block.
+   * 
+   * @param partner partner to get information
+   * @param numberPP number of project partner
+   * @param partnersBlock paragraph to add the information
+   */
+  private void auxiliarGetPartners(ProjectPartner partner, int numberPP, Paragraph partnersBlock) {
 
     if (!(partner == null)) {
       Paragraph paragraph = new Paragraph();
@@ -2105,19 +2115,18 @@ public class ProjectSummaryPDF extends BasePDF {
       // Partner #
       StringBuffer partnerLabel = new StringBuffer();
 
-      partnerLabel.append(this.getText("summaries.project.partner") + c + " ");
-      if (c == 1) {
+      partnerLabel.append(this.getText("summaries.project.partner") + numberPP + " ");
+      if (numberPP == 1) {
         partnerLabel.append(this.getText("summaries.project.partner.leader"));
       }
       paragraph.setFont(HEADING4_FONT);
       paragraph.add(partnerLabel.toString());
       paragraph.add(Chunk.NEWLINE);;
 
-
       // Contact information
       paragraph.setFont(BODY_TEXT_BOLD_FONT);
       partnerLabel = new StringBuffer();
-      if (c == 1) {
+      if (numberPP == 1) {
         partnerLabel.append(this.getText("summaries.project.organization.lead"));
       } else {
         partnerLabel.append(this.getText("summaries.project.partner.contactperson"));
@@ -2136,7 +2145,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
       // Coordinator
-      if (c == 1) {
+      if (numberPP == 1) {
         partnerLabel = new StringBuffer();
         partnerLabel.append("Coordinator: ");
         paragraph.setFont(BODY_TEXT_BOLD_FONT);
@@ -2184,9 +2193,9 @@ public class ProjectSummaryPDF extends BasePDF {
   /**
    * This method is used for generate the file pdf.
    * 
-   * @param project
-   * @param currentPlanningYear
-   * @param midOutcomeYear
+   * @param project project prepared before with the information
+   * @param currentPlanningYear current year of planning
+   * @param midOutcomeYear year 2019
    */
   public void generatePdf(Project project, int currentPlanningYear, int midOutcomeYear) {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -2225,6 +2234,11 @@ public class ProjectSummaryPDF extends BasePDF {
     inputStream = new ByteArrayInputStream(outputStream.toByteArray());
   }
 
+  /**
+   * Method used for to get the etiquette of BudgetType depending of project type
+   * 
+   * @return etiquette
+   */
   private BudgetType getBudgetType() {
     if (project.isBilateralProject()) {
       return BudgetType.W3_BILATERAL;
@@ -2234,11 +2248,20 @@ public class ProjectSummaryPDF extends BasePDF {
     return null;
   }
 
-
+  /**
+   * Method used for to get the size of document
+   * 
+   * @return size of document
+   */
   public int getContentLength() {
     return contentLength;
   }
 
+  /**
+   * Method used for to get the name of document
+   * 
+   * @return name of document
+   */
   public String getFileName() {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String fileName;
@@ -2250,14 +2273,29 @@ public class ProjectSummaryPDF extends BasePDF {
     return fileName;
   }
 
+  /**
+   * Method used for to get the title of document
+   * 
+   * @return title of document
+   */
   public String getFileTitle() {
     return summaryTitle;
   }
 
+  /**
+   * Method used for to get the inputStream of document
+   * 
+   * @return inputStream of document
+   */
   public InputStream getInputStream() {
     return inputStream;
   }
 
+  /**
+   * Method used for to get outcomes by indicator
+   * 
+   * @return midOutcomes that is the list of outcomes found
+   */
   private List<IPElement> getMidOutcomesPerIndicators() {
     List<IPElement> midOutcomes = new ArrayList<>();
 
@@ -2272,8 +2310,8 @@ public class ProjectSummaryPDF extends BasePDF {
   /**
    * Auxiliary method used for numbering the mogs in the summary
    * 
-   * @param mog
-   * @return
+   * @param mog MOG to number
+   * @return number mog
    */
   public int getMOGIndex(IPElement mog) {
     int index = 0;
@@ -2288,7 +2326,13 @@ public class ProjectSummaryPDF extends BasePDF {
     return index;
   }
 
-
+  /**
+   * Method used for to search if the MOG in an OutputBudget's ArrayList is related.
+   * 
+   * @param listOutputBudget list of OutpuBudget
+   * @param mog MOG to search in the list
+   * @return outputBudget founded, null when the output doesn't exists
+   */
   public OutputBudget getOutputBudgetByMog(List<OutputBudget> listOutputBudget, IPElement mog) {
 
     for (OutputBudget outputBudget : listOutputBudget) {
@@ -2299,7 +2343,14 @@ public class ProjectSummaryPDF extends BasePDF {
     return null;
   }
 
-
+  /**
+   * This method is for search the location for the name in a list
+   * 
+   * @param location location to search
+   * @param listLocation list where searching
+   * @param index
+   * @return
+   */
   private boolean isRepeatedLocation(Location location, List<Location> listLocation, int index) {
     for (int a = index; a < listLocation.size(); a++) {
       if (listLocation.get(a).getName().trim().equals(location.getName().trim())) {
@@ -2311,9 +2362,12 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
   /**
-   * @param ppaPartners
-   * @param pp
-   * @return
+   * This method is for search the project partner for the index in a list
+   * 
+   * @param ppaPartners list of project partners
+   * @param pp project partner to search
+   * @param index index of the list
+   * @return true if project partner exist in the list otherwise false
    */
   private boolean isRepeatProjectPartner(List<ProjectPartner> ppaPartners, ProjectPartner pp, int index) {
     for (int a = index; a < ppaPartners.size(); a++) {
@@ -2324,6 +2378,12 @@ public class ProjectSummaryPDF extends BasePDF {
     return false;
   }
 
+  /**
+   * This method converts the string in return message of summary
+   * 
+   * @param enter String of entering
+   * @returnnull default message when the string is null or empty, otherwise the string
+   */
   private String messageReturn(String enter) {
 
     if (enter == null || enter.equals("")) {
@@ -2336,8 +2396,10 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
   /**
-   * @param ppaPartners
-   * @return
+   * This method is used for removed partner repeat in a list
+   * 
+   * @param ppaPartners list to depure
+   * @return list of project partners refined
    */
   private List<ProjectPartner> removePartnersRepeat(List<ProjectPartner> ppaPartners) {
 
@@ -2355,6 +2417,12 @@ public class ProjectSummaryPDF extends BasePDF {
     return ppaPartners_aux;
   }
 
+  /**
+   * This method is used for removed location repeat in a list
+   * 
+   * @param listLocation list to depure
+   * @return list of project locations refined
+   */
   public List<Location> removeRepeatedLocations(List<Location> listLocation) {
     List<Location> listLocationAnswer = new ArrayList<Location>();
     //
@@ -2367,19 +2435,22 @@ public class ProjectSummaryPDF extends BasePDF {
     return listLocationAnswer;
   }
 
+  /**
+   * this method is used for set the title
+   * 
+   * @param title
+   */
   public void setSummaryTitle(String title) {
     this.summaryTitle = title;
   }
 
+  /**
+   * this method is used for to replace the ',' for '.' in money format
+   * 
+   * @param moneyString
+   * @return
+   */
   public String truncate(String moneyString) {
-    //
-    // if (moneyString.endsWith(".00")) {
-    // int centsIndex = moneyString.lastIndexOf(".00");
-    // if (centsIndex != -1) {
-    // moneyString = moneyString.substring(1, centsIndex);
-    // }
-    // }
-
     return moneyString.replace(",", ".");
   }
 }

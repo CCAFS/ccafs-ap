@@ -22,50 +22,70 @@ import java.io.InputStream;
 
 
 /**
- * @author Your name
+ * @author Jorge Leonardo Solis B.
  */
-public class DeliverableSummaryCSV {
+public class DeliverableSummaryCSV extends BaseCSV {
 
   private InputStream inputStream;
   int contentLength;
+  FileWriter fileWriter;
 
   public void generateCSV() {
 
+    // File file = new File(baseURL + "temporal.txt");
     File file = new File("temporal.txt");
-    FileWriter fileWriter = null;
+    fileWriter = null;
+    this.initializeCsv(file);
 
     try {
       fileWriter = new FileWriter(file, true);
 
       // Write here.
-
-      fileWriter.flush();
+      String COMMA_DELIMITER = ",";
+      String NEW_LINE_SEPARATOR = "\n";
+      fileWriter.append("55");
+      fileWriter.append(COMMA_DELIMITER);
+      fileWriter.append("555");
+      fileWriter.append(COMMA_DELIMITER);
+      fileWriter.append("lu");
+      fileWriter.append(NEW_LINE_SEPARATOR);
+      fileWriter.append("fa");
+      fileWriter.append(COMMA_DELIMITER);
+      fileWriter.append("fo");
+      fileWriter.append(COMMA_DELIMITER);
+      fileWriter.append("fu");
       fileWriter.close();
+
       inputStream = new FileInputStream(file);
       contentLength = (int) file.length();
-      file.delete();
-
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
   }
 
+  /**
+   * @return
+   */
   public int getContentLength() {
     return contentLength;
   }
 
+  /**
+   * @return
+   */
   public String getFileName() {
     String fileName;
 
-    fileName = "publication";
+    fileName = "publication2";
     fileName += ".csv";
 
     return fileName;
   }
 
   /**
+   * method for to get the inputStream
+   * 
    * @return the inputStream
    */
   public InputStream getInputStream() {
@@ -73,6 +93,8 @@ public class DeliverableSummaryCSV {
   }
 
   /**
+   * method for to set the inputStream
+   * 
    * @param inputStream the inputStream to set
    */
   public void setInputStream(InputStream inputStream) {
