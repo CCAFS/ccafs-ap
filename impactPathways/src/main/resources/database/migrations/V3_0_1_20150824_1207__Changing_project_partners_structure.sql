@@ -158,6 +158,7 @@ ALTER TABLE `activities`
 -- ----------------------------------------------------------------
 -- Add foreign key to project partners in table deliverable_partnerships 
 -- ----------------------------------------------------------------
+TRUNCATE TABLE `deliverable_partnerships`;
 
 ALTER TABLE `deliverable_partnerships` CHANGE COLUMN `partner_id` `partner_person_id` BIGINT(20) NOT NULL ;
 
