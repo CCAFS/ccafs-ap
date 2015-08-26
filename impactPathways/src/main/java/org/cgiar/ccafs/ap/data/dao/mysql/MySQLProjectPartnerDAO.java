@@ -175,8 +175,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("WHERE pp.project_id = ");
     query.append(projectID);
     query.append(" AND pp.is_active = 1 ");
-    query.append("ORDER BY partner_id, partner_type");
-
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
     return this.getData(query.toString());

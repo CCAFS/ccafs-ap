@@ -58,10 +58,10 @@ public interface DeliverableTypeManager {
   public List<DeliverableType> getDeliverableTypes();
 
   /**
-   * This method gets all the Deliverables type information by a given deliverable type ID
+   * This method gets all the Deliverable sub-types by a given deliverable main type ID
    *
-   * @param typeID is the deliverable main type or parent id.
-   * @return a List of the Deliverables Type Information related to a specific Deliverable Type
+   * @param typeID is the deliverable main type.
+   * @return a List of the Deliverable Sub-types that belong to a specific Deliverable Main Type
    */
   public List<DeliverableType> getDeliverableTypes(int typeID);
 

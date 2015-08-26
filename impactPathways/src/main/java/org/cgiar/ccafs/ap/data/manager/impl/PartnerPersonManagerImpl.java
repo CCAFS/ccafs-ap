@@ -38,8 +38,9 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
   private UserManager userManager;
 
   @Inject
-  public PartnerPersonManagerImpl(UserManager userManager) {
+  public PartnerPersonManagerImpl(UserManager userManager, PartnerPersonDAO partnerPersonDAO) {
     this.userManager = userManager;
+    this.partnerPersonDAO = partnerPersonDAO;
   }
 
   @Override
