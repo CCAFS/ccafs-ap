@@ -162,9 +162,17 @@ ALTER TABLE `activities`
 
 ALTER TABLE `deliverable_partnerships` CHANGE COLUMN `partner_id` `partner_person_id` BIGINT(20) NOT NULL ;
 
-ALTER TABLE `deliverable_partnerships` 
-  ADD CONSTRAINT `FK_deliverable_partnerships_project_partner_persons` FOREIGN KEY (`partner_person_id` )
-  REFERENCES `project_partner_persons` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE;
+--UPDATE TABLE `deliverable_partnerships` dp SET partner_person_id = 
+--(
+--  SELECT ppp.id FROM project_partner_persons ppp 
+--  INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id 
+--  INNER JOIN pp_old po ON ppp.id = po.new_id 
+--  WHERE po.id = dp.partner_person_id AND po.user_id = ppp.user_id 
+--);
+--
+--ALTER TABLE `deliverable_partnerships` 
+--  ADD CONSTRAINT `FK_deliverable_partnerships_project_partner_persons` FOREIGN KEY (`partner_person_id` )
+--  REFERENCES `project_partner_persons` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE;
 
   
 -- ----------------------------------------------------------------
