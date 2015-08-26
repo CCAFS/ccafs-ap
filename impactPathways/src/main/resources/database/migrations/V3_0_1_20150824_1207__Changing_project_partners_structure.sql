@@ -96,7 +96,7 @@ CREATE  TABLE `project_partner_persons` (
     REFERENCES `users` (`id` ) ON DELETE CASCADE ON UPDATE CASCADE,   
   CONSTRAINT `fk_project_partner_persons_users_created_by` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_project_partner_persons_users_modified__by` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-)DEFAULT CHARACTER SET = utf8;
+) ENGINE=InnoDB DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO project_partner_persons (project_partner_id, user_id, contact_type, responsibilities, active_since, created_by, modified_by, modification_justification)
 SELECT new_id, user_id, CASE partner_type WHEN "PP" THEN "CP" WHEN "PPA" THEN "CP" ELSE partner_type END, 
@@ -109,20 +109,21 @@ WHERE user_id IS NOT NULL;
 -- ----------------------------------------------------------------
 
 UPDATE activities a SET leader_id = (
-  SELECT ppp.id FROM project_partner_persons ppp 
-  INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id
-  INNER JOIN pp_old po ON pp.id = po.new_id  
-  WHERE po.id = a.leader_id AND ppp.user_id = po.user_id AND po.user_id IS NOT NULL
+  IFNULL(
+    (
+    SELECT ppp.id FROM project_partner_persons ppp 
+    INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id
+    INNER JOIN pp_old po ON pp.id = po.new_id  
+    WHERE po.id = a.leader_id AND ppp.user_id = po.user_id AND po.user_id IS NOT NULL
+    ),
+    -- If the project has not a leader, assign the project leader as activity leader
+    (
+    SELECT ppp.id FROM project_partner_persons ppp 
+    INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id 
+    WHERE ppp.contact_type = 'PL' AND pp.project_id = a.project_id 
+    )
+  )
 );
-
--- Just in case the activity has not a leader, assign the project leader as activity leader
-
-UPDATE activities a SET leader_id = (
-  SELECT ppp.id FROM project_partner_persons ppp 
-  INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id 
-  WHERE ppp.contact_type = 'PL' AND pp.project_id = a.project_id 
-)
-WHERE a.leader_id = 0;
 
 -- ----------------------------------------------------------------
 -- Add new columns and foreign keys to project_partner_contributions table
