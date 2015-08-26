@@ -51,6 +51,30 @@ public interface ProjectPartnerManager {
   public List<ProjectPartner> getProjectPartners(Project project);
 
   /**
+   * This method adds or updates a given project partner.
+   * 
+   * @param project is the Project where this partner belongs to.
+   * @param projectPartner is the Project Partner to be saved. If its id is -1, the method will add it into the
+   *        database, if the id is > 0, the project partner will be updated.
+   * @param user is the user that is making the change.
+   * @param justification is the justification for the change made.
+   * @return the id of the project partner inserted, 0 if the record was updated and -1 if some error occurred.
+   */
+  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification);
+
+  /**
+   * This method saves a list of project partners that belongs to a specific project
+   * 
+   * @param project is the project to which these project partners belong.
+   * @param partners is a list of ProjectPartner objects with the information to be saved.
+   * @param user is the user that is making the change.
+   * @param justification is the justification statement.
+   * @return true if all partners were successfully saved; false otherwise.
+   */
+  public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
+    String justification);
+
+  /**
    * TODO - To Review
    * This method deletes a specific project partner from the database
    *

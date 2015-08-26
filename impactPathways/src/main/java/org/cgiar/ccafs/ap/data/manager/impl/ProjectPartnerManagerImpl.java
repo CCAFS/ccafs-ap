@@ -60,7 +60,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if the institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -93,7 +93,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if its institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -106,6 +106,47 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   public UserManager getUserManager() {
     return userManager;
+  }
+
+  @Override
+  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification) {
+    Map<String, Object> projectPartnerData = new HashMap<>();
+
+    // Project partners must have an institution associated.
+    if (projectPartner.getInstitution() == null || projectPartner.getInstitution().getId() == -1) {
+      return -1;
+    }
+
+    // if this is a new project partner, do not assign an id.
+    if (projectPartner.getId() > 0) {
+      projectPartnerData.put("id", projectPartner.getId());
+    } else {
+      // otherwise will be a new record so we need to include the creator.
+      projectPartnerData.put("created_by", user.getId());
+    }
+    projectPartnerData.put("project_id", project.getId());
+    projectPartnerData.put("institution_id", projectPartner.getInstitution().getId());
+    projectPartnerData.put("modified_by", user.getId());
+    projectPartnerData.put("modification_justification", justification);
+
+    int result = projecPartnerDAO.saveProjectPartner(projectPartnerData);
+    if (result > 0) {
+      LOG.debug("saveProjectPartner > New Project Partner added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("saveProjectPartner > Project partner with id={} was updated", projectPartner.getId());
+    } else {
+      LOG.error("saveProjectPartner > There was an error trying to save/update a project partner from projectId={}",
+        project.getId());
+    }
+
+    return result;
+  }
+
+  @Override
+  public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
+    String justification) {
+    // TODO Auto-generated method stub
+    return false;
   }
 
   public void setUserManager(UserManager userManager) {
@@ -141,7 +182,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
     // Institution as partner_id
     projectPartner
-    .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
+      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
 
     // Getting the institutions which this partner is contributing to.
     // projectPartner

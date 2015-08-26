@@ -34,7 +34,7 @@ public interface PartnerPersonManager {
    * This method gets all the partner persons that are part of a specific project partner.
    * 
    * @param projectPartner is the project partner where the partner persons are contributing.
-   * @return a list of partner person objects, an empty list if nothing found or null if some error occurr.
+   * @return a list of partner person objects, an empty list if nothing found or null if some error occur.
    */
   public List<PartnerPerson> getPartnerPersons(ProjectPartner projectPartner);
 
