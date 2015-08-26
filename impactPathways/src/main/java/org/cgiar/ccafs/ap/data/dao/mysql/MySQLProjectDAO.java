@@ -581,9 +581,11 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append(userID);
       query.append(") OR p.liaison_institution_id = (SELECT institution_id FROM liaison_users WHERE user_id = ");
       query.append(userID);
-      query.append(") OR EXISTS (SELECT project_id FROM project_partners WHERE  partner_type = '");
+      query.append(") OR EXISTS (SELECT project_id FROM project_partners pp ");
+      query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+      query.append("WHERE  ppp.contact_type = '");
       query.append(APConstants.PROJECT_PARTNER_PL);
-      query.append("' AND project_id = p.id AND user_id = ");
+      query.append("' AND pp.project_id = p.id AND ppp.user_id = ");
       query.append(userID);
       query.append(") ");
       // If the project is bilateral and the user is a focal point of the lead institution
