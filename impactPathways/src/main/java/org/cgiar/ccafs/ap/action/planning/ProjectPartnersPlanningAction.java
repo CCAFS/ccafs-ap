@@ -74,9 +74,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<Country> countries;
   private List<Institution> allInstitutions; // Is used to list all the partner institutions that have the system.
   private List<Institution> allPPAInstitutions; // Is used to list all the PPA partners institutions
-
   private List<ProjectPartner> projectPPAPartners; // Is used to list all the PPA partners that belongs to the project.
-
   private List<User> allUsers; // will be used to list all the project leaders that have the system.
 
   // private List<Institution> contributionPartners; // this would get the partners contributing to others
@@ -99,6 +97,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   public List<Institution> getAllInstitutions() {
     return allInstitutions;
+  }
+
+  public List<Institution> getAllPPAInstitutions() {
+    return allPPAInstitutions;
   }
 
   // private boolean deletePartner(ProjectPartner partnerToDelete, List<ProjectPartner> partners) {
@@ -149,10 +151,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // return deleted;
   // }
 
-  public List<Institution> getAllPPAInstitutions() {
-    return allPPAInstitutions;
-  }
-
   public List<Institution> getAllPPAPartners() {
     return allPPAInstitutions;
   }
@@ -166,6 +164,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   }
 
   public List<InstitutionType> getInstitutionTypes() {
+    return intitutionTypes;
+  }
+
+  public List<InstitutionType> getIntitutionTypes() {
     return intitutionTypes;
   }
 

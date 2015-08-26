@@ -1,27 +1,33 @@
-var $removePartnerDialog;
+var $removePartnerDialog, $projectPPAPartners;
 var allPPAInstitutions;
 var lWordsResp = 100;
 
 $(document).ready(init);
 
 function init() {
-  $removePartnerDialog = $('#partnerRemove-dialog');
-  $partnersBlock = $('#projectPartnersBlock');
-  allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
-  updateProjectPPAPartnersLists();
-  attachEvents();
-  // This function enables launch the pop up window
-  popups();
-  // Activate the chosen plugin to the existing partners
-  addChosen();
-  applyWordCounter($("textarea.resp"), lWordsResp);
-  applyWordCounter($("#lessons textarea"), lWordsResp);
- 
-  setInitialPPAPartners();
-  initItemListEvents();
-  
-  validateEvent([ "#justification" ]);  
-   
+  if (editable){
+    // Setting global variables
+    $removePartnerDialog = $('#partnerRemove-dialog');
+    $partnersBlock = $('#projectPartnersBlock');
+    allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
+    $projectPPAPartners = $('#projectPPAPartners');
+    // Update initial project CCAFS partners list for each partner
+    updateProjectPPAPartnersLists();
+    // Attaching listeners
+    attachEvents();
+    // This function enables launch the pop up window
+    popups();
+    // Activate the chosen to the existing partners
+    addChosen();
+    // Applying word counters to form fields
+    applyWordCounter($("textarea.resp"), lWordsResp);
+    applyWordCounter($("#lessons textarea"), lWordsResp);
+    
+    setInitialPPAPartners();
+    initItemListEvents();
+    
+    validateEvent([ "#justification" ]);  
+  }
   $('.loadingBlock').hide().next().fadeIn(500);
 }
 
@@ -29,9 +35,11 @@ function attachEvents() {
   // Partners Events
   $("a.addProjectPartner").on('click',addPartnerEvent);
   $(".removePartner").on('click',removePartnerEvent);
+  
   // Contacts Events
   $(".addContact a.addLink").on('click',addContactEvent);
   $(".removePerson").on('click',removePersonEvent);
+  
   // Partners filters
   $(".filters-link").click(function(event) {
     var $filterContent = $(event.target).next();
@@ -40,6 +48,7 @@ function attachEvents() {
     }
     $filterContent.slideToggle();
   });
+  
   // When Partner Type change
   $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
   
@@ -50,9 +59,8 @@ function attachEvents() {
   
   // When partnerPersonType change
   $("select.partnerPersonType").on("change",function(e){
-    var optionSelected = $(e.target).val();
     var contact = new PartnerPersonObject($(e.target).parents('.contactPerson'));
-    contact.changeType(optionSelected);
+    contact.changeType();
   });
 }
 
@@ -87,27 +95,33 @@ function updateOrganizationsList(e) {
 }
 
 function updateProjectPPAPartnersLists(){
-  $('#projectPPAPartners').empty();
+  // Collecting list CCAFS partners from all project partners
+  $projectPPAPartners.empty();
   $partnersBlock.find('.projectPartner').each(function(i,projectPartner){
     var partner = new PartnerObject($(projectPartner));
-    partner.startLoader();
-    if(allPPAInstitutions.indexOf(partner.institutionId) != -1){
+    if(allPPAInstitutions.indexOf(partner.institutionId) != -1 ){
       partner.hidePPAs();
-      $('#projectPPAPartners').append(setOption(partner.institutionId, partner.institutionName));
+      $projectPPAPartners.append(setOption(partner.institutionId, partner.institutionName));
     }else{
-      partner.showPPAs();
+      if (partner.institutionId == -1){
+        partner.hidePPAs();
+      }else{
+        partner.showPPAs();        
+      }
     }
-    partner.stopLoader();
+    
   });
+  // Filling CCAFS partners lists for each project partner
   $partnersBlock.find('.projectPartner').each(function(i,partner){
     $('select.ppaPartnersSelect').empty().append(setOption(-1, "Select an option"));
-    $('select.ppaPartnersSelect').append($('#projectPPAPartners').html()).trigger("liszt:updated");
+    $('select.ppaPartnersSelect').append($projectPPAPartners.html()).trigger("liszt:updated");
   });
 }
 
 // Partner Events
 function removePartnerEvent(e) {
   var partner = new PartnerObject($(e.target).parent().parent());
+  console.log(partner);
   if(partner.id == "-1"){
     partner.remove();
     return
@@ -124,7 +138,6 @@ function removePartnerEvent(e) {
         $removePartnerDialog.find('.activities').hide();
         $removePartnerDialog.find('.deliverables').hide();
         $removePartnerDialog.find('.projectPartners').hide();
-
         $removePartnerDialog.find('.activities ul').empty();
         $removePartnerDialog.find('.deliverables ul').empty();
         $removePartnerDialog.find('.projectPartners ul').empty();
@@ -170,7 +183,6 @@ function removePartnerEvent(e) {
               $removePartnerDialog.find('.projectPartners ul').append("<li>" + projectPartner.title + "</li>");
             });
           }
-
           $removePartnerDialog.dialog(dialogOptions);
         } else {
           partner.remove();
@@ -185,7 +197,6 @@ function addPartnerEvent(e) {
   var $newElement = $("#projectPartner-template").clone(true).removeAttr("id");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
-
   // Activate the chosen plugin for new partners created
   $newElement.find("select").chosen({
       no_results_text: $("#noResultText").val(),
@@ -199,7 +210,6 @@ function addContactEvent(e) {
   var $newElement = $("#contactPerson-template").clone(true).removeAttr("id");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
-
   // Activate the chosen plugin for new partners created
   $newElement.find("select").chosen({
       no_results_text: $("#noResultText").val(),
@@ -210,29 +220,14 @@ function addContactEvent(e) {
 
 function removePersonEvent(e){
   e.preventDefault();
-  $(e.target).parent().hide('slow', function(){
-    $(this).remove();
-    setProjectPartnersIndexes();
-  });
+  var person = new PartnerPersonObject($(e.target).parent());
+  person.remove();
 }
 
 function setProjectPartnersIndexes() {
   $partnersBlock.find(".projectPartner").each(function(index,element) {
-    var elementName = $('#partners-name').val() + "[" + index + "].";
-    $(element).find(".leftHead .index").html(index + 1);
-    $(element).find("[id$='id']").attr("name", elementName + "id");
-    $(element).find("[id$='institution']").attr("name", elementName + "institution");
-    
-    // Update index for CCAFS Partners
-    $(element).find('.ppaPartnersList ul.list li').each(function(li_index,li) {
-      $(li).find('.id').attr("name", elementName + "contributeInstitutions" + "[" + li_index + "].id");
-    });
-    
-    // Update index for partner persons
-    $(element).find('.contactPerson').each(function(i, partnerPerson) {
-      var contact = new PartnerPersonObject($(partnerPerson));
-      contact.setIndex(elementName, i);
-    });
+    var partner = new PartnerObject($(element));
+    partner.setIndex($('#partners-name').val(), index);
   });
 }
 
@@ -251,9 +246,10 @@ function initItemListEvents() {
 
 function setInitialPPAPartners() {
   $("div.projectPartner").each(function(index,element) {
-    // Getting PPA Partners previously selected by project partner
+    // Removing of the list CCAFS partners previously selected by project partner
     var $select = $(element).find('select');
     $(element).find('li input.id').each(function(i_id,id) {
+      // 
       $select.find('option[value=' + $(id).val() + ']').remove();
     });
     $select.trigger("liszt:updated");
@@ -261,7 +257,7 @@ function setInitialPPAPartners() {
 }
 
 function removeItemList($item) {
-  // Adding to select list
+  // Adding option to the select
   var $select = $item.parents('.panel').find('select');
   $select.append(setOption($item.find('.id').val(), $item.find('.name').text()));
   $select.trigger("liszt:updated");
@@ -275,17 +271,18 @@ function removeItemList($item) {
 function addItemList($option) {
   var $select = $option.parent();
   var $list = $option.parents('.panel').find('ul.list');
+  // Adding element to the list
   var $li = $("#ppaListTemplate").clone(true).removeAttr("id");
   $li.find('.id').val($option.val());
   $li.find('.name').html($option.text());
   $li.appendTo($list).hide().show('slow');
+  // Removing option from select
   $option.remove();
   $select.trigger("liszt:updated");
   setProjectPartnersIndexes();
 }
 
-// Activate the chosen plugin to the countries, partner types and
-// partners lists.
+// Activate the chosen plugin to the countries, partner types and partners lists.
 function addChosen() {
   $("form select").chosen({
     search_contains: true
@@ -293,7 +290,9 @@ function addChosen() {
 }
 
 /**
- * Javascript Objects
+ * PartnerObject
+ * 
+ * @param {JqueryObject} Project partner
  */
 
 function PartnerObject(partner) {
@@ -303,10 +302,27 @@ function PartnerObject(partner) {
   this.institutionName = $(partner).find('.institutionsList option[value='+this.institutionId+']').text();
   this.ppaPartnersList = $(partner).find('.ppaPartnersList');
   this.loader = $(partner).find('.loading');
+  this.setIndex = function(name, index) {
+    var elementName = name+"["+index+"].";
+    // Update index for project Partner
+    $(partner).find(".leftHead .index").html(index + 1);
+    $(partner).find("[id$='id']").attr("name", elementName + "id");
+    $(partner).find("[id$='institution']").attr("name", elementName + "institution");
+    // Update index for CCAFS Partners
+    $(partner).find('.ppaPartnersList ul.list li').each(function(li_index,li) {
+      $(li).find('.id').attr("name", elementName + "contributeInstitutions" + "[" + li_index + "].id");
+    });
+    // Update index for partner persons
+    $(partner).find('.contactPerson').each(function(i, partnerPerson) {
+      var contact = new PartnerPersonObject($(partnerPerson));
+      contact.setIndex(elementName, i);
+    });
+  };
   this.checkLeader = function(){
     if ($(partner).find('.contactPerson.PL').length == 0){
       $(partner).removeClass('leader');
     }else{
+      $(partner).addClass('leader');
       types.push('Leader');
     }
   };
@@ -314,16 +330,11 @@ function PartnerObject(partner) {
     if ($(partner).find('.contactPerson.PC').length == 0){
       $(partner).removeClass('coordinator');
     }else{
+      $(partner).addClass('coordinator');
       types.push('Coordinator');
     }
   };
   this.changeType = function(type){
-    if (type == "PL"){
-      $(partner).addClass('leader');
-    }
-    if(type == "PC"){
-      $(partner).addClass('coordinator');
-    }
     types = [];
     this.checkLeader();
     this.checkCoordinator();
@@ -353,12 +364,18 @@ function PartnerObject(partner) {
   };
 }
 
+/**
+ * PartnerPersonObject
+ * 
+ * @param {JqueryObject} Partner person
+ */
 function PartnerPersonObject(partnerPerson) {
   this.id = parseInt($(partnerPerson).find('.partnerPersonId').val());
-  this.changeType = function(type){
+  this.type = $(partnerPerson).find('select.partnerPersonType').val();
+  this.changeType = function(){
     var partner = new PartnerObject($(partnerPerson).parents('.projectPartner'));
-    $(partnerPerson).removeClass('PC PL CP -1').addClass(type);
-    partner.changeType(type);
+    $(partnerPerson).removeClass('PC PL CP -1').addClass(this.type);
+    partner.changeType(this.type);
   };
   this.setIndex = function(name, index) {
     var elementName = name+"partnerPersons["+index+"].";
@@ -367,5 +384,13 @@ function PartnerPersonObject(partnerPerson) {
     $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
     $(partnerPerson).find(".userId").attr("name", elementName + "user");
     $(partnerPerson).find(".resp").attr("name", elementName + "responsibilities");
+  };
+  this.remove = function() {
+    var partner = new PartnerObject($(partnerPerson).parents('.projectPartner'));
+    $(partnerPerson).hide("slow", function() {
+      $(partnerPerson).remove();
+      partner.changeType(this.type);
+      setProjectPartnersIndexes();
+    });
   };
 }

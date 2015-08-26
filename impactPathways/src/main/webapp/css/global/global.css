@@ -538,7 +538,7 @@ img.icon {
 }
 
 .removeElement {
-  padding: 10px 22px;
+  padding: 10px 20px;
   background-image: url(../../images/global/icon-remove.png);
   background-repeat: no-repeat;
   background-position: center;
@@ -572,11 +572,11 @@ img.icon {
 
 .loading {
   width: 98%;
-  height: 91%;
+  height: 93%;
   background: url(../../images/global/loading.gif) #FFF no-repeat 50%;
   position: absolute;
   z-index: 99;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .loadingBlock {
@@ -758,7 +758,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 .panel.tertiary .panel-head{
   background: #FFFFFF;
-  color: #5D5D5E;
+  color: #554444;
   padding: 2px 0 4px 0;
   margin-bottom: 8px;
   text-align: left;
@@ -2633,6 +2633,8 @@ textarea[id$='summary'] {
   margin-bottom: 7px;
   background: url(../../images/global/filter.png) no-repeat 0px 3px;
   background-size: 12px;
+  float: right;
+  margin-top: -12px;
 }
 
 .projectPartner .filters-link:hover {
@@ -2649,6 +2651,10 @@ textarea[id$='summary'] {
 .projectPartner {
   padding-top: 40px !important;
   margin-bottom: 40px !important;
+}
+
+.projectPartner:hover > .leftHead{ 
+ box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 span.partnerTag {
@@ -2680,6 +2686,10 @@ span.partnerTag {
 .contactPerson {
   font-size: 0.96em;
   padding: 25px 16px 5px 16px !important;
+}
+
+.contactPerson .removeElement{
+  padding: 10px 13px;
 }
 
 .contactPerson .partnerPerson-type {
