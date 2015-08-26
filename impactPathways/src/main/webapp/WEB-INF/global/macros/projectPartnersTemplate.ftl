@@ -67,7 +67,7 @@
         [/#if]
         </ul>
         [#if editable]
-          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="projectPPAPartners" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
         [/#if] 
       </div>
     </div>

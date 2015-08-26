@@ -117,6 +117,11 @@
   [#-- allPPAInstitutions --]
   <input type="hidden" id="allPPAInstitutions" value="[[#list allPPAInstitutions as item]${item.id}[#if item_has_next],[/#if][/#list]]"/>
   
+  [#-- Project PPA Partners --]
+  <select id="projectPPAPartners" style="display:none">
+    [#list project.PPAPartners as ppaPartner]<option value="${ppaPartner.institution.id}">${ppaPartner.institution.getComposedName()}</option>[/#list]
+  </select>
+  
   [#-- Remove Partner Dialog --]
   <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
     <p class="message"></p>
@@ -138,7 +143,7 @@
   </div>
   
   [#-- Search users Interface --]
-  [@usersForm.searchUsers/] 
+  [@usersForm.searchUsers/]
   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
