@@ -167,10 +167,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return intitutionTypes;
   }
 
-  public List<InstitutionType> getIntitutionTypes() {
-    return intitutionTypes;
-  }
-
   public Map<String, String> getPartnerPersonTypes() {
     return partnerPersonTypes;
   }
@@ -328,26 +324,26 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     super.saveProjectLessons(projectID);
     switch (actionName) {
-        // case "partnerLead":
-        // if (securityContext.canUpdateProjectLeader()) {
-        // return this.savePartnerLead();
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "partnerLead":
+      // if (securityContext.canUpdateProjectLeader()) {
+      // return this.savePartnerLead();
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-        // case "ppaPartners":
-        // if (securityContext.canUpdateProjectPPAPartner()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "ppaPartners":
+      // if (securityContext.canUpdateProjectPPAPartner()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
 
-        // case "partners":
-        // if (securityContext.canUpdateProjectPartners()) {
-        // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-        // } else {
-        // return NOT_AUTHORIZED;
-        // }
+      // case "partners":
+      // if (securityContext.canUpdateProjectPartners()) {
+      // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+      // } else {
+      // return NOT_AUTHORIZED;
+      // }
     }
 
     return NOT_AUTHORIZED;
