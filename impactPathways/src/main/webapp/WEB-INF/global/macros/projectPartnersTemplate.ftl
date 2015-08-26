@@ -25,7 +25,7 @@
         [#-- Partner type list --]
         <div class="halfPartBlock partnerTypeName chosen">
           [#-- Name attribute is not needed, we just need to load the value, not save it it. --]
-          [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.partnerType" listName="partnerTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${(projectPartner.institution.type.id)!-1}" /]
+          [@customForm.select name="" label="" disabled=!editable i18nkey="preplanning.projectPartners.partnerType" listName="intitutionTypes" keyFieldName="id"  displayFieldName="name" className="partnerTypes" value="${(projectPartner.institution.type.id)!-1}" /]
         </div>
         [#-- Country list --]
         <div class="halfPartBlock countryListBlock chosen">
@@ -41,15 +41,8 @@
     </div>
     
     [#-- Indicate which PPA Partners for second level partners --]
-    [#if projectPartner.institution??]
-      [#if !projectPartner.institution.PPA]
-        <div class="ppaPartnersList panel tertiary" style="display:block">
-      [#else]
-        <div class="ppaPartnersList panel tertiary" style="display:none">
-      [/#if]
-    [#else]
-    <div class="ppaPartnersList panel tertiary" style="display:none">
-    [/#if]
+    [#assign showPPABlock][#if projectPartner.institution??][#if projectPartner.institution.PPA]none[#else]block[/#if][#else]none[/#if][/#assign]
+    <div class="ppaPartnersList panel tertiary" style="display:${showPPABlock}">
       <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
       <div class="panel-body">
         [#if !(projectPartner.contributeInstitutions?has_content) && !editable]
@@ -107,13 +100,13 @@
     <div class="fullPartBlock"> 
       <div class="partnerPerson-type halfPartBlock clearfix">
       [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=editable /]
-      [#if !editable][@s.text name="planning.projectPartners.types.${(contact.type)!}"/][/#if]
+      [#if !editable]<div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!}"/]</p></div>[/#if]
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-        [@customForm.input name="contact-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=editable/]
-        [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=editable/]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}">   
+        [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
     

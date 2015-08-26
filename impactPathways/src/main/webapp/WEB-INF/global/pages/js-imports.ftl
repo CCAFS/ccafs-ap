@@ -74,6 +74,7 @@
 
   [#-- Second, import global javascripts and templates. --]
   <input type="hidden" id="baseURL" value="${baseUrl}" />
+  <input type="hidden" id="editable" value="${editable?string}" />
   [#-- Library for textareas --]
   <script src="${baseUrl}/js/libs/autogrow-3.0/jquery.autogrowtextarea.min.js"></script>
   [#-- Global Javascript --]
