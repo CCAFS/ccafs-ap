@@ -204,42 +204,36 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
   @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
-    LOG.debug(">> createProjectPartner(projectPartnerData)", projectPartnerData);
+    LOG.debug(">> saveProjectPartner(projectPartnerData)", projectPartnerData);
     StringBuilder query = new StringBuilder();
     Object[] values;
     if (projectPartnerData.get("id") == null) {
       // Insert new record
       query.append(
-        "INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
-      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-      values = new Object[9];
+        "INSERT INTO project_partners (id, project_id, institution_id, created_by, modified_by, modification_justification) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+      values = new Object[6];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");
-      values[2] = projectPartnerData.get("partner_id");
-      values[3] = projectPartnerData.get("user_id");
-      values[4] = projectPartnerData.get("partner_type");
-      values[5] = projectPartnerData.get("responsabilities");
-      values[6] = projectPartnerData.get("created_by");
-      values[7] = projectPartnerData.get("modified_by");
-      values[8] = projectPartnerData.get("modification_justification");
+      values[2] = projectPartnerData.get("institution_id");
+      values[3] = projectPartnerData.get("created_by");
+      values[4] = projectPartnerData.get("modified_by");
+      values[5] = projectPartnerData.get("modification_justification");
     } else {
       // update record
       query.append(
-        "UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, partner_type = ?, responsabilities = ?, modified_by = ?, modification_justification = ? ");
+        "UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[8];
+      values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
-      values[1] = projectPartnerData.get("partner_id");
-      values[2] = projectPartnerData.get("user_id");
-      values[3] = projectPartnerData.get("partner_type");
-      values[4] = projectPartnerData.get("responsabilities");
-      values[5] = projectPartnerData.get("modified_by");
-      values[6] = projectPartnerData.get("modification_justification");
-      values[7] = projectPartnerData.get("id");
+      values[1] = projectPartnerData.get("institution_id");
+      values[2] = projectPartnerData.get("modified_by");
+      values[3] = projectPartnerData.get("modification_justification");
+      values[4] = projectPartnerData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);
-    LOG.debug("<< createProjectPartner():{}", result);
+    LOG.debug("<< saveProjectPartner():{}", result);
     return result;
   }
 }
