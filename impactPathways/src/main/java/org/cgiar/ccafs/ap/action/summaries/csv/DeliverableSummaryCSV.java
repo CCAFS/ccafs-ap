@@ -14,11 +14,14 @@
 
 package org.cgiar.ccafs.ap.action.summaries.csv;
 
+import org.cgiar.ccafs.ap.data.model.Deliverable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 
 /**
@@ -26,11 +29,74 @@ import java.io.InputStream;
  */
 public class DeliverableSummaryCSV extends BaseCSV {
 
+
   private InputStream inputStream;
+  String COMMA_DELIMITER = ",";
+  String NEW_LINE_SEPARATOR = "\n";
+
   int contentLength;
   FileWriter fileWriter;
 
-  public void generateCSV() {
+  public DeliverableSummaryCSV() {
+  }
+
+  private void addContent(List<Deliverable> deliverables) {
+    for (Deliverable deliverable : deliverables) {
+
+      try {
+
+        // fileWriter.append(deliverable.getId());
+        fileWriter.append(String.valueOf(deliverable.getId()));
+        fileWriter.append(COMMA_DELIMITER);
+
+        fileWriter.append(deliverable.getTitle());
+        fileWriter.append(COMMA_DELIMITER);
+
+        fileWriter.append(String.valueOf(deliverable.getType().getName()));
+        fileWriter.append(COMMA_DELIMITER);
+
+        fileWriter.append(String.valueOf(deliverable.getOutput().getDescription()));
+        fileWriter.append(COMMA_DELIMITER);
+
+        fileWriter.append(String.valueOf(deliverable.getTitle()));
+        fileWriter.append(COMMA_DELIMITER);
+
+        fileWriter.append(String.valueOf(deliverable.getId()));
+        fileWriter.append(COMMA_DELIMITER);
+
+
+        fileWriter.append(this.NEW_LINE_SEPARATOR);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
+    }
+  }
+
+  /**
+   * This method is used for to add the headers for the file
+   */
+  private void addHeaders() {
+
+    String[] headers =
+      new String[] {"Author", "Title", "Publication type", "Publication status", "Description", "Identifier"};
+
+    try {
+
+      for (int a = 0; a < headers.length; a++) {
+        fileWriter.append(headers[a]);
+        fileWriter.append(COMMA_DELIMITER);
+      }
+      fileWriter.append(this.NEW_LINE_SEPARATOR);
+
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void generateCSV(List<Deliverable> deliverables) {
 
     // File file = new File(baseURL + "temporal.txt");
     File file = new File("temporal.txt");
@@ -39,29 +105,15 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
     try {
       fileWriter = new FileWriter(file, true);
+      this.addHeaders();
+      this.addContent(deliverables);
 
-      // Write here.
-      String COMMA_DELIMITER = ",";
-      String NEW_LINE_SEPARATOR = "\n";
-      fileWriter.append("55");
-      fileWriter.append(COMMA_DELIMITER);
-      fileWriter.append("555");
-      fileWriter.append(COMMA_DELIMITER);
-      fileWriter.append("lu");
-      fileWriter.append(NEW_LINE_SEPARATOR);
-      fileWriter.append("fa");
-      fileWriter.append(COMMA_DELIMITER);
-      fileWriter.append("fo");
-      fileWriter.append(COMMA_DELIMITER);
-      fileWriter.append("fu");
       fileWriter.close();
-
       inputStream = new FileInputStream(file);
       contentLength = (int) file.length();
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 
   /**
@@ -71,17 +123,6 @@ public class DeliverableSummaryCSV extends BaseCSV {
     return contentLength;
   }
 
-  /**
-   * @return
-   */
-  public String getFileName() {
-    String fileName;
-
-    fileName = "publication2";
-    fileName += ".csv";
-
-    return fileName;
-  }
 
   /**
    * method for to get the inputStream
@@ -91,6 +132,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
   public InputStream getInputStream() {
     return inputStream;
   }
+
 
   /**
    * method for to set the inputStream

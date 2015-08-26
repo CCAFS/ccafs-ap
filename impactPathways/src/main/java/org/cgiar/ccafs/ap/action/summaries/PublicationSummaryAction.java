@@ -45,6 +45,8 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
   private DeliverableSummaryCSV deliverableCSV;
   private DeliverableManager deliverableManager;
   List<InputStream> streams;
+  List<Deliverable> deliverables;
+  int projectID;
 
   @Inject
   public PublicationSummaryAction(APConfig config, DeliverableManager deliverableManager,
@@ -62,7 +64,7 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
   public String execute() throws Exception {
 
     // Generate the csv file
-    deliverableCSV.generateCSV();
+    deliverableCSV.generateCSV(deliverables);
     streams = new ArrayList<>();
     streams.add(deliverableCSV.getInputStream());
 
@@ -76,7 +78,7 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
 
   @Override
   public String getFileName() {
-    return deliverableCSV.getFileName();
+    return deliverableCSV.getFileName(projectID);
   }
 
 
@@ -89,9 +91,9 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
 
-    int projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
-    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
+    deliverables = deliverableManager.getDeliverablesByProject(projectID);
 
     for (Deliverable deliverable : deliverables) {
       // Getting next users.
@@ -114,6 +116,5 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
 
 
   }
-
 
 }

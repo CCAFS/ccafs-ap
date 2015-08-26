@@ -31,6 +31,23 @@ public class BaseCSV {
   private static final Logger LOG = LoggerFactory.getLogger(BaseCSV.class);
 
 
+  /**
+   * Method used for to get the name of document
+   * 
+   * @return name of document
+   */
+  public String getFileName(int projectID) {
+    StringBuffer fileName = new StringBuffer();
+
+    fileName.append("publication");
+    fileName.append("-");
+    fileName.append(projectID);
+    fileName.append("-");
+    fileName.append(".csv");
+
+    return fileName.toString();
+  }
+
   public void initializeCsv(File file) {
     file.delete();
     try {
