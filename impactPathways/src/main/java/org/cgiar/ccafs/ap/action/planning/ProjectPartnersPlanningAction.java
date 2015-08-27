@@ -242,38 +242,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting all Project Leaders
     allUsers = userManager.getAllUsers();
 
-    // Getting the list of Project Partners
-    // ********** SIMULATING FAKE PROJECT PARTNERS ***********
-    // List<ProjectPartner> partners = new ArrayList<ProjectPartner>();
-    // for (int c = 1; c <= 10; c++) {
-    // ProjectPartner pp = new ProjectPartner(c);
-    // pp.setInstitution(allInstitutions.get(c));
-    // List<PartnerPerson> persons = new ArrayList<PartnerPerson>();
-    // if (c == 5) { // leader
-    // pp.setInstitution(allPPAInstitutions.get(c));
-    // PartnerPerson per = new PartnerPerson(Integer.parseInt("999"));
-    // per.setResponsibilities("Leading the project... ");
-    // per.setUser(allUsers.get(0));
-    // per.setType(APConstants.PROJECT_PARTNER_PL);
-    // persons.add(per);
-    // } else if (c % 2 == 1) {
-    // pp.setInstitution(allPPAInstitutions.get(c));
-    // }
-    // for (int i = 1; i <= 3; i++) {
-    // PartnerPerson per = new PartnerPerson(Integer.parseInt("1" + c + "" + i));
-    // per.setResponsibilities("Responsible for... " + Integer.parseInt("1" + c + "" + i));
-    // per.setUser(allUsers.get(Integer.parseInt(c + "" + i)));
-    // per.setType(APConstants.PROJECT_PARTNER_CP);
-    // persons.add(per);
-    // }
-    // pp.setPartnerPersons(persons);
-    // partners.add(pp);
-    // }
-    //
-    // project.setProjectPartners(partners);
-
-
-    // ***************************************************
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
     // Getting the list of PPA Partners for this project
@@ -324,26 +292,26 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     super.saveProjectLessons(projectID);
     switch (actionName) {
-      // case "partnerLead":
-      // if (securityContext.canUpdateProjectLeader()) {
-      // return this.savePartnerLead();
-      // } else {
-      // return NOT_AUTHORIZED;
-      // }
+    // case "partnerLead":
+    // if (securityContext.canUpdateProjectLeader()) {
+    // return this.savePartnerLead();
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
 
-      // case "ppaPartners":
-      // if (securityContext.canUpdateProjectPPAPartner()) {
-      // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-      // } else {
-      // return NOT_AUTHORIZED;
-      // }
+    // case "ppaPartners":
+    // if (securityContext.canUpdateProjectPPAPartner()) {
+    // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
 
-      // case "partners":
-      // if (securityContext.canUpdateProjectPartners()) {
-      // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-      // } else {
-      // return NOT_AUTHORIZED;
-      // }
+    // case "partners":
+    // if (securityContext.canUpdateProjectPartners()) {
+    // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
     }
 
     return NOT_AUTHORIZED;
