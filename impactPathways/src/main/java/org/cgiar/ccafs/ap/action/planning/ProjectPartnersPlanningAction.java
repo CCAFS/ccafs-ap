@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Country;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -59,6 +60,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private UserManager userManager;
   private ActivityManager activityManager;
+  private DeliverableManager deliverableManager;
   // private BudgetManager budgetManager;
   // private DeliverablePartnerManager deliverablePartnerManager;
   // private DeliverableManager deliverableManager;
@@ -94,10 +96,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.projectManager = projectManager;
     this.userManager = userManager;
     this.activityManager = activityManager;
+    this.deliverableManager = deliverableManager;
     // this.budgetManager = budgetManager;
     // this.projectPartnersValidator = projectPartnersValidator;
     // this.deliverablePartnerManager = deliverablePartnerManager;
-    // this.deliverableManager = deliverableManager;
   }
 
   public List<Activity> getActivitiesLedByUser(int userID) {
@@ -106,6 +108,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   public List<Institution> getAllInstitutions() {
     return allInstitutions;
+  }
+
+  public List<Institution> getAllPPAInstitutions() {
+    return allPPAInstitutions;
   }
 
   // private boolean deletePartner(ProjectPartner partnerToDelete, List<ProjectPartner> partners) {
@@ -156,10 +162,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // return deleted;
   // }
 
-  public List<Institution> getAllPPAInstitutions() {
-    return allPPAInstitutions;
-  }
-
   public List<Institution> getAllPPAPartners() {
     return allPPAInstitutions;
   }
@@ -170,6 +172,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   public List<Country> getCountries() {
     return countries;
+  }
+
+  public List<Deliverable> getDeliverablesLedByUser(int userID) {
+    return deliverableManager.getProjectDeliverablesLedByUser(projectID, userID);
   }
 
   public List<InstitutionType> getInstitutionTypes() {
