@@ -41,7 +41,7 @@
     </div>
     
     [#-- Indicate which PPA Partners for second level partners --]
-    [#assign showPPABlock][#if projectPartner.institution??][#if projectPartner.institution.PPA]none[#else]block[/#if][#else]none[/#if][/#assign]
+    [#assign showPPABlock][#if (projectPartner.institution.PPA)!true]none[#else]block[/#if][/#assign]
     <div class="ppaPartnersList panel tertiary" style="display:${showPPABlock}">
       <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
       <div class="panel-body">
