@@ -1,5 +1,5 @@
 var $removePartnerDialog, $projectPPAPartners;
-var allPPAInstitutions;
+var allPPAInstitutions, partnerPersonTypes, leaderType, defaultType;
 var lWordsResp = 100;
 
 $(document).ready(init);
@@ -11,6 +11,10 @@ function init() {
     $partnersBlock = $('#projectPartnersBlock');
     allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
     $projectPPAPartners = $('#projectPPAPartners');
+    partnerPersonTypes = ['PC', 'PL', 'CP', '-1'];
+    leaderType = 'PL';
+    defaultType = 'CP';
+    
     // Update initial project CCAFS partners list for each partner
     updateProjectPPAPartnersLists();
     // Attaching listeners
@@ -53,7 +57,7 @@ function attachEvents() {
   
   // When organization change
   $("select.institutionsList").on("change",function(e){
-    updateProjectPPAPartnersLists();
+    updateProjectPPAPartnersLists(e);
   });
   
   // When partnerPersonType change
@@ -93,11 +97,13 @@ function updateOrganizationsList(e) {
   });
 }
 
-function updateProjectPPAPartnersLists(){
-  // Collecting list CCAFS partners from all project partners
+function updateProjectPPAPartnersLists(e){
   $projectPPAPartners.empty();
+  var projectInstitutions = [];
   $partnersBlock.find('.projectPartner').each(function(i,projectPartner){
     var partner = new PartnerObject($(projectPartner));
+    projectInstitutions.push(parseInt(partner.institutionId));
+    // Collecting list CCAFS partners from all project partners
     if(allPPAInstitutions.indexOf(partner.institutionId) != -1 ){
       partner.hidePPAs();
       $projectPPAPartners.append(setOption(partner.institutionId, partner.institutionName));
@@ -109,6 +115,17 @@ function updateProjectPPAPartnersLists(){
       }
     }
   });
+  // Validating if the institution chosen is already selected
+  if(e){
+    $(e.target).parents('.partnerName').find('p.fieldError').text('');
+    var count = 0;
+    for(var i = 0; i < projectInstitutions.length; ++i){
+        if(projectInstitutions[i] == e.target.value){count++;}
+    }
+    if (count > 1){
+      $(e.target).parents('.partnerName').find('p.fieldError').text('This institution is already selected');
+    }
+  }
   // Filling CCAFS partners lists for each project partner
   $partnersBlock.find('.projectPartner').each(function(i,partner){
     var $select = $(partner).find('select.ppaPartnersSelect');
@@ -123,7 +140,19 @@ function updateProjectPPAPartnersLists(){
   
 }
 
-
+function setPartnerTypeToDefault(type){
+  $partnersBlock.find('.projectPartner').each(function(i,partner){
+    var projectPartner = new PartnerObject($(partner));
+    $(partner).find('.contactPerson').each(function(i, partnerPerson) {
+      var contact = new PartnerPersonObject($(partnerPerson));
+      if (contact.type == type){
+        $(partnerPerson).removeClass(partnerPersonTypes.join(' ')).addClass(defaultType);
+        contact.setPartnerType(defaultType);
+      }
+    });
+    projectPartner.changeType();
+  });
+}
 
 // Partner Events
 function removePartnerEvent(e) {
@@ -327,10 +356,10 @@ function PartnerPersonObject(partnerPerson) {
   };
   this.changeType = function(){
     var partner = new PartnerObject($(partnerPerson).parents('.projectPartner'));
-    if (this.type == 'PL'){
-      setUniquePartnerType(this.type);
+    if (this.type == leaderType){
+      setPartnerTypeToDefault(this.type);
     }
-    $(partnerPerson).removeClass('PC PL CP -1').addClass(this.type);
+    $(partnerPerson).removeClass(partnerPersonTypes.join(' ')).addClass(this.type);
     this.setPartnerType(this.type);
     partner.changeType();
   };
@@ -350,18 +379,4 @@ function PartnerPersonObject(partnerPerson) {
       setProjectPartnersIndexes();
     });
   };
-}
-
-function setUniquePartnerType(type){
-  $partnersBlock.find('.projectPartner').each(function(i,partner){
-    var projectPartner = new PartnerObject($(partner));
-    $(partner).find('.contactPerson').each(function(i, partnerPerson) {
-      var contact = new PartnerPersonObject($(partnerPerson));
-      if (contact.type == type){
-        $(partnerPerson).removeClass('PC PL CP -1').addClass('CP');
-        contact.setPartnerType('CP');
-      }
-    });
-    projectPartner.changeType();
-  });
 }

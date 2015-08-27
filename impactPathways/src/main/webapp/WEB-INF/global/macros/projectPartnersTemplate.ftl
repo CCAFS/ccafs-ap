@@ -16,7 +16,7 @@
       <span class="index">${projectPartnerIndex?number+1}</span>
       <span class="elementId">Project Partner  <strong class="type"> ${(projectPartner.leader?string('(Leader)',''))!} ${(projectPartner.coordinator?string('(Coordinator)',''))!}</strong></span>
     </div>
-    <input id="id" class="partnerId" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].id" value="${(projectPartner.id)!}" />
+    <input id="id" class="partnerId" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].id" value="${(projectPartner.id)!-1}" />
 
     [#-- Filters --]
     [#if editable]
@@ -37,6 +37,7 @@
     
     [#-- Organization  --]
     <div class="fullPartBlock partnerName chosen">
+      <p class="fieldError"></p>
       [@customForm.select name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!'-1'}" className="institutionsList" required=true  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
     </div>
     
