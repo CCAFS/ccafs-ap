@@ -88,6 +88,34 @@
         </div> 
       </div>
       [#if canEdit && !action.canDelete()]
+      <div id="dialog" title="Deliverable types" style="display: none">
+        <table style="height:700px; width:900px;">
+          <th> [@s.text name="planning.deliverables.dialogMessage.part1" /] </th>
+          <th> [@s.text name="planning.deliverables.dialogMessage.part2" /] </th>
+          <th> [@s.text name="planning.deliverables.dialogMessage.part3" /] </th>
+          [#list deliverableTypes as mt]
+            [#list action.getDeliverableSubTypes(mt.id) as st]
+              [#if st_index == 0]
+              <tr>
+                <th rowspan="${action.getDeliverableSubTypes(mt.id).size()}"> ${mt.name} </th>
+                    <td> ${st.name} </td>
+                    <td> ${st.description!}</td>
+              </tr>
+              [#else]
+              <tr>
+                <td> ${st.name} </td>
+                <td> ${st.description!} </td>
+              </tr>
+              [/#if]
+            [/#list]
+          [/#list]  
+        </table>
+      </div> <!-- End dialog--> 
+  
+        <div class="helpMessage3"><p><a href="javascript:openDialog();" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]
+    </a></p>
+    </div>
+        <p>&nbsp</p>
         <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
       [/#if]
     </div>

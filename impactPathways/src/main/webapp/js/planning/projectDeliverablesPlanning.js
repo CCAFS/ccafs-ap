@@ -52,6 +52,25 @@ function removeElementEvent(e) {
   });
 }
 
+function openDialog() {
+  $("#dialog").dialog({
+      autoOpen: false,
+      height: 735,
+      width: 925,
+      show: {
+          effect: "blind",
+          duration: 1000
+      },
+      hide: {
+          effect: "explode",
+          duration: 1000
+      }
+  });
+
+  $("#dialog").dialog("open");
+
+}
+
 function addNextUserEvent(e) {
   e.preventDefault();
   var $newElement = $("#projectNextUserTemplate").clone(true).removeAttr("id").addClass("projectNextUser");
