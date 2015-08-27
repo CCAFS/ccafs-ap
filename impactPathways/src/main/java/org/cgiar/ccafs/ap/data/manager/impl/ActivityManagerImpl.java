@@ -100,8 +100,8 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("leader_id") != null) {
-        activity
-        .setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        activity.setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData
+          .get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -174,8 +174,8 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("leader_id") != null) {
-        activity
-          .setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        activity.setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData
+          .get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -211,8 +211,8 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
         if (activityData.get("leader_id") != null) {
-          activity
-          .setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          activity.setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData
+            .get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
@@ -221,6 +221,21 @@ public class ActivityManagerImpl implements ActivityManager {
       activityList.add(activity);
     }
     return activityList;
+  }
+
+  @Override
+  public List<Activity> getProjectActivitiesLedByUser(int projectID, int userID) {
+    List<Activity> activities = new ArrayList<>();
+    List<Map<String, String>> activitiesData = activityDAO.getProjectActivitiesLedByUser(projectID, userID);
+
+    for (Map<String, String> activityData : activitiesData) {
+      Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activityData.get("id")));
+      activity.setTitle(activityData.get("title"));
+
+      activities.add(activity);
+    }
+    return activities;
   }
 
   @Override

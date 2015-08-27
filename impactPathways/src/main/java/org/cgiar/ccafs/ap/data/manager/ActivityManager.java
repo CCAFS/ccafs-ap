@@ -24,6 +24,7 @@ import com.google.inject.ImplementedBy;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 @ImplementedBy(ActivityManagerImpl.class)
 public interface ActivityManager {
@@ -87,6 +88,16 @@ public interface ActivityManager {
    * @return an Array of Activity objects.
    */
   public List<Activity> getAllActivities();
+
+  /**
+   * This method return all the activities that belongs to a given project and which are led by a given user.
+   * The activities will contain only the basic information: id, title
+   * 
+   * @param projectID - Project identifier
+   * @param userID - User identifier
+   * @return a list of Activity objects or an empty list if any activity is found.
+   */
+  public List<Activity> getProjectActivitiesLedByUser(int projectID, int userID);
 
   /**
    * This method returns the activity identifier whether using composed codification (that is with the organization IATI
