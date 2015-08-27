@@ -60,7 +60,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if the institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -93,7 +93,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if its institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -145,8 +145,13 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   @Override
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
     String justification) {
-    // TODO Auto-generated method stub
-    return false;
+    boolean result = true;
+    for (ProjectPartner partner : projectPartners) {
+      if (this.saveProjectPartner(project, partner, user, justification) == -1) {
+        result = false;
+      }
+    }
+    return result;
   }
 
   public void setUserManager(UserManager userManager) {
@@ -182,7 +187,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
     // Institution as partner_id
     projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
+    .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
 
     // Getting the institutions which this partner is contributing to.
     // projectPartner

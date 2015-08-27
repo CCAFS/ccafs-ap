@@ -33,6 +33,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -122,6 +123,23 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public List<DeliverableType> getDeliverableSubTypes() {
     return deliverableSubTypes;
+  }
+
+  /**
+   * This method returns a list of DeliverableSubTypes depending on the deliverableMainTypeID received as parameter.
+   * 
+   * @param deliverableMainTypeID is the deliverable main category identifier.
+   * @return a list with the sub-types related to the main-type identifier received, an empty list if there is no
+   *         coincidence or null if an error happens.
+   */
+  public List<DeliverableType> getDeliverableSubTypes(int deliverableMainTypeID) {
+    List<DeliverableType> listSubTypes = new ArrayList<DeliverableType>();
+    for (int i = 0; i < deliverableSubTypes.size(); i++) {
+      if (deliverableSubTypes.get(i).getCategory().getId() == deliverableMainTypeID) {
+        listSubTypes.add(deliverableSubTypes.get(i));
+      }
+    }
+    return listSubTypes;
   }
 
   public List<DeliverableType> getDeliverableTypes() {
