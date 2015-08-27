@@ -175,7 +175,10 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Get a route for the workplan name
     if (project.isWorkplanRequired()) {
-      project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+
+      if (this.getWorkplanURL() != null || project.getWorkplanName() != null) {
+        project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+      }
     }
 
     // Getting the information of the Regions program

@@ -20,6 +20,16 @@ function init() {
     "#justification"
   ]);
 
+  $("#dialog").dialog({
+      autoOpen: false,
+      buttons: {
+        Close: function() {
+          $(this).dialog("close");
+        }
+      },
+      width: 925,
+      modal: true
+  });
 }
 
 function attachEvents() {
@@ -34,6 +44,8 @@ function attachEvents() {
 
   // Partnership contribution to deliverable
   $(".addPartner").on("click", addPartnerEvent);
+
+  $('.helpMessage3').on("click", openDialog);
 }
 
 function addChosen() {
@@ -50,6 +62,12 @@ function removeElementEvent(e) {
     $parent.remove();
     setDeliverablesIndexes();
   });
+}
+
+function openDialog() {
+
+  $("#dialog").dialog("open");
+
 }
 
 function addNextUserEvent(e) {
