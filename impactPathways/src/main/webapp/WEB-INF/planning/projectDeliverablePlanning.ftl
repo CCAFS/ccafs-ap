@@ -110,12 +110,17 @@
             [/#list]
           [/#list]  
         </table>
-      </div> <!-- End dialog--> 
-  
+      </div> <!-- End dialog-->
         <div class="helpMessage3"><p><a href="javascript:openDialog();" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]
-    </a></p>
-    </div>
+         </a></p>
+        </div>
         <p>&nbsp</p>
+        [#if editable]
+         <div class="note left">
+          <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
+         </div>
+        [/#if]
+            <p>&nbsp</p>
         <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
       [/#if]
     </div>
