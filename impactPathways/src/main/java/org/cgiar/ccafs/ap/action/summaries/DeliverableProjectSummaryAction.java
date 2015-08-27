@@ -36,9 +36,9 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis Banguera
  */
-public class PublicationSummaryAction extends BaseAction implements Summary {
+public class DeliverableProjectSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(PublicationSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(DeliverableProjectSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
@@ -49,7 +49,7 @@ public class PublicationSummaryAction extends BaseAction implements Summary {
   int projectID;
 
   @Inject
-  public PublicationSummaryAction(APConfig config, DeliverableManager deliverableManager,
+  public DeliverableProjectSummaryAction(APConfig config, DeliverableManager deliverableManager,
     NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
     DeliverableSummaryCSV deliverableCSV) {
     super(config);
