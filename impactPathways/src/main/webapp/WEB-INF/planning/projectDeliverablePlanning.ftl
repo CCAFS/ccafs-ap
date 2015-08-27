@@ -88,6 +88,39 @@
         </div> 
       </div>
       [#if canEdit && !action.canDelete()]
+      <div id="dialog" title="Deliverable types" style="display: none">
+        <table style="height:700px; width:900px;">
+          <th> [@s.text name="planning.deliverables.dialogMessage.part1" /] </th>
+          <th> [@s.text name="planning.deliverables.dialogMessage.part2" /] </th>
+          <th> [@s.text name="planning.deliverables.dialogMessage.part3" /] </th>
+          [#list deliverableTypes as mt]
+            [#list action.getDeliverableSubTypes(mt.id) as st]
+              [#if st_index == 0]
+              <tr>
+                <th rowspan="${action.getDeliverableSubTypes(mt.id).size()}"> ${mt.name} </th>
+                    <td> ${st.name} </td>
+                    <td> ${st.description!}</td>
+              </tr>
+              [#else]
+              <tr>
+                <td> ${st.name} </td>
+                <td> ${st.description!} </td>
+              </tr>
+              [/#if]
+            [/#list]
+          [/#list]  
+        </table>
+      </div> <!-- End dialog-->
+        <div class="helpMessage3"><p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]
+         </a></p>
+        </div>
+        <p>&nbsp</p>
+        [#if editable]
+         <div class="note left">
+          <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
+         </div>
+        [/#if]
+            <p>&nbsp</p>
         <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
       [/#if]
     </div>
@@ -193,8 +226,5 @@
 
 [#-- Deliverable Partner Template--]
 [@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index template=true /]
-
-[#-- Search users Interface Popup --]
-[@usersForm.searchUsers isActive=false/]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
