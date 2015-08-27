@@ -400,10 +400,10 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("UPDATE project_budgets pb ");
     query.append("SET pb.is_active = FALSE ");
     query.append("WHERE pb.institution_id NOT IN ");
-    query.append("( SELECT  partner_id FROM project_partners pp ");
-    query.append("  INNER JOIN institutions i ON pp.partner_id = i.id ");
+    query.append("( SELECT  institution_id FROM project_partners pp ");
+    query.append("  INNER JOIN institutions i ON pp.institution_id = i.id ");
     query.append("  WHERE pp.project_id = pb.project_id AND pp.is_active = TRUE AND i.is_ppa = TRUE ");
-    query.append("  GROUP BY pp.partner_id, pp.is_active ");
+    query.append("  GROUP BY pp.institution_id, pp.is_active ");
     query.append(") AND pb.project_id = ");
     query.append(projectID);
 
