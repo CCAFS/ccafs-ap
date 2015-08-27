@@ -10,6 +10,7 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
@@ -18,6 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
@@ -56,6 +58,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private LocationManager locationManager;
   private ProjectManager projectManager;
   private UserManager userManager;
+  private ActivityManager activityManager;
   // private BudgetManager budgetManager;
   // private DeliverablePartnerManager deliverablePartnerManager;
   // private DeliverableManager deliverableManager;
@@ -82,25 +85,27 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
-    DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager) {
+    DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
+    ActivityManager activityManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.locationManager = locationManager;
     this.projectManager = projectManager;
     this.userManager = userManager;
+    this.activityManager = activityManager;
     // this.budgetManager = budgetManager;
     // this.projectPartnersValidator = projectPartnersValidator;
     // this.deliverablePartnerManager = deliverablePartnerManager;
     // this.deliverableManager = deliverableManager;
   }
 
-  public List<Institution> getAllInstitutions() {
-    return allInstitutions;
+  public List<Activity> getActivitiesLedByUser(int userID) {
+    return activityManager.getProjectActivitiesLedByUser(projectID, userID);
   }
 
-  public List<Institution> getAllPPAInstitutions() {
-    return allPPAInstitutions;
+  public List<Institution> getAllInstitutions() {
+    return allInstitutions;
   }
 
   // private boolean deletePartner(ProjectPartner partnerToDelete, List<ProjectPartner> partners) {
@@ -150,6 +155,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // this.getJustification());
   // return deleted;
   // }
+
+  public List<Institution> getAllPPAInstitutions() {
+    return allPPAInstitutions;
+  }
 
   public List<Institution> getAllPPAPartners() {
     return allPPAInstitutions;
@@ -288,36 +297,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     return this.projectPPAPartners;
   }
 
-  @Override
-  public String save() {
-    super.saveProjectLessons(projectID);
-    switch (actionName) {
-    // case "partnerLead":
-    // if (securityContext.canUpdateProjectLeader()) {
-    // return this.savePartnerLead();
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
-
-    // case "ppaPartners":
-    // if (securityContext.canUpdateProjectPPAPartner()) {
-    // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
-
-    // case "partners":
-    // if (securityContext.canUpdateProjectPartners()) {
-    // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
-    }
-
-    return NOT_AUTHORIZED;
-
-  }
-
   // private String savePartnerLead() {
   // boolean success = true;
   //
@@ -421,6 +400,36 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // return INPUT;
   //
   // }
+
+  @Override
+  public String save() {
+    super.saveProjectLessons(projectID);
+    switch (actionName) {
+    // case "partnerLead":
+    // if (securityContext.canUpdateProjectLeader()) {
+    // return this.savePartnerLead();
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
+
+    // case "ppaPartners":
+    // if (securityContext.canUpdateProjectPPAPartner()) {
+    // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
+
+    // case "partners":
+    // if (securityContext.canUpdateProjectPartners()) {
+    // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+    // } else {
+    // return NOT_AUTHORIZED;
+    // }
+    }
+
+    return NOT_AUTHORIZED;
+
+  }
 
   public void setAllProjectLeaders(List<User> allProjectLeaders) {
     this.allUsers = allProjectLeaders;
