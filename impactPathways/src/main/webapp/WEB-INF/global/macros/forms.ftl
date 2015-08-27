@@ -48,9 +48,9 @@
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
-          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue}[/#if]
+          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue?replace('\n', '<br>')}[/#if]
         [#else]
-          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value}[/#if] 
+          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value?replace('\n', '<br>')}[/#if] 
         [/#if]
       </p>
     [/#if] 
