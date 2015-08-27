@@ -111,7 +111,7 @@
           [/#list]  
         </table>
       </div> <!-- End dialog-->
-        <div class="helpMessage3"><p><a href="javascript:openDialog();" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]
+        <div class="helpMessage3"><p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]
          </a></p>
         </div>
         <p>&nbsp</p>
@@ -226,8 +226,5 @@
 
 [#-- Deliverable Partner Template--]
 [@deliverableTemplate.deliverablePartner dp={} dp_name=params.partners.name dp_index=dp_index template=true /]
-
-[#-- Search users Interface Popup --]
-[@usersForm.searchUsers isActive=false/]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
