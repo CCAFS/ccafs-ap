@@ -25,6 +25,7 @@ import com.google.inject.ImplementedBy;
 
 /**
  * @author Javier Andrés Gallego B.
+ * @author Hernán David Carvajal.
  */
 @ImplementedBy(DeliverableManagerImpl.class)
 public interface DeliverableManager {
@@ -97,6 +98,16 @@ public interface DeliverableManager {
    *         if some problem occurred.
    */
   public List<Deliverable> getDeliverablesByProjectPartnerID(int projectPartnerID);
+
+  /**
+   * This method return all the deliverables that belongs to a given project and which are led by a given user.
+   * The deliverables will contain only the basic information: id, title
+   * 
+   * @param projectID - Project identifier
+   * @param userID - User identifier
+   * @return a list of Deliverable objects or an empty list if no deliverable is found.
+   */
+  public List<Deliverable> getProjectDeliverablesLedByUser(int projectID, int userID);
 
   /**
    * This method returns the deliverable identifier whether using composed codification (that is with the organization

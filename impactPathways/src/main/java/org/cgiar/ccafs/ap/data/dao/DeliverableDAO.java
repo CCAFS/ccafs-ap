@@ -96,6 +96,16 @@ public interface DeliverableDAO {
   public List<Map<String, String>> getDeliverablesByProjectPartnerID(int projectPartnerID);
 
   /**
+   * This method return all the deliverables that belongs to a given project and which are led by a given user.
+   * The deliverables will contain only the basic information: id, title
+   * 
+   * @param projectID - Project identifier
+   * @param userID - User identifier
+   * @return a list of maps with the information or an empty list if no deliverable is found.
+   */
+  public List<Map<String, String>> getProjectDeliverablesLedByUser(int projectID, int userID);
+
+  /**
    * This method saves the Deliverable information
    * 
    * @param deliverableData - is a Map with the information of the deliverable to be saved

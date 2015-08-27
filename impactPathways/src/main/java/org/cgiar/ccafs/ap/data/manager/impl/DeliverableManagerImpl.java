@@ -178,6 +178,22 @@ public class DeliverableManagerImpl implements DeliverableManager {
   }
 
   @Override
+  public List<Deliverable> getProjectDeliverablesLedByUser(int projectID, int userID) {
+    List<Deliverable> deliverables = new ArrayList<>();
+    List<Map<String, String>> deliverablesData = deliverableDAO.getProjectDeliverablesLedByUser(projectID, userID);
+
+    for (Map<String, String> deliverableData : deliverablesData) {
+      Deliverable deliverable = new Deliverable();
+      deliverable.setId(Integer.parseInt(deliverableData.get("id")));
+      deliverable.setTitle(deliverableData.get("title"));
+
+      deliverables.add(deliverable);
+    }
+
+    return deliverables;
+  }
+
+  @Override
   public String getStandardIdentifier(Project project, Deliverable deliverable, boolean useComposedCodification) {
     StringBuilder result = new StringBuilder();
     if (useComposedCodification) {
@@ -223,9 +239,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       LOG
         .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
     }
-
     return result;
-
   }
 
   @Override
