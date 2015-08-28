@@ -2740,6 +2740,8 @@ span.partnerTag {
   width: 67%;
 }
 
+.contactPerson .contactTags {
+}
 .contactPerson .tag {
   background-color: #f1f1f1;
   float: left;
