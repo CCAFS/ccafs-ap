@@ -108,4 +108,43 @@ public class MySQLPartnerPersonDAO implements PartnerPersonDAO {
     return this.getData(query.toString());
   }
 
+  @Override
+  public int savePartnerPerson(Map<String, Object> partnerPersonData) {
+    LOG.debug(">> savePartnerPerson(partnerPersonData)", partnerPersonData);
+    StringBuilder query = new StringBuilder();
+    Object[] values;
+    if (partnerPersonData.get("id") == null) {
+      // Insert new record
+      query.append(
+        "INSERT INTO project_partner_persons (id, project_partner_id, user_id, contact_type, responsibilities, created_by, modified_by, modification_justification) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+      values = new Object[8];
+      values[0] = partnerPersonData.get("id");
+      values[1] = partnerPersonData.get("project_partner_id");
+      values[2] = partnerPersonData.get("user_id");
+      values[3] = partnerPersonData.get("contact_type");
+      values[4] = partnerPersonData.get("responsibilities");
+      values[5] = partnerPersonData.get("created_by");
+      values[6] = partnerPersonData.get("modified_by");
+      values[7] = partnerPersonData.get("modification_justification");
+    } else {
+      // update record
+      query.append(
+        "UPDATE project_partner_persons SET project_partner_id = ?, user_id = ?, contact_type = ?, responsibilities = ?, modified_by = ?, modification_justification = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[7];
+      values[0] = partnerPersonData.get("project_partner_id");
+      values[1] = partnerPersonData.get("user_id");
+      values[2] = partnerPersonData.get("contact_type");
+      values[3] = partnerPersonData.get("responsibilities");
+      values[4] = partnerPersonData.get("modified_by");
+      values[5] = partnerPersonData.get("modification_justification");
+      values[6] = partnerPersonData.get("id");
+    }
+
+    int result = databaseManager.saveData(query.toString(), values);
+    LOG.debug("<< savePartnerPerson():{}", result);
+    return result;
+  }
+
 }

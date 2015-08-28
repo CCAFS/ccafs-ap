@@ -38,5 +38,14 @@ public interface PartnerPersonDAO {
    */
   public List<Map<String, String>> getPartnerPersonsByPartnerID(int projectPartnerID);
 
+  /**
+   * This method saves/updates a partner Person into the system.
+   * 
+   * @param partnerPersonData is a Map which contains all the information to be saved.
+   * @return a number greater than 0 with the new record added, 0 if the record was successfully updated or -1 if some
+   *         error occurred.
+   */
+  public int savePartnerPerson(Map<String, Object> partnerPersonData);
+
 
 }
