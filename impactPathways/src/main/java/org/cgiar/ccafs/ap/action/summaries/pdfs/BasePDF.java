@@ -308,6 +308,29 @@ public class BasePDF {
 
 
   /**
+   * Creates a PdfCell object add the text passed and
+   * give it the standard format for header cells.
+   * 
+   * @param cell - Cell for insert
+   * @return a PdfCell object with the text formatted.
+   */
+  public void addTableHeaderCell(PdfPTable table, PdfPCell cell) {
+    // Set alignment
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    cell.setBackgroundColor(TABLE_HEADER_BACKGROUND);
+
+    // Set padding
+    cell.setUseBorderPadding(true);
+    cell.setPadding(3);
+
+    // Set border color
+    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
+
+    table.addCell(cell);
+  }
+
+  /**
    * Add a title in the current page of document.
    * 
    * @param document - Document where title must be inserted
