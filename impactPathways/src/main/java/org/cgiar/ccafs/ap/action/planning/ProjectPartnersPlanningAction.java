@@ -100,6 +100,24 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // this.deliverableManager = deliverableManager;
   }
 
+  // public static void main(String[] args) {
+  // Injector in = Guice.createInjector(new APModule());
+  // ProjectPartnerManager partnerManager = in.getInstance(ProjectPartnerManager.class);
+  // InstitutionManager instManager = in.getInstance(InstitutionManager.class);
+  // PartnerPersonManager personManager = in.getInstance(PartnerPersonManager.class);
+  //
+  // ProjectPartner partner = partnerManager.getProjectPartner(1);
+  // partner.setInstitution(instManager.getInstitution(5));
+  // PartnerPerson newPerson = new PartnerPerson(810);
+  // newPerson.setResponsibilities("responsibilities OTHER....");
+  // newPerson.setType(APConstants.PROJECT_PARTNER_CP);
+  // newPerson.setUser(new User(5));
+  //
+  // System.out.println(personManager.savePartnerPerson(partner, newPerson, new User(2), "Justification test...."));
+  // // partnerManager.saveProjectPartner(new Project(2), partner, new User(1), "testing update");
+  //
+  // }
+
   public List<Activity> getActivitiesLedByUser(int userID) {
     return activityManager.getProjectActivitiesLedByUser(projectID, userID);
   }
@@ -405,26 +423,26 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     super.saveProjectLessons(projectID);
     switch (actionName) {
-    // case "partnerLead":
-    // if (securityContext.canUpdateProjectLeader()) {
-    // return this.savePartnerLead();
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
+        // case "partnerLead":
+        // if (securityContext.canUpdateProjectLeader()) {
+        // return this.savePartnerLead();
+        // } else {
+        // return NOT_AUTHORIZED;
+        // }
 
-    // case "ppaPartners":
-    // if (securityContext.canUpdateProjectPPAPartner()) {
-    // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
+        // case "ppaPartners":
+        // if (securityContext.canUpdateProjectPPAPartner()) {
+        // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
+        // } else {
+        // return NOT_AUTHORIZED;
+        // }
 
-    // case "partners":
-    // if (securityContext.canUpdateProjectPartners()) {
-    // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
+        // case "partners":
+        // if (securityContext.canUpdateProjectPartners()) {
+        // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
+        // } else {
+        // return NOT_AUTHORIZED;
+        // }
     }
 
     return NOT_AUTHORIZED;
