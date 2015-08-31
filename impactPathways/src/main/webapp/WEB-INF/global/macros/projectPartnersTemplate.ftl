@@ -106,7 +106,7 @@
       <div class="partnerPerson-email userField halfPartBlock clearfix">
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
         [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=editable/]
-        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}">   
+        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user.id" value="${(contact.user.id)!'-1'}" />   
         [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
