@@ -424,7 +424,7 @@ public class Project {
     return null;
   }
 
-  public PartnerPerson getProjectLeader() {
+  public PartnerPerson getLeaderPerson() {
     for (ProjectPartner partner : projectPartners) {
       for (PartnerPerson person : partner.getPartnerPersons()) {
         if (person.isLeader()) {
