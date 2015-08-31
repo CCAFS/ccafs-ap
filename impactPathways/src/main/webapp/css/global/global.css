@@ -2800,6 +2800,9 @@ table#deliverableTypes, #deliverableTypes th, #deliverableTypes td {
    height: 20px;
    vertical-align:middle;
 }
+#deliverableTypes td {
+  text-align: left;
+}
 .BudgetByYear {
   float: left;
   padding: 0 2% 8px 2%;
