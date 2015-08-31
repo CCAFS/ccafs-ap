@@ -272,7 +272,7 @@ function addChosen() {
 /**
  * PartnerObject
  * 
- * @param {JqueryObject} Project partner
+ * @param {DOM} Project partner
  */
 
 function PartnerObject(partner) {
@@ -346,7 +346,7 @@ function PartnerObject(partner) {
 /**
  * PartnerPersonObject
  * 
- * @param {JqueryObject} Partner person
+ * @param {DOM} Partner person
  */
 function PartnerPersonObject(partnerPerson) {
   this.id = parseInt($(partnerPerson).find('.partnerPersonId').val());
@@ -368,7 +368,7 @@ function PartnerPersonObject(partnerPerson) {
     $(partnerPerson).find(".leftHead .index").html(index + 1);
     $(partnerPerson).find(".partnerPersonId").attr("name", elementName + "id");
     $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
-    $(partnerPerson).find(".userId").attr("name", elementName + "user");
+    $(partnerPerson).find(".userId").attr("name", elementName + "user.id");
     $(partnerPerson).find(".resp").attr("name", elementName + "responsibilities");
   };
   this.remove = function() {
