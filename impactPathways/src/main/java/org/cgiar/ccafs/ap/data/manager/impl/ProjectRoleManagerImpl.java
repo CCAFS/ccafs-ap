@@ -14,12 +14,9 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectRoleDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectRoleManager;
-import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import com.google.inject.Inject;
@@ -44,20 +41,12 @@ public class ProjectRoleManagerImpl implements ProjectRoleManager {
 
   @Override
   public boolean saveProjectRoles(Project project, User user, String justification) {
+    boolean success = true;
     // First remove the project roles saved previously if any
-    this.deleteProjectRoles(project);
+    success = success && this.deleteProjectRoles(project);
 
     // Save the leaders and coordinators
-    for (ProjectPartner projectPartner : project.getProjectPartners()) {
-      for (PartnerPerson partnerPerson : projectPartner.getPartnerPersons()) {
-        if (partnerPerson.getType().equals(APConstants.PROJECT_PARTNER_PL)) {
-          projectRoleDAO.addProjectRole(project.getId(), user.getId(), APConstants.PROJECT_PARTNER_PL);
-        } else if (partnerPerson.getType().equals(APConstants.PROJECT_PARTNER_PC)) {
-          // TODO - Create project coordinator role and assign it here
-        }
-      }
-    }
-
-    return false;
+    success = success && projectRoleDAO.addProjectRoles(project.getId());
+    return success;
   }
 }
