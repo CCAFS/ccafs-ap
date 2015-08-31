@@ -21,13 +21,24 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Héctor Fabio Tobón R.
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 @ImplementedBy(ProjectPartnerManagerImpl.class)
 public interface ProjectPartnerManager {
 
   /**
+   * This method delete the project partner received by parameter from the database.
+   * 
+   * @param projectPartner - Project partner object
+   * @param currentUser - User who is making the change
+   * @param justification
+   * @return true if the projectPartner was deleted successfully. False otherwise.
+   */
+  public boolean deleteProjectPartner(ProjectPartner projectPartner, User user, String justification);
+
+  /**
    * This method is used to get a specific Project Partner identified by the given ID.
-   *
+   * 
    * @param partnerID is a partner identifier.
    * @return The ProjectPartner object identified by the given id. If no project partner is found, this method will
    *         return null value.
@@ -77,7 +88,7 @@ public interface ProjectPartnerManager {
   /**
    * TODO - To Review
    * This method deletes a specific project partner from the database
-   *
+   * 
    * @param id of the project partner that will be deleted.
    * @param user the user that is deleting the record.
    * @param justification is the justification statement.
@@ -86,10 +97,11 @@ public interface ProjectPartnerManager {
   @Deprecated
   public boolean z_old_deleteProjectPartner(int id, User user, String justifications);
 
+
   /**
    * TODO - To Review
    * Delete a Project Partners information which belongs to the project Id and Institution Id given
-   *
+   * 
    * @param projectId is the id of the project
    * @param partnerId from institution
    * @return true if the deletion process was successful or false otherwise.
@@ -99,11 +111,10 @@ public interface ProjectPartnerManager {
   @Deprecated
   public boolean z_old_deleteProjectPartner(Project project, Institution partner);
 
-
   /**
    * TODO - To Review
    * This method is used to get the Project Partner that belongs to a specific project.
-   *
+   * 
    * @param partnerId is the id of the partner.
    * @return The ProjectPartner object that belongs to the project identified with the given id. If no projects
    *         are found, this method will return an empty list.
@@ -114,7 +125,7 @@ public interface ProjectPartnerManager {
   /**
    * TODO - To Review
    * This method is used to get the list of Project Partners that belongs to a specific project.
-   *
+   * 
    * @param projectId is the id of the project.
    * @return a List of ProjectPartner objects that belongs to the project identified with the given id. If no projects
    *         are found, this method will return an empty list.
@@ -154,7 +165,7 @@ public interface ProjectPartnerManager {
   /**
    * TODO - To Review
    * This method save the project partner of a specific project
-   *
+   * 
    * @param projectId is the project identifier in which these projects partners belong to.
    * @param partners is the information to be saved
    * @param user is the user that is making the change.
@@ -162,8 +173,8 @@ public interface ProjectPartnerManager {
    * @return true if all partners were successfully saved; or false otherwise.
    */
   @Deprecated
-  public boolean z_old_saveProjectPartners(int projectId, List<ProjectPartner> partners, User user,
-    String justification);
+  public boolean
+    z_old_saveProjectPartners(int projectId, List<ProjectPartner> partners, User user, String justification);
 
 
 }
