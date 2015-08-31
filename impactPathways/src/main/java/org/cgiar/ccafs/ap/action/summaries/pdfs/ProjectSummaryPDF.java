@@ -262,21 +262,30 @@ public class ProjectSummaryPDF extends BasePDF {
 
     if (budget_temp == null) {
 
+      // amount
       cell.add(currencyFormatter.format(0));
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
       currencyFormatter.setMaximumFractionDigits(0);
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+      cell = new Paragraph();
+      cell.setFont(TABLE_BODY_FONT);
       cell.add(currencyFormatter.format(0));
-      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
 
-
+      // gender
       cell = new Paragraph();
       cell.setFont(TABLE_BODY_FONT);
       currencyFormatter = NumberFormat.getPercentInstance(locale);
       cell.add(currencyFormatter.format(0));
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+      cell = new Paragraph();
+      cell.setFont(TABLE_BODY_FONT);
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
       currencyFormatter.setMaximumFractionDigits(0);
       cell.add(currencyFormatter.format(0));
-      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
 
 
     } else {
@@ -286,24 +295,96 @@ public class ProjectSummaryPDF extends BasePDF {
       cell = new Paragraph();
       cell.setFont(TABLE_BODY_FONT);
       cell.add(currencyFormatter.format(budget_temp.getTotalContribution() * 0.01));
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
       currencyFormatter.setMaximumFractionDigits(0);
+      cell = new Paragraph();
+      cell.setFont(TABLE_BODY_FONT);
       cell.add(currencyFormatter.format(budget_temp.getTotalContribution() * 0.01
         * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year)));
-      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
 
       // Gender
       currencyFormatter = NumberFormat.getPercentInstance(locale);
       cell = new Paragraph();
       cell.setFont(TABLE_BODY_FONT);
       cell.add(currencyFormatter.format(budget_temp.getGenderContribution() * 0.01));
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+      cell = new Paragraph();
+      cell.setFont(TABLE_BODY_FONT);
       currencyFormatter = NumberFormat.getCurrencyInstance(locale);
       currencyFormatter.setMaximumFractionDigits(0);
+
+      cell = new Paragraph();
+      cell.setFont(TABLE_BODY_FONT);
       cell.add(currencyFormatter.format(budget_temp.getGenderContribution() * 0.01
         * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year)));
-      this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+      this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
     }
+  }
 
+  private void addBudgetByMogOne(Paragraph paragraph, PdfPTable table, StringBuffer budgetLabel, IPElement mog,
+    int startYear, int endYear, BudgetType budgetType) {
+    paragraph = new Paragraph();
+    budgetLabel = new StringBuffer();
+    paragraph.setFont(TABLE_BODY_FONT);
+    budgetLabel.append(mog.getProgram().getAcronym());
+    budgetLabel.append(" - MOG # ");
+    budgetLabel.append(this.getMOGIndex(mog));
+    budgetLabel.append(": ");
+    budgetLabel.append(mog.getDescription());
+    budgetLabel.append(" - " + budgetType.name());
+    paragraph.add(budgetLabel.toString());
+    this.addCustomTableCell(table, paragraph, Element.ALIGN_JUSTIFIED, BODY_TEXT_FONT, Color.WHITE,
+      table.getNumberOfColumns(), 0, false);
+
+    PdfPCell cell;
+    // year
+    paragraph = new Paragraph(this.getText("summaries.project.budget.overall.type"), TABLE_HEADER_FONT);
+    cell = new PdfPCell(paragraph);
+    cell.setRowspan(2);
+    this.addTableHeaderCell(table, cell);
+
+    // % de amount
+    paragraph =
+      new Paragraph(this.getText("summaries.project.budget.mog.anual.percentaje", new String[] {budgetType.name()
+        .replace("_", "/")}), TABLE_HEADER_FONT);
+    cell = new PdfPCell(paragraph);
+    cell.setColspan(2);
+    this.addTableHeaderCell(table, cell);
+
+    // gender
+    paragraph =
+      new Paragraph(this.getText("summaries.project.budget.mog.anual.gender",
+        new String[] {budgetType.name().replace("_", "/")}), TABLE_HEADER_FONT);
+    cell = new PdfPCell(paragraph);
+    cell.setColspan(2);
+    this.addTableHeaderCell(table, cell);
+
+    // amount (%)
+    paragraph = new Paragraph("(%)", TABLE_HEADER_FONT);
+    this.addTableHeaderCell(table, paragraph);
+
+    // amount (USD)
+    paragraph = new Paragraph("(USD)", TABLE_HEADER_FONT);
+    this.addTableHeaderCell(table, paragraph);
+
+    // gender (%)
+    paragraph = new Paragraph("(%)", TABLE_HEADER_FONT);
+    this.addTableHeaderCell(table, paragraph);
+
+    // gender (USD)
+    paragraph = new Paragraph("(USD)", TABLE_HEADER_FONT);
+    this.addTableHeaderCell(table, paragraph);
+
+    for (int year = startYear; year <= endYear; year++) {
+      paragraph = new Paragraph(String.valueOf(year), TABLE_BODY_BOLD_FONT);
+      this.addTableBodyCell(table, paragraph, Element.ALIGN_CENTER, 0);
+
+      this.addBudgetByMog(year, paragraph, table, mog, budgetType);
+    }
 
   }
 
@@ -313,7 +394,9 @@ public class ProjectSummaryPDF extends BasePDF {
 
     PdfPCell cell;
 
-    paragraph = new Paragraph(projectPartner.getInstitution().getComposedName(), BODY_TEXT_BOLD_FONT);
+    paragraph =
+      new Paragraph(projectPartner.getInstitution().getComposedName() + " " + budgetType.name().replace("_", "/"),
+        BODY_TEXT_BOLD_FONT);
     this.addCustomTableCell(table, paragraph, Element.ALIGN_CENTER, BODY_TEXT_BOLD_FONT, Color.WHITE,
       table.getNumberOfColumns(), 0, false);
 
@@ -355,6 +438,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
 
   }
+
 
   /**
    * This Method is for to calculate the overall or gender summary
@@ -464,7 +548,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(currencyFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
             valueSum = value;
@@ -575,7 +659,6 @@ public class ProjectSummaryPDF extends BasePDF {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
   }
-
 
   /**
    * @param deliverable deliverable to add in the summary
@@ -862,6 +945,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+
   /**
    * This method is used for add the main information table of project summary
    */
@@ -959,8 +1043,9 @@ public class ProjectSummaryPDF extends BasePDF {
       hyperLink.setStyle(Font.UNDERLINE);
 
       Chunk imdb;
+
       if (project.getWorkplanName() == null) {
-        imdb = new Chunk(this.getText("summaries.project.empty"), hyperLink);
+        imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
       } else {
         imdb = new Chunk("Download", hyperLink);
         imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
@@ -978,7 +1063,6 @@ public class ProjectSummaryPDF extends BasePDF {
       e.printStackTrace();
     }
   }
-
 
   /**
    * This method is used for add Overview in the project summary
@@ -1026,13 +1110,12 @@ public class ProjectSummaryPDF extends BasePDF {
     overviewBlock.setFont(TABLE_BODY_BOLD_FONT);
     overviewLabel.append(this.getText("summaries.project.expected.contribution.first"));
     overviewLabel.append(year);
-    overviewLabel.append(" " + this.getText("summaries.project.expected.contribution.last") + " : ");
+    overviewLabel.append(" " + this.getText("summaries.project.expected.contribution.last"));
     overviewBlock.add(overviewLabel.toString());
+    overviewBlock.add(Chunk.NEWLINE);
 
     // Expected Annual Contribution text
-
     overviewBlock.setFont(TABLE_BODY_FONT);
-
     overviewLabel = new StringBuffer();
     // overviewBlock.setAlignment(Element.ALIGN_JUSTIFIED);
 
@@ -1049,8 +1132,9 @@ public class ProjectSummaryPDF extends BasePDF {
     // Social Annual Contribution title
     overviewLabel = new StringBuffer();
     overviewBlock.setFont(TABLE_BODY_BOLD_FONT);
-    overviewLabel.append(this.getText("summaries.project.social.contribution") + " : ");
+    overviewLabel.append(this.getText("summaries.project.social.contribution"));
     overviewBlock.add(overviewLabel.toString());
+    overviewBlock.add(Chunk.NEWLINE);
 
     // Social Annual Contribution text
     overviewBlock.setFont(TABLE_BODY_FONT);
@@ -1127,14 +1211,17 @@ public class ProjectSummaryPDF extends BasePDF {
           table = new PdfPTable(4);
           table.setWidths(new int[] {2, 3, 3, 3});
           table.setTotalWidth(480);
-          table.setLockedWidth(true);
 
           if (project.isCoFundedProject()) {
             this.addBudgetPartner(projectPartner, paragraph, table, BudgetType.W1_W2, startYear, endYear);
             document.add(table);
             paragraph = new Paragraph(Chunk.NEWLINE);
-            paragraph = new Paragraph(Chunk.NEWLINE);
+            paragraph.add(Chunk.NEWLINE);
+            document.add(paragraph);
 
+            table = new PdfPTable(4);
+            table.setWidths(new int[] {2, 3, 3, 3});
+            table.setTotalWidth(480);
             this.addBudgetPartner(projectPartner, paragraph, table, BudgetType.W3_BILATERAL, startYear, endYear);
           } else {
             this.addBudgetPartner(projectPartner, paragraph, table, this.getBudgetType(), startYear, endYear);
@@ -1177,81 +1264,38 @@ public class ProjectSummaryPDF extends BasePDF {
 
         int year;
 
-        StringBuffer budgetLabel;
+        StringBuffer budgetLabel = new StringBuffer();;
         int[] widths;
+        table = new PdfPTable(5);
+
+        table.setTotalWidth(480);
+        table.setWidths(new int[] {2, 3, 3, 3, 3});
+        table.setLockedWidth(true);
+
+
         for (IPElement mog : outputsList) {
-
-          if (project.isCoFundedProject()) {
-
-            table = new PdfPTable(5);
-            widths = new int[] {2, 3, 3, 3, 3};
-          } else {
-            table = new PdfPTable(3);
-            widths = new int[] {2, 3, 3};
-          }
+          table = new PdfPTable(5);
 
           table.setTotalWidth(480);
-          table.setWidths(widths);
+          table.setWidths(new int[] {2, 3, 3, 3, 3});
           table.setLockedWidth(true);
 
-          paragraph = new Paragraph();
-          budgetLabel = new StringBuffer();
-          paragraph.setFont(TABLE_BODY_FONT);
-          budgetLabel.append(mog.getProgram().getAcronym());
-          budgetLabel.append(" - MOG # ");
-          budgetLabel.append(this.getMOGIndex(mog));
-          budgetLabel.append(": ");
-          budgetLabel.append(mog.getDescription());
-          paragraph.add(budgetLabel.toString());
-          this.addCustomTableCell(table, paragraph, Element.ALIGN_JUSTIFIED, BODY_TEXT_FONT, Color.WHITE,
-            table.getNumberOfColumns(), 0, false);
 
-          paragraph = new Paragraph(this.getText("summaries.project.budget.overall.type"), TABLE_HEADER_FONT);
-          this.addTableHeaderCell(table, paragraph);
           if (project.isCoFundedProject()) {
+            this.addBudgetByMogOne(paragraph, table, budgetLabel, mog, startYear, endYear, BudgetType.W1_W2);
+            document.add(table);
 
-            paragraph =
-              new Paragraph(this.getText("summaries.project.budget.mog.anual.percentaje",
-                new String[] {BudgetType.W1_W2.name().replace("_", "/")}), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, paragraph);
+            table = new PdfPTable(5);
 
-            paragraph =
-              new Paragraph(this.getText("summaries.project.budget.mog.anual.gender", new String[] {BudgetType.W1_W2
-                .name().replace("_", "/")}), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, paragraph);
+            table.setTotalWidth(480);
+            table.setWidths(new int[] {2, 3, 3, 3, 3});
+            table.setLockedWidth(true);
 
-            paragraph =
-              new Paragraph(this.getText("summaries.project.budget.mog.anual.percentaje",
-                new String[] {BudgetType.W3_BILATERAL.name().replace("_", "/")}), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, paragraph);
 
-            paragraph =
-              new Paragraph(this.getText("summaries.project.budget.mog.anual.gender",
-                new String[] {BudgetType.W3_BILATERAL.name().replace("_", "/")}), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, paragraph);
-
+            document.add(Chunk.NEWLINE);
+            this.addBudgetByMogOne(paragraph, table, budgetLabel, mog, startYear, endYear, BudgetType.W3_BILATERAL);
           } else {
-            paragraph =
-              new Paragraph(this.getText("summaries.project.budget.mog.anual.percentaje", new String[] {this
-                .getBudgetType().name().replace("_", "/")}), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, paragraph);
-
-            paragraph =
-              new Paragraph(this.getText("summaries.project.budget.mog.anual.gender", new String[] {this
-                .getBudgetType().name().replace("_", "/")}), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, paragraph);
-          }
-
-          for (year = startYear; year <= endYear; year++) {
-            paragraph = new Paragraph(String.valueOf(year), TABLE_BODY_BOLD_FONT);
-            this.addTableBodyCell(table, paragraph, Element.ALIGN_CENTER, 0);
-
-            if (project.isCoFundedProject()) {
-              this.addBudgetByMog(year, paragraph, table, mog, BudgetType.W1_W2);
-              this.addBudgetByMog(year, paragraph, table, mog, BudgetType.W3_BILATERAL);
-            } else {
-              this.addBudgetByMog(year, paragraph, table, mog, this.getBudgetType());
-            }
+            this.addBudgetByMogOne(paragraph, table, budgetLabel, mog, startYear, endYear, this.getBudgetType());
           }
 
           document.add(table);
@@ -1262,6 +1306,7 @@ public class ProjectSummaryPDF extends BasePDF {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
   }
+
 
   private void addProjectContributions() {
     try {
@@ -1391,7 +1436,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -2267,13 +2312,13 @@ public class ProjectSummaryPDF extends BasePDF {
     // Summary content
     this.addProjectTitle();
     this.addMainInformationTable();
-    // this.addProjectContributions();
-    // this.addSummary();
-    // this.addProjectPartners();
-    // this.addProjectLocations();
-    // this.addProjectOutcomes();
-    // this.addProjectOutputs();
-    // this.addActivities();
+    this.addProjectContributions();
+    this.addSummary();
+    this.addProjectPartners();
+    this.addProjectLocations();
+    this.addProjectOutcomes();
+    this.addProjectOutputs();
+    this.addActivities();
     this.addProjectBudgets();
 
     // Close document
