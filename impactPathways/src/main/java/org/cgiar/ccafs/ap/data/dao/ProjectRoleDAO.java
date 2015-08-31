@@ -27,14 +27,13 @@ import com.google.inject.ImplementedBy;
 public interface ProjectRoleDAO {
 
   /**
-   * This method assign a role to an user in a project.
+   * This method assign all the roles of project leader and project coordinator to the corresponding users based on the
+   * information saved in the table project_partner_persons.
    * 
    * @param projectID - Project identifier
-   * @param userID - user identifier
-   * @param roleID - role identifier
-   * @return true if the role was added successfully. False otherwise
+   * @return true if the query run successfully. False otherwise
    */
-  public boolean addProjectRole(int projectID, int userID, String role);
+  public boolean addProjectRoles(int projectID);
 
   /**
    * This method removes all the roles that an user has for a certain project.

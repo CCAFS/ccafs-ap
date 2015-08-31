@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -59,8 +60,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     Map<String, String> projectPartnerData = projecPartnerDAO.getProjectPartner(partnerID);
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
-      projectPartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
+        .get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if the institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -92,8 +93,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     for (Map<String, String> projectPartnerData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
-      projectPartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
+        .get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if its institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -137,6 +138,11 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     } else {
       LOG.error("saveProjectPartner > There was an error trying to save/update a project partner from projectId={}",
         project.getId());
+    }
+
+    // Now, save the persons linked to the project partner if any
+    for (PartnerPerson person : projectPartner.getPartnerPersons()) {
+      partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
     }
 
     return result;
@@ -186,8 +192,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     // projectPartner.setResponsabilities(projectPartnerData.get("responsabilities"));
 
     // Institution as partner_id
-    projectPartner
-    .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("partner_id"))));
+    projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
+      .get("partner_id"))));
 
     // Getting the institutions which this partner is contributing to.
     // projectPartner

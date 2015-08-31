@@ -115,8 +115,8 @@ public class MySQLPartnerPersonDAO implements PartnerPersonDAO {
     Object[] values;
     if (partnerPersonData.get("id") == null) {
       // Insert new record
-      query.append(
-        "INSERT INTO project_partner_persons (id, project_partner_id, user_id, contact_type, responsibilities, created_by, modified_by, modification_justification) ");
+      query.append("INSERT INTO project_partner_persons (id, project_partner_id, user_id, contact_type, ");
+      query.append("responsibilities, created_by, modified_by, modification_justification) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[8];
       values[0] = partnerPersonData.get("id");
@@ -129,8 +129,8 @@ public class MySQLPartnerPersonDAO implements PartnerPersonDAO {
       values[7] = partnerPersonData.get("modification_justification");
     } else {
       // update record
-      query.append(
-        "UPDATE project_partner_persons SET project_partner_id = ?, user_id = ?, contact_type = ?, responsibilities = ?, modified_by = ?, modification_justification = ? ");
+      query.append("UPDATE project_partner_persons SET project_partner_id = ?, user_id = ?, contact_type = ?, ");
+      query.append("responsibilities = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = partnerPersonData.get("project_partner_id");

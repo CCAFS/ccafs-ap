@@ -96,7 +96,7 @@ public class ProjectPartner {
    */
   public boolean isLeader() {
     for (PartnerPerson person : partnerPersons) {
-      if (person.getType().equals(APConstants.PROJECT_PARTNER_PL)) {
+      if (person.isLeader()) {
         return true;
       }
     }

@@ -37,10 +37,16 @@ public class MySQLProjectRoleDAO implements ProjectRoleDAO {
   }
 
   @Override
-  public boolean addProjectRole(int projectID, int userID, String role) {
-    String query = "INSERT INTO project_roles (project_id, user_id, role_id) VALUES (?, ?, ";
-    query += " (SELECT id FROM roles WHERE acronym = '?') )";
-    int result = daoManager.saveData(query, new Object[] {projectID, userID, role});
+  public boolean addProjectRoles(int projectID) {
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_roles (project_id, user_id, role_id) ");
+    query.append("SELECT pp.project_id, ppp.user_id, (SELECT id FROM roles WHERE acronym = ppp.contact_type) ");
+    query.append("FROM `project_partner_persons` ppp ");
+    query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE (ppp.contact_type = 'PL' OR ppp.contact_type = 'PC' ) ");
+    query.append("AND pp.project_id = ?");
+
+    int result = daoManager.saveData(query.toString(), new Object[] {projectID});
     return result != -1;
   }
 
