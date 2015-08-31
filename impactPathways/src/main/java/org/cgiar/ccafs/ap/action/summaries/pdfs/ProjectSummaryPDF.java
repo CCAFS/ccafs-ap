@@ -335,7 +335,7 @@ public class ProjectSummaryPDF extends BasePDF {
     budgetLabel.append(this.getMOGIndex(mog));
     budgetLabel.append(": ");
     budgetLabel.append(mog.getDescription());
-    budgetLabel.append(" - " + budgetType.name());
+    budgetLabel.append(" - " + budgetType.name().replace("_", "/"));
     paragraph.add(budgetLabel.toString());
     this.addCustomTableCell(table, paragraph, Element.ALIGN_JUSTIFIED, BODY_TEXT_FONT, Color.WHITE,
       table.getNumberOfColumns(), 0, false);
@@ -701,7 +701,7 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.add(this.getText("summaries.project.deliverable.information.title") + ": ");
 
         deliverableBlock.setFont(TABLE_BODY_FONT);
-        deliverableBlock.add(deliverable.getTitle());
+        deliverableBlock.add(this.messageReturn(deliverable.getTitle()));
         deliverableBlock.add(Chunk.NEWLINE);;
         // document.add(deliverableBlock);
         this.addTableColSpanCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1, 2);

@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import com.opensymphony.xwork2.TextProvider;
+
 
 /**
  * @author Jorge Leonardo Solis B.
@@ -33,7 +35,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
   private InputStream inputStream;
   String COMMA_DELIMITER = ",";
   String NEW_LINE_SEPARATOR = "\n";
-
+  TextProvider textProvider;
   int contentLength;
   FileWriter fileWriter;
 
@@ -41,31 +43,58 @@ public class DeliverableSummaryCSV extends BaseCSV {
   }
 
   private void addContent(List<Deliverable> deliverables) {
+
+    StringBuilder stringBuilder;
     for (Deliverable deliverable : deliverables) {
 
       try {
+        if (deliverable != null) {
+          // Id
+          stringBuilder = new StringBuilder();
+          stringBuilder.append(deliverable.getId());
+          fileWriter.append(stringBuilder.toString());
+          fileWriter.append(COMMA_DELIMITER);
 
-        // fileWriter.append(deliverable.getId());
-        fileWriter.append(String.valueOf(deliverable.getId()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Title
+          stringBuilder = new StringBuilder();
+          fileWriter.append(this.messageReturn(deliverable.getTitle()));
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(deliverable.getTitle());
-        fileWriter.append(COMMA_DELIMITER);
+          // MOG
+          fileWriter.append(this.messageReturn(deliverable.getOutput().getDescription()));
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getType().getName()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Year
+          fileWriter.append(String.valueOf(deliverable.getYear()));
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getOutput().getDescription()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Main Type
+          stringBuilder = new StringBuilder();
+          stringBuilder.append(this.messageReturn(deliverable.getType().getCategory().getName()));
+          fileWriter.append(stringBuilder.toString());
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getTitle()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Sub Type
+          stringBuilder = new StringBuilder();
+          stringBuilder.append(this.messageReturn(deliverable.getType().getName()));
+          fileWriter.append(stringBuilder.toString());
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getId()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Partner Responsible
+          stringBuilder = new StringBuilder();
+          if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
+            stringBuilder
+            .append(this.messageReturn(deliverable.getResponsiblePartner().getPartner().getComposedName()));
+          } else {
+            stringBuilder.append(this.getText("summaries.project.empty"));
+          }
+          fileWriter.append(stringBuilder.toString());
+          fileWriter.append(COMMA_DELIMITER);
 
 
-        fileWriter.append(this.NEW_LINE_SEPARATOR);
+          fileWriter.append(this.NEW_LINE_SEPARATOR);
+
+        }
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -80,7 +109,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
   private void addHeaders() {
 
     String[] headers =
-      new String[] {"Author", "Title", "Publication type", "Publication status", "Description", "Identifier"};
+      new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Partner Responsible"};
 
     try {
 
@@ -135,6 +164,22 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
 
   /**
+   * This method converts the string in return message of summary
+   * 
+   * @param enter String of entering
+   * @returnnull default message when the string is null or empty, otherwise the string
+   */
+  private String messageReturn(String enter) {
+
+    if (enter == null || enter.equals("")) {
+      return this.getText("summaries.project.empty");
+    } else {
+      return enter.replace(",", ".");
+    }
+
+  }
+
+  /**
    * method for to set the inputStream
    * 
    * @param inputStream the inputStream to set
@@ -142,4 +187,5 @@ public class DeliverableSummaryCSV extends BaseCSV {
   public void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }
+
 }

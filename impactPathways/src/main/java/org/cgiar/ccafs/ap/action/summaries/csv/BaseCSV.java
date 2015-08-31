@@ -19,6 +19,8 @@ package org.cgiar.ccafs.ap.action.summaries.csv;
 import java.io.File;
 import java.io.IOException;
 
+import com.opensymphony.xwork2.DefaultTextProvider;
+import com.opensymphony.xwork2.TextProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +31,7 @@ public class BaseCSV {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(BaseCSV.class);
+  private TextProvider textProvider;
 
 
   /**
@@ -36,10 +39,10 @@ public class BaseCSV {
    * 
    * @return name of document
    */
-  public String getFileName(int projectID) {
+  public String getFileName(int projectID, String name) {
     StringBuffer fileName = new StringBuffer();
 
-    fileName.append("publication");
+    fileName.append(name);
     fileName.append("-");
     fileName.append(projectID);
     fileName.append("-");
@@ -48,7 +51,13 @@ public class BaseCSV {
     return fileName.toString();
   }
 
+  public String getText(String key) {
+    return textProvider.getText(key);
+  }
+
   public void initializeCsv(File file) {
+    textProvider = new DefaultTextProvider();
+
     file.delete();
     try {
       file.createNewFile();
@@ -56,6 +65,5 @@ public class BaseCSV {
       ioe.printStackTrace();
     }
   }
-
 
 }

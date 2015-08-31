@@ -14,7 +14,7 @@
 	 </action>
 	 
 	 
-  <action class="org.cgiar.ccafs.ap.action.summaries.PublicationSummaryAction" name="publication">
+  <action class="org.cgiar.ccafs.ap.action.summaries.DeliverableProjectSummaryAction" name="deliverable">
       <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
