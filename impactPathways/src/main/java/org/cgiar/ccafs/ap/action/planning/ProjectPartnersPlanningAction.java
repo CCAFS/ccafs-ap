@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectRoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Country;
@@ -58,6 +59,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private InstitutionManager institutionManager;
   private LocationManager locationManager;
   private ProjectManager projectManager;
+  private ProjectRoleManager projectRoleManager;
   private UserManager userManager;
   private ActivityManager activityManager;
   private DeliverableManager deliverableManager;
@@ -88,12 +90,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
     DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
-    ActivityManager activityManager) {
+    ActivityManager activityManager, ProjectRoleManager projectRoleManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.locationManager = locationManager;
     this.projectManager = projectManager;
+    this.projectRoleManager = projectRoleManager;
     this.userManager = userManager;
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
@@ -409,30 +412,15 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    super.saveProjectLessons(projectID);
-    switch (actionName) {
-    // case "partnerLead":
-    // if (securityContext.canUpdateProjectLeader()) {
-    // return this.savePartnerLead();
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
+    if (securityContext.canUpdateProjectPartners()) {
+      super.saveProjectLessons(projectID);
 
-    // case "ppaPartners":
-    // if (securityContext.canUpdateProjectPPAPartner()) {
-    // return this.savePartners(APConstants.PROJECT_PARTNER_PPA);
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
+      projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
+        this.getJustification());
 
-    // case "partners":
-    // if (securityContext.canUpdateProjectPartners()) {
-    // return this.savePartners(APConstants.PROJECT_PARTNER_PP);
-    // } else {
-    // return NOT_AUTHORIZED;
-    // }
+      projectRoleManager.saveProjectRoles(project, this.getCurrentUser(), this.getJustification());
+
     }
-
     return NOT_AUTHORIZED;
 
   }
