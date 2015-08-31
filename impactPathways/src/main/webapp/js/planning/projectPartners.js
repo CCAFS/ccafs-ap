@@ -368,7 +368,7 @@ function PartnerPersonObject(partnerPerson) {
     $(partnerPerson).find(".leftHead .index").html(index + 1);
     $(partnerPerson).find(".partnerPersonId").attr("name", elementName + "id");
     $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
-    $(partnerPerson).find(".userId").attr("name", elementName + "user");
+    $(partnerPerson).find(".userId").attr("name", elementName + "user.id");
     $(partnerPerson).find(".resp").attr("name", elementName + "responsibilities");
   };
   this.remove = function() {
