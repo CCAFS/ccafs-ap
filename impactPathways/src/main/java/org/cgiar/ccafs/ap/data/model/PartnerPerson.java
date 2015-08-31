@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -87,6 +89,10 @@ public class PartnerPerson {
     return this.getId();
   }
 
+  public boolean isLeader() {
+    return type.equals(APConstants.PROJECT_PARTNER_PL);
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -107,6 +113,5 @@ public class PartnerPerson {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 
 }
