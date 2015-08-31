@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -32,6 +33,7 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +74,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   // Model for the back-end
   private int projectID;
+  private Project previousProject;
   private Project project;
   private String actionName;
 
@@ -85,6 +88,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<User> allUsers; // will be used to list all the project leaders that have the system.
 
   // private List<Institution> contributionPartners; // this would get the partners contributing to others
+
   @Inject
   public ProjectPartnersPlanningAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
@@ -289,10 +293,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
 
     // If the user is not admin or the project owner, we should keep some information
-    // unmutable
-    // previousProject = new Project();
-    // previousProject.setId(project.getId());
-    // previousProject.setPPAPartners(project.getPPAPartners());
+    // immutable
+    previousProject = new Project();
+    previousProject.setId(project.getId());
+    previousProject.setProjectPartners(project.getProjectPartners());
 
     // if (actionName.equals("partnerLead")) {
     // super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
@@ -436,7 +440,34 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
         this.getJustification());
 
+
       projectRoleManager.saveProjectRoles(project, this.getCurrentUser(), this.getJustification());
+
+      // Check if the project leader has changed and send the corresponding emails
+      PartnerPerson previousLeader = previousProject.getLeaderPerson();
+      PartnerPerson leader = project.getLeaderPerson();
+
+      if (previousLeader == null && leader != null) {
+        // TODO - Send message notifying to the new project leader
+      } else if (previousLeader != null && leader == null) {
+        // TODO - Send message notifying to the user that is not the project leader anymore
+      } else if (previousLeader != null && leader != null) {
+        if (!leader.equals(previousLeader)) {
+          // TODO - Send message to leader notifying that he/she is the new project leader
+          // TODO - Send message to previousLeader notifying that he/she is not the project leader anymore
+        }
+      }
+
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
+      return SUCCESS;
     }
     return NOT_AUTHORIZED;
 
