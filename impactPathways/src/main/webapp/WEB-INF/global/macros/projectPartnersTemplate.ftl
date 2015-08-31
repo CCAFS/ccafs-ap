@@ -118,9 +118,15 @@
     
     [#if !template]
     [#-- Activities leading and Deliverables with responsibilities --]
-    <div class="fullPartBlock clearfix"> 
-      <div class="tag">[@s.text name="planning.projectPartners.personActivities"][@s.param]3[/@s.param][/@s.text]</div>
-      <div class="tag">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]1[/@s.param][/@s.text]</div>
+    <div class="contactTags fullPartBlock clearfix">
+      [#if (contact.user.id??)!false ]
+        [#if action.getActivitiesLedByUser(contact.user.id)?has_content]
+          <div class="tag">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+        [/#if]
+        [#if action.getDeliverablesLedByUser(contact.user.id)?has_content]
+          <div class="tag">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+        [/#if]
+      [/#if]
     </div>
     [/#if]
   </div>

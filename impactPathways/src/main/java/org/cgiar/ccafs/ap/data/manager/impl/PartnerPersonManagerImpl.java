@@ -13,8 +13,10 @@ import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +73,38 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
       persons.add(person);
     }
     return persons;
+  }
+
+  @Override
+  public int savePartnerPerson(ProjectPartner partner, PartnerPerson partnerPerson, User user, String justification) {
+    Map<String, Object> partnerPersonData = new HashMap<>();
+
+    // if this is a new partner person, do not assign an id.
+    if (partnerPerson.getId() > 0) {
+      partnerPersonData.put("id", partnerPerson.getId());
+    } else {
+      // otherwise will be a new record so we need to include the creator.
+      partnerPersonData.put("created_by", user.getId());
+    }
+    partnerPersonData.put("project_partner_id", partner.getId());
+    partnerPersonData.put("user_id", partnerPerson.getUser().getId());
+    partnerPersonData.put("contact_type", partnerPerson.getType());
+    partnerPersonData.put("responsibilities", partnerPerson.getResponsibilities());
+    partnerPersonData.put("modified_by", user.getId());
+    partnerPersonData.put("modification_justification", justification);
+
+    int result = partnerPersonDAO.savePartnerPerson(partnerPersonData);
+    if (result > 0) {
+      LOG.debug("savePartnerPerson > New Partner Person added with id {}", result);
+    } else if (result == 0) {
+      LOG.debug("savePartnerPerson > Partner person with id={} was updated", partnerPerson.getId());
+    } else {
+      LOG.error(
+        "savePartnerPerson > There was an error trying to save/update a partner person from projectPartnerID={}",
+        partner.getId());
+    }
+
+    return result;
   }
 
 

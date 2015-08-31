@@ -89,7 +89,7 @@
       </div>
       [#if canEdit && !action.canDelete()]
       <div id="dialog" title="Deliverable types" style="display: none">
-        <table style="height:700px; width:900px;">
+        <table id="deliverableTypes" style="height:700px; width:900px;">
           <th> [@s.text name="planning.deliverables.dialogMessage.part1" /] </th>
           <th> [@s.text name="planning.deliverables.dialogMessage.part2" /] </th>
           <th> [@s.text name="planning.deliverables.dialogMessage.part3" /] </th>
