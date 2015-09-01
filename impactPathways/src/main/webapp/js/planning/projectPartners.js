@@ -22,8 +22,9 @@ function init() {
       handle: ".leftHead",
       cursor: "move",
       opacity: 0.9,
-      containment: "parent",  
-      stop: function() {
+      containment: "parent",
+      revert:true,
+      update: function() {
         setProjectPartnersIndexes();
       }
     });
@@ -82,13 +83,20 @@ function attachEvents() {
   
   // Event when is clicked in a tag of relationship
   $(".tag").on("click",function(e){
-    $( this ).next().dialog({
+    var $relations = $( this ).next().html();
+    $('#relations-dialog').dialog({
       modal : true,
       width: 400,
       buttons: {
         Close: function() {
           $( this ).dialog( "close" );
         }
+      },
+      open: function(){
+        $(this).find('ul').html($relations);
+      },
+      close: function(){
+        $(this).find('ul').empty();
       }
     });
   });

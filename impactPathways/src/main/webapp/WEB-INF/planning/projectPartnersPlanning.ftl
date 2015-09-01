@@ -147,6 +147,11 @@
     <ul class="messages"></ul>
   </div>
   
+  [#-- Partner person relations dialog --]
+  <div id="relations-dialog" title="Partner person relations" style="display:none">
+    <ul class="messages"></ul>
+  </div>
+  
   [#-- Search users Interface --]
   [@usersForm.searchUsers/]
   
