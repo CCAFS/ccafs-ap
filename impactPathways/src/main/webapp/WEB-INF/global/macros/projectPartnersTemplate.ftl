@@ -125,9 +125,23 @@
         [#if (contact.user.id??)!false ]
           [#if action.getActivitiesLedByUser(contact.user.id)?has_content]
             <div class="tag activities">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+            <div id="activitiesList-${(contact.id)!}" class="activitiesList" style="display:none">
+              <ul>
+              [#list action.getActivitiesLedByUser(contact.user.id) as activity]
+                <li>${activity.title}</li>
+              [/#list]
+              </ul>
+            </div>
           [/#if]
           [#if action.getDeliverablesLedByUser(contact.user.id)?has_content]
             <div class="tag deliverables">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+            <div id="deliverablesList-${(contact.id)!}" class="deliverablesList" style="display:none">
+              <ul>
+              [#list action.getDeliverablesLedByUser(contact.user.id) as deliverable]
+                <li>${deliverable.title}</li>
+              [/#list]
+              </ul>
+            </div>
           [/#if]
         [/#if]
       </div>
