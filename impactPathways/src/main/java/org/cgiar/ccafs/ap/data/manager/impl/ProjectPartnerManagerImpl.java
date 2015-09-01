@@ -146,11 +146,37 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
 
     // Now, save the persons linked to the project partner if any
+    projectPartner.setId((result > 0) ? result : projectPartner.getId());
     for (PartnerPerson person : projectPartner.getPartnerPersons()) {
       partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
     }
 
     return result;
+  }
+
+  private boolean saveProjectPartnerContribution(int projectID, ProjectPartner projectPartner,
+    ProjectPartner partnerContribution, User user, String justification) {
+    Map<String, Object> partnerContributionData = new HashMap<>();
+    partnerContributionData.put("project_partner_id", projectPartner.getId());
+    partnerContributionData.put("institution_id", partnerContribution.getInstitution().getId());
+    partnerContributionData.put("project_id", projectID);
+    partnerContributionData.put("user_id", user.getId());
+    partnerContributionData.put("justification", justification);
+
+    int result = projectPartnerDAO.saveProjectPartnerContribution(partnerContributionData);
+    return result != -1;
+  }
+
+  @Override
+  public boolean saveProjectPartnerContributions(int projectID, ProjectPartner projectPartner, User user,
+    String justification) {
+    boolean success = true;
+    for (ProjectPartner partnerContribution : projectPartner.getPartnerContributors()) {
+      success =
+        success
+          && this.saveProjectPartnerContribution(projectID, projectPartner, partnerContribution, user, justification);
+    }
+    return success;
   }
 
   @Override

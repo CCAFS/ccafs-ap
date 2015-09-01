@@ -25,7 +25,7 @@ public interface ProjectPartnerDAO {
 
   /**
    * This method deletes the project partner given the project Id and the institution Id
-   *
+   * 
    * @param projectId - is the id of a project
    * @param partnerId - is the id related to a Institution
    * @return true if the elements were deleted successfully. False otherwise
@@ -34,7 +34,7 @@ public interface ProjectPartnerDAO {
 
   /**
    * This method deletes a project partner from the database.
-   *
+   * 
    * @param id of the project partner to be deleted.
    * @param userID is the user identifier that wants to delete it.
    * @param justification is the justification statement.
@@ -44,7 +44,7 @@ public interface ProjectPartnerDAO {
 
   /**
    * This method gets a project partner information identified with the given ID.
-   *
+   * 
    * @param partnerID - is a partner identifier
    * @return a Map with the information of a project partner identified with the given id; an empty list if nothing was
    *         found or NULL if
@@ -62,7 +62,7 @@ public interface ProjectPartnerDAO {
 
   /**
    * This method gets the project partners information given the project Id
-   *
+   * 
    * @param projectId - is the id of a project
    * @return a list of project partners that belong to the given project; an empty list if nothing was found or NULL if
    *         an error occurred.
@@ -82,11 +82,17 @@ public interface ProjectPartnerDAO {
 
   /**
    * This method saves into the database a new Project Partner
-   *
+   * 
    * @param projectPartnerData - Information to be saved
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveProjectPartner(Map<String, Object> projectPartnerData);
 
-
+  /**
+   * This method saves into the database a new project partner contribution
+   * 
+   * @param partnerContributionData- Information to be saved.
+   * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
+   */
+  public int saveProjectPartnerContribution(Map<String, Object> partnerContributionData);
 }

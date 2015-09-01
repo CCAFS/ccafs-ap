@@ -74,6 +74,19 @@ public interface ProjectPartnerManager {
   public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification);
 
   /**
+   * This method saves into the database the contributions made by some project partner(s) to the partner received by
+   * parameter
+   * 
+   * @param projectID - Project identifier
+   * @param projectPartner - Project partner object with the information to be saved
+   * @param user - User who is making the change
+   * @param justification
+   * @return true if the information was saved successfully, false otherwise.
+   */
+  public boolean saveProjectPartnerContributions(int projectID, ProjectPartner projectPartner, User user,
+    String justification);
+
+  /**
    * This method saves a list of project partners that belongs to a specific project
    * 
    * @param project is the project to which these project partners belong.

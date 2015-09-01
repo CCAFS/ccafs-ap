@@ -237,4 +237,28 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     LOG.debug("<< saveProjectPartner():{}", result);
     return result;
   }
+
+  @Override
+  public int saveProjectPartnerContribution(Map<String, Object> partnerContributionData) {
+    LOG.debug(">> saveProjectPartnerContribution({})", partnerContributionData);
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_partner_contributions (project_partner_id, project_partner_contributor_id, ");
+    query.append("created_by, modified_by, modification_justification) VALUES (?, ");
+    query.append("( SELECT id FROM project_partners WHERE institution_id=? AND project_id=? ) ");
+    query.append(",?,?,?) ON DUPLICATE KEY UPDATE is_active = TRUE, created_by=VALUES(created_by), ");
+    query.append("modified_by = VALUES(modified_by), modification_justification=VALUES(modification_justification) ");
+
+    Object[] values = new Object[6];
+    values[0] = partnerContributionData.get("project_partner_id");
+    values[1] = partnerContributionData.get("institution_id");
+    values[2] = partnerContributionData.get("project_id");
+    values[3] = partnerContributionData.get("user_id");
+    values[4] = partnerContributionData.get("user_id");
+    values[5] = partnerContributionData.get("justification");
+
+    int result = databaseManager.saveData(query.toString(), values);
+
+    LOG.debug("<< saveProjectPartnerContribution():{}", result);
+    return result;
+  }
 }
