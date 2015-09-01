@@ -104,7 +104,7 @@
     <div class="fullPartBlock"> 
       <div class="partnerPerson-type halfPartBlock clearfix">
       [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=editable /]
-      [#if !editable]<div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!}"/]</p></div>[/#if]
+      [#if !editable]<div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p></div>[/#if]
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 

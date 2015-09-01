@@ -38,7 +38,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   public static Logger LOG = LoggerFactory.getLogger(ProjectPartnerManagerImpl.class);
 
   // DAO's
-  private ProjectPartnerDAO projecPartnerDAO;
+  private ProjectPartnerDAO projectPartnerDAO;
 
   // Managers
   private PartnerPersonManager partnerPersonManager;
@@ -48,16 +48,22 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   @Inject
   public ProjectPartnerManagerImpl(ProjectPartnerDAO projectPartnerDAO, PartnerPersonManager partnerPersonManager,
     InstitutionManager institutionManager, UserManager userManager) {
-    this.projecPartnerDAO = projectPartnerDAO;
+    this.projectPartnerDAO = projectPartnerDAO;
     this.partnerPersonManager = partnerPersonManager;
     this.institutionManager = institutionManager;
     this.setUserManager(userManager);
   }
 
   @Override
+  public boolean deleteProjectPartner(ProjectPartner projectPartner, User user, String justification) {
+    return projectPartnerDAO.deleteProjectPartner(projectPartner.getId(), user.getId(), justification);
+  }
+
+
+  @Override
   public ProjectPartner getProjectPartner(int partnerID) {
     ProjectPartner projectPartner = new ProjectPartner();
-    Map<String, String> projectPartnerData = projecPartnerDAO.getProjectPartner(partnerID);
+    Map<String, String> projectPartnerData = projectPartnerDAO.getProjectPartner(partnerID);
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
@@ -72,12 +78,11 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     return null;
   }
 
-
   @Override
   public List<ProjectPartner> getProjectPartnerContributors(ProjectPartner projectPartner) {
     List<ProjectPartner> partnerContributors = new ArrayList<>();
     List<Map<String, String>> partnerContributorsDataList =
-      projecPartnerDAO.getProjectPartnerContributors(projectPartner.getId());
+      projectPartnerDAO.getProjectPartnerContributors(projectPartner.getId());
     for (Map<String, String> pData : partnerContributorsDataList) {
       ProjectPartner partnerContributor =
         this.getProjectPartner(Integer.parseInt(pData.get("project_partner_contributor_id")));
@@ -89,7 +94,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   @Override
   public List<ProjectPartner> getProjectPartners(Project project) {
     List<ProjectPartner> partners = new ArrayList<>();
-    List<Map<String, String>> projectPartnerDataList = projecPartnerDAO.getProjectPartners(project.getId());
+    List<Map<String, String>> projectPartnerDataList = projectPartnerDAO.getProjectPartners(project.getId());
     for (Map<String, String> projectPartnerData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
@@ -130,7 +135,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     projectPartnerData.put("modified_by", user.getId());
     projectPartnerData.put("modification_justification", justification);
 
-    int result = projecPartnerDAO.saveProjectPartner(projectPartnerData);
+    int result = projectPartnerDAO.saveProjectPartner(projectPartnerData);
     if (result > 0) {
       LOG.debug("saveProjectPartner > New Project Partner added with id {}", result);
     } else if (result == 0) {
@@ -141,11 +146,37 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
 
     // Now, save the persons linked to the project partner if any
+    projectPartner.setId((result > 0) ? result : projectPartner.getId());
     for (PartnerPerson person : projectPartner.getPartnerPersons()) {
       partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
     }
 
     return result;
+  }
+
+  private boolean saveProjectPartnerContribution(int projectID, ProjectPartner projectPartner,
+    ProjectPartner partnerContribution, User user, String justification) {
+    Map<String, Object> partnerContributionData = new HashMap<>();
+    partnerContributionData.put("project_partner_id", projectPartner.getId());
+    partnerContributionData.put("institution_id", partnerContribution.getInstitution().getId());
+    partnerContributionData.put("project_id", projectID);
+    partnerContributionData.put("user_id", user.getId());
+    partnerContributionData.put("justification", justification);
+
+    int result = projectPartnerDAO.saveProjectPartnerContribution(partnerContributionData);
+    return result != -1;
+  }
+
+  @Override
+  public boolean saveProjectPartnerContributions(int projectID, ProjectPartner projectPartner, User user,
+    String justification) {
+    boolean success = true;
+    for (ProjectPartner partnerContribution : projectPartner.getPartnerContributors()) {
+      success =
+        success
+          && this.saveProjectPartnerContribution(projectID, projectPartner, partnerContribution, user, justification);
+    }
+    return success;
   }
 
   @Override
@@ -166,18 +197,18 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   @Override
   public boolean z_old_deleteProjectPartner(int id, User user, String justification) {
-    return projecPartnerDAO.deleteProjectPartner(id, user.getId(), justification);
+    return projectPartnerDAO.deleteProjectPartner(id, user.getId(), justification);
   }
 
   @Override
   public boolean z_old_deleteProjectPartner(Project projectId, Institution partnerId) {
-    return projecPartnerDAO.deleteProjectPartner(projectId.getId(), partnerId.getId());
+    return projectPartnerDAO.deleteProjectPartner(projectId.getId(), partnerId.getId());
   }
 
   @Override
   public ProjectPartner z_old_getProjectPartnerById(int partnerId) {
     ProjectPartner projectPartner = new ProjectPartner();
-    Map<String, String> projectPartnerData = projecPartnerDAO.getProjectPartner(partnerId);
+    Map<String, String> projectPartnerData = projectPartnerDAO.getProjectPartner(partnerId);
     projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
     // Partner type (PPA, PL, PP, etc.)
     // projectPartner.setType(projectPartnerData.get("partner_type"));
@@ -206,7 +237,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   @Override
   public List<ProjectPartner> z_old_getProjectPartners(int projectId) {
     List<ProjectPartner> projectPartners = new ArrayList<>();
-    List<Map<String, String>> projectPartnerDataList = projecPartnerDAO.getProjectPartners(projectId);
+    List<Map<String, String>> projectPartnerDataList = projectPartnerDAO.getProjectPartners(projectId);
     for (Map<String, String> pData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(pData.get("id")));
@@ -231,7 +262,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   public List<ProjectPartner> z_old_getProjectPartners(int projectId, String projectPartnerType) {
     List<ProjectPartner> projectPartners = new ArrayList<>();
     List<Map<String, String>> projectPartnerDataList =
-      projecPartnerDAO.getProjectPartners(projectId, projectPartnerType);
+      projectPartnerDAO.getProjectPartners(projectId, projectPartnerType);
     for (Map<String, String> pData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(pData.get("id")));
@@ -286,7 +317,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     projectPartnerData.put("modified_by", user.getId());
     projectPartnerData.put("modification_justification", justification);
 
-    int result = projecPartnerDAO.saveProjectPartner(projectPartnerData);
+    int result = projectPartnerDAO.saveProjectPartner(projectPartnerData);
     if (result > 0) {
       LOG.debug("saveProjectPartner > New Project Partner added with id {}", result);
     } else if (result == 0) {

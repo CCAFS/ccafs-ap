@@ -296,7 +296,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // immutable
     previousProject = new Project();
     previousProject.setId(project.getId());
-    previousProject.setProjectPartners(project.getProjectPartners());
+    previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
     // if (actionName.equals("partnerLead")) {
     // super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
@@ -436,6 +436,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     if (securityContext.canUpdateProjectPartners()) {
       super.saveProjectLessons(projectID);
+
+      // First, delete the partners that are not active anymore
+      for (ProjectPartner previousPartner : previousProject.getProjectPartners()) {
+        if (!project.getProjectPartners().contains(previousPartner)) {
+          projectPartnerManager.deleteProjectPartner(previousPartner, this.getCurrentUser(), this.getJustification());
+        }
+      }
 
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
         this.getJustification());
