@@ -276,6 +276,10 @@ fieldset {
   /* border: 1px solid silver; */
 }
 
+ul.messages {
+  text-align: left;
+}
+
 legend {
   text-align: center;
   padding: 5px;

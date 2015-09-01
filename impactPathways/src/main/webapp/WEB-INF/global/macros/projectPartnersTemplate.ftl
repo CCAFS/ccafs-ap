@@ -19,7 +19,7 @@
     <input id="id" class="partnerId" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].id" value="${(projectPartner.id)!-1}" />
 
     [#-- Filters --]
-    [#if editable]
+    [#if editable && template]
       <div class="filters-link">[@s.text name="preplanning.projectPartners.filters" /]</div>
       <div class="filters-content">
         [#-- Partner type list --]
@@ -38,7 +38,10 @@
     [#-- Organization  --]
     <div class="fullPartBlock partnerName chosen">
       <p class="fieldError"></p>
-      [@customForm.select name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!'-1'}" className="institutionsList" required=true  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
+      [@customForm.select name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=(editable && template) /]
+      [#if editable && !template]
+        <input class="institutionsList" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" />
+      [/#if]
     </div>
     
     [#-- Indicate which PPA Partners for second level partners --]
@@ -117,17 +120,17 @@
     </div>
     
     [#if !template]
-    [#-- Activities leading and Deliverables with responsibilities --]
-    <div class="contactTags fullPartBlock clearfix">
-      [#if (contact.user.id??)!false ]
-        [#if action.getActivitiesLedByUser(contact.user.id)?has_content]
-          <div class="tag">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+      [#-- Activities leading and Deliverables with responsibilities --]
+      <div class="contactTags fullPartBlock clearfix">
+        [#if (contact.user.id??)!false ]
+          [#if action.getActivitiesLedByUser(contact.user.id)?has_content]
+            <div class="tag activities">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+          [/#if]
+          [#if action.getDeliverablesLedByUser(contact.user.id)?has_content]
+            <div class="tag deliverables">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+          [/#if]
         [/#if]
-        [#if action.getDeliverablesLedByUser(contact.user.id)?has_content]
-          <div class="tag">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
-        [/#if]
-      [/#if]
-    </div>
+      </div>
     [/#if]
   </div>
 [/#macro]

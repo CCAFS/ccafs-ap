@@ -43,7 +43,7 @@
     [#-- Listing Partners from partnersTemplate.ftl --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
     <div class="loadingBlock"></div>
-    <div id="projectPartnersBlock" class="simpleBox" style="display:none"> 
+    <div id="projectPartnersBlock" class="simpleBox" style="display:none">
       [#if project.projectPartners?has_content]
         [#list project.projectPartners as projectPartner]
           [@partnersTemplate.projectPartner projectPartner=projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="${projectPartner_index}" /]
@@ -140,6 +140,11 @@
       <h3>[@s.text name="preplanning.projectPartners.title" /]</h3>
       <ul></ul>
     </div>
+  </div>
+  
+  [#-- Remove partner person leader dialog --]
+  <div id="contactRemove-dialog" title="Remove contact" style="display:none">
+    <ul class="messages"></ul>
   </div>
   
   [#-- Search users Interface --]
