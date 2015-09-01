@@ -25,7 +25,7 @@
 /* Interaction Cues
 ----------------------------------*/
 .ui-state-disabled { cursor: default !important; }
-
+.ui-state-highlight { height: 2.5em; line-height: 1.2em; }
 
 /* Icons
 ----------------------------------*/
@@ -741,7 +741,7 @@ html, body{background-color:#ffffff;}
 
 
 /* Highlight */
-.ui-state-highlight{border-color:#efdca9;color:#525252;background:#efdca9;}
+.ui-state-highlight{border-color:#efdca9;color:#525252;border-radius: 4px;border-style: dashed;}
 .ui-state-highlight .ui-icon{background-image:url(images/ui-icons_525252_0.png);}
 
 /* Error */
