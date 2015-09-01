@@ -23,7 +23,7 @@ function init() {
       cursor: "move",
       opacity: 0.9,
       containment: "parent",
-      stop: function() {
+      update: function() {
         setProjectPartnersIndexes();
       }
     });
@@ -300,7 +300,7 @@ function PartnerObject(partner) {
     // Update index for project Partner
     $(partner).find(".leftHead .index").html(index + 1);
     $(partner).find("[id$='id']").attr("name", elementName + "id");
-    $(partner).find("[id$='institution']").attr("name", elementName + "institution");
+    $(partner).find(".institutionsList").attr("name", elementName + "institution");
     // Update index for CCAFS Partners
     $(partner).find('.ppaPartnersList ul.list li').each(function(li_index,li) {
       $(li).find('.id').attr("name", elementName + "contributeInstitutions" + "[" + li_index + "].id");
