@@ -280,6 +280,10 @@ ul.messages {
   text-align: left;
 }
 
+ul.messages li{
+    margin: 3px 0;
+}
+
 legend {
   text-align: center;
   padding: 5px;
