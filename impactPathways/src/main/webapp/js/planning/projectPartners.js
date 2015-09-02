@@ -376,7 +376,7 @@ function PartnerObject(partner) {
     $(partner).find(".institutionsList").attr("name", elementName + "institution");
     // Update index for CCAFS Partners
     $(partner).find('.ppaPartnersList ul.list li').each(function(li_index,li) {
-      $(li).find('.id').attr("name", elementName + "partnerContributors" + "[" + li_index + "].id");
+      $(li).find('.id').attr("name", elementName + "partnerContributors" + "[" + li_index + "].institution.id");
     });
     // Update index for partner persons
     $(partner).find('.contactPerson').each(function(i, partnerPerson) {

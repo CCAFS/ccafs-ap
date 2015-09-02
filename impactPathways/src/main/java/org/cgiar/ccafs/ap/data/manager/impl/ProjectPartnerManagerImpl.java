@@ -145,10 +145,17 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
         project.getId());
     }
 
-    // Now, save the persons linked to the project partner if any
+    // Update the id in the object
     projectPartner.setId((result > 0) ? result : projectPartner.getId());
+
+    // Now, save the persons linked to the project partner if any
     for (PartnerPerson person : projectPartner.getPartnerPersons()) {
       partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
+    }
+
+    // Now, save the partner contributors if any
+    if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
+      this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
     }
 
     return result;

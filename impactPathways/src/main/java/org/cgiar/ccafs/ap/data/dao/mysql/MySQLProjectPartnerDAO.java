@@ -210,9 +210,11 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     Object[] values;
     if (projectPartnerData.get("id") == null) {
       // Insert new record
-      query
-        .append("INSERT INTO project_partners (id, project_id, institution_id, created_by, modified_by, modification_justification) ");
-      query.append("VALUES (?, ?, ?, ?, ?, ?) ");
+      query.append("INSERT INTO project_partners (id, project_id, institution_id, created_by, modified_by, ");
+      query.append("modification_justification) VALUES (?, ?, ?, ?, ?, ?) ");
+      query.append("ON DUPLICATE KEY UPDATE is_active=TRUE, modified_by=VALUES(modified_by),  ");
+      query.append("modification_justification=VALUES(modification_justification) ");
+
       values = new Object[6];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");
@@ -234,6 +236,25 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     }
 
     int result = databaseManager.saveData(query.toString(), values);
+
+    // If the record already exists but was inactive we need to get the id
+    if (result == 0 && projectPartnerData.get("id") == null) {
+      query.setLength(0);
+      query.append("SELECT id FROM project_partners WHERE project_id = ");
+      query.append(projectPartnerData.get("project_id"));
+      query.append(" and institution_id = ");
+      query.append(projectPartnerData.get("institution_id"));
+      try (Connection con = databaseManager.getConnection()) {
+        ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+        if (rs.next()) {
+          result = rs.getInt("id");
+        }
+      } catch (SQLException e) {
+        LOG.error("There was an error getting the partner id of project {} with the insitution {}.",
+          projectPartnerData.get("project_id"), projectPartnerData.get("institution_id"));
+      }
+    }
+
     LOG.debug("<< saveProjectPartner():{}", result);
     return result;
   }

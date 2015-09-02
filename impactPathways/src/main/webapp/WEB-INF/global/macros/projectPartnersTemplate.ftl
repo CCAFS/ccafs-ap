@@ -56,8 +56,8 @@
         [#if projectPartner.partnerContributors?has_content]
           [#list projectPartner.partnerContributors as ppaPartner]
             <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
-              <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].partnerContributors[${ppaPartner_index}].id" value="${ppaPartner.id}" />
-              <span class="name">${(ppaPartner.composedName)!}</span> 
+              <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].partnerContributors[${ppaPartner_index}].institution.id" value="${ppaPartner.id}" />
+              <span class="name">${(ppaPartner.institution.composedName)!}</span> 
               [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
             </li>
           [/#list]
