@@ -42,10 +42,11 @@ public class BaseCSV {
   public String getFileName(int projectID, String name) {
     StringBuffer fileName = new StringBuffer();
 
-    fileName.append(name);
+    fileName.append("Project");
     fileName.append("-");
     fileName.append(projectID);
     fileName.append("-");
+    fileName.append(name);
     fileName.append(".csv");
 
     return fileName.toString();

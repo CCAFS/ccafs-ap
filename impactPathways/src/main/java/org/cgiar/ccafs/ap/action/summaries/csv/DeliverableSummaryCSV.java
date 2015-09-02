@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries.csv;
 
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,11 +81,36 @@ public class DeliverableSummaryCSV extends BaseCSV {
           fileWriter.append(stringBuilder.toString());
           fileWriter.append(COMMA_DELIMITER);
 
+          // Other type
+          stringBuilder = new StringBuilder();
+          stringBuilder.append(this.messageReturn(deliverable.getTypeOther()));
+          fileWriter.append(stringBuilder.toString());
+          fileWriter.append(COMMA_DELIMITER);
+
           // Partner Responsible
           stringBuilder = new StringBuilder();
           if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
             stringBuilder
             .append(this.messageReturn(deliverable.getResponsiblePartner().getPartner().getComposedName()));
+          } else {
+            stringBuilder.append(this.getText("summaries.project.empty"));
+          }
+          fileWriter.append(stringBuilder.toString());
+          fileWriter.append(COMMA_DELIMITER);
+
+          // Others Partners
+          DeliverablePartner otherPartner;
+          stringBuilder = new StringBuilder();
+          if (deliverable.getOtherPartners() != null) {
+            for (int a = 0; a < deliverable.getOtherPartners().size(); a++) {
+              otherPartner = deliverable.getOtherPartners().get(a);
+              if (otherPartner != null && otherPartner.getPartner() != null) {
+                if (a != 0) {
+                  stringBuilder.append("--");
+                }
+                stringBuilder.append(this.messageReturn(otherPartner.getPartner().getComposedName()));
+              }
+            }
           } else {
             stringBuilder.append(this.getText("summaries.project.empty"));
           }
@@ -109,7 +135,8 @@ public class DeliverableSummaryCSV extends BaseCSV {
   private void addHeaders() {
 
     String[] headers =
-      new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Partner Responsible"};
+      new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+        "Others Partners"};
 
     try {
 
@@ -174,7 +201,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
     if (enter == null || enter.equals("")) {
       return this.getText("summaries.project.empty");
     } else {
-      return enter.replace(",", ".");
+      return enter.replace(",", ";");
     }
 
   }
