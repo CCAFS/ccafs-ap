@@ -36,13 +36,12 @@ public class BaseCSV {
    * 
    * @return name of document
    */
-  public String getFileName(int projectID) {
+  public String getFileName(int projectID, String name) {
     StringBuffer fileName = new StringBuffer();
 
-    fileName.append("publication");
-    fileName.append("-");
+    fileName.append(name);
+    fileName.append("- project#");
     fileName.append(projectID);
-    fileName.append("-");
     fileName.append(".csv");
 
     return fileName.toString();
