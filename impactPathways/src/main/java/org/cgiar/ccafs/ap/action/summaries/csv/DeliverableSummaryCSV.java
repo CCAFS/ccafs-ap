@@ -34,90 +34,83 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
 
   private InputStream inputStream;
-  String COMMA_DELIMITER = ",";
-  String NEW_LINE_SEPARATOR = "\n";
+  String COMMA_DELIMITER;
+  String NEW_LINE_SEPARATOR;
   TextProvider textProvider;
   int contentLength;
   FileWriter fileWriter;
+  String[] headers;
 
   public DeliverableSummaryCSV() {
+
+    COMMA_DELIMITER = ",";
+    NEW_LINE_SEPARATOR = "\n";
+    headers =
+      new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+        "Others Partners"};
   }
 
+  // private void addContent(List<Deliverable> deliverables) {
   private void addContent(List<Deliverable> deliverables) {
 
-    StringBuilder stringBuilder;
     for (Deliverable deliverable : deliverables) {
 
       try {
         if (deliverable != null) {
+          StringBuilder stringBuilder = new StringBuilder();
+
           // Id
-          stringBuilder = new StringBuilder();
-          stringBuilder.append(deliverable.getId());
-          fileWriter.append(stringBuilder.toString());
+          this.addRegister(deliverable.getId(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // Title
-          stringBuilder = new StringBuilder();
-          fileWriter.append(this.messageReturn(deliverable.getTitle()));
+          this.addRegister(deliverable.getTitle(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // MOG
-          fileWriter.append(this.messageReturn(deliverable.getOutput().getDescription()));
+          this.addRegister(deliverable.getOutput().getDescription(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // Year
-          fileWriter.append(String.valueOf(deliverable.getYear()));
+          this.addRegister(deliverable.getYear(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // Main Type
-          stringBuilder = new StringBuilder();
-          stringBuilder.append(this.messageReturn(deliverable.getType().getCategory().getName()));
-          fileWriter.append(stringBuilder.toString());
+          this.addRegister(deliverable.getType().getCategory().getName(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // Sub Type
-          stringBuilder = new StringBuilder();
-          stringBuilder.append(this.messageReturn(deliverable.getType().getName()));
-          fileWriter.append(stringBuilder.toString());
+          this.addRegister(deliverable.getType().getName(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // Other type
-          stringBuilder = new StringBuilder();
-          stringBuilder.append(this.messageReturn(deliverable.getTypeOther()));
-          fileWriter.append(stringBuilder.toString());
+          this.addRegister(deliverable.getTypeOther(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // Partner Responsible
-          stringBuilder = new StringBuilder();
           if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
-            stringBuilder
-            .append(this.messageReturn(deliverable.getResponsiblePartner().getPartner().getComposedName()));
+            this.addRegister(deliverable.getResponsiblePartner().getPartner().getComposedName(), fileWriter);
           } else {
-            stringBuilder.append(this.getText("summaries.project.empty"));
+            this.addRegister("", fileWriter);
           }
-          fileWriter.append(stringBuilder.toString());
           fileWriter.append(COMMA_DELIMITER);
 
           // Others Partners
           DeliverablePartner otherPartner;
-          stringBuilder = new StringBuilder();
           if (deliverable.getOtherPartners() != null) {
             for (int a = 0; a < deliverable.getOtherPartners().size(); a++) {
               otherPartner = deliverable.getOtherPartners().get(a);
               if (otherPartner != null && otherPartner.getPartner() != null) {
                 if (a != 0) {
-                  stringBuilder.append("--");
+                  stringBuilder.append("; ");
                 }
-                stringBuilder.append(this.messageReturn(otherPartner.getPartner().getComposedName()));
+                stringBuilder.append(otherPartner.getPartner().getComposedName());
               }
             }
           } else {
-            stringBuilder.append(this.getText("summaries.project.empty"));
+            stringBuilder.append("");
           }
-          fileWriter.append(stringBuilder.toString());
-          fileWriter.append(COMMA_DELIMITER);
-
-
+          this.addRegister(stringBuilder, fileWriter);
           fileWriter.append(this.NEW_LINE_SEPARATOR);
 
         }
@@ -129,28 +122,6 @@ public class DeliverableSummaryCSV extends BaseCSV {
     }
   }
 
-  /**
-   * This method is used for to add the headers for the file
-   */
-  private void addHeaders() {
-
-    String[] headers =
-      new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-        "Others Partners"};
-
-    try {
-
-      for (int a = 0; a < headers.length; a++) {
-        fileWriter.append(headers[a]);
-        fileWriter.append(COMMA_DELIMITER);
-      }
-      fileWriter.append(this.NEW_LINE_SEPARATOR);
-
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
 
   public void generateCSV(List<Deliverable> deliverables) {
 
@@ -160,11 +131,14 @@ public class DeliverableSummaryCSV extends BaseCSV {
     this.initializeCsv(file);
 
     try {
+      // fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"));
       fileWriter = new FileWriter(file, true);
-      this.addHeaders();
+
+      this.addHeaders(headers, fileWriter);
       this.addContent(deliverables);
 
       fileWriter.close();
+
       inputStream = new FileInputStream(file);
       contentLength = (int) file.length();
     } catch (IOException e) {
@@ -189,22 +163,6 @@ public class DeliverableSummaryCSV extends BaseCSV {
     return inputStream;
   }
 
-
-  /**
-   * This method converts the string in return message of summary
-   * 
-   * @param enter String of entering
-   * @returnnull default message when the string is null or empty, otherwise the string
-   */
-  private String messageReturn(String enter) {
-
-    if (enter == null || enter.equals("")) {
-      return this.getText("summaries.project.empty");
-    } else {
-      return enter.replace(",", ";");
-    }
-
-  }
 
   /**
    * method for to set the inputStream
