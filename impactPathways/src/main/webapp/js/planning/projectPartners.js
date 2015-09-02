@@ -16,7 +16,7 @@ function init() {
     defaultType = 'CP';
     partnerPersonTypes = [coordinatorType, leaderType, defaultType, '-1'];
 
-    // Draggable
+    // Draggable project partners
     $partnersBlock.sortable({
       placeholder: "ui-state-highlight",
       handle: ".leftHead",
@@ -33,7 +33,6 @@ function init() {
     // Update initial project CCAFS partners list for each partner
     updateProjectPPAPartnersLists();
     // Attaching listeners
-    attachEvents();
     // This function enables launch the pop up window
     popups();
     // Activate the chosen to the existing partners
@@ -46,6 +45,7 @@ function init() {
 
     validateEvent([ "#justification" ]);  
   }
+  attachEvents();
   $('.loadingBlock').hide().next().fadeIn(500);
 }
 
@@ -223,9 +223,11 @@ function removePartnerEvent(e) {
   if (deliverables > 0){
     $( "#contactRemove-dialog" ).find('.messages').append('<li>Please bear in mind that if you delete this contact, '+deliverables+' deliverables relationships will be deleted</li>');
     canDelete = false;
-    removeDialogOptions.buttons.Remove = function(){
-      partner.remove();
-    };
+    removeDialogOptions.buttons = {
+        Close: function() {
+          $(this).dialog( "close" );
+        }
+      };
   }
   if(canDelete){
     partner.remove();     
