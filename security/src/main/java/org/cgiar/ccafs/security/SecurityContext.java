@@ -177,6 +177,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if Can update the PPA partners of a project
+   * 
+   * @return
+   */
+  public boolean canUpdatePPAPartners() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_PPA_UPDATE);
+  }
+
+  /**
    * Verify if can update the project activities section
    * 
    * @return
@@ -240,12 +249,12 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
-   * Verify if can update the project leader section
+   * Verify if Can update the project leader of a project
    * 
    * @return
    */
   public boolean canUpdateProjectLeader() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_LEAD_PARTNER_UPDATE);
+    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE);
   }
 
   /**
@@ -292,25 +301,6 @@ public class SecurityContext extends BaseSecurityContext {
   public boolean canUpdateProjectPartners() {
     return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_UPDATE);
   }
-
-  /**
-   * Verify if can update the project PPA partners section
-   * 
-   * @return
-   */
-  public boolean canUpdateProjectPPAPartner() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_PPA_PARTNER_UPDATE);
-  }
-
-  /**
-   * Verify if can upload a bilateral contract proposal in the planning section
-   * 
-   * @return
-   */
-  public boolean canUploadBilateralContract() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE);
-  }
-
 
   /**
    * Verify if the user has the administrator role

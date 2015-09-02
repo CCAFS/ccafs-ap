@@ -126,20 +126,22 @@ public class Permission {
 
   // --------------------------- Project Partners ---------------------------------
 
-  /**
-   * Can update the planning project Lead partner section
-   */
-  public static final String PLANNING_PROJECT_LEAD_PARTNER_UPDATE = "planning:projects:partnerLead:update";
-
-  /**
-   * Can update the planning project PPA partners section
-   */
-  public static final String PLANNING_PROJECT_PPA_PARTNER_UPDATE = "planning:projects:ppaPartners:update";
 
   /**
    * Can update the planning project partners section
    */
   public static final String PLANNING_PROJECT_PARTNER_UPDATE = "planning:projects:partners:update";
+
+  /**
+   * Can update the project leader in the planning project partners section
+   */
+  public static final String PLANNING_PROJECT_PARTNER_LEADER_UPDATE = "planning:projects:partners:leader:update";
+
+  /**
+   * Can update the planning project partners section
+   */
+  public static final String PLANNING_PROJECT_PARTNER_PPA_UPDATE = "planning:projects:partners:ppa:update";
+
 
   // --------------------------- End of Project Partners ---------------------------------
 
