@@ -49,14 +49,14 @@
     <div class="ppaPartnersList panel tertiary" style="display:${showPPABlock}">
       <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
       <div class="panel-body">
-        [#if !(projectPartner.contributeInstitutions?has_content) && !editable]
+        [#if !(projectPartner.partnerContributors?has_content) && !editable]
           <p>[@s.text name="planning.projectPartners.noSelectedCCAFSPartners" /] </p>
         [/#if]
         <ul class="list"> 
-        [#if projectPartner.contributeInstitutions?has_content]
-          [#list projectPartner.contributeInstitutions as ppaPartner]
+        [#if projectPartner.partnerContributors?has_content]
+          [#list projectPartner.partnerContributors as ppaPartner]
             <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
-              <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].contributeInstitutions[${ppaPartner_index}].id" value="${ppaPartner.id}" />
+              <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].partnerContributors[${ppaPartner_index}].id" value="${ppaPartner.id}" />
               <span class="name">${(ppaPartner.composedName)!}</span> 
               [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
             </li>
