@@ -61,6 +61,11 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
 
   @Override
+  public boolean deleteProjectPartnerContributions(ProjectPartner projectPartner) {
+    return projectPartnerDAO.deleteProjectPartnerContributions(projectPartner.getId());
+  }
+
+  @Override
   public ProjectPartner getProjectPartner(int partnerID) {
     ProjectPartner projectPartner = new ProjectPartner();
     Map<String, String> projectPartnerData = projectPartnerDAO.getProjectPartner(partnerID);
@@ -153,7 +158,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
     }
 
-    // Now, save the partner contributors if any
+    // Delete the project partner contributions and then added again if any
+    this.deleteProjectPartnerContributions(projectPartner);
     if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
       this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
     }

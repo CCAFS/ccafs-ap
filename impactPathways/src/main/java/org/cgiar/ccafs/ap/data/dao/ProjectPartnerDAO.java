@@ -43,6 +43,14 @@ public interface ProjectPartnerDAO {
   public boolean deleteProjectPartner(int id, int userID, String justification);
 
   /**
+   * This method deactive all the contributions to a project partner identified by the value received by parameter.
+   * 
+   * @param projectPartnerID - project partner identifier.
+   * @return true if the query was executed successfully. False otherwise.
+   */
+  public boolean deleteProjectPartnerContributions(int projectPartnerID);
+
+  /**
    * This method gets a project partner information identified with the given ID.
    * 
    * @param partnerID - is a partner identifier
