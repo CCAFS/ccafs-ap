@@ -70,6 +70,32 @@ public class ProjectPartner {
     return partnerPersons;
   }
 
+  public String getPersonComposedName(int partnerPersonID) {
+    if (partnerPersonID <= 0) {
+      return "";
+    }
+
+    for (PartnerPerson person : partnerPersons) {
+      if (person.getId() == partnerPersonID) {
+        StringBuilder str = new StringBuilder();
+        str.append(person.getUser().getLastName());
+        str.append(", ");
+        str.append(person.getUser().getFirstName());
+        str.append(" <");
+        str.append(person.getUser().getEmail());
+        str.append(">, ");
+        if (institution.getAcronym() != null) {
+          str.append(institution.getAcronym());
+          str.append(" - ");
+        }
+        str.append(institution.getName());
+        return str.toString();
+      }
+    }
+
+    return "";
+  }
+
   @Override
   public int hashCode() {
     return this.getId();

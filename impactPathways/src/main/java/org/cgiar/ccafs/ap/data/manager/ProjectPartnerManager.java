@@ -37,6 +37,15 @@ public interface ProjectPartnerManager {
   public boolean deleteProjectPartner(ProjectPartner projectPartner, User user, String justification);
 
   /**
+   * This method de-active all the contributions made to the project partner identified by the value received by
+   * parameter.
+   * 
+   * @param projectPartner - Project partner object
+   * @return true if the contributions was deleted successfully. False otherwise.
+   */
+  public boolean deleteProjectPartnerContributions(ProjectPartner projectPartner);
+
+  /**
    * This method is used to get a specific Project Partner identified by the given ID.
    * 
    * @param partnerID is a partner identifier.

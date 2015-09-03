@@ -344,6 +344,19 @@ public class Project {
     return leader;
   }
 
+  public PartnerPerson getLeaderPerson() {
+    if (projectPartners != null) {
+      for (ProjectPartner partner : projectPartners) {
+        for (PartnerPerson person : partner.getPartnerPersons()) {
+          if (person.isLeader()) {
+            return person;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
   }
@@ -420,17 +433,6 @@ public class Project {
         }
       }
       return ppaPartners;
-    }
-    return null;
-  }
-
-  public PartnerPerson getLeaderPerson() {
-    for (ProjectPartner partner : projectPartners) {
-      for (PartnerPerson person : partner.getPartnerPersons()) {
-        if (person.isLeader()) {
-          return person;
-        }
-      }
     }
     return null;
   }

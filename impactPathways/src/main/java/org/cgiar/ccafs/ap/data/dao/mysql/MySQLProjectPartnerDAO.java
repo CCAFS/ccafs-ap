@@ -86,6 +86,14 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
 
+  @Override
+  public boolean deleteProjectPartnerContributions(int projectPartnerID) {
+    String query = "UPDATE  project_partner_contributions SET is_active = FALSE WHERE project_partner_id = ?";
+    int result = databaseManager.saveData(query, new Object[] {projectPartnerID});
+
+    return result != -1;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> projectPartnerList = new ArrayList<>();
@@ -130,6 +138,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return new HashMap<String, String>();
   }
 
+
   @Override
   public List<Map<String, String>> getProjectPartnerContributors(int projectPartnerID) {
     LOG.debug(">> getProjectPartnerContributors( )");
@@ -167,7 +176,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return partnerContributionsDataList;
   }
 
-
   @Override
   public List<Map<String, String>> getProjectPartners(int projectID) {
     LOG.debug(">> getProjectPartners projectID = {} )", projectID);
@@ -202,6 +210,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
+
 
   @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
