@@ -41,6 +41,9 @@ public class DeliverableSummaryCSV extends BaseCSV {
   FileWriter fileWriter;
   String[] headers;
 
+  /**
+   * Method constructor.
+   */
   public DeliverableSummaryCSV() {
 
     COMMA_DELIMITER = ",";
@@ -50,7 +53,11 @@ public class DeliverableSummaryCSV extends BaseCSV {
         "Others Partners"};
   }
 
-  // private void addContent(List<Deliverable> deliverables) {
+  /**
+   * Method for the
+   * 
+   * @param deliverables
+   */
   private void addContent(List<Deliverable> deliverables) {
 
     for (Deliverable deliverable : deliverables) {
@@ -84,7 +91,13 @@ public class DeliverableSummaryCSV extends BaseCSV {
           fileWriter.append(COMMA_DELIMITER);
 
           // Other type
-          this.addRegister(deliverable.getTypeOther(), fileWriter);
+          stringBuilder = new StringBuilder();
+          if (deliverable.getTypeOther() == null || deliverable.getTypeOther().equals("")) {
+            stringBuilder.append(this.getText("summaries.project.notapplicable"));
+          } else {
+            stringBuilder.append(deliverable.getTypeOther());
+          }
+          this.addRegister(stringBuilder.toString(), fileWriter);
           fileWriter.append(COMMA_DELIMITER);
 
           // Partner Responsible
@@ -97,6 +110,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
           // Others Partners
           DeliverablePartner otherPartner;
+          stringBuilder = new StringBuilder();
           if (deliverable.getOtherPartners() != null) {
             for (int a = 0; a < deliverable.getOtherPartners().size(); a++) {
               otherPartner = deliverable.getOtherPartners().get(a);
@@ -122,7 +136,11 @@ public class DeliverableSummaryCSV extends BaseCSV {
     }
   }
 
-
+  /**
+   * Method is used for to generate the csv for the deliverble.
+   * 
+   * @param deliverables
+   */
   public void generateCSV(List<Deliverable> deliverables) {
 
     // File file = new File(baseURL + "temporal.txt");
@@ -155,7 +173,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
 
   /**
-   * method for to get the inputStream
+   * Method for to get the inputStream
    * 
    * @return the inputStream
    */
