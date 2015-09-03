@@ -303,6 +303,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if can upload a bilateral contract proposal in the planning section
+   * 
+   * @return
+   */
+  public boolean canUploadBilateralContract() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE);
+  }
+
+  /**
    * Verify if the user has the administrator role
    * 
    * @return
