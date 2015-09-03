@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries.csv;
 
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import com.opensymphony.xwork2.TextProvider;
 
 
 /**
@@ -31,41 +34,86 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
 
   private InputStream inputStream;
-  String COMMA_DELIMITER = ",";
-  String NEW_LINE_SEPARATOR = "\n";
-
+  String COMMA_DELIMITER;
+  String NEW_LINE_SEPARATOR;
+  TextProvider textProvider;
   int contentLength;
   FileWriter fileWriter;
+  String[] headers;
 
   public DeliverableSummaryCSV() {
+
+    COMMA_DELIMITER = ",";
+    NEW_LINE_SEPARATOR = "\n";
+    headers =
+      new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+        "Others Partners"};
   }
 
+  // private void addContent(List<Deliverable> deliverables) {
   private void addContent(List<Deliverable> deliverables) {
+
     for (Deliverable deliverable : deliverables) {
 
       try {
+        if (deliverable != null) {
+          StringBuilder stringBuilder = new StringBuilder();
 
-        // fileWriter.append(deliverable.getId());
-        fileWriter.append(String.valueOf(deliverable.getId()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Id
+          this.addRegister(deliverable.getId(), fileWriter);
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(deliverable.getTitle());
-        fileWriter.append(COMMA_DELIMITER);
+          // Title
+          this.addRegister(deliverable.getTitle(), fileWriter);
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getType().getName()));
-        fileWriter.append(COMMA_DELIMITER);
+          // MOG
+          this.addRegister(deliverable.getOutput().getDescription(), fileWriter);
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getOutput().getDescription()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Year
+          this.addRegister(deliverable.getYear(), fileWriter);
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getTitle()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Main Type
+          this.addRegister(deliverable.getType().getCategory().getName(), fileWriter);
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(String.valueOf(deliverable.getId()));
-        fileWriter.append(COMMA_DELIMITER);
+          // Sub Type
+          this.addRegister(deliverable.getType().getName(), fileWriter);
+          fileWriter.append(COMMA_DELIMITER);
 
+          // Other type
+          this.addRegister(deliverable.getTypeOther(), fileWriter);
+          fileWriter.append(COMMA_DELIMITER);
 
-        fileWriter.append(this.NEW_LINE_SEPARATOR);
+          // Partner Responsible
+          if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
+            this.addRegister(deliverable.getResponsiblePartner().getPartner().getComposedName(), fileWriter);
+          } else {
+            this.addRegister("", fileWriter);
+          }
+          fileWriter.append(COMMA_DELIMITER);
+
+          // Others Partners
+          DeliverablePartner otherPartner;
+          if (deliverable.getOtherPartners() != null) {
+            for (int a = 0; a < deliverable.getOtherPartners().size(); a++) {
+              otherPartner = deliverable.getOtherPartners().get(a);
+              if (otherPartner != null && otherPartner.getPartner() != null) {
+                if (a != 0) {
+                  stringBuilder.append("; ");
+                }
+                stringBuilder.append(otherPartner.getPartner().getComposedName());
+              }
+            }
+          } else {
+            stringBuilder.append("");
+          }
+          this.addRegister(stringBuilder, fileWriter);
+          fileWriter.append(this.NEW_LINE_SEPARATOR);
+
+        }
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -74,27 +122,6 @@ public class DeliverableSummaryCSV extends BaseCSV {
     }
   }
 
-  /**
-   * This method is used for to add the headers for the file
-   */
-  private void addHeaders() {
-
-    String[] headers =
-      new String[] {"Author", "Title", "Publication type", "Publication status", "Description", "Identifier"};
-
-    try {
-
-      for (int a = 0; a < headers.length; a++) {
-        fileWriter.append(headers[a]);
-        fileWriter.append(COMMA_DELIMITER);
-      }
-      fileWriter.append(this.NEW_LINE_SEPARATOR);
-
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
 
   public void generateCSV(List<Deliverable> deliverables) {
 
@@ -104,11 +131,14 @@ public class DeliverableSummaryCSV extends BaseCSV {
     this.initializeCsv(file);
 
     try {
+      // fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"));
       fileWriter = new FileWriter(file, true);
-      this.addHeaders();
+
+      this.addHeaders(headers, fileWriter);
       this.addContent(deliverables);
 
       fileWriter.close();
+
       inputStream = new FileInputStream(file);
       contentLength = (int) file.length();
     } catch (IOException e) {
@@ -142,4 +172,5 @@ public class DeliverableSummaryCSV extends BaseCSV {
   public void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }
+
 }
