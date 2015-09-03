@@ -32,6 +32,7 @@ public class Institution {
   private Country country;
   private String city;
   private boolean isPPA;
+  private String websiteLink;
 
   public Institution() {
     super();
@@ -95,6 +96,10 @@ public class Institution {
     return type;
   }
 
+  public String getWebsiteLink() {
+    return websiteLink;
+  }
+
   @Override
   public int hashCode() {
     return this.getId();
@@ -134,6 +139,10 @@ public class Institution {
 
   public void setType(InstitutionType type) {
     this.type = type;
+  }
+
+  public void setWebsiteLink(String websiteLink) {
+    this.websiteLink = websiteLink;
   }
 
   @Override
