@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +33,11 @@ public class BaseCSV {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(BaseCSV.class);
-  private TextProvider textProvider;
   String COMMA_DELIMITER = ",";
   String NEW_LINE_SEPARATOR = "\n";
+  FileWriter fileWriter;
+  TextProvider textProvider;
+  String[] headers;
 
   /**
    * This method is used for to add the headers for the file
@@ -49,8 +52,6 @@ public class BaseCSV {
         fileWriter.append(headers[a]);
         fileWriter.append(COMMA_DELIMITER);
       }
-
-
       fileWriter.append(this.NEW_LINE_SEPARATOR);
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -70,15 +71,8 @@ public class BaseCSV {
       if (register == null || register.equals("")) {
         fileWriter.append(this.getText("summaries.project.empty"));
       } else {
-        text = String.valueOf(register);
-        if (text.contains(",") || text.contains("\"")) {
-          text = "\"" + text + "\"";
-        }
-        if (text.contains("\"")) {
-          text.replace("\"", "\"\"");
-        }
+        text = StringEscapeUtils.escapeCsv(String.valueOf(register)); // I said "Hey, I am 5'10"."
       }
-
       fileWriter.append(text);
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -120,10 +114,12 @@ public class BaseCSV {
    * @param file file to initialize
    */
   public void initializeCsv(File file) {
-    textProvider = new DefaultTextProvider();
-
-    file.delete();
     try {
+
+      textProvider = new DefaultTextProvider();
+
+      file.delete();
+
       file.createNewFile();
     } catch (IOException ioe) {
       ioe.printStackTrace();

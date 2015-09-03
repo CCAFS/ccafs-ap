@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.opensymphony.xwork2.TextProvider;
 
 
 /**
@@ -38,10 +37,8 @@ public class DeliverableSummaryCSV extends BaseCSV {
   private InputStream inputStream;
   private String COMMA_DELIMITER;
   private String NEW_LINE_SEPARATOR;
-  private TextProvider textProvider;
+
   private int contentLength;
-  private FileWriter fileWriter;
-  private String[] headers;
   private APConfig config;
 
   /**
@@ -54,7 +51,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
     NEW_LINE_SEPARATOR = "\n";
     headers =
       new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-        "Others Partners"};
+    "Others Partners"};
     this.config = config;
   }
 
@@ -127,7 +124,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
               }
             }
           } else {
-            stringBuilder.append("");
+            stringBuilder.append(this.getText("summaries.project.empty"));
           }
           this.addRegister(stringBuilder, fileWriter);
           fileWriter.append(this.NEW_LINE_SEPARATOR);
@@ -141,20 +138,20 @@ public class DeliverableSummaryCSV extends BaseCSV {
   }
 
   /**
-   * Method is used for to generate the csv for the deliverble.
+   * Method is used to generate the csv for the deliverable.
    * 
    * @param deliverables
    */
+
   public void generateCSV(List<Deliverable> deliverables) {
 
-    // File file = new File(baseURL + "temporal.txt");
     File file = new File(config.getUploadsBaseFolder() + "temporal.txt");
     fileWriter = null;
     this.initializeCsv(file);
 
     try {
-      // fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"));
       fileWriter = new FileWriter(file, true);
+      fileWriter.write('\ufeff');
 
       this.addHeaders(headers, fileWriter);
       this.addContent(deliverables);
