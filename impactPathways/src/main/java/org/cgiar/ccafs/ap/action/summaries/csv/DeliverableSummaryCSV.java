@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.summaries.csv;
 
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.opensymphony.xwork2.TextProvider;
 
 
@@ -34,27 +36,30 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
 
   private InputStream inputStream;
-  String COMMA_DELIMITER;
-  String NEW_LINE_SEPARATOR;
-  TextProvider textProvider;
-  int contentLength;
-  FileWriter fileWriter;
-  String[] headers;
+  private String COMMA_DELIMITER;
+  private String NEW_LINE_SEPARATOR;
+  private TextProvider textProvider;
+  private int contentLength;
+  private FileWriter fileWriter;
+  private String[] headers;
+  private APConfig config;
 
   /**
    * Method constructor.
    */
-  public DeliverableSummaryCSV() {
+  @Inject
+  public DeliverableSummaryCSV(APConfig config) {
 
     COMMA_DELIMITER = ",";
     NEW_LINE_SEPARATOR = "\n";
     headers =
       new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
         "Others Partners"};
+    this.config = config;
   }
 
   /**
-   * Method for the
+   * Method is used for to add the deliverable
    * 
    * @param deliverables
    */
@@ -129,7 +134,6 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
         }
       } catch (IOException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
 
@@ -144,7 +148,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
   public void generateCSV(List<Deliverable> deliverables) {
 
     // File file = new File(baseURL + "temporal.txt");
-    File file = new File("temporal.txt");
+    File file = new File(config.getUploadsBaseFolder() + "temporal.txt");
     fileWriter = null;
     this.initializeCsv(file);
 
@@ -154,7 +158,6 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
       this.addHeaders(headers, fileWriter);
       this.addContent(deliverables);
-
       fileWriter.close();
 
       inputStream = new FileInputStream(file);
