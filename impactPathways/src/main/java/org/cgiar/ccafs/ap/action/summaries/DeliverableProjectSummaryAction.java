@@ -78,7 +78,7 @@ public class DeliverableProjectSummaryAction extends BaseAction implements Summa
 
   @Override
   public String getFileName() {
-    return deliverableCSV.getFileName(projectID);
+    return deliverableCSV.getFileName(projectID, "Deliverables");
   }
 
 
