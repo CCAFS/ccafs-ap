@@ -177,6 +177,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if Can update the project leader of a project
+   * 
+   * @return
+   */
+  public boolean canUpdatePartnerLeader() {
+    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_PPA_UPDATE);
+  }
+
+  /**
    * Verify if Can update the PPA partners of a project
    * 
    * @return
