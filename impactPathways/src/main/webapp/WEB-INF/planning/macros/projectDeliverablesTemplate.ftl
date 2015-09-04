@@ -41,7 +41,9 @@
     <div id="projectNextUserTemplate" class="borderBox" style="display:none">
       <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
       <input type="hidden" value="${nextUserValue}" name="].id" />
-      <span class="index">${nu_index?number+1}</span>
+      <div class="leftHead">
+        <span class="index">${nu_index?number+1}</span>
+      </div>
       [#-- Next User --]
       [@customForm.input name="user" type="text" i18nkey="planning.deliverables.nextUser" required=true /]<br/>
       [#-- Expected Changes --]
@@ -55,7 +57,9 @@
         <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
         <input type="hidden" name="${nu_name}[${nu_index}].id" value="${nextUserValue}" />
       [/#if]
-      <span class="index">${nu_index?number+1}</span>
+      <div class="leftHead">
+        <span class="index">${nu_index?number+1}</span>
+      </div>
       [#-- Next User --]
       [@customForm.input name="${nu_name}[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" required=true editable=editable /]<br/>
       [#-- Expected Changes --]

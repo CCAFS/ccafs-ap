@@ -45,7 +45,7 @@ function init() {
     validateEvent([ "#justification" ]);  
   }
   attachEvents();
-  if(($partnersBlock.find('.projectPartners').length == 0) && editable){
+  if(($partnersBlock.find('.projectPartner').length == 0) && editable){
     $("a.addProjectPartner").trigger('click');
   }
   $('.loadingBlock').hide().next().fadeIn(500);

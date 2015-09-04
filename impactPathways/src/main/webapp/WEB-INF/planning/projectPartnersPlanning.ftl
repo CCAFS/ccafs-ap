@@ -39,6 +39,10 @@
     [#if !canEdit]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="preplanning.project"/][/@s.param][/@s.text]</p>
     [/#if]
+    canEditLeadOrganization -> ${securityContext.canEditLeadOrganization()?string} <br />
+    canUpdatePPAPartners -> ${securityContext.canUpdatePPAPartners()?string} <br />
+    editable -> ${editable?string} <br />
+    canEdit -> ${canEdit?string} <br />
     
     [#-- Listing Partners from partnersTemplate.ftl --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
@@ -49,10 +53,11 @@
           [@partnersTemplate.projectPartner projectPartner=projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="${projectPartner_index}" /]
         [/#list]
       [#else]
-        [#-- @partnersTemplate.projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="0" / --]
-        <div id="addProjectPartner" class="addLink">
-          <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-        </div>
+        [#if !editable]
+          <p class="center">[@s.text name="planning.projectPartners.empty" /]
+          <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.projectPartners.switchEditingMode" /]
+          </p>
+        [/#if]
       [/#if] 
       [#if (editable && canEdit)]
         <div id="addProjectPartner" class="addLink">
