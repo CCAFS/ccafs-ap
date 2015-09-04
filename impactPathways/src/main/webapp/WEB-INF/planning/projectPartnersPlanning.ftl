@@ -49,7 +49,10 @@
           [@partnersTemplate.projectPartner projectPartner=projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="${projectPartner_index}" /]
         [/#list]
       [#else]
-        [@partnersTemplate.projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="0" /]
+        [#-- @partnersTemplate.projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="0" / --]
+        <div id="addProjectPartner" class="addLink">
+          <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
+        </div>
       [/#if] 
       [#if (editable && canEdit)]
         <div id="addProjectPartner" class="addLink">
@@ -148,7 +151,7 @@
   </div>
   
   [#-- Partner person relations dialog --]
-  <div id="relations-dialog" title="Partner person relations" style="display:none">
+  <div id="relations-dialog" title="Leading activities" style="display:none">
     <ul class="messages"></ul>
   </div>
   

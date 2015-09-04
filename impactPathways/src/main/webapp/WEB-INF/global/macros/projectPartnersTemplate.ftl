@@ -14,7 +14,7 @@
     
     <div class="leftHead">
       <span class="index">${projectPartnerIndex?number+1}</span>
-      <span class="elementId">Project Partner  <strong class="type"> ${(projectPartner.leader?string('(Leader)',''))!} ${(projectPartner.coordinator?string('(Coordinator)',''))!}</strong></span>
+      <span class="elementId">Partner  <strong class="type"> ${(projectPartner.leader?string('(Leader)',''))!} ${(projectPartner.coordinator?string('(Coordinator)',''))!}</strong></span>
     </div>
     <input id="id" class="partnerId" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].id" value="${(projectPartner.id)!-1}" />
 
@@ -96,7 +96,7 @@
       <div class="removePerson removeElement" title="[@s.text name="planning.projectPartners.removePerson" /]"></div>
     [/#if]
     <div class="leftHead">
-      <span class="index">${contactIndex?number+1}</span>
+      <span class="index"></span>
     </div>
     <input id="id" class="partnerPersonId" type="hidden" name="${contactName}[${contactIndex}].id" value="${(contact.id)!-1}" />
     
