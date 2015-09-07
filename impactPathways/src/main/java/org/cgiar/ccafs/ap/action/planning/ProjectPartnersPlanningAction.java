@@ -441,7 +441,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     if (securityContext.canUpdateProjectPartners()) {
 
-      if (this.isNewProject()) {
+      if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);
       }
 

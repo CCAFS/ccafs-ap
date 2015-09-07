@@ -153,12 +153,13 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     // Update the id in the object
     projectPartner.setId((result > 0) ? result : projectPartner.getId());
 
-    // Now, save the persons linked to the project partner if any
+    // Delete the project partner persons and then add them again if any
+    partnerPersonManager.deletePartnerPersons(projectPartner);
     for (PartnerPerson person : projectPartner.getPartnerPersons()) {
       partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
     }
 
-    // Delete the project partner contributions and then added again if any
+    // Delete the project partner contributions and then add them again if any
     this.deleteProjectPartnerContributions(projectPartner);
     if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
       this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);

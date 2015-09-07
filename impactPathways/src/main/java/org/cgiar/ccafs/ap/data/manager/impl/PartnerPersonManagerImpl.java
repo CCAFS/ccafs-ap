@@ -85,12 +85,7 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
     Map<String, Object> partnerPersonData = new HashMap<>();
 
     // if this is a new partner person, do not assign an id.
-    if (partnerPerson.getId() > 0) {
-      partnerPersonData.put("id", partnerPerson.getId());
-    } else {
-      // otherwise will be a new record so we need to include the creator.
-      partnerPersonData.put("created_by", user.getId());
-    }
+    partnerPersonData.put("created_by", user.getId());
     partnerPersonData.put("project_partner_id", partner.getId());
     partnerPersonData.put("user_id", partnerPerson.getUser().getId());
     partnerPersonData.put("contact_type", partnerPerson.getType());
