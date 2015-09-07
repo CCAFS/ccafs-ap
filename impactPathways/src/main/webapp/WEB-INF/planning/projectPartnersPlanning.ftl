@@ -39,10 +39,6 @@
     [#if !canEdit]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="preplanning.project"/][/@s.param][/@s.text]</p>
     [/#if]
-    canEditLeadOrganization -> ${securityContext.canEditLeadOrganization()?string} <br />
-    canUpdatePPAPartners -> ${securityContext.canUpdatePPAPartners()?string} <br />
-    editable -> ${editable?string} <br />
-    canEdit -> ${canEdit?string} <br />
     
     [#-- Listing Partners from partnersTemplate.ftl --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
