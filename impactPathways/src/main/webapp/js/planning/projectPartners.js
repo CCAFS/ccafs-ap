@@ -5,17 +5,16 @@ var lWordsResp = 100;
 $(document).ready(init);
 
 function init() {
-  if (editable){
-    // Setting global variables
-    $removePartnerDialog = $('#partnerRemove-dialog');
-    $partnersBlock = $('#projectPartnersBlock');
-    allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
-    $projectPPAPartners = $('#projectPPAPartners');
-    leaderType = 'PL';
-    coordinatorType = 'PC';
-    defaultType = 'CP';
-    partnerPersonTypes = [coordinatorType, leaderType, defaultType, '-1'];
-
+  // Setting global variables
+  $removePartnerDialog = $('#partnerRemove-dialog');
+  $partnersBlock = $('#projectPartnersBlock');
+  allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
+  $projectPPAPartners = $('#projectPPAPartners');
+  leaderType = 'PL';
+  coordinatorType = 'PC';
+  defaultType = 'CP';
+  partnerPersonTypes = [coordinatorType, leaderType, defaultType, '-1'];
+  if (editable){ 
     // Draggable project partners
     $partnersBlock.sortable({
       placeholder: "ui-state-highlight",
@@ -46,6 +45,9 @@ function init() {
     validateEvent([ "#justification" ]);  
   }
   attachEvents();
+  if(($partnersBlock.find('.projectPartner').length == 0) && editable){
+    $("a.addProjectPartner").trigger('click');
+  }
   $('.loadingBlock').hide().next().fadeIn(500);
 }
 
@@ -371,7 +373,7 @@ function PartnerObject(partner) {
   this.setIndex = function(name, index) {
     var elementName = name+"["+index+"].";
     // Update index for project Partner
-    $(partner).find(".leftHead .index").html(index + 1);
+    $(partner).find("> .leftHead .index").html(index + 1);
     $(partner).find("[id$='id']").attr("name", elementName + "id");
     $(partner).find(".institutionsList").attr("name", elementName + "institution");
     // Update index for CCAFS Partners
@@ -473,7 +475,7 @@ function PartnerPersonObject(partnerPerson) {
   };
   this.setIndex = function(name, index) {
     var elementName = name+"partnerPersons["+index+"].";
-    $(partnerPerson).find(".leftHead .index").html(index + 1);
+    // $(partnerPerson).find(".leftHead .index").html(index + 1);
     $(partnerPerson).find(".partnerPersonId").attr("name", elementName + "id");
     $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
     $(partnerPerson).find(".userId").attr("name", elementName + "user.id");

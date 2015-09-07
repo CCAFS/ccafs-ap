@@ -14,7 +14,7 @@
     
     <div class="leftHead">
       <span class="index">${projectPartnerIndex?number+1}</span>
-      <span class="elementId">Project Partner  <strong class="type"> ${(projectPartner.leader?string('(Leader)',''))!} ${(projectPartner.coordinator?string('(Coordinator)',''))!}</strong></span>
+      <span class="elementId">Partner  <strong class="type"> ${(projectPartner.leader?string('(Leader)',''))!} ${(projectPartner.coordinator?string('(Coordinator)',''))!}</strong></span>
     </div>
     <input id="id" class="partnerId" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].id" value="${(projectPartner.id)!-1}" />
 
@@ -38,7 +38,7 @@
     [#-- Organization  --]
     <div class="fullPartBlock partnerName chosen">
       <p class="fieldError"></p>
-      [@customForm.select name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="preplanning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=(editable && template) /]
+      [@customForm.select name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="planning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=(editable && template) /]
       [#if editable && !template]
         <input class="institutionsList" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" />
       [/#if]
@@ -47,7 +47,7 @@
     [#-- Indicate which PPA Partners for second level partners --]
     [#assign showPPABlock][#if (projectPartner.institution.PPA)!true]none[#else]block[/#if][/#assign]
     <div class="ppaPartnersList panel tertiary" style="display:${showPPABlock}">
-      <div class="panel-head">[@customForm.text name="preplanning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
+      <div class="panel-head">[@customForm.text name="planning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
       <div class="panel-body">
         [#if !(projectPartner.partnerContributors?has_content) && !editable]
           <p>[@s.text name="planning.projectPartners.noSelectedCCAFSPartners" /] </p>
@@ -96,7 +96,7 @@
       <div class="removePerson removeElement" title="[@s.text name="planning.projectPartners.removePerson" /]"></div>
     [/#if]
     <div class="leftHead">
-      <span class="index">${contactIndex?number+1}</span>
+      <span class="index"></span>
     </div>
     <input id="id" class="partnerPersonId" type="hidden" name="${contactName}[${contactIndex}].id" value="${(contact.id)!-1}" />
     
@@ -108,7 +108,7 @@
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="preplanning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=editable/]
+        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=editable/]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user.id" value="${(contact.user.id)!'-1'}" />   
         [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>

@@ -110,7 +110,7 @@
 [#-- Internal parameters --]   
 [#list params?keys as prop]<input id="${params[prop].id}" type="hidden" value="${params[prop].name}" />[/#list]
 
-[#-- Search users Interface Popup --]
+[#-- Activity template --]
 [@activitiesForms.activityMacro activity={} activity_index="0" template=true/]
 
 [#-- Search users Interface Popup --]

@@ -2723,7 +2723,9 @@ span.partnerTag {
 }
 .projectPartner.leader .contactPerson.PL .index {
   background-color: #72D09A !important;
-  background-image: url(../../images/global/user_white.png);    background-position: 3px center;    background-repeat: no-repeat;    padding-left: 22px !important;
+  background-image: url(../../images/global/user_white.png);    background-position: 3px center;    background-repeat: no-repeat;    
+  padding-left: 14px !important;
+  display: initial;
 }
 
 .projectPartner .addContact {
@@ -2771,6 +2773,7 @@ span.partnerTag {
   background-color: #CECECE !important;  
   font-size: 0.95em !important;
   padding: 2px 10px 2px 10px !important;            
+  display: none;
 }
 
 /* Project Budget */
@@ -3753,7 +3756,7 @@ ul#deliverablesFilesMessages > li {
 
 .borderBox, .publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
   border: 1px solid #D1D1D1;
-  padding: 20px 15px 0px 15px;
+  padding: 20px 15px 19px 15px;
   border-radius: 4px;
   margin: 16px 0 15px 0;
   position: relative;

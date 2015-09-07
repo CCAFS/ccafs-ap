@@ -7,3 +7,4 @@ DELETE FROM `permissions` WHERE `permissions`.`permission` = 'planning:projects:
 
 INSERT INTO `permissions` (permission, description) VALUES ('planning:projects:partners:leader:update', 'Can update the project leader of a project');
 INSERT INTO `permissions` (permission, description) VALUES ('planning:projects:partners:ppa:update', 'Can update the PPA partners of a project');
+INSERT INTO `permissions` (permission, description) VALUES ('planning:projects:partners:update', 'Can update the planning project partners section');
