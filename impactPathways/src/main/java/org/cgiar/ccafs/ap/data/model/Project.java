@@ -232,6 +232,22 @@ public class Project {
     return coordinator;
   }
 
+  public List<PartnerPerson> getCoordinatorPersons() {
+    List<PartnerPerson> projectCoordinators = new ArrayList<>();
+
+    if (projectPartners != null) {
+      for (ProjectPartner partner : projectPartners) {
+        for (PartnerPerson person : partner.getPartnerPersons()) {
+          if (person.isCoordinator()) {
+            projectCoordinators.add(person);
+          }
+        }
+      }
+    }
+
+    return projectCoordinators;
+  }
+
   public long getCreated() {
     return created;
   }
@@ -529,12 +545,26 @@ public class Project {
     return (type != null) ? type.equals(APConstants.PROJECT_CCAFS_COFUNDED) : false;
   }
 
+  public boolean isCoordinator(User user) {
+    List<PartnerPerson> coordinators = this.getCoordinatorPersons();
+    for (PartnerPerson person : coordinators) {
+      if (person.getUser().getId() == user.getId()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public boolean isCoreProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_CORE) : false;
   }
 
   public boolean isGlobal() {
     return isGlobal;
+  }
+
+  public boolean isLeader(User user) {
+    return this.getLeaderPerson().getUser().getId() == user.getId();
   }
 
   /**

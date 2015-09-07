@@ -89,6 +89,10 @@ public class PartnerPerson {
     return this.getId();
   }
 
+  public boolean isCoordinator() {
+    return type.equals(APConstants.PROJECT_PARTNER_PC);
+  }
+
   public boolean isLeader() {
     return type.equals(APConstants.PROJECT_PARTNER_PL);
   }
