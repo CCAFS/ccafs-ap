@@ -115,11 +115,8 @@ public class BaseCSV {
    */
   public void initializeCsv(File file) {
     try {
-
       textProvider = new DefaultTextProvider();
-
       file.delete();
-
       file.createNewFile();
     } catch (IOException ioe) {
       ioe.printStackTrace();

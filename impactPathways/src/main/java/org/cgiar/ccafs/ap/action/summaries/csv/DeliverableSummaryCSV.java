@@ -58,7 +58,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
   /**
    * Method is used for to add the deliverable
    * 
-   * @param deliverables
+   * @param deliverables it is a list that contain the deliverables
    */
   private void addContent(List<Deliverable> deliverables) {
 
@@ -113,7 +113,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
           // Others Partners
           DeliverablePartner otherPartner;
           stringBuilder = new StringBuilder();
-          if (deliverable.getOtherPartners() != null) {
+          if (deliverable.getOtherPartners() != null && !deliverable.getOtherPartners().isEmpty()) {
             for (int a = 0; a < deliverable.getOtherPartners().size(); a++) {
               otherPartner = deliverable.getOtherPartners().get(a);
               if (otherPartner != null && otherPartner.getPartner() != null) {
@@ -128,7 +128,6 @@ public class DeliverableSummaryCSV extends BaseCSV {
           }
           this.addRegister(stringBuilder, fileWriter);
           fileWriter.append(this.NEW_LINE_SEPARATOR);
-
         }
       } catch (IOException e) {
         e.printStackTrace();
@@ -140,7 +139,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
   /**
    * Method is used to generate the csv for the deliverable.
    * 
-   * @param deliverables
+   * @param deliverables it is a list that contain the deliverables
    */
 
   public void generateCSV(List<Deliverable> deliverables) {
