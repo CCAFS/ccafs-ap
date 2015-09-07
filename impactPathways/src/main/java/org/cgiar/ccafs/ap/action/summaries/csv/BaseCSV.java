@@ -19,6 +19,8 @@ package org.cgiar.ccafs.ap.action.summaries.csv;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
@@ -87,12 +89,13 @@ public class BaseCSV {
    */
   public String getFileName(int projectID, String name) {
     StringBuffer fileName = new StringBuffer();
-
     fileName.append("Project");
     fileName.append("-");
     fileName.append(projectID);
     fileName.append("-");
     fileName.append(name);
+    fileName.append("-");
+    fileName.append(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
     fileName.append(".csv");
 
     return fileName.toString();

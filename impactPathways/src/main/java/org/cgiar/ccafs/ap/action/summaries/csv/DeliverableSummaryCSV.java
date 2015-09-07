@@ -65,6 +65,9 @@ public class DeliverableSummaryCSV extends BaseCSV {
     for (Deliverable deliverable : deliverables) {
 
       try {
+
+        // if (deliverable != null && deliverable.getYear() > 2014)
+
         if (deliverable != null) {
           StringBuilder stringBuilder = new StringBuilder();
 
