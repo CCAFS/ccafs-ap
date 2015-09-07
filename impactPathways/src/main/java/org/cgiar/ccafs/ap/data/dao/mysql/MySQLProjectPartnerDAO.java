@@ -274,7 +274,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO project_partner_contributions (project_partner_id, project_partner_contributor_id, ");
     query.append("created_by, modified_by, modification_justification) VALUES (?, ");
-    query.append("( SELECT id FROM project_partners WHERE institution_id=? AND project_id=? ) ");
+    query.append("( SELECT id FROM project_partners WHERE institution_id=? AND project_id=? AND is_active = TRUE) ");
     query.append(",?,?,?) ON DUPLICATE KEY UPDATE is_active = TRUE, created_by=VALUES(created_by), ");
     query.append("modified_by = VALUES(modified_by), modification_justification=VALUES(modification_justification) ");
 
