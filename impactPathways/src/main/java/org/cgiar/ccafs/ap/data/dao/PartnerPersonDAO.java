@@ -23,6 +23,15 @@ import com.google.inject.ImplementedBy;
 public interface PartnerPersonDAO {
 
   /**
+   * This method set as inactive all the partner persons linked to the project partner identified by the value received
+   * by parameter.
+   * 
+   * @param projectPartnerID - Project partner identifier
+   * @return true if the query ran successfully. False otherwise.
+   */
+  public boolean deletePartnerPersons(int projectPartnerID);
+
+  /**
    * This method gets a specific partner person identified with the given id.
    * 
    * @param partnerPersonID is the partner person identifier.

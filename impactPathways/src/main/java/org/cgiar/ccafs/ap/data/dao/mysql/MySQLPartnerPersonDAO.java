@@ -44,6 +44,13 @@ public class MySQLPartnerPersonDAO implements PartnerPersonDAO {
     this.databaseManager = databaseManager;
   }
 
+  @Override
+  public boolean deletePartnerPersons(int projectPartnerID) {
+    String query = "UPDATE project_partner_persons SET is_active = FALSE WHERE project_partner_id = ?";
+    int result = databaseManager.delete(query, new Object[] {projectPartnerID});
+    return result != -1;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> personsList = new ArrayList<>();
