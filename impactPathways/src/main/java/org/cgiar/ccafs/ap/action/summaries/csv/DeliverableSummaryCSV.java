@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.summaries.csv;
 
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
@@ -23,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -41,6 +44,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
   private int contentLength;
   private APConfig config;
 
+
   /**
    * Method constructor.
    */
@@ -51,7 +55,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
     NEW_LINE_SEPARATOR = "\n";
     headers =
       new String[] {"Identifier", "Title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-    "Others Partners"};
+      "Others Partners", "Project Id", "Project Name", "Flashig(s)", "Region(s)"};
     this.config = config;
   }
 
@@ -60,82 +64,110 @@ public class DeliverableSummaryCSV extends BaseCSV {
    * 
    * @param deliverables it is a list that contain the deliverables
    */
-  private void addContent(List<Deliverable> deliverables) {
+  private void addContent(List<Project> projectList) {
 
-    for (Deliverable deliverable : deliverables) {
+    List<Deliverable> deliverables;
+    for (Project project : projectList) {
 
-      try {
+      deliverables = project.getDeliverables();
 
-        // if (deliverable != null && deliverable.getYear() > 2014)
+      for (Deliverable deliverable : deliverables) {
 
-        if (deliverable != null) {
-          StringBuilder stringBuilder = new StringBuilder();
+        try {
+          // if (deliverable != null && deliverable.getYear() > 2014)
+          if (deliverable != null) {
+            StringBuilder stringBuilder = new StringBuilder();
 
-          // Id
-          this.addRegister(deliverable.getId(), fileWriter);
-          fileWriter.append(COMMA_DELIMITER);
+            // Id
+            this.addRegister(deliverable.getId(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
 
-          // Title
-          this.addRegister(deliverable.getTitle(), fileWriter);
-          fileWriter.append(COMMA_DELIMITER);
+            // Title
+            this.addRegister(deliverable.getTitle(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
 
-          // MOG
-          this.addRegister(deliverable.getOutput().getDescription(), fileWriter);
-          fileWriter.append(COMMA_DELIMITER);
-
-          // Year
-          this.addRegister(deliverable.getYear(), fileWriter);
-          fileWriter.append(COMMA_DELIMITER);
-
-          // Main Type
-          this.addRegister(deliverable.getType().getCategory().getName(), fileWriter);
-          fileWriter.append(COMMA_DELIMITER);
-
-          // Sub Type
-          this.addRegister(deliverable.getType().getName(), fileWriter);
-          fileWriter.append(COMMA_DELIMITER);
-
-          // Other type
-          stringBuilder = new StringBuilder();
-          if (deliverable.getTypeOther() == null || deliverable.getTypeOther().equals("")) {
-            stringBuilder.append(this.getText("summaries.project.notapplicable"));
-          } else {
-            stringBuilder.append(deliverable.getTypeOther());
-          }
-          this.addRegister(stringBuilder.toString(), fileWriter);
-          fileWriter.append(COMMA_DELIMITER);
-
-          // Partner Responsible
-          if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
-            this.addRegister(deliverable.getResponsiblePartner().getPartner().getComposedName(), fileWriter);
-          } else {
-            this.addRegister("", fileWriter);
-          }
-          fileWriter.append(COMMA_DELIMITER);
-
-          // Others Partners
-          DeliverablePartner otherPartner;
-          stringBuilder = new StringBuilder();
-          if (deliverable.getOtherPartners() != null && !deliverable.getOtherPartners().isEmpty()) {
-            for (int a = 0; a < deliverable.getOtherPartners().size(); a++) {
-              otherPartner = deliverable.getOtherPartners().get(a);
-              if (otherPartner != null && otherPartner.getPartner() != null) {
-                if (a != 0) {
-                  stringBuilder.append("; ");
-                }
-                stringBuilder.append(otherPartner.getPartner().getComposedName());
-              }
+            // MOG
+            if (deliverable.getOutput() != null) {
+              this.addRegister(deliverable.getOutput().getDescription(), fileWriter);
+            } else {
+              this.addRegister(this.getText("summaries.project.empty"), fileWriter);
             }
-          } else {
-            stringBuilder.append(this.getText("summaries.project.empty"));
-          }
-          this.addRegister(stringBuilder, fileWriter);
-          fileWriter.append(this.NEW_LINE_SEPARATOR);
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+            fileWriter.append(COMMA_DELIMITER);
 
+            // Year
+            this.addRegister(deliverable.getYear(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Main Type
+            this.addRegister(deliverable.getType().getCategory().getName(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Sub Type
+            this.addRegister(deliverable.getType().getName(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Other type
+            stringBuilder = new StringBuilder();
+            if (deliverable.getTypeOther() == null || deliverable.getTypeOther().equals("")) {
+              stringBuilder.append(this.getText("summaries.project.notapplicable"));
+            } else {
+              stringBuilder.append(deliverable.getTypeOther());
+            }
+            this.addRegister(stringBuilder.toString(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Partner Responsible
+            if (deliverable.getResponsiblePartner() != null
+              && (deliverable.getResponsiblePartner().getPartner() != null)) {
+              this.addRegister(deliverable.getResponsiblePartner().getPartner().getComposedName(), fileWriter);
+            } else {
+              this.addRegister("", fileWriter);
+            }
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Others Partners
+            DeliverablePartner otherPartner;
+            stringBuilder = new StringBuilder();
+            if (deliverable.getOtherPartners() != null && !deliverable.getOtherPartners().isEmpty()) {
+              for (int a = 0; a < deliverable.getOtherPartners().size(); a++) {
+                otherPartner = deliverable.getOtherPartners().get(a);
+                if (otherPartner != null && otherPartner.getPartner() != null) {
+                  if (a != 0) {
+                    stringBuilder.append("; ");
+                  }
+                  stringBuilder.append(otherPartner.getPartner().getComposedName());
+                }
+              }
+            } else {
+              stringBuilder.append(this.getText("summaries.project.empty"));
+            }
+            this.addRegister(stringBuilder, fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Project Id
+            this.addRegister(project.getId(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Title
+            this.addRegister(project.getTitle(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Flashig
+            this.addRegister(project.getId(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            // Region
+            this.addRegister(project.getId(), fileWriter);
+            fileWriter.append(COMMA_DELIMITER);
+
+            fileWriter.append(this.NEW_LINE_SEPARATOR);
+
+          }
+
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
     }
   }
 
@@ -145,7 +177,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
    * @param deliverables it is a list that contain the deliverables
    */
 
-  public void generateCSV(List<Deliverable> deliverables) {
+  public void generateCSV(List<Project> projectList) {
 
     File file = new File(config.getUploadsBaseFolder() + "temporal.txt");
     fileWriter = null;
@@ -156,8 +188,22 @@ public class DeliverableSummaryCSV extends BaseCSV {
       fileWriter.write('\ufeff');
 
       this.addHeaders(headers, fileWriter);
-      this.addContent(deliverables);
+      this.addContent(projectList);
       fileWriter.close();
+
+      // *********************Created the fileName****************************
+      // Expected-deliverables-fecha(yyyyMMdd)
+      StringBuffer fileName = new StringBuffer();
+
+      fileName.append("Expected");
+      fileName.append("-");
+      fileName.append("deliverables");
+      fileName.append("-");
+      fileName.append(new SimpleDateFormat("dd/MM/yyyy/HH:mm").format(new Date()));
+      fileName.append(".csv");
+
+      this.fileName = fileName.toString();
+      // *****************************************************************
 
       inputStream = new FileInputStream(file);
       contentLength = (int) file.length();

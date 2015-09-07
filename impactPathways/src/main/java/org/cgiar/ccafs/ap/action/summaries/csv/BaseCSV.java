@@ -19,8 +19,6 @@ package org.cgiar.ccafs.ap.action.summaries.csv;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
@@ -35,11 +33,13 @@ public class BaseCSV {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(BaseCSV.class);
-  String COMMA_DELIMITER = ",";
-  String NEW_LINE_SEPARATOR = "\n";
-  FileWriter fileWriter;
-  TextProvider textProvider;
-  String[] headers;
+  public String COMMA_DELIMITER = ",";
+  public String NEW_LINE_SEPARATOR = "\n";
+  public FileWriter fileWriter;
+  public TextProvider textProvider;
+  public String[] headers;
+  public String fileName;
+
 
   /**
    * This method is used for to add the headers for the file
@@ -87,19 +87,10 @@ public class BaseCSV {
    * 
    * @return name of document
    */
-  public String getFileName(int projectID, String name) {
-    StringBuffer fileName = new StringBuffer();
-    fileName.append("Project");
-    fileName.append("-");
-    fileName.append(projectID);
-    fileName.append("-");
-    fileName.append(name);
-    fileName.append("-");
-    fileName.append(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-    fileName.append(".csv");
-
-    return fileName.toString();
+  public String getFileName() {
+    return fileName;
   }
+
 
   /**
    * Method used for to get the key internationalized that is in the properties file.
