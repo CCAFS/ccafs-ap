@@ -46,6 +46,11 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
   }
 
   @Override
+  public boolean deletePartnerPersons(ProjectPartner projectPartner) {
+    return partnerPersonDAO.deletePartnerPersons(projectPartner.getId());
+  }
+
+  @Override
   public PartnerPerson getPartnerPerson(int partnerPersonID) {
     Map<String, String> personsData = partnerPersonDAO.getPartnerPerson(partnerPersonID);
     if (personsData.size() > 0) {
