@@ -39,10 +39,6 @@
     [#if !canEdit]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="preplanning.project"/][/@s.param][/@s.text]</p>
     [/#if]
-    canEditLeadOrganization -> ${securityContext.canEditLeadOrganization()?string} <br />
-    canUpdatePPAPartners -> ${securityContext.canUpdatePPAPartners()?string} <br />
-    editable -> ${editable?string} <br />
-    canEdit -> ${canEdit?string} <br />
     
     [#-- Listing Partners from partnersTemplate.ftl --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
@@ -124,6 +120,9 @@
   
   [#-- allPPAInstitutions --]
   <input type="hidden" id="allPPAInstitutions" value="[[#list allPPAInstitutions as item]${item.id}[#if item_has_next],[/#if][/#list]]"/>
+  
+  [#-- Can update PPA Partners --]
+  <input type="hidden" id="canUpdatePPAPartners" value="${(securityContext.canUpdatePPAPartners() || project.bilateralProject)?string}"/>
   
   [#-- Project PPA Partners --]
   <select id="projectPPAPartners" style="display:none">

@@ -102,15 +102,24 @@
     
     [#-- Partner Person type and email--]
     <div class="fullPartBlock"> 
+      [#if (contact.leader)!false]
+       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader())/]
+      [#else]
+       [#assign canEditLeader=editable /]
+      [/#if]
       <div class="partnerPerson-type halfPartBlock clearfix">
-      [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=editable /]
-      [#if !editable]<div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p></div>[/#if]
+        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=canEditLeader /]
+        [#if !canEditLeader]
+        <div class="select">
+          <input class="partnerPersonType" type="hidden" name="${contactName}[${contactIndex}].type" value="${(contact.type)!-1}" /> 
+          <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
+        </div>[/#if]
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=editable/]
+        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=canEditLeader /]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user.id" value="${(contact.user.id)!'-1'}" />   
-        [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+        [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
     

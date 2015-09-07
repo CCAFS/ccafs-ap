@@ -2769,7 +2769,11 @@ span.partnerTag {
     font-weight: bold;
 }
 
-.contactPerson .index {
+.contactPerson .leftHead {
+  border: none !important;
+}
+
+.contactPerson .leftHead .index {
   background-color: #CECECE !important;  
   font-size: 0.95em !important;
   padding: 2px 10px 2px 10px !important;            

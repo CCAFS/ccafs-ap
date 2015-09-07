@@ -1,5 +1,5 @@
 var $removePartnerDialog, $projectPPAPartners;
-var allPPAInstitutions, partnerPersonTypes, leaderType, coordinatorType, defaultType;
+var canUpdatePPAPartners, allPPAInstitutions, partnerPersonTypes, leaderType, coordinatorType, defaultType;
 var lWordsResp = 100;
 
 $(document).ready(init);
@@ -10,6 +10,7 @@ function init() {
   $partnersBlock = $('#projectPartnersBlock');
   allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
   $projectPPAPartners = $('#projectPPAPartners');
+  canUpdatePPAPartners = ($("#canUpdatePPAPartners").val() === "true");
   leaderType = 'PL';
   coordinatorType = 'PC';
   defaultType = 'CP';
@@ -29,6 +30,10 @@ function init() {
     });
     $('.projectPartner > .leftHead').css({cursor: 'move'});
     $partnersBlock.disableSelection();
+    // Remove PPA institutions from partner institution list when there is not privileges to update PPA Partners
+    if(!canUpdatePPAPartners){
+      removePPAPartnersFromList('#projectPartner-template .institutionsList');
+    }  
     // Update initial project CCAFS partners list for each partner
     updateProjectPPAPartnersLists();
     // Attaching listeners
@@ -125,6 +130,9 @@ function updateOrganizationsList(e) {
       $.each(data.institutions, function(index,institution) {
         $selectInstitutions.append(setOption(institution.id, institution.composedName));
       });
+      if(!canUpdatePPAPartners){
+        removePPAPartnersFromList($selectInstitutions);
+      }
     },
     complete: function() {
       partner.stopLoader();
@@ -132,6 +140,13 @@ function updateOrganizationsList(e) {
       $selectInstitutions.trigger("liszt:updated");
     }
   });
+}
+
+function removePPAPartnersFromList(list){
+  for (var i = 0, len = allPPAInstitutions.length; i < len; i++) {
+    $(list).find('option[value='+allPPAInstitutions[i]+']').remove();
+  }
+  $(list).trigger("liszt:updated");
 }
 
 function updateProjectPPAPartnersLists(e){
@@ -457,9 +472,9 @@ function PartnerObject(partner) {
  */
 function PartnerPersonObject(partnerPerson) {
   this.id = parseInt($(partnerPerson).find('.partnerPersonId').val());
-  this.type = $(partnerPerson).find('select.partnerPersonType').val();
+  this.type = $(partnerPerson).find('.partnerPersonType').val();
   this.setPartnerType = function(type){
-    $(partnerPerson).find('select.partnerPersonType').val(type).trigger("liszt:updated");;
+    $(partnerPerson).find('.partnerPersonType').val(type).trigger("liszt:updated");;
   };
   this.changeType = function(){
     var partner = new PartnerObject($(partnerPerson).parents('.projectPartner'));
