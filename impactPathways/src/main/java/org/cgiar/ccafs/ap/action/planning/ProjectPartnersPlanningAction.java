@@ -273,12 +273,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting all partner types
     intitutionTypes = institutionManager.getAllInstitutionTypes();
 
-    // Populating the list of partner person types
-    partnerPersonTypes = new HashMap<>();
-    partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PL, this.getText("planning.projectPartners.types.PL"));
-    partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PC, this.getText("planning.projectPartners.types.PC"));
-    partnerPersonTypes.put(APConstants.PROJECT_PARTNER_CP, this.getText("planning.projectPartners.types.CP"));
-
     // Getting all Project Leaders
     allUsers = userManager.getAllUsers();
 
@@ -291,6 +285,17 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         this.projectPPAPartners.add(pp);
       }
     }
+
+    // Populating the list of partner person types
+    partnerPersonTypes = new HashMap<>();
+
+    // The project leader cannot change the leadership.
+    if (project.getLeaderPerson().getUser().getId() == this.getCurrentUser().getId()) {
+      partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PL, this.getText("planning.projectPartners.types.PL"));
+    }
+
+    partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PC, this.getText("planning.projectPartners.types.PC"));
+    partnerPersonTypes.put(APConstants.PROJECT_PARTNER_CP, this.getText("planning.projectPartners.types.CP"));
 
     // If the user is not admin or the project owner, we should keep some information
     // immutable
