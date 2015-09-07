@@ -197,11 +197,27 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
     String justification) {
     boolean result = true;
+    List<ProjectPartner> noPPAPartners = new ArrayList<>();
+
+    // Let's save only the PPA partners and later on the other partners to ensure that the partner contributions are
+    // saved correctly
     for (ProjectPartner partner : projectPartners) {
+      if (partner.getInstitution().isPPA()) {
+        if (this.saveProjectPartner(project, partner, user, justification) == -1) {
+          result = false;
+        }
+      } else {
+        noPPAPartners.add(partner);
+        continue;
+      }
+    }
+
+    for (ProjectPartner partner : noPPAPartners) {
       if (this.saveProjectPartner(project, partner, user, justification) == -1) {
         result = false;
       }
     }
+
     return result;
   }
 
