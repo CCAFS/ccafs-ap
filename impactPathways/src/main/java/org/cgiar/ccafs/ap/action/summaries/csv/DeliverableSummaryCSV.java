@@ -89,7 +89,9 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
           // Partner Responsible
           if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
-            this.addRegister(deliverable.getResponsiblePartner().getPartner().getComposedName(), fileWriter);
+            int responsibleID = deliverable.getResponsiblePartner().getPartner().getPartnerPersons().get(0).getId();
+            this.addRegister(deliverable.getResponsiblePartner().getPartner().getPersonComposedName(responsibleID),
+              fileWriter);
           } else {
             this.addRegister("", fileWriter);
           }
@@ -104,7 +106,8 @@ public class DeliverableSummaryCSV extends BaseCSV {
                 if (a != 0) {
                   stringBuilder.append("; ");
                 }
-                stringBuilder.append(otherPartner.getPartner().getComposedName());
+                // TODO - Jorge please fix this error, this is caused by the change in project partner class.
+                // stringBuilder.append(otherPartner.getPartner().getComposedName());
               }
             }
           } else {

@@ -290,7 +290,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     partnerPersonTypes = new HashMap<>();
 
     // The project leader cannot change the leadership.
-    if (project.getLeaderPerson().getUser().getId() == this.getCurrentUser().getId()) {
+    if (project.getLeaderPerson().getUser().getId() != this.getCurrentUser().getId()) {
       partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PL, this.getText("planning.projectPartners.types.PL"));
     }
 
