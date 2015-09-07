@@ -88,7 +88,7 @@
       [#-- Partner Name --]
       [#assign partnerId][#if dp.partner??]${dp.partner.id}[#else]-1[/#if][/#assign]
       <div class="fullPartBlock partnerName chosen"> 
-        [@customForm.select name="${customName}.partner" value="${partnerId}" className="partner" required=isResponsable label="" i18nkey="planning.projectDeliverable.partner" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+        [@customForm.select name="${customName}.partner" value="${partnerId}" className="partner" required=isResponsable label="" i18nkey="planning.projectDeliverable.partner" listName="projectPartnerPersons" editable=editable/]
       </div>
     [/#if] 
   </div> 
