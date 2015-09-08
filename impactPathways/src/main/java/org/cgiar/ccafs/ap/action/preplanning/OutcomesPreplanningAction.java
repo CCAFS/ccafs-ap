@@ -114,7 +114,6 @@ public class OutcomesPreplanningAction extends BaseAction {
     return APConstants.REGION_PROGRAM_TYPE;
   }
 
-
   @Override
   public String next() {
     String result = this.save();
