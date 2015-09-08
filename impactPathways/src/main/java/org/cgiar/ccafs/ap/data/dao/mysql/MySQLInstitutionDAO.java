@@ -316,6 +316,52 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectLeadingInstitutions() {
+    List<Map<String, String>> institutionsDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT i.id as 'institution_id', ");
+    query.append("i.name as 'institution_name', ");
+    query.append("i.acronym as 'institution_acronym', ");
+    query.append("i.website_link as 'institution_website_link', ");
+    query.append("pp.id as 'project_partner_id', ");
+    query.append("ppp.contact_type as 'partner_person_type', ");
+    query.append("pp.project_id as 'project_id', ");
+    query.append("le.id as 'country_id', ");
+    query.append("le.name as 'country_name' ");
+    query.append("FROM institutions i ");
+    query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("LEFT JOIN loc_elements le ON le.id = i.country_id ");
+    query.append("WHERE ppp.contact_type = 'PL' ");
+    query.append("ORDER BY i.id");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> institutionData = new HashMap<String, String>();
+        institutionData.put("id", rs.getString("institution_id"));
+        institutionData.put("name", rs.getString("institution_name"));
+        institutionData.put("acronym", rs.getString("institution_acronym"));
+        institutionData.put("website_link", rs.getString("institution_website_link"));
+        institutionData.put("project_partner_id", rs.getString("project_partner_id"));
+        institutionData.put("partner_person_type", rs.getString("partner_person_type"));
+        institutionData.put("project_id", rs.getString("project_id"));
+        institutionData.put("country_id", rs.getString("country_id"));
+        institutionData.put("country_name", rs.getString("country_name"));
+
+        institutionsDataList.add(institutionData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the ProjectPartnersinstitutions.", e);
+    }
+
+    return institutionsDataList;
+  }
+
+  @Override
   public List<Map<String, String>> getProjectPartnerInstitutions() {
     List<Map<String, String>> institutionsDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
@@ -331,6 +377,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("FROM institutions i ");
     query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
     query.append("LEFT JOIN loc_elements le ON le.id = i.country_id ");
+    query.append("ORDER BY i.id");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
