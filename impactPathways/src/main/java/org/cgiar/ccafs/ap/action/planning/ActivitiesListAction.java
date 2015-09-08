@@ -147,11 +147,11 @@ public class ActivitiesListAction extends BaseAction {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
     project.setActivities(activityManager.getActivitiesByProject(projectID));
-    projectPartners = projectPartnerManager.z_old_getProjectPartners(projectID);
 
     projectPartners = projectPartnerManager.getProjectPartners(project);
-    projectPartnerPersons = new HashMap<>();
 
+    // Creating Map of partner persons to be displayed in the view.
+    projectPartnerPersons = new HashMap<>();
     for (ProjectPartner partner : projectPartners) {
       for (PartnerPerson person : partner.getPartnerPersons()) {
         projectPartnerPersons.put(person.getId(), partner.getPersonComposedName(person.getId()));
@@ -194,9 +194,8 @@ public class ActivitiesListAction extends BaseAction {
         }
       }
       // Saving new and old Activities
-      boolean saved =
-        activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
-          this.getJustification());
+      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+        this.getJustification());
 
       if (!saved) {
         success = false;
