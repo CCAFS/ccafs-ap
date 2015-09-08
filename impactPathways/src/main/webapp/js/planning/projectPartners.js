@@ -156,7 +156,7 @@ function updateProjectPPAPartnersLists(e){
     var partner = new PartnerObject($(projectPartner));
     projectInstitutions.push(parseInt(partner.institutionId));
     // Collecting list CCAFS partners from all project partners
-    if(allPPAInstitutions.indexOf(partner.institutionId) != -1 ){
+    if(partner.isPPA()){
       partner.hidePPAs();
       $projectPPAPartners.append(setOption(partner.institutionId, partner.institutionName));
     }else{
@@ -256,8 +256,18 @@ function removePartnerEvent(e) {
         }
     }; 
   }
+  console.log(partner.hasLeader());
   if (partner.hasLeader()){
     messages += '<li>Please indicate another project leader before deleting this partner.</li>';
+    canDelete = false;
+    removeDialogOptions.buttons = {
+        Close : function() { 
+          $(this).dialog( "close" );
+        }
+    };
+  }
+  if (partner.isPPA() && !canUpdatePPAPartners){
+    messages += '<li>You don\'t have privileges to delete CCAFS Partners, please contact the ML to delete this partner. </li>';
     canDelete = false;
     removeDialogOptions.buttons = {
         Close : function() { 
@@ -437,7 +447,6 @@ function PartnerObject(partner) {
       contact.setIndex(elementName, i);
     });
   };
-  
   this.hasPartnerContributions = function(){
     var partnerInstitutionId = this.institutionId;
     var partners = [];
@@ -452,7 +461,6 @@ function PartnerObject(partner) {
     });
     return partners;
   };
-  
   this.hasLeader = function(){
     var result = false;
     $(partner).find('.contactPerson').each(function(i, partnerPerson) {
@@ -462,6 +470,13 @@ function PartnerObject(partner) {
       }
     });
     return result;
+  };
+  this.isPPA = function(){
+    if(allPPAInstitutions.indexOf(parseInt($(partner).find('.institutionsList').val())) != -1 ){
+      return true;
+    }else{
+      return false;
+    }
   };
   this.getRelationsNumber =  function(relation){
     var count = 0;

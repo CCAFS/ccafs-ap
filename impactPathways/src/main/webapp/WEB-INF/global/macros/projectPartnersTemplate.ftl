@@ -114,6 +114,7 @@
         [#if !canEditLeader && (contact.leader)!false]
         <div class="select">
           <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
+          <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
         </div>
         [/#if]
       </div>
