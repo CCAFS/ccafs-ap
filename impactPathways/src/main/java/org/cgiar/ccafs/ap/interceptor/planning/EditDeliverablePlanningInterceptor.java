@@ -17,7 +17,7 @@ package org.cgiar.ccafs.ap.interceptor.planning;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.security.SecurityContext;
+import org.cgiar.ccafs.ap.util.SecurityContext;
 
 import java.util.Map;
 

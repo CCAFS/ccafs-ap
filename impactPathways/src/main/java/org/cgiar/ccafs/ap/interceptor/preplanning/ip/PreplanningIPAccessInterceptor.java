@@ -16,7 +16,7 @@ package org.cgiar.ccafs.ap.interceptor.preplanning.ip;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.security.SecurityContext;
+import org.cgiar.ccafs.ap.util.SecurityContext;
 
 import java.util.Map;
 

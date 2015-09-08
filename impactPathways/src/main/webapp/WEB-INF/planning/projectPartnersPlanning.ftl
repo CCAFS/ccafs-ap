@@ -121,6 +121,9 @@
   [#-- allPPAInstitutions --]
   <input type="hidden" id="allPPAInstitutions" value="[[#list allPPAInstitutions as item]${item.id}[#if item_has_next],[/#if][/#list]]"/>
   
+  [#-- Can update PPA Partners --]
+  <input type="hidden" id="canUpdatePPAPartners" value="${(securityContext.canUpdatePPAPartners() || project.bilateralProject)?string}"/>
+  
   [#-- Project PPA Partners --]
   <select id="projectPPAPartners" style="display:none">
     [#list project.PPAPartners as ppaPartner]<option value="${ppaPartner.institution.id}">${ppaPartner.institution.getComposedName()}</option>[/#list]
@@ -128,22 +131,7 @@
   
   [#-- Remove Partner Dialog --]
   <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
-    <p class="message"></p>
-    <br />
-    <div class="activities">
-      <h3>[@s.text name="planning.activities.title" /]</h3>
-      <ul></ul>
-    </div>
-    <br />
-    <div class="deliverables">
-      <h3>[@s.text name="planning.deliverables" /]</h3>
-      <ul></ul>
-    </div>
-    <br />
-    <div class="projectPartners">
-      <h3>[@s.text name="preplanning.projectPartners.title" /]</h3>
-      <ul></ul>
-    </div>
+    <ul class="messages"></ul>
   </div>
   
   [#-- Remove partner person leader dialog --]

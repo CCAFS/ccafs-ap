@@ -100,7 +100,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("leader_id") != null) {
-        activity.setLeader(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(activityData
+        activity.setLeader(projectPartnerManager.getProjectPartnerByPersonID(Integer.parseInt(activityData
           .get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));

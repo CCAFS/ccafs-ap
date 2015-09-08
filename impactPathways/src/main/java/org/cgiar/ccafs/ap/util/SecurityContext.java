@@ -12,7 +12,11 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.security;
+package org.cgiar.ccafs.ap.util;
+
+import org.cgiar.ccafs.security.BaseSecurityContext;
+import org.cgiar.ccafs.security.Permission;
+import org.cgiar.ccafs.security.Role;
 
 
 /**

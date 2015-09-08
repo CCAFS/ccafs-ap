@@ -55,6 +55,17 @@ public interface ProjectPartnerManager {
   public ProjectPartner getProjectPartner(int partnerID);
 
   /**
+   * This method gets the project partner to which the partner person identified by the values received by parameter is
+   * linked to.
+   * 
+   * @param projectPartnerPersonID - Project partner person identifier
+   * @return Project partner object with the information, the map also will include the partner person information. If
+   *         no
+   *         information was found this method will return null.
+   */
+  public ProjectPartner getProjectPartnerByPersonID(int projectPartnerPersonID);
+
+  /**
    * Get the list of Project Partner whose a given partner is contributing to.
    * 
    * @param projectPartner is the partner object where we want to know which partners are contributing to it.

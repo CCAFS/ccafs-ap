@@ -56,7 +56,7 @@
         [#if projectPartner.partnerContributors?has_content]
           [#list projectPartner.partnerContributors as ppaPartner]
             <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
-              <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].partnerContributors[${ppaPartner_index}].institution.id" value="${ppaPartner.id}" />
+              <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].partnerContributors[${ppaPartner_index}].institution.id" value="${ppaPartner.institution.id}" />
               <span class="name">${(ppaPartner.institution.composedName)!}</span> 
               [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
             </li>
@@ -102,19 +102,31 @@
     
     [#-- Partner Person type and email--]
     <div class="fullPartBlock"> 
+      [#if (contact.leader)!false ]
+       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != contact.user.id)/]
+      [#elseif (contact.coordinator)!false]
+       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != contact.user.id)/]
+      [#else]
+       [#assign canEditLeader=editable /]
+      [/#if]
       <div class="partnerPerson-type halfPartBlock clearfix">
-      [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=editable /]
-      [#if !editable]<div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p></div>[/#if]
+        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=canEditLeader /]
+        [#if !canEditLeader && (contact.leader)!false]
+        <div class="select">
+          <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
+        </div>
+        [/#if]
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
+        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.user.id)!-1)?has_content) /]
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=editable/]
+        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=(canEditLeader && canEditEmail) /]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user.id" value="${(contact.user.id)!'-1'}" />   
-        [#if editable]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+        [#if canEditLeader && canEditEmail]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
     
-    [#-- Responsibilities --] 
+    [#-- Responsibilities --]
     <div class="fullPartBlock partnerResponsabilities chosen"> 
       [@customForm.textArea name="${contactName}[${contactIndex}].responsibilities" className="resp" i18nkey="preplanning.projectPartners.responsabilities" required=!project.bilateralProject editable=editable /]
     </div>
@@ -127,7 +139,7 @@
             <div class="tag activities">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
             <ul class="activitiesList" style="display:none">
             [#list action.getActivitiesLedByUser(contact.user.id) as activity]
-              <li><a href="[@s.url namespace=namespace action='activities' ][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]#activity-${activity.id}">${activity.title}</a></li>
+              <li>${activity.title}  <a href="[@s.url namespace=namespace action='activities' ][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]#activity-${activity.id}"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
             [/#list]
             </ul>
           [/#if]
@@ -135,7 +147,7 @@
             <div class="tag deliverables">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
             <ul class="deliverablesList" style="display:none">
             [#list action.getDeliverablesLedByUser(contact.user.id) as deliverable]
-              <li><a href="[@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${deliverable.id}[/@s.param][/@s.url]">${deliverable.title}</a></li>
+              <li>${deliverable.title}  <a href="[@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${deliverable.id}[/@s.param][/@s.url]"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
             [/#list]
             </ul>
           [/#if]
