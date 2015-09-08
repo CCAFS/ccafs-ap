@@ -32,7 +32,7 @@ import com.google.inject.Inject;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class PartnersSummaryCSV extends BaseCSV {
+public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
 
 
   private InputStream inputStream;
@@ -43,7 +43,7 @@ public class PartnersSummaryCSV extends BaseCSV {
   private APConfig config;
 
   @Inject
-  public PartnersSummaryCSV(APConfig config) {
+  public LeadInstitutionPartnersSummaryCSV(APConfig config) {
     COMMA_DELIMITER = ",";
     NEW_LINE_SEPARATOR = "\n";
     headers =
@@ -52,14 +52,14 @@ public class PartnersSummaryCSV extends BaseCSV {
   }
 
   /**
-   * This method is used to add an institution being a project partner
+   * This method is used to add an institution being a project leader
    * 
-   * @param projectPartnerInstitutions is the list of institutions to be added
+   * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Institution> projectPartnerInstitutions, String[] projectList) {
+  private void addContent(List<Institution> projectLeadingInstitutions, String[] projectList) {
     int i = 0;
-    for (Institution institution : projectPartnerInstitutions) {
+    for (Institution institution : projectLeadingInstitutions) {
       try {
 
         this.addRegister(institution.getId(), fileWriter);
@@ -95,12 +95,12 @@ public class PartnersSummaryCSV extends BaseCSV {
   }
 
   /**
-   * This method is used to generate the csv file for the ProjectPartner institutions.
+   * This method is used to generate the csv file for the ProjectLeading institutions.
    * 
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public void generateCSV(List<Institution> projectPartnerInstitutions, String[] projectList) {
+  public void generateCSV(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     File file = new File(config.getUploadsBaseFolder() + "temporal.txt");
     fileWriter = null;
@@ -111,14 +111,14 @@ public class PartnersSummaryCSV extends BaseCSV {
       fileWriter.write('\ufeff');
 
       this.addHeaders(headers, fileWriter);
-      this.addContent(projectPartnerInstitutions, projectList);
+      this.addContent(projectLeadingInstitutions, projectList);
       fileWriter.close();
 
       // *********************Created the fileName****************************
-      // ProjectPartner-Institutions_fecha(yyyyMMdd-HH:mm)
+      // ProjectLeading-Institutions-fecha(yyyyMMdd-HH:mm)
       StringBuffer fileName = new StringBuffer();
 
-      fileName.append("ProjectPartner");
+      fileName.append("ProjectLeading");
       fileName.append("-");
       fileName.append("Institutions");
       fileName.append("_");
