@@ -63,14 +63,17 @@ function init() {
 }
 
 function attachEvents() {
-  // Partners Events
+  /** Project partner Events ** */
+  // Add a project partner Event
   $("a.addProjectPartner").on('click', addPartnerEvent);
+  // Remove a project partner Event
   $(".removePartner").on('click', removePartnerEvent);
-
-  // Contacts Events
-  $(".addContact a.addLink").on('click', addContactEvent);
-  $(".removePerson").on('click', removePersonEvent);
-
+  // When Partner Type change
+  $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
+  // When organization change
+  $("select.institutionsList").on("change", function(e) {
+    updateProjectPPAPartnersLists(e);
+  });
   // Partners filters
   $(".filters-link").click(function(event) {
     var $filterContent = $(event.target).next();
@@ -80,21 +83,23 @@ function attachEvents() {
     $filterContent.slideToggle();
   });
 
-  // When Partner Type change
-  $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
-
-  // When organization change
-  $("select.institutionsList").on("change", function(e) {
-    updateProjectPPAPartnersLists(e);
-  });
-
+  /** Partner Person Events ** */
+  // Add partner Person Event
+  $(".addContact a.addLink").on('click', addContactEvent);
+  // Remove partner person event
+  $(".removePerson").on('click', removePersonEvent);
   // When partnerPersonType change
   $("select.partnerPersonType").on("change", function(e) {
-    var contact = new PartnerPersonObject($(e.target).parents('.contactPerson'));
+    var $contactPerson = $(e.target).parents('.contactPerson');
+    var contact = new PartnerPersonObject($contactPerson);
+    var partner = new PartnerObject($contactPerson.parents('.projectPartner'));
+    if((contact.type == leaderType) || (contact.type == coordinatorType)) {
+      setPartnerTypeToDefault(contact.type);
+    }
     contact.changeType();
+    partner.changeType();
   });
-
-  // Event when is clicked in a tag of relationship
+  // Event when click in a relation tag of partner person
   $(".tag").on("click", function(e) {
     var $relations = $(this).next().html();
     $('#relations-dialog').dialog({
@@ -215,7 +220,6 @@ function setPartnerTypeToDefault(type) {
   });
 }
 
-// Partner Events
 function removePartnerEvent(e) {
   e.preventDefault();
   var partner = new PartnerObject($(e.target).parent().parent());
@@ -279,7 +283,7 @@ function removePartnerEvent(e) {
       }
     };
   }
-  // Validate if there are any activity linked with to partner
+  // Validate if there are any activity linked to this partner
   if(activities > 0) {
     messages +=
         '<li>This partner cannot be deleted due to is currently related with ' + activities + ' activities</li>';
@@ -291,10 +295,10 @@ function removePartnerEvent(e) {
   }
 
   if(messages === "") {
-    // Remove partner if ther is not any problem
+    // Remove partner if there is not any problem
     partner.remove();
   } else {
-    // Show popup id there are any message
+    // Show pop up if there are any message
     $("#partnerRemove-dialog").find('.messages').append(messages);
     $("#partnerRemove-dialog").dialog(removeDialogOptions);
   }
@@ -333,9 +337,11 @@ function removePersonEvent(e) {
   var messages = "";
   var activities = person.getRelationsNumber('activities');
   var deliverables = person.getRelationsNumber('deliverables');
+  // Validate if the person type is PL
   if(person.isLeader()) {
     messages += '<li>Please indicate another project leader before deleting this contact.</li>';
   }
+  // Validate if there are any activity linked to this person
   if(activities > 0) {
     messages +=
         '<li>This contact cannot be deleted due to is currently the Activity Leader for ' + activities + ' activities';
@@ -344,14 +350,17 @@ function removePersonEvent(e) {
     messages += '</ul>';
     messages += '</li>';
   }
+  // Validate if there are any deliverable linked to this person
   if(deliverables > 0) {
     messages +=
         '<li>Please bear in mind that if you delete this contact, ' + deliverables
             + ' deliverables relationships will be deleted</li>';
   }
   if(messages === "") {
+    // Remove person if there is not any message
     person.remove();
   } else {
+    // Show a pop up with the message
     $("#contactRemove-dialog").find('.messages').append(messages);
     $("#contactRemove-dialog").dialog({
         modal: true,
@@ -451,14 +460,13 @@ function PartnerObject(partner) {
     });
   };
   this.hasPartnerContributions = function() {
-    var partnerInstitutionId = this.institutionId;
     var partners = [];
+    var institutionId = this.institutionId;
     $partnersBlock.find(".projectPartner").each(function(index,element) {
-      var partner = new PartnerObject($(element));
+      var projectPartner = new PartnerObject($(element));
       $(element).find('.ppaPartnersList ul.list li input.id').each(function(i_id,id) {
-        if($(id).val() == partnerInstitutionId) {
-          hasPartners = true;
-          partners.push(partner.institutionName);
+        if($(id).val() == institutionId) {
+          partners.push(projectPartner.institutionName);
         }
       });
     });
@@ -548,13 +556,8 @@ function PartnerPersonObject(partnerPerson) {
     ;
   };
   this.changeType = function() {
-    var partner = new PartnerObject($(partnerPerson).parents('.projectPartner'));
-    if((this.type == leaderType) || (this.type == coordinatorType)) {
-      setPartnerTypeToDefault(this.type);
-    }
     $(partnerPerson).removeClass(partnerPersonTypes.join(' ')).addClass(this.type);
     this.setPartnerType(this.type);
-    partner.changeType();
   };
   this.getRelationsNumber = function(relation) {
     return parseInt($(partnerPerson).find('.tag.' + relation + ' span').text()) || 0;
