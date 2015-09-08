@@ -249,6 +249,11 @@ p.checked, label.checked {
   text-align: justify;
 }
 
+img.external-link {
+  vertical-align: middle;
+  padding-left: 3px;
+}
+
 h6.checked-true {
   background: url(../../images/global/checked-true.png) no-repeat 0;
   padding: 3px 0  3px 23px;
@@ -2769,7 +2774,11 @@ span.partnerTag {
     font-weight: bold;
 }
 
-.contactPerson .index {
+.contactPerson .leftHead {
+  border: none !important;
+}
+
+.contactPerson .leftHead .index {
   background-color: #CECECE !important;  
   font-size: 0.95em !important;
   padding: 2px 10px 2px 10px !important;            

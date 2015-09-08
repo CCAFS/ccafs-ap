@@ -158,21 +158,26 @@
         [/#if] 
       [#else] 
         <p>  
-        [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
-        [#if value=="-NULL"] 
-          [#if !(customValue)?has_content] 
-            [@s.text name="form.values.fieldEmpty" /]
+          [#if displayFieldName == "" ]
+            [#assign key][@s.property value="${name}"/][/#assign]
+            [@s.property value="${listName}['${key}']"/]
           [#else]
-            ${customValue}
+            [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
+            [#if value=="-NULL"] 
+              [#if !(customValue)?has_content] 
+                [@s.text name="form.values.fieldEmpty" /]
+              [#else]
+                ${customValue}
+              [/#if]
+            [#else]  
+              [#if customValue?has_content]
+                ${customValue}
+              [#elseif value=="-1"]
+                [@s.text name="form.values.fieldEmpty" /]
+              [/#if] 
+            [/#if]
+            </p>
           [/#if]
-        [#else]  
-          [#if customValue?has_content]
-            ${customValue}
-          [#elseif value=="-1"]
-            [@s.text name="form.values.fieldEmpty" /]
-          [/#if] 
-        [/#if]
-        </p>
       [/#if]  
     </div> 
   </div>  
