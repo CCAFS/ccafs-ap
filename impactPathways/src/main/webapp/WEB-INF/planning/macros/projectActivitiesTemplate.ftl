@@ -33,9 +33,9 @@
         [@customForm.input name="${activitiesName}.endDate" className="endDate"  type="text" i18nkey="planning.activityDescription.endDate" required=true editable=editable/]
       </div>
     </div>
-    [#-- Project Partner --]
+    [#-- Project Leader --]
     <div class="fullPartBlock">
-      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable/]
     </div>  
   </div><!-- End ${activityId} -->
 [/#macro]
