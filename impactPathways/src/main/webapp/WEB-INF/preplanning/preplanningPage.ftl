@@ -24,7 +24,20 @@
   [@s.form action="projects"]  
     <br />
     <h1 class="contentTitle">Pre-Planning introduction</h1>
-    <div class="borderBox">
+    [#-- Flagships --]
+    <div id="flagships" class="borderBox">
+      <h3 class="projectSubTitle">Flagships</h3>
+      [#list programs as program]
+        [#if program.id != globalProgramID]
+          <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
+            <div class="program">${program.acronym}</div>
+          </a>
+        [/#if]
+      [/#list]
+    </div>
+    [#-- Regions --]
+    <div id="regions" class="borderBox">
+      <h3 class="projectSubTitle">Regions</h3>
       [#list programs as program]
         [#if program.id != globalProgramID]
           <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
