@@ -47,12 +47,12 @@
             [#assign outcomeDescription]
               [#if program.type.id == flagshipProgramTypeID]
                 [@s.text name="preplanning.outcomes.outcome"] 
-                  [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
+                  [@s.param name="0"]${program.acronym}[/@s.param] 
                   [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
                 [/@s.text]
               [#elseif securityContext.RPL]
                 [@s.text name="preplanning.outcomes.outcomeRPL"] 
-                  [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
+                  [@s.param name="0"]${program.acronym}[/@s.param] 
                   [@s.param name="1"]<span id="elementIndex">${outcome_index+1}</span>[/@s.param] 
                 [/@s.text]
               [/#if]
@@ -176,12 +176,12 @@
         <div id="outcomesBlock" class="outcome borderBox">
           [#-- Outcome identifier --]
           <input type="hidden" name="outcomes[0].id" value="-1" /> 
-          <input type="hidden" name="outcomes[0].program.id" value="${securityContext.CUrrentInstitution.program.id}" />
+          <input type="hidden" name="outcomes[0].program.id" value="${program.id}" />
           <input type="hidden" name="outcomes[0].type.id" value="${elementTypeID}" />
           [#-- Title --]
           [#assign outcomeDescription]
             [@s.text name="preplanning.outcomes.outcome"] 
-              [@s.param name="0"]${securityContext.CUrrentInstitution.program.acronym}[/@s.param] 
+              [@s.param name="0"]${program.acronym}[/@s.param] 
               [@s.param name="1"]<span id="elementIndex">1</span>[/@s.param] 
             [/@s.text]
           [/#assign]
@@ -224,7 +224,7 @@
   [/@s.form] 
   
 [#if program.type.id == flagshipProgramTypeID]
-  <input type="hidden" id="isFPL" value="${securityContext.CUrrentInstitution.program.id}" />
+  <input type="hidden" id="isFPL" value="${program.id}" />
 [/#if]  
 [#-- Outcome 2025 template --]
 <div id="outcomeTemplate" class="outcome borderBox" style="display:none">
