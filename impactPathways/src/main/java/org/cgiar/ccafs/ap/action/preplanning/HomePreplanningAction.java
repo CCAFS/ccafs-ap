@@ -37,12 +37,17 @@ public class HomePreplanningAction extends BaseAction {
   private IPProgramManager programManager;
 
   // Model
-  List<IPProgram> programs;
+  List<IPProgram> flagshipPrograms;
+  List<IPProgram> regionPrograms;
 
   @Inject
   public HomePreplanningAction(APConfig config, IPProgramManager programManager) {
     super(config);
     this.programManager = programManager;
+  }
+
+  public List<IPProgram> getFlagshipPrograms() {
+    return flagshipPrograms;
   }
 
   public int getGlobalProgramID() {
@@ -53,17 +58,17 @@ public class HomePreplanningAction extends BaseAction {
     return APConstants.PROGRAM_REQUEST_ID;
   }
 
-  public List<IPProgram> getPrograms() {
-    return programs;
+  public List<IPProgram> getRegionPrograms() {
+    return regionPrograms;
   }
 
   @Override
   public void prepare() throws Exception {
-    programs = programManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
-    programs.addAll(programManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE));
+    flagshipPrograms = programManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    regionPrograms = programManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
   }
 
   public void setPrograms(List<IPProgram> programs) {
-    this.programs = programs;
+    this.flagshipPrograms = programs;
   }
 }

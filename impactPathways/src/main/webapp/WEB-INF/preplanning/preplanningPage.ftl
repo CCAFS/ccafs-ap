@@ -25,7 +25,7 @@
     <br />
     <h1 class="contentTitle">Pre-Planning introduction</h1>
     <div class="borderBox">
-      [#list programs as program]
+      [#list regionPrograms as program]
         [#if program.id != globalProgramID]
           <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
             <div class="program">${program.acronym}</div>
