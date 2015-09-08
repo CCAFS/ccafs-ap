@@ -9,7 +9,7 @@
 
     <!-- Sections -->
     
-    <action name="intro" class="org.cgiar.ccafs.ap.action.BaseAction">
+    <action name="intro" class="org.cgiar.ccafs.ap.action.preplanning.HomePreplanningAction">
       <result name="input">/WEB-INF/preplanning/preplanningPage.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">intro</param>
