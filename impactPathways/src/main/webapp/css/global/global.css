@@ -2314,6 +2314,21 @@ width:10px;
   text-align: left;
 }
 
+/* Introduction */
+
+#preplanningPrograms .program {
+  float: left;
+  width: 23%;
+  margin: 1%;
+  padding-top: 27px;
+  text-align: center;
+  height: 51px;
+  background-color: #BEC7AB;
+  color: #fff;
+  font-size: 1.3em;
+  border-radius: 2px;
+}
+
 /* Outcomes 2025*/
 #idosBlock .ido {
     padding: 0.5em;

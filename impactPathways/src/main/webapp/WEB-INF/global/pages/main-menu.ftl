@@ -22,11 +22,7 @@
 	      [#-- PRE-Planning section --]
 	      [#if securityContext.FPL || securityContext.RPL || securityContext.CU || securityContext.admin ]
 	        [#if preplanningActive ]
-	          [#if securityContext.CU ]
-  	          <a  href="[@s.url namespace="/pre-planning" action='projects'/]">
-  	        [#else]
-  	          <a  href="[@s.url namespace="/pre-planning" action='outcomes'/]">
-  	        [/#if]
+  	          <a  href="[@s.url namespace="/pre-planning" action='intro'/]">
 	        [#else]
 	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
 	        [/#if]

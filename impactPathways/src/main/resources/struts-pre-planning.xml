@@ -9,6 +9,13 @@
 
     <!-- Sections -->
     
+    <action name="intro" class="org.cgiar.ccafs.ap.action.preplanning.HomePreplanningAction">
+      <result name="input">/WEB-INF/preplanning/preplanningPage.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">intro</param>
+      </result>
+    </action>
+    
     <!-- Section: Higher Level Impact Pathways  -->
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
       <result name="cancel" type="redirectAction">

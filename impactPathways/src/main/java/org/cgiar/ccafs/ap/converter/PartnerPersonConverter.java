@@ -13,8 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.converter;
 
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 
 import java.util.Map;
 
@@ -24,34 +24,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Carlos Alberto Martínez M.
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
-public class ProjectPartnerConverter extends StrutsTypeConverter {
+public class PartnerPersonConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(ProjectPartnerConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PartnerPersonConverter.class);
 
   // Manager
-  private ProjectPartnerManager projectPartnerManager;
+  private PartnerPersonManager partnerPersonManager;
 
   @Inject
-  public ProjectPartnerConverter(ProjectPartnerManager projectPartnerManager) {
-    this.projectPartnerManager = projectPartnerManager;
+  public PartnerPersonConverter(PartnerPersonManager partnerPersonManager) {
+    this.partnerPersonManager = partnerPersonManager;
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public Object convertFromString(Map context, String[] values, Class toClass) {
-    if (toClass == ProjectPartner.class) {
+    if (toClass == PartnerPerson.class) {
       String id = values[0];
       try {
         LOG.debug(">> convertFromString > id = {} ", id);
-        return projectPartnerManager.getProjectPartner(Integer.parseInt(id));
+        return partnerPersonManager.getPartnerPerson(Integer.parseInt(id));
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG.error("Problem to convert Project Partner from String (convertFromString) for id = {} ", id,
-          e.getMessage());
+        LOG.error("Problem to convert Partner Person from String (convertFromString) for id = {} ", id, e.getMessage());
       }
     }
     return null;
@@ -61,9 +59,9 @@ public class ProjectPartnerConverter extends StrutsTypeConverter {
   @Override
   public String convertToString(Map context, Object o) {
     if (o != null) {
-      ProjectPartner projectPartner = (ProjectPartner) o;
-      LOG.debug(">> convertToString > id = {} ", projectPartner.getId());
-      return projectPartner.getId() + "";
+      PartnerPerson partnerPerson = (PartnerPerson) o;
+      LOG.debug(">> convertToString > id = {} ", partnerPerson.getId());
+      return partnerPerson.getId() + "";
     }
     return null;
   }

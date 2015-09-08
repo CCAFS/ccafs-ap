@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,8 @@ public class OutcomesPreplanningAction extends BaseAction {
   private List<IPElement> outcomes;
   private List<IPElement> outcomesFromDatabase;
   private List<IPIndicator> fplOutcomesIndicators;
-
+  private IPProgram program;
+  private int programID;
 
   @Inject
   public OutcomesPreplanningAction(APConfig config, IPElementManager ipElementManager,
@@ -80,6 +82,10 @@ public class OutcomesPreplanningAction extends BaseAction {
     return APConstants.ELEMENT_TYPE_OUTCOME2025;
   }
 
+  public int getFlagshipProgramTypeID() {
+    return APConstants.FLAGSHIP_PROGRAM_TYPE;
+  }
+
   public List<IPIndicator> getFplOutcomesIndicators() {
     return fplOutcomesIndicators;
   }
@@ -96,6 +102,18 @@ public class OutcomesPreplanningAction extends BaseAction {
     return outcomes;
   }
 
+  public IPProgram getProgram() {
+    return program;
+  }
+
+  public int getProgramID() {
+    return programID;
+  }
+
+  public int getRegionProgramTypeID() {
+    return APConstants.REGION_PROGRAM_TYPE;
+  }
+
   @Override
   public String next() {
     String result = this.save();
@@ -108,6 +126,8 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    programID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROGRAM_REQUEST_ID)));
+
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
     // The Consortium IDOs are created by the system administrator
@@ -120,7 +140,9 @@ public class OutcomesPreplanningAction extends BaseAction {
     consortiumIDOs = ipElementManager.getIPElements(systemProgram, idoType);
     ccafsIDOs = ipElementManager.getIPElements(ccafsProgram, idoType);
 
-    outcomes = ipElementManager.getIPElements(this.getCurrentUser().getCurrentInstitution().getProgram(), type);
+    program = ipProgramManager.getIPProgramById(programID);
+
+    outcomes = ipElementManager.getIPElements(program, type);
 
     // Keep the id of all outcomes which come from the database
     outcomesFromDatabase = new ArrayList<>();
@@ -149,8 +171,8 @@ public class OutcomesPreplanningAction extends BaseAction {
       List<IPProgram> flagshipPrograms = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
       IPElementType outcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
-      for (IPProgram program : flagshipPrograms) {
-        List<IPElement> elements = ipElementManager.getIPElements(program, outcomesType);
+      for (IPProgram flagshipProgram : flagshipPrograms) {
+        List<IPElement> elements = ipElementManager.getIPElements(flagshipProgram, outcomesType);
         for (IPElement e : elements) {
           for (IPIndicator indicator : e.getIndicators()) {
             if (indicator.getParent() == null) {
@@ -208,5 +230,13 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   public void setOutcomes(List<IPElement> outcomes) {
     this.outcomes = outcomes;
+  }
+
+  public void setProgram(IPProgram program) {
+    this.program = program;
+  }
+
+  public void setProgramID(int programID) {
+    this.programID = programID;
   }
 }
