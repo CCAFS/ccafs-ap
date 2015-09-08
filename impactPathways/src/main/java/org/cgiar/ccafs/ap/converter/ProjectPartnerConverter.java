@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public class ProjectPartnerConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(InstitutionConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProjectPartnerConverter.class);
 
   // Manager
   private ProjectPartnerManager projectPartnerManager;
