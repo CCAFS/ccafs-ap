@@ -32,26 +32,24 @@ import com.google.inject.Inject;
 
 
 /**
- * @author Jorge Leonardo Solis B.
+ * @author Your name
  */
-
-public class DeliverableSummaryCSV extends BaseCSV {
-
-
-  private APConfig config;
+public class PWOBSummaryCSV extends BaseCSV {
 
 
   /**
    * Method constructor.
    */
+  APConfig config;
+
   @Inject
-  public DeliverableSummaryCSV(APConfig config) {
+  public PWOBSummaryCSV(APConfig config) {
 
     COMMA_DELIMITER = ",";
     NEW_LINE_SEPARATOR = "\n";
     headers =
       new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID", "Deliverable title",
-        "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
+      "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
     this.config = config;
   }
 
@@ -193,6 +191,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
     }
   }
 
+
   /**
    * Method is used to generate the csv for the deliverable.
    * 
@@ -235,6 +234,5 @@ public class DeliverableSummaryCSV extends BaseCSV {
       e.printStackTrace();
     }
   }
-
 
 }
