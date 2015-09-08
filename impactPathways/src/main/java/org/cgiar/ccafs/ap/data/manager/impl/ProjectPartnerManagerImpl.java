@@ -84,6 +84,42 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
+  public ProjectPartner getProjectPartnerByPersonID(int projectPartnerPersonID) {
+    ProjectPartner partner = new ProjectPartner();
+    Map<String, String> partnerData = projectPartnerDAO.getProjectPartnerByPersonID(projectPartnerPersonID);
+
+    if (partnerData.isEmpty()) {
+      return null;
+    }
+
+    partner.setId(Integer.parseInt(partnerData.get("id")));
+
+    Institution institution = new Institution();
+    institution.setId(Integer.parseInt(partnerData.get("institution_id")));
+    institution.setName(partnerData.get("institution_name"));
+    institution.setAcronym(partnerData.get("institution_acronym"));
+    partner.setInstitution(institution);
+
+    List<PartnerPerson> partnerPersons = new ArrayList<>();
+    PartnerPerson person = new PartnerPerson();
+    person.setId(Integer.parseInt(partnerData.get("partner_person_id")));
+    person.setResponsibilities(partnerData.get("responsibilities"));
+    person.setType(partnerData.get("contact_type"));
+
+    User user = new User();
+    user.setId(Integer.parseInt(partnerData.get("user_id")));
+    user.setFirstName(partnerData.get("first_name"));
+    user.setLastName(partnerData.get("last_name"));
+    user.setEmail(partnerData.get("email"));
+    person.setUser(user);
+
+    partnerPersons.add(person);
+    partner.setPartnerPersons(partnerPersons);
+
+    return partner;
+  }
+
+  @Override
   public List<ProjectPartner> getProjectPartnerContributors(ProjectPartner projectPartner) {
     List<ProjectPartner> partnerContributors = new ArrayList<>();
     List<Map<String, String>> partnerContributorsDataList =
