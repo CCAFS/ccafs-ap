@@ -111,11 +111,11 @@
       [/#if]
       <div class="partnerPerson-type halfPartBlock clearfix">
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=canEditLeader /]
-        [#if !canEditLeader && (contact.leader)!false]
-        <div class="select">
-          <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
-          <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
-        </div>
+        [#if !canEditLeader ]
+          <div class="select">
+            <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
+            <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
+          </div>
         [/#if]
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">

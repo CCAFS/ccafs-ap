@@ -191,8 +191,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
     // Delete the project partner persons and then add them again if any
     partnerPersonManager.deletePartnerPersons(projectPartner);
-    for (PartnerPerson person : projectPartner.getPartnerPersons()) {
-      partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
+    if (projectPartner.getPartnerPersons() != null) {
+      for (PartnerPerson person : projectPartner.getPartnerPersons()) {
+        partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
+      }
     }
 
     // Delete the project partner contributions and then add them again if any

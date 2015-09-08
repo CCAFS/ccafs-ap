@@ -3,22 +3,22 @@
   <ul> 
     <li [#if currentStage == "outcomes"] class="currentSection" [/#if]>
       <a href="[@s.url action='outcomes' includeParams='get'][/@s.url]">
-        [#if securityContext.FPL]
+        [#if program.type.id == flagshipProgramTypeID]
           [@s.text name="menu.preplanning.submenu.outcomes" /]
-        [#elseif securityContext.RPL]
+        [#elseif program.type.id == regionProgramTypeID]
           [@s.text name="menu.preplanning.submenu.outcomesRPL" /]
         [/#if]
       </a>
     </li>
     
-    [#if securityContext.RPL ]
+    [#if program.type.id == regionProgramTypeID ]
       <li [#if currentStage == "midOutcomes"] class="currentSection" [/#if]>
         <a href="[@s.url action='midOutcomesRPL' includeParams='get'][/@s.url]">
           [@s.text name="menu.preplanning.submenu.midOutcomes" /]
         </a>
       </li>
       
-    [#elseif securityContext.FPL ] 
+    [#elseif program.type.id == flagshipProgramTypeID ] 
       <li [#if currentStage == "midOutcomes"] class="currentSection" [/#if]>
         <a href="[@s.url action='midOutcomes' includeParams='get'][/@s.url]">
           [@s.text name="menu.preplanning.submenu.midOutcomes" /]
@@ -40,7 +40,7 @@
         <img style="display: block; margin: 0 auto;" src="${baseUrl}/images/global/loading.gif" alt="Loader" />
     </div>
     <div id="ipGraph-content"></div>
-      [#if securityContext.FPL]
+      [#if program.type.id == flagshipProgramTypeID]
     	<button id="ipGraph-btnFullimpact" class="ipGraph-btn">[@s.text name="preplanning.ipGraph.all" /]</button>
     	<button style='display:none' id="ipGraph-btnSingleimpact" class="ipGraph-btn">[@s.text name="preplanning.ipGraph.myFP" /]</button>
 	  [/#if]
