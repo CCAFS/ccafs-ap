@@ -41,7 +41,7 @@
               <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
                 [#-- Mid outcome identifier --]
                 <input type="hidden" id="id" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-                <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${securityContext.CUrrentInstitution.program.id}" />
+                <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${program.id}" />
                 <input type="hidden" id="midOutcomeTypeId" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
                 [#-- Contribution to the regional vision 2025 --]
                 <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${outcomesList[0].id}" /> 
@@ -161,7 +161,7 @@
 <div class="midOutcome borderBox" id="midOutcomeRPLTemplate" style="display:none">
   [#-- Mid outcome identifier --]
   <input id="id" type="hidden"  value="-1" />
-  <input type="hidden" id="midOutcomeProgramId" value="${securityContext.CUrrentInstitution.program.id}" />
+  <input type="hidden" id="midOutcomeProgramId" value="${program.id}" />
   <input type="hidden" id="midOutcomeTypeId" value="${elementTypeID}" />
   [#-- Contribution to the regional vision 2025 --]
   [#-- If there are no Outcomes 2025, users can not add midOutcomes --]

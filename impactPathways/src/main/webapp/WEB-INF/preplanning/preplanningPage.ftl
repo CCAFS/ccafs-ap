@@ -24,27 +24,33 @@
   [@s.form action="projects"]  
     <br />
     <h1 class="contentTitle">Pre-Planning introduction</h1>
-    [#-- Flagships --]
-    <div id="flagships" class="borderBox">
-      <h3 class="projectSubTitle">Flagships</h3>
-      [#list programs as program]
-        [#if program.id != globalProgramID]
-          <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
-            <div class="program">${program.acronym}</div>
-          </a>
-        [/#if]
-      [/#list]
-    </div>
-    [#-- Regions --]
-    <div id="regions" class="borderBox">
-      <h3 class="projectSubTitle">Regions</h3>
-      [#list programs as program]
-        [#if program.id != globalProgramID]
-          <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
-            <div class="program">${program.acronym}</div>
-          </a>
-        [/#if]
-      [/#list]
+    <div>
+      [#-- Flagships --]
+      <div id="flagships" class="borderBox">
+        <h3 class="projectSubTitle" style="margin-top:0">Flagships</h3>
+        [#list flagshipPrograms as program]
+          [#if program.id != globalProgramID]
+            <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
+              <div class="program">${program.acronym} 
+                <p class="name">${program.name} </p>
+              </div>
+            </a>
+          [/#if]
+        [/#list]
+      </div>
+      [#-- Regions --]
+      <div id="regions" class="borderBox">
+        <h3 class="projectSubTitle" style="margin-top:0">Regions</h3>
+        [#list regionPrograms as program]
+          [#if program.id != globalProgramID]
+            <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
+              <div class="program">${program.acronym}
+                <p class="name">${program.name} </p>
+              </div>
+            </a>
+          [/#if]
+        [/#list]
+      </div>
     </div>
   [/@s.form]  
   </article>
