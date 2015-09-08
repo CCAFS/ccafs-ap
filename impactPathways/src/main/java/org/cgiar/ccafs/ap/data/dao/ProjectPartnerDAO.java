@@ -61,6 +61,16 @@ public interface ProjectPartnerDAO {
   public Map<String, String> getProjectPartner(int partnerID);
 
   /**
+   * This method gets the project partner to which the partner person identified by the values received by parameter is
+   * linked to.
+   * 
+   * @param projectPartnerPersonID - Project partner person identifier
+   * @return a map with the project partner information, the map also will include the partner person information. If no
+   *         information was found this method will return an empty map.
+   */
+  public Map<String, String> getProjectPartnerByPersonID(int projectPartnerPersonID);
+
+  /**
    * Get the list of project partners that are contributing to a given project partner.
    * 
    * @param projectPartnerID is the project partner identifier whose project partners are contributing to

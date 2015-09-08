@@ -140,6 +140,43 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
 
   @Override
+  public Map<String, String> getProjectPartnerByPersonID(int projectPartnerPersonID) {
+    Map<String, String> projectPartnerData = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT pp.id, i.id as 'institution_id', i.name as 'institution_name',  ");
+    query.append("i.acronym as 'institution_acronym', ppp.responsibilities, ppp.contact_type, ");
+    query.append("ppp.id as 'partner_person_id', u.id as 'user_id', u.first_name, u.last_name, u.email ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+    query.append("INNER JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("INNER JOIN users u ON ppp.user_id = u.id ");
+    query.append("WHERE ppp.id = ");
+    query.append(projectPartnerPersonID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        projectPartnerData.put("id", rs.getString("id"));
+        projectPartnerData.put("institution_id", rs.getString("institution_id"));
+        projectPartnerData.put("institution_name", rs.getString("institution_name"));
+        projectPartnerData.put("institution_acronym", rs.getString("institution_acronym"));
+        projectPartnerData.put("partner_person_id", rs.getString("partner_person_id"));
+        projectPartnerData.put("responsibilities", rs.getString("responsibilities"));
+        projectPartnerData.put("contact_type", rs.getString("contact_type"));
+        projectPartnerData.put("user_id", rs.getString("user_id"));
+        projectPartnerData.put("first_name", rs.getString("first_name"));
+        projectPartnerData.put("last_name", rs.getString("last_name"));
+        projectPartnerData.put("email", rs.getString("email"));
+      }
+    } catch (SQLException e) {
+      LOG.error("getProjectPartnerByPersonID > Exception raised trying to get the project partner linked to "
+        + "the partner person {}.", projectPartnerPersonID, e);
+    }
+
+    return projectPartnerData;
+  }
+
+  @Override
   public List<Map<String, String>> getProjectPartnerContributors(int projectPartnerID) {
     LOG.debug(">> getProjectPartnerContributors( )");
 
@@ -191,7 +228,9 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return this.getData(query.toString());
   }
 
+
   @Override
+  @Deprecated
   public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
     LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})", new Object[] {projectID,
       projectPartnerType});
@@ -210,7 +249,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
