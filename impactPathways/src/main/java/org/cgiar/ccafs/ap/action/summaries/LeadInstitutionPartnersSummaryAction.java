@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.csv.PartnersSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.csv.LeadInstitutionPartnersSummaryCSV;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
@@ -37,31 +37,32 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class PartnersSummaryAction extends BaseAction implements Summary {
+public class LeadInstitutionPartnersSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(PartnersSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(LeadInstitutionPartnersSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
-  private PartnersSummaryCSV partnersCSV;
+  private LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV;
   private ProjectPartnerManager projectPartnerManager;
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   List<InputStream> streams;
   List<ProjectPartner> partners;
-  List<Institution> projectPartnerInstitutions;
+  List<Institution> projectLeadingInstitutions;
   String[] projectList;
   int projectID;
   Project project;
 
   @Inject
-  public PartnersSummaryAction(APConfig config, ProjectPartnerManager projectPartnerManager,
+  public LeadInstitutionPartnersSummaryAction(APConfig config, ProjectPartnerManager projectPartnerManager,
     NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
-    PartnersSummaryCSV partnersCSV, InstitutionManager institutionManager, ProjectManager projectManager) {
+    LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV, InstitutionManager institutionManager,
+    ProjectManager projectManager) {
     super(config);
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
-    this.partnersCSV = partnersCSV;
+    this.leadInstitutionPartnersSummaryCSV = leadInstitutionPartnersSummaryCSV;
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.projectManager = projectManager;
@@ -72,58 +73,58 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   public String execute() throws Exception {
 
     // Generate the csv file
-    partnersCSV.generateCSV(projectPartnerInstitutions, projectList);
+    leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
     streams = new ArrayList<>();
-    streams.add(partnersCSV.getInputStream());
+    streams.add(leadInstitutionPartnersSummaryCSV.getInputStream());
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return partnersCSV.getContentLength();
+    return leadInstitutionPartnersSummaryCSV.getContentLength();
   }
 
   @Override
   public String getFileName() {
-    return partnersCSV.getFileName();
+    return leadInstitutionPartnersSummaryCSV.getFileName();
   }
 
 
   @Override
   public InputStream getInputStream() {
-    return partnersCSV.getInputStream();
+    return leadInstitutionPartnersSummaryCSV.getInputStream();
   }
 
 
   @Override
   public void prepare() {
 
-    projectPartnerInstitutions = institutionManager.getProjectPartnerInstitutions();
-    projectList = new String[projectPartnerInstitutions.size()];
+    projectLeadingInstitutions = institutionManager.getProjectLeadingInstitutions();
+    projectList = new String[projectLeadingInstitutions.size()];
     // Fill in projectList with blanks to be worked on later
     for (int p = 0; p < projectList.length; p++) {
       projectList[p] = "";
     }
     // Remove repeated institutions
-    for (int k = 0; k < projectPartnerInstitutions.size(); k++) {
-      for (int l = projectPartnerInstitutions.size() - 1; l > k; l--) {
-        if (projectPartnerInstitutions.get(k).getId() == projectPartnerInstitutions.get(l).getId()) {
-          projectPartnerInstitutions.remove(l);
+    for (int k = 0; k < projectLeadingInstitutions.size(); k++) {
+      for (int l = projectLeadingInstitutions.size() - 1; l > k; l--) {
+        if (projectLeadingInstitutions.get(k).getId() == projectLeadingInstitutions.get(l).getId()) {
+          projectLeadingInstitutions.remove(l);
         }
       }
     }
     // Generate the list with projectIDs for each institution
     int count = 0;
-    for (int i = 0; i < projectPartnerInstitutions.size(); i++) {
-      int stop = projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).size();
+    for (int i = 0; i < projectLeadingInstitutions.size(); i++) {
+      int stop = projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).size();
       for (int j = 0; j < stop; j++) {
         if (j == stop - 1) {
           projectList[count] +=
-            projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId();
+            projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).get(j).getId();
         } else {
           projectList[count] +=
-            (projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId() + " , ");
+            (projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).get(j).getId() + " , ");
         }
       }
       count++;
