@@ -206,50 +206,80 @@ function setPartnerTypeToDefault(type){
   });
 }
 
+
 // Partner Events
 function removePartnerEvent(e) {
+  e.preventDefault();
   var partner = new PartnerObject($(e.target).parent().parent());
   if(partner.id == "-1"){
     partner.remove();
     return
   }
-  e.preventDefault();
+  var messages="";
   var canDelete = true;
   var activities = partner.getRelationsNumber('activities');
   var deliverables = partner.getRelationsNumber('deliverables');
+  var partnerContributions = partner.hasPartnerContributions();
   var removeDialogOptions = {
       modal : true,
-      width: 400,
-      buttons: {
-        Close: function() {
-          $(this).dialog( "close" );
-        }
-      },
+      width: 500,
+      buttons: {},
       close : function(){
-        $( "#contactRemove-dialog" ).find('.messages').empty();          
+        $( "#partnerRemove-dialog" ).find('.messages').empty();
       }
   };
-  if (partner.hasLeader()){
-    $( "#contactRemove-dialog" ).find('.messages').append('<li>Please indicate another project leader before deleting this partner.</li>');
-    canDelete = false;
-  }
-  if (activities > 0){
-    $( "#contactRemove-dialog" ).find('.messages').append('<li>This partner cannot be deleted due to is currently related with '+activities+' activities</li>');
-    canDelete = false;
-  }
+  
   if (deliverables > 0){
-    $( "#contactRemove-dialog" ).find('.messages').append('<li>Please bear in mind that if you delete this contact, '+deliverables+' deliverables relationships will be deleted</li>');
+    messages +='<li>Please bear in mind that if you delete this contact, '+deliverables+' deliverables relationships will be deleted</li>';
     canDelete = false;
     removeDialogOptions.buttons = {
-        Close: function() {
+        "Remove partner" : function() {
+          partner.remove();
+          $(this).dialog( "close" );
+        },
+        Close : function() { 
           $(this).dialog( "close" );
         }
-      };
+    }; 
   }
+  if(partnerContributions.length > 0){
+    messages += '<li>This partner cannot be deleted due to is currently contributing to another partner ';
+    messages += '<ul>';
+    for (var i = 0, len = partnerContributions.length; i < len; i++) {
+      messages += '<li>'+partnerContributions[i]+'</li>';
+    }
+    messages += '</ul> </li>';
+    canDelete = false;
+    removeDialogOptions.buttons = {
+        Close : function() { 
+          $(this).dialog( "close" );
+        }
+    }; 
+  }
+  if (partner.hasLeader()){
+    messages += '<li>Please indicate another project leader before deleting this partner.</li>';
+    canDelete = false;
+    removeDialogOptions.buttons = {
+        Close : function() { 
+          $(this).dialog( "close" );
+        }
+    };
+  }
+  if (activities > 0){
+    messages += '<li>This partner cannot be deleted due to is currently related with '+activities+' activities</li>';
+    canDelete = false;
+    removeDialogOptions.buttons = {
+        Close : function() { 
+          $(this).dialog( "close" );
+        }
+    };
+  }
+  
   if(canDelete){
     partner.remove();     
   }else{
-    $( "#contactRemove-dialog" ).dialog(removeDialogOptions);
+    $( "#partnerRemove-dialog" ).find('.messages').append(messages);
+    $( "#partnerRemove-dialog" ).dialog(removeDialogOptions);
   }
 
 }
@@ -287,24 +317,30 @@ function removePersonEvent(e){
     person.remove();
     return
   }
+  var messages="";
   var canDelete = true;
   var activities = person.getRelationsNumber('activities');
   var deliverables = person.getRelationsNumber('deliverables');
   if (person.isLeader()){
-    $( "#contactRemove-dialog" ).find('.messages').append('<li>Please indicate another project leader before deleting this contact.</li>');
+    messages += '<li>Please indicate another project leader before deleting this contact.</li>';
     canDelete = false;
   }
   if (activities > 0){
-    $( "#contactRemove-dialog" ).find('.messages').append('<li>This contact cannot be deleted due to is currently the Activity Leader for '+activities+' activities</li>');
+    messages += '<li>This contact cannot be deleted due to is currently the Activity Leader for '+activities+' activities';
+    messages += '<ul>';
+    messages += person.getRelations('activities');
+    messages += '</ul>';
+    messages += '</li>';
     canDelete = false;
   }
   if (deliverables > 0){
-    $( "#contactRemove-dialog" ).find('.messages').append('<li>Please bear in mind that if you delete this contact, '+deliverables+' deliverables relationships will be deleted</li>');
+    messages += '<li>Please bear in mind that if you delete this contact, '+deliverables+' deliverables relationships will be deleted</li>';
     canDelete = false;
   }
   if (canDelete){
     person.remove();
   }else{
+    $( "#contactRemove-dialog" ).find('.messages').append(messages);
     $( "#contactRemove-dialog" ).dialog({
       modal : true,
       width: 400,
@@ -401,6 +437,22 @@ function PartnerObject(partner) {
       contact.setIndex(elementName, i);
     });
   };
+  
+  this.hasPartnerContributions = function(){
+    var partnerInstitutionId = this.institutionId;
+    var partners = [];
+    $partnersBlock.find(".projectPartner").each(function(index,element) {
+      var partner = new PartnerObject($(element));
+      $(element).find('.ppaPartnersList ul.list li input.id').each(function(i_id,id) {
+       if($(id).val() == partnerInstitutionId){
+         hasPartners = true;
+         partners.push(partner.institutionName);
+       }
+      });
+    });
+    return partners;
+  };
+  
   this.hasLeader = function(){
     var result = false;
     $(partner).find('.contactPerson').each(function(i, partnerPerson) {
@@ -487,6 +539,9 @@ function PartnerPersonObject(partnerPerson) {
   };
   this.getRelationsNumber =  function(relation){
     return parseInt($(partnerPerson).find('.tag.'+relation+' span').text()) || 0;
+  };
+  this.getRelations =  function(relation){
+    return $(partnerPerson).find('.tag.'+relation).next().html();
   };
   this.setIndex = function(name, index) {
     var elementName = name+"partnerPersons["+index+"].";

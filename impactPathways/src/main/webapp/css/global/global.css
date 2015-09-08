@@ -249,6 +249,11 @@ p.checked, label.checked {
   text-align: justify;
 }
 
+img.external-link {
+  vertical-align: middle;
+  padding-left: 3px;
+}
+
 h6.checked-true {
   background: url(../../images/global/checked-true.png) no-repeat 0;
   padding: 3px 0  3px 23px;

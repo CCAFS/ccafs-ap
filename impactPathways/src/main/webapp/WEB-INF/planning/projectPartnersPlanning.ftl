@@ -131,22 +131,7 @@
   
   [#-- Remove Partner Dialog --]
   <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
-    <p class="message"></p>
-    <br />
-    <div class="activities">
-      <h3>[@s.text name="planning.activities.title" /]</h3>
-      <ul></ul>
-    </div>
-    <br />
-    <div class="deliverables">
-      <h3>[@s.text name="planning.deliverables" /]</h3>
-      <ul></ul>
-    </div>
-    <br />
-    <div class="projectPartners">
-      <h3>[@s.text name="preplanning.projectPartners.title" /]</h3>
-      <ul></ul>
-    </div>
+    <ul class="messages"></ul>
   </div>
   
   [#-- Remove partner person leader dialog --]
