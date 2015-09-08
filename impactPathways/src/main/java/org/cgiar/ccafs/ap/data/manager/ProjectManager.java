@@ -172,6 +172,14 @@ public interface ProjectManager {
   public List<IPIndicator> getProjectIndicators(int projectID);
 
   /**
+   * This method returns a list of projects that belongs to an institution id given as parameter.
+   * 
+   * @param institutionID
+   * @return a list of Projects.
+   */
+  public List<Project> getProjectsByInstitution(int institutionID);
+
+  /**
    * This method returns the list of all CCAFS projects that belongs to a specific program.
    * 
    * @return a list with Project objects.

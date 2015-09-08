@@ -224,6 +224,14 @@ public interface ProjectDAO {
   public List<Map<String, String>> getProjectOwnerId(int programId);
 
   /**
+   * This method returns a list of projects that belongs to an institution id given as parameter.
+   * 
+   * @param institutionID, identifier of the institution
+   * @return a list of maps which represent the projects.
+   */
+  public List<Map<String, String>> getProjectsByInstitution(int institutionID);
+
+  /**
    * This method return all the Projects which belongs to the program
    * indicated by the parameter.
    * 

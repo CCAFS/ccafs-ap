@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +33,13 @@ public class BaseCSV {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(BaseCSV.class);
-  private TextProvider textProvider;
-  String COMMA_DELIMITER = ",";
-  String NEW_LINE_SEPARATOR = "\n";
+  public String COMMA_DELIMITER = ",";
+  public String NEW_LINE_SEPARATOR = "\n";
+  public FileWriter fileWriter;
+  public TextProvider textProvider;
+  public String[] headers;
+  public String fileName;
+
 
   /**
    * This method is used for to add the headers for the file
@@ -49,8 +54,6 @@ public class BaseCSV {
         fileWriter.append(headers[a]);
         fileWriter.append(COMMA_DELIMITER);
       }
-
-
       fileWriter.append(this.NEW_LINE_SEPARATOR);
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -70,15 +73,8 @@ public class BaseCSV {
       if (register == null || register.equals("")) {
         fileWriter.append(this.getText("summaries.project.empty"));
       } else {
-        text = String.valueOf(register);
-        if (text.contains(",") || text.contains("\"")) {
-          text = "\"" + text + "\"";
-        }
-        if (text.contains("\"")) {
-          text.replace("\"", "\"\"");
-        }
+        text = StringEscapeUtils.escapeCsv(String.valueOf(register)); // I said "Hey, I am 5'10"."
       }
-
       fileWriter.append(text);
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -91,39 +87,30 @@ public class BaseCSV {
    * 
    * @return name of document
    */
-  public String getFileName(int projectID, String name) {
-    StringBuffer fileName = new StringBuffer();
-
-    fileName.append("Project");
-    fileName.append("-");
-    fileName.append(projectID);
-    fileName.append("-");
-    fileName.append(name);
-    fileName.append(".csv");
-
-    return fileName.toString();
+  public String getFileName() {
+    return fileName;
   }
 
+
   /**
-   * Method used for to get the key internationalized that is in the properties file.
+   * Method used to get the internationalized key that is in the properties file.
    * 
-   * @param key key to search
-   * @return internazionale key
+   * @param key to search
+   * @return international key
    */
   public String getText(String key) {
     return textProvider.getText(key);
   }
 
   /**
-   * Method used for to inicialize the csv file
+   * Method used for to initialize the csv file
    * 
-   * @param file file to initialize
+   * @param file to be initialized
    */
   public void initializeCsv(File file) {
-    textProvider = new DefaultTextProvider();
-
-    file.delete();
     try {
+      textProvider = new DefaultTextProvider();
+      file.delete();
       file.createNewFile();
     } catch (IOException ioe) {
       ioe.printStackTrace();

@@ -325,6 +325,30 @@ public class InstitutionManagerImpl implements InstitutionManager {
   }
 
   @Override
+  public List<Institution> getProjectPartnerInstitutions() {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList = institutionDAO.getProjectPartnerInstitutions();
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setWebsiteLink(iData.get("website_link"));
+
+      // Location Object
+      Country country = new Country();
+      if (iData.get("country_id") != null) {
+        country.setId(Integer.parseInt(iData.get("country_id")));
+        country.setName(iData.get("country_name"));
+        institution.setCountry(country);
+      }
+
+      institutions.add(institution);
+    }
+    return institutions;
+  }
+
+  @Override
   public Institution getUserMainInstitution(User user) {
     Map<String, String> iData = institutionDAO.getUserMainInstitution(user.getId());
     if (!iData.isEmpty()) {
@@ -369,14 +393,14 @@ public class InstitutionManagerImpl implements InstitutionManager {
     int result = institutionDAO.saveProjectPartnerContributeInstitution(contributionData);
     if (result == 0) {
       LOG
-      .debug(
-        "saveProjectPartnerContributeInstitution > New Project Partner Contribution added with projectPartnerID={}, institutionID={} ",
-        projectPartnerID, institutionID);
+        .debug(
+          "saveProjectPartnerContributeInstitution > New Project Partner Contribution added with projectPartnerID={}, institutionID={} ",
+          projectPartnerID, institutionID);
     } else {
       LOG
-      .error(
-        "saveProjectPartnerContributeInstitution > There was an error trying to save/update a project partner contribution from projectPartnerID={} and institutionID={}",
-        projectPartnerID, institutionID);
+        .error(
+          "saveProjectPartnerContributeInstitution > There was an error trying to save/update a project partner contribution from projectPartnerID={} and institutionID={}",
+          projectPartnerID, institutionID);
     }
 
     return result;
@@ -384,7 +408,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
   @Override
   public boolean
-  saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions) {
+    saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions) {
     boolean allSaved = true;
     int result;
     for (Institution institution : contributeInstitutions) {

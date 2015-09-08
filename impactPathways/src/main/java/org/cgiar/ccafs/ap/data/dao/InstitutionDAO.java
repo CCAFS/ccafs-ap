@@ -97,6 +97,13 @@ public interface InstitutionDAO {
    */
   public Map<String, String> getInstitutionType(int institutionTypeID);
 
+  /**
+   * This method gets the information of the institutions that are projectPartners
+   * 
+   * @return a list of maps with the information with the Institutions being projectPartners
+   */
+  public List<Map<String, String>> getProjectPartnerInstitutions();
+
 
   /**
    * This method returns the information of the institution marked as

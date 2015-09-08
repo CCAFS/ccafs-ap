@@ -107,6 +107,13 @@ public interface InstitutionManager {
   public InstitutionType getInstitutionType(int institutionTypeId);
 
   /**
+   * This method gets the institutions that are projectPartners
+   * 
+   * @return a list of institution objects with the information
+   */
+  public List<Institution> getProjectPartnerInstitutions();
+
+  /**
    * This method returns the user's main institution defined in the database.
    * 
    * @param user
@@ -130,8 +137,8 @@ public interface InstitutionManager {
    * @param contributeInstitutions is the list of institutions that this project partner is contributing to.
    * @return true if the information was successfully saved, false otherwise.
    */
-  public boolean saveProjectPartnerContributeInstitutions(int projectPartnerID,
-    List<Institution> contributeInstitutions);
+  public boolean
+    saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions);
 
   /**
    * This method validates if the institution of the given projectPartner is the lastone institution of all the other

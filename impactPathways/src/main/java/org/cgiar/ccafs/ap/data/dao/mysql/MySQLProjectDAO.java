@@ -724,6 +724,33 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectsByInstitution(int institutionID) {
+    LOG.debug(">> getProjectsByInstitution(institutionID={})", new Object[] {institutionID});
+    List<Map<String, String>> projectList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.* ");
+    query.append("FROM projects as p ");
+    query.append("INNER JOIN project_partners pp ON pp.project_id = p.id ");
+    query.append("INNER JOIN institutions i ON i.id = pp.institution_id ");
+    query.append("WHERE i.id= ");
+    query.append(institutionID);
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+
+        projectList.add(projectData);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getCoreProjects() > Exception raised trying to get the core projects.", e);
+    }
+    return projectList;
+  }
+
+  @Override
   public List<Map<String, String>> getProjectsByProgram(int programID) {
     LOG.debug(">> getProjects programID = {} )", programID);
     StringBuilder query = new StringBuilder();

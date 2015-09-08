@@ -11,10 +11,10 @@
         <param name="contentType">application/pdf</param>
         <param name="contentDisposition">filename="${fileName}"</param>
      </result>
-	 </action>
-	 
-	 
-  <action class="org.cgiar.ccafs.ap.action.summaries.DeliverableProjectSummaryAction" name="deliverable">
+   </action>
+   
+   
+  <action class="org.cgiar.ccafs.ap.action.summaries.DeliverableProjectSummaryAction" name="publication">
       <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
@@ -22,7 +22,15 @@
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
      </result>
    </action>
-	 
-	 
+   
+        <action class="org.cgiar.ccafs.ap.action.summaries.PartnersSummaryAction" name="projectPartnersSummary">
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">text/csv</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+     </result>
+   </action>
+   
   </package>
 </struts>
