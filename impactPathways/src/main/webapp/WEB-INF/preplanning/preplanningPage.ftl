@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Projects" /]
+[#assign title = "Pre-Planning" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty","autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/preplanning/projectsListPreplanning.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]

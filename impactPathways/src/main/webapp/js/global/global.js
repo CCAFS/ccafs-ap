@@ -31,9 +31,8 @@ $(document).ready(function() {
   $("textarea[id!='justification']").autoGrow();
 
   // hash url animation
-  setTimeout(function() {
-    // $(window.location.hash).addClass('animated flipInX').css({'z-index': '9999'});
-  }, 300);
+
+  // $(window.location.hash).addClass('animated flipInX').css({'z-index': '9999'});
 
   if(window.location.hash) {
     $('html, body').animate({
