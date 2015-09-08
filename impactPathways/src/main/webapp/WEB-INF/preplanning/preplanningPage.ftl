@@ -25,15 +25,13 @@
     <br />
     <h1 class="contentTitle">Pre-Planning introduction</h1>
     <div class="borderBox">
-      <a href=""><div class="program">Flagship 1</div></a>
-      <a href=""><div class="program">Flagship 2</div></a>
-      <a href=""><div class="program">Flagship 3</div></a>
-      <a href=""><div class="program">Flagship 4</div></a>
-      <a href=""><div class="program">Latin America</div></a>
-      <a href=""><div class="program">South East Asia</div></a>
-      <a href=""><div class="program">South Asia</div></a>
-      <a href=""><div class="program">East Africa</div></a>
-      <a href=""><div class="program">West Africa</div></a>
+      [#list programs as program]
+        [#if program.id != globalProgramID]
+          <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
+            <div class="program">${program.acronym}</div>
+          </a>
+        [/#if]
+      [/#list]
     </div>
   [/@s.form]  
   </article>
