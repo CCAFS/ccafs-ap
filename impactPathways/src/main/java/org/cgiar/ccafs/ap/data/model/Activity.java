@@ -33,21 +33,8 @@ public class Activity {
   private String description;
   private Date startDate;
   private Date endDate;
-  private ProjectPartner leader;
-  private List<IPCrossCutting> crossCuttings;// The list of Cross Cutting themes in which this project works with.
-  private List<Location> locations;
+  private PartnerPerson leader;
   private long created;
-  private List<ActivityPartner> activityPartners;
-  private List<ProjectPartner> projectPartners;
-  private List<IPElement> outputs;
-  private List<IPIndicator> indicators;
-  private List<Budget> budgets;
-  private List<Deliverable> deliverables;
-  private OtherContribution ipOtherContribution;
-  private String expectedResearchOutputs;
-  private String expectedGenderContribution;
-  private double genderPercentage;
-  private String outcome;
 
   public Activity() {
     super();
@@ -58,17 +45,6 @@ public class Activity {
     this.id = id;
   }
 
-  public boolean containsOutput(int outputID) {
-    if (this.outputs != null) {
-      for (IPElement output : this.outputs) {
-        if (output.getId() == outputID) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Activity) {
@@ -76,10 +52,6 @@ public class Activity {
       return a.getId() == this.id;
     }
     return false;
-  }
-
-  public List<ActivityPartner> getActivityPartners() {
-    return activityPartners;
   }
 
   /**
@@ -106,10 +78,6 @@ public class Activity {
     return allYears;
   }
 
-  public List<Budget> getBudgets() {
-    return budgets;
-  }
-
   /**
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the activity.
@@ -130,15 +98,6 @@ public class Activity {
     return created;
   }
 
-  public List<IPCrossCutting> getCrossCuttings() {
-    return crossCuttings;
-  }
-
-
-  public List<Deliverable> getDeliverables() {
-    return deliverables;
-  }
-
   public String getDescription() {
     return description;
   }
@@ -147,68 +106,12 @@ public class Activity {
     return endDate;
   }
 
-  public String getExpectedGenderContribution() {
-    return expectedGenderContribution;
-  }
-
-  public String getExpectedResearchOutputs() {
-    return expectedResearchOutputs;
-  }
-
-  public double getGenderPercentage() {
-    return genderPercentage;
-  }
-
   public int getId() {
     return id;
   }
 
-  /**
-   * This method search if the list of indicators contains an indicator
-   * which parent is identified by the value passed as parameter.
-   * 
-   * @param indicatorID - indicator identifier
-   * @return If the indicator is found, the method returns it. Otherwise, return null
-   */
-  public IPIndicator getIndicatorByParent(int parentIndicatorID) {
-    if (indicators != null) {
-      for (IPIndicator indicator : this.indicators) {
-        if (indicator.getParent() != null) {
-          if (indicator.getParent().getId() == parentIndicatorID) {
-            return indicator;
-          }
-        }
-      }
-    }
-    return null;
-  }
-
-  public List<IPIndicator> getIndicators() {
-    return indicators;
-  }
-
-  public OtherContribution getIpOtherContribution() {
-    return ipOtherContribution;
-  }
-
-  public ProjectPartner getLeader() {
+  public PartnerPerson getLeader() {
     return leader;
-  }
-
-  public List<Location> getLocations() {
-    return locations;
-  }
-
-  public String getOutcome() {
-    return outcome;
-  }
-
-  public List<IPElement> getOutputs() {
-    return outputs;
-  }
-
-  public List<ProjectPartner> getProjectPartners() {
-    return projectPartners;
   }
 
   public Date getStartDate() {
@@ -217,16 +120,6 @@ public class Activity {
 
   public String getTitle() {
     return title;
-  }
-
-  public double getTotalActivitiesBudget() {
-    double totalBudget = 0.0;
-    if (this.getBudgets() != null) {
-      for (Budget budget : this.getBudgets()) {
-        totalBudget += budget.getAmount();
-      }
-    }
-    return totalBudget;
   }
 
   @Override
@@ -245,24 +138,8 @@ public class Activity {
     return this.created >= planningStartDate.getTime();
   }
 
-  public void setActivityPartners(List<ActivityPartner> partners) {
-    this.activityPartners = partners;
-  }
-
-  public void setBudgets(List<Budget> budgets) {
-    this.budgets = budgets;
-  }
-
   public void setCreated(long created) {
     this.created = created;
-  }
-
-  public void setCrossCuttings(List<IPCrossCutting> crossCuttings) {
-    this.crossCuttings = crossCuttings;
-  }
-
-  public void setDeliverables(List<Deliverable> deliverables) {
-    this.deliverables = deliverables;
   }
 
   public void setDescription(String description) {
@@ -273,49 +150,12 @@ public class Activity {
     this.endDate = endDate;
   }
 
-  public void setExpectedGenderContribution(String expectedGenderContribution) {
-    this.expectedGenderContribution = expectedGenderContribution;
-  }
-
-  public void setExpectedResearchOutputs(String expectedResearchOutputs) {
-    this.expectedResearchOutputs = expectedResearchOutputs;
-  }
-
-  public void setGenderPercentage(double genderPercentage) {
-    this.genderPercentage = genderPercentage;
-  }
-
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setIndicators(List<IPIndicator> indicators) {
-    this.indicators = indicators;
-  }
-
-  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
-    this.ipOtherContribution = ipOtherContribution;
-  }
-
-  public void setLeader(ProjectPartner leader) {
+  public void setLeader(PartnerPerson leader) {
     this.leader = leader;
-  }
-
-  public void setLocations(List<Location> locations) {
-    this.locations = locations;
-  }
-
-
-  public void setOutcome(String outcome) {
-    this.outcome = outcome;
-  }
-
-  public void setOutputs(List<IPElement> outputs) {
-    this.outputs = outputs;
-  }
-
-  public void setProjectPartners(List<ProjectPartner> projectPartners) {
-    this.projectPartners = projectPartners;
   }
 
   public void setStartDate(Date startDate) {

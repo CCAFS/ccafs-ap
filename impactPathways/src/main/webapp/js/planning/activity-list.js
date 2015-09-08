@@ -29,7 +29,7 @@ function attachEvents() {
   // Remove an activity event
   $('.removeElement').on('click', removeElement);
   // Add new activity event
-  $('#activities_add').on('click', addElement);
+  $('#activities_add a').on('click', addElement);
 }
 
 function removeElement(e) {
