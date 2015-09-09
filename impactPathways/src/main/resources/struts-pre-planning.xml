@@ -49,7 +49,6 @@
     
     <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <interceptor-ref name="preplanningStackIP" />
-      <interceptor-ref name="RPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/midOutcomesRplPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">midOutcomesRPL</param>
