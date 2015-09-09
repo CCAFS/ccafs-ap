@@ -32,7 +32,7 @@
           [#if program.id != globalProgramID]
             <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
               <div class="program">${program.acronym} 
-                <p class="name">${program.name} </p>
+                <p class="name">${program.name}</p>
               </div>
             </a>
           [/#if]
@@ -45,7 +45,7 @@
           [#if program.id != globalProgramID]
             <a href="[@s.url action='outcomes'] [@s.param name="${programRequest}"]${program.id}[/@s.param] [/@s.url]">
               <div class="program">${program.acronym}
-                <p class="name">${program.name} </p>
+                <p class="name">${program.name}</p>
               </div>
             </a>
           [/#if]
