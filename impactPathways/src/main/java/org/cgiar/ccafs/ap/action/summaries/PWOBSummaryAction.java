@@ -145,10 +145,12 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
       project.setCrpContributions(crpManager.getCrpContributions(project.getId()));
       project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(project.getId()));
 
-      project.setIndicators(projectManager.getProjectIndicators(project.getId()));
-
-      project.setActivities(activityManager.getActivitiesByProject(project.getId()));
-
+      if (projectManager.getProjectIndicators(project.getId()) != null) {
+        project.setIndicators(projectManager.getProjectIndicators(project.getId()));
+      }
+      if (activityManager.getActivitiesByProject(project.getId()) != null) {
+        project.setActivities(activityManager.getActivitiesByProject(project.getId()));
+      }
       // *************************Budgets ******************************
       project.setBudgets(this.budgetManager.getBudgetsByProject(project));
     }
