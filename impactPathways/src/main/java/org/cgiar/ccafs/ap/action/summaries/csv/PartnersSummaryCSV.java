@@ -122,7 +122,7 @@ public class PartnersSummaryCSV extends BaseCSV {
       fileName.append("-");
       fileName.append("Institutions");
       fileName.append("_");
-      fileName.append(new SimpleDateFormat("yyyyMMdd-HH:mm").format(new Date()));
+      fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
       fileName.append(".csv");
 
       this.fileName = fileName.toString();
@@ -135,6 +135,7 @@ public class PartnersSummaryCSV extends BaseCSV {
     }
   }
 
+  @Override
   public int getContentLength() {
     return contentLength;
   }
@@ -145,6 +146,7 @@ public class PartnersSummaryCSV extends BaseCSV {
    * 
    * @return the inputStream
    */
+  @Override
   public InputStream getInputStream() {
     return inputStream;
   }
@@ -155,6 +157,7 @@ public class PartnersSummaryCSV extends BaseCSV {
    * 
    * @param inputStream the inputStream to set
    */
+  @Override
   public void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }

@@ -123,7 +123,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
             projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId();
         } else {
           projectList[count] +=
-            (projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId() + " , ");
+            (projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId() + ", ");
         }
       }
       count++;

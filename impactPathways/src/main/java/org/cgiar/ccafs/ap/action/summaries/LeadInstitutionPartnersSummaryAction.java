@@ -124,7 +124,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
             projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).get(j).getId();
         } else {
           projectList[count] +=
-            (projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).get(j).getId() + " , ");
+            (projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).get(j).getId() + ", ");
         }
       }
       count++;
