@@ -93,7 +93,26 @@ function attachEvents() {
     var $contactPerson = $(e.target).parents('.contactPerson');
     var contact = new PartnerPersonObject($contactPerson);
     var partner = new PartnerObject($contactPerson.parents('.projectPartner'));
-    if((contact.type == leaderType) || (contact.type == coordinatorType)) {
+    if(contact.type == leaderType) {
+      if(projectLeaders() > 1) {
+        var messages = '<li>A project leader has been selected before, it will become in a contact person</li>';
+        // Show a pop up with the message
+        $("#contactChangeType-dialog").find('.messages').append(messages);
+        $("#contactChangeType-dialog").dialog({
+            modal: true,
+            width: 400,
+            buttons: {
+              Close: function() {
+                $(this).dialog("close");
+              }
+            },
+            close: function() {
+              $(this).find('.messages').empty();
+            }
+        });
+      }
+      setPartnerTypeToDefault(contact.type);
+    } else if(contact.type == coordinatorType) {
       setPartnerTypeToDefault(contact.type);
     }
     contact.changeType();
@@ -126,7 +145,7 @@ function attachEvents() {
                 }
               },
               close: function() {
-                $("#contactChange-dialog").find('.messages').empty();
+                $(this).find('.messages').empty();
               }
           });
         }
@@ -150,6 +169,17 @@ function attachEvents() {
         }
     });
   });
+}
+
+function projectLeaders() {
+  var leaders = 0;
+  $partnersBlock.find('.contactPerson').each(function(i,partnerPerson) {
+    var contact = new PartnerPersonObject($(partnerPerson));
+    if(contact.isLeader()) {
+      leaders++;
+    }
+  });
+  return leaders;
 }
 
 function updateOrganizationsList(e) {
@@ -195,12 +225,15 @@ function removePPAPartnersFromList(list) {
 function updateProjectPPAPartnersLists(e) {
   $projectPPAPartners.empty();
   var projectInstitutions = [];
+  // Loop for all projects partners
   $partnersBlock.find('.projectPartner').each(function(i,projectPartner) {
     var partner = new PartnerObject($(projectPartner));
+    // Collecting partners institutions
     projectInstitutions.push(parseInt(partner.institutionId));
-    // Collecting list CCAFS partners from all project partners
+    // Validating if the partners is CCAFS Partner
     if(partner.isPPA()) {
       partner.hidePPAs();
+      // Collecting list CCAFS partners from all project partners
       $projectPPAPartners.append(setOption(partner.institutionId, partner.institutionName));
     } else {
       if(partner.institutionId == -1) {
@@ -212,16 +245,18 @@ function updateProjectPPAPartnersLists(e) {
   });
   // Validating if the institution chosen is already selected
   if(e) {
-    $(e.target).parents('.partnerName').find('p.fieldError').text('');
+    var $fieldError = $(e.target).parents('.partnerName').find('p.fieldError');
+    $fieldError.text('');
     var count = 0;
+    // Verify if the partner is already selected
     for(var i = 0; i < projectInstitutions.length; ++i) {
       if(projectInstitutions[i] == e.target.value) {
         count++;
       }
     }
+    // If there is one selected , show an error message
     if(count > 1) {
-      $(e.target).parents('.partnerName').find('p.fieldError').text('This institution is already selected').addClass(
-          'animated flipInX');
+      $fieldError.text('This institution is already selected').addClass('animated flipInX');
     }
   }
   // Filling CCAFS partners lists for each project partner
@@ -404,7 +439,7 @@ function removePersonEvent(e) {
           }
         },
         close: function() {
-          $("#contactRemove-dialog").find('.messages').empty();
+          $(this).find('.messages').empty();
         }
     });
   }
@@ -587,7 +622,6 @@ function PartnerPersonObject(partnerPerson) {
   this.canEditEmail = ($(partnerPerson).find('input.canEditEmail').val() === "true");
   this.setPartnerType = function(type) {
     $(partnerPerson).find('.partnerPersonType').val(type).trigger("liszt:updated");
-    ;
   };
   this.changeType = function() {
     $(partnerPerson).removeClass(partnerPersonTypes.join(' ')).addClass(this.type);
