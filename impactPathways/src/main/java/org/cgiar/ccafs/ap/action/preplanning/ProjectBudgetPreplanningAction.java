@@ -564,7 +564,7 @@ public class ProjectBudgetPreplanningAction extends BaseAction {
           // totalLeveragedBudget = budgetManager.calculateProjectTotalLeveragedBudget(projectID);
 
           // Getting all the project partners.
-          projectPartners = partnerManager.z_old_getProjectPartners(projectID);
+          // projectPartners = partnerManager.z_old_getProjectPartners(projectID);
 
           // Getting the list of budgets.
           project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
