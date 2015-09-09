@@ -19,27 +19,26 @@ package org.cgiar.ccafs.ap.action.summaries.csv;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Jorge Leonardo Solis Banguera
  */
 public class BaseCSV {
 
-  // Logger
-  private static final Logger LOG = LoggerFactory.getLogger(BaseCSV.class);
+
   public String COMMA_DELIMITER = ",";
   public String NEW_LINE_SEPARATOR = "\n";
   public FileWriter fileWriter;
   public TextProvider textProvider;
   public String[] headers;
   public String fileName;
-
+  public InputStream inputStream;
+  public int contentLength;
 
   /**
    * This method is used for to add the headers for the file
@@ -56,7 +55,7 @@ public class BaseCSV {
       }
       fileWriter.append(this.NEW_LINE_SEPARATOR);
     } catch (IOException e) {
-      // TODO Auto-generated catch block
+      //
       e.printStackTrace();
     }
   }
@@ -83,12 +82,29 @@ public class BaseCSV {
   }
 
   /**
+   * @return
+   */
+  public int getContentLength() {
+    return contentLength;
+  }
+
+
+  /**
    * Method used for to get the name of document
    * 
    * @return name of document
    */
   public String getFileName() {
     return fileName;
+  }
+
+  /**
+   * Method for to get the inputStream
+   * 
+   * @return the inputStream
+   */
+  public InputStream getInputStream() {
+    return inputStream;
   }
 
 
@@ -101,6 +117,7 @@ public class BaseCSV {
   public String getText(String key) {
     return textProvider.getText(key);
   }
+
 
   /**
    * Method used for to initialize the csv file
@@ -115,5 +132,15 @@ public class BaseCSV {
     } catch (IOException ioe) {
       ioe.printStackTrace();
     }
+  }
+
+
+  /**
+   * method for to set the inputStream
+   * 
+   * @param inputStream the inputStream to set
+   */
+  public void setInputStream(InputStream inputStream) {
+    this.inputStream = inputStream;
   }
 }
