@@ -356,8 +356,18 @@ public class Project {
     return ipOtherContribution;
   }
 
+
   public ProjectPartner getLeader() {
-    return leader;
+    if (projectPartners != null) {
+      for (ProjectPartner partner : projectPartners) {
+        for (PartnerPerson person : partner.getPartnerPersons()) {
+          if (person.isLeader()) {
+            return partner;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   public PartnerPerson getLeaderPerson() {

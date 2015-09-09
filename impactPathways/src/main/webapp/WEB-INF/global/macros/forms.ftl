@@ -160,7 +160,12 @@
         <p>  
           [#if displayFieldName == "" ]
             [#assign key][@s.property value="${name}"/][/#assign]
-            [@s.property value="${listName}['${key}']"/]
+            [#assign customValue][@s.property value="${listName}['${key}']"/][/#assign]
+            [#if customValue?has_content] 
+                ${customValue}
+              [#else]
+                [@s.text name="form.values.fieldEmpty" /]
+              [/#if]
           [#else]
             [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
             [#if value=="-NULL"] 

@@ -126,14 +126,10 @@
               <div class="ccafsBudget fullPartBlock ${project.type}">
                 <h1 class="contentTitle">[@s.text name="planning.projectBudget.annualPartnerBudget" /]</h1> 
                 [@s.set var="counter" value="0"/]
-                [#-- Project Leader --]
-                [#if project.leader?has_content]
-                  [@partnerBudget institution=project.leader.institution budget=project.getBudget(project.leader.institution.id, project.bilateralProject?string(2, 1)?number, year )! isPL=true cofinancing_budgets=project.getCofinancingBudgets()! editable=editable /]
-                [/#if]
                 [#-- Project CCAFS Partners --]
                 [#if projectPPAPartners?has_content] 
                   [#list projectPPAPartners as partnerInstitution ]
-                    [@partnerBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! pp_index="${partnerInstitution_index+1}" editable=editable /]
+                    [@partnerBudget institution=partnerInstitution budget=project.getBudget(partnerInstitution.id, project.bilateralProject?string(2, 1)?number, year )! isPL=partnerInstitution==project.leader.institution pp_index="${partnerInstitution_index+1}" editable=editable /]
                   [/#list]  
                 [/#if]
                 [#-- Project budget per linked project --]
