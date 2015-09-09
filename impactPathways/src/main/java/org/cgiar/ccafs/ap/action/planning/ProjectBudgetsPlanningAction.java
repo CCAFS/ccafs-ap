@@ -191,32 +191,46 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       previousProject.setLinkedProjects(linkedProjects);
     }
 
-    // Getting the Project Leader.
-    List<ProjectPartner> ppArray =
-      projectPartnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
-    if (!ppArray.isEmpty()) {
-      project.setLeader(ppArray.get(0));
-      hasLeader = true;
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    projectPPAPartners = new HashSet<Institution>();
+
+    // If the project is bilateral only ask budget for the lead institution
+    if (project.isBilateralProject()) {
+      projectPPAPartners.add(project.getLeader().getInstitution());
     } else {
-      hasLeader = false;
+      for (ProjectPartner partner : project.getProjectPartners()) {
+        if (partner.getInstitution().isPPA()) {
+          projectPPAPartners.add(partner.getInstitution());
+        }
+      }
     }
+
+    // // Getting the Project Leader.
+    // List<ProjectPartner> ppArray =
+    // projectPartnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+    // if (!ppArray.isEmpty()) {
+    // project.setLeader(ppArray.get(0));
+    // hasLeader = true;
+    // } else {
+    // hasLeader = false;
+    // }
+    //
+    // // Getting the list of PPA Partner institutions
+    // projectPPAPartners = new HashSet<Institution>();
+    // for (ProjectPartner ppaPartner : project.getProjectPartners()) {
+    // if (ppaPartner.getInstitution().isPPA()) {
+    // projectPPAPartners.add(ppaPartner.getInstitution());
+    // }
+    // }
+    //
+    // // Remove the project leader from the list of PPA partner in case it is present.
+    // if (project.getLeader() != null) {
+    // projectPPAPartners.remove(project.getLeader().getInstitution());
+    // }
 
     totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
     totalBilateralBudget =
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
-
-    // Getting the list of PPA Partner institutions
-    projectPPAPartners = new HashSet<Institution>();
-    for (ProjectPartner ppaPartner : project.getProjectPartners()) {
-      if (ppaPartner.getInstitution().isPPA()) {
-        projectPPAPartners.add(ppaPartner.getInstitution());
-      }
-    }
-
-    // Remove the project leader from the list of PPA partner in case it is present.
-    if (project.getLeader() != null) {
-      projectPPAPartners.remove(project.getLeader().getInstitution());
-    }
 
     allYears = project.getAllYears();
     invalidYear = allYears.isEmpty();
@@ -290,8 +304,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
             // The co-financing budget belongs to the project which receive it.
             budget.setCofinancingProject(project);
             budget.setInstitution(cofinancingProject.getLeader().getInstitution());
-            saved = budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
+                this.getJustification());
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
