@@ -10,7 +10,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.DeliverablePartnerDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -36,13 +36,13 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
   private DeliverablePartnerDAO deliverablePartnerDAO;
 
   // Managers
-  private ProjectPartnerManager projectPartnerManager;
+  private PartnerPersonManager partnerPersonManager;
 
   @Inject
   public DeliverablePartnerManagerImpl(DeliverablePartnerDAO deliverablePartnerDAO,
-    ProjectPartnerManager projectPartnerManager) {
+    PartnerPersonManager partnerPersonManager) {
     this.deliverablePartnerDAO = deliverablePartnerDAO;
-    this.projectPartnerManager = projectPartnerManager;
+    this.partnerPersonManager = partnerPersonManager;
   }
 
   @Override
@@ -88,7 +88,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartner.setId(Integer.parseInt(dData.get("id")));
       // project partner
       deliverablePartner
-      .setPartner(projectPartnerManager.z_old_getProjectPartnerById(Integer.parseInt(dData.get("partner_id"))));
+        .setPartner(partnerPersonManager.getPartnerPerson(Integer.parseInt(dData.get("partner_person_id"))));
       // Partner type (Resp, Other)
       deliverablePartner.setType(dData.get("partner_type"));
       // adding information of the object to the array
@@ -110,7 +110,7 @@ public class DeliverablePartnerManagerImpl implements DeliverablePartnerManager 
       deliverablePartnerData.put("created_by", user.getId());
     }
     deliverablePartnerData.put("deliverable_id", deliverableID);
-    deliverablePartnerData.put("partner_id", deliverablePartner.getPartner().getId());
+    deliverablePartnerData.put("partner_person_id", deliverablePartner.getPartner().getId());
     deliverablePartnerData.put("partner_type", deliverablePartner.getType());
     // Logs data
     deliverablePartnerData.put("modified_by", user.getId());

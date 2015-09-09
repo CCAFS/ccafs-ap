@@ -2318,15 +2318,34 @@ width:10px;
 
 #preplanningPrograms .program {
   float: left;
-  width: 23%;
-  margin: 1%;
-  padding-top: 27px;
+  padding-top: 7px;
   text-align: center;
-  height: 51px;
+  height: 77px;
   background-color: #BEC7AB;
   color: #fff;
-  font-size: 1.3em;
+  font-size: 1.8em;
+  font-weight: lighter;
   border-radius: 2px;
+}
+
+#preplanningPrograms .program p.name {
+ font-size: 0.7em;
+}
+
+#preplanningPrograms .program:hover {
+  background-color: #B5BBA7;
+}
+
+
+#preplanningPrograms #flagships .program {
+  width: 23%;
+  margin: 1%;
+}
+
+#preplanningPrograms #regions .program {
+  width: 18%;
+  margin: 1%;
+  height: 58px;
 }
 
 /* Outcomes 2025*/
