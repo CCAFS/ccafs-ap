@@ -45,29 +45,31 @@
     </div>
     
     [#-- Indicate which PPA Partners for second level partners --]
-    [#assign showPPABlock][#if (projectPartner.institution.PPA)!true]none[#else]block[/#if][/#assign]
-    <div class="ppaPartnersList panel tertiary" style="display:${showPPABlock}">
-      <div class="panel-head">[@customForm.text name="planning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
-      <div class="panel-body">
-        [#if !(projectPartner.partnerContributors?has_content) && !editable]
-          <p>[@s.text name="planning.projectPartners.noSelectedCCAFSPartners" /] </p>
-        [/#if]
-        <ul class="list"> 
-        [#if projectPartner.partnerContributors?has_content]
-          [#list projectPartner.partnerContributors as ppaPartner]
-            <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
-              <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].partnerContributors[${ppaPartner_index}].institution.id" value="${ppaPartner.institution.id}" />
-              <span class="name">${(ppaPartner.institution.composedName)!}</span> 
-              [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
-            </li>
-          [/#list]
-        [/#if]
-        </ul>
-        [#if editable]
-          [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
-        [/#if] 
+    [#if editable || ((!editable && projectPartner.partnerContributors?has_content)!false)]
+      [#assign showPPABlock][#if (projectPartner.institution.PPA)!true]none[#else]block[/#if][/#assign]
+      <div class="ppaPartnersList panel tertiary" style="display:${showPPABlock}">
+        <div class="panel-head">[@customForm.text name="planning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 
+        <div class="panel-body">
+          [#if !(projectPartner.partnerContributors?has_content) && !editable]
+            <p>[@s.text name="planning.projectPartners.noSelectedCCAFSPartners" /] </p>
+          [/#if]
+          <ul class="list"> 
+          [#if projectPartner.partnerContributors?has_content]
+            [#list projectPartner.partnerContributors as ppaPartner]
+              <li class="clearfix [#if !ppaPartner_has_next]last[/#if]">
+                <input class="id" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].partnerContributors[${ppaPartner_index}].institution.id" value="${ppaPartner.institution.id}" />
+                <span class="name">${(ppaPartner.institution.composedName)!}</span> 
+                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
+              </li>
+            [/#list]
+          [/#if]
+          </ul>
+          [#if editable]
+            [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="" keyFieldName="id"  displayFieldName="getComposedName()" className="ppaPartnersSelect" value="" /]
+          [/#if] 
+        </div>
       </div>
-    </div>
+    [/#if]
     
     [#-- Contacts person  --]
     <div class="contactsPerson panel tertiary">
@@ -122,10 +124,11 @@
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
         [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.user.id)!-1)?has_content) /]
+        <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=(canEditLeader && canEditEmail) /]
+        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=!project.bilateralProject readOnly=true editable=canEditLeader /]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user.id" value="${(contact.user.id)!'-1'}" />   
-        [#if canEditLeader && canEditEmail]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+        [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
     
