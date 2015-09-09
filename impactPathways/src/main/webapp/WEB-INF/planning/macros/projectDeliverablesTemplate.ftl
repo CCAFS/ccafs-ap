@@ -75,14 +75,18 @@
     [#if editable && !isResponsable]
       <div class="removeElement removeLink" title="[@s.text name="planning.deliverables.removePartnerContribution" /]"></div> 
     [/#if]
-    [#if !isResponsable]<span class="index">${dp_index+1}</span>[/#if]
+    [#if !isResponsable]
+    <div class="leftHead">
+      <span class="index">${dp_index+1}</span>
+    </div>
+    [/#if]
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
     <input class="id" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
     <input class="type" type="hidden" name="${customName}.type" value="${isResponsable?string('Resp','Other')}">
     [#if template]
       [#-- Partner Name --]
       <div class="fullPartBlock partnerName chosen"> 
-        [@customForm.select name="" value="-1" className="partner" i18nkey="preplanning.projectPartners.partner.name" listName="projectPartners" keyFieldName="id"  displayFieldName="composedName" editable=editable /]
+        [@customForm.select name="" value="-1" className="partner" i18nkey="preplanning.projectPartners.partner.name" listName="projectPartnerPersons" editable=editable /]
       </div>
     [#else]
       [#-- Partner Name --]
