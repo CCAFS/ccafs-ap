@@ -55,9 +55,9 @@ public class V3_0_1__Base_java_migration implements JdbcMigration {
         /*
          * Query to drop the triggers
          */
-        query.setLength(0);
-        query.append("DROP TRIGGER ");
-        query.append(triggerName);
+        // query.setLength(0);
+        // query.append("DROP TRIGGER ");
+        // query.append(triggerName);
 
         // dropTriggerStatement = connection.prepareStatement(query.toString());
         // dropTriggerStatement.executeUpdate();
@@ -75,4 +75,3 @@ public class V3_0_1__Base_java_migration implements JdbcMigration {
     }
   }
 }
-
