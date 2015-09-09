@@ -33,7 +33,6 @@
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <interceptor-ref name="preplanningStackIP" />
-      <interceptor-ref name="FPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/midOutcomesPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">midOutcomes</param>
@@ -64,7 +63,6 @@
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
       <interceptor-ref name="preplanningStackIP" />
-      <interceptor-ref name="FPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/outputsPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outputs</param>
