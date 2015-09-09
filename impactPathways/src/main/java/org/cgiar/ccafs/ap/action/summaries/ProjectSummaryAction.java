@@ -189,14 +189,15 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
 
     // Getting the Project Leader.
-    List<ProjectPartner> ppArray =
-      partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
+    List<ProjectPartner> ppArray = new ArrayList<>();
+    // partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
     if (ppArray.size() != 0) {
       project.setLeader(ppArray.get(0));
     }
 
     // Getting Project Coordinator
-    ppArray = partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
+    // ppArray = partnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
+    ppArray = new ArrayList(); // TODO To review.
     if (ppArray.size() != 0) {
       project.setCoordinator(ppArray.get(0));
     }
@@ -206,7 +207,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
 
     // Getting 2-level Project Partners
-    project.setProjectPartners(partnerManager.z_old_getProjectPartners(project.getId(), "PP"));
+    // project.setProjectPartners(partnerManager.z_old_getProjectPartners(project.getId(), "PP"));
+    project.setProjectPartners(new ArrayList());
     // Getting the 2-level Project Partner contributions
     for (ProjectPartner partner : project.getProjectPartners()) {
       // partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
