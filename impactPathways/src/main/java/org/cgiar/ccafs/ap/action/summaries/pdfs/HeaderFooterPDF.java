@@ -24,11 +24,9 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
 
   private String headerText;
   private int pagenumber;
-  private int pageOrientation;
 
   public HeaderFooterPDF(String headerText, int pageOrientation) {
     this.headerText = headerText;
-    this.pageOrientation = pageOrientation;
   }
 
   /**

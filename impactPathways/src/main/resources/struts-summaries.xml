@@ -41,5 +41,14 @@
      </result>
    </action>
    
+     <action class="org.cgiar.ccafs.ap.action.summaries.PWOBSummaryAction" name="pwob">
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">text/csv</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+     </result>
+   </action>
+
   </package>
 </struts>
