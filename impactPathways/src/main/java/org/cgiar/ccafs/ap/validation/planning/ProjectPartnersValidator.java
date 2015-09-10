@@ -32,20 +32,18 @@ public class ProjectPartnersValidator extends BaseValidator {
 
   private static final long serialVersionUID = -4087794336343347402L;
 
+  private ProjectValidator projectValidator;
+
   @Inject
   public ProjectPartnersValidator(ProjectValidator projectValidator) {
     super();
+    this.projectValidator = projectValidator;
   }
 
   public void validate(BaseAction action, Project project) {
     if (project != null) {
       this.validateProjectJustification(action, project);
-
-      // All projects must specify the project leader
-      if (project.getLeader() == null) {
-        String msg = this.getText("validation.required", new String[] {this.getText("home.glossary.projectLeader")});
-        action.addActionError(msg);
-      }
+      this.validateProjectLeader(action, project);
 
       if (project.isBilateralProject()) {
         this.validateBilateralProject(action, project);
@@ -57,22 +55,23 @@ public class ProjectPartnersValidator extends BaseValidator {
   }
 
   private void validateBilateralProject(BaseAction action, Project project) {
-
   }
 
   private void validateCCAFSProject(BaseAction action, Project project) {
-
   }
 
-  private boolean validateLeaderAndCoordinator(BaseAction action, Project project) {
-    if (project.getLeader() != null && project.getCoordinator() != null && project.getLeader().getId() != -1
-      && project.getCoordinator().getId() != -1 && project.getLeader().getId() == project.getCoordinator().getId()) {
-      action.addActionError(this.getText("planning.projectPartners.duplicated.PLPC"));
-      action.addFieldError("contact-person-leader", this.getText("validation.duplicated"));
-      action.addFieldError("contact-person-coordinator", this.getText("validation.duplicated"));
-      return true;
+  private void validateProjectLeader(BaseAction action, Project project) {
+    // All projects must specify the project leader
+    if (!projectValidator.isValidLeader(project.getLeader(), project.isBilateralProject())) {
+      String msg, projectLeader;
+      projectLeader = this.getText("home.glossary.projectLeader");
+      if (project.isBilateralProject()) {
+        projectLeader += " " + this.getText("planning.projectPartners.validation.bilateralLeader");
+      }
+
+      msg = this.getText("validation.required", new String[] {projectLeader});
+      this.addMessage(msg);
     }
-    return false;
   }
 
 
