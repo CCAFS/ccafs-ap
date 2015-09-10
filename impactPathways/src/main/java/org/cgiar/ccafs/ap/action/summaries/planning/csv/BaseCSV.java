@@ -93,7 +93,7 @@ public class BaseCSV {
    * @param key to search
    * @return international key
    */
-  public String getText(String key) {
+  protected String getText(String key) {
     return textProvider.getText(key);
   }
 
