@@ -16,19 +16,14 @@ package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.action.summaries.planning.csv.DeliverableSummaryCSV;
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
-import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
-import org.cgiar.ccafs.ap.data.manager.NextUserManager;
-import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,24 +38,26 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   private static final long serialVersionUID = 365962206662709857L;
 
   // Managers
-  private NextUserManager nextUserManager;
-  private DeliverablePartnerManager deliverablePartnerManager;
+  private ProjectManager projectManager;
+  // private NextUserManager nextUserManager;
+  // private DeliverablePartnerManager deliverablePartnerManager;
   private DeliverableSummaryCSV deliverableCSV;
   private DeliverableManager deliverableManager;
 
+  // CSV bytes
+  private byte[] bytesCSV;
+
   // Streams
-  List<InputStream> streams;
+  InputStream inputStream;
 
   // Model
-  List<Project> projectList;
+  List<Project> projectsList;
 
   @Inject
-  public DeliverablePlanningSummaryAction(APConfig config, DeliverableManager deliverableManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
-    DeliverableSummaryCSV deliverableCSV) {
+  public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager,
+    DeliverableManager deliverableManager, DeliverableSummaryCSV deliverableCSV) {
     super(config);
-    this.nextUserManager = nextUserManager;
-    this.deliverablePartnerManager = deliverablePartnerManager;
+    this.projectManager = projectManager;
     this.deliverableCSV = deliverableCSV;
     this.deliverableManager = deliverableManager;
 
@@ -68,17 +65,17 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   @Override
   public String execute() throws Exception {
-
     // Generate the csv file
-    deliverableCSV.generateCSV(projectList);
-    streams = new ArrayList<>();
-
-    inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-
-    streams.add(deliverableCSV.getInputStream());
+    bytesCSV = deliverableCSV.generateCSV(projectsList);
 
     return SUCCESS;
   }
+
+  @Override
+  public int getContentLength() {
+    return bytesCSV.length;
+  }
+
 
   @Override
   public String getFileName() {
@@ -91,32 +88,44 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
     return fileName.toString();
   }
 
+  @Override
+  public InputStream getInputStream() {
+    if (inputStream == null) {
+      inputStream = new ByteArrayInputStream(bytesCSV);
+    }
+    return inputStream;
+  }
 
   @Override
   public void prepare() {
 
-    deliverables = deliverableManager.getDeliverablesByProject(projectID);
+    projectsList = projectManager.getAllProjectsBasicInfo();
+    double c = 0;
+    for (Project project : projectsList) {
+      System.out.println(++c + "/" + projectsList.size());
+      project.setDeliverables(deliverableManager.getDeliverablesByProject(project.getId()));
 
-    for (Deliverable deliverable : deliverables) {
-      // Getting next users.
-      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
-
-      // Getting the responsible partner.
-      List<DeliverablePartner> partners =
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
-      if (partners.size() > 0) {
-        deliverable.setResponsiblePartner(partners.get(0));
-      } else {
-        DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-        deliverable.setResponsiblePartner(responsiblePartner);
-      }
-
-      // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
-
+    // Not sure if everything here is needed.
+    // for (Deliverable deliverable : deliverables) {
+    // // Getting next users.
+    // deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
+    //
+    // // Getting the responsible partner.
+    // List<DeliverablePartner> partners =
+    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
+    // if (partners.size() > 0) {
+    // deliverable.setResponsiblePartner(partners.get(0));
+    // } else {
+    // DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
+    // deliverable.setResponsiblePartner(responsiblePartner);
+    // }
+    //
+    // // Getting the other partners that are contributing to this deliverable.
+    // deliverable.setOtherPartners(
+    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+    // }
   }
 
 }
