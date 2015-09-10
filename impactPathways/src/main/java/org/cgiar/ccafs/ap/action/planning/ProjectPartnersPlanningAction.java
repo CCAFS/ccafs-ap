@@ -70,7 +70,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // private DeliverableManager deliverableManager;
 
   // Validator
-  // private ProjectPartnersValidator projectPartnersValidator;
+  private ProjectPartnersValidator projectPartnersValidator;
 
   // Model for the back-end
   private int projectID;
@@ -104,8 +104,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.userManager = userManager;
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
+    this.projectPartnersValidator = projectPartnersValidator;
     // this.budgetManager = budgetManager;
-    // this.projectPartnersValidator = projectPartnersValidator;
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
 
@@ -440,6 +440,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
+    LOG.debug("saving... ");
     if (securityContext.canUpdateProjectPartners()) {
 
       if (!this.isNewProject()) {
@@ -503,10 +504,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    LOG.debug(">> validate() ");
-    // validate only if user clicks any save button.
     if (save) {
-      // projectPartnersValidator.validate(this, project);
+      projectPartnersValidator.validate(this, project);
     }
   }
 
