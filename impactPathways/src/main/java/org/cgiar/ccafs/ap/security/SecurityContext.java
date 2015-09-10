@@ -12,11 +12,14 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.util;
+package org.cgiar.ccafs.ap.security;
 
+import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.BaseSecurityContext;
 import org.cgiar.ccafs.security.Permission;
 import org.cgiar.ccafs.security.Role;
+
+import com.google.inject.Inject;
 
 
 /**
@@ -24,6 +27,13 @@ import org.cgiar.ccafs.security.Role;
  */
 
 public class SecurityContext extends BaseSecurityContext {
+
+  private User user;
+
+  @Inject
+  public SecurityContext(User user) {
+    this.user = user;
+  }
 
   /**
    * Verify if can add bilateral projects in the planning section
@@ -307,11 +317,13 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
-   * Verify if can update the project partners section
+   * Verify if can update the project partners section for the project identified by the value received by paramter.
    * 
+   * @param projectID - project identifier
    * @return
    */
-  public boolean canUpdateProjectPartners() {
+  public boolean canUpdateProjectPartners(int projectID) {
+    System.out.println(user.getComposedName());
     return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_UPDATE);
   }
 

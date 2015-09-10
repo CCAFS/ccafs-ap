@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.security.realms;
+package org.cgiar.ccafs.ap.security;
 
 import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.security.data.manager.UserManagerImpl;

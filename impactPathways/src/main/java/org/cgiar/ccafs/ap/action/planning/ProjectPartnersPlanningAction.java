@@ -251,6 +251,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    System.out.println("preparing....");
     super.prepare();
     actionName = ActionContext.getContext().getName();
     // Getting the project id from the URL parameter
@@ -441,7 +442,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   @Override
   public String save() {
     LOG.debug("saving... ");
-    if (securityContext.canUpdateProjectPartners()) {
+    if (securityContext.canUpdateProjectPartners(project.getId())) {
 
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);
