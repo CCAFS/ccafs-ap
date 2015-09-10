@@ -139,8 +139,13 @@
     <ul class="messages"></ul>
   </div>
   
-  [#-- Can not change partner person dialog --]
-  <div id="contactChange-dialog" title="Change person" style="display:none">
+  [#-- Change partner person email dialog --]
+  <div id="contactChange-dialog" title="Change contact person" style="display:none">
+    <ul class="messages"></ul>
+  </div>
+  
+  [#-- Change partner person type dialog --]
+  <div id="contactChangeType-dialog" title="Change person type" style="display:none">
     <ul class="messages"></ul>
   </div>
   
