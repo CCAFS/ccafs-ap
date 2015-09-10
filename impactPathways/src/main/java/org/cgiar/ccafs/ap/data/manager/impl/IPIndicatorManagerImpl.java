@@ -18,8 +18,10 @@ import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -181,8 +183,69 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
+  public List<IPIndicator> getProjectIndicators(int projectID) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    List<Map<String, String>> indicatorsData = indicatorDAO.getProjectIndicators(projectID);
+
+    for (Map<String, String> iData : indicatorsData) {
+      IPIndicator indicator = new IPIndicator();
+      indicator.setId(Integer.parseInt(iData.get("id")));
+      indicator.setDescription(iData.get("description"));
+      indicator.setTarget(iData.get("target"));
+      indicator.setYear(Integer.parseInt(iData.get("year")));
+
+      // Parent indicator
+      IPIndicator parent = new IPIndicator(Integer.parseInt(iData.get("parent_id")));
+      parent.setDescription(iData.get("parent_description"));
+      parent.setTarget(iData.get("parent_target"));
+      indicator.setParent(parent);
+
+      // Outcome
+      IPElement outcome = new IPElement(Integer.parseInt(iData.get("outcome_id")));
+      outcome.setDescription(iData.get("outcome_description"));
+      indicator.setOutcome(outcome);
+
+      indicators.add(indicator);
+    }
+
+    return indicators;
+  }
+
+  @Override
   public boolean removeElementIndicators(IPElement element) {
     return indicatorDAO.deleteIpElementIndicators(element.getId());
+  }
+
+  @Override
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
+    Map<String, String> indicatorData;
+    boolean saved = true;
+
+    for (IPIndicator indicator : indicators) {
+      if (indicator == null) {
+        continue;
+      }
+      indicatorData = new HashMap<>();
+
+      indicatorData.put("description", indicator.getDescription());
+      indicatorData.put("target", indicator.getTarget());
+      indicatorData.put("year", String.valueOf(indicator.getYear()));
+      indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
+      indicatorData.put("project_id", String.valueOf(projectID));
+      indicatorData.put("outcome_id", String.valueOf(indicator.getOutcome().getId()));
+      indicatorData.put("user_id", String.valueOf(user.getId()));
+      indicatorData.put("justification", justification);
+
+      if (indicator.getId() == -1) {
+        indicatorData.put("id", null);
+        saved = indicatorDAO.saveProjectIndicators(indicatorData) && saved;
+      } else {
+        indicatorData.put("id", String.valueOf(indicator.getId()));
+        saved = indicatorDAO.updateProjectIndicators(indicatorData) && saved;
+      }
+    }
+
+    return saved;
   }
 
 }

@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.IPIndicatorManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(IPIndicatorManagerImpl.class)
 public interface IPIndicatorManager {
+
 
   /**
    * This method gets all the indicators related with the element passed
@@ -77,6 +79,14 @@ public interface IPIndicatorManager {
   public List<IPIndicator> getIndicatorsList(String[] indicatorsIDs);
 
   /**
+   * This method gets all the indicators related to the project passed as parameter
+   * 
+   * @param projectID - project identifier
+   * @return a list of IPIndicator objects
+   */
+  public List<IPIndicator> getProjectIndicators(int projectID);
+
+  /**
    * This method removes from the database the indicators which are related with the
    * ipProgram and ipElement passed as parameters
    * 
@@ -84,4 +94,16 @@ public interface IPIndicatorManager {
    * @return true if the indicators were removed successfully. False otherwise.
    */
   public boolean removeElementIndicators(IPElement element);
+
+  /**
+   * This method save into the database the relation between a project and
+   * some midOutcomes indicators
+   * 
+   * @param indicators - List of indicators objects
+   * @param projectID - project identifier
+   * @param user - the user who is making the change
+   * @param justification - the justification for the changes made
+   * @return true if ALL the indicators were saved successfully. False otherwise
+   */
+  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification);
 }

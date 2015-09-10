@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectManagerImpl;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -79,6 +78,16 @@ public interface ProjectManager {
    * @return a list with Project objects.
    */
   public List<Project> getAllProjectsBasicInfo();
+
+  /**
+   * This method will return the list of all the projects and all their respective deliverables.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary report expected deliverables.
+   * 
+   * @return a list of Project objects with the Deliverable information.
+   */
+  public List<Project> getAllProjectsWithDeliverables();
 
   /**
    * This method returns the bilateral projects that contributes with the flagship and the regions received by
@@ -164,14 +173,6 @@ public interface ProjectManager {
   public List<Integer> getProjectIdsEditables(User user);
 
   /**
-   * This method gets all the indicators related to the project passed as parameter
-   * 
-   * @param projectID - project identifier
-   * @return a list of IPIndicator objects
-   */
-  public List<IPIndicator> getProjectIndicators(int projectID);
-
-  /**
    * This method returns a list of projects that belongs to an institution id given as parameter.
    * 
    * @param institutionID
@@ -215,18 +216,6 @@ public interface ProjectManager {
    *         error happened.
    */
   public int saveProjectDescription(Project project, User user, String justification);
-
-  /**
-   * This method save into the database the relation between a project and
-   * some midOutcomes indicators
-   * 
-   * @param indicators - List of indicators objects
-   * @param projectID - project identifier
-   * @param user - the user who is making the change
-   * @param justification - the justification for the changes made
-   * @return true if ALL the indicators were saved successfully. False otherwise
-   */
-  public boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification);
 
   /**
    * This method save into the database the relation between a project and
