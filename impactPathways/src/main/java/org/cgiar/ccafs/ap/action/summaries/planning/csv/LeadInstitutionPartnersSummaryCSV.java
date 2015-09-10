@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.csv;
+package org.cgiar.ccafs.ap.action.summaries.planning.csv;
 
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
@@ -33,7 +33,6 @@ import com.google.inject.Inject;
  * @author Carlos Alberto Martínez M.
  */
 public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
-
 
   private InputStream inputStream;
   private String COMMA_DELIMITER;

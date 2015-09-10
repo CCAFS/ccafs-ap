@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.csv;
+package org.cgiar.ccafs.ap.action.summaries.planning.csv;
 
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
@@ -20,15 +20,11 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.struts2.components.If;
 
 
 /**
@@ -37,21 +33,13 @@ import com.google.inject.Inject;
 
 public class DeliverableSummaryCSV extends BaseCSV {
 
-
   private APConfig config;
-
 
   /**
    * Method constructor.
    */
   @Inject
   public DeliverableSummaryCSV(APConfig config) {
-
-    COMMA_DELIMITER = ",";
-    NEW_LINE_SEPARATOR = "\n";
-    headers =
-      new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID", "Deliverable title",
-      "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
     this.config = config;
   }
 
@@ -59,8 +47,9 @@ public class DeliverableSummaryCSV extends BaseCSV {
    * Method is used for to add the deliverable
    * 
    * @param deliverables it is a list that contain the deliverables
+   * @throws If an I/O error occurs.
    */
-  private void addContent(List<Project> projectList) {
+  private void addContent(List<Project> projectList) throws IOException {
 
     List<Deliverable> deliverables;
     StringBuilder stringBuilder;
@@ -79,12 +68,10 @@ public class DeliverableSummaryCSV extends BaseCSV {
             stringBuilder = new StringBuilder();
 
             // Project Id
-            this.addRegister(project.getId(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(String.valueOf(project.getId()), true, true);
 
             // Title
-            this.addRegister(project.getTitle(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(project.getTitle(), true, true);
 
             // Flashig
             counter = 0;
@@ -97,9 +84,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
               counter++;
             }
 
-            this.addRegister(stringBuilder.toString(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
-
+            this.writeString(stringBuilder.toString(), true, true);
 
             // Region
             counter = 0;
@@ -112,55 +97,39 @@ public class DeliverableSummaryCSV extends BaseCSV {
               counter++;
             }
 
-            this.addRegister(stringBuilder.toString(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(stringBuilder.toString(), true, true);
 
             // deliverable Id
-            this.addRegister(deliverable.getId(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(String.valueOf(deliverable.getId()), false, true);
 
             // deliverable Title
-            this.addRegister(deliverable.getTitle(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(deliverable.getTitle(), true, true);
 
             // MOG
-            if (deliverable.getOutput() != null) {
-              this.addRegister(deliverable.getOutput().getDescription(), fileWriter);
-            } else {
-              this.addRegister(this.getText("summaries.project.empty"), fileWriter);
-            }
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(deliverable.getOutput().getDescription(), true, true);
 
             // Year
-            this.addRegister(deliverable.getYear(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(String.valueOf(deliverable.getYear()), true, true);
 
             // Main Type
-            this.addRegister(deliverable.getType().getCategory().getName(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(deliverable.getType().getCategory().getName(), true, true);
 
             // Sub Type
-            this.addRegister(deliverable.getType().getName(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(deliverable.getType().getName(), true, true);
 
             // Other type
-            stringBuilder = new StringBuilder();
             if (deliverable.getTypeOther() == null || deliverable.getTypeOther().equals("")) {
-              stringBuilder.append(this.getText("summaries.project.notapplicable"));
+              this.writeString(this.getText("summaries.project.notapplicable"), false, true);
             } else {
-              stringBuilder.append(deliverable.getTypeOther());
+              this.writeString(deliverable.getTypeOther(), false, true);
             }
-            this.addRegister(stringBuilder.toString(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
 
             // Partner Responsible
-            if (deliverable.getResponsiblePartner() != null
-              && (deliverable.getResponsiblePartner().getPartner() != null)) {
-              this.addRegister(deliverable.getResponsiblePartner().getPartner().getComposedName(), fileWriter);
+            if (deliverable.getResponsiblePartner() != null) {
+              this.writeString(deliverable.getResponsiblePartner().getPartner().getComposedName(), false, true);
             } else {
-              this.addRegister("", fileWriter);
+              this.writeString("", false, true);
             }
-            fileWriter.append(COMMA_DELIMITER);
 
             // Others Partners
             DeliverablePartner otherPartner;
@@ -175,18 +144,13 @@ public class DeliverableSummaryCSV extends BaseCSV {
                   stringBuilder.append(otherPartner.getPartner().getComposedName());
                 }
               }
-            } else {
-              stringBuilder.append(this.getText("summaries.project.empty"));
             }
-            this.addRegister(stringBuilder, fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
-
-
-            fileWriter.append(this.NEW_LINE_SEPARATOR);
-
+            this.writeString(stringBuilder.toString(), true, true);
+            this.writeSeparator();
           }
 
         } catch (IOException e) {
+          // TODO
           e.printStackTrace();
         }
       }
@@ -194,46 +158,33 @@ public class DeliverableSummaryCSV extends BaseCSV {
   }
 
   /**
-   * Method is used to generate the csv for the deliverable.
+   * This method is used to generate the CSV for the deliverable report.
    * 
-   * @param deliverables it is a list that contain the deliverables
+   * @param projectList is a list of projects with all their deliverables information.
    */
 
-  public void generateCSV(List<Project> projectList) {
-
-    File file = new File(config.getUploadsBaseFolder() + "temporal.txt");
-    fileWriter = null;
-    this.initializeCsv(file);
+  public byte[] generateCSV(List<Project> projectList) {
 
     try {
-      fileWriter = new FileWriter(file, true);
-      fileWriter.write('\ufeff');
+      this.initializeCSV();
+      String[] headers = new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID",
+        "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+      "Others Partners"};
 
-      this.addHeaders(headers, fileWriter);
+      this.addHeaders(headers);
       this.addContent(projectList);
-      fileWriter.close();
+      this.flush();
+      // TODO - We need to close the streams
 
-      // *********************Created the fileName****************************
-      // Expected-deliverables-fecha(yyyyMMdd)
+      // returning the bytes that are in the output stream.
+      return this.getBytes();
 
-      String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
-      StringBuffer fileName = new StringBuffer();
-
-      fileName.append("Expected");
-      fileName.append("-");
-      fileName.append("deliverables");
-      fileName.append("-");
-      fileName.append(date);
-      fileName.append(".csv");
-
-      this.fileName = fileName.toString();
-      // *****************************************************************
-
-      inputStream = new FileInputStream(file);
-      contentLength = (int) file.length();
     } catch (IOException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
+    return null;
   }
 
 

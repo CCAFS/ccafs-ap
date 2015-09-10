@@ -15,41 +15,47 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.csv.DeliverableSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.csv.DeliverableSummaryCSV;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Jorge Leonardo Solis Banguera
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
-public class DeliverableProjectSummaryAction extends BaseAction implements Summary {
+public class DeliverablePlanningSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(DeliverableProjectSummaryAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;
+  private static final long serialVersionUID = 365962206662709857L;
+
+  // Managers
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
   private DeliverableSummaryCSV deliverableCSV;
   private DeliverableManager deliverableManager;
+
+  // Streams
   List<InputStream> streams;
-  List<Deliverable> deliverables;
-  int projectID;
+
+  // Model
+  List<Project> projectList;
 
   @Inject
-  public DeliverableProjectSummaryAction(APConfig config, DeliverableManager deliverableManager,
+  public DeliverablePlanningSummaryAction(APConfig config, DeliverableManager deliverableManager,
     NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
     DeliverableSummaryCSV deliverableCSV) {
     super(config);
@@ -64,34 +70,30 @@ public class DeliverableProjectSummaryAction extends BaseAction implements Summa
   public String execute() throws Exception {
 
     // Generate the csv file
-    deliverableCSV.generateCSV(deliverables);
+    deliverableCSV.generateCSV(projectList);
     streams = new ArrayList<>();
+
+    inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+
     streams.add(deliverableCSV.getInputStream());
 
     return SUCCESS;
   }
 
   @Override
-  public int getContentLength() {
-    return deliverableCSV.getContentLength();
-  }
-
-  @Override
   public String getFileName() {
-    return deliverableCSV.getFileName(projectID, "Deliverables");
-  }
-
-
-  @Override
-  public InputStream getInputStream() {
-    return deliverableCSV.getInputStream();
+    // e.g. Expected-deliverables-20150914-0835.csv
+    String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
+    StringBuffer fileName = new StringBuffer();
+    fileName.append("Expected-deliverables-");
+    fileName.append(date);
+    fileName.append(".csv");
+    return fileName.toString();
   }
 
 
   @Override
   public void prepare() {
-
-    projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
     deliverables = deliverableManager.getDeliverablesByProject(projectID);
 
@@ -110,8 +112,8 @@ public class DeliverableProjectSummaryAction extends BaseAction implements Summa
       }
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
 

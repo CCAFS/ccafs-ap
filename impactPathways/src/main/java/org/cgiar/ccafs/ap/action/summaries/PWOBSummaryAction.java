@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.csv.DeliverableSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.csv.DeliverableSummaryCSV;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PWOBSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(DeliverableProjectSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
