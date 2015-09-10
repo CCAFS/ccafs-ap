@@ -62,27 +62,27 @@ public class PartnersSummaryCSV extends BaseCSV {
     for (Institution institution : projectPartnerInstitutions) {
       try {
 
-        this.writeString(institution.getId(), fileWriter);
+        this.addRegister(institution.getId(), fileWriter);
         fileWriter.append(COMMA_DELIMITER);
 
-        this.writeString(institution.getName(), fileWriter);
+        this.addRegister(institution.getName(), fileWriter);
         fileWriter.append(COMMA_DELIMITER);
 
         if (institution.getAcronym() != null && !institution.getAcronym().isEmpty()) {
-          this.writeString(institution.getAcronym(), fileWriter);
+          this.addRegister(institution.getAcronym(), fileWriter);
         }
         fileWriter.append(COMMA_DELIMITER);
 
         if (institution.getWebsiteLink() != null && !institution.getWebsiteLink().isEmpty()) {
-          this.writeString(institution.getWebsiteLink(), fileWriter);
+          this.addRegister(institution.getWebsiteLink(), fileWriter);
         }
         fileWriter.append(COMMA_DELIMITER);
 
-        this.writeString(institution.getCountry().getName(), fileWriter);
+        this.addRegister(institution.getCountry().getName(), fileWriter);
         fileWriter.append(COMMA_DELIMITER);
 
         // Getting the project ids
-        this.writeString(projectList[i], fileWriter);
+        this.addRegister(projectList[i], fileWriter);
         i++;
 
         fileWriter.append(this.NEW_LINE_SEPARATOR);
@@ -122,7 +122,7 @@ public class PartnersSummaryCSV extends BaseCSV {
       fileName.append("-");
       fileName.append("Institutions");
       fileName.append("_");
-      fileName.append(new SimpleDateFormat("yyyyMMdd-HH:mm").format(new Date()));
+      fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
       fileName.append(".csv");
 
       this.fileName = fileName.toString();
@@ -135,6 +135,7 @@ public class PartnersSummaryCSV extends BaseCSV {
     }
   }
 
+  @Override
   public int getContentLength() {
     return contentLength;
   }
@@ -145,6 +146,7 @@ public class PartnersSummaryCSV extends BaseCSV {
    * 
    * @return the inputStream
    */
+  @Override
   public InputStream getInputStream() {
     return inputStream;
   }
@@ -155,6 +157,7 @@ public class PartnersSummaryCSV extends BaseCSV {
    * 
    * @param inputStream the inputStream to set
    */
+  @Override
   public void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }

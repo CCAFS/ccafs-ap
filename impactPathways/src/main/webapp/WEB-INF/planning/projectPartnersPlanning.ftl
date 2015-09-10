@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Partners" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/usersManagement.js", "${baseUrl}/js/planning/projectPartners.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectPartners.js", "${baseUrl}/js/global/usersManagement.js"] /]
 
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
@@ -135,7 +135,17 @@
   </div>
   
   [#-- Remove partner person leader dialog --]
-  <div id="contactRemove-dialog" title="Remove contact" style="display:none">
+  <div id="contactRemove-dialog" title="Remove person" style="display:none">
+    <ul class="messages"></ul>
+  </div>
+  
+  [#-- Change partner person email dialog --]
+  <div id="contactChange-dialog" title="Change contact person" style="display:none">
+    <ul class="messages"></ul>
+  </div>
+  
+  [#-- Change partner person type dialog --]
+  <div id="contactChangeType-dialog" title="Change person type" style="display:none">
     <ul class="messages"></ul>
   </div>
   
