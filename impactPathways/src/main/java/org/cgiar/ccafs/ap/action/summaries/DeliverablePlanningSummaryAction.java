@@ -102,7 +102,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
     projectsList = projectManager.getAllProjectsBasicInfo();
     double c = 0;
     for (Project project : projectsList) {
-      System.out.println(++c + "/" + projectsList.size());
+      // System.out.println(++c + "/" + projectsList.size());
       project.setDeliverables(deliverableManager.getDeliverablesByProject(project.getId()));
 
     }

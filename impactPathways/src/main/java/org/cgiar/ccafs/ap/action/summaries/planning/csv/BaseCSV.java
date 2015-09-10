@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class manage everything related to the creation of a CSV and the output streams needed to write the information.
  * 
- * @author Jorge Leonardo Solis Banguera
+ * @author Jorge Leonardo Solis B. - CIAT/CCAFS
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class BaseCSV {
@@ -103,11 +103,22 @@ public class BaseCSV {
    * 
    * @return a BufferedWriter Stream representing the stream where is going to be written all the information in CSV
    *         format.
+   * @throws IOException
    */
-  protected void initializeCSV() {
+  protected void initializeCSV() throws IOException {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+    this.writeAccentFormat();
+  }
+
+  /**
+   * This Method is used for to prepate the file for accept format acent
+   * 
+   * @throws IOException if an I/O error occurs.
+   */
+  public void writeAccentFormat() throws IOException {
+    writer.write('\ufeff');
   }
 
   /**

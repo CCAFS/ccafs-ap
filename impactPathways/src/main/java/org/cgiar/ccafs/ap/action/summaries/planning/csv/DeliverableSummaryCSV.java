@@ -54,7 +54,8 @@ public class DeliverableSummaryCSV extends BaseCSV {
     Project project;
     // for (Project project : projectList) {
     try {
-      for (int a = 0; a < projectList.size(); a++) {
+      // for (int a = 0; a < projectList.size(); a++) {
+      for (int a = 0; a < 2; a++) {
         project = projectList.get(a);
         deliverables = project.getDeliverables();
 
@@ -169,8 +170,8 @@ public class DeliverableSummaryCSV extends BaseCSV {
       this.initializeCSV();
       String[] headers =
         new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID",
-        "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-      "Others Partners"};
+          "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+          "Others Partners"};
 
       this.addHeaders(headers);
       this.addContent(projectList);

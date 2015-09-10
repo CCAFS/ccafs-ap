@@ -56,7 +56,6 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   private DeliverableManager deliverableManager;
   private ProjectManager projectManager;
   private ProjectOutcomeManager projectOutcomeManager;
-  private List<InputStream> streams;
   private CRPManager crpManager;
   private ProjectOtherContributionManager ipOtherContributionManager;
   private ActivityManager activityManager;
