@@ -18,7 +18,6 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,14 +32,12 @@ import org.apache.struts2.components.If;
 
 public class DeliverableSummaryCSV extends BaseCSV {
 
-  private APConfig config;
 
   /**
    * Method constructor.
    */
   @Inject
-  public DeliverableSummaryCSV(APConfig config) {
-    this.config = config;
+  public DeliverableSummaryCSV() {
   }
 
   /**
@@ -170,7 +167,8 @@ public class DeliverableSummaryCSV extends BaseCSV {
 
     try {
       this.initializeCSV();
-      String[] headers = new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID",
+      String[] headers =
+        new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID",
         "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
       "Others Partners"};
 

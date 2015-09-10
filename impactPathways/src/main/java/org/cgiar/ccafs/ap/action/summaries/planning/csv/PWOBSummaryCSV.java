@@ -22,19 +22,14 @@ import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
 
 
 /**
- * @author Your name
+ * @author Jorge Leonardo Solis B.
  */
 public class PWOBSummaryCSV extends BaseCSV {
 
@@ -42,24 +37,16 @@ public class PWOBSummaryCSV extends BaseCSV {
   /**
    * Method constructor.
    */
-  APConfig config;
   BudgetManager budgetManager;
 
   @Inject
   public PWOBSummaryCSV(APConfig config, BudgetManager budgetManager) {
 
-    SEPARATOR_DELIMITER = ",";
-    NEW_LINE = "\n";
-    headers =
-      new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution",
-      "Lead institution acronym", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "Activity ID",
-      "Activity title", "Activity description", "activity leader", "locations"};
 
     this.budgetManager = budgetManager;
     // Project ID Flagship(s) Project title Project summary Lead institution Lead institution acronym Regions covered
     // W1/W2 Budget W3/Bilateral Budget Activity ID Activity title Activity description activity leader deliverable
     // project MOG to which the deliverable contributes Locations
-    this.config = config;
   }
 
   /**
@@ -86,8 +73,8 @@ public class PWOBSummaryCSV extends BaseCSV {
             stringBuilder = new StringBuilder();
 
             // Project Id
-            this.writeString(project.getId(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(String.valueOf(project.getId()), true, false);
+            this.writeSeparator();
 
             // Flashig
             counter = 0;
@@ -100,31 +87,31 @@ public class PWOBSummaryCSV extends BaseCSV {
               counter++;
             }
 
-            this.writeString(stringBuilder.toString(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(stringBuilder.toString(), true, false);
+            this.writeSeparator();
 
             // Title
-            this.writeString(project.getTitle(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(project.getTitle(), true, false);
+            this.writeSeparator();
 
             // Summary
-            this.writeString(project.getSummary(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(project.getSummary(), true, false);
+            this.writeSeparator();
 
             if (project.getLeader() != null) {
               // Lead institution Acronym
-              this.writeString(project.getLeader().getInstitution().getAcronym(), fileWriter);
-              fileWriter.append(SEPARATOR_DELIMITER);
+              this.writeString(project.getLeader().getInstitution().getAcronym(), true, false);
+              this.writeSeparator();
 
               // Lead institution
-              this.writeString(project.getLeader().getInstitution().getName(), fileWriter);
-              fileWriter.append(SEPARATOR_DELIMITER);
+              this.writeString(project.getLeader().getInstitution().getName(), true, false);
+              this.writeSeparator();
             } else {
-              this.writeString(null, fileWriter);
-              fileWriter.append(SEPARATOR_DELIMITER);
+              this.writeString(null, true, false);
+              this.writeSeparator();
 
-              this.writeString(null, fileWriter);
-              fileWriter.append(SEPARATOR_DELIMITER);
+              this.writeString(null, true, false);
+              this.writeSeparator();
             }
 
             // Region
@@ -137,39 +124,39 @@ public class PWOBSummaryCSV extends BaseCSV {
               stringBuilder.append(region.getAcronym());
               counter++;
             }
-            this.writeString(stringBuilder.toString(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(stringBuilder.toString(), true, false);
+            this.writeSeparator();
 
             // W1/W2 Budget
-            this.writeString(
-              budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), BudgetType.W1_W2.getValue()), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
+              BudgetType.W1_W2.getValue())), true, false);
+            this.writeSeparator();
 
             // W3/Bilateral Budget
             this.writeString(
-              budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), BudgetType.W3_BILATERAL.getValue()),
-              fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+              String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
+                BudgetType.W3_BILATERAL.getValue())), true, false);
+            this.writeSeparator();
 
             // Activity Id
-            this.writeString(activity.getId(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(String.valueOf(activity.getId()), true, false);
+            this.writeSeparator();
 
             // Activity title
-            this.writeString(activity.getTitle(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(activity.getTitle(), true, false);
+            this.writeSeparator();
 
             // Activity description
-            this.writeString(activity.getDescription(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(activity.getDescription(), true, false);
+            this.writeSeparator();
 
             // Activity leader
             if (activity.getLeader() != null) {
-              this.writeString(activity.getLeader().getComposedName(), fileWriter);
+              this.writeString(activity.getLeader().getComposedName(), true, false);
             } else {
-              this.writeString(null, fileWriter);
+              this.writeString(null, true, false);
             }
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeSeparator();
 
             // Location
             counter = 0;
@@ -181,8 +168,8 @@ public class PWOBSummaryCSV extends BaseCSV {
               stringBuilder.append(location.getName());
               counter++;
             }
-            this.writeString(stringBuilder.toString(), fileWriter);
-            fileWriter.append(SEPARATOR_DELIMITER);
+            this.writeString(stringBuilder.toString(), true, false);
+            this.writeSeparator();
 
             // MOG
             // if (activity.getOutput() != null) {
@@ -243,7 +230,7 @@ public class PWOBSummaryCSV extends BaseCSV {
             // fileWriter.append(COMMA_DELIMITER);
 
 
-            fileWriter.append(this.NEW_LINE);
+            this.writeNewLine();
 
           }
 
@@ -260,38 +247,30 @@ public class PWOBSummaryCSV extends BaseCSV {
    * @param projectList it is a list that contain the project with the nessesary information
    */
 
-  public void generateCSV(List<Project> projectList) {
-
-    File file = new File(config.getUploadsBaseFolder() + "temporal.txt");
-    fileWriter = null;
-    this.initializeCsv(file);
+  public byte[] generateCSV(List<Project> projectList) {
 
     try {
-      fileWriter = new FileWriter(file, true);
-      fileWriter.write('\ufeff');
+      this.initializeCSV();
+      String[] headers =
+        new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution",
+          "Lead institution acronym", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "Activity ID",
+          "Activity title", "Activity description", "activity leader", "locations"};
 
-      this.addHeaders(headers, fileWriter);
+      this.addHeaders(headers);
       this.addContent(projectList);
-      fileWriter.close();
+      this.flush();
+      // TODO - We need to close the streams
 
-      // *********************Created the fileName****************************
-      // Expected-deliverables-fecha(yyyyMMdd)
-
-
-      StringBuffer fileName = new StringBuffer();
-      fileName.append("PWOB");
-      fileName.append("-");
-      fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
-      fileName.append(".csv");
-
-      this.fileName = fileName.toString();
-      // *****************************************************************
-
-      inputStream = new FileInputStream(file);
-      contentLength = (int) file.length();
+      // returning the bytes that are in the output stream.
+      return this.getBytes();
 
     } catch (IOException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
+    return null;
   }
+
+
 }
