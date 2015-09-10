@@ -1,4 +1,4 @@
-package org.cgiar.ccafs.ap.action.summaries.pdfs;
+package org.cgiar.ccafs.ap.action.summaries.planning.pdf;
 
 import java.awt.Color;
 import java.text.SimpleDateFormat;

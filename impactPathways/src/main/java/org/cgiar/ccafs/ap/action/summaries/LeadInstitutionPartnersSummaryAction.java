@@ -15,19 +15,17 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.csv.LeadInstitutionPartnersSummaryCSV;
-import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
+import org.cgiar.ccafs.ap.action.summaries.planning.csv.LeadInstitutionPartnersSummaryCSV;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
-import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -41,29 +39,24 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   public static Logger LOG = LoggerFactory.getLogger(LeadInstitutionPartnersSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private NextUserManager nextUserManager;
-  private DeliverablePartnerManager deliverablePartnerManager;
   private LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV;
-  private ProjectPartnerManager projectPartnerManager;
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
-  List<InputStream> streams;
   List<ProjectPartner> partners;
   List<Institution> projectLeadingInstitutions;
   String[] projectList;
-  int projectID;
-  Project project;
+  // CSV bytes
+  private byte[] bytesCSV;
+
+  // Streams
+  InputStream inputStream;
 
   @Inject
-  public LeadInstitutionPartnersSummaryAction(APConfig config, ProjectPartnerManager projectPartnerManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
+  public LeadInstitutionPartnersSummaryAction(APConfig config,
     LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV, InstitutionManager institutionManager,
     ProjectManager projectManager) {
     super(config);
-    this.nextUserManager = nextUserManager;
-    this.deliverablePartnerManager = deliverablePartnerManager;
     this.leadInstitutionPartnersSummaryCSV = leadInstitutionPartnersSummaryCSV;
-    this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.projectManager = projectManager;
 
@@ -71,29 +64,33 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   @Override
   public String execute() throws Exception {
-
     // Generate the csv file
-    leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
-    streams = new ArrayList<>();
-    streams.add(leadInstitutionPartnersSummaryCSV.getInputStream());
+    bytesCSV = leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return leadInstitutionPartnersSummaryCSV.getContentLength();
+    return bytesCSV.length;
   }
 
   @Override
   public String getFileName() {
-    return leadInstitutionPartnersSummaryCSV.getFileName();
+    String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
+    StringBuffer fileName = new StringBuffer();
+    fileName.append("ProjectLeading-Institutions_");
+    fileName.append(date);
+    fileName.append(".csv");
+    return fileName.toString();
   }
-
 
   @Override
   public InputStream getInputStream() {
-    return leadInstitutionPartnersSummaryCSV.getInputStream();
+    if (inputStream == null) {
+      inputStream = new ByteArrayInputStream(bytesCSV);
+    }
+    return inputStream;
   }
 
 

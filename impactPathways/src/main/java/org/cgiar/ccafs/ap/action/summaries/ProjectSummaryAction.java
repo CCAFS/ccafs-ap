@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.pdfs.ProjectSummaryPDF;
+import org.cgiar.ccafs.ap.action.summaries.planning.pdf.ProjectSummaryPDF;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -260,8 +260,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       }
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
+        APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables

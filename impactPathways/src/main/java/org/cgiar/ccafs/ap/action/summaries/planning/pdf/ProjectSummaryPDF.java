@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.pdfs;
+package org.cgiar.ccafs.ap.action.summaries.planning.pdf;
 
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
@@ -871,9 +871,10 @@ public class ProjectSummaryPDF extends BasePDF {
 
         // TODO - Jorge please test if this works properly
         if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
-          int personResponsibleID = deliverable.getResponsiblePartner().getPartner().getPartnerPersons().get(0).getId();
-          stringBuilder.append(this.messageReturn(deliverable.getResponsiblePartner().getPartner()
-            .getPersonComposedName(personResponsibleID)));
+          // int personResponsibleID =
+          // deliverable.getResponsiblePartner().getPartner().getPartnerPersons().get(0).getId();
+          // stringBuilder.append(this.messageReturn(deliverable.getResponsiblePartner().getPartner()
+          // .getPersonComposedName(personResponsibleID)));
         } else {
           stringBuilder.append(this.getText("summaries.project.empty"));
         }
@@ -1443,7 +1444,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
