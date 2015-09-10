@@ -85,7 +85,7 @@ public class DashboardAction extends BaseAction {
       if (securityContext.isAdmin()) {
         projects = projectManager.getAllProjectsBasicInfo();
       } else {
-        List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser());
+        List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
         projects = new ArrayList<>();
         for (Integer projectId : ids) {
           projects.add(projectManager.getProjectBasicInfo(projectId));

@@ -158,10 +158,10 @@ public interface ProjectManager {
   /**
    * This method returns the list of project identifiers that the given user is able to edit.
    * 
-   * @param user is the user object.
+   * @param userID is the user identifier.
    * @return a List of project identifiers (Integer numbers).
    */
-  public List<Integer> getProjectIdsEditables(User user);
+  public List<Integer> getProjectIdsEditables(int userID);
 
   /**
    * This method gets all the indicators related to the project passed as parameter

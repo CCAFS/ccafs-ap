@@ -14,6 +14,7 @@
 
 package org.cgiar.ccafs.ap.security;
 
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.security.data.manager.UserManagerImpl;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
@@ -58,6 +59,7 @@ public class APCustomRealm extends AuthorizingRealm {
   final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
   private UserManagerImpl userManager;
   private UserRoleManagerImpl userRoleManager;
+  private ProjectManager projectManager;
 
   @Named("DB")
   Authenticator dbAuthenticator;
@@ -68,14 +70,15 @@ public class APCustomRealm extends AuthorizingRealm {
 
 
   @Inject
-  public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager,
+  public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager, ProjectManager projectManager,
     @Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator) {
     this.userManager = userManager;
     this.userRoleManager = userRoleManager;
+    this.projectManager = projectManager;
     this.dbAuthenticator = dbAuthenticator;
     this.ldapAuthenticator = ldapAuthenticator;
     injector = Guice.createInjector();
-    setName("APCustomRealm");
+    this.setName("APCustomRealm");
   }
 
   @Override
@@ -115,7 +118,7 @@ public class APCustomRealm extends AuthorizingRealm {
       throw new IncorrectCredentialsException();
     }
 
-    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), getName());
+    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), this.getName());
     return info;
   }
 
@@ -124,6 +127,7 @@ public class APCustomRealm extends AuthorizingRealm {
     int userID = (Integer) principals.getPrimaryPrincipal();
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
     Map<String, UserRole> projectRoles = userRoleManager.getProjectUserRoles(String.valueOf(userID));
+    projectManager.getProjectIdsEditables(userID);
 
     SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
