@@ -260,8 +260,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       }
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
+        APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables

@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.csv.DeliverableSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.csv.PWOBSummaryCSV;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -31,8 +31,10 @@ import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -46,29 +48,38 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
+
+  // Managers
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
-  private DeliverableSummaryCSV deliverableCSV;
+  private PWOBSummaryCSV pwobSummaryCSV;
   private DeliverableManager deliverableManager;
   private ProjectManager projectManager;
   private ProjectOutcomeManager projectOutcomeManager;
-  private List<InputStream> streams;
-  private List<Project> projectList;
   private CRPManager crpManager;
   private ProjectOtherContributionManager ipOtherContributionManager;
   private ActivityManager activityManager;
   private BudgetManager budgetManager;
 
+  // CSV bytes
+  private byte[] bytesCSV;
+
+  // Streams
+  InputStream inputStream;
+
+  // Model
+  List<Project> projectsList;
+
   @Inject
   public PWOBSummaryAction(APConfig config, DeliverableManager deliverableManager, NextUserManager nextUserManager,
-    DeliverablePartnerManager deliverablePartnerManager, DeliverableSummaryCSV deliverableCSV,
-    ProjectManager projectManager, ProjectOutcomeManager projectOutcomeManager, CRPManager crpManager,
+    DeliverablePartnerManager deliverablePartnerManager, PWOBSummaryCSV pwobSummaryCSV, ProjectManager projectManager,
+    ProjectOutcomeManager projectOutcomeManager, CRPManager crpManager,
     ProjectOtherContributionManager ipOtherContributionManager, ActivityManager activityManager,
     BudgetManager budgetManager) {
     super(config);
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
-    this.deliverableCSV = deliverableCSV;
+    this.pwobSummaryCSV = pwobSummaryCSV;
     this.deliverableManager = deliverableManager;
     this.projectManager = projectManager;
     this.projectOutcomeManager = projectOutcomeManager;
@@ -82,39 +93,46 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   public String execute() throws Exception {
 
     // Generate the csv file
-    deliverableCSV.generateCSV(projectList);
-    streams = new ArrayList<>();
-    streams.add(deliverableCSV.getInputStream());
+    bytesCSV = pwobSummaryCSV.generateCSV(projectsList);
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return deliverableCSV.getContentLength();
+    return pwobSummaryCSV.getBytes().length;
   }
 
   @Override
   public String getFileName() {
-    return deliverableCSV.getFileName();
+    StringBuffer fileName = new StringBuffer();
+    fileName.append("PWOB");
+    fileName.append("-");
+    fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
+    fileName.append(".csv");
+
+    return fileName.toString();
+
   }
 
 
   @Override
   public InputStream getInputStream() {
-    return deliverableCSV.getInputStream();
+    if (inputStream == null) {
+      inputStream = new ByteArrayInputStream(bytesCSV);
+    }
+    return inputStream;
   }
-
 
   @Override
   public void prepare() {
 
-    projectList = this.projectManager.getAllProjectsBasicInfo();
+    projectsList = this.projectManager.getAllProjectsBasicInfo();
     // projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     List<Deliverable> deliverables;
 
 
-    for (Project project : projectList) {
+    for (Project project : projectsList) {
 
       // *************************Deliverable*****************************
       deliverables = deliverableManager.getDeliverablesByProject(project.getId());

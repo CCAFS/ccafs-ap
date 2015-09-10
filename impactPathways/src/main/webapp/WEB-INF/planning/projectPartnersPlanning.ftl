@@ -131,6 +131,7 @@
   
   [#-- Remove Partner Dialog --]
   <div id="partnerRemove-dialog" title="Remove partner" style="display:none">
+    <p>[@s.text name="planning.projectPartners.partnerCannotBeDeleted" /]</p>
     <ul class="messages"></ul>
   </div>
   
@@ -150,8 +151,7 @@
   </div>
   
   [#-- Partner person relations dialog --]
-  <div id="relations-dialog" title="Leading activities" style="display:none">
-    <ul class="messages"></ul>
+  <div id="relations-dialog" title="Leading Activities/Deliverables" style="display:none">
   </div>
   
   [#-- Search users Interface --]
