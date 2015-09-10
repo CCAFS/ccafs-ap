@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.csv;
+package org.cgiar.ccafs.ap.action.summaries.planning.csv;
 
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
@@ -62,27 +62,27 @@ public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
     for (Institution institution : projectLeadingInstitutions) {
       try {
 
-        this.addRegister(institution.getId(), fileWriter);
+        this.writeString(institution.getId(), fileWriter);
         fileWriter.append(COMMA_DELIMITER);
 
-        this.addRegister(institution.getName(), fileWriter);
+        this.writeString(institution.getName(), fileWriter);
         fileWriter.append(COMMA_DELIMITER);
 
         if (institution.getAcronym() != null && !institution.getAcronym().isEmpty()) {
-          this.addRegister(institution.getAcronym(), fileWriter);
+          this.writeString(institution.getAcronym(), fileWriter);
         }
         fileWriter.append(COMMA_DELIMITER);
 
         if (institution.getWebsiteLink() != null && !institution.getWebsiteLink().isEmpty()) {
-          this.addRegister(institution.getWebsiteLink(), fileWriter);
+          this.writeString(institution.getWebsiteLink(), fileWriter);
         }
         fileWriter.append(COMMA_DELIMITER);
 
-        this.addRegister(institution.getCountry().getName(), fileWriter);
+        this.writeString(institution.getCountry().getName(), fileWriter);
         fileWriter.append(COMMA_DELIMITER);
 
         // Getting the project ids
-        this.addRegister(projectList[i], fileWriter);
+        this.writeString(projectList[i], fileWriter);
         i++;
 
         fileWriter.append(this.NEW_LINE_SEPARATOR);
