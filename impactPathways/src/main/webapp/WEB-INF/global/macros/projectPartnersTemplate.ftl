@@ -115,7 +115,7 @@
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=canEditLeader /]
         [#if !canEditLeader]
           <div class="select">
-            [#if (contact.leader)!false]
+            [#if (!securityContext.canUpdatePPAPartners()) && (contact.leader)!false]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
             [/#if]
             <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
@@ -143,19 +143,25 @@
         [#if (contact.user.id??)!false ]
           [#if action.getActivitiesLedByUser(contact.user.id)?has_content]
             <div class="tag activities">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
-            <ul class="activitiesList" style="display:none">
-            [#list action.getActivitiesLedByUser(contact.user.id) as activity]
-              <li>${activity.title}  <a target="_blank" href="[@s.url namespace=namespace action='activities' ][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]#activity-${activity.id}"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
-            [/#list]
-            </ul>
+            <div class="activitiesList"  style="display:none">
+              <h3>Activities</h3>
+              <ul>
+              [#list action.getActivitiesLedByUser(contact.user.id) as activity]
+                <li>${activity.title}  <a target="_blank" href="[@s.url namespace=namespace action='activities' ][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]#activity-${activity.id}"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
+              [/#list]
+              </ul>
+            </div>
           [/#if]
           [#if action.getDeliverablesLedByUser(contact.user.id)?has_content]
             <div class="tag deliverables">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
-            <ul class="deliverablesList" style="display:none">
-            [#list action.getDeliverablesLedByUser(contact.user.id) as deliverable]
-              <li>${deliverable.title}  <a target="_blank" href="[@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${deliverable.id}[/@s.param][/@s.url]"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
-            [/#list]
-            </ul>
+            <div class="deliverablesList" style="display:none">
+              <h3>Deliverables</h3>
+              <ul>
+              [#list action.getDeliverablesLedByUser(contact.user.id) as deliverable]
+                <li>${deliverable.title}  <a target="_blank" href="[@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${deliverable.id}[/@s.param][/@s.url]"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
+              [/#list]
+              </ul>
+            </div>
           [/#if]
         [/#if]
       </div>

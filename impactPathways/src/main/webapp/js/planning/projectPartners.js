@@ -1,5 +1,6 @@
 var $removePartnerDialog, $projectPPAPartners;
 var canUpdatePPAPartners, allPPAInstitutions, partnerPersonTypes, leaderType, coordinatorType, defaultType;
+var projectLeader;
 var lWordsResp = 100;
 
 $(document).ready(init);
@@ -8,8 +9,8 @@ function init() {
   // Setting global variables
   $removePartnerDialog = $('#partnerRemove-dialog');
   $partnersBlock = $('#projectPartnersBlock');
-  allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
   $projectPPAPartners = $('#projectPPAPartners');
+  allPPAInstitutions = JSON.parse($('#allPPAInstitutions').val());
   canUpdatePPAPartners = ($("#canUpdatePPAPartners").val() === "true");
   leaderType = 'PL';
   coordinatorType = 'PC';
@@ -18,29 +19,14 @@ function init() {
       coordinatorType, leaderType, defaultType, '-1'
   ];
   if(editable) {
-    // Draggable project partners
-    $partnersBlock.sortable({
-        placeholder: "ui-state-highlight",
-        handle: ".leftHead",
-        cursor: "move",
-        opacity: 0.9,
-        containment: "parent",
-        revert: true,
-        update: function() {
-          setProjectPartnersIndexes();
-        }
-    });
-    $('.projectPartner > .leftHead').css({
-      cursor: 'move'
-    });
-    $partnersBlock.disableSelection();
+    // Getting the actual project leader
+    projectLeader = jQuery.extend({}, getProjectLeader());
     // Remove PPA institutions from partner institution list when there is not privileges to update PPA Partners
     if(!canUpdatePPAPartners) {
       removePPAPartnersFromList('#projectPartner-template .institutionsList');
     }
     // Update initial project CCAFS partners list for each partner
     updateProjectPPAPartnersLists();
-    // Attaching listeners
     // This function enables launch the pop up window
     popups();
     // Activate the chosen to the existing partners
@@ -48,13 +34,12 @@ function init() {
     // Applying word counters to form fields
     applyWordCounter($("textarea.resp"), lWordsResp);
     applyWordCounter($("#lessons textarea"), lWordsResp);
-
-    initItemListEvents();
-
+    // Validate on save and next action
     validateEvent([
       "#justification"
     ]);
   }
+  // Attaching listeners
   attachEvents();
   if(($partnersBlock.find('.projectPartner').length == 0) && editable) {
     $("a.addProjectPartner").trigger('click');
@@ -63,7 +48,9 @@ function init() {
 }
 
 function attachEvents() {
-  /** Project partner Events ** */
+  /**
+   * Project partner Events
+   */
   // Add a project partner Event
   $("a.addProjectPartner").on('click', addPartnerEvent);
   // Remove a project partner Event
@@ -71,115 +58,143 @@ function attachEvents() {
   // When Partner Type change
   $("select.partnerTypes, select.countryList").change(updateOrganizationsList);
   // When organization change
-  $("select.institutionsList").on("change", function(e) {
-    updateProjectPPAPartnersLists(e);
-  });
+  $("select.institutionsList").on("change", updateProjectPPAPartnersLists);
   // Partners filters
-  $(".filters-link").click(function(event) {
-    var $filterContent = $(event.target).next();
-    if($filterContent.is(":visible")) {
-      updateOrganizationsList(event);
-    }
-    $filterContent.slideToggle();
+  $(".filters-link").on("click", filterInstitutions);
+
+  /**
+   * CCAFS Partners list events
+   */
+  $('.ppaPartnersList select').on('change', function(e) {
+    addItemList($(this).find('option:selected'));
+  });
+  $('ul li .remove').on('click', function(e) {
+    removeItemList($(this).parents('li'));
   });
 
-  /** Partner Person Events ** */
+  /**
+   * Partner Person Events
+   */
   // Add partner Person Event
   $(".addContact a.addLink").on('click', addContactEvent);
   // Remove partner person event
   $(".removePerson").on('click', removePersonEvent);
   // When partnerPersonType change
-  $("select.partnerPersonType").on("change", function(e) {
-    var $contactPerson = $(e.target).parents('.contactPerson');
-    var contact = new PartnerPersonObject($contactPerson);
-    var partner = new PartnerObject($contactPerson.parents('.projectPartner'));
-    if(contact.type == leaderType) {
-      if(projectLeaders() > 1) {
-        var messages = '<li>A project leader has been selected before, it will become in a contact person</li>';
-        // Show a pop up with the message
-        $("#contactChangeType-dialog").find('.messages').append(messages);
-        $("#contactChangeType-dialog").dialog({
-            modal: true,
-            width: 400,
-            buttons: {
-              Close: function() {
-                $(this).dialog("close");
-              }
-            },
-            close: function() {
-              $(this).find('.messages').empty();
-            }
-        });
-      }
-      setPartnerTypeToDefault(contact.type);
-    } else if(contact.type == coordinatorType) {
-      setPartnerTypeToDefault(contact.type);
-    }
-    contact.changeType();
-    partner.changeType();
-  });
+  $("select.partnerPersonType").on("change", changePartnerPersonType);
   // Event to open dialog box and search an contact person
-  $(".searchUser, input.userName").on(
-      "click",
-      function(e) {
-        var person = new PartnerPersonObject($(e.target).parents('.contactPerson'));
-        // Validate if the person has any activity related for be changed
-        if(!person.canEditEmail) {
-          var messages = '';
-          e.stopImmediatePropagation();
-          messages +=
-              '<li>This contact cannot be changed due to is currently the Activity Leader for '
-                  + person.getRelationsNumber('activities') + ' activity(ies)';
-          messages += '<ul>';
-          messages += person.getRelations('activities');
-          messages += '</ul>';
-          messages += '</li>';
-          // Show a pop up with the message
-          $("#contactChange-dialog").find('.messages').append(messages);
-          $("#contactChange-dialog").dialog({
-              modal: true,
-              width: 400,
-              buttons: {
-                Close: function() {
-                  $(this).dialog("close");
-                }
-              },
-              close: function() {
-                $(this).find('.messages').empty();
-              }
-          });
-        }
-      });
+  $(".searchUser, input.userName").on("click", changePersonEmail);
   // Event when click in a relation tag of partner person
-  $(".tag").on("click", function(e) {
-    var $relations = $(this).next().html();
-    $('#relations-dialog').dialog({
+  $(".tag").on("click", showPersonRelations);
+
+}
+
+function getProjectLeader() {
+  var contactLeader = {};
+  $partnersBlock.find('.contactPerson').each(function(i,partnerPerson) {
+    var contact = new PartnerPersonObject($(partnerPerson));
+    if(contact.isLeader()) {
+      contactLeader = jQuery.extend({}, contact);
+    }
+  });
+  return contactLeader;
+}
+
+function setProjectLeader(obj) {
+  projectLeader = jQuery.extend({}, obj);
+}
+
+function filterInstitutions(e) {
+  var $filterContent = $(e.target).next();
+  if($filterContent.is(":visible")) {
+    updateOrganizationsList(e);
+  }
+  $filterContent.slideToggle();
+}
+
+function changePersonEmail(e) {
+  var person = new PartnerPersonObject($(e.target).parents('.contactPerson'));
+  // Validate if the person has any activity related for be changed
+  if(!person.canEditEmail) {
+    var messages = '';
+    e.stopImmediatePropagation();
+    messages +=
+        '<li>This contact cannot be changed due to is currently the Activity Leader for '
+            + person.getRelationsNumber('activities') + ' activity(ies)';
+    messages += '<ul>';
+    messages += person.getRelations('activities');
+    messages += '</ul>';
+    messages += '</li>';
+    // Show a pop up with the message
+    $("#contactChange-dialog").find('.messages').append(messages);
+    $("#contactChange-dialog").dialog({
         modal: true,
-        width: 400,
+        width: 500,
         buttons: {
           Close: function() {
             $(this).dialog("close");
           }
         },
-        open: function() {
-          $(this).find('ul').html($relations);
-        },
         close: function() {
-          $(this).find('ul').empty();
+          $(this).find('.messages').empty();
         }
     });
+  }
+}
+
+function showPersonRelations(e) {
+  var $relations = $(this).next().html();
+  $('#relations-dialog').dialog({
+      modal: true,
+      width: 500,
+      buttons: {
+        Close: function() {
+          $(this).dialog("close");
+        }
+      },
+      open: function() {
+        $(this).html($relations);
+      },
+      close: function() {
+        $(this).empty();
+      }
   });
 }
 
-function projectLeaders() {
-  var leaders = 0;
-  $partnersBlock.find('.contactPerson').each(function(i,partnerPerson) {
-    var contact = new PartnerPersonObject($(partnerPerson));
-    if(contact.isLeader()) {
-      leaders++;
+function changePartnerPersonType(e) {
+  var $contactPerson = $(e.target).parents('.contactPerson');
+  var contact = new PartnerPersonObject($contactPerson);
+  // Set as unique contact type in the project
+  if((contact.type == leaderType) || (contact.type == coordinatorType)) {
+    setPartnerTypeToDefault(contact.type);
+  }
+  // Change partner person type
+  contact.changeType();
+  // Change parent partner type
+  var partner = new PartnerObject($contactPerson.parents('.projectPartner'));
+  partner.changeType();
+  if(contact.type == leaderType) {
+    if(!jQuery.isEmptyObject(projectLeader)) {
+      var previousLeaderName = projectLeader.contactInfo;
+      var messages = '<li>Please be aware that you can only have one project leader per project. <br/>';
+      messages += 'Therefore <strong>' + previousLeaderName + '</strong> was assigned a contact person role.</li>';
+      // Show a pop up with the message
+      $("#contactChangeType-dialog").find('.messages').append(messages);
+      $("#contactChangeType-dialog").dialog({
+          modal: true,
+          width: 500,
+          buttons: {
+            Close: function() {
+              $(this).dialog("close");
+            }
+          },
+          close: function() {
+            $(this).find('.messages').empty();
+          }
+      });
     }
-  });
-  return leaders;
+  }
+  // Update project leader contact person
+  setProjectLeader(getProjectLeader());
 }
 
 function updateOrganizationsList(e) {
@@ -299,13 +314,26 @@ function removePartnerEvent(e) {
       width: 500,
       buttons: {},
       close: function() {
-        $("#partnerRemove-dialog").find('.messages').empty();
+        $(this).find('.messages').empty();
       }
   };
-  // Validate if there are any deliverable linked to any contact person of this partner
+  // The budget related with this partner will be deleted
+  if(partner.id != -1) {
+    messages += '<li>The budget related with this partner will be deleted</li>';
+    removeDialogOptions.buttons = {
+        "Remove partner": function() {
+          partner.remove();
+          $(this).dialog("close");
+        },
+        Close: function() {
+          $(this).dialog("close");
+        }
+    };
+  }
+  // Validate if there are any deliverables linked to any contact persons from this partner
   if(deliverables > 0) {
     messages +=
-        '<li>Please bear in mind that if you delete this contact, ' + deliverables
+        '<li>Please bear in mind that if you delete this partner, ' + deliverables
             + ' deliverables relations will be deleted</li>';
     removeDialogOptions.buttons = {
         "Remove partner": function() {
@@ -317,9 +345,9 @@ function removePartnerEvent(e) {
         }
     };
   }
-  // Validate if the CCAFS partner has any contribution to another partner
+  // Validate if the CCAFS partner is currently contributing has any contributions to another partner
   if(partner.isPPA() && (partnerContributions.length > 0)) {
-    messages += '<li>This partner cannot be deleted due to is currently contributing to another partner ';
+    messages += '<li>' + partner.institutionName + ' is currently allocating budget to the following partner(s):';
     messages += '<ul>';
     for(var i = 0, len = partnerContributions.length; i < len; i++) {
       messages += '<li>' + partnerContributions[i] + '</li>';
@@ -331,9 +359,10 @@ function removePartnerEvent(e) {
       }
     };
   }
-  // Validate if the project partner has any person as leader role
+  // Validate if the project partner has any project leader assigned
   if(partner.hasLeader()) {
-    messages += '<li>Please indicate another project leader before deleting this partner.</li>';
+    messages +=
+        '<li>Please indicate another project leader from a different partner before deleting this partner.</li>';
     removeDialogOptions.buttons = {
       Close: function() {
         $(this).dialog("close");
@@ -343,7 +372,7 @@ function removePartnerEvent(e) {
   // Validate if the user has privileges to remove CCAFS Partners
   if(partner.isPPA() && !canUpdatePPAPartners) {
     messages +=
-        '<li>You don\'t have privileges to delete CCAFS Partners, please contact the ML to delete this partner. </li>';
+        '<li>You don\'t have enough privileges to delete CCAFS Partners, please contact the Management Liaison to delete this partner.</li>';
     removeDialogOptions.buttons = {
       Close: function() {
         $(this).dialog("close");
@@ -353,7 +382,10 @@ function removePartnerEvent(e) {
   // Validate if there are any activity linked to any contact person of this partner
   if(activities > 0) {
     messages +=
-        '<li>This partner cannot be deleted due to is currently related with ' + activities + ' activities.</li>';
+        '<li>This partner cannot be deleted because at least one or more contact persons is leading ' + activities
+            + ' activity(ies)</li>';
+    messages +=
+        '<li>If you want to proceed with the deletion, please go to the activities and change the activity leader</li>';
     removeDialogOptions.buttons = {
       Close: function() {
         $(this).dialog("close");
@@ -369,7 +401,6 @@ function removePartnerEvent(e) {
     $("#partnerRemove-dialog").find('.messages').append(messages);
     $("#partnerRemove-dialog").dialog(removeDialogOptions);
   }
-
 }
 
 function addPartnerEvent(e) {
@@ -404,25 +435,53 @@ function removePersonEvent(e) {
   var messages = "";
   var activities = person.getRelationsNumber('activities');
   var deliverables = person.getRelationsNumber('deliverables');
-  // Validate if the person type is PL
-  if(person.isLeader()) {
-    messages += '<li>Please indicate another project leader before deleting this contact.</li>';
-  }
-  // Validate if there are any activity linked to this person
-  if(activities > 0) {
-    messages +=
-        '<li>This contact cannot be deleted due to is currently the Activity Leader for ' + activities
-            + ' activity(ies)';
-    messages += '<ul>';
-    messages += person.getRelations('activities');
-    messages += '</ul>';
-    messages += '</li>';
-  }
+  var removeDialogOptions = {
+      modal: true,
+      width: 500,
+      buttons: {},
+      close: function() {
+        $(this).find('.messages').empty();
+      }
+  };
   // Validate if there are any deliverable linked to this person
   if(deliverables > 0) {
     messages +=
         '<li>Please bear in mind that if you delete this contact, ' + deliverables
-            + ' deliverables relations will be deleted</li>';
+            + ' deliverables relations will be deleted.</li>';
+    removeDialogOptions.buttons = {
+        "Remove Person": function() {
+          person.remove();
+          $(this).dialog("close");
+        },
+        Close: function() {
+          $(this).dialog("close");
+        }
+    };
+  }
+  // Validate if the person type is PL
+  if(person.isLeader()) {
+    messages +=
+        '<li>There must be one project leader per project. Please select another project leader before deleting this contact.</li>';
+    removeDialogOptions.buttons = {
+      Close: function() {
+        $(this).dialog("close");
+      }
+    };
+  }
+  // Validate if there are any activity linked to this person
+  if(activities > 0) {
+    messages += '<li>This contact person cannot be deleted because he/she is leading activity(ies)';
+    messages +=
+        '<li>If you want to proceed with the deletion, please go to the following activities and change the activity leader</li>';
+    messages += '<ul>';
+    messages += person.getRelations('activities');
+    messages += '</ul>';
+    messages += '</li>';
+    removeDialogOptions.buttons = {
+      Close: function() {
+        $(this).dialog("close");
+      }
+    };
   }
   if(messages === "") {
     // Remove person if there is not any message
@@ -430,18 +489,7 @@ function removePersonEvent(e) {
   } else {
     // Show a pop up with the message
     $("#contactRemove-dialog").find('.messages').append(messages);
-    $("#contactRemove-dialog").dialog({
-        modal: true,
-        width: 400,
-        buttons: {
-          Close: function() {
-            $(this).dialog("close");
-          }
-        },
-        close: function() {
-          $(this).find('.messages').empty();
-        }
-    });
+    $("#contactRemove-dialog").dialog(removeDialogOptions);
   }
 }
 
@@ -455,15 +503,6 @@ function setProjectPartnersIndexes() {
 /**
  * Items list functions
  */
-
-function initItemListEvents() {
-  $('.ppaPartnersList select').on('change', function(e) {
-    addItemList($(this).find('option:selected'));
-  });
-  $('ul li .remove').on('click', function(e) {
-    removeItemList($(this).parents('li'));
-  });
-}
 
 function removeItemList($item) {
   // Adding option to the select
@@ -619,6 +658,7 @@ function PartnerObject(partner) {
 function PartnerPersonObject(partnerPerson) {
   this.id = parseInt($(partnerPerson).find('.partnerPersonId').val());
   this.type = $(partnerPerson).find('.partnerPersonType').val();
+  this.contactInfo = $(partnerPerson).find('.userName').val();
   this.canEditEmail = ($(partnerPerson).find('input.canEditEmail').val() === "true");
   this.setPartnerType = function(type) {
     $(partnerPerson).find('.partnerPersonType').val(type).trigger("liszt:updated");
@@ -631,7 +671,7 @@ function PartnerPersonObject(partnerPerson) {
     return parseInt($(partnerPerson).find('.tag.' + relation + ' span').text()) || 0;
   };
   this.getRelations = function(relation) {
-    return $(partnerPerson).find('.tag.' + relation).next().html();
+    return $(partnerPerson).find('.tag.' + relation).next().find('ul').html();
   };
   this.setIndex = function(name,index) {
     var elementName = name + "partnerPersons[" + index + "].";
