@@ -137,8 +137,10 @@ public class BaseCSV {
    * @throws IOException If an I/O error occurs
    */
   public void writeString(String text, boolean useDefault, boolean endWithSeparator) throws IOException {
-    if (useDefault && (text == null || text.equals(""))) {
-      writer.write(this.getText("summaries.project.empty"));
+    if (text == null || text.equals("")) {
+      if (useDefault) {
+        writer.write(this.getText("summaries.project.empty"));
+      }
     } else {
       writer.write(StringEscapeUtils.escapeCsv(String.valueOf(text)));
     }
