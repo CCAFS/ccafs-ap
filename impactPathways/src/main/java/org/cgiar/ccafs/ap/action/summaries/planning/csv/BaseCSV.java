@@ -55,7 +55,7 @@ public class BaseCSV {
    * @param writer is the stream to the "file" where the headers will be placed.
    * @throws IOException If an I/O error occurs
    */
-  public void addHeaders(String[] headers) throws IOException {
+  protected void addHeaders(String[] headers) throws IOException {
     for (int a = 0; a < headers.length; a++) {
       writer.write(headers[a]);
       writer.write(SEPARATOR);
@@ -63,7 +63,7 @@ public class BaseCSV {
     writer.write(NEW_LINE);
   }
 
-  public void closeStreams() throws IOException {
+  protected void closeStreams() throws IOException {
     outputStream.close();
     writer.close();
   }
@@ -74,7 +74,7 @@ public class BaseCSV {
    * 
    * @throws IOException If an I/O error occurs
    */
-  public void flush() throws IOException {
+  protected void flush() throws IOException {
     writer.flush();
   }
 
@@ -104,7 +104,7 @@ public class BaseCSV {
    * @return a BufferedWriter Stream representing the stream where is going to be written all the information in CSV
    *         format.
    */
-  public void initializeCSV() {
+  protected void initializeCSV() {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     writer = new BufferedWriter(new OutputStreamWriter(outputStream));

@@ -56,13 +56,13 @@ public class DeliverableSummaryCSV extends BaseCSV {
     int counter = 0;
     Project project;
     // for (Project project : projectList) {
-    for (int a = 0; a < projectList.size(); a++) {
-      project = projectList.get(a);
-      deliverables = project.getDeliverables();
+    try {
+      for (int a = 0; a < projectList.size(); a++) {
+        project = projectList.get(a);
+        deliverables = project.getDeliverables();
 
-      for (Deliverable deliverable : deliverables) {
+        for (Deliverable deliverable : deliverables) {
 
-        try {
           // if (deliverable != null && deliverable.getYear() > 2014)
           if (deliverable != null) {
             stringBuilder = new StringBuilder();
@@ -106,7 +106,11 @@ public class DeliverableSummaryCSV extends BaseCSV {
             this.writeString(deliverable.getTitle(), true, true);
 
             // MOG
-            this.writeString(deliverable.getOutput().getDescription(), true, true);
+            if (deliverable.getOutput() != null) {
+              this.writeString(deliverable.getOutput().getDescription(), true, true);
+            } else {
+              this.writeString("", false, true);
+            }
 
             // Year
             this.writeString(String.valueOf(deliverable.getYear()), true, true);
@@ -146,14 +150,13 @@ public class DeliverableSummaryCSV extends BaseCSV {
               }
             }
             this.writeString(stringBuilder.toString(), true, true);
-            this.writeSeparator();
           }
-
-        } catch (IOException e) {
-          // TODO
-          e.printStackTrace();
+          this.writeNewLine();
         }
       }
+    } catch (IOException e) {
+      // TODO To manage
+      e.printStackTrace();
     }
   }
 
