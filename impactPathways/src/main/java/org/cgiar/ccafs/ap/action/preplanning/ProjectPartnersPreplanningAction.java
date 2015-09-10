@@ -135,7 +135,7 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     project = projectManager.getProject(projectID);
 
     // if there are not partners, please return an empty List.
-    project.setProjectPartners(projectPartnerManager.z_old_getProjectPartners(projectID));
+    // project.setProjectPartners(projectPartnerManager.z_old_getProjectPartners(projectID));
 
     // Getting all partners.
     allPartners = new ArrayList<>();
@@ -194,13 +194,14 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // ---------- PROJECT PARTNERS ------------
 
     // Getting previous Project Partners to identify those that need to be deleted.
-    List<ProjectPartner> previousProjectPartners = projectPartnerManager.z_old_getProjectPartners(projectID);
+    List<ProjectPartner> previousProjectPartners = null;
+    // projectPartnerManager.z_old_getProjectPartners(projectID);
 
     // Deleting project partners
     for (ProjectPartner projectPartner : previousProjectPartners) {
       if (!project.getProjectPartners().contains(projectPartner)) {
-        boolean deleted =
-          projectPartnerManager.z_old_deleteProjectPartner(projectPartner.getId(), this.getCurrentUser(), "");
+        boolean deleted = false;
+        // projectPartnerManager.z_old_deleteProjectPartner(projectPartner.getId(), this.getCurrentUser(), "");
         if (!deleted) {
           success = false;
         }
@@ -217,8 +218,9 @@ public class ProjectPartnersPreplanningAction extends BaseAction {
     // }
 
     // Saving new and old project partners
-    saved = projectPartnerManager.z_old_saveProjectPartners(project.getId(), project.getProjectPartners(),
-      this.getCurrentUser(), "");
+    saved = true;
+    // projectPartnerManager.z_old_saveProjectPartners(project.getId(), project.getProjectPartners(),
+    // this.getCurrentUser(), "");
     if (!saved) {
       success = false;
     }

@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.csv;
+package org.cgiar.ccafs.ap.action.summaries.planning.csv;
 
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -48,8 +48,8 @@ public class PWOBSummaryCSV extends BaseCSV {
   @Inject
   public PWOBSummaryCSV(APConfig config, BudgetManager budgetManager) {
 
-    COMMA_DELIMITER = ",";
-    NEW_LINE_SEPARATOR = "\n";
+    SEPARATOR_DELIMITER = ",";
+    NEW_LINE = "\n";
     headers =
       new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution",
       "Lead institution acronym", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "Activity ID",
@@ -86,8 +86,8 @@ public class PWOBSummaryCSV extends BaseCSV {
             stringBuilder = new StringBuilder();
 
             // Project Id
-            this.addRegister(project.getId(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(project.getId(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Flashig
             counter = 0;
@@ -100,31 +100,31 @@ public class PWOBSummaryCSV extends BaseCSV {
               counter++;
             }
 
-            this.addRegister(stringBuilder.toString(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(stringBuilder.toString(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Title
-            this.addRegister(project.getTitle(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(project.getTitle(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Summary
-            this.addRegister(project.getSummary(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(project.getSummary(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             if (project.getLeader() != null) {
               // Lead institution Acronym
-              this.addRegister(project.getLeader().getInstitution().getAcronym(), fileWriter);
-              fileWriter.append(COMMA_DELIMITER);
+              this.writeString(project.getLeader().getInstitution().getAcronym(), fileWriter);
+              fileWriter.append(SEPARATOR_DELIMITER);
 
               // Lead institution
-              this.addRegister(project.getLeader().getInstitution().getName(), fileWriter);
-              fileWriter.append(COMMA_DELIMITER);
+              this.writeString(project.getLeader().getInstitution().getName(), fileWriter);
+              fileWriter.append(SEPARATOR_DELIMITER);
             } else {
-              this.addRegister(null, fileWriter);
-              fileWriter.append(COMMA_DELIMITER);
+              this.writeString(null, fileWriter);
+              fileWriter.append(SEPARATOR_DELIMITER);
 
-              this.addRegister(null, fileWriter);
-              fileWriter.append(COMMA_DELIMITER);
+              this.writeString(null, fileWriter);
+              fileWriter.append(SEPARATOR_DELIMITER);
             }
 
             // Region
@@ -137,39 +137,39 @@ public class PWOBSummaryCSV extends BaseCSV {
               stringBuilder.append(region.getAcronym());
               counter++;
             }
-            this.addRegister(stringBuilder.toString(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(stringBuilder.toString(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // W1/W2 Budget
-            this.addRegister(
+            this.writeString(
               budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), BudgetType.W1_W2.getValue()), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // W3/Bilateral Budget
-            this.addRegister(
+            this.writeString(
               budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), BudgetType.W3_BILATERAL.getValue()),
               fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Activity Id
-            this.addRegister(activity.getId(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(activity.getId(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Activity title
-            this.addRegister(activity.getTitle(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(activity.getTitle(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Activity description
-            this.addRegister(activity.getDescription(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(activity.getDescription(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Activity leader
             if (activity.getLeader() != null) {
-              this.addRegister(activity.getLeader().getComposedName(), fileWriter);
+              this.writeString(activity.getLeader().getComposedName(), fileWriter);
             } else {
-              this.addRegister(null, fileWriter);
+              this.writeString(null, fileWriter);
             }
-            fileWriter.append(COMMA_DELIMITER);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // Location
             counter = 0;
@@ -181,8 +181,8 @@ public class PWOBSummaryCSV extends BaseCSV {
               stringBuilder.append(location.getName());
               counter++;
             }
-            this.addRegister(stringBuilder.toString(), fileWriter);
-            fileWriter.append(COMMA_DELIMITER);
+            this.writeString(stringBuilder.toString(), fileWriter);
+            fileWriter.append(SEPARATOR_DELIMITER);
 
             // MOG
             // if (activity.getOutput() != null) {
@@ -243,7 +243,7 @@ public class PWOBSummaryCSV extends BaseCSV {
             // fileWriter.append(COMMA_DELIMITER);
 
 
-            fileWriter.append(this.NEW_LINE_SEPARATOR);
+            fileWriter.append(this.NEW_LINE);
 
           }
 

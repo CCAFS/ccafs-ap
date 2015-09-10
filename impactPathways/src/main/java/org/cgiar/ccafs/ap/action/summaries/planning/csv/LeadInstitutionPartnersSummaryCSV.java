@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.csv;
+package org.cgiar.ccafs.ap.action.summaries.planning.csv;
 
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
@@ -33,7 +33,6 @@ import com.google.inject.Inject;
  * @author Carlos Alberto Martínez M.
  */
 public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
-
 
   private InputStream inputStream;
   private String COMMA_DELIMITER;
@@ -122,7 +121,7 @@ public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
       fileName.append("-");
       fileName.append("Institutions");
       fileName.append("_");
-      fileName.append(new SimpleDateFormat("yyyyMMdd-HH:mm").format(new Date()));
+      fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
       fileName.append(".csv");
 
       this.fileName = fileName.toString();
@@ -135,6 +134,7 @@ public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
     }
   }
 
+  @Override
   public int getContentLength() {
     return contentLength;
   }
@@ -145,6 +145,7 @@ public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
    * 
    * @return the inputStream
    */
+  @Override
   public InputStream getInputStream() {
     return inputStream;
   }
@@ -155,6 +156,7 @@ public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
    * 
    * @param inputStream the inputStream to set
    */
+  @Override
   public void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }

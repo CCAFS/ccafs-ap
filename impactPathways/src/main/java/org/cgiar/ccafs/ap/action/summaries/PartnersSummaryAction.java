@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.csv.PartnersSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.csv.PartnersSummaryCSV;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
@@ -123,7 +123,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
             projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId();
         } else {
           projectList[count] +=
-            (projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId() + " , ");
+            (projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId() + ", ");
         }
       }
       count++;

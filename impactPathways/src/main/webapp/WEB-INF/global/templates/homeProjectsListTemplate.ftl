@@ -2,7 +2,7 @@
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#-- This macro is being used in projectsListPreplanning.ftl and projectsListPlanning.ftl The idea is to represent a table with specific information about projects --]
 [#macro projectsList projects owned=true canValidate=false isPlanning=false namespace="/" tableID="defaultTable"]
-  <table class="projectsList" id="${tableID}">
+  <table class="projectsHome" id="home">
 	  <thead>
 	    <tr>
 	      <th id="ids">[@s.text name="preplanning.projects.projectids" /]</th>
@@ -32,7 +32,9 @@
             [/#if]
           </td>
           <td>
+          <center>
             [@s.text name="${project.type}" /]
+          </center>
           </td>
         </tr>  
       [/#list]
