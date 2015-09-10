@@ -51,7 +51,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
     NEW_LINE_SEPARATOR = "\n";
     headers =
       new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID", "Deliverable title",
-      "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
+        "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
     this.config = config;
   }
 
