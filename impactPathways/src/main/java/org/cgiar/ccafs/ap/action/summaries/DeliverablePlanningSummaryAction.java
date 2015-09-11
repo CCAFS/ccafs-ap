@@ -99,33 +99,8 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   @Override
   public void prepare() {
 
-    projectsList = projectManager.getAllProjectsBasicInfo();
-    double c = 0;
-    for (Project project : projectsList) {
-      System.out.println(++c + "/" + projectsList.size());
-      project.setDeliverables(deliverableManager.getDeliverablesByProject(project.getId()));
+    projectsList = projectManager.getAllProjectsWithDeliverables();
 
-    }
-
-    // Not sure if everything here is needed.
-    // for (Deliverable deliverable : deliverables) {
-    // // Getting next users.
-    // deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
-    //
-    // // Getting the responsible partner.
-    // List<DeliverablePartner> partners =
-    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
-    // if (partners.size() > 0) {
-    // deliverable.setResponsiblePartner(partners.get(0));
-    // } else {
-    // DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-    // deliverable.setResponsiblePartner(responsiblePartner);
-    // }
-    //
-    // // Getting the other partners that are contributing to this deliverable.
-    // deliverable.setOtherPartners(
-    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
-    // }
   }
 
 }
