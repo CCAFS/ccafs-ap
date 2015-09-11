@@ -29,11 +29,10 @@
   
   [@s.form action="budgetByMog" cssClass="pure-form"]
     <article class="halfContent" id="projectBudget">
-      [#include "/WEB-INF/planning/projectBudget-sub-menu.ftl" /]
       [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
       [#assign projectTypeLabel][@s.text name="${project.bilateralProject?string('planning.projectBudget.W3Bilateral', 'planning.projectBudget.W1W2')}" /][/#assign]
       [#assign projectType][@s.text name="${project.bilateralProject?string('W3_BILATERAL', 'W1_W2')}" /][/#assign]
-
+      <br />
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
       [#if !canEdit]
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
@@ -84,6 +83,8 @@
               [#if project.bilateralProject || project.coFundedProject]
                 [#-- Total budget amount W3/Bilateral for bilateral and Co-funded projects --]
                 <div class="BudgetByYear"> 
+                  ccafsBudgetByYear -> ${ccafsBudgetByYear} <br />
+                  bilateralBudgetByYear -> ${bilateralBudgetByYear} <br />
                   [#assign totalCoFundedBudgetByYear="100000" /]
                   <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${bilateralGenderPercentage?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedBudgetByYear">
@@ -94,6 +95,8 @@
 
                 [#-- Total gender budget amount (W3/Bilateral) for Co-funded projects --]
                 <div class="BudgetByYear"> 
+                  ccafsGenderPercentage-> ${ccafsGenderPercentage} <br />
+                  bilateralGenderPercentage -> ${bilateralGenderPercentage} <br />
                   [#assign totalCoFundedGenderBudgetByYear="50000" /]
                   <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] Gender budget : US$ <span>${totalBilateralGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedGenderBudgetByYear">

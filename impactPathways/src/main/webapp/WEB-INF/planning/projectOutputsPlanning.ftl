@@ -25,8 +25,8 @@
   [@s.form action="outputs" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
     [#assign years= [midOutcomeYear, currentPlanningYear-1,currentPlanningYear, currentPlanningYear+1] /]
-    [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+    <br />
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if !canEdit]
       <p class="readPrivileges">
