@@ -271,6 +271,15 @@ public interface ProjectDAO {
   public int saveProjectOutput(Map<String, String> outputData);
 
   /**
+   * This method returns the information of all the deliverables and their projects to be used in the summary report of
+   * expected deliverables.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
+
+  /**
    * This method updates the project type into the database according to the values received by parameter.
    * 
    * @param projectID - project identifier

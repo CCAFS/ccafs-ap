@@ -154,12 +154,6 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getAllProjectsWithDeliverables() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
   public List<Project> getBilateralCofinancingProjects(int flagshipID, int regionID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsData = projectDAO.getBilateralCofinancingProjects(flagshipID, regionID);
@@ -313,7 +307,6 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
-
   @Override
   public Project getProjectFromDeliverableId(int deliverableID) {
     int projectID = projectDAO.getProjectIdFromDeliverableId(deliverableID);
@@ -322,6 +315,7 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return null;
   }
+
 
   @Override
   public Project getProjectFromProjectPartnerID(int projectPartnerID) {
@@ -332,11 +326,11 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
-
   @Override
   public List<Integer> getProjectIdsEditables(User user) {
     return projectDAO.getProjectIdsEditables(user.getId());
   }
+
 
   @Override
   public List<Project> getProjectsByInstitution(int institutionID) {
@@ -487,6 +481,11 @@ public class ProjectManagerImpl implements ProjectManager {
       saved = (relationID != -1) && saved;
     }
     return saved;
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
+    return projectDAO.summaryGetAllProjectsWithDeliverables();
   }
 
   @Override

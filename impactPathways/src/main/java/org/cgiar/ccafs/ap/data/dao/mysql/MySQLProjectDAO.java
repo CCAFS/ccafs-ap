@@ -917,6 +917,104 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
+  public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
+    LOG.debug(">> getAllProjectsWithDeliverables ");
+    // TODO
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    // Formatted query:
+    query.append("SELECT p.id as 'project_id', ");
+    query.append("p.title as 'project_title', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(ip1.acronym SEPARATOR ', ') ");
+    query.append("FROM project_focuses pf1 ");
+    query.append("INNER JOIN ip_programs ip1 ON ip1.id = pf1.program_id ");
+    query.append("WHERE pf1.project_id = p.id AND ip1.id < 5 ");
+    query.append("GROUP BY d.id ");
+    query.append(") as 'flagships', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(ip2.acronym SEPARATOR ', ') ");
+    query.append("FROM project_focuses pf2 ");
+    query.append("INNER JOIN ip_programs ip2 ON ip2.id = pf2.program_id ");
+    query.append("WHERE pf2.project_id = p.id AND ip2.id >= 5 ");
+    query.append("GROUP BY d.id ");
+    query.append(") as 'regions', ");
+    query.append("d.id as 'deliverable_id', ");
+    query.append("d.title as 'deliverable_title', ");
+    query.append("ip.description as 'mog', ");
+    query.append("d.year as 'deliverable_year', ");
+    query.append("dtype.name as 'deliverable_type', ");
+    query.append("dsubtype.name as 'deliverable_sub_type', ");
+    query.append("d.type_other as 'other_type', ");
+    query.append("( ");
+    query.append(
+      "SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    query.append("FROM deliverable_partnerships dp_resp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("WHERE dp_resp.deliverable_id = d.id ");
+    query.append("AND dp_resp.partner_type = 'Resp' ");
+    query.append(" GROUP BY d.id ");
+    query.append(") as 'partner_responsible', ");
+    query.append("( ");
+    query.append(
+      "SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    query.append("FROM deliverable_partnerships dp_resp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("WHERE dp_resp.deliverable_id = d.id ");
+    query.append("AND dp_resp.partner_type = 'Other' ");
+    query.append("GROUP BY d.id ");
+    query.append(") as 'other_responsibles' ");
+    query.append("FROM deliverables d ");
+    query.append("INNER JOIN projects p ON p.id = d.project_id ");
+    query.append("INNER JOIN project_partners pp ON pp.project_id = p.id ");
+    query.append("INNER JOIN project_partner_persons persons ON persons.project_partner_id = pp.id ");
+    query.append("INNER JOIN institutions i ON i.id = pp.institution_id ");
+    query.append("INNER JOIN users u ON u.id = persons.user_id ");
+    query.append("INNER JOIN ip_deliverable_contributions ipd ON ipd.deliverable_id = d.id ");
+    query.append("INNER JOIN ip_project_contributions ipp ON ipp.id = ipd.project_contribution_id ");
+    query.append("INNER JOIN ip_elements ip ON ip.id = ipp.mog_id ");
+    query.append("INNER JOIN deliverable_types dsubtype ON dsubtype.id = d.type_id ");
+    query.append("INNER JOIN deliverable_types dtype ON dtype.id = dsubtype.parent_id ");
+    query.append("WHERE p.is_active = 1 ");
+    query.append("AND d.is_active = 1 ");
+    query.append("AND pp.is_active = 1 ");
+    query.append("AND persons.is_active = 1 ");
+    query.append("GROUP BY d.id ");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> csvData = new HashMap<>();
+        csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("flagships", rs.getString("flagships"));
+        csvData.put("regions", rs.getString("regions"));
+        csvData.put("deliverable_id", rs.getInt("deliverable_id"));
+        csvData.put("deliverable_title", rs.getString("deliverable_title"));
+        csvData.put("mog", rs.getString("mog"));
+        csvData.put("deliverable_type", rs.getString("deliverable_type"));
+        csvData.put("deliverable_sub_type", rs.getString("deliverable_sub_type"));
+        csvData.put("other_type", rs.getString("other_type"));
+        csvData.put("partner_responsible", rs.getString("partner_responsible"));
+        csvData.put("other_responsibles", rs.getString("other_responsibles"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllProjectsWithDeliverables() > Exception raised trying ";
+      exceptionMessage += "to get the summary report for expected deliverables: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getAllProjectsWithDeliverables ");
+    return csvRecords;
+  }
+
+  @Override
   public boolean updateProjectType(int projectID, String type) {
     int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE id = ?", new Object[] {projectID, type});
     return !(result == -1);

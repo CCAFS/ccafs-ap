@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -78,16 +79,6 @@ public interface ProjectManager {
    * @return a list with Project objects.
    */
   public List<Project> getAllProjectsBasicInfo();
-
-  /**
-   * This method will return the list of all the projects and all their respective deliverables.
-   * This method also gets all the information in one single query to the database, improving its performance and
-   * letting the charge to the RAM memory.
-   * This method should be used to the summary report expected deliverables.
-   * 
-   * @return a list of Project objects with the Deliverable information.
-   */
-  public List<Project> getAllProjectsWithDeliverables();
 
   /**
    * This method returns the bilateral projects that contributes with the flagship and the regions received by
@@ -228,6 +219,16 @@ public interface ProjectManager {
    * @return true if ALL the relations were saved successfully. False otherwise.
    */
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
+
+  /**
+   * This method will return the list of all the projects and all their respective deliverables.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary report expected deliverables.
+   * 
+   * @return a list of Project objects with the Deliverable information.
+   */
+  public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
 
   /**
    * This method updates the project type into the database accordign to the values contained in the project received by
