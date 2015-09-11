@@ -136,8 +136,8 @@ public class BaseCSV {
    * @param useDefault if true, a default value will be written in case the string is empty or null. Otherwise
    * @throws IOException If an I/O error occurs
    */
-  public void writeString(String text, boolean useDefault, boolean endWithSeparator) throws IOException {
-    if (text == null || text.equals("")) {
+  public void writeString(Object text, boolean useDefault, boolean endWithSeparator) throws IOException {
+    if (text == null || String.valueOf(text).equals("")) {
       if (useDefault) {
         writer.write(this.getText("summaries.project.empty"));
       }
