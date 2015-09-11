@@ -137,6 +137,7 @@
   
   [#-- Remove partner person leader dialog --]
   <div id="contactRemove-dialog" title="Remove person" style="display:none">
+    <p>[@s.text name="planning.projectPartners.personCannotBeDeleted" /]</p>
     <ul class="messages"></ul>
   </div>
   

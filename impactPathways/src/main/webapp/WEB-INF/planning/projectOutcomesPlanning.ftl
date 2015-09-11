@@ -59,7 +59,7 @@
               <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=true param="${year}" /]</h6>
               [@customForm.textArea name="project.outcomes[${year?string}].statement" className="limitWords-80" showTitle=false editable=false /]
             [#else]
-              [#if year == currentPlanningYear]
+              [#if (year == currentPlanningYear) || (year == currentPlanningYear+1)]
                 <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /] [@customForm.req required=!project.bilateralProject /]</h6>
                 [@customForm.textArea name="project.outcomes[${year?string}].statement" required=!project.bilateralProject className="limitWords-80" showTitle=false editable=editable /]
               [#else]  
@@ -86,7 +86,7 @@
         [#-- Annual for the expected Gender and Social contribution --]
         [#list project.startDate?string.yyyy?number..midOutcomeYear?number-1 as year]
           <div class="fullPartBlock">
-            [#if year == currentPlanningYear]
+            [#if (year == currentPlanningYear) || (year == currentPlanningYear+1)]
               <h6>[@customForm.text name="planning.projectOutcome.genderAndSocialAnnualProgress" readText=!editable param="${year}" /] [@customForm.req required=!project.bilateralProject /]</h6>
               [@customForm.textArea name="project.outcomes[${year?string}].genderDimension" className="limitWords-100" required=!project.bilateralProject showTitle=false editable=editable /]
             [#else]  
