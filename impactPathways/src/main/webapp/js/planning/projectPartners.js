@@ -115,8 +115,8 @@ function changePersonEmail(e) {
   var person = new PartnerPersonObject($(e.target).parents('.contactPerson'));
   // Validate if the person has any activity related for be changed
   if(!person.canEditEmail) {
-    var messages = '';
     e.stopImmediatePropagation();
+    var messages = '';
     messages +=
         '<li>This contact cannot be changed due to is currently the Activity Leader for '
             + person.getRelationsNumber('activities') + ' activity(ies)';
@@ -172,7 +172,9 @@ function changePartnerPersonType(e) {
   // Change parent partner type
   var partner = new PartnerObject($contactPerson.parents('.projectPartner'));
   partner.changeType();
+  // If the contact type selected is PL
   if(contact.type == leaderType) {
+    // If there is a PL previous selected
     if(!jQuery.isEmptyObject(projectLeader)) {
       var previousLeaderName = projectLeader.contactInfo;
       var messages = '<li>Please be aware that you can only have one project leader per project. <br/>';
@@ -675,7 +677,6 @@ function PartnerPersonObject(partnerPerson) {
   };
   this.setIndex = function(name,index) {
     var elementName = name + "partnerPersons[" + index + "].";
-    // $(partnerPerson).find(".leftHead .index").html(index + 1);
     $(partnerPerson).find(".partnerPersonId").attr("name", elementName + "id");
     $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
     $(partnerPerson).find(".userId").attr("name", elementName + "user.id");
