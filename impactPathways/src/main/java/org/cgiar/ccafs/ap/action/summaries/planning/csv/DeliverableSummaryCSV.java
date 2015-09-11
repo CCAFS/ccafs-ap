@@ -73,7 +73,7 @@ public class DeliverableSummaryCSV extends BaseCSV {
             // Title
             this.writeString(project.getTitle(), true, true);
 
-            // Flashig
+            // Flagships
             counter = 0;
             stringBuilder = new StringBuilder();
             for (IPProgram flashig : project.getFlagships()) {
