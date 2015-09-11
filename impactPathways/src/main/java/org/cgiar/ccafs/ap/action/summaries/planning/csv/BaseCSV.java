@@ -108,8 +108,7 @@ public class BaseCSV {
   public void initializeCSV() throws IOException {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
-    writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-    this.writeAccentFormat();
+    writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
   }
 
   /**
