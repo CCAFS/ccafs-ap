@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.IOException;
@@ -41,7 +42,6 @@ public class PWOBSummaryCSV extends BaseCSV {
   @Inject
   public PWOBSummaryCSV(APConfig config, BudgetManager budgetManager) {
 
-
     this.budgetManager = budgetManager;
   }
 
@@ -56,105 +56,109 @@ public class PWOBSummaryCSV extends BaseCSV {
     StringBuilder stringBuilder;
     int counter = 0;
     Project project;
+    List<ProjectPartner> listProjectPartnersPPA;
     // for (int a = 0; a < projectList.size(); a++) {
-    for (int a = 0; a < 3; a++) {
-      project = projectList.get(a);
 
+    try {
+      for (int a = 0; a < 3; a++) {
+        project = projectList.get(a);
+        listProjectPartnersPPA = project.getPPAPartners();
+        for (ProjectPartner projectPartnerPPA : listProjectPartnersPPA) {
 
-      try {
+          if (project.getLeader() != null) {
 
-        stringBuilder = new StringBuilder();
-        // Project Id
-        this.writeString(String.valueOf(project.getId()), true, false);
-        this.writeSeparator();
+            stringBuilder = new StringBuilder();
+            // Project Id
+            this.writeString(String.valueOf(project.getId()), true, false);
+            this.writeSeparator();
 
-        // Flashig
-        counter = 0;
-        stringBuilder = new StringBuilder();
-        for (IPProgram flashig : project.getFlagships()) {
-          if (counter != 0) {
-            stringBuilder.append(", ");
+            // Flashig
+            counter = 0;
+            stringBuilder = new StringBuilder();
+            for (IPProgram flashig : project.getFlagships()) {
+              if (counter != 0) {
+                stringBuilder.append(", ");
+              }
+              stringBuilder.append(flashig.getAcronym());
+              counter++;
+            }
+
+            this.writeString(stringBuilder.toString(), true, false);
+            this.writeSeparator();
+
+            // Title
+            this.writeString(project.getTitle(), true, false);
+            this.writeSeparator();
+
+            // Summary
+            this.writeString(project.getSummary(), true, false);
+            this.writeSeparator();
+
+            // Lead institution Acronym
+            this.writeString(project.getLeader().getInstitution().getAcronym(), true, false);
+            this.writeSeparator();
+
+            // Lead institution
+            this.writeString(project.getLeader().getInstitution().getName(), true, false);
+            this.writeSeparator();
+          } else {
+            this.writeString(null, true, false);
+            this.writeSeparator();
+
+            this.writeString(null, true, false);
+            this.writeSeparator();
           }
-          stringBuilder.append(flashig.getAcronym());
-          counter++;
-        }
 
-        this.writeString(stringBuilder.toString(), true, false);
-        this.writeSeparator();
-
-        // Title
-        this.writeString(project.getTitle(), true, false);
-        this.writeSeparator();
-
-        // Summary
-        this.writeString(project.getSummary(), true, false);
-        this.writeSeparator();
-
-        if (project.getLeader() != null) {
-          // Lead institution Acronym
-          this.writeString(project.getLeader().getInstitution().getAcronym(), true, false);
-          this.writeSeparator();
-
-          // Lead institution
-          this.writeString(project.getLeader().getInstitution().getName(), true, false);
-          this.writeSeparator();
-        } else {
-          this.writeString(null, true, false);
-          this.writeSeparator();
-
-          this.writeString(null, true, false);
-          this.writeSeparator();
-        }
-
-        // Region
-        counter = 0;
-        stringBuilder = new StringBuilder();
-        for (IPProgram region : project.getRegions()) {
-          if (counter != 0) {
-            stringBuilder.append("-");
+          // Region
+          counter = 0;
+          stringBuilder = new StringBuilder();
+          for (IPProgram region : project.getRegions()) {
+            if (counter != 0) {
+              stringBuilder.append("-");
+            }
+            stringBuilder.append(region.getAcronym());
+            counter++;
           }
-          stringBuilder.append(region.getAcronym());
-          counter++;
-        }
-        this.writeString(stringBuilder.toString(), true, false);
-        this.writeSeparator();
+          this.writeString(stringBuilder.toString(), true, false);
+          this.writeSeparator();
 
-        // W1/W2 Budget
-        this.writeString(
-          String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(), BudgetType.W1_W2.getValue())),
-          true, false);
-        this.writeSeparator();
+          // W1/W2 Budget
+          this
+            .writeString(String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
+              BudgetType.W1_W2.getValue())), true, false);
+          this.writeSeparator();
 
-        // W3/Bilateral Budget
-        this.writeString(
-          String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
-            BudgetType.W3_BILATERAL.getValue())), true, false);
-        this.writeSeparator();
+          // W3/Bilateral Budget
+          this.writeString(
+            String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
+              BudgetType.W3_BILATERAL.getValue())), true, false);
+          this.writeSeparator();
 
-
-        // Location
-        counter = 0;
-        project.getLocations();
-        stringBuilder = new StringBuilder();
-        for (Location location : project.getLocations()) {
-          if (counter != 0) {
-            stringBuilder.append(",");
+          // Location
+          counter = 0;
+          project.getLocations();
+          stringBuilder = new StringBuilder();
+          for (Location location : project.getLocations()) {
+            if (counter != 0) {
+              stringBuilder.append(", ");
+            }
+            stringBuilder.append(location.getName());
+            counter++;
           }
-          stringBuilder.append(location.getName());
-          counter++;
+          this.writeString(stringBuilder.toString(), true, false);
+          this.writeSeparator();
+
+          this.writeNewLine();
+
+
         }
-        this.writeString(stringBuilder.toString(), true, false);
-        this.writeSeparator();
-
-        this.writeNewLine();
-
-
-      } catch (IOException e) {
-        e.printStackTrace();
       }
+
+    } catch (IOException e) {
+      e.printStackTrace();
+
     }
   }
-
 
   /**
    * Method is used to generate the csv for the deliverable.

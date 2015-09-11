@@ -19,8 +19,10 @@ import org.cgiar.ccafs.ap.action.summaries.planning.csv.PWOBSummaryCSV;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.ByteArrayInputStream;
@@ -46,6 +48,7 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   private PWOBSummaryCSV pwobSummaryCSV;
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
+  private ProjectPartnerManager projectPartnerManager;
 
   // CSV bytes
   private byte[] bytesCSV;
@@ -58,14 +61,13 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
 
   @Inject
   public PWOBSummaryAction(APConfig config, PWOBSummaryCSV pwobSummaryCSV, ProjectManager projectManager,
-    BudgetManager budgetManager,
-
-    LocationManager locationManager) {
+    BudgetManager budgetManager, ProjectPartnerManager projectPartnerManager, LocationManager locationManager) {
     super(config);
     this.locationManager = locationManager;
     this.pwobSummaryCSV = pwobSummaryCSV;
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
+    this.projectPartnerManager = projectPartnerManager;
   }
 
   @Override
@@ -106,12 +108,18 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
 
+
     projectsList = this.projectManager.getAllProjectsBasicInfo();
+    List<ProjectPartner> partnersList;
     List<Location> locationsList;
 
     for (Project project : projectsList) {
 
-      // ***************** Locations
+      // ***************** Partners ******************************
+      partnersList = projectPartnerManager.getProjectPartners(project);
+      project.setProjectPartners(partnersList);
+
+      // ***************** Locations ******************************
       locationsList = this.locationManager.getProjectLocations(project.getId());
       project.setLocations(locationsList);
 
