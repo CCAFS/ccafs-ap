@@ -17,13 +17,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning.csv;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -34,26 +28,16 @@ import com.google.inject.Inject;
  */
 public class PartnersSummaryCSV extends BaseCSV {
 
-
-  private InputStream inputStream;
-  private String COMMA_DELIMITER;
-  private String NEW_LINE_SEPARATOR;
-
-  private int contentLength;
   private APConfig config;
 
   @Inject
   public PartnersSummaryCSV(APConfig config) {
-    COMMA_DELIMITER = ",";
-    NEW_LINE_SEPARATOR = "\n";
-    headers =
-      new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
     this.config = config;
   }
 
   /**
    * This method is used to add an institution being a project partner
-   * 
+   *
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
@@ -62,30 +46,22 @@ public class PartnersSummaryCSV extends BaseCSV {
     for (Institution institution : projectPartnerInstitutions) {
       try {
 
-        this.addRegister(institution.getId(), fileWriter);
-        fileWriter.append(COMMA_DELIMITER);
+        this.writeString(String.valueOf(institution.getId()), false, true);
 
-        this.addRegister(institution.getName(), fileWriter);
-        fileWriter.append(COMMA_DELIMITER);
+        this.writeString(institution.getName(), false, true);
 
-        if (institution.getAcronym() != null && !institution.getAcronym().isEmpty()) {
-          this.addRegister(institution.getAcronym(), fileWriter);
-        }
-        fileWriter.append(COMMA_DELIMITER);
+        this.writeString(institution.getAcronym(), false, true);
 
-        if (institution.getWebsiteLink() != null && !institution.getWebsiteLink().isEmpty()) {
-          this.addRegister(institution.getWebsiteLink(), fileWriter);
-        }
-        fileWriter.append(COMMA_DELIMITER);
 
-        this.addRegister(institution.getCountry().getName(), fileWriter);
-        fileWriter.append(COMMA_DELIMITER);
+        this.writeString(institution.getWebsiteLink(), false, true);
+
+        this.writeString(institution.getCountry().getName(), false, true);
 
         // Getting the project ids
-        this.addRegister(projectList[i], fileWriter);
+        this.writeString(projectList[i], false, false);
         i++;
 
-        fileWriter.append(this.NEW_LINE_SEPARATOR);
+        this.writeNewLine();
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -96,69 +72,27 @@ public class PartnersSummaryCSV extends BaseCSV {
 
   /**
    * This method is used to generate the csv file for the ProjectPartner institutions.
-   * 
+   *
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public void generateCSV(List<Institution> projectPartnerInstitutions, String[] projectList) {
-
-    File file = new File(config.getUploadsBaseFolder() + "temporal.txt");
-    fileWriter = null;
-    this.initializeCsv(file);
+  public byte[] generateCSV(List<Institution> projectPartnerInstitutions, String[] projectList) {
 
     try {
-      fileWriter = new FileWriter(file, true);
-      fileWriter.write('\ufeff');
+      String[] headers =
+        new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
-      this.addHeaders(headers, fileWriter);
+      this.initializeCSV();
+      this.addHeaders(headers);
       this.addContent(projectPartnerInstitutions, projectList);
-      fileWriter.close();
-
-      // *********************Created the fileName****************************
-      // ProjectPartner-Institutions_fecha(yyyyMMdd-HH:mm)
-      StringBuffer fileName = new StringBuffer();
-
-      fileName.append("ProjectPartner");
-      fileName.append("-");
-      fileName.append("Institutions");
-      fileName.append("_");
-      fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
-      fileName.append(".csv");
-
-      this.fileName = fileName.toString();
-      // *****************************************************************
-
-      inputStream = new FileInputStream(file);
-      contentLength = (int) file.length();
+      this.flush();
+      byte[] byteArray = this.getBytes();
+      // Closing streams.
+      this.closeStreams();
+      return byteArray;
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  @Override
-  public int getContentLength() {
-    return contentLength;
-  }
-
-
-  /**
-   * method to get the inputStream
-   * 
-   * @return the inputStream
-   */
-  @Override
-  public InputStream getInputStream() {
-    return inputStream;
-  }
-
-
-  /**
-   * method to set the inputStream
-   * 
-   * @param inputStream the inputStream to set
-   */
-  @Override
-  public void setInputStream(InputStream inputStream) {
-    this.inputStream = inputStream;
+    return null;
   }
 }
