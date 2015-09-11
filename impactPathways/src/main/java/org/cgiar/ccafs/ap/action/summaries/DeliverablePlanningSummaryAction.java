@@ -60,15 +60,16 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   @Override
   public String execute() throws Exception {
-    // Generate the csv file
-
+    // Generating the csv file
     try {
       csv.initializeCSV();
+
+      // adding headers
       String[] headers = new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID",
         "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-      "Others Partners"};
-
+        "Others Partners"};
       csv.addHeaders(headers);
+      // writing rows
       for (Map<String, Object> csvRow : csvDeliverableList) {
         csv.writeString(csvRow.get("project_id"), false, true);
         csv.writeString(csvRow.get("project_title"), true, true);
@@ -89,11 +90,12 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
       // getting the bytes that are in the output stream.
       bytesCSV = csv.getBytes();
+      // closing streams.
       csv.closeStreams();
 
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
+      return ERROR;
     }
     return SUCCESS;
   }
