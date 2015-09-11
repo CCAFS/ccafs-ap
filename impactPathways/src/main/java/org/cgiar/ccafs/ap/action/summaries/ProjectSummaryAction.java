@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
@@ -78,12 +79,14 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private NextUserManager nextUserManager;
   private ProjectContributionOverviewManager overviewManager;
   private ProjectPartnerManager partnerManager;
-  private Project project;
-
-  ProjectManager projectManager;
+  private ProjectManager projectManager;
   private PartnerPersonManager partnerPersonManager;
-  ProjectOutcomeManager projectOutcomeManager;
+  private ProjectOutcomeManager projectOutcomeManager;
+  private IPIndicatorManager indicatorManager;
+
+
   // Model
+  private Project project;
   ProjectSummaryPDF projectPDF;
   List<InputStream> streams;
 
@@ -96,7 +99,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager,
     InstitutionManager institutionManager, DeliverableManager deliverableManager, NextUserManager nextUserManager,
     DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
-    CRPManager crpManager, PartnerPersonManager partnerPersonManager) {
+    CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager) {
     super(config);
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
@@ -115,6 +118,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.crpManager = crpManager;
     this.partnerPersonManager = partnerPersonManager;
+    this.indicatorManager = indicatorManager;
   }
 
 
@@ -245,8 +249,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables
@@ -260,7 +264,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
 
-    project.setIndicators(projectManager.getProjectIndicators(project.getId()));
+    project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));
 
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
 
