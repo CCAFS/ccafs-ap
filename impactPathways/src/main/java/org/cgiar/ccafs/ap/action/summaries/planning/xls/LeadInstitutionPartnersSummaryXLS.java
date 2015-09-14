@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -94,8 +96,13 @@ public class LeadInstitutionPartnersSummaryXLS {
       // for (Row row : sheet1) {
       // for (Cell cell : row) {\
       Row row = sheet.createRow((short) 0);
+      Font font = workbook.createFont();
+      font.setBold(true);
+      CellStyle style = workbook.createCellStyle();
+      style.setFont(font);
       for (int c = 0; c < headers.length; c++) {
         row.createCell(c).setCellValue(headers[c]);
+        row.getCell(c).setCellStyle(style);
       }
       // }
       // }
