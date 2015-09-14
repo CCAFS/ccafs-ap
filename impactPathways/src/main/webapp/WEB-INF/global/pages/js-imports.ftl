@@ -68,7 +68,6 @@
       [#if libraryName="slidr"] 
         <script src="${baseUrl}/js/libs/slidr/slidr.min.js"></script>
       [/#if]
-      
    [/#list]
   [/#if]
 
