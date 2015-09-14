@@ -2737,6 +2737,7 @@ textarea[id$='summary'] {
 
 .projectPartner {
   padding-top: 33px !important;
+  padding-bottom: 0px !important;
   /* margin-bottom: 18px !important; */
 }
 
