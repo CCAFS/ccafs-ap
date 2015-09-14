@@ -51,7 +51,7 @@ public class MySQLRoleDAO implements RoleDAO {
       query.append("DELETE FROM user_roles WHERE user_id = ? AND role_id = ?");
     } else {
       // To delete the project leader role, we should verify that the user is not leader of any project.
-      query.append("DELETE FROM user_roles ur WHERE user_id = ? AND role_id = ? ");
+      query.append("DELETE FROM ur USING user_roles AS ur WHERE user_id = ? AND role_id = ? ");
       query.append("AND NOT EXISTS ( ");
       query.append("SELECT user_id FROM project_partner_persons ");
       query.append("WHERE contact_type = 'PL' AND user_id = ur.id ");
