@@ -84,8 +84,11 @@ public final class APConstants {
   public static final String DATE_FORMAT = "yyyy-MM-dd";
 
   // Identifier for role
-  public static final int ROLE_FLAGSHIP_PROGRAM_LEADER = 2;
-  public static final int ROLE_REGIONAL_PROGRAM_LEADER = 3;
+  public static final int ROLE_ADMIN = 1;
+  public static final int ROLE_MANAGEMENT_LIAISON = 2;
+  public static final int ROLE_CONTACT_POINT = 4;
+  public static final int ROLE_PROJECT_LEADER = 7;
+  public static final int ROLE_PROJECT_COORDINATOR = 9;
   public static final int ROLE_COORDINATING_UNIT = 6;
 
   // Location types identifiers
