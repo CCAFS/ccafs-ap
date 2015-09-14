@@ -68,7 +68,7 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
     query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
     query.append("INNER JOIN liaison_institutions uli ON i.id = uli.institution_id ");
     query.append("INNER JOIN liaison_users lu ON uli.id = lu.institution_id ");
-    query.append("WHERE p.type != 'BILATERAL' AND r.id = 2 AND lu.user_id =  ");
+    query.append("WHERE r.id = 2 AND lu.user_id =  ");
     query.append(userID);
 
     return this.setData(query.toString());
