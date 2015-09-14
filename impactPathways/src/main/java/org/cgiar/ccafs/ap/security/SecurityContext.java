@@ -139,10 +139,8 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   public boolean canEditProjectPlanningSection(String sectionName, int projectID) {
-    String generalPermission = "planning:projects:" + sectionName + ":update";
-    String projectPermission = "project:" + projectID + ":" + sectionName + ":update";
-
-    return this.hasPermission(generalPermission) || this.hasPermission(projectPermission);
+    String permission = "planning:projects:" + projectID + ":" + sectionName + ":update";
+    return this.hasPermission(permission);
   }
 
   /**
