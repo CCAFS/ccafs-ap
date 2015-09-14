@@ -38,15 +38,19 @@ public class UserRoleManagerImpl {
     this.userRoleDAO = userRoleDAO;
   }
 
+  public Map<String, UserRole> getContactPointProjects(int userID) {
+    List<Map<String, String>> userRoleData = userRoleDAO.getContactPointProjects(userID);
+    return this.getData(userRoleData);
+  }
+
   /**
    * This method gets all the permissions assigned to the user identified by userID over specific projects if any.
    * 
    * @param userID
    * @return a Map <projectID, UserRole> that specifies the role assigned for the project identified by the key value.
    */
-  public Map<String, UserRole> getProjectUserRoles(String userID) {
+  private Map<String, UserRole> getData(List<Map<String, String>> userRoleData) {
     Map<String, UserRole> projectRoles = new HashMap<>();
-    List<Map<String, String>> userRoleData = userRoleDAO.getProjectUserRoles(userID);
 
     for (Map<String, String> roleData : userRoleData) {
 
@@ -60,6 +64,17 @@ public class UserRoleManagerImpl {
     }
 
     return projectRoles;
+  }
+
+  public Map<String, UserRole> getManagementLiaisonProjects(int userID) {
+    List<Map<String, String>> userRoleData = userRoleDAO.getManagementLiaisonProjects(userID);
+    return this.getData(userRoleData);
+  }
+
+
+  public Map<String, UserRole> getProjectLeaderProjects(int userID) {
+    List<Map<String, String>> userRoleData = userRoleDAO.getProjectLeaderProjects(userID);
+    return this.getData(userRoleData);
   }
 
   public List<UserRole> getUserRolesByUserID(String userID) {
