@@ -85,12 +85,20 @@ public class LeadInstitutionPartnersSummaryXLS {
   public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
-      Workbook workbook = xls.initializeXLS("xls");
+      Workbook workbook = xls.initializeXLS("xlsx", config.getBaseUrl());
 
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
-      Sheet sheet = workbook.createSheet("LeadInstitutions");
+      workbook.setSheetName(0, "LeadInstitutions");
+      Sheet sheet = workbook.getSheetAt(0);
+
+      // if (workbook.getNumberOfSheets() > 0) {
+      // sheet = workbook.getSheetAt(0);
+      // } else {
+      // sheet = workbook.createSheet("LeadInstitutions");
+      // }
+      // xls.createTemplate(sheet);
 
       Row row = sheet.createRow((short) 0);
       Font font = workbook.createFont();
