@@ -46,7 +46,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
   List<Institution> projectLeadingInstitutions;
   String[] projectList;
   // CSV bytes
-  private byte[] bytesCSV;
+  private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
@@ -65,14 +65,23 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
   @Override
   public String execute() throws Exception {
     // Generate the csv file
-    bytesCSV = leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
+    bytesXLS = leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return bytesCSV.length;
+    return bytesXLS.length;
+  }
+
+  @Override
+  public String getContentType() {
+    if (this.getFileName().endsWith("xlsx")) {
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    } else {
+      return "application/vnd.ms-excel";
+    }
   }
 
   @Override
@@ -81,18 +90,18 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
     StringBuffer fileName = new StringBuffer();
     fileName.append("ProjectLeading-Institutions_");
     fileName.append(date);
-    fileName.append(".csv");
+    fileName.append(".xlsx");
     return fileName.toString();
   }
+
 
   @Override
   public InputStream getInputStream() {
     if (inputStream == null) {
-      inputStream = new ByteArrayInputStream(bytesCSV);
+      inputStream = new ByteArrayInputStream(bytesXLS);
     }
     return inputStream;
   }
-
 
   @Override
   public void prepare() {

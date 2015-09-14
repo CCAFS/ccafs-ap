@@ -67,7 +67,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
       // adding headers
       String[] headers = new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID",
         "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-        "Others Partners"};
+      "Others Partners"};
       csv.addHeaders(headers);
       // writing rows
       for (Map<String, Object> csvRow : csvDeliverableList) {
@@ -105,6 +105,11 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
     return bytesCSV.length;
   }
 
+
+  @Override
+  public String getContentType() {
+    return "text/csv";
+  }
 
   @Override
   public String getFileName() {

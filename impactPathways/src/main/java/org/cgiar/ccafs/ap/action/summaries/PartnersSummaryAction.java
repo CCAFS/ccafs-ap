@@ -76,6 +76,12 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   }
 
   @Override
+  public String getContentType() {
+    return "text/csv";
+  }
+
+
+  @Override
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
@@ -93,7 +99,6 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
     }
     return inputStream;
   }
-
 
   @Override
   public void prepare() {

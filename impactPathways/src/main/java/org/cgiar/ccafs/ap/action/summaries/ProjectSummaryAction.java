@@ -141,20 +141,26 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   }
 
   @Override
+  public String getContentType() {
+    return "application/pdf";
+  }
+
+  @Override
   public String getFileName() {
     return projectPDF.getFileName();
   }
+
 
   @Override
   public InputStream getInputStream() {
     return projectPDF.getInputStream();
   }
 
-
   private String getWorkplanRelativePath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
       + config.getProjectWorkplanFolder() + File.separator;
   }
+
 
   public String getWorkplanURL() {
     return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
