@@ -89,6 +89,7 @@ public class LeadInstitutionPartnersSummaryXLS {
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
       Sheet sheet = workbook.createSheet("LeadInstitutions");
+      xls.createTemplate(sheet);
 
       // for (Row row : sheet1) {
       // for (Cell cell : row) {\
