@@ -48,31 +48,54 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Institution> projectLeadingInstitutions, String[] projectList) {
-    int i = 0;
-    for (Institution institution : projectLeadingInstitutions) {
-      // try {
-      //
-      // this.writeString(String.valueOf(institution.getId()), false, true);
-      //
-      // this.writeString(institution.getName(), false, true);
-      //
-      // this.writeString(institution.getAcronym(), false, true);
-      //
-      // this.writeString(institution.getWebsiteLink(), false, true);
-      //
-      // this.writeString(institution.getCountry().getName(), false, true);
-      //
-      // // Getting the project ids
-      // this.writeString(projectList[i], false, false);
-      // i++;
-      //
-      // this.writeNewLine();
-      // } catch (IOException e) {
-      // // TODO Auto-generated catch block
-      // e.printStackTrace();
-      // }
+  private void addContent(List<Institution> projectLeadingInstitutions, String[] projectList, Workbook workBook) {
+    int i = 12;
+    int count = 0;
 
+    // try {
+    // InputStream input = new FileInputStream("template.xlsx");
+    // POIFSFileSystem fs = new POIFSFileSystem(input);
+    // HSSFWorkbook wb = new HSSFWorkbook(fs);
+    // HSSFSheet sheet = wb.getSheetAt(0);
+    // HSSFPatriarch pat = sheet.getDrawingPatriarch();
+    // List children = pat.getChildren();
+    //
+    // Iterator it = children.iterator();
+    // while (it.hasNext()) {
+    // HSSFShape shape = (HSSFShape) it.next();
+    // if (shape instanceof HSSFTextbox) {
+    // HSSFTextbox textbox = (HSSFTextbox) shape;
+    // HSSFRichTextString richString = textbox.getString();
+    // String str = richString.getString();
+    // System.out.println("String: " + str);
+    // System.out.println("String length: " + str.length());
+    // }
+    // }
+    // } catch (IOException ex) {
+    // ex.printStackTrace();
+    // }
+
+    for (Institution institution : projectLeadingInstitutions) {
+      Sheet sheet = workBook.getSheetAt(0);
+      Row row = sheet.createRow((short) i);
+      CellStyle style = workBook.createCellStyle();
+      style.setAlignment(CellStyle.ALIGN_CENTER);
+      row.createCell(1).setCellValue(String.valueOf(institution.getId()));
+      sheet.autoSizeColumn(1);
+      row.getCell(1).setCellStyle(style);
+      row.createCell(2).setCellValue(institution.getName());
+      sheet.autoSizeColumn(2);
+      row.createCell(3).setCellValue(institution.getAcronym());
+      sheet.autoSizeColumn(3);
+      row.getCell(3).setCellStyle(style);
+      row.createCell(4).setCellValue(institution.getWebsiteLink());
+      sheet.autoSizeColumn(4);
+      row.createCell(5).setCellValue(institution.getCountry().getName());
+      sheet.autoSizeColumn(5);
+      row.createCell(6).setCellValue(projectList[count]);
+      sheet.autoSizeColumn(6);
+      i++;
+      count++;
     }
   }
 
@@ -93,27 +116,20 @@ public class LeadInstitutionPartnersSummaryXLS {
       workbook.setSheetName(0, "LeadInstitutions");
       Sheet sheet = workbook.getSheetAt(0);
 
-      // if (workbook.getNumberOfSheets() > 0) {
-      // sheet = workbook.getSheetAt(0);
-      // } else {
-      // sheet = workbook.createSheet("LeadInstitutions");
-      // }
-      // xls.createTemplate(sheet);
-
-      Row row = sheet.createRow((short) 0);
+      Row row = sheet.createRow((short) 11);
       Font font = workbook.createFont();
       font.setBold(true);
       CellStyle style = workbook.createCellStyle();
       style.setAlignment(CellStyle.ALIGN_CENTER);
-      style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
       style.setFont(font);
-      for (int c = 0; c < headers.length; c++) {
-        row.createCell(c).setCellValue(headers[c]);
+      for (int c = 1; c <= headers.length; c++) {
+        row.createCell(c).setCellValue(headers[c - 1]);
         row.getCell(c).setCellStyle(style);
+        sheet.autoSizeColumn(c);
       }
 
       // this.addHeaders(headers);
-      // this.addContent(projectLeadingInstitutions, projectList);
+      this.addContent(projectLeadingInstitutions, projectList, workbook);
       // this.flush();
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();
