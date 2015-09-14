@@ -92,12 +92,12 @@ public class LeadInstitutionPartnersSummaryXLS {
 
       Sheet sheet = workbook.createSheet("LeadInstitutions");
 
-      // for (Row row : sheet1) {
-      // for (Cell cell : row) {\
       Row row = sheet.createRow((short) 0);
       Font font = workbook.createFont();
       font.setBold(true);
       CellStyle style = workbook.createCellStyle();
+      style.setAlignment(CellStyle.ALIGN_CENTER);
+      style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
       style.setFont(font);
       for (int c = 0; c < headers.length; c++) {
         row.createCell(c).setCellValue(headers[c]);
