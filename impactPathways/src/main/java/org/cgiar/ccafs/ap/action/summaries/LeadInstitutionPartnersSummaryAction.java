@@ -65,7 +65,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
   @Override
   public String execute() throws Exception {
     // Generate the csv file
-    bytesCSV = leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
+    bytesCSV = leadInstitutionPartnersSummaryCSV.generateXLS(projectLeadingInstitutions, projectList);
 
     return SUCCESS;
   }
