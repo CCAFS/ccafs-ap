@@ -98,15 +98,15 @@ public class BaseXLS {
    *         XLS
    *         format.
    */
-  public Workbook initializeXLS(String excelFormat, String baseURL) {
+  public Workbook initializeXLS(String excelFormat, String templateFile) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
-    EXCEL_TEMPLATE_FILE = baseURL + "/resources/templates/template.xlsx";
+
     if (excelFormat.toLowerCase().equals("xls")) {
       workbook = new HSSFWorkbook();
     } else if (excelFormat.toLowerCase().equals("xlsx")) {
       try {
-        InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
+        InputStream templateStream = new FileInputStream(templateFile);
         workbook = new XSSFWorkbook(templateStream);
         templateStream.close();
       } catch (IOException e) {
