@@ -80,9 +80,9 @@ public class BaseXLS {
   public Workbook initializeXLS(String excelFormat) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
-    if (excelFormat.equals("xls")) {
+    if (excelFormat.toLowerCase().equals("xls")) {
       workbook = new HSSFWorkbook();
-    } else if (excelFormat.equals("xlsx")) {
+    } else if (excelFormat.toLowerCase().equals("xlsx")) {
       workbook = new XSSFWorkbook();
     }
     return workbook;
