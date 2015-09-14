@@ -81,7 +81,7 @@ public class LeadInstitutionPartnersSummaryXLS {
   public byte[] generateCSV(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
-      Workbook workbook = xls.initializeXLS();
+      Workbook workbook = xls.initializeXLS("xls");
 
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};

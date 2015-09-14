@@ -185,12 +185,18 @@
       <version>${itext.version}</version>
     </dependency>
 
-    <!--  Apache POI - JAVA API To Access Microsoft Format Files -->
+    <!--  Apache POI - JAVA API To Access Microsoft XLS Format Files -->
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
       <version>${poi.version}</version>
     </dependency>	
+    <!--  Apache POI - JAVA API To Access Microsoft XLSX Format Files -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>${poi.version}</version>
+    </dependency> 
 
     <!-- Database version control -->
     <dependency>
