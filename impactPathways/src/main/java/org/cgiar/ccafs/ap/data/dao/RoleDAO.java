@@ -28,6 +28,15 @@ import com.google.inject.ImplementedBy;
 public interface RoleDAO {
 
   /**
+   * This method removes a role assigned to a user.
+   * 
+   * @param userID - user identifier
+   * @param roleID - role identifier
+   * @return true if the role was removed successfully. False otherwise.
+   */
+  public boolean deleteRole(int userID, int roleID);
+
+  /**
    * This method gets all the Roles
    * 
    * @return a List of Map with all the information of the roles. If no information were found, return an empty list
@@ -42,4 +51,13 @@ public interface RoleDAO {
    * @return a Map with the information of the role
    */
   public Map<String, String> getRole(int userID, int institutionID);
+
+  /**
+   * This method saves into the database the role assigned to the user.
+   * 
+   * @param userID - User identifier
+   * @param roleID - role identifier
+   * @return true if the role was assigned successfully. False otherwise.
+   */
+  public boolean saveRole(int userID, int roleID);
 }
