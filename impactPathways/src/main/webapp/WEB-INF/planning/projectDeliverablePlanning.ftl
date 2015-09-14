@@ -40,9 +40,9 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="deliverable" cssClass="pure-form"]
-  <article class="halfContent" id="projectDeliverable"> 
-    [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
+  <article class="halfContent" id="projectDeliverable">  
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
+    <br />
     [#-- Informing user that he-she does not have enough privileges to edit. See GrantProjectPlanningAccessInterceptor --]  
     [#if !canEdit]
       <p class="readPrivileges">

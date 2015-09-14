@@ -55,7 +55,7 @@ public class BaseCSV {
    * @param writer is the stream to the "file" where the headers will be placed.
    * @throws IOException If an I/O error occurs
    */
-  protected void addHeaders(String[] headers) throws IOException {
+  public void addHeaders(String[] headers) throws IOException {
     for (int a = 0; a < headers.length; a++) {
       writer.write(headers[a]);
       writer.write(SEPARATOR);
@@ -63,7 +63,7 @@ public class BaseCSV {
     writer.write(NEW_LINE);
   }
 
-  protected void closeStreams() throws IOException {
+  public void closeStreams() throws IOException {
     outputStream.close();
     writer.close();
   }
@@ -74,7 +74,7 @@ public class BaseCSV {
    * 
    * @throws IOException If an I/O error occurs
    */
-  protected void flush() throws IOException {
+  public void flush() throws IOException {
     writer.flush();
   }
 
@@ -93,7 +93,7 @@ public class BaseCSV {
    * @param key to search
    * @return international key
    */
-  public String getText(String key) {
+  protected String getText(String key) {
     return textProvider.getText(key);
   }
 
@@ -105,11 +105,10 @@ public class BaseCSV {
    *         format.
    * @throws IOException
    */
-  protected void initializeCSV() throws IOException {
+  public void initializeCSV() throws IOException {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
-    writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-    this.writeAccentFormat();
+    writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
   }
 
   /**
@@ -147,9 +146,11 @@ public class BaseCSV {
    * @param useDefault if true, a default value will be written in case the string is empty or null. Otherwise
    * @throws IOException If an I/O error occurs
    */
-  public void writeString(String text, boolean useDefault, boolean endWithSeparator) throws IOException {
-    if (useDefault && (text == null || text.equals(""))) {
-      writer.write(this.getText("summaries.project.empty"));
+  public void writeString(Object text, boolean useDefault, boolean endWithSeparator) throws IOException {
+    if (text == null || String.valueOf(text).equals("")) {
+      if (useDefault) {
+        writer.write(this.getText("summaries.project.empty"));
+      }
     } else {
       writer.write(StringEscapeUtils.escapeCsv(String.valueOf(text)));
     }

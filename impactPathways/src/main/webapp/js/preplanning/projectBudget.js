@@ -135,6 +135,9 @@ function attachEvents() {
     $genderBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
+    $projectBudgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
+    });
     return;
   });
 }

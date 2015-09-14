@@ -16,19 +16,13 @@ package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.action.summaries.planning.csv.PWOBSummaryCSV;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.manager.CRPManager;
-import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
-import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
-import org.cgiar.ccafs.ap.data.manager.NextUserManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
-import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.ByteArrayInputStream;
@@ -42,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jorge Leonardo Solis Banguera
+ * @author Jorge Leonardo Solis B. CCAFS
  */
 public class PWOBSummaryAction extends BaseAction implements Summary {
 
@@ -50,16 +44,11 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   private static final long serialVersionUID = 5110987672008315842L;
 
   // Managers
-  private NextUserManager nextUserManager;
-  private DeliverablePartnerManager deliverablePartnerManager;
+  private LocationManager locationManager;
   private PWOBSummaryCSV pwobSummaryCSV;
-  private DeliverableManager deliverableManager;
   private ProjectManager projectManager;
-  private ProjectOutcomeManager projectOutcomeManager;
-  private CRPManager crpManager;
-  private ProjectOtherContributionManager ipOtherContributionManager;
-  private ActivityManager activityManager;
   private BudgetManager budgetManager;
+  private ProjectPartnerManager projectPartnerManager;
 
   // CSV bytes
   private byte[] bytesCSV;
@@ -71,22 +60,14 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   List<Project> projectsList;
 
   @Inject
-  public PWOBSummaryAction(APConfig config, DeliverableManager deliverableManager, NextUserManager nextUserManager,
-    DeliverablePartnerManager deliverablePartnerManager, PWOBSummaryCSV pwobSummaryCSV, ProjectManager projectManager,
-    ProjectOutcomeManager projectOutcomeManager, CRPManager crpManager,
-    ProjectOtherContributionManager ipOtherContributionManager, ActivityManager activityManager,
-    BudgetManager budgetManager) {
+  public PWOBSummaryAction(APConfig config, PWOBSummaryCSV pwobSummaryCSV, ProjectManager projectManager,
+    BudgetManager budgetManager, ProjectPartnerManager projectPartnerManager, LocationManager locationManager) {
     super(config);
-    this.nextUserManager = nextUserManager;
-    this.deliverablePartnerManager = deliverablePartnerManager;
+    this.locationManager = locationManager;
     this.pwobSummaryCSV = pwobSummaryCSV;
-    this.deliverableManager = deliverableManager;
     this.projectManager = projectManager;
-    this.projectOutcomeManager = projectOutcomeManager;
-    this.crpManager = crpManager;
-    this.ipOtherContributionManager = ipOtherContributionManager;
-    this.activityManager = activityManager;
     this.budgetManager = budgetManager;
+    this.projectPartnerManager = projectPartnerManager;
   }
 
   @Override
@@ -127,48 +108,21 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
 
-    projectsList = this.projectManager.getAllProjectsBasicInfo();
-    // projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    List<Deliverable> deliverables;
 
+    projectsList = this.projectManager.getAllProjectsBasicInfo();
+    List<ProjectPartner> partnersList;
+    List<Location> locationsList;
 
     for (Project project : projectsList) {
 
-      // *************************Deliverable*****************************
-      deliverables = deliverableManager.getDeliverablesByProject(project.getId());
-      for (Deliverable deliverable : deliverables) {
-        // Getting next users.
-        deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
+      // ***************** Partners ******************************
+      partnersList = projectPartnerManager.getProjectPartners(project);
+      project.setProjectPartners(partnersList);
 
-        // Getting the responsible partner.
-        List<DeliverablePartner> partners =
-          deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
-        if (partners.size() > 0) {
-          deliverable.setResponsiblePartner(partners.get(0));
-        } else {
-          DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-          deliverable.setResponsiblePartner(responsiblePartner);
-        }
+      // ***************** Locations ******************************
+      locationsList = this.locationManager.getProjectLocations(project.getId());
+      project.setLocations(locationsList);
 
-        // Getting the other partners that are contributing to this deliverable.
-        deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-          APConstants.DELIVERABLE_PARTNER_OTHER));
-      }
-      project.setDeliverables(deliverables);
-
-      // *************************Outcomes*****************************
-      project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
-
-      // Getting the information for the IP Other Contribution
-      project.setCrpContributions(crpManager.getCrpContributions(project.getId()));
-      project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(project.getId()));
-
-      if (projectManager.getProjectIndicators(project.getId()) != null) {
-        project.setIndicators(projectManager.getProjectIndicators(project.getId()));
-      }
-      if (activityManager.getActivitiesByProject(project.getId()) != null) {
-        project.setActivities(activityManager.getActivitiesByProject(project.getId()));
-      }
       // *************************Budgets ******************************
       project.setBudgets(this.budgetManager.getBudgetsByProject(project));
     }

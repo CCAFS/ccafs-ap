@@ -15,17 +15,17 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.csv.DeliverableSummaryCSV;
-import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.action.summaries.planning.csv.BaseCSV;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 
@@ -39,10 +39,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   // Managers
   private ProjectManager projectManager;
-  // private NextUserManager nextUserManager;
-  // private DeliverablePartnerManager deliverablePartnerManager;
-  private DeliverableSummaryCSV deliverableCSV;
-  private DeliverableManager deliverableManager;
+  private BaseCSV csv;
 
   // CSV bytes
   private byte[] bytesCSV;
@@ -50,24 +47,56 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   // Streams
   InputStream inputStream;
 
-  // Model
-  List<Project> projectsList;
+  // CSV list
+  List<Map<String, Object>> csvDeliverableList;
 
   @Inject
-  public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager,
-    DeliverableManager deliverableManager, DeliverableSummaryCSV deliverableCSV) {
+  public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager, BaseCSV csv) {
     super(config);
     this.projectManager = projectManager;
-    this.deliverableCSV = deliverableCSV;
-    this.deliverableManager = deliverableManager;
+    this.csv = csv;
 
   }
 
   @Override
   public String execute() throws Exception {
-    // Generate the csv file
-    bytesCSV = deliverableCSV.generateCSV(projectsList);
+    // Generating the csv file
+    try {
+      csv.initializeCSV();
 
+      // adding headers
+      String[] headers = new String[] {"Project Id", "Project title", " Flagship(s) ", "Region(s)", "Deliverable ID",
+        "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+        "Others Partners"};
+      csv.addHeaders(headers);
+      // writing rows
+      for (Map<String, Object> csvRow : csvDeliverableList) {
+        csv.writeString(csvRow.get("project_id"), false, true);
+        csv.writeString(csvRow.get("project_title"), true, true);
+        csv.writeString(csvRow.get("flagships"), true, true);
+        csv.writeString(csvRow.get("regions"), true, true);
+        csv.writeString(csvRow.get("deliverable_id"), false, true);
+        csv.writeString(csvRow.get("deliverable_title"), true, true);
+        csv.writeString(csvRow.get("mog"), true, true);
+        csv.writeString(csvRow.get("deliverable_year"), true, true);
+        csv.writeString(csvRow.get("deliverable_type"), true, true);
+        csv.writeString(csvRow.get("deliverable_sub_type"), false, true);
+        csv.writeString(csvRow.get("other_type"), false, true);
+        csv.writeString(csvRow.get("partner_responsible"), true, true);
+        csv.writeString(csvRow.get("other_responsibles"), true, false);
+        csv.writeNewLine();
+      }
+      csv.flush();
+
+      // getting the bytes that are in the output stream.
+      bytesCSV = csv.getBytes();
+      // closing streams.
+      csv.closeStreams();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+      return ERROR;
+    }
     return SUCCESS;
   }
 
@@ -99,33 +128,8 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   @Override
   public void prepare() {
 
-    projectsList = projectManager.getAllProjectsBasicInfo();
-    double c = 0;
-    for (Project project : projectsList) {
-      // System.out.println(++c + "/" + projectsList.size());
-      project.setDeliverables(deliverableManager.getDeliverablesByProject(project.getId()));
+    csvDeliverableList = projectManager.summaryGetAllProjectsWithDeliverables();
 
-    }
-
-    // Not sure if everything here is needed.
-    // for (Deliverable deliverable : deliverables) {
-    // // Getting next users.
-    // deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
-    //
-    // // Getting the responsible partner.
-    // List<DeliverablePartner> partners =
-    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
-    // if (partners.size() > 0) {
-    // deliverable.setResponsiblePartner(partners.get(0));
-    // } else {
-    // DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-    // deliverable.setResponsiblePartner(responsiblePartner);
-    // }
-    //
-    // // Getting the other partners that are contributing to this deliverable.
-    // deliverable.setOtherPartners(
-    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
-    // }
   }
 
 }

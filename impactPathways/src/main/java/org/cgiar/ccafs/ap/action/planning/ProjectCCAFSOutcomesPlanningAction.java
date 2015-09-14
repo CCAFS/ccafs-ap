@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -54,6 +55,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   private IPElementManager ipElementManager;
   private ProjectManager projectManager;
   private HistoryManager historyManager;
+  private IPIndicatorManager indicatorManager;
 
   // Model
   private List<IPElement> midOutcomes;
@@ -70,12 +72,14 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
   @Inject
   public ProjectCCAFSOutcomesPlanningAction(APConfig config, IPProgramManager programManager,
-    IPElementManager ipElementManager, ProjectManager projectManager, HistoryManager historyManager) {
+    IPElementManager ipElementManager, ProjectManager projectManager, HistoryManager historyManager,
+    IPIndicatorManager indicatorManager) {
     super(config);
     this.programManager = programManager;
     this.ipElementManager = ipElementManager;
     this.projectManager = projectManager;
     this.historyManager = historyManager;
+    this.indicatorManager = indicatorManager;
   }
 
   public Activity getActivity() {
@@ -173,9 +177,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     for (IPIndicator indicator : project.getIndicators()) {
       IPElement midoutcome = ipElementManager.getIPElement(indicator.getOutcome().getId());
       if (!midOutcomesSelected.contains(midoutcome)) {
-        String description =
-          midoutcome.getProgram().getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-            + ": " + midoutcome.getDescription();
+        String description = midoutcome.getProgram().getAcronym() + " - "
+          + this.getText("planning.activityImpactPathways.outcome2019") + ": " + midoutcome.getDescription();
         midoutcome.setDescription(description);
 
         midOutcomesSelected.add(midoutcome);
@@ -188,9 +191,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
       for (IPElement parent : output.getContributesTo()) {
         IPElement midoutcome = ipElementManager.getIPElement(parent.getId());
         if (!midOutcomesSelected.contains(midoutcome)) {
-          String description =
-            midoutcome.getProgram().getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-              + ": " + midoutcome.getDescription();
+          String description = midoutcome.getProgram().getAcronym() + " - "
+            + this.getText("planning.activityImpactPathways.outcome2019") + ": " + midoutcome.getDescription();
           midoutcome.setDescription(description);
 
           midOutcomesSelected.add(midoutcome);
@@ -219,9 +221,9 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
       for (int i = 0; i < elements.size(); i++) {
         IPElement midOutcome = elements.get(i);
         if (this.isValidMidoutcome(midOutcome)) {
-          midOutcome.setDescription(program.getAcronym() + " - "
-            + this.getText("planning.activityImpactPathways.outcome2019") + " #" + (i + 1) + ": "
-            + midOutcome.getDescription());
+          midOutcome
+            .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
+              + " #" + (i + 1) + ": " + midOutcome.getDescription());
           midOutcomes.add(midOutcome);
         }
 
@@ -327,7 +329,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     project.setOutputs(ipElementManager.getProjectOutputs(projectID));
 
     // Get the project indicators from database
-    project.setIndicators(projectManager.getProjectIndicators(projectID));
+    project.setIndicators(indicatorManager.getProjectIndicators(projectID));
 
     // Then, we have to get all the midOutcomes that belongs to the project focuses
     this.getMidOutcomesByProjectFocuses();
@@ -383,39 +385,33 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {
         if (!project.containsOutput(output)) {
-          boolean deleted =
-            projectManager.deleteProjectOutput(projectID, output.getId(), output.getContributesToIDs()[0], this
-              .getCurrentUser().getId(), this.getJustification());
+          boolean deleted = projectManager.deleteProjectOutput(projectID, output.getId(),
+            output.getContributesToIDs()[0], this.getCurrentUser().getId(), this.getJustification());
           if (!deleted) {
             success = false;
           }
         }
       }
 
-      success =
-        success
-          && projectManager.saveProjectOutputs(project.getOutputs(), projectID, this.getCurrentUser(),
-            this.getJustification());
+      success = success && projectManager.saveProjectOutputs(project.getOutputs(), projectID, this.getCurrentUser(),
+        this.getJustification());
 
       // Delete the indicators removed
       for (IPIndicator indicator : previousIndicators) {
         if (!project.getIndicators().contains(indicator)) {
-          boolean deleted =
-            projectManager
-              .deleteIndicator(projectID, indicator.getId(), this.getCurrentUser(), this.getJustification());
+          boolean deleted = projectManager.deleteIndicator(projectID, indicator.getId(), this.getCurrentUser(),
+            this.getJustification());
           if (!deleted) {
             success = false;
           }
         }
       }
 
-      success =
-        success
-          && projectManager.saveProjectIndicators(project.getIndicators(), projectID, this.getCurrentUser(),
-            this.getJustification());
+      success = success && indicatorManager.saveProjectIndicators(project.getIndicators(), projectID,
+        this.getCurrentUser(), this.getJustification());
       if (success) {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("planning.projectOutcome.title")}));
+        this.addActionMessage(
+          this.getText("saving.success", new String[] {this.getText("planning.projectOutcome.title")}));
         return SUCCESS;
       } else {
         this.addActionError(this.getText("saving.problem"));

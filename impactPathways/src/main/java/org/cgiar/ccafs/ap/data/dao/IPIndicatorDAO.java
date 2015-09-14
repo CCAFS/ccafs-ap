@@ -80,11 +80,37 @@ public interface IPIndicatorDAO {
   public List<Map<String, String>> getIndicatorsList();
 
   /**
+   * This method returns all the indicators related with the project
+   * identified by the value received as parameter.
+   * 
+   * @param projectID - project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectIndicators(int projectID);
+
+  /**
    * This method save the information of the indicator.
    * 
    * @param indicatorData - the information to be saved
    * @return the last inserted id if any or 0 if some record was updated or -1 if any error occurred.
    */
   public int saveIndicator(Map<String, Object> indicatorData);
+
+  /**
+   * This method save into the database the relation between a project and
+   * some midOutcomes indicators
+   * 
+   * @param indicatorData - map with the information to be saved
+   * @return true if the relation was successfully added.s
+   */
+  public boolean saveProjectIndicators(Map<String, String> indicatorData);
+
+  /**
+   * This method updates the project indicator with the information received by parameter.
+   * 
+   * @param indicatorData - map with the information to be updated
+   * @return true id the update process was successful. False otherwise.
+   */
+  public boolean updateProjectIndicators(Map<String, String> indicatorData);
 
 }

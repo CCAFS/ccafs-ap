@@ -189,14 +189,6 @@ public interface ProjectDAO {
    */
   public List<Integer> getProjectIdsEditables(int userId);
 
-  /**
-   * This method returns all the indicators related with the project
-   * identified by the value received as parameter.
-   * 
-   * @param projectID - project identifier
-   * @return a list of maps with the information
-   */
-  public List<Map<String, String>> getProjectIndicators(int projectID);
 
   /**
    * Get a Project Leader information with a given Project Id
@@ -276,15 +268,6 @@ public interface ProjectDAO {
 
   /**
    * This method save into the database the relation between a project and
-   * some midOutcomes indicators
-   * 
-   * @param indicatorData - map with the information to be saved
-   * @return true if the relation was successfully added.s
-   */
-  public boolean saveProjectIndicators(Map<String, String> indicatorData);
-
-  /**
-   * This method save into the database the relation between a project and
    * one output
    * 
    * @param outputData - information to be saved
@@ -293,12 +276,13 @@ public interface ProjectDAO {
   public int saveProjectOutput(Map<String, String> outputData);
 
   /**
-   * This method updates the project indicator with the information received by parameter.
+   * This method returns the information of all the deliverables and their projects to be used in the summary report of
+   * expected deliverables.
    * 
-   * @param indicatorData - map with the information to be updated
-   * @return true id the update process was successful. False otherwise.
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
    */
-  public boolean updateProjectIndicators(Map<String, String> indicatorData);
+  public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
 
   /**
    * This method updates the project type into the database according to the values received by parameter.
