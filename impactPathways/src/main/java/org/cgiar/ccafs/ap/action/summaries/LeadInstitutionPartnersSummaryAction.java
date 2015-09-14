@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.csv.LeadInstitutionPartnersSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.xls.LeadInstitutionPartnersSummaryXLS;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,24 +40,24 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   public static Logger LOG = LoggerFactory.getLogger(LeadInstitutionPartnersSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV;
+  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   List<ProjectPartner> partners;
   List<Institution> projectLeadingInstitutions;
   String[] projectList;
   // CSV bytes
-  private byte[] bytesCSV;
+  private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
 
   @Inject
   public LeadInstitutionPartnersSummaryAction(APConfig config,
-    LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV, InstitutionManager institutionManager,
+    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS, InstitutionManager institutionManager,
     ProjectManager projectManager) {
     super(config);
-    this.leadInstitutionPartnersSummaryCSV = leadInstitutionPartnersSummaryCSV;
+    this.leadInstitutionPartnersSummaryXLS = leadInstitutionPartnersSummaryXLS;
     this.institutionManager = institutionManager;
     this.projectManager = projectManager;
 
@@ -64,15 +65,26 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   @Override
   public String execute() throws Exception {
-    // Generate the csv file
-    bytesCSV = leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
+    // Generate the xls file
+    String templateFile = ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
+    System.out.println(templateFile);
+    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(templateFile, projectLeadingInstitutions, projectList);
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return bytesCSV.length;
+    return bytesXLS.length;
+  }
+
+  @Override
+  public String getContentType() {
+    if (this.getFileName().endsWith("xlsx")) {
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    } else {
+      return "application/vnd.ms-excel";
+    }
   }
 
   @Override
@@ -81,18 +93,18 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
     StringBuffer fileName = new StringBuffer();
     fileName.append("ProjectLeading-Institutions_");
     fileName.append(date);
-    fileName.append(".csv");
+    fileName.append(".xlsx");
     return fileName.toString();
   }
+
 
   @Override
   public InputStream getInputStream() {
     if (inputStream == null) {
-      inputStream = new ByteArrayInputStream(bytesCSV);
+      inputStream = new ByteArrayInputStream(bytesXLS);
     }
     return inputStream;
   }
-
 
   @Override
   public void prepare() {

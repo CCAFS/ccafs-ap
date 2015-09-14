@@ -28,7 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class manage everything related to the creation of a CSV and the output streams needed to write the information.
+ * This class manages everything related to the creation of a CSV and the output streams needed to write the
+ * information.
  * 
  * @author Jorge Leonardo Solis B. - CIAT/CCAFS
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
@@ -99,7 +100,7 @@ public class BaseCSV {
 
   /**
    * Method used for to initialize the CSV Stream.
-   * It creates a byte output stream and returns a more complex stream that will help us to work with.
+   * It creates a byte output stream and a more complex stream that will help us to work with (writer object).
    * 
    * @return a BufferedWriter Stream representing the stream where is going to be written all the information in CSV
    *         format.

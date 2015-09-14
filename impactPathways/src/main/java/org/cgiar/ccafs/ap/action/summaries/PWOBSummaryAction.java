@@ -85,6 +85,12 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   }
 
   @Override
+  public String getContentType() {
+    return "text/csv";
+  }
+
+
+  @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
     fileName.append("PWOB");
@@ -95,7 +101,6 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
     return fileName.toString();
 
   }
-
 
   @Override
   public InputStream getInputStream() {

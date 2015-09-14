@@ -30,9 +30,11 @@
     <janino.version>2.6.1</janino.version>    
     <itext.version>2.1.7</itext.version>
     <flyway.version>3.2.1</flyway.version>
+    <poi.version>3.12</poi.version>
   </properties>
 
   <developers>
+    <!-- Main developers -->
     <developer>
       <name>Héctor F. Tobón R.</name>
       <email>h.f.tobon@cgiar.org</email>
@@ -88,6 +90,13 @@
       <version>${struts2.version}</version>
       <scope>test</scope>
     </dependency>
+    
+    <!--  Struts - JSON library -->
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts2-json-plugin</artifactId>
+      <version>${struts2-json.version}</version>
+    </dependency>
 
     <!-- Google Guice -->
     <!-- connector to use guice natively with struts2 -->
@@ -136,10 +145,10 @@
     
     <!-- This dependency allows conditions in logger configuration -->
     <dependency>
-	  <groupId>org.codehaus.janino</groupId>
-	  <artifactId>janino</artifactId>
-	  <version>${janino.version}</version>
-	</dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+      <version>${janino.version}</version>
+    </dependency>
     
     <dependency>
       <groupId>junit</groupId>
@@ -168,27 +177,26 @@
       <artifactId>mail</artifactId>
       <version>${java-mail.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.apache.struts</groupId>
-	    <artifactId>struts2-json-plugin</artifactId>
-	    <version>${struts2-json.version}</version>
-    </dependency>
     
     <!-- iText -->
     <dependency>
-		  <groupId>com.lowagie</groupId>
-		  <artifactId>itext</artifactId>
-		  <version>${itext.version}</version>
-		</dependency>
-		
-	<!-- Csv Reader -->
- <dependency>
-     <groupId>com.opencsv</groupId>
-     <artifactId>opencsv</artifactId>
-     <version>3.4</version>
-  </dependency>
-	
+      <groupId>com.lowagie</groupId>
+      <artifactId>itext</artifactId>
+      <version>${itext.version}</version>
+    </dependency>
+
+    <!--  Apache POI - JAVA API To Access Microsoft XLS Format Files -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>${poi.version}</version>
+    </dependency>	
+    <!--  Apache POI - JAVA API To Access Microsoft XLSX Format Files -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>${poi.version}</version>
+    </dependency> 
 
     <!-- Database version control -->
     <dependency>
@@ -200,13 +208,13 @@
   
   <build>
     <finalName>${project.artifactId}</finalName>
-    <defaultGoal>jetty:run</defaultGoal>
-    <!-- defaultGoal>tomcat7:run</defaultGoal -->
+    <!-- defaultGoal>jetty:run</defaultGoal -->
+    <defaultGoal>tomcat7:run</defaultGoal>
 
     <plugins>
       <!-- Jetty server used only during the developer process -->
       <!-- (it loads faster than Tomcat) -->
-      <plugin>
+      <!-- plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
         <version>${jetty.version}</version>
@@ -231,7 +239,7 @@
             </connector>
           </connectors>
         </configuration>
-      </plugin>
+      </plugin -->
       <!-- Tomcat plugin just to test compatibilities with Tomcat. -->
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
