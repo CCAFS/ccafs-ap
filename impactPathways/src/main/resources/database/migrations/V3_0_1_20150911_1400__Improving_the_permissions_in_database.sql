@@ -60,6 +60,7 @@ INSERT INTO role_permissions (role_id, permission_id) VALUES (7, (SELECT id FROM
 -- Update all the permissions assigned to the project coordinator
 DELETE FROM role_permissions WHERE role_id = 9;
 
+INSERT INTO role_permissions (role_id, permission_id) VALUES (9, (SELECT id FROM permissions WHERE permission = 'planning:projects:description:update' ));
 INSERT INTO role_permissions (role_id, permission_id) VALUES (9, (SELECT id FROM permissions WHERE permission = 'planning:projects:partners:update' ));
 INSERT INTO role_permissions (role_id, permission_id) VALUES (9, (SELECT id FROM permissions WHERE permission = 'planning:projects:locations:update' ));
 INSERT INTO role_permissions (role_id, permission_id) VALUES (9, (SELECT id FROM permissions WHERE permission = 'planning:projects:outcomes:update' ));
