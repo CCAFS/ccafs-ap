@@ -23,6 +23,7 @@ import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,10 +77,14 @@ public class BaseXLS {
    *         XLS
    *         format.
    */
-  public Workbook initializeXLS() {
+  public Workbook initializeXLS(String excelFormat) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
-    workbook = new HSSFWorkbook();
+    if (excelFormat.toLowerCase().equals("xls")) {
+      workbook = new HSSFWorkbook();
+    } else if (excelFormat.toLowerCase().equals("xlsx")) {
+      workbook = new XSSFWorkbook();
+    }
     return workbook;
   }
 
