@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning.csv;
+package org.cgiar.ccafs.ap.action.summaries.planning.xls;
 
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
@@ -21,18 +21,21 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.poi.ss.usermodel.Workbook;
 
 
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
+public class LeadInstitutionPartnersSummaryXLS {
 
   private APConfig config;
+  private BaseXLS xls;
 
   @Inject
-  public LeadInstitutionPartnersSummaryCSV(APConfig config) {
+  public LeadInstitutionPartnersSummaryXLS(APConfig config, BaseXLS xls) {
     this.config = config;
+    this.xls = xls;
   }
 
   /**
@@ -44,27 +47,27 @@ public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
   private void addContent(List<Institution> projectLeadingInstitutions, String[] projectList) {
     int i = 0;
     for (Institution institution : projectLeadingInstitutions) {
-      try {
-
-        this.writeString(String.valueOf(institution.getId()), false, true);
-
-        this.writeString(institution.getName(), false, true);
-
-        this.writeString(institution.getAcronym(), false, true);
-
-        this.writeString(institution.getWebsiteLink(), false, true);
-
-        this.writeString(institution.getCountry().getName(), false, true);
-
-        // Getting the project ids
-        this.writeString(projectList[i], false, false);
-        i++;
-
-        this.writeNewLine();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      // try {
+      //
+      // this.writeString(String.valueOf(institution.getId()), false, true);
+      //
+      // this.writeString(institution.getName(), false, true);
+      //
+      // this.writeString(institution.getAcronym(), false, true);
+      //
+      // this.writeString(institution.getWebsiteLink(), false, true);
+      //
+      // this.writeString(institution.getCountry().getName(), false, true);
+      //
+      // // Getting the project ids
+      // this.writeString(projectList[i], false, false);
+      // i++;
+      //
+      // this.writeNewLine();
+      // } catch (IOException e) {
+      // // TODO Auto-generated catch block
+      // e.printStackTrace();
+      // }
 
     }
   }
@@ -78,18 +81,19 @@ public class LeadInstitutionPartnersSummaryCSV extends BaseCSV {
   public byte[] generateCSV(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
+      Workbook workbook = xls.initializeXLS();
+
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
-      this.initializeCSV();
 
-
-      this.addHeaders(headers);
-      this.addContent(projectLeadingInstitutions, projectList);
-      this.flush();
-      byte[] byteArray = this.getBytes();
+      // this.addHeaders(headers);
+      // this.addContent(projectLeadingInstitutions, projectList);
+      // this.flush();
+      xls.writeWorkbook();
+      byte[] byteArray = xls.getBytes();
       // Closing streams.
-      this.closeStreams();
+      xls.closeStreams();
 
       return byteArray;
 

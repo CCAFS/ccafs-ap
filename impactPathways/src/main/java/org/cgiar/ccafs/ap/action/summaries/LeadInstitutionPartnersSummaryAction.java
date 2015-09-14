@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.csv.LeadInstitutionPartnersSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.xls.LeadInstitutionPartnersSummaryXLS;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -39,7 +39,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   public static Logger LOG = LoggerFactory.getLogger(LeadInstitutionPartnersSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV;
+  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryCSV;
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   List<ProjectPartner> partners;
@@ -53,7 +53,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   @Inject
   public LeadInstitutionPartnersSummaryAction(APConfig config,
-    LeadInstitutionPartnersSummaryCSV leadInstitutionPartnersSummaryCSV, InstitutionManager institutionManager,
+    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryCSV, InstitutionManager institutionManager,
     ProjectManager projectManager) {
     super(config);
     this.leadInstitutionPartnersSummaryCSV = leadInstitutionPartnersSummaryCSV;
