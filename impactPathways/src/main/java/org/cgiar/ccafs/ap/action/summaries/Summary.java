@@ -32,6 +32,13 @@ public interface Summary {
   public int getContentLength();
 
   /**
+   * This method should return the content type for the file that is going to be returned.
+   * 
+   * @return a String representing the content type. E.g. for CSV would be "text/csv".
+   */
+  public String getContentType();
+
+  /**
    * This method should return the name of the file
    * to return.
    * 

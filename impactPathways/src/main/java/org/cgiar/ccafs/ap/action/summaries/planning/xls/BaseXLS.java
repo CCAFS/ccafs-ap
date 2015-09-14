@@ -75,7 +75,6 @@ public class BaseXLS {
    * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
    *         XLS
    *         format.
-   * @throws IOException if some I/O error occurs.
    */
   public Workbook initializeXLS() {
     textProvider = new DefaultTextProvider();
