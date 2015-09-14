@@ -176,8 +176,13 @@ public interface ProjectDAO {
   public int getProjectIDFromProjectPartnerID(int projectPartnerID);
 
   /**
-   * This method returns a list of project identifiers that can be edited by the user identified with the value received
-   * by parameter.
+   * This method returns a list of project identifiers that can be edited by a given user.
+   * An user can edit a project if:
+   * - Is the management liaison contact person
+   * - It is affiliated to the liaison institution organization of the project
+   * - Is the leader of the project
+   * - If the project is bilateral and you are a focal point (CP or ML) of the lead institution
+   * - Has the administrator role
    * 
    * @param userId is the owner identifier.
    * @return a list of Integers which represent the project identifiers.
