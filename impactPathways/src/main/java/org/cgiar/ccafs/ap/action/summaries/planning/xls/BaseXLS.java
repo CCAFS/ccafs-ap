@@ -72,9 +72,10 @@ public class BaseXLS {
    * Method used for to initialize the XLS Workbook object.
    * It creates a byte output stream and returns a more complex stream that will help us to work with.
    * 
-   * @return a BufferedWriter Stream representing the stream where is going to be written all the information in CSV
+   * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
+   *         XLS
    *         format.
-   * @throws IOException
+   * @throws IOException if some I/O error occurs.
    */
   public Workbook initializeXLS() {
     textProvider = new DefaultTextProvider();
@@ -85,7 +86,7 @@ public class BaseXLS {
 
 
   /**
-   * This Method is used for to prepate the file for accept format acent
+   * This Method is used for to write the Workbook instance into the output stream
    * 
    * @throws IOException if an I/O error occurs.
    */
