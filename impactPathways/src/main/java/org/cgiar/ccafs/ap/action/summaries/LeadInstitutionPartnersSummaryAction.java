@@ -90,7 +90,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
     StringBuffer fileName = new StringBuffer();
     fileName.append("ProjectLeading-Institutions_");
     fileName.append(date);
-    fileName.append(".xls");
+    fileName.append(".xlsx");
     return fileName.toString();
   }
 

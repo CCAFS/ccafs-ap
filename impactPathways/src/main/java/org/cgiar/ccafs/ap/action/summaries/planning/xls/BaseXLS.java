@@ -17,11 +17,17 @@ package org.cgiar.ccafs.ap.action.summaries.planning.xls;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -38,17 +44,32 @@ public class BaseXLS {
 
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
+  private static String EXCEL_TEMPLATE_FILE;
+
   // Internationalization file.
   private TextProvider textProvider;
-
   // Streams
   private ByteArrayOutputStream outputStream; // byte stream.
+
   private Workbook workbook; // Excel high level model.
+
+  /**
+   * This method creates a template in a specific sheet.
+   * 
+   * @param sheet where the template will be placed.
+   */
+  private void addHeader(Sheet sheet) {
+    Header header = sheet.getHeader();
+    String date = new SimpleDateFormat("yyyy-MM-dd-HHmm").format(new Date());
+    header.setLeft("Planning and Reporting Platform");
+    header.setRight("Report generated on " + date);
+  }
 
   public void closeStreams() throws IOException {
     outputStream.close();
     workbook.close();
   }
+
 
   /**
    * This method return the information that is in the outputStream as an array of bytes.
@@ -77,13 +98,21 @@ public class BaseXLS {
    *         XLS
    *         format.
    */
-  public Workbook initializeXLS(String excelFormat) {
+  public Workbook initializeXLS(String excelFormat, String baseURL) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
+    EXCEL_TEMPLATE_FILE = baseURL + "/resources/templates/template.xlsx";
     if (excelFormat.toLowerCase().equals("xls")) {
       workbook = new HSSFWorkbook();
     } else if (excelFormat.toLowerCase().equals("xlsx")) {
-      workbook = new XSSFWorkbook();
+      try {
+        InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
+        workbook = new XSSFWorkbook(templateStream);
+        templateStream.close();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
     return workbook;
   }
