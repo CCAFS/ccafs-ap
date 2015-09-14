@@ -103,8 +103,6 @@ public class LeadInstitutionPartnersSummaryXLS {
         row.createCell(c).setCellValue(headers[c]);
         row.getCell(c).setCellStyle(style);
       }
-      // }
-      // }
 
       // this.addHeaders(headers);
       // this.addContent(projectLeadingInstitutions, projectList);
