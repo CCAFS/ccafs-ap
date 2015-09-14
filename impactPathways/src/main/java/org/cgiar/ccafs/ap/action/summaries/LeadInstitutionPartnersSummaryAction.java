@@ -39,7 +39,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   public static Logger LOG = LoggerFactory.getLogger(LeadInstitutionPartnersSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryCSV;
+  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   List<ProjectPartner> partners;
@@ -53,10 +53,10 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   @Inject
   public LeadInstitutionPartnersSummaryAction(APConfig config,
-    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryCSV, InstitutionManager institutionManager,
+    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS, InstitutionManager institutionManager,
     ProjectManager projectManager) {
     super(config);
-    this.leadInstitutionPartnersSummaryCSV = leadInstitutionPartnersSummaryCSV;
+    this.leadInstitutionPartnersSummaryXLS = leadInstitutionPartnersSummaryXLS;
     this.institutionManager = institutionManager;
     this.projectManager = projectManager;
 
@@ -64,8 +64,8 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   @Override
   public String execute() throws Exception {
-    // Generate the csv file
-    bytesXLS = leadInstitutionPartnersSummaryCSV.generateCSV(projectLeadingInstitutions, projectList);
+    // Generate the xls file
+    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions, projectList);
 
     return SUCCESS;
   }
@@ -90,7 +90,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
     StringBuffer fileName = new StringBuffer();
     fileName.append("ProjectLeading-Institutions_");
     fileName.append(date);
-    fileName.append(".xlsx");
+    fileName.append(".xls");
     return fileName.toString();
   }
 

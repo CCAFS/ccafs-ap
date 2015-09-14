@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 
@@ -78,7 +80,7 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateCSV(List<Institution> projectLeadingInstitutions, String[] projectList) {
+  public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
       Workbook workbook = xls.initializeXLS("xls");
@@ -86,6 +88,16 @@ public class LeadInstitutionPartnersSummaryXLS {
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
+      Sheet sheet = workbook.createSheet("LeadInstitutions");
+
+      // for (Row row : sheet1) {
+      // for (Cell cell : row) {\
+      Row row = sheet.createRow((short) 0);
+      for (int c = 0; c < headers.length; c++) {
+        row.createCell(c).setCellValue(headers[c]);
+      }
+      // }
+      // }
 
       // this.addHeaders(headers);
       // this.addContent(projectLeadingInstitutions, projectList);
