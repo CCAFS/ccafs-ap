@@ -28,7 +28,6 @@ import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -38,6 +37,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFTextBox;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
@@ -56,8 +56,8 @@ public class BaseXLS {
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
   // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE = ServletActionContext.getServletContext().getRealPath(
-    "resources/templates/template.xlsx");
+  private static String EXCEL_TEMPLATE_FILE =
+    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
 
   // Header Style
   private static final String HEADER_FONT_NAME = "Arial";
@@ -168,13 +168,13 @@ public class BaseXLS {
     if (usingTemplate) {
       // ------ Preparing the style.
       // Font
-      Font font = workbook.createFont();
+      XSSFFont font = (XSSFFont) workbook.createFont();
       font.setBold(true);
       font.setFontName(HEADER_FONT_NAME);
+      font.setColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
       font.setFontHeightInPoints(HEADER_FONT_SIZE);
       // Style
       XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
-      style.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
       style.setAlignment(CellStyle.ALIGN_CENTER);
       style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
       style.setFillBackgroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
