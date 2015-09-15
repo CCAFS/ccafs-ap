@@ -58,8 +58,8 @@ public class BaseXLS {
   // Header Style
   private static final String HEADER_FONT_NAME = "Arial";
   private static final short HEADER_FONT_SIZE = 11;
-  private static final String HEADER_FONT_COLOR_HEX = "4E4E4F";
-  private static final int HEADER_ROW_HEIGHT = 11;
+  private static final String HEADER_FONT_COLOR_HEX = "#4E4E4F";
+  private static final int HEADER_ROW_HEIGHT = 31;
 
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
@@ -122,8 +122,8 @@ public class BaseXLS {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     usingTemplate = useTemplate;
-    rowStart = 13;
-    columnStart = 2;
+    rowStart = 12;
+    columnStart = 1;
     try {
       // validating the type of format.
       if (useTemplate) {
@@ -170,7 +170,7 @@ public class BaseXLS {
 
       // Writting headers.
       Cell cell;
-      for (int c = 0, columnCounter = columnStart; c <= headers.length; c++, columnCounter++) {
+      for (int c = 0, columnCounter = columnStart; c < headers.length; c++, columnCounter++) {
         cell = row.createCell(columnCounter);
         cell.setCellStyle(style);
         cell.setCellValue(headers[c]);
