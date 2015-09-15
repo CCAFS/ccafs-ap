@@ -17,7 +17,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.util.SecurityContext;
+import org.cgiar.ccafs.ap.security.SecurityContext;
 
 import java.util.List;
 import java.util.Map;
@@ -72,7 +72,7 @@ public class GrantProjectPreplanningAccessInterceptor extends AbstractIntercepto
         baseAction.setSaveable(true);
       } else {
         // If the user is not an Admin, let's figure out if he/she can have the enough privileges to edit the project.
-        List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user);
+        List<Integer> idsAllowedToEdit = projectManager.getProjectIdsEditables(user.getId());
         if (idsAllowedToEdit.contains(new Integer(projectID))) {
           baseAction.setSaveable(true);
         } else {

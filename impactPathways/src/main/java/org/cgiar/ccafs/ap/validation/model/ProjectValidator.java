@@ -80,8 +80,16 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
-  public boolean isValidLeader(ProjectPartner leader) {
-    return (leader != null) ? true : false;
+  public boolean isValidLeader(ProjectPartner leader, boolean isBilateral) {
+    if (leader == null) {
+      return false;
+    }
+
+    // For bilateral projects the leader must be a PPA institution
+    if (isBilateral && !leader.getInstitution().isPPA()) {
+      return false;
+    }
+    return true;
   }
 
   public boolean isValidLeaderResponsabilities(String leaderResponsabilities) {

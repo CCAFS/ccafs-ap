@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -109,15 +110,23 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setTitle(projectData.get("title"));
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
+      List<Budget> budgets = new ArrayList<>(2);
 
-      if (projectData.get("total_budget_amount") != null) {
-        Budget totalBudget = new Budget();
-        totalBudget.setAmount(Double.parseDouble(projectData.get("total_budget_amount")));
-        List<Budget> budgets = new ArrayList<>(1);
-        budgets.add(totalBudget);
-        project.setBudgets(budgets);
+      if (projectData.get("total_ccafs_amount") != null) {
+        Budget ccafsBudget = new Budget();
+        ccafsBudget.setAmount(Double.parseDouble(projectData.get("total_ccafs_amount")));
+        ccafsBudget.setType(BudgetType.W1_W2);
+        budgets.add(ccafsBudget);
       }
 
+      if (projectData.get("total_bilateral_amount") != null) {
+        Budget ccafsBudget = new Budget();
+        ccafsBudget.setAmount(Double.parseDouble(projectData.get("total_bilateral_amount")));
+        ccafsBudget.setType(BudgetType.W3_BILATERAL);
+        budgets.add(ccafsBudget);
+      }
+
+      project.setBudgets(budgets);
       project.setCreated(Long.parseLong(projectData.get("created")));
 
       // Getting Project Focuses - Regions
@@ -329,8 +338,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Integer> getProjectIdsEditables(User user) {
-    return projectDAO.getProjectIdsEditables(user.getId());
+  public List<Integer> getProjectIdsEditables(int userID) {
+    return projectDAO.getProjectIdsEditables(userID);
   }
 
   @Override
@@ -463,8 +472,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-  public
-  boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+    public
+    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

@@ -30,13 +30,28 @@ import com.google.inject.ImplementedBy;
 public interface UserRoleDAO {
 
   /**
-   * This method gets the permissions that the user has assigned to
-   * specific projects if any.
+   * This method gets the projects where the user is assigned as contact point.
    * 
-   * @param UserID
-   * @return a list of maps with the information
+   * @param userID - user identifier
+   * @return a list of maps with the project identifier and the contact point role information.
    */
-  public List<Map<String, String>> getProjectUserRoles(String userID);
+  public List<Map<String, String>> getContactPointProjects(int userID);
+
+  /**
+   * This method gets the projects where the user is assigned as management liaison.
+   * 
+   * @param userID - user identifier
+   * @return a list of maps with the project identifier and the contact point role information.
+   */
+  public List<Map<String, String>> getManagementLiaisonProjects(int userID);
+
+  /**
+   * This method gets the projects where the user is assigned as leader.
+   * 
+   * @param userID - user identifier
+   * @return a list of maps with the project identifier and the contact point role information.
+   */
+  public List<Map<String, String>> getProjectLeaderProjects(int userID);
 
   /**
    * This method gets all the permissions assigned to the role
@@ -55,4 +70,13 @@ public interface UserRoleDAO {
    * @return a list of maps with the permissions.
    */
   public List<Map<String, String>> getUserRolesByUserID(String userID);
+
+  /**
+   * This method gets the permissions that the user has assigned to
+   * specific projects if any.
+   * 
+   * @param UserID
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> setData(String query);
 }

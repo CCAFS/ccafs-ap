@@ -20,7 +20,7 @@ package org.cgiar.ccafs.ap.config;
  */
 
 
-import org.cgiar.ccafs.security.realms.APCustomRealm;
+import org.cgiar.ccafs.ap.security.APCustomRealm;
 
 import javax.servlet.ServletContext;
 

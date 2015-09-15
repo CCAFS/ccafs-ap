@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectRoleManager;
+import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Country;
@@ -28,6 +29,7 @@ import org.cgiar.ccafs.ap.data.model.InstitutionType;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
@@ -63,6 +65,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private ProjectManager projectManager;
   private ProjectRoleManager projectRoleManager;
   private UserManager userManager;
+  private RoleManager roleManager;
   private ActivityManager activityManager;
   private DeliverableManager deliverableManager;
   // private BudgetManager budgetManager;
@@ -70,7 +73,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // private DeliverableManager deliverableManager;
 
   // Validator
-  // private ProjectPartnersValidator projectPartnersValidator;
+  private ProjectPartnersValidator projectPartnersValidator;
 
   // Model for the back-end
   private int projectID;
@@ -94,7 +97,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
     DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
-    ActivityManager activityManager, ProjectRoleManager projectRoleManager) {
+    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
@@ -104,8 +107,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.userManager = userManager;
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
+    this.projectPartnersValidator = projectPartnersValidator;
+    this.roleManager = roleManager;
     // this.budgetManager = budgetManager;
-    // this.projectPartnersValidator = projectPartnersValidator;
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
 
@@ -251,6 +255,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+    System.out.println("preparing....");
     super.prepare();
     actionName = ActionContext.getContext().getName();
     // Getting the project id from the URL parameter
@@ -440,7 +445,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectPartners()) {
+    LOG.debug("saving... ");
+    if (securityContext.canUpdateProjectPartners(project.getId())) {
 
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);
@@ -456,19 +462,25 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
         this.getJustification());
 
-
+      // TODO - The project role manager can be deleted now because we are not using the table project_roles to
+      // verify if a user can edit a project.
       projectRoleManager.saveProjectRoles(project, this.getCurrentUser(), this.getJustification());
 
       // Check if the project leader has changed and send the corresponding emails
       PartnerPerson previousLeader = previousProject.getLeaderPerson();
       PartnerPerson leader = project.getLeaderPerson();
 
+      Role plRole = new Role(APConstants.ROLE_PROJECT_LEADER);
       if (previousLeader == null && leader != null) {
+        roleManager.saveRole(leader.getUser(), plRole);
         // TODO - Send message notifying to the new project leader
       } else if (previousLeader != null && leader == null) {
+        roleManager.deleteRole(previousLeader.getUser(), plRole);
         // TODO - Send message notifying to the user that is not the project leader anymore
       } else if (previousLeader != null && leader != null) {
         if (!leader.equals(previousLeader)) {
+          roleManager.saveRole(leader.getUser(), plRole);
+          roleManager.deleteRole(previousLeader.getUser(), plRole);
           // TODO - Send message to leader notifying that he/she is the new project leader
           // TODO - Send message to previousLeader notifying that he/she is not the project leader anymore
         }
@@ -503,10 +515,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void validate() {
-    LOG.debug(">> validate() ");
-    // validate only if user clicks any save button.
     if (save) {
-      // projectPartnersValidator.validate(this, project);
+      projectPartnersValidator.validate(this, project);
     }
   }
 

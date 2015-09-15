@@ -25,6 +25,15 @@ import com.google.inject.ImplementedBy;
 public interface RoleManager {
 
   /**
+   * This method removes a role assigned to a user.
+   * 
+   * @param user - The user to who the role is being removed.
+   * @param role
+   * @return true if the role was removed successfully. False otherwise.
+   */
+  public boolean deleteRole(User user, Role role);
+
+  /**
    * This method gets all Roles information
    * 
    * @return a list of roles with the information, or an empty list if no information were found
@@ -39,4 +48,13 @@ public interface RoleManager {
    * @return a Role object with the information
    */
   public Role getRole(User user);
+
+  /**
+   * This method saves into the database the role assigned to the user.
+   * 
+   * @param user - User who is been assigned the role
+   * @param role
+   * @return true if the role was assigned successfully. False otherwise.
+   */
+  public boolean saveRole(User user, Role role);
 }

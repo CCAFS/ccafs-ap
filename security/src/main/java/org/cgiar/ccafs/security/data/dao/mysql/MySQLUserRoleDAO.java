@@ -45,29 +45,46 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjectUserRoles(String userID) {
-    List<Map<String, String>> userRolesList = new ArrayList<>();
+  public List<Map<String, String>> getContactPointProjects(int userID) {
     StringBuilder query = new StringBuilder();
-    query.append("SELECT r.id, r.name, r.acronym, pr.project_id ");
-    query.append("FROM project_roles pr ");
-    query.append("INNER JOIN roles r ON pr.role_id = r.id ");
-    query.append("WHERE pr.user_id = ");
+    query.append("SELECT r.id, r.name, r.acronym, p.id as 'project_id' ");
+    query.append("FROM roles r, projects p ");
+    query.append("INNER JOIN liaison_institutions li ON p.liaison_institution_id = li.id ");
+    query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
+    query.append("INNER JOIN liaison_institutions uli ON i.id = uli.institution_id ");
+    query.append("INNER JOIN liaison_users lu ON uli.id = lu.institution_id ");
+    query.append("WHERE p.type = 'BILATERAL' AND r.id = 4 AND lu.user_id = ");
     query.append(userID);
 
-    try (Connection con = daoManager.getConnection()) {
-      ResultSet rs = daoManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> userRole = new HashMap<>();
-        userRole.put("id", rs.getString("id"));
-        userRole.put("name", rs.getString("name"));
-        userRole.put("acronym", rs.getString("acronym"));
-        userRole.put("project_id", rs.getString("project_id"));
-        userRolesList.add(userRole);
-      }
-    } catch (SQLException e) {
-      LOG.error("verifiyCredentials() > There was an error verifiying the credentials of {}", userID, e);
-    }
-    return userRolesList;
+    return this.setData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getManagementLiaisonProjects(int userID) {
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym, p.id as 'project_id' ");
+    query.append("FROM roles r, projects p ");
+    query.append("INNER JOIN liaison_institutions li ON p.liaison_institution_id = li.id ");
+    query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
+    query.append("INNER JOIN liaison_institutions uli ON i.id = uli.institution_id ");
+    query.append("INNER JOIN liaison_users lu ON uli.id = lu.institution_id ");
+    query.append("WHERE r.id = 2 AND lu.user_id =  ");
+    query.append(userID);
+
+    return this.setData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectLeaderProjects(int userID) {
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym, project_id ");
+    query.append("FROM  roles r, project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+    query.append("WHERE ( ppp.contact_type = 'PL' OR ppp.contact_type = 'PC' ) ");
+    query.append("AND r.id = 7 AND ppp.user_id = ");
+    query.append(userID);
+
+    return this.setData(query.toString());
   }
 
   @Override
@@ -110,6 +127,26 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
       }
     } catch (SQLException e) {
       LOG.error("verifiyCredentials() > There was an error verifiying the credentials of {}", userID, e);
+    }
+    return userRolesList;
+  }
+
+  @Override
+  public List<Map<String, String>> setData(String query) {
+    List<Map<String, String>> userRolesList = new ArrayList<>();
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> userRole = new HashMap<>();
+        userRole.put("id", rs.getString("id"));
+        userRole.put("name", rs.getString("name"));
+        userRole.put("acronym", rs.getString("acronym"));
+        userRole.put("project_id", rs.getString("project_id"));
+        userRolesList.add(userRole);
+      }
+    } catch (SQLException e) {
+      LOG.error("verifiyCredentials() > There was an error running a query.", e);
     }
     return userRolesList;
   }

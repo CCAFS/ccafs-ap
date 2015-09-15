@@ -205,29 +205,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       }
     }
 
-    // // Getting the Project Leader.
-    // List<ProjectPartner> ppArray =
-    // projectPartnerManager.z_old_getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
-    // if (!ppArray.isEmpty()) {
-    // project.setLeader(ppArray.get(0));
-    // hasLeader = true;
-    // } else {
-    // hasLeader = false;
-    // }
-    //
-    // // Getting the list of PPA Partner institutions
-    // projectPPAPartners = new HashSet<Institution>();
-    // for (ProjectPartner ppaPartner : project.getProjectPartners()) {
-    // if (ppaPartner.getInstitution().isPPA()) {
-    // projectPPAPartners.add(ppaPartner.getInstitution());
-    // }
-    // }
-    //
-    // // Remove the project leader from the list of PPA partner in case it is present.
-    // if (project.getLeader() != null) {
-    // projectPPAPartners.remove(project.getLeader().getInstitution());
-    // }
-
     totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
     totalBilateralBudget =
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
@@ -304,12 +281,13 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
             // The co-financing budget belongs to the project which receive it.
             budget.setCofinancingProject(project);
             budget.setInstitution(cofinancingProject.getLeader().getInstitution());
-            saved = budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              budgetManager.saveBudget(cofinancingProject.getId(), budget, this.getCurrentUser(),
+                this.getJustification());
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
-            .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
 
@@ -352,7 +330,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
       // Adjust the type of all projects according to their links with other projects.
       projectManager.updateProjectTypes();
-      budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID);
+      budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID, this.getCurrentPlanningYear());
 
       if (!success) {
         this.addActionError(this.getText("saving.problem"));

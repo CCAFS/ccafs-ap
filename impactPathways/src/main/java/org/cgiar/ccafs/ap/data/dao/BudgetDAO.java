@@ -197,10 +197,13 @@ public interface BudgetDAO {
   /**
    * This method deletes all the budgets that belong to some institution which has NOT link with the project to which
    * the budget belongs to.
+   * This method only deletes budgets with year >= currentYear
    * 
+   * @param projectID - project identifier
+   * @param currentYear
    * @return False if any error occurred. True otherwise.
    */
-  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID);
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID, int currentYear);
 
   /**
    * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.

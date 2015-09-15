@@ -574,7 +574,13 @@ public class Project {
   }
 
   public boolean isLeader(User user) {
-    return this.getLeaderPerson().getUser().getId() == user.getId();
+    PartnerPerson leader = this.getLeaderPerson();
+
+    if (leader != null) {
+      return leader.getUser().getId() == user.getId();
+    }
+
+    return false;
   }
 
   /**

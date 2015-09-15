@@ -177,14 +177,17 @@ public class MySQLProjectDAO implements ProjectDAO {
         + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
         + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
-    query.append("SELECT p.id, p.title, p.type, p.summary, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.type, p.summary, p.active_since, SUM(pb.amount) as 'total_ccafs_amount', ");
+    query.append("SUM(pb2.amount) as 'total_bilateral_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
     query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
     query.append("FROM projects as p ");
-    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.budget_type IN (  ");
-    query.append(BudgetType.W1_W2.getValue() + ", ");
-    query.append(BudgetType.W3_BILATERAL.getValue() + " ) ");
-    query.append("WHERE p.is_active = TRUE ");
+    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
+    query.append(BudgetType.W1_W2.getValue());
+    query
+      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+    query.append(BudgetType.W3_BILATERAL.getValue());
+    query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -195,7 +198,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("title", rs.getString("title"));
         projectData.put("summary", rs.getString("summary"));
         projectData.put("type", rs.getString("type"));
-        projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
+        projectData.put("total_ccafs_amount", rs.getString("total_ccafs_amount"));
+        projectData.put("total_bilateral_amount", rs.getString("total_bilateral_amount"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
         projectData.put("regions", rs.getString("regions"));
         projectData.put("flagships", rs.getString("flagships"));
@@ -597,6 +601,12 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
       query.append(userID);
       query.append(" ) ) ");
+      // If the project user has the role of 'Admin'
+      query.append("OR ( ");
+      query.append(" 'Admin' IN ( SELECT acronym FROM user_roles ur INNER JOIN roles r ON ur.role_id = r.id ");
+      query.append("WHERE ur.user_id = ");
+      query.append(userID);
+      query.append(" ) ) ");
       query.append("AND p.is_active = TRUE ");
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
@@ -813,9 +823,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
     } else {
       // UPDATE the record into the database.
-      query
-        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
-      query.append("WHERE id = ?");
+      query.append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, ");
+      query.append("contact_email = ?, institution_id = ? WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
       values[1] = expectedProjectLeaderData.get("contact_last_name");
@@ -881,7 +890,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug(">> saveProject(projectData={})", projectData);
     return result;
   }
-
 
   @Override
   public int saveProjectOutput(Map<String, String> outputData) {

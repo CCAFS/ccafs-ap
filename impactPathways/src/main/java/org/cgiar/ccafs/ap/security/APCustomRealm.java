@@ -12,14 +12,17 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.security.realms;
+package org.cgiar.ccafs.ap.security;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.security.data.manager.UserManagerImpl;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.User;
 import org.cgiar.ccafs.security.data.model.UserRole;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +61,7 @@ public class APCustomRealm extends AuthorizingRealm {
   final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
   private UserManagerImpl userManager;
   private UserRoleManagerImpl userRoleManager;
+  private ProjectManager projectManager;
 
   @Named("DB")
   Authenticator dbAuthenticator;
@@ -68,14 +72,15 @@ public class APCustomRealm extends AuthorizingRealm {
 
 
   @Inject
-  public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager,
+  public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager, ProjectManager projectManager,
     @Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator) {
     this.userManager = userManager;
     this.userRoleManager = userRoleManager;
+    this.projectManager = projectManager;
     this.dbAuthenticator = dbAuthenticator;
     this.ldapAuthenticator = ldapAuthenticator;
     injector = Guice.createInjector();
-    setName("APCustomRealm");
+    this.setName("APCustomRealm");
   }
 
   @Override
@@ -115,23 +120,41 @@ public class APCustomRealm extends AuthorizingRealm {
       throw new IncorrectCredentialsException();
     }
 
-    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), getName());
+    SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), this.getName());
     return info;
   }
 
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
     int userID = (Integer) principals.getPrimaryPrincipal();
-    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
-    Map<String, UserRole> projectRoles = userRoleManager.getProjectUserRoles(String.valueOf(userID));
-
     SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
+    Map<String, UserRole> projectRoles = new HashMap<>();
+
 
     // Get the roles general to the platform
     for (UserRole role : roles) {
       authorizationInfo.addRole(role.getAcronym());
-      for (String permission : role.getPermissions()) {
-        authorizationInfo.addStringPermission(permission);
+
+      switch (role.getId()) {
+        case APConstants.ROLE_ADMIN:
+          for (String permission : role.getPermissions()) {
+            authorizationInfo.addStringPermission(permission);
+          }
+          break;
+
+        case APConstants.ROLE_MANAGEMENT_LIAISON:
+          projectRoles.putAll(userRoleManager.getManagementLiaisonProjects(userID));
+          break;
+
+        case APConstants.ROLE_PROJECT_LEADER:
+        case APConstants.ROLE_PROJECT_COORDINATOR:
+          projectRoles.putAll(userRoleManager.getProjectLeaderProjects(userID));
+          break;
+
+        case APConstants.ROLE_CONTACT_POINT:
+          projectRoles.putAll(userRoleManager.getContactPointProjects(userID));
+          break;
       }
     }
 
@@ -142,7 +165,7 @@ public class APCustomRealm extends AuthorizingRealm {
 
       for (String permission : role.getPermissions()) {
         // Add the project identifier to the permission
-        String projectPermission = permission.replace("project:", "project:" + projectID + ":");
+        String projectPermission = permission.replace("projects:", "projects:" + projectID + ":");
         authorizationInfo.addStringPermission(projectPermission);
       }
     }

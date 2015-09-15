@@ -28,6 +28,13 @@ public class Role {
   private String name;
   private String acronym;
 
+  public Role() {
+  }
+
+  public Role(int id) {
+    this.id = id;
+  }
+
   public String getAcronym() {
     return acronym;
   }

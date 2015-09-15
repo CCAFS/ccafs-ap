@@ -133,8 +133,8 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
-    return budgetDAO.deleteBudgetsWithNoLinkToInstitutions(projectID);
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID, int currentYear) {
+    return budgetDAO.deleteBudgetsWithNoLinkToInstitutions(projectID, currentYear);
   }
 
   @Override
