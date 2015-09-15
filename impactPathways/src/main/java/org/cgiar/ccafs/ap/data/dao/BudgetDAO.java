@@ -18,6 +18,7 @@ package org.cgiar.ccafs.ap.data.dao;
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal.
+ * @author Jorge Leonardo Solis B.
  */
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLBudgetDAO;
 
@@ -71,6 +72,31 @@ public interface BudgetDAO {
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalBudgetByYear(int projectID, int year);
+
+  /**
+   * This method calculates the total CCAFS Budget which is the addition for ALL years depending of partner.
+   * 
+   * @param projectID is the project id
+   * @param institutionID is the institution id
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
+   *         institution and type, if no data found the method will return 0.0 and if some error happen a -1.0 will be
+   *         returned.
+   */
+
+  public double calculateTotalCCAFSBudgetByInstitution(int projectID, int institutionID);
+
+  /**
+   * This method calculates the total CCAFS Budget which is the addition for ALL years depending of partner.
+   * 
+   * @param projectID is the project id
+   * @param institutionID is the institution id
+   * @param budgetTypeID is the budget type id
+   * @return a decimal number representing the amount of the total CCAFS Budget for that specific project in the given
+   *         institution and type budget, if no data found the method will return 0.0 and if some error happen a
+   *         -1.0will be returned.
+   */
+
+  public double calculateTotalCCAFSBudgetByInstitutionAndType(int projectID, int institutionID, int budgetTypeID);
 
   /**
    * This method calculates the total CCAFS Budget which is the addition for ALL years depending of type.
@@ -186,6 +212,7 @@ public interface BudgetDAO {
    */
   public boolean deleteCofoundedBudgetsWithNoLink(int projectID);
 
+
   /**
    * This method gets all the budget information by a given Project Id
    * 
@@ -193,6 +220,7 @@ public interface BudgetDAO {
    * @return a List of Map of the Budget Information related with the project
    */
   public List<Map<String, String>> getBudgetsByProject(int projectID);
+
 
   /**
    * This method gets all the Budget information by a given project Id and a year

@@ -58,14 +58,15 @@ public class PWOBSummaryCSV extends BaseCSV {
     Project project;
     List<ProjectPartner> listProjectPartnersPPA;
     // for (int a = 0; a < projectList.size(); a++) {
+    double W1W2, W3Bilateral;
 
     try {
       for (int a = 0; a < 3; a++) {
         project = projectList.get(a);
         listProjectPartnersPPA = project.getPPAPartners();
-        for (ProjectPartner projectPartnerPPA : listProjectPartnersPPA) {
 
-          if (project.getLeader() != null) {
+        for (ProjectPartner projectPartnerPPA : listProjectPartnersPPA) {
+          if (projectPartnerPPA != null) {
 
             stringBuilder = new StringBuilder();
             // Project Id
@@ -101,55 +102,52 @@ public class PWOBSummaryCSV extends BaseCSV {
             // Lead institution
             this.writeString(project.getLeader().getInstitution().getName(), true, false);
             this.writeSeparator();
-          } else {
-            this.writeString(null, true, false);
+
+            // Region
+            counter = 0;
+            stringBuilder = new StringBuilder();
+            for (IPProgram region : project.getRegions()) {
+              if (counter != 0) {
+                stringBuilder.append("-");
+              }
+              stringBuilder.append(region.getAcronym());
+              counter++;
+            }
+            this.writeString(stringBuilder.toString(), true, false);
             this.writeSeparator();
 
-            this.writeString(null, true, false);
+            // W1/W2 Budget
+            W1W2 =
+              budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
+                .getInstitution().getId(), BudgetType.W1_W2.getValue());
+
+            this.writeString(String.valueOf(W1W2), true, false);
             this.writeSeparator();
-          }
 
-          // Region
-          counter = 0;
-          stringBuilder = new StringBuilder();
-          for (IPProgram region : project.getRegions()) {
-            if (counter != 0) {
-              stringBuilder.append("-");
+            // W3/Bilateral Budget
+            W3Bilateral =
+              budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
+                .getInstitution().getId(), BudgetType.W3_BILATERAL.getValue());
+
+            this.writeString(String.valueOf(W3Bilateral), true, false);
+            this.writeSeparator();
+
+            // Location
+            counter = 0;
+            project.getLocations();
+            stringBuilder = new StringBuilder();
+            for (Location location : project.getLocations()) {
+              if (counter != 0) {
+                stringBuilder.append(", ");
+              }
+              stringBuilder.append(location.getName());
+              counter++;
             }
-            stringBuilder.append(region.getAcronym());
-            counter++;
+            this.writeString(stringBuilder.toString(), true, false);
+            this.writeSeparator();
+
+            this.writeNewLine();
           }
-          this.writeString(stringBuilder.toString(), true, false);
-          this.writeSeparator();
-
-          // W1/W2 Budget
-          this
-            .writeString(String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
-              BudgetType.W1_W2.getValue())), true, false);
-          this.writeSeparator();
-
-          // W3/Bilateral Budget
-          this.writeString(
-            String.valueOf(budgetManager.calculateTotalCCAFSBudgetByType(project.getId(),
-              BudgetType.W3_BILATERAL.getValue())), true, false);
-          this.writeSeparator();
-
-          // Location
-          counter = 0;
-          project.getLocations();
-          stringBuilder = new StringBuilder();
-          for (Location location : project.getLocations()) {
-            if (counter != 0) {
-              stringBuilder.append(", ");
-            }
-            stringBuilder.append(location.getName());
-            counter++;
-          }
-          this.writeString(stringBuilder.toString(), true, false);
-          this.writeSeparator();
-
-          this.writeNewLine();
-
 
         }
       }
@@ -172,7 +170,7 @@ public class PWOBSummaryCSV extends BaseCSV {
       this.initializeCSV();
       String[] headers =
         new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution acronym",
-        "Lead institution", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "locations"};
+          "Lead institution", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "locations"};
 
       this.addHeaders(headers);
       this.addContent(projectList);
@@ -183,7 +181,6 @@ public class PWOBSummaryCSV extends BaseCSV {
       return this.getBytes();
 
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 

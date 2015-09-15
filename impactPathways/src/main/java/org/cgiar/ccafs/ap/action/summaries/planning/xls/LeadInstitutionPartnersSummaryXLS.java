@@ -105,10 +105,10 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(String templateFile, List<Institution> projectLeadingInstitutions, String[] projectList) {
+  public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
-      Workbook workbook = xls.initializeXLS("xlsx", templateFile);
+      Workbook workbook = xls.initializeXLS(true);
 
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};

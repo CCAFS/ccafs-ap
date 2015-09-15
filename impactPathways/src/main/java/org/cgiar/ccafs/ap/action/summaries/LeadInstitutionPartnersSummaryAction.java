@@ -29,7 +29,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,9 +65,7 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    String templateFile = ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
-    System.out.println(templateFile);
-    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(templateFile, projectLeadingInstitutions, projectList);
+    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions, projectList);
 
     return SUCCESS;
   }

@@ -102,12 +102,13 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getAllProjectsBasicInfo() {
     List<Map<String, String>> projectDataList = projectDAO.getAllProjectsBasicInfo();
     List<Project> projectsList = new ArrayList<>();
-
+    Project project;
     for (Map<String, String> projectData : projectDataList) {
 
-      Project project = new Project(Integer.parseInt(projectData.get("id")));
+      project = new Project(Integer.parseInt(projectData.get("id")));
       project.setTitle(projectData.get("title"));
       project.setType(projectData.get("type"));
+      project.setSummary(projectData.get("summary"));
 
       if (projectData.get("total_budget_amount") != null) {
         Budget totalBudget = new Budget();
@@ -307,6 +308,7 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
+
   @Override
   public Project getProjectFromDeliverableId(int deliverableID) {
     int projectID = projectDAO.getProjectIdFromDeliverableId(deliverableID);
@@ -315,7 +317,6 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return null;
   }
-
 
   @Override
   public Project getProjectFromProjectPartnerID(int projectPartnerID) {
@@ -326,11 +327,11 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
+
   @Override
   public List<Integer> getProjectIdsEditables(int userID) {
     return projectDAO.getProjectIdsEditables(userID);
   }
-
 
   @Override
   public List<Project> getProjectsByInstitution(int institutionID) {
