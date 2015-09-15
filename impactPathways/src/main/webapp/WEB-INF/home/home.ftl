@@ -23,7 +23,7 @@
       <div class="addProjectButtons clearfix" style="display:none">
         <p class="title">What type of project do you want to enter?</p>
         [#if securityContext.canAddCoreProject()]
-          <a href="[@s.url namespace="/planning" action='addNewCoreProject'/]"><div class="addProject"><p>CCAFS <br />Core</p></div></a>
+          <a href="[@s.url namespace="/planning" action='addNewCoreProject'/]"><div class="addProject"><p>CCAFS <br />Core Project</p></div></a>
         [/#if]
         [#if securityContext.canAddBilateralProject()]
           <a href="[@s.url namespace="/planning" action='addNewBilateralProject'/]"><div class="addProject"><p>Bilateral <br />Project</p></div></a>

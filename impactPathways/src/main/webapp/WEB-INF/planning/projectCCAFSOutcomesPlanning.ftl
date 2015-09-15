@@ -114,7 +114,7 @@
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
-                                      ${fieldEmpty}
+                                      [#if !project.bilateralProject]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if] ${fieldEmpty}
                                     [#else]
                                       <div class="select"><p>${projectIndicator.target}</p></div>
                                     [/#if]
@@ -128,7 +128,7 @@
                                     <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
-                                      ${fieldEmpty}
+                                      [#if !project.bilateralProject]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if] ${fieldEmpty}
                                     [#else]
                                       <div class="select"><p>${projectIndicator.description}</p></div>
                                     [/#if] 
