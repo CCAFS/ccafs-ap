@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.csv.PWOBSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.xls.PWOBSummaryXLS;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -45,13 +45,13 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
 
   // Managers
   private LocationManager locationManager;
-  private PWOBSummaryCSV pwobSummaryCSV;
+  private PWOBSummaryXLS pwobSummaryXLS;
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
   private ProjectPartnerManager projectPartnerManager;
 
-  // CSV bytes
-  private byte[] bytesCSV;
+  // XLS bytes
+  private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
@@ -60,43 +60,42 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   List<Project> projectsList;
 
   @Inject
-  public PWOBSummaryAction(APConfig config, PWOBSummaryCSV pwobSummaryCSV, ProjectManager projectManager,
-    BudgetManager budgetManager, ProjectPartnerManager projectPartnerManager, LocationManager locationManager) {
+  public PWOBSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
+    ProjectPartnerManager projectPartnerManager, LocationManager locationManager, PWOBSummaryXLS pwobSummaryXLS) {
     super(config);
     this.locationManager = locationManager;
-    this.pwobSummaryCSV = pwobSummaryCSV;
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
+    this.pwobSummaryXLS = pwobSummaryXLS;
   }
 
   @Override
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesCSV = pwobSummaryCSV.generateCSV(projectsList);
+    bytesXLS = pwobSummaryXLS.generateXLS(projectsList);
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return pwobSummaryCSV.getBytes().length;
+    return bytesXLS.length;
   }
 
   @Override
   public String getContentType() {
-    return "text/csv";
+    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
   }
 
 
   @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
-    fileName.append("PWOB");
-    fileName.append("-");
+    fileName.append("PWOB-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
-    fileName.append(".csv");
+    fileName.append(".xlsx");
 
     return fileName.toString();
 
@@ -105,15 +104,13 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   @Override
   public InputStream getInputStream() {
     if (inputStream == null) {
-      inputStream = new ByteArrayInputStream(bytesCSV);
+      inputStream = new ByteArrayInputStream(bytesXLS);
     }
     return inputStream;
   }
 
   @Override
   public void prepare() {
-
-
     projectsList = this.projectManager.getAllProjectsBasicInfo();
     List<ProjectPartner> partnersList;
     List<Location> locationsList;
