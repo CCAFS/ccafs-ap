@@ -109,7 +109,8 @@ public class BaseCSV {
   public void initializeCSV() throws IOException {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
-    writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+    writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+    this.writeAccentFormat();
   }
 
   /**
@@ -117,7 +118,7 @@ public class BaseCSV {
    * 
    * @throws IOException if an I/O error occurs.
    */
-  public void writeAccentFormat() throws IOException {
+  private void writeAccentFormat() throws IOException {
     writer.write('\ufeff');
   }
 
