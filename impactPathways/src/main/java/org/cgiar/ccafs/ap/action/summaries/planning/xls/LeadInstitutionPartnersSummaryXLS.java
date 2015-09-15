@@ -108,7 +108,7 @@ public class LeadInstitutionPartnersSummaryXLS {
   public byte[] generateXLS(String templateFile, List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
-      Workbook workbook = xls.initializeXLS("xlsx", templateFile);
+      Workbook workbook = xls.initializeXLS("xlsx", true);
 
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};

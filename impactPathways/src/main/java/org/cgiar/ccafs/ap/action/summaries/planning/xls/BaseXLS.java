@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,27 +45,33 @@ public class BaseXLS {
 
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
-  private static String EXCEL_TEMPLATE_FILE;
+  // Excel template location.
+  private static String EXCEL_TEMPLATE_FILE =
+    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
 
-  // Internationalization file.
-  private TextProvider textProvider;
-  // Streams
+  private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
-
   private Workbook workbook; // Excel high level model.
+  private boolean usingTemplate;
+
 
   /**
-   * This method creates a template in a specific sheet.
+   * This method set-ups a header to the sheet page.
    * 
-   * @param sheet where the template will be placed.
+   * @param sheet where the header will be placed.
    */
   private void addHeader(Sheet sheet) {
     Header header = sheet.getHeader();
-    String date = new SimpleDateFormat("yyyy-MM-dd-HHmm").format(new Date());
-    header.setLeft("Planning and Reporting Platform");
+    String date = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z").format(new Date());
+    header.setLeft("CCAFS Planning and Reporting Platform");
     header.setRight("Report generated on " + date);
   }
 
+  /**
+   * This method closes all the streams opened in the process.
+   * 
+   * @throws IOException If some I/O error occurs.
+   */
   public void closeStreams() throws IOException {
     outputStream.close();
     workbook.close();
@@ -91,32 +98,53 @@ public class BaseXLS {
   }
 
   /**
-   * Method used for to initialize the XLS Workbook object.
-   * It creates a byte output stream and returns a more complex stream that will help us to work with.
+   * Method used for to initialize an Excel Workbook object.
+   * It creates a Workbook object using a predefined template.
    * 
+   * @param excelFormat is the format that you want to create (i.e. 'xls' or 'xlsx').
+   * @param useTemplate is true if you want to use a templa, false if you want to create the Workbook empty.
    * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
-   *         XLS
-   *         format.
+   *         XLS format.
    */
-  public Workbook initializeXLS(String excelFormat, String templateFile) {
+  public Workbook initializeXLS(String excelFormat, boolean useTemplate) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
-
-    if (excelFormat.toLowerCase().equals("xls")) {
-      workbook = new HSSFWorkbook();
-    } else if (excelFormat.toLowerCase().equals("xlsx")) {
-      try {
-        InputStream templateStream = new FileInputStream(templateFile);
-        workbook = new XSSFWorkbook(templateStream);
-        templateStream.close();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+    usingTemplate = useTemplate;
+    try {
+      // validating the type of format.
+      if (excelFormat.toLowerCase().equals("xls")) {
+        if (useTemplate) {
+          // opening excel template.
+          InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
+          // creating workbook based on the template.
+          workbook = new HSSFWorkbook(templateStream);
+          // closing input stream.
+          templateStream.close();
+          // applying header.
+          this.addHeader(workbook.getSheetAt(0));
+        } else {
+          workbook = new HSSFWorkbook();
+        }
+      } else if (excelFormat.toLowerCase().equals("xlsx")) {
+        if (useTemplate) {
+          // opening excel template.
+          InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
+          // creating workbook based on the template.
+          workbook = new XSSFWorkbook(templateStream);
+          // closing input stream.
+          templateStream.close();
+          // applying header.
+          this.addHeader(workbook.getSheetAt(0));
+        } else {
+          workbook = new XSSFWorkbook();
+        }
       }
+      return workbook;
+    } catch (IOException e) {
+      LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
     }
-    return workbook;
+    return null;
   }
-
 
   /**
    * This Method is used for to write the Workbook instance into the output stream
