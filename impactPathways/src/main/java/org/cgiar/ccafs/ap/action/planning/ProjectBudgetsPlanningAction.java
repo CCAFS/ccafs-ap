@@ -330,7 +330,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
       // Adjust the type of all projects according to their links with other projects.
       projectManager.updateProjectTypes();
-      budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID);
+      budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID, this.getCurrentPlanningYear());
 
       if (!success) {
         this.addActionError(this.getText("saving.problem"));

@@ -395,7 +395,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID, int currentYear) {
     StringBuilder query = new StringBuilder();
     query.append("UPDATE project_budgets pb ");
     query.append("SET pb.is_active = FALSE ");
@@ -406,6 +406,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append("  GROUP BY pp.institution_id, pp.is_active ");
     query.append(") AND pb.project_id = ");
     query.append(projectID);
+    query.append(" AND pb.year >= ");
+    query.append(currentYear);
 
     int result = databaseManager.saveData(query.toString(), new Object[] {});
     return (result != -1);

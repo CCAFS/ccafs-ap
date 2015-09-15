@@ -63,15 +63,6 @@ public interface BudgetDAO {
   public double calculateTotalBudget(int projectID);
 
   /**
-   * This method calculates the total CCAFS Budget which is the addition for ALL years depending of type.
-   * 
-   * @param projectID is the project id
-   * @param budgetTypeID is the budget Type
-   * @return
-   */
-  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
-
-  /**
    * This method calculates the total of the CCAFS Budget which is the addition of (W1W2)+(W3BILATERAL) and a given year
    * 
    * @param projectID is the project id.
@@ -80,6 +71,15 @@ public interface BudgetDAO {
    *         year, if no data found the method will return 0.0 and if some error happen a -1.0 will be returned.
    */
   public double calculateTotalBudgetByYear(int projectID, int year);
+
+  /**
+   * This method calculates the total CCAFS Budget which is the addition for ALL years depending of type.
+   * 
+   * @param projectID is the project id
+   * @param budgetTypeID is the budget Type
+   * @return
+   */
+  public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
 
   /**
    * This method calculates the total gender percentage which is the addition of W1+W2+W3+BILATERAL for ALL years.
@@ -171,10 +171,13 @@ public interface BudgetDAO {
   /**
    * This method deletes all the budgets that belong to some institution which has NOT link with the project to which
    * the budget belongs to.
+   * This method only deletes budgets with year >= currentYear
    * 
+   * @param projectID - project identifier
+   * @param currentYear
    * @return False if any error occurred. True otherwise.
    */
-  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID);
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID, int currentYear);
 
   /**
    * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.
