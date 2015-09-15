@@ -153,7 +153,17 @@ public class BaseXLS {
     return null;
   }
 
-  public void newLine() {
+  /**
+   * This method move the cursor to the next column.
+   */
+  public void nextColumn() {
+    columnCounter++;
+  }
+
+  /**
+   * This method move the cursor to the beginning of the next row.
+   */
+  public void nextRow() {
     rowCounter++;
     columnCounter = columnStart;
   }
