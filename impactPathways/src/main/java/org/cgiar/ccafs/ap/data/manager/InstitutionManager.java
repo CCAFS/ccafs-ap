@@ -107,12 +107,18 @@ public interface InstitutionManager {
   public InstitutionType getInstitutionType(int institutionTypeId);
 
   /**
-   * Get the list of institutions which a given partner is contributing to.
+   * This method gets the institutions leading projects
    * 
-   * @param projectPartner is the project partner object.
-   * @return a list of Institutions, an empty list if nothing found and a null reference if an error occurred.
+   * @return a list of institution objects with the information
    */
-  public List<Institution> getProjectPartnerContributeInstitutions(ProjectPartner projectPartner);
+  public List<Institution> getProjectLeadingInstitutions();
+
+  /**
+   * This method gets the institutions that are projectPartners
+   * 
+   * @return a list of institution objects with the information
+   */
+  public List<Institution> getProjectPartnerInstitutions();
 
   /**
    * This method returns the user's main institution defined in the database.
@@ -132,14 +138,14 @@ public interface InstitutionManager {
   public int saveProjectPartnerContributeInstitution(int projectPartnerID, int institutionID);
 
   /**
-   * This method add or update a project partner contributions.
+   * This method adds or updates a project partner contributions.
    * 
    * @param projectPartnerID is the project partner id
    * @param contributeInstitutions is the list of institutions that this project partner is contributing to.
    * @return true if the information was successfully saved, false otherwise.
    */
-  public boolean saveProjectPartnerContributeInstitutions(int projectPartnerID,
-    List<Institution> contributeInstitutions);
+  public boolean
+  saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions);
 
   /**
    * This method validates if the institution of the given projectPartner is the lastone institution of all the other

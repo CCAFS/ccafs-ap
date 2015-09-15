@@ -36,6 +36,11 @@ public class RoleManagerImpl implements RoleManager {
 
 
   @Override
+  public boolean deleteRole(User user, Role role) {
+    return roleDAO.deleteRole(user.getId(), role.getId());
+  }
+
+  @Override
   public List<Role> getAllRoles() {
     List<Role> roles = new ArrayList<>();
     List<Map<String, String>> rolesDataList = roleDAO.getAllRoles();
@@ -63,6 +68,11 @@ public class RoleManagerImpl implements RoleManager {
       return role;
     }
     return null;
+  }
+
+  @Override
+  public boolean saveRole(User user, Role role) {
+    return roleDAO.saveRole(user.getId(), role.getId());
   }
 
 }

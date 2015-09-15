@@ -71,6 +71,39 @@ public interface BudgetManager {
    */
   public double calculateTotalBudgetByYear(int projectID, int year);
 
+  /**
+   * This method calculates the CCAFS budget for a given project according to the type received by
+   * type.
+   * 
+   * @param projectID - project identifier.
+   * @param institutionID - institution identifier.
+   * @return a number representing the total value for that specific project by partner, if some error happen a -1.0
+   *         will be
+   *         returned.
+   */
+  public double calculateTotalCCAFSBudgetByInstitution(int projectID, int institutionID);
+
+  /**
+   * This method calculates the CCAFS budget for a given project according to the type received by
+   * type.
+   * 
+   * @param projectID - project identifier.
+   * @param institutionID - institution identifier.
+   * @param budgetTypeID - budget identifier.
+   * @return a number representing the total value for that specific project by partner and type budget, if some error
+   *         happen a -1.0 will be returned.
+   */
+  public double calculateTotalCCAFSBudgetByInstitutionAndType(int projectID, int institutionID, int budgetTypeID);
+
+  /**
+   * This method calculates the CCAFS budget for a given project according to the type received by
+   * type.
+   * 
+   * @param projectID - project identifier.
+   * @param budgetTypeID - budget identifier.
+   * @return a number representing thetotal value for that specific project, if some error happen a -1.0 will be
+   *         returned.
+   */
   public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID);
 
 
@@ -165,10 +198,11 @@ public interface BudgetManager {
   /**
    * This method deletes all the budgets that belong to some institution which has NOT link with the project to which
    * the budget belongs to.
+   * This method only deletes budgets with years >= currentYear
    * 
    * @return False if any error occurred. True otherwise.
    */
-  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID);
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID, int currentYear);
 
   /**
    * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.

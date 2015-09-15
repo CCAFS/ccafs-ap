@@ -29,32 +29,30 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   <article class="halfContent" id="mainInformation"> 
-    [#include "/WEB-INF/planning/projectOutputs-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
+    <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1> 
     <div id="projectDeliverables" class="clearfix">
-      <h1 class="contentTitle">[@s.text name="planning.projectDeliverables.title" /]</h1> 
       [#if allYears?has_content]
-      [#-- Planned Deliverables --]
-      <div class="fullBlock clearfix">
-        <h3 class="projectSubTitle">[@s.text name="planning.projectDeliverables.plannedDeliverables" /]</h3>
-        [#if project.deliverables?has_content]
-          [@deliverableTemplate.deliverablesList deliverables=project.deliverables canEdit=canEdit /]
-        [#else]
-          [#-- Just show this empty message to those users who are not able to modify this section --]
-          <p class="simpleBox center">[@s.text name="planning.deliverables.empty"/]</p> 
-        [/#if]   
-        [#if canEdit]
-        <div class="buttons"> 
-          <a class="addButton" href="[@s.url namespace="/planning/projects" action='addNewDeliverable'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
-            [@s.text name="planning.projectDeliverables.addNewDeliverable" /]
-          </a>
+        [#-- Planned Deliverables --]
+        <div class="fullBlock clearfix">
+          <h3 class="projectSubTitle">[@s.text name="planning.projectDeliverables.plannedDeliverables" /]</h3>
+          [#if project.deliverables?has_content]
+            [@deliverableTemplate.deliverablesList deliverables=project.deliverables canEdit=canEdit /]
+          [#else]
+            [#-- Just show this empty message to those users who are not able to modify this section --]
+            <p class="simpleBox center">[@s.text name="planning.deliverables.empty"/]</p> 
+          [/#if]   
+          [#if canEdit]
+          <div class="buttons"> 
+            <a class="addButton" href="[@s.url namespace="/planning/projects" action='addNewDeliverable'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
+              [@s.text name="planning.projectDeliverables.addNewDeliverable" /]
+            </a>
+          </div>
+          [/#if]
         </div>
-        [/#if]
-      </div>
       [#else]
         [#-- If the project has not an start date and/or end date defined --]
-        <p class="simpleBox center">[@s.text name="preplanning.projectBudget.message.dateUndefined" /]</p>
+        <p class="simpleBox center">[@s.text name="planning.projectDeliverable.message.dateUndefined" /]</p>
       [/#if]
     </div>     
   </article>

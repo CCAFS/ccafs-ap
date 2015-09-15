@@ -71,6 +71,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
       institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+      institution.setWebsiteLink(iData.get("website_link"));
 
       // InstitutionType Object
       InstitutionType type = new InstitutionType();
@@ -129,6 +130,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
       institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+      institution.setWebsiteLink(iData.get("website_link"));
 
       // InstitutionType Object
       InstitutionType type = new InstitutionType();
@@ -170,6 +172,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
       institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+      institution.setWebsiteLink(iData.get("website_link"));
 
       // InstitutionType Object
       InstitutionType type = new InstitutionType();
@@ -207,6 +210,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
     institution.setName(iData.get("name"));
     institution.setAcronym(iData.get("acronym"));
     institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+    institution.setWebsiteLink(iData.get("website_link"));
 
     // InstitutionType Object
     InstitutionType type = new InstitutionType();
@@ -240,6 +244,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
       institution.setPPA(Boolean.parseBoolean(iData.get("is_ppa")));
+      institution.setWebsiteLink(iData.get("website_link"));
 
       // InstitutionType Object
       InstitutionType _type = new InstitutionType();
@@ -282,6 +287,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
+      institution.setWebsiteLink(iData.get("website_link"));
 
       // Program Object
       IPProgram program = new IPProgram();
@@ -319,14 +325,48 @@ public class InstitutionManagerImpl implements InstitutionManager {
   }
 
   @Override
-  public List<Institution> getProjectPartnerContributeInstitutions(ProjectPartner projectPartner) {
+  public List<Institution> getProjectLeadingInstitutions() {
     List<Institution> institutions = new ArrayList<>();
-    List<Map<String, String>> institutionDataList =
-      institutionDAO.getProjectPartnerContributeInstitutions(projectPartner.getId());
+    List<Map<String, String>> institutionDataList = institutionDAO.getProjectLeadingInstitutions();
     for (Map<String, String> iData : institutionDataList) {
-      Institution institution = this.getInstitutionData(iData);
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setWebsiteLink(iData.get("website_link"));
 
-      // Adding object to the array.
+      // Location Object
+      Country country = new Country();
+      if (iData.get("country_id") != null) {
+        country.setId(Integer.parseInt(iData.get("country_id")));
+        country.setName(iData.get("country_name"));
+        institution.setCountry(country);
+      }
+
+      institutions.add(institution);
+    }
+    return institutions;
+  }
+
+  @Override
+  public List<Institution> getProjectPartnerInstitutions() {
+    List<Institution> institutions = new ArrayList<>();
+    List<Map<String, String>> institutionDataList = institutionDAO.getProjectPartnerInstitutions();
+    for (Map<String, String> iData : institutionDataList) {
+      Institution institution = new Institution();
+      institution.setId(Integer.parseInt(iData.get("id")));
+      institution.setName(iData.get("name"));
+      institution.setAcronym(iData.get("acronym"));
+      institution.setWebsiteLink(iData.get("website_link"));
+
+      // Location Object
+      Country country = new Country();
+      if (iData.get("country_id") != null) {
+        country.setId(Integer.parseInt(iData.get("country_id")));
+        country.setName(iData.get("country_name"));
+        institution.setCountry(country);
+      }
+
       institutions.add(institution);
     }
     return institutions;
@@ -340,6 +380,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setId(Integer.parseInt(iData.get("id")));
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
+      institution.setWebsiteLink(iData.get("website_link"));
 
       // Program Object
       if (iData.get("program_id") != null) {
@@ -375,21 +416,23 @@ public class InstitutionManagerImpl implements InstitutionManager {
 
     int result = institutionDAO.saveProjectPartnerContributeInstitution(contributionData);
     if (result == 0) {
-      LOG.debug(
-        "saveProjectPartnerContributeInstitution > New Project Partner Contribution added with projectPartnerID={}, institutionID={} ",
-        projectPartnerID, institutionID);
+      LOG
+        .debug(
+          "saveProjectPartnerContributeInstitution > New Project Partner Contribution added with projectPartnerID={}, institutionID={} ",
+          projectPartnerID, institutionID);
     } else {
-      LOG.error(
-        "saveProjectPartnerContributeInstitution > There was an error trying to save/update a project partner contribution from projectPartnerID={} and institutionID={}",
-        projectPartnerID, institutionID);
+      LOG
+        .error(
+          "saveProjectPartnerContributeInstitution > There was an error trying to save/update a project partner contribution from projectPartnerID={} and institutionID={}",
+          projectPartnerID, institutionID);
     }
 
     return result;
   }
 
   @Override
-  public boolean saveProjectPartnerContributeInstitutions(int projectPartnerID,
-    List<Institution> contributeInstitutions) {
+  public boolean
+    saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions) {
     boolean allSaved = true;
     int result;
     for (Institution institution : contributeInstitutions) {

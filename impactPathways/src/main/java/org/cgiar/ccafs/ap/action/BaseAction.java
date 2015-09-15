@@ -20,7 +20,7 @@ import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.LogHistory;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.security.SecurityContext;
+import org.cgiar.ccafs.ap.security.SecurityContext;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;

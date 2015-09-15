@@ -90,6 +90,16 @@ public interface ActivityDAO {
   public List<Map<String, String>> getAllActivities();
 
   /**
+   * This method return all the activities that belongs to a given project and which are led by a given user.
+   * The activities will contain only the basic information: id, title
+   * 
+   * @param projectID - Project identifier
+   * @param userID - User identifier
+   * @return a list of maps with the information or an empty list if any activity is found.
+   */
+  public List<Map<String, String>> getProjectActivitiesLedByUser(int projectID, int userID);
+
+  /**
    * This method saves the Activity information
    * 
    * @param activityData - is a Map with the information of the activity to be saved

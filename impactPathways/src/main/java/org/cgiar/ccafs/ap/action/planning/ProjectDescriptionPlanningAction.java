@@ -270,7 +270,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
 
     // Getting project
-    System.out.println();
     project = projectManager.getProject(projectID);
     if (project != null) {
       // Getting the information of the Flagships Program associated with the project

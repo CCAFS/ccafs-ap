@@ -75,38 +75,6 @@
     
     <!-- Partners  -->
     
-    <action name="partnerLead" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
-      <result name="input">/WEB-INF/planning/projectPartnerLeadPlanning.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">partnerLead</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">ppaPartners</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">partnerLead</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-    </action>
-    
-    <action name="ppaPartners" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
-      <result name="input">/WEB-INF/planning/projectPpaPartnersPlanning.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">ppaPartners</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">partners</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">ppaPartners</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-    </action>
-    
     <action name="partners" class="org.cgiar.ccafs.ap.action.planning.ProjectPartnersPlanningAction">
       <result name="input">/WEB-INF/planning/projectPartnersPlanning.ftl</result>
       <result name="success" type="redirectAction">

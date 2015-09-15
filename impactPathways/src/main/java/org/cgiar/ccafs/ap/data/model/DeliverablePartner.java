@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class DeliverablePartner {
 
   private int id;
-  private ProjectPartner partner;
+  private PartnerPerson partner;
   private String type; // Resp, Other.
 
 
@@ -49,7 +49,7 @@ public class DeliverablePartner {
     return id;
   }
 
-  public ProjectPartner getPartner() {
+  public PartnerPerson getPartner() {
     return partner;
   }
 
@@ -66,7 +66,7 @@ public class DeliverablePartner {
     this.id = id;
   }
 
-  public void setPartner(ProjectPartner partner) {
+  public void setPartner(PartnerPerson partner) {
     this.partner = partner;
   }
 

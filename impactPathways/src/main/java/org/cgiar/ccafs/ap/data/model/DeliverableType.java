@@ -22,12 +22,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * The timeline is used in months and depends on the Open Access Policy implemented by the CGIAR.
  *
  * @author Héctor Fabio Tobón R.
+ * @author Carlos Alberto Martínez M.
  */
 public class DeliverableType {
 
   private int id;
   private String name;
   private int timeline; // in months.
+  private String description;
   private DeliverableType category;
 
   public DeliverableType() {
@@ -45,6 +47,10 @@ public class DeliverableType {
 
   public DeliverableType getCategory() {
     return category;
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   public int getId() {
@@ -66,6 +72,10 @@ public class DeliverableType {
 
   public void setCategory(DeliverableType category) {
     this.category = category;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public void setId(int id) {

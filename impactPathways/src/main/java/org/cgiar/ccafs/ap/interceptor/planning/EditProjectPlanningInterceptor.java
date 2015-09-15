@@ -18,7 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.security.SecurityContext;
+import org.cgiar.ccafs.ap.security.SecurityContext;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +69,7 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       int projectID = Integer.parseInt(projectParameter);
 
       // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
-      List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user);
+      List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
       canEditProject = (securityContext.isAdmin()) ? true : projectsEditable.contains(new Integer(projectID));
 
       boolean editParameter = false;

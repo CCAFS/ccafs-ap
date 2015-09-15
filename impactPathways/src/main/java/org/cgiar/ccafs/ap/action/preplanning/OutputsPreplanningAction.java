@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,8 @@ public class OutputsPreplanningAction extends BaseAction {
   private List<IPElement> outputsFromDatabase;
   private List<IPElement> midOutcomesList;
   private List<IPProgram> flagshipsList;
+  private int programID;
+  private IPProgram program;
 
   @Inject
   public OutputsPreplanningAction(APConfig config, IPElementManager ipElementManager,
@@ -62,6 +65,10 @@ public class OutputsPreplanningAction extends BaseAction {
 
   public int getElementTypeID() {
     return APConstants.ELEMENT_TYPE_OUTPUTS;
+  }
+
+  public int getFlagshipProgramTypeID() {
+    return APConstants.FLAGSHIP_PROGRAM_TYPE;
   }
 
   public List<IPProgram> getFlagshipsList() {
@@ -80,6 +87,18 @@ public class OutputsPreplanningAction extends BaseAction {
     return outputs;
   }
 
+  public IPProgram getProgram() {
+    return program;
+  }
+
+  public int getProgramID() {
+    return programID;
+  }
+
+  public int getRegionProgramTypeID() {
+    return APConstants.REGION_PROGRAM_TYPE;
+  }
+
   @Override
   public String next() {
     String result = this.save();
@@ -92,7 +111,8 @@ public class OutputsPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    IPProgram program = this.getCurrentUser().getCurrentInstitution().getProgram();
+    programID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROGRAM_REQUEST_ID)));
+    program = ipProgramManager.getIPProgramById(programID);
 
     // Create an element type for midOutcomes
     IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
@@ -178,6 +198,14 @@ public class OutputsPreplanningAction extends BaseAction {
 
   public void setOutputs(List<IPElement> outputs) {
     this.outputs = outputs;
+  }
+
+  public void setProgram(IPProgram program) {
+    this.program = program;
+  }
+
+  public void setProgramID(int programID) {
+    this.programID = programID;
   }
 
 }

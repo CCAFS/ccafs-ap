@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Dashboard - CCAFS P&R" /]
 [#assign globalLibs = ["jquery", "noty", "jreject", "dataTable", "slidr", "cytoscape", "qtip","cytoscapePanzoom"] /]
-[#assign customJS = ["${baseUrl}/js/home/login.js","${baseUrl}/js/global/ipGraph.js","${baseUrl}/js/home/dashboard.js"] /]
+[#assign customJS = ["${baseUrl}/js/home/login.js","${baseUrl}/js/global/ipGraph.js","${baseUrl}/js/home/dashboard.js", "${baseUrl}/js/planning/projectsListPlanning.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "home" /]
 
@@ -23,10 +23,7 @@
       <div class="addProjectButtons clearfix" style="display:none">
         <p class="title">What type of project do you want to enter?</p>
         [#if securityContext.canAddCoreProject()]
-          <a href="[@s.url namespace="/planning" action='addNewCoreProject'/]"><div class="addProject"><p>CCAFS <br />Core</p></div></a>
-        [/#if]
-        [#if securityContext.canAddCofoundedProject()]
-          <a href="[@s.url namespace="/planning" action='addCoFundedProject'/]"><div class="addProject"><p>CCAFS <br />Co-funded</p></div></a>
+          <a href="[@s.url namespace="/planning" action='addNewCoreProject'/]"><div class="addProject"><p>CCAFS <br />Core Project</p></div></a>
         [/#if]
         [#if securityContext.canAddBilateralProject()]
           <a href="[@s.url namespace="/planning" action='addNewBilateralProject'/]"><div class="addProject"><p>Bilateral <br />Project</p></div></a>

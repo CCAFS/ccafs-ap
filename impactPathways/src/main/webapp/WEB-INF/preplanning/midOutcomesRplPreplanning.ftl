@@ -41,7 +41,7 @@
               <div class="midOutcome borderBox" id="midOutcome-${midOutcome_index}">
                 [#-- Mid outcome identifier --]
                 <input type="hidden" id="id" name="midOutcomes[${midOutcome_index}].id" value="${midOutcome.id}" />
-                <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${securityContext.CUrrentInstitution.program.id}" />
+                <input type="hidden" id="midOutcomeProgramId" name="midOutcomes[${midOutcome_index}].program.id" value="${program.id}" />
                 <input type="hidden" id="midOutcomeTypeId" name="midOutcomes[${midOutcome_index}].type.id" value="${elementTypeID}" />
                 [#-- Contribution to the regional vision 2025 --]
                 <input type="hidden" name="midOutcomes[${midOutcome_index}].contributesTo" value="${outcomesList[0].id}" /> 
@@ -138,12 +138,13 @@
       <div id="addMidOutcomeBlock" class="addLink"> 
         <a href="" class="addMidOutcome addButton" >[@s.text name="preplanning.midOutcomesRPL.addOutcome" /]</a>
       </div> 
+      [#-- 
        <div class="buttons">
         [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
         [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
         [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
       </div>
-      
+      --]
     [#else]
       [#-- To add midoutcomes, user should have outcomes 2025 --]
       <p>
@@ -161,7 +162,7 @@
 <div class="midOutcome borderBox" id="midOutcomeRPLTemplate" style="display:none">
   [#-- Mid outcome identifier --]
   <input id="id" type="hidden"  value="-1" />
-  <input type="hidden" id="midOutcomeProgramId" value="${securityContext.CUrrentInstitution.program.id}" />
+  <input type="hidden" id="midOutcomeProgramId" value="${program.id}" />
   <input type="hidden" id="midOutcomeTypeId" value="${elementTypeID}" />
   [#-- Contribution to the regional vision 2025 --]
   [#-- If there are no Outcomes 2025, users can not add midOutcomes --]

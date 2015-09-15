@@ -79,9 +79,10 @@ public class ProjectsListPreplanningAction extends BaseAction {
       // Now the creator is a liaison isntitution not a ipProgram
       // newProject.setProgramCreator(userProgram);
     } else {
-      LOG.error(
-        "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-        new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+      LOG
+        .error(
+          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
+          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
     }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());
@@ -135,7 +136,7 @@ public class ProjectsListPreplanningAction extends BaseAction {
     allProjects = projectManager.getAllProjectsBasicInfo();
 
     // Getting the list of projects that the user's program created and also those where the users is the project owner.
-    List<Integer> projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
+    List<Integer> projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
 
     projects = new ArrayList<>();
     for (Integer projectId : projectIds) {

@@ -21,8 +21,8 @@ import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -103,21 +103,30 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getAllProjectsBasicInfo() {
     List<Map<String, String>> projectDataList = projectDAO.getAllProjectsBasicInfo();
     List<Project> projectsList = new ArrayList<>();
-
+    Project project;
     for (Map<String, String> projectData : projectDataList) {
 
-      Project project = new Project(Integer.parseInt(projectData.get("id")));
+      project = new Project(Integer.parseInt(projectData.get("id")));
       project.setTitle(projectData.get("title"));
       project.setType(projectData.get("type"));
+      project.setSummary(projectData.get("summary"));
+      List<Budget> budgets = new ArrayList<>(2);
 
-      if (projectData.get("total_budget_amount") != null) {
-        Budget totalBudget = new Budget();
-        totalBudget.setAmount(Double.parseDouble(projectData.get("total_budget_amount")));
-        List<Budget> budgets = new ArrayList<>(1);
-        budgets.add(totalBudget);
-        project.setBudgets(budgets);
+      if (projectData.get("total_ccafs_amount") != null) {
+        Budget ccafsBudget = new Budget();
+        ccafsBudget.setAmount(Double.parseDouble(projectData.get("total_ccafs_amount")));
+        ccafsBudget.setType(BudgetType.W1_W2);
+        budgets.add(ccafsBudget);
       }
 
+      if (projectData.get("total_bilateral_amount") != null) {
+        Budget ccafsBudget = new Budget();
+        ccafsBudget.setAmount(Double.parseDouble(projectData.get("total_bilateral_amount")));
+        ccafsBudget.setType(BudgetType.W3_BILATERAL);
+        budgets.add(ccafsBudget);
+      }
+
+      project.setBudgets(budgets);
       project.setCreated(Long.parseLong(projectData.get("created")));
 
       // Getting Project Focuses - Regions
@@ -308,6 +317,7 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
+
   @Override
   public Project getProjectFromDeliverableId(int deliverableID) {
     int projectID = projectDAO.getProjectIdFromDeliverableId(deliverableID);
@@ -316,7 +326,6 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     return null;
   }
-
 
   @Override
   public Project getProjectFromProjectPartnerID(int projectPartnerID) {
@@ -327,41 +336,23 @@ public class ProjectManagerImpl implements ProjectManager {
     return null;
   }
 
+
   @Override
-  public List<Integer> getProjectIdsEditables(User user) {
-    return projectDAO.getProjectIdsEditables(user.getId());
+  public List<Integer> getProjectIdsEditables(int userID) {
+    return projectDAO.getProjectIdsEditables(userID);
   }
 
-
   @Override
-  // TODO - Move this method to a class called projectIndicatorManager
-    public
-    List<IPIndicator> getProjectIndicators(int projectID) {
-    List<IPIndicator> indicators = new ArrayList<>();
-    List<Map<String, String>> indicatorsData = projectDAO.getProjectIndicators(projectID);
-
-    for (Map<String, String> iData : indicatorsData) {
-      IPIndicator indicator = new IPIndicator();
-      indicator.setId(Integer.parseInt(iData.get("id")));
-      indicator.setDescription(iData.get("description"));
-      indicator.setTarget(iData.get("target"));
-      indicator.setYear(Integer.parseInt(iData.get("year")));
-
-      // Parent indicator
-      IPIndicator parent = new IPIndicator(Integer.parseInt(iData.get("parent_id")));
-      parent.setDescription(iData.get("parent_description"));
-      parent.setTarget(iData.get("parent_target"));
-      indicator.setParent(parent);
-
-      // Outcome
-      IPElement outcome = new IPElement(Integer.parseInt(iData.get("outcome_id")));
-      outcome.setDescription(iData.get("outcome_description"));
-      indicator.setOutcome(outcome);
-
-      indicators.add(indicator);
+  public List<Project> getProjectsByInstitution(int institutionID) {
+    List<Map<String, String>> projectDataList = projectDAO.getProjectsByInstitution(institutionID);
+    List<Project> projectsList = new ArrayList<>();
+    for (Map<String, String> elementData : projectDataList) {
+      Project project = new Project(Integer.parseInt(elementData.get("id")));
+      project.setTitle(elementData.get("title"));
+      projectsList.add(project);
     }
 
-    return indicators;
+    return projectsList;
   }
 
   @Override
@@ -480,40 +471,6 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  // TODO - Move this method to a class called projectIndicatorManager
-    public
-    boolean saveProjectIndicators(List<IPIndicator> indicators, int projectID, User user, String justification) {
-    Map<String, String> indicatorData;
-    boolean saved = true;
-
-    for (IPIndicator indicator : indicators) {
-      if (indicator == null) {
-        continue;
-      }
-      indicatorData = new HashMap<>();
-
-      indicatorData.put("description", indicator.getDescription());
-      indicatorData.put("target", indicator.getTarget());
-      indicatorData.put("year", String.valueOf(indicator.getYear()));
-      indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
-      indicatorData.put("project_id", String.valueOf(projectID));
-      indicatorData.put("outcome_id", String.valueOf(indicator.getOutcome().getId()));
-      indicatorData.put("user_id", String.valueOf(user.getId()));
-      indicatorData.put("justification", justification);
-
-      if (indicator.getId() == -1) {
-        indicatorData.put("id", null);
-        saved = projectDAO.saveProjectIndicators(indicatorData) && saved;
-      } else {
-        indicatorData.put("id", String.valueOf(indicator.getId()));
-        saved = projectDAO.updateProjectIndicators(indicatorData) && saved;
-      }
-    }
-
-    return saved;
-  }
-
-  @Override
   // TODO - Move this method to a class called projectOutputManager
     public
     boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
@@ -535,6 +492,11 @@ public class ProjectManagerImpl implements ProjectManager {
       saved = (relationID != -1) && saved;
     }
     return saved;
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
+    return projectDAO.summaryGetAllProjectsWithDeliverables();
   }
 
   @Override

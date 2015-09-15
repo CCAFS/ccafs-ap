@@ -9,6 +9,13 @@
 
     <!-- Sections -->
     
+    <action name="intro" class="org.cgiar.ccafs.ap.action.preplanning.HomePreplanningAction">
+      <result name="input">/WEB-INF/preplanning/preplanningPage.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">intro</param>
+      </result>
+    </action>
+    
     <!-- Section: Higher Level Impact Pathways  -->
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.preplanning.OutcomesPreplanningAction">
       <result name="cancel" type="redirectAction">
@@ -26,7 +33,6 @@
     
     <action name="midOutcomes" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <interceptor-ref name="preplanningStackIP" />
-      <interceptor-ref name="FPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/midOutcomesPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">midOutcomes</param>
@@ -42,7 +48,6 @@
     
     <action name="midOutcomesRPL" class="org.cgiar.ccafs.ap.action.preplanning.MidOutcomesPreplanningAction">
       <interceptor-ref name="preplanningStackIP" />
-      <interceptor-ref name="RPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/midOutcomesRplPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">midOutcomesRPL</param>
@@ -58,7 +63,6 @@
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.preplanning.OutputsPreplanningAction">
       <interceptor-ref name="preplanningStackIP" />
-      <interceptor-ref name="FPLAccessOnly" />
       <result name="input">/WEB-INF/preplanning/outputsPreplanning.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">outputs</param>

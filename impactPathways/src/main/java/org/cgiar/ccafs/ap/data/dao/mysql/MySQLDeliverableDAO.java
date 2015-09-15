@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego B.
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Hernán David Carvajal - CIAT/CCAFS
  */
 public class MySQLDeliverableDAO implements DeliverableDAO {
 
@@ -258,6 +259,37 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectDeliverablesLedByUser(int projectID, int userID) {
+    List<Map<String, String>> deliverables = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT d.* FROM deliverables d ");
+    query.append("INNER JOIN deliverable_partnerships dp ON d.id = dp.deliverable_id ");
+    query.append("INNER JOIN project_partner_persons pp ON dp.partner_person_id = pp.id ");
+    query.append("WHERE d.project_id = ");
+    query.append(projectID);
+    query.append(" AND pp.user_id = ");
+    query.append(userID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      Map<String, String> deliverableData;
+      while (rs.next()) {
+        deliverableData = new HashMap<>();
+        deliverableData.put("id", rs.getString("id"));
+        deliverableData.put("title", rs.getString("title"));
+
+        deliverables.add(deliverableData);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getProjectDeliverablesLedByUser() > Exception raised trying to get the deliverables led by user {} "
+        + " whitin the project {}", new Object[] {userID, projectID, e});
+    }
+
+    return deliverables;
+  }
+
+  @Override
   public int saveDeliverable(Map<String, Object> deliverableData) {
     LOG.debug(">> saveDeliverable(deliverableData={})", deliverableData);
     StringBuilder query = new StringBuilder();
@@ -281,8 +313,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       values[8] = deliverableData.get("modification_justification");
     } else {
       // Updating existing deliverable record
-      query.append(
-        "UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+      query
+        .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = deliverableData.get("title");

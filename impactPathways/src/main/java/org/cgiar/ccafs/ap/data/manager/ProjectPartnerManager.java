@@ -9,7 +9,6 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectPartnerManagerImpl;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -21,85 +20,101 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Héctor Fabio Tobón R.
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 @ImplementedBy(ProjectPartnerManagerImpl.class)
 public interface ProjectPartnerManager {
 
   /**
-   * This method deletes a specific project partner from the database
-   *
-   * @param id of the project partner that will be deleted.
-   * @param user the user that is deleting the record.
-   * @param justification is the justification statement.
-   * @return true if the project partner was deleted or false otherwise.
-   */
-  public boolean deleteProjectPartner(int id, User user, String justifications);
-
-  /**
-   * Delete a Project Partners information which belongs to the project Id and Institution Id given
-   *
-   * @param projectId is the id of the project
-   * @param partnerId from institution
-   * @return true if the deletion process was successful or false otherwise.
-   * @deprecated This method must not be used since institutions can now be repeated per project. Thus, the only
-   *             differentiation between partners would be the identifier. Please use deleteProjectPartner(id).
-   */
-  @Deprecated
-  public boolean deleteProjectPartner(Project project, Institution partner);
-
-
-  /**
-   * This method is used to get the Project Partner that belongs to a specific project.
-   *
-   * @param partnerId is the id of the partner.
-   * @return The ProjectPartner object that belongs to the project identified with the given id. If no projects
-   *         are found, this method will return an empty list.
-   */
-  public ProjectPartner getProjectPartnerById(int partnerId);
-
-  /**
-   * This method is used to get the list of Project Partners that belongs to a specific project.
-   *
-   * @param projectId is the id of the project.
-   * @return a List of ProjectPartner objects that belongs to the project identified with the given id. If no projects
-   *         are found, this method will return an empty list.
-   */
-  public List<ProjectPartner> getProjectPartners(int projectId);
-
-  /**
-   * This method is used to get the list of Project Partners that belongs to a specific project and type (PL, PP, PPA,
-   * PC, etc.)
+   * This method delete the project partner received by parameter from the database.
    * 
-   * @param projectId is the id of the project.
-   * @param projectPartnerType is the type of the Project Partner and can be found from constant variables within the
-   *        class APConstants ("Type of Project Partners")
-   * @return List of ProjectPartner objects that belongs to the project identified with the given id and type. If no
-   *         projects are found, this method will return an empty list.
+   * @param projectPartner - Project partner object
+   * @param currentUser - User who is making the change
+   * @param justification
+   * @return true if the projectPartner was deleted successfully. False otherwise.
    */
-  public List<ProjectPartner> getProjectPartners(int projectId, String projectPartnerType);
+  public boolean deleteProjectPartner(ProjectPartner projectPartner, User user, String justification);
 
   /**
-   * This method saves a Project Partner individually.
-   * This method could be used for saving a Project Leader or a Project Coordinator.
+   * This method de-active all the contributions made to the project partner identified by the value received by
+   * parameter.
    * 
-   * @param projectId is the project identifier
-   * @param partner is the partner object that is going to be saved.
+   * @param projectPartner - Project partner object
+   * @return true if the contributions was deleted successfully. False otherwise.
+   */
+  public boolean deleteProjectPartnerContributions(ProjectPartner projectPartner);
+
+  /**
+   * This method is used to get a specific Project Partner identified by the given ID.
+   * 
+   * @param partnerID is a partner identifier.
+   * @return The ProjectPartner object identified by the given id. If no project partner is found, this method will
+   *         return null value.
+   */
+  public ProjectPartner getProjectPartner(int partnerID);
+
+  /**
+   * This method gets the project partner to which the partner person identified by the values received by parameter is
+   * linked to.
+   * 
+   * @param projectPartnerPersonID - Project partner person identifier
+   * @return Project partner object with the information, the map also will include the partner person information. If
+   *         no
+   *         information was found this method will return null.
+   */
+  public ProjectPartner getProjectPartnerByPersonID(int projectPartnerPersonID);
+
+  /**
+   * Get the list of Project Partner whose a given partner is contributing to.
+   * 
+   * @param projectPartner is the partner object where we want to know which partners are contributing to it.
+   * @return a list of ProjectPartner objects, an empty list if nothing found or a null reference if an error occur.
+   */
+  public List<ProjectPartner> getProjectPartnerContributors(ProjectPartner projectPartner);
+
+  /**
+   * This method returns all the project partners that belong to a specific project.
+   * 
+   * @param project is the project object which we want to get the list of partners.
+   * @return a list of project partners, an empty list if nothing found or null if some error occur.
+   */
+  public List<ProjectPartner> getProjectPartners(Project project);
+
+  /**
+   * This method adds or updates a given project partner.
+   * 
+   * @param project is the Project where this partner belongs to.
+   * @param projectPartner is the Project Partner to be saved. If its id is -1, the method will add it into the
+   *        database, if the id is > 0, the project partner will be updated.
    * @param user is the user that is making the change.
    * @param justification is the justification for the change made.
    * @return the id of the project partner inserted, 0 if the record was updated and -1 if some error occurred.
    */
-  public int saveProjectPartner(int projectId, ProjectPartner partner, User user, String justification);
+  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification);
 
   /**
-   * This method save the project partner of a specific project
-   *
-   * @param projectId is the project identifier in which these projects partners belong to.
-   * @param partners is the information to be saved
-   * @param user is the user that is making the change.
-   * @param justification is the justification for the change made.
-   * @return true if all partners were successfully saved; or false otherwise.
+   * This method saves into the database the contributions made by some project partner(s) to the partner received by
+   * parameter
+   * 
+   * @param projectID - Project identifier
+   * @param projectPartner - Project partner object with the information to be saved
+   * @param user - User who is making the change
+   * @param justification
+   * @return true if the information was saved successfully, false otherwise.
    */
-  public boolean saveProjectPartners(int projectId, List<ProjectPartner> partners, User user, String justification);
+  public boolean saveProjectPartnerContributions(int projectID, ProjectPartner projectPartner, User user,
+    String justification);
 
+  /**
+   * This method saves a list of project partners that belongs to a specific project
+   * 
+   * @param project is the project to which these project partners belong.
+   * @param partners is a list of ProjectPartner objects with the information to be saved.
+   * @param user is the user that is making the change.
+   * @param justification is the justification statement.
+   * @return true if all partners were successfully saved; false otherwise.
+   */
+  public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
+    String justification);
 
 }

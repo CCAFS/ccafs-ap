@@ -1,9 +1,13 @@
+var crpContributionName;
+var $contributionsBlock;
 var textAreaLimitWords = 100;
 var lWordsLessons = 100;
 var lWordsCollaboration = 50;
 $(document).ready(init);
 
 function init() {
+  $contributionsBlock = $('ul#contributionsBlock');
+  crpContributionName = $('#crpsName').val();
   initGraph();
   addChosen();
   initItemListEvents();
@@ -48,25 +52,27 @@ function removeItemList($item) {
   // Removing from list
   $item.hide("slow", function() {
     $item.remove();
+    setIndexes();
   });
 }
 
 function addItemList($option) {
   var $select = $option.parent();
-  var $list = $option.parents('.panel').find('ul.list');
   var $li = $("#crpTemplate").clone(true).removeAttr("id");
   $li.find('.id').val($option.val());
   $li.find('.name').html($option.text());
-  $li.appendTo($list).hide().show('slow');
+  $li.appendTo($contributionsBlock).hide().show('slow');
   $option.remove();
   $select.trigger("liszt:updated");
-  setIndexes($list, $('#crpsName').val());
-  $list.find('.emptyText').fadeOut();
+  setIndexes();
+  $contributionsBlock.find('.emptyText').fadeOut();
 }
 
-function setIndexes($element,elementName) {
-  $element.find('li').each(function(i,item) {
-    $(item).find('.id').attr('name', elementName);
+function setIndexes() {
+  $contributionsBlock.find('li').each(function(i,item) {
+    var elementName = crpContributionName + '.[' + i + ']';
+    $(item).find('.id').attr('name', elementName + '.id');
+    $(item).find('.crpCollaborationNature').attr('name', elementName + '.crpCollaborationNature');
   });
 }
 

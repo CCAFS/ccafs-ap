@@ -152,6 +152,63 @@ public class MySQLBudgetDAO implements BudgetDAO {
 
 
   @Override
+  public double calculateTotalCCAFSBudgetByInstitution(int projectID, int institutionID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND institution_id = ");
+    query.append(institutionID);
+    query.append(" AND is_active = TRUE");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
+  public double calculateTotalCCAFSBudgetByInstitutionAndType(int projectID, int institutionID, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND institution_id = ");
+    query.append(institutionID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND is_active = TRUE");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+  @Override
   public double calculateTotalCCAFSBudgetByType(int projectID, int budgetTypeID) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -230,6 +287,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
+
 
   @Override
   public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID) {
@@ -315,7 +373,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
-
   @Override
   public boolean deleteBudget(int budgetId, int userId, String justification) {
     LOG.debug(">> deleteBudget(id={})", budgetId);
@@ -334,7 +391,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     LOG.debug("<< deleteBudget:{}", false);
     return false;
   }
-
 
   @Override
   public boolean deleteBudgetsByInstitution(int projectID, int institutionID, int userID, String justification) {
@@ -395,17 +451,19 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID) {
+  public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID, int currentYear) {
     StringBuilder query = new StringBuilder();
     query.append("UPDATE project_budgets pb ");
     query.append("SET pb.is_active = FALSE ");
     query.append("WHERE pb.institution_id NOT IN ");
-    query.append("( SELECT  partner_id FROM project_partners pp ");
-    query.append("  INNER JOIN institutions i ON pp.partner_id = i.id ");
+    query.append("( SELECT  institution_id FROM project_partners pp ");
+    query.append("  INNER JOIN institutions i ON pp.institution_id = i.id ");
     query.append("  WHERE pp.project_id = pb.project_id AND pp.is_active = TRUE AND i.is_ppa = TRUE ");
-    query.append("  GROUP BY pp.partner_id, pp.is_active ");
+    query.append("  GROUP BY pp.institution_id, pp.is_active ");
     query.append(") AND pb.project_id = ");
     query.append(projectID);
+    query.append(" AND pb.year >= ");
+    query.append(currentYear);
 
     int result = databaseManager.saveData(query.toString(), new Object[] {});
     return (result != -1);

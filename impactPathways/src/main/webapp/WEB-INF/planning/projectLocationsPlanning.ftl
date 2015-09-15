@@ -29,7 +29,6 @@
   
   [@s.form action="locations" cssClass="pure-form"]
   <article class="halfContent" id="projectLocations">
-    [#include "/WEB-INF/planning/projectDescription-planning-sub-menu.ftl" /]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
     [#if !canEdit]
@@ -37,16 +36,14 @@
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
     [/#if]
+    [#-- Title --]
+    <h1 class="contentTitle">[@s.text name="planning.project.locations.title" /] </h1>  
     <div class="loadingBlock"></div>
     <div id="" class="borderBox" style="display:none"> 
       [#-- Can edit button --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [/#if]  
-      [#-- Title --]
-      <h1 class="contentTitle">
-      [@s.text name="planning.project" /]: ${project.composedId} - [@s.text name="planning.project.locations.title" /] 
-      </h1>  
       <div id="locationsGlobalBlock" class="clearfix">
         [@customForm.checkbox className="globalCheck" name="project.global" value="true" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global editable=editable /]
         [#-- [@customForm.checkbox name="project.global" i18nkey="planning.project.locations.checkbox.isGlobal" checked=project.global value="true" /]  --] 

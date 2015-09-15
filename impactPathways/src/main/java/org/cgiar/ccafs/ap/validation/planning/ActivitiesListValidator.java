@@ -89,7 +89,7 @@ public class ActivitiesListValidator extends BaseValidator {
         problem = true;
       }
 
-      // Validating end date
+      // Validating leader
       if (activity.getLeader() == null) {
         action.addFieldError("project.activities[" + c + "].leader", this.getText("validation.field.required"));
         problem = true;

@@ -74,7 +74,7 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
       while (rs.next()) {
         Map<String, String> deliverablePartnerData = new HashMap<String, String>();
         deliverablePartnerData.put("id", rs.getString("id"));
-        deliverablePartnerData.put("partner_id", rs.getString("partner_id"));
+        deliverablePartnerData.put("partner_person_id", rs.getString("partner_person_id"));
         deliverablePartnerData.put("deliverable_id", rs.getString("deliverable_id"));
         deliverablePartnerData.put("partner_type", rs.getString("partner_type"));
 
@@ -137,12 +137,12 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
     if (deliverablePartnerData.get("id") == null) {
       // Insert new record
       query.append(
-        "INSERT INTO deliverable_partnerships (id, deliverable_id, partner_id, partner_type, created_by, modified_by, modification_justification) ");
+        "INSERT INTO deliverable_partnerships (id, deliverable_id, partner_person_id, partner_type, created_by, modified_by, modification_justification) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[7];
       values[0] = deliverablePartnerData.get("id");
       values[1] = deliverablePartnerData.get("deliverable_id");
-      values[2] = deliverablePartnerData.get("partner_id");
+      values[2] = deliverablePartnerData.get("partner_person_id");
       values[3] = deliverablePartnerData.get("partner_type");
       values[4] = deliverablePartnerData.get("created_by");
       values[5] = deliverablePartnerData.get("modified_by");
@@ -150,11 +150,11 @@ public class MySQLDeliverablePartnerDAO implements DeliverablePartnerDAO {
     } else {
       // update record
       query.append(
-        "UPDATE deliverable_partnerships SET deliverable_id = ?, partner_id = ?, partner_type = ?, modified_by = ?, modification_justification = ? ");
+        "UPDATE deliverable_partnerships SET deliverable_id = ?, partner_person_id = ?, partner_type = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[6];
       values[0] = deliverablePartnerData.get("deliverable_id");
-      values[1] = deliverablePartnerData.get("partner_id");
+      values[1] = deliverablePartnerData.get("partner_person_id");
       values[2] = deliverablePartnerData.get("partner_type");
       values[3] = deliverablePartnerData.get("modified_by");
       values[4] = deliverablePartnerData.get("modification_justification");

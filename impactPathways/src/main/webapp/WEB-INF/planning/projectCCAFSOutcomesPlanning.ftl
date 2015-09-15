@@ -31,6 +31,7 @@
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
+    [#assign fieldEmpty] <div class="select"><p>[@s.text name="form.values.fieldEmpty" /]</p></div>[/#assign]
     
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
     [#if !canEdit]
@@ -74,7 +75,7 @@
                       [#if projectIndicator.id != -1 || isUniqueIndicator]
                         <div class="midOutcomeIndicator" >
                           [#if editable] 
-                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked" disabled="disabled"[/#if] [#if isUniqueIndicator][/#if]  />
+                            <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked" disabled="disabled"[/#if] />
                           [/#if]
                           [#if indicator.parent?has_content] 
                             <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.parent.description}</label>
@@ -112,7 +113,11 @@
                                   [#if editable && (currentPlanningYear lte year)]
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
-                                    <p>${projectIndicator.target!}</p>
+                                    [#if !projectIndicator.target?has_content]
+                                      [#if !project.bilateralProject]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if] ${fieldEmpty}
+                                    [#else]
+                                      <div class="select"><p>${projectIndicator.target}</p></div>
+                                    [/#if]
                                   [/#if]
                                 </div> 
                                 
@@ -122,7 +127,11 @@
                                   [#if editable && (currentPlanningYear lte year)]
                                     <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
-                                    ${projectIndicator.description!}
+                                    [#if !projectIndicator.description?has_content]
+                                      [#if !project.bilateralProject]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if] ${fieldEmpty}
+                                    [#else]
+                                      <div class="select"><p>${projectIndicator.description}</p></div>
+                                    [/#if] 
                                   [/#if] 
                                 </div>
                               </div>  
@@ -164,7 +173,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                 [#if editable]
-                                  <input type="text" class="projectIndicatorTarget" name="project.indicators.target" />                              
+                                  <input type="text" class="projectIndicatorTarget" name="project.indicators.target" />
                                 [/#if]
                               </div>
                               

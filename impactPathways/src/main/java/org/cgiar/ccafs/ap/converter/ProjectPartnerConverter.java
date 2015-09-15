@@ -25,11 +25,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Carlos Alberto Martínez M.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class ProjectPartnerConverter extends StrutsTypeConverter {
 
   // LOG
-  private static final Logger LOG = LoggerFactory.getLogger(InstitutionConverter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProjectPartnerConverter.class);
 
   // Manager
   private ProjectPartnerManager projectPartnerManager;
@@ -46,11 +47,11 @@ public class ProjectPartnerConverter extends StrutsTypeConverter {
       String id = values[0];
       try {
         LOG.debug(">> convertFromString > id = {} ", id);
-        return projectPartnerManager.getProjectPartnerById(Integer.parseInt(id));
+        return projectPartnerManager.getProjectPartner(Integer.parseInt(id));
       } catch (NumberFormatException e) {
         // Do Nothing
-        LOG
-        .error("Problem to convert Project Partner from String (convertFromString) for id = {} ", id, e.getMessage());
+        LOG.error("Problem to convert Project Partner from String (convertFromString) for id = {} ", id,
+          e.getMessage());
       }
     }
     return null;

@@ -186,7 +186,7 @@ public class ProjectsListPlanningAction extends BaseAction {
       allProjects = new ArrayList<>();
     } else {
       allProjects = projectManager.getAllProjectsBasicInfo();
-      List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser());
+      List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
 
       // We should remove from the allProjects list the project
       // led by the user and also we should add them to a another list

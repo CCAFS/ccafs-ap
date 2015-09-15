@@ -14,6 +14,7 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.RoleDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego
+ * @author Hernán David Carvajal
  */
 public class MySQLRoleDAO implements RoleDAO {
 
@@ -40,6 +42,24 @@ public class MySQLRoleDAO implements RoleDAO {
   @Inject
   public MySQLRoleDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
+  }
+
+  @Override
+  public boolean deleteRole(int userID, int roleID) {
+    StringBuilder query = new StringBuilder();
+    if (roleID != APConstants.ROLE_PROJECT_LEADER) {
+      query.append("DELETE FROM user_roles WHERE user_id = ? AND role_id = ?");
+    } else {
+      // To delete the project leader role, we should verify that the user is not leader of any project.
+      query.append("DELETE FROM ur USING user_roles AS ur WHERE user_id = ? AND role_id = ? ");
+      query.append("AND NOT EXISTS ( ");
+      query.append("SELECT user_id FROM project_partner_persons ");
+      query.append("WHERE contact_type = 'PL' AND user_id = ur.id ");
+      query.append(") ");
+    }
+
+    int result = databaseManager.delete(query.toString(), new Object[] {userID, roleID});
+    return result != -1;
   }
 
   @Override
@@ -94,5 +114,12 @@ public class MySQLRoleDAO implements RoleDAO {
       LOG.error("Exception raised getting the role of the user {}", userID, e);
     }
     return roleData;
+  }
+
+  @Override
+  public boolean saveRole(int userID, int roleID) {
+    String query = "INSERT IGNORE INTO user_roles (user_id, role_id) VALUES (?, ?)";
+    int result = databaseManager.saveData(query, new Object[] {userID, roleID});
+    return result != -1;
   }
 }

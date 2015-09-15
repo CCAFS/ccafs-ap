@@ -42,14 +42,14 @@
               <div class="output borderBox" id="output-${output_index}">
                 [#-- output identifier --] 
                 <input id="outputId" name="outputs[${output_index}].id" value="${output.id}"  type="hidden"/>
-                <input id="outputProgramID" name="outputs[${output_index}].program.id" value="${securityContext.CUrrentInstitution.program.id}" type="hidden" />
+                <input id="outputProgramID" name="outputs[${output_index}].program.id" value="${program.id}" type="hidden" />
                 <input id="outputTypeID" name="outputs[${output_index}].type.id" value="${elementTypeID}" type="hidden" />
                 [#-- Remove Output --]
                 <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputs.removeOutput" /]"></div>
                 [#-- Title --]
                 [#assign outputDescription]
                   [@s.text name="preplanning.outputs.output"]
-                    [@s.param name="0"]${securityContext.CUrrentInstitution.program.id}[/@s.param] 
+                    [@s.param name="0"]${program.id}[/@s.param] 
                     [@s.param name="1"]<span id="elementIndex">${output_index+1}</span>[/@s.param] 
                   [/@s.text]
                 [/#assign]
@@ -79,13 +79,14 @@
           <a href="" class="addOutput addButton" >[@s.text name="preplanning.outputs.addOutput" /]</a>
         </div>
         [#-- Program ID  --]
-        <input type="hidden" id="programID" value="${securityContext.CUrrentInstitution.program.id}" />
+        <input type="hidden" id="programID" value="${program.id}" />
+        [#-- 
          <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
           [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
         </div>
-        
+        --]
       [/#if]
     [#else]
       [@s.text name="preplanning.outputs.addMidoutcomes" /]
@@ -97,14 +98,14 @@
     <div id="outputTemplate" class="output borderBox" style="display:none">
       [#-- Objective identifier --]
       <input id="outputId" type="hidden" value="-1" />
-      <input id="outputProgramID" value="${securityContext.CUrrentInstitution.program.id}" type="hidden" />
+      <input id="outputProgramID" value="${program.id}" type="hidden" />
       <input id="outputTypeID" value="${elementTypeID}" type="hidden" />
       [#-- Remove Output --]
       <div id="removeOutput" class="removeOutput removeElement removeLink" title="[@s.text name="preplanning.outputs.removeOutput" /]"></div>
       [#-- Title --]
       [#assign outputDescription]
         [@s.text name="preplanning.outputs.output"]
-          [@s.param name="0"]${securityContext.CUrrentInstitution.program.id}[/@s.param] 
+          [@s.param name="0"]${program.id}[/@s.param] 
           [@s.param name="1"]<span id="elementIndex">{0}</span>[/@s.param] 
         [/@s.text]
       [/#assign]

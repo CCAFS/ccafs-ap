@@ -1,20 +1,25 @@
 [#ftl]
 [#macro activityMacro activity activity_name="" activity_index="0" template=false editable=true canEdit=true]
   [#assign activitiesName]${activity_name}[${activity_index}][/#assign]
-  [#assign activityId]${template?string('template',activity_index)}[/#assign]
-  <div id="activity-${(activity.id)!}" class="activity borderBox" style="display:${template?string('none','block')}"> 
+  [#assign activityId]${template?string('template',(activity.id)!)}[/#assign]
+  <div id="activity-${(activityId)}" class="activity borderBox" style="display:${template?string('none','block')}"> 
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.edit" /]</a></div>
     [/#if]
     [#if template]
+      <div class="leftHead">
+        <span class="index"></span>
+      </div>
       <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
     [#else]
-      <span class="elementId">A${activity.id}</span>
+      <div class="leftHead">
+        <span class="index">${activity_index+1}</span>
+        <span class="elementId">A${(activity.id)!}</span>
+      </div>
       [#if editable && canEdit && action.canDelete(activity.id)]
         <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
       [/#if]
     [/#if]
-    <span class="index">${activity_index+1}</span> 
       <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
     [#-- Title --]
     <div class="fullPartBlock clearfix">
@@ -33,9 +38,9 @@
         [@customForm.input name="${activitiesName}.endDate" className="endDate"  type="text" i18nkey="planning.activityDescription.endDate" required=true editable=editable/]
       </div>
     </div>
-    [#-- Project Partner --]
+    [#-- Project Leader --]
     <div class="fullPartBlock">
-      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartners" keyFieldName="id" displayFieldName="composedName" editable=editable/]
+      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable/]
     </div>  
   </div><!-- End ${activityId} -->
 [/#macro]

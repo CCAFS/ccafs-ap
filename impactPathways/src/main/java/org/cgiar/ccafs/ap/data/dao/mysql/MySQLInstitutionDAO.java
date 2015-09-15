@@ -67,7 +67,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     LOG.debug(">> getAllInstitutions( )");
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.website_link, i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -112,7 +112,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     LOG.debug(">> getAllPPAInstitutions( )");
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id, i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.website_link, i.institution_type_id, i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -139,6 +139,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
         institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("is_ppa")));
+        institutionData.put("website_link", rs.getString("website_link"));
         institutionData.put("loc_elements_id", rs.getString("loc_elements_id"));
         institutionData.put("loc_elements_name", rs.getString("loc_elements_name"));
         institutionData.put("loc_elements_code", rs.getString("loc_elements_code"));
@@ -169,7 +170,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     LOG.debug(">> getInstitution( institutionID = {} )", institutionID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.website_link, i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -187,6 +188,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
         institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("is_ppa")));
+        institutionData.put("website_link", rs.getString("website_link"));
         institutionData.put("loc_elements_id", rs.getString("loc_elements_id"));
         institutionData.put("loc_elements_name", rs.getString("loc_elements_name"));
         institutionData.put("loc_elements_code", rs.getString("loc_elements_code"));
@@ -209,7 +211,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   @Override
   public List<Map<String, String>> getInstitutionsByTypeAndCountry(int typeID, int countryID) {
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.website_link, i.institution_type_id,i.program_id, ");
     query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
     query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
     query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
@@ -246,8 +248,9 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("SELECT e.id as 'employee_id', ");
     query.append("i.id as 'institution_id', ");
     query.append("i.name as 'institution_name', ");
-    query.append("i.acronym as 'institution_acronym',");
-    query.append("i.is_ppa as 'institution_is_ppa',");
+    query.append("i.acronym as 'institution_acronym', ");
+    query.append("i.is_ppa as 'institution_is_ppa', ");
+    query.append("i.website_link as 'institution_website_link', ");
     query.append("p.id as 'program_id', ");
     query.append("p.name as 'program_name', ");
     query.append("p.acronym as 'program_acronym',");
@@ -268,6 +271,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("name", rs.getString("institution_name"));
         institutionData.put("acronym", rs.getString("institution_acronym"));
         institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("institution_is_ppa")));
+        institutionData.put("website_link", rs.getString("institution_website_link"));
         institutionData.put("program_id", rs.getString("program_id"));
         institutionData.put("program_name", rs.getString("program_name"));
         institutionData.put("program_acronym", rs.getString("program_acronym"));
@@ -312,35 +316,97 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjectPartnerContributeInstitutions(int projectPartnerID) {
-
-    LOG.debug(">> getProjectPartnerContributeInstitutions( )");
-
+  public List<Map<String, String>> getProjectLeadingInstitutions() {
+    List<Map<String, String>> institutionsDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.institution_type_id,i.program_id, ");
-    query.append("lc.id as loc_elements_id, lc.name as loc_elements_name,lc.code as loc_elements_code, ");
-    query.append("it.name as institution_type_name, it.acronym as institution_type_acronym, ");
-    query.append("ip.id as program_id, ip.name as program_name, ip.acronym as program_acronym ");
-    query.append("FROM project_partner_contributions ppc ");
-    query.append(" INNER JOIN institutions i ON i.id = ppc.contribution_institution_id ");
-    query.append("INNER JOIN institution_types it ON it.id=i.institution_type_id ");
-    query.append("LEFT JOIN loc_elements lc ON lc.id=i.country_id ");
-    query.append("LEFT JOIN ip_programs ip ON ip.id=i.program_id ");
-    query.append("WHERE ppc.project_partner_id = ");
-    query.append(projectPartnerID);
-    query.append(" ORDER BY i.acronym, i.name, loc_elements_name ASC ");
+    query.append("SELECT i.id as 'institution_id', ");
+    query.append("i.name as 'institution_name', ");
+    query.append("i.acronym as 'institution_acronym', ");
+    query.append("i.website_link as 'institution_website_link', ");
+    query.append("pp.id as 'project_partner_id', ");
+    query.append("ppp.contact_type as 'partner_person_type', ");
+    query.append("pp.project_id as 'project_id', ");
+    query.append("le.id as 'country_id', ");
+    query.append("le.name as 'country_name' ");
+    query.append("FROM institutions i ");
+    query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("LEFT JOIN loc_elements le ON le.id = i.country_id ");
+    query.append("WHERE ppp.contact_type = 'PL' ");
+    query.append("ORDER BY i.id");
 
-    LOG.debug("-- getProjectPartnerContributeInstitutions() > Calling method executeQuery to get the results");
-    return this.getData(query.toString());
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> institutionData = new HashMap<String, String>();
+        institutionData.put("id", rs.getString("institution_id"));
+        institutionData.put("name", rs.getString("institution_name"));
+        institutionData.put("acronym", rs.getString("institution_acronym"));
+        institutionData.put("website_link", rs.getString("institution_website_link"));
+        institutionData.put("project_partner_id", rs.getString("project_partner_id"));
+        institutionData.put("partner_person_type", rs.getString("partner_person_type"));
+        institutionData.put("project_id", rs.getString("project_id"));
+        institutionData.put("country_id", rs.getString("country_id"));
+        institutionData.put("country_name", rs.getString("country_name"));
 
+        institutionsDataList.add(institutionData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the ProjectPartnersinstitutions.", e);
+    }
+
+    return institutionsDataList;
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectPartnerInstitutions() {
+    List<Map<String, String>> institutionsDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT i.id as 'institution_id', ");
+    query.append("i.name as 'institution_name', ");
+    query.append("i.acronym as 'institution_acronym', ");
+    query.append("i.website_link as 'institution_website_link', ");
+    query.append("pp.id as 'project_partner_id', ");
+    query.append("pp.project_id as 'project_id', ");
+    query.append("le.id as 'country_id', ");
+    query.append("le.name as 'country_name' ");
+    query.append("FROM institutions i ");
+    query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
+    query.append("LEFT JOIN loc_elements le ON le.id = i.country_id ");
+    query.append("ORDER BY i.id");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> institutionData = new HashMap<String, String>();
+        institutionData.put("id", rs.getString("institution_id"));
+        institutionData.put("name", rs.getString("institution_name"));
+        institutionData.put("acronym", rs.getString("institution_acronym"));
+        institutionData.put("website_link", rs.getString("institution_website_link"));
+        institutionData.put("project_partner_id", rs.getString("project_partner_id"));
+        institutionData.put("project_id", rs.getString("project_id"));
+        institutionData.put("country_id", rs.getString("country_id"));
+        institutionData.put("country_name", rs.getString("country_name"));
+
+        institutionsDataList.add(institutionData);
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the ProjectPartnersinstitutions.", e);
+    }
+
+    return institutionsDataList;
   }
 
   @Override
   public Map<String, String> getUserMainInstitution(int userID) {
     Map<String, String> institutionData = new HashMap<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, ");
+    query.append("SELECT i.id, i.name, i.acronym, i.is_ppa, i.website_link, ");
     query.append("p.id as program_id, p.name as program_name, p.acronym as 'program_acronym', ");
     query.append("it.id as institution_type_id, it.acronym as 'institution_type_acronym'");
     query.append("FROM institutions i ");
@@ -359,6 +425,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("name", rs.getString("name"));
         institutionData.put("acronym", rs.getString("acronym"));
         institutionData.put("is_ppa", Boolean.toString(rs.getBoolean("is_ppa")));
+        institutionData.put("website_link", rs.getString("website_link"));
         institutionData.put("program_id", rs.getString("program_id"));
         institutionData.put("program_name", rs.getString("program_name"));
         institutionData.put("program_acronym", rs.getString("program_acronym"));
@@ -396,8 +463,8 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
 
     StringBuilder query = new StringBuilder();
 
-    query.append(
-      "SELECT COUNT(*) FROM project_partners pp WHERE pp.project_id = (SELECT pp2.project_id FROM project_partners pp2 WHERE pp2.id = ");
+    query
+      .append("SELECT COUNT(*) FROM project_partners pp WHERE pp.project_id = (SELECT pp2.project_id FROM project_partners pp2 WHERE pp2.id = ");
     query.append(projectPartnerID);
     query.append(") AND pp.partner_id = (SELECT pp3.partner_id FROM project_partners pp3 WHERE pp3.id = ");
     query.append(projectPartnerID);

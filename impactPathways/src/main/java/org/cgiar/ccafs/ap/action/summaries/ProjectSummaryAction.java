@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.pdfs.ProjectSummaryPDF;
+import org.cgiar.ccafs.ap.action.summaries.planning.pdf.ProjectSummaryPDF;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -23,10 +23,12 @@ import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
+import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -63,28 +65,31 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   public static Logger LOG = LoggerFactory.getLogger(ProjectSummaryAction.class);
   private static final long serialVersionUID = 5140987672008315842L;
 
-  ActivityManager activityManager;
-  BudgetManager budgetManager;
-  CRPManager crpManager;
-  DeliverableManager deliverableManager;
-  DeliverablePartnerManager deliverablePartnerManager;
-  InstitutionManager institutionManager;
-  IPElementManager ipElementManager;
-  ProjectOtherContributionManager ipOtherContributionManager;
-  IPProgramManager ipProgramManager;
-  ProjectCofinancingLinkageManager linkedCoreProjectManager;
-  LocationManager locationManager;
-  NextUserManager nextUserManager;
-  ProjectContributionOverviewManager overviewManager;
-  ProjectPartnerManager partnerManager;
-  Project project;
   // Managers
-  ProjectManager projectManager;
+  private ActivityManager activityManager;
+  private BudgetManager budgetManager;
+  private CRPManager crpManager;
+  private DeliverableManager deliverableManager;
+  private DeliverablePartnerManager deliverablePartnerManager;
+  private IPElementManager ipElementManager;
+  private ProjectOtherContributionManager ipOtherContributionManager;
+  private IPProgramManager ipProgramManager;
+  private ProjectCofinancingLinkageManager linkedCoreProjectManager;
+  private LocationManager locationManager;
+  private NextUserManager nextUserManager;
+  private ProjectContributionOverviewManager overviewManager;
+  private ProjectPartnerManager partnerManager;
+  private ProjectManager projectManager;
+  private PartnerPersonManager partnerPersonManager;
+  private ProjectOutcomeManager projectOutcomeManager;
+  private IPIndicatorManager indicatorManager;
 
-  ProjectOutcomeManager projectOutcomeManager;
+
   // Model
+  private Project project;
   ProjectSummaryPDF projectPDF;
   List<InputStream> streams;
+
 
   @Inject
   public ProjectSummaryAction(APConfig config, ProjectSummaryPDF projectPDF, ProjectManager projectManager,
@@ -94,7 +99,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager,
     InstitutionManager institutionManager, DeliverableManager deliverableManager, NextUserManager nextUserManager,
     DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
-    CRPManager crpManager) {
+    CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager) {
     super(config);
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
@@ -107,12 +112,13 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.locationManager = locationManager;
     this.ipElementManager = ipElementManager;
     this.overviewManager = overviewManager;
-    this.institutionManager = institutionManager;
     this.deliverableManager = deliverableManager;
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.crpManager = crpManager;
+    this.partnerPersonManager = partnerPersonManager;
+    this.indicatorManager = indicatorManager;
   }
 
 
@@ -135,20 +141,26 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   }
 
   @Override
+  public String getContentType() {
+    return "application/pdf";
+  }
+
+  @Override
   public String getFileName() {
     return projectPDF.getFileName();
   }
+
 
   @Override
   public InputStream getInputStream() {
     return projectPDF.getInputStream();
   }
 
-
   private String getWorkplanRelativePath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
       + config.getProjectWorkplanFolder() + File.separator;
   }
+
 
   public String getWorkplanURL() {
     return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
@@ -173,8 +185,13 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // Get all the information to add in the pdf file
     project = projectManager.getProject(projectID);
 
+    // Get a route for the workplan name
+    if (project.isWorkplanRequired()) {
 
-    project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+      if (this.getWorkplanURL() != null || project.getWorkplanName() != null) {
+        project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+      }
+    }
 
     // Getting the information of the Regions program
     project.setRegions(ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE));
@@ -183,28 +200,13 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setFlagships(ipProgramManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE));
 
 
-    // Getting the Project Leader.
-    List<ProjectPartner> ppArray = partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PL);
-    if (ppArray.size() != 0) {
-      project.setLeader(ppArray.get(0));
+    List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project);
+
+    for (ProjectPartner projectPartner : projectPartnerList) {
+      projectPartner.setPartnerPersons(this.partnerPersonManager.getPartnerPersons(projectPartner));
+      projectPartner.setPartnerContributors(partnerManager.getProjectPartnerContributors(projectPartner));
     }
-
-    // Getting Project Coordinator
-    ppArray = partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PC);
-    if (ppArray.size() != 0) {
-      project.setCoordinator(ppArray.get(0));
-    }
-
-    // Getting PPA Partners
-    project.setPPAPartners(partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PPA));
-
-
-    // Getting 2-level Project Partners
-    project.setProjectPartners(partnerManager.getProjectPartners(project.getId(), APConstants.PROJECT_PARTNER_PP));
-    // Getting the 2-level Project Partner contributions
-    for (ProjectPartner partner : project.getProjectPartners()) {
-      partner.setContributeInstitutions(institutionManager.getProjectPartnerContributeInstitutions(partner));
-    }
+    project.setProjectPartners(projectPartnerList);
 
     // Add Linked project
     // If project is CCAFS co_founded, we should load the core projects linked to it.
@@ -251,23 +253,24 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
         deliverable.setResponsiblePartner(responsiblePartner);
       }
 
+
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables
     project.setDeliverables(deliverables);
 
-
     // *************************Outcomes*****************************
     project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
-    // Getting the information for the IP Other Contribution
+    // Getting the informations
+
     project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
 
-    project.setIndicators(projectManager.getProjectIndicators(project.getId()));
+    project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));
 
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
 

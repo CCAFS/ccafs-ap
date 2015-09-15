@@ -127,9 +127,7 @@ public class MySQLUserDAO implements UserDAO {
       query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
       query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
       query.append("WHERE (ro.id= '");
-      query.append(APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER);
-      query.append("' OR ro.id= '");
-      query.append(APConstants.ROLE_REGIONAL_PROGRAM_LEADER);
+      query.append(APConstants.ROLE_MANAGEMENT_LIAISON);
       query.append("' OR ro.id= '");
       query.append(APConstants.ROLE_COORDINATING_UNIT);
       query.append("') AND ins.program_id = ");

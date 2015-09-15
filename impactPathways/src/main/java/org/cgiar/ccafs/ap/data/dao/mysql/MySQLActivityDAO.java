@@ -216,6 +216,36 @@ public class MySQLActivityDAO implements ActivityDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectActivitiesLedByUser(int projectID, int userID) {
+    List<Map<String, String>> activities = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT a.* FROM activities a ");
+    query.append("INNER JOIN project_partner_persons ppp ON a.leader_id = ppp.id ");
+    query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE ppp.user_id = ");
+    query.append(userID);
+    query.append(" AND pp.project_id = ");
+    query.append(projectID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      Map<String, String> activityData;
+
+      while (rs.next()) {
+        activityData = new HashMap<>();
+        activityData.put("id", rs.getString("id"));
+        activityData.put("title", rs.getString("title"));
+
+        activities.add(activityData);
+      }
+    } catch (SQLException e) {
+      LOG.error("getActivitiesLedByUser() > Exception raised trying to get the activities led by user {}.", userID, e);
+    }
+
+    return activities;
+  }
+
+  @Override
   public int saveActivity(int projectID, Map<String, Object> activityData, User user, String justification) {
     LOG.debug(">> saveActivity(activityData={})", activityData);
     StringBuilder query = new StringBuilder();

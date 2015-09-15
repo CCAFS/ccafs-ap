@@ -4,24 +4,51 @@
 
   <package extends="ccafsap-default" name="summaries" namespace="/summaries">
 
-  <action class="org.cgiar.ccafs.ap.action.summaries.ProjectSummaryAction" name="project">
+  <action name="project" class="org.cgiar.ccafs.ap.action.summaries.ProjectSummaryAction">
       <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">application/pdf</param>
-        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+        <param name="contentDisposition">filename="${fileName}"</param>
      </result>
-	 </action>
-	 
-	 
-  <action class="org.cgiar.ccafs.ap.action.summaries.PublicationSummaryAction" name="publication">
-      <result name="input">/WEB-INF/summaries/projectPublicationSummaries.ftl</result>
+   </action>
+   
+   
+  <action  name="deliverablePlanning" class="org.cgiar.ccafs.ap.action.summaries.DeliverablePlanningSummaryAction">
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
      </result>
    </action>
-	 
-	 
+   
+   <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.PartnersSummaryAction">
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">text/csv</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+     </result>
+   </action>
+   
+   <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.LeadInstitutionPartnersSummaryAction">
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">${contentType}</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+     </result>
+   </action>
+   
+    <action name="pwob" class="org.cgiar.ccafs.ap.action.summaries.PWOBSummaryAction">
+      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">text/csv</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+     </result>
+   </action>
+
   </package>
 </struts>

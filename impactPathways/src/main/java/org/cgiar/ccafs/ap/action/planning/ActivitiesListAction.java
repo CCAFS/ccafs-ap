@@ -20,13 +20,16 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +52,7 @@ public class ActivitiesListAction extends BaseAction {
   private ActivityManager activityManager;
   private ProjectManager projectManager;
   private ProjectPartnerManager projectPartnerManager;
+  private Map<Integer, String> projectPartnerPersons;
   private HistoryManager historyManager;
 
   // Model for the back-end
@@ -120,6 +124,10 @@ public class ActivitiesListAction extends BaseAction {
     return projectID;
   }
 
+  public Map<Integer, String> getProjectPartnerPersons() {
+    return projectPartnerPersons;
+  }
+
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
   }
@@ -132,13 +140,23 @@ public class ActivitiesListAction extends BaseAction {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
 
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
     project.setActivities(activityManager.getActivitiesByProject(projectID));
-    projectPartners = projectPartnerManager.getProjectPartners(projectID);
+
+    projectPartners = projectPartnerManager.getProjectPartners(project);
+
+    // Creating Map of partner persons to be displayed in the view.
+    projectPartnerPersons = new HashMap<>();
+    for (ProjectPartner partner : projectPartners) {
+      for (PartnerPerson person : partner.getPartnerPersons()) {
+        projectPartnerPersons.put(person.getId(), partner.getPersonComposedName(person.getId()));
+      }
+    }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -150,6 +168,7 @@ public class ActivitiesListAction extends BaseAction {
     super.getProjectLessons(projectID);
     super.setHistory(historyManager.getActivitiesHistory(project.getId()));
   }
+
 
   @Override
   public String save() {
@@ -175,9 +194,8 @@ public class ActivitiesListAction extends BaseAction {
         }
       }
       // Saving new and old Activities
-      boolean saved =
-        activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
-          this.getJustification());
+      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+        this.getJustification());
 
       if (!saved) {
         success = false;
@@ -204,6 +222,10 @@ public class ActivitiesListAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setProjectPartnerPersons(Map<Integer, String> projectPartnerPersons) {
+    this.projectPartnerPersons = projectPartnerPersons;
   }
 
   @Override

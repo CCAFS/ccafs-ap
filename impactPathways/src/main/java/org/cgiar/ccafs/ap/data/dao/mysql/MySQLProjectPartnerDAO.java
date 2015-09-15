@@ -74,14 +74,25 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     values[2] = id;
 
     int result = databaseManager.saveData(query.toString(), values);
-    if (result == 0) {
-      LOG.debug("<< deleteProjectPartner():{}", true);
-      return true;
+    if (result >= 0) {
+      LOG.debug("<< deleteProject():{}", true);
+
+      // Then we need delete all the tables that are referencing the projects table.
+      return databaseManager.deleteOnCascade("project_partners", "id", id, userID, justification);
     }
+
     LOG.debug("<< deleteProjectPartner:{}", false);
     return false;
   }
 
+
+  @Override
+  public boolean deleteProjectPartnerContributions(int projectPartnerID) {
+    String query = "UPDATE  project_partner_contributions SET is_active = FALSE WHERE project_partner_id = ?";
+    int result = databaseManager.saveData(query, new Object[] {projectPartnerID});
+
+    return result != -1;
+  }
 
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
@@ -93,11 +104,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         Map<String, String> projectPartnerData = new HashMap<String, String>();
         projectPartnerData.put("id", rs.getString("id"));
         projectPartnerData.put("project_id", rs.getString("project_id"));
-        projectPartnerData.put("partner_id", rs.getString("partner_id"));
-        projectPartnerData.put("user_id", rs.getString("user_id"));
-        projectPartnerData.put("partner_type", rs.getString("partner_type"));
-        projectPartnerData.put("responsabilities", rs.getString("responsabilities"));
-
+        projectPartnerData.put("institution_id", rs.getString("institution_id"));
         projectPartnerList.add(projectPartnerData);
       }
       rs.close();
@@ -113,24 +120,97 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  public Map<String, String> getProjectPartnerById(int partnerID) {
+  public Map<String, String> getProjectPartner(int partnerID) {
     LOG.debug(">> getProjectPartner projectID = {} )", partnerID);
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT pp.*   ");
     query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.id= ");
+    query.append("WHERE pp.id = ");
     query.append(partnerID);
     query.append(" AND pp.is_active = 1 ");
-    query.append("ORDER BY partner_id, partner_type");
 
-
-    LOG.debug("-- getProject() > Calling method executeQuery to get the results");
+    LOG.debug("-- getProjectPartner() > Calling method executeQuery to get the results");
     List<Map<String, String>> data = this.getData(query.toString());
     if (data.size() > 0) {
       return data.get(0);
     }
     return new HashMap<String, String>();
+  }
+
+
+  @Override
+  public Map<String, String> getProjectPartnerByPersonID(int projectPartnerPersonID) {
+    Map<String, String> projectPartnerData = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT pp.id, i.id as 'institution_id', i.name as 'institution_name',  ");
+    query.append("i.acronym as 'institution_acronym', ppp.responsibilities, ppp.contact_type, ");
+    query.append("ppp.id as 'partner_person_id', u.id as 'user_id', u.first_name, u.last_name, u.email ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+    query.append("INNER JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("INNER JOIN users u ON ppp.user_id = u.id ");
+    query.append("WHERE ppp.id = ");
+    query.append(projectPartnerPersonID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        projectPartnerData.put("id", rs.getString("id"));
+        projectPartnerData.put("institution_id", rs.getString("institution_id"));
+        projectPartnerData.put("institution_name", rs.getString("institution_name"));
+        projectPartnerData.put("institution_acronym", rs.getString("institution_acronym"));
+        projectPartnerData.put("partner_person_id", rs.getString("partner_person_id"));
+        projectPartnerData.put("responsibilities", rs.getString("responsibilities"));
+        projectPartnerData.put("contact_type", rs.getString("contact_type"));
+        projectPartnerData.put("user_id", rs.getString("user_id"));
+        projectPartnerData.put("first_name", rs.getString("first_name"));
+        projectPartnerData.put("last_name", rs.getString("last_name"));
+        projectPartnerData.put("email", rs.getString("email"));
+      }
+    } catch (SQLException e) {
+      LOG.error("getProjectPartnerByPersonID > Exception raised trying to get the project partner linked to "
+        + "the partner person {}.", projectPartnerPersonID, e);
+    }
+
+    return projectPartnerData;
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectPartnerContributors(int projectPartnerID) {
+    LOG.debug(">> getProjectPartnerContributors( )");
+
+    StringBuilder query = new StringBuilder();
+
+    query.append("SELECT ppc.* ");
+    query.append("FROM project_partner_contributions ppc ");
+    query.append("WHERE ppc.project_partner_id = ");
+    query.append(projectPartnerID);
+    query.append(" AND ppc.is_active = 1");
+
+
+    LOG.debug(">> executeQuery(query='{}')", query);
+    List<Map<String, String>> partnerContributionsDataList = new ArrayList<>();
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> partnerContributionsData = new HashMap<String, String>();
+        partnerContributionsData.put("id", rs.getString("id"));
+        partnerContributionsData.put("project_partner_id", rs.getString("project_partner_id"));
+        partnerContributionsData.put("project_partner_contributor_id", rs.getString("project_partner_contributor_id"));
+        partnerContributionsDataList.add(partnerContributionsData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query.toString();
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< executeQuery():projectPartnerList.size={}", partnerContributionsDataList.size());
+    return partnerContributionsDataList;
   }
 
   @Override
@@ -143,17 +223,17 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("WHERE pp.project_id = ");
     query.append(projectID);
     query.append(" AND pp.is_active = 1 ");
-    query.append("ORDER BY partner_id, partner_type");
-
 
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
 
+
   @Override
+  @Deprecated
   public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
-    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})",
-      new Object[] {projectID, projectPartnerType});
+    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})", new Object[] {projectID,
+      projectPartnerType});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT *   ");
@@ -170,45 +250,83 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return this.getData(query.toString());
   }
 
-
   @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
-    LOG.debug(">> createProjectPartner(projectPartnerData)", projectPartnerData);
+    LOG.debug(">> saveProjectPartner(projectPartnerData)", projectPartnerData);
     StringBuilder query = new StringBuilder();
     Object[] values;
     if (projectPartnerData.get("id") == null) {
       // Insert new record
-      query.append(
-        "INSERT INTO project_partners (id, project_id, partner_id, user_id, partner_type, responsabilities, created_by, modified_by, modification_justification) ");
-      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-      values = new Object[9];
+      query.append("INSERT INTO project_partners (id, project_id, institution_id, created_by, modified_by, ");
+      query.append("modification_justification) VALUES (?, ?, ?, ?, ?, ?) ");
+      query.append("ON DUPLICATE KEY UPDATE is_active=TRUE, modified_by=VALUES(modified_by),  ");
+      query.append("modification_justification=VALUES(modification_justification) ");
+
+      values = new Object[6];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");
-      values[2] = projectPartnerData.get("partner_id");
-      values[3] = projectPartnerData.get("user_id");
-      values[4] = projectPartnerData.get("partner_type");
-      values[5] = projectPartnerData.get("responsabilities");
-      values[6] = projectPartnerData.get("created_by");
-      values[7] = projectPartnerData.get("modified_by");
-      values[8] = projectPartnerData.get("modification_justification");
+      values[2] = projectPartnerData.get("institution_id");
+      values[3] = projectPartnerData.get("created_by");
+      values[4] = projectPartnerData.get("modified_by");
+      values[5] = projectPartnerData.get("modification_justification");
     } else {
       // update record
-      query.append(
-        "UPDATE project_partners SET project_id = ?, partner_id = ?, user_id = ?, partner_type = ?, responsabilities = ?, modified_by = ?, modification_justification = ? ");
+      query
+        .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[8];
+      values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
-      values[1] = projectPartnerData.get("partner_id");
-      values[2] = projectPartnerData.get("user_id");
-      values[3] = projectPartnerData.get("partner_type");
-      values[4] = projectPartnerData.get("responsabilities");
-      values[5] = projectPartnerData.get("modified_by");
-      values[6] = projectPartnerData.get("modification_justification");
-      values[7] = projectPartnerData.get("id");
+      values[1] = projectPartnerData.get("institution_id");
+      values[2] = projectPartnerData.get("modified_by");
+      values[3] = projectPartnerData.get("modification_justification");
+      values[4] = projectPartnerData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);
-    LOG.debug("<< createProjectPartner():{}", result);
+
+    // If the record already exists but was inactive we need to get the id
+    if (result == 0 && projectPartnerData.get("id") == null) {
+      query.setLength(0);
+      query.append("SELECT id FROM project_partners WHERE project_id = ");
+      query.append(projectPartnerData.get("project_id"));
+      query.append(" and institution_id = ");
+      query.append(projectPartnerData.get("institution_id"));
+      try (Connection con = databaseManager.getConnection()) {
+        ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+        if (rs.next()) {
+          result = rs.getInt("id");
+        }
+      } catch (SQLException e) {
+        LOG.error("There was an error getting the partner id of project {} with the insitution {}.",
+          projectPartnerData.get("project_id"), projectPartnerData.get("institution_id"));
+      }
+    }
+
+    LOG.debug("<< saveProjectPartner():{}", result);
+    return result;
+  }
+
+  @Override
+  public int saveProjectPartnerContribution(Map<String, Object> partnerContributionData) {
+    LOG.debug(">> saveProjectPartnerContribution({})", partnerContributionData);
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO project_partner_contributions (project_partner_id, project_partner_contributor_id, ");
+    query.append("created_by, modified_by, modification_justification) VALUES (?, ");
+    query.append("( SELECT id FROM project_partners WHERE institution_id=? AND project_id=? AND is_active = TRUE) ");
+    query.append(",?,?,?) ON DUPLICATE KEY UPDATE is_active = TRUE, created_by=VALUES(created_by), ");
+    query.append("modified_by = VALUES(modified_by), modification_justification=VALUES(modification_justification) ");
+
+    Object[] values = new Object[6];
+    values[0] = partnerContributionData.get("project_partner_id");
+    values[1] = partnerContributionData.get("institution_id");
+    values[2] = partnerContributionData.get("project_id");
+    values[3] = partnerContributionData.get("user_id");
+    values[4] = partnerContributionData.get("user_id");
+    values[5] = partnerContributionData.get("justification");
+
+    int result = databaseManager.saveData(query.toString(), values);
+
+    LOG.debug("<< saveProjectPartnerContribution():{}", result);
     return result;
   }
 }

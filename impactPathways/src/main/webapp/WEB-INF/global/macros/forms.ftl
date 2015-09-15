@@ -19,12 +19,13 @@
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className?has_content]class="${className}"[/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle && placeholder]placeholder="${labelTitle}"[/#if]/>
     [#else]
+      [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
-          [#if !(customValue)?has_content][@s.text name="form.values.fieldEmpty" /][#else]${customValue}[/#if]
+          [#if !(customValue)?has_content]${requiredText}[@s.text name="form.values.fieldEmpty" /][#else]${customValue}[/#if]
         [#else]
-          [#if !value?has_content][@s.text name="form.values.fieldEmpty" /][#else]${value}[/#if] 
+          [#if !value?has_content]${requiredText}[@s.text name="form.values.fieldEmpty" /][#else]${value}[/#if] 
         [/#if]
       </p>
     [/#if]
@@ -45,12 +46,13 @@
     [#if editable]
       <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if]/>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
     [#else]
+      [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
-          [#if !(customValue)?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${customValue}[/#if]
+          [#if !(customValue)?has_content]${requiredText}[@s.text name="form.values.fieldEmpty" /][#else]${customValue?replace('\n', '<br>')}[/#if]
         [#else]
-          [#if !value?has_content] [@s.text name="form.values.fieldEmpty" /][#else]${value}[/#if] 
+          [#if !value?has_content]${requiredText}[@s.text name="form.values.fieldEmpty" /][#else]${value?replace('\n', '<br>')}[/#if] 
         [/#if]
       </p>
     [/#if] 
@@ -97,7 +99,8 @@
         [@s.checkboxlist name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
       [/#if]
     [#elseif keyFieldName == ""]  
-      [@s.text name="form.values.fieldEmpty" /]
+      [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign] 
+      ${requiredText}  [@s.text name="form.values.fieldEmpty" /]
     [#else]
       ${customValue}
     [/#if] 
@@ -118,7 +121,6 @@
         [#else]
           [@s.radio name="${name}" cssClass="${className}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
         [/#if]
-      
     </div>
   </div>
 [/#macro]
@@ -138,16 +140,16 @@
       [#if value=="-NULL"]
         [#assign customValue][@s.property value="${name}" /][/#assign]
       [#else]
-        [#assign customValue]${value}[/#assign]        
+        [#assign customValue]${value}[/#assign]
       [/#if]
       [#-- Help text --]
       [#if help!=""][#assign helpText][@s.text name="${help}" /][/#assign][#else][#assign helpText][/#assign][/#if]
-      [#if editable] 
+      [#if editable]
         [#if keyFieldName == ""]
           [#if multiple]
             [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" multiple="true" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText  /]
           [#else]
-            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText  /]
+            [@s.select name="${name}" list="${listName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" headerKey="-1" headerValue="${placeholderText}"  /]
           [/#if]
         [#else]
           [#if multiple]
@@ -156,23 +158,39 @@
             [@s.select name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" cssClass="${className}" tooltip="${helpText}" headerKey="-1" headerValue=placeholderText /]
           [/#if]
         [/#if] 
-      [#else] 
+      [#else]
+        [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign]  
         <p>  
-        [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
-        [#if value=="-NULL"] 
-          [#if !(customValue)?has_content] 
-            [@s.text name="form.values.fieldEmpty" /]
+          [#if displayFieldName == "" ]
+            [#assign key][@s.property value="${name}"/][/#assign]
+            [#assign customValue][@s.property value="${listName}['${key}']"/][/#assign]
+            [#if customValue?has_content] 
+                ${customValue}
+              [#else]
+                [#if !(key?has_content)]
+                  ${requiredText}   [@s.text name="form.values.fieldEmpty" /]
+                [/#if]
+              [/#if]
           [#else]
-            ${customValue}
+            [#if name == ""]
+              [#--@s.property value="${listName}[${value}].${displayFieldName}"/--]
+            [/#if]
+            [#assign customValue][@s.property value="${name}.${displayFieldName}"/][/#assign]  
+            [#if value=="-NULL"] 
+              [#if !(customValue)?has_content] 
+                 ${requiredText}   [@s.text name="form.values.fieldEmpty" /]
+              [#else]
+                ${customValue}
+              [/#if]
+            [#else]  
+              [#if customValue?has_content]
+                ${customValue}
+              [#elseif value=="-1"]
+                 ${requiredText}   [@s.text name="form.values.fieldEmpty" /]
+              [/#if] 
+            [/#if]
+            </p>
           [/#if]
-        [#else]  
-          [#if customValue?has_content]
-            ${customValue}
-          [#elseif value=="-1"]
-            [@s.text name="form.values.fieldEmpty" /]
-          [/#if] 
-        [/#if]
-        </p>
       [/#if]  
     </div> 
   </div>  
@@ -191,7 +209,7 @@
   [#if required]
     <span class="red">*</span>
   [/#if]
-[/#macro] 
+[/#macro]
 
 [#macro confirmJustification action="" namespace="/" nameId="" title="" projectID=""]
   <div id="dialog-justification" title="${title}" style="display:none"> 

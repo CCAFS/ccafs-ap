@@ -177,14 +177,17 @@ public class MySQLProjectDAO implements ProjectDAO {
         + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
         + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
-    query.append("SELECT p.id, p.title, p.type, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.type, p.summary, p.active_since, SUM(pb.amount) as 'total_ccafs_amount', ");
+    query.append("SUM(pb2.amount) as 'total_bilateral_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
     query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
     query.append("FROM projects as p ");
-    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.budget_type IN (  ");
-    query.append(BudgetType.W1_W2.getValue() + ", ");
-    query.append(BudgetType.W3_BILATERAL.getValue() + " ) ");
-    query.append("WHERE p.is_active = TRUE ");
+    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
+    query.append(BudgetType.W1_W2.getValue());
+    query
+      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+    query.append(BudgetType.W3_BILATERAL.getValue());
+    query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -193,8 +196,10 @@ public class MySQLProjectDAO implements ProjectDAO {
         Map<String, String> projectData = new HashMap<String, String>();
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
+        projectData.put("summary", rs.getString("summary"));
         projectData.put("type", rs.getString("type"));
-        projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
+        projectData.put("total_ccafs_amount", rs.getString("total_ccafs_amount"));
+        projectData.put("total_bilateral_amount", rs.getString("total_bilateral_amount"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
         projectData.put("regions", rs.getString("regions"));
         projectData.put("flagships", rs.getString("flagships"));
@@ -357,36 +362,6 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     LOG.debug("<< executeQuery():ProjectList.size={}", projectList.size());
     return projectList;
-  }
-
-  @Override
-  public Map<String, String> getExpectedProjectLeader(int projectID) {
-    LOG.debug(">> getExpectedProjectLeader(projectID={})", projectID);
-    Map<String, String> expectedProjectLeaderData = new HashMap<>();
-    try (Connection connection = databaseManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT epl.* ");
-      query.append("FROM expected_project_leaders epl ");
-      query.append("INNER JOIN projects p ON p.expected_project_leader_id = epl.id ");
-      query.append("WHERE p.id= ");
-      query.append(projectID);
-
-      ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
-        expectedProjectLeaderData.put("id", rs.getString("id"));
-        expectedProjectLeaderData.put("contact_first_name", rs.getString("contact_first_name"));
-        expectedProjectLeaderData.put("contact_last_name", rs.getString("contact_last_name"));
-        expectedProjectLeaderData.put("contact_email", rs.getString("contact_email"));
-        expectedProjectLeaderData.put("institution_id", rs.getString("institution_id"));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getExpectedProjectLeader() > There was an error getting the data for expeted project leader {}.",
-        projectID, e);
-      return null;
-    }
-    LOG.debug("<< getExpectedProjectLeader():{}", expectedProjectLeaderData);
-    return expectedProjectLeaderData;
   }
 
   @Override
@@ -611,9 +586,11 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append(userID);
       query.append(") OR p.liaison_institution_id = (SELECT institution_id FROM liaison_users WHERE user_id = ");
       query.append(userID);
-      query.append(") OR EXISTS (SELECT project_id FROM project_partners WHERE  partner_type = '");
+      query.append(") OR EXISTS (SELECT project_id FROM project_partners pp ");
+      query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+      query.append("WHERE  ppp.contact_type = '");
       query.append(APConstants.PROJECT_PARTNER_PL);
-      query.append("' AND project_id = p.id AND user_id = ");
+      query.append("' AND pp.project_id = p.id AND ppp.user_id = ");
       query.append(userID);
       query.append(") ");
       // If the project is bilateral and the user is a focal point of the lead institution
@@ -622,6 +599,12 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("' AND ( SELECT institution_id FROM liaison_institutions WHERE id = p.liaison_institution_id) = ");
       query.append(" ( SELECT li.institution_id FROM liaison_institutions li ");
       query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
+      query.append(userID);
+      query.append(" ) ) ");
+      // If the project user has the role of 'Admin'
+      query.append("OR ( ");
+      query.append(" 'Admin' IN ( SELECT acronym FROM user_roles ur INNER JOIN roles r ON ur.role_id = r.id ");
+      query.append("WHERE ur.user_id = ");
       query.append(userID);
       query.append(" ) ) ");
       query.append("AND p.is_active = TRUE ");
@@ -636,51 +619,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
     return projectIds;
-  }
-
-  @Override
-  public List<Map<String, String>> getProjectIndicators(int projectID) {
-    LOG.debug(">> getProjectIndicators( projectID = {} )", projectID);
-    List<Map<String, String>> indicatorsDataList = new ArrayList<>();
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ai.id, ai.description, ai.target, ai.year, aip.id as 'parent_id', ");
-    query.append("aip.description as 'parent_description', aip.target as 'parent_target', ");
-    query.append("ie.id as 'outcome_id', ie.description as 'outcome_description' ");
-    query.append("FROM ip_project_indicators as ai ");
-    query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
-    query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
-    query.append("WHERE ai.project_id=  ");
-    query.append(projectID);
-    query.append(" AND ai.is_active = TRUE ");
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> indicatorData = new HashMap<String, String>();
-
-        indicatorData.put("id", rs.getString("id"));
-        indicatorData.put("description", rs.getString("description"));
-        indicatorData.put("target", rs.getString("target"));
-        indicatorData.put("year", rs.getString("year"));
-        indicatorData.put("parent_id", rs.getString("parent_id"));
-        indicatorData.put("parent_description", rs.getString("parent_description"));
-        indicatorData.put("parent_target", rs.getString("parent_target"));
-        indicatorData.put("outcome_id", rs.getString("outcome_id"));
-        indicatorData.put("outcome_description", rs.getString("outcome_description"));
-
-        indicatorsDataList.add(indicatorData);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      String exceptionMessage = "-- getProjectIndicators() > Exception raised trying ";
-      exceptionMessage += "to get the activity indicators for activity  " + projectID;
-
-      LOG.error(exceptionMessage, e);
-      return null;
-    }
-    LOG.debug("<< getProjectIndicators():indicatorsDataList.size={}", indicatorsDataList.size());
-    return indicatorsDataList;
   }
 
   @Override
@@ -749,6 +687,34 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     LOG.debug("-- getProjectOwnerId() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectsByInstitution(int institutionID) {
+    LOG.debug(">> getProjectsByInstitution(institutionID={})", new Object[] {institutionID});
+    List<Map<String, String>> projectList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.* ");
+    query.append("FROM projects as p ");
+    query.append("INNER JOIN project_partners pp ON pp.project_id = p.id ");
+    query.append("INNER JOIN institutions i ON i.id = pp.institution_id ");
+    query.append("WHERE i.id= ");
+    query.append(institutionID);
+    query.append(" ORDER BY p.id");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+
+        projectList.add(projectData);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getCoreProjects() > Exception raised trying to get the core projects.", e);
+    }
+    return projectList;
   }
 
   @Override
@@ -857,9 +823,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
     } else {
       // UPDATE the record into the database.
-      query
-        .append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, contact_email = ?, institution_id = ? ");
-      query.append("WHERE id = ?");
+      query.append("UPDATE expected_project_leaders SET contact_first_name = ?, contact_last_name = ?, ");
+      query.append("contact_email = ?, institution_id = ? WHERE id = ?");
       Object[] values = new Object[5];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
       values[1] = expectedProjectLeaderData.get("contact_last_name");
@@ -927,48 +892,6 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public boolean saveProjectIndicators(Map<String, String> indicatorData) {
-    LOG.debug(">> saveProjectIndicators(indicatorData={})", indicatorData);
-    StringBuilder query = new StringBuilder();
-
-
-    Object[] values;
-    // Insert new activity indicator record
-    query.append("INSERT INTO ip_project_indicators (id, description, target, year, project_id, ");
-    query.append("parent_id, outcome_id, created_by, modified_by, modification_justification) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, ");
-    query.append("description = VALUES(description), target = VALUES(target), ");
-    query.append("modified_by = VALUES(modified_by), ");
-    query.append("modification_justification = VALUES(modification_justification) ");
-
-    values = new Object[10];
-    values[0] = indicatorData.get("id");
-    values[1] = indicatorData.get("description");
-    values[2] = indicatorData.get("target");
-    values[3] = indicatorData.get("year");
-    values[4] = indicatorData.get("project_id");
-    values[5] = indicatorData.get("parent_id");
-    values[6] = indicatorData.get("outcome_id");
-    values[7] = indicatorData.get("user_id");
-    values[8] = indicatorData.get("user_id");
-    values[9] = indicatorData.get("justification");
-
-    int newId = databaseManager.saveData(query.toString(), values);
-    if (newId == -1) {
-      LOG
-        .warn(
-          "-- saveProjectIndicators() > A problem happened trying to add a new project indicator. Data tried to save was: {}",
-          indicatorData);
-      LOG.debug("<< saveProjectIndicators(): {}", false);
-      return false;
-    }
-
-    LOG.debug("<< saveProjectIndicators(): {}", true);
-    return true;
-  }
-
-  @Override
   public int saveProjectOutput(Map<String, String> outputData) {
     LOG.debug(">> saveProjectOutput(outputData={})", outputData);
     StringBuilder query = new StringBuilder();
@@ -1003,36 +926,103 @@ public class MySQLProjectDAO implements ProjectDAO {
     return newId;
   }
 
+
   @Override
-  public boolean updateProjectIndicators(Map<String, String> indicatorData) {
-    LOG.debug(">> updateProjectIndicators(indicatorData={})", indicatorData);
+  public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
+    LOG.debug(">> getAllProjectsWithDeliverables ");
+    // TODO
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    Object[] values;
+
+    // Formatted query:
+    query.append("SELECT p.id as 'project_id', ");
+    query.append("p.title as 'project_title', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(ip1.acronym SEPARATOR ', ') ");
+    query.append("FROM project_focuses pf1 ");
+    query.append("INNER JOIN ip_programs ip1 ON ip1.id = pf1.program_id ");
+    query.append("WHERE pf1.project_id = p.id AND ip1.id < 5 ");
+    query.append("GROUP BY d.id ");
+    query.append(") as 'flagships', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(ip2.acronym SEPARATOR ', ') ");
+    query.append("FROM project_focuses pf2 ");
+    query.append("INNER JOIN ip_programs ip2 ON ip2.id = pf2.program_id ");
+    query.append("WHERE pf2.project_id = p.id AND ip2.id >= 5 ");
+    query.append("GROUP BY d.id ");
+    query.append(") as 'regions', ");
+    query.append("d.id as 'deliverable_id', ");
+    query.append("d.title as 'deliverable_title', ");
+    query.append("ip.description as 'mog', ");
+    query.append("d.year as 'deliverable_year', ");
+    query.append("dtype.name as 'deliverable_type', ");
+    query.append("dsubtype.name as 'deliverable_sub_type', ");
+    query.append("d.type_other as 'other_type', ");
+    query.append("( ");
+    query
+      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    query.append("FROM deliverable_partnerships dp_resp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("WHERE dp_resp.deliverable_id = d.id ");
+    query.append("AND dp_resp.partner_type = 'Resp' ");
+    query.append(" GROUP BY d.id ");
+    query.append(") as 'partner_responsible', ");
+    query.append("( ");
+    query
+      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    query.append("FROM deliverable_partnerships dp_resp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("WHERE dp_resp.deliverable_id = d.id ");
+    query.append("AND dp_resp.partner_type = 'Other' ");
+    query.append("GROUP BY d.id ");
+    query.append(") as 'other_responsibles' ");
+    query.append("FROM deliverables d ");
+    query.append("INNER JOIN projects p ON p.id = d.project_id ");
+    query.append("INNER JOIN project_partners pp ON pp.project_id = p.id ");
+    query.append("INNER JOIN project_partner_persons persons ON persons.project_partner_id = pp.id ");
+    query.append("INNER JOIN institutions i ON i.id = pp.institution_id ");
+    query.append("INNER JOIN users u ON u.id = persons.user_id ");
+    query.append("INNER JOIN ip_deliverable_contributions ipd ON ipd.deliverable_id = d.id ");
+    query.append("INNER JOIN ip_project_contributions ipp ON ipp.id = ipd.project_contribution_id ");
+    query.append("INNER JOIN ip_elements ip ON ip.id = ipp.mog_id ");
+    query.append("INNER JOIN deliverable_types dsubtype ON dsubtype.id = d.type_id ");
+    query.append("INNER JOIN deliverable_types dtype ON dtype.id = dsubtype.parent_id ");
+    query.append("WHERE p.is_active = 1 ");
+    query.append("AND d.is_active = 1 ");
+    query.append("AND pp.is_active = 1 ");
+    query.append("AND persons.is_active = 1 ");
+    query.append("GROUP BY d.id ");
 
 
-    // Insert new activity indicator record
-    query.append("UPDATE ip_project_indicators SET ");
-    query.append("modified_by = ? , modification_justification = ?, ");
-    query.append("description = ?, target = ? ");
-    query.append("WHERE id = ? ");
-
-    values = new Object[5];
-    values[0] = indicatorData.get("user_id");
-    values[1] = indicatorData.get("justification");
-    values[2] = indicatorData.get("description");
-    values[3] = indicatorData.get("target");
-    values[4] = indicatorData.get("id");
-
-    int newId = databaseManager.saveData(query.toString(), values);
-    if (newId == -1) {
-      LOG.warn("-- updateProjectIndicators() > A problem happened trying to update the project indicator {}.",
-        indicatorData.get("id"));
-      LOG.debug("<< updateProjectIndicators(): {}", false);
-      return false;
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> csvData = new HashMap<>();
+        csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("flagships", rs.getString("flagships"));
+        csvData.put("regions", rs.getString("regions"));
+        csvData.put("deliverable_id", rs.getInt("deliverable_id"));
+        csvData.put("deliverable_title", rs.getString("deliverable_title"));
+        csvData.put("mog", rs.getString("mog"));
+        csvData.put("deliverable_type", rs.getString("deliverable_type"));
+        csvData.put("deliverable_sub_type", rs.getString("deliverable_sub_type"));
+        csvData.put("other_type", rs.getString("other_type"));
+        csvData.put("partner_responsible", rs.getString("partner_responsible"));
+        csvData.put("other_responsibles", rs.getString("other_responsibles"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllProjectsWithDeliverables() > Exception raised trying ";
+      exceptionMessage += "to get the summary report for expected deliverables: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
     }
-
-    LOG.debug("<< updateProjectIndicators(): {}", true);
-    return true;
+    LOG.debug("<< getAllProjectsWithDeliverables ");
+    return csvRecords;
   }
 
   @Override

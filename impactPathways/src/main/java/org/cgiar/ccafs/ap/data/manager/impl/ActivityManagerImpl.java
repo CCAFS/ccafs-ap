@@ -16,7 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ActivityDAO;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -48,12 +48,12 @@ public class ActivityManagerImpl implements ActivityManager {
   private ActivityDAO activityDAO;
 
   // Managers
-  private ProjectPartnerManager projectPartnerManager;
+  private PartnerPersonManager partnerPersonManager;
 
   @Inject
-  public ActivityManagerImpl(ActivityDAO activityDAO, ProjectPartnerManager projectPartnerManager) {
+  public ActivityManagerImpl(ActivityDAO activityDAO, PartnerPersonManager partnerPersonManager) {
     this.activityDAO = activityDAO;
-    this.projectPartnerManager = projectPartnerManager;
+    this.partnerPersonManager = partnerPersonManager;
   }
 
   @Override
@@ -100,8 +100,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("leader_id") != null) {
-        activity
-        .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        activity.setLeader(partnerPersonManager.getPartnerPerson(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
 
@@ -174,8 +173,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
       }
       if (activityData.get("leader_id") != null) {
-        activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+        activity.setLeader(partnerPersonManager.getPartnerPerson(Integer.parseInt(activityData.get("leader_id"))));
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
       return activity;
@@ -211,8 +209,7 @@ public class ActivityManagerImpl implements ActivityManager {
           LOG.error("There was an error formatting the end date", e);
         }
         if (activityData.get("leader_id") != null) {
-          activity
-          .setLeader(projectPartnerManager.getProjectPartnerById(Integer.parseInt(activityData.get("leader_id"))));
+          activity.setLeader(partnerPersonManager.getPartnerPerson(Integer.parseInt(activityData.get("leader_id"))));
         }
       }
       activity.setCreated(Long.parseLong(activityData.get("created")));
@@ -221,6 +218,21 @@ public class ActivityManagerImpl implements ActivityManager {
       activityList.add(activity);
     }
     return activityList;
+  }
+
+  @Override
+  public List<Activity> getProjectActivitiesLedByUser(int projectID, int userID) {
+    List<Activity> activities = new ArrayList<>();
+    List<Map<String, String>> activitiesData = activityDAO.getProjectActivitiesLedByUser(projectID, userID);
+
+    for (Map<String, String> activityData : activitiesData) {
+      Activity activity = new Activity();
+      activity.setId(Integer.parseInt(activityData.get("id")));
+      activity.setTitle(activityData.get("title"));
+
+      activities.add(activity);
+    }
+    return activities;
   }
 
   @Override
