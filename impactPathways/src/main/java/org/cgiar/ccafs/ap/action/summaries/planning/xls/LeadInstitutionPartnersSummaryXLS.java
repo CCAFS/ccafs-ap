@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -47,31 +45,39 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Institution> projectLeadingInstitutions, String[] projectList, Workbook workBook) {
-    int i = 12;
+  private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList,
+    Workbook workBook) {
+    int rowStart = 12;
+    int columnStart = 1;
     int count = 0;
 
     for (Institution institution : projectLeadingInstitutions) {
-      Sheet sheet = workBook.getSheetAt(0);
-      Row row = sheet.createRow((short) i);
-      CellStyle style = workBook.createCellStyle();
-      style.setAlignment(CellStyle.ALIGN_CENTER);
-      row.createCell(1).setCellValue(String.valueOf(institution.getId()));
-      sheet.autoSizeColumn(1);
-      row.getCell(1).setCellStyle(style);
-      row.createCell(2).setCellValue(institution.getName());
-      sheet.autoSizeColumn(2);
-      row.createCell(3).setCellValue(institution.getAcronym());
-      sheet.autoSizeColumn(3);
-      row.getCell(3).setCellStyle(style);
-      row.createCell(4).setCellValue(institution.getWebsiteLink());
-      sheet.autoSizeColumn(4);
-      row.createCell(5).setCellValue(institution.getCountry().getName());
-      sheet.autoSizeColumn(5);
-      row.createCell(6).setCellValue(projectList[count]);
-      sheet.autoSizeColumn(6);
-      i++;
-      count++;
+      xls.writeValue(sheet, institution.getId(), true, rowStart, columnStart);
+      xls.writeValue(sheet, institution.getName(), false, rowStart, 2);
+      xls.writeValue(sheet, institution.getAcronym(), true, rowStart, 3);
+      xls.writeValue(sheet, institution.getWebsiteLink(), false, rowStart, 4);
+      xls.writeValue(sheet, institution.getCountry().getName(), false, rowStart, 5);
+      // xls.writeValue(sheet, institution.getName(), false, rowStart, columnStart);
+      // Row row = sheet.createRow((short) i);
+      // CellStyle style = workBook.createCellStyle();
+      // style.setAlignment(CellStyle.ALIGN_CENTER);
+      // row.createCell(1).setCellValue(String.valueOf(institution.getId()));
+      // sheet.autoSizeColumn(1);
+      // row.getCell(1).setCellStyle(style);
+      // row.createCell(2).setCellValue(institution.getName());
+      // sheet.autoSizeColumn(2);
+      // row.createCell(3).setCellValue(institution.getAcronym());
+      // sheet.autoSizeColumn(3);
+      // row.getCell(3).setCellStyle(style);
+      // row.createCell(4).setCellValue(institution.getWebsiteLink());
+      // sheet.autoSizeColumn(4);
+      // row.createCell(5).setCellValue(institution.getCountry().getName());
+      // sheet.autoSizeColumn(5);
+      // row.createCell(6).setCellValue(projectList[count]);
+      // sheet.autoSizeColumn(6);
+      // i++;
+      // count++;
+      rowStart++;
     }
   }
 
@@ -94,7 +100,7 @@ public class LeadInstitutionPartnersSummaryXLS {
       xls.writeTitleBox(sheet, "CCAFS Lead Institutions");
       xls.writeHeaders(sheet, headers);
 
-      this.addContent(projectLeadingInstitutions, projectList, workbook);
+      this.addContent(sheet, projectLeadingInstitutions, projectList, workbook);
 
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();
