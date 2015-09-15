@@ -22,7 +22,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -99,21 +98,22 @@ public class LeadInstitutionPartnersSummaryXLS {
 
       workbook.setSheetName(0, "LeadInstitutions");
       Sheet sheet = workbook.getSheetAt(0);
-
-      Row row = sheet.createRow((short) 11);
-      Font font = workbook.createFont();
-      font.setBold(true);
-      CellStyle style = workbook.createCellStyle();
-      style.setAlignment(CellStyle.ALIGN_CENTER);
-      style.setFont(font);
-      for (int c = 1; c <= headers.length; c++) {
-        row.createCell(c).setCellValue(headers[c - 1]);
-        row.getCell(c).setCellStyle(style);
-        sheet.autoSizeColumn(c);
-      }
-
-      // this.addHeaders(headers);
-      this.addContent(projectLeadingInstitutions, projectList, workbook);
+      xls.writeTitleBox(sheet, "CCAFS Lead Institutions");
+      xls.writeHeaders(sheet, headers);
+      // Row row = sheet.createRow((short) 11);
+      // Font font = workbook.createFont();
+      // font.setBold(true);
+      // CellStyle style = workbook.createCellStyle();
+      // style.setAlignment(CellStyle.ALIGN_CENTER);
+      // style.setFont(font);
+      // for (int c = 1; c <= headers.length; c++) {
+      // row.createCell(c).setCellValue(headers[c - 1]);
+      // row.getCell(c).setCellStyle(style);
+      // sheet.autoSizeColumn(c);
+      // }
+      //
+      // // this.addHeaders(headers);
+      // this.addContent(projectLeadingInstitutions, projectList, workbook);
       // this.flush();
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();

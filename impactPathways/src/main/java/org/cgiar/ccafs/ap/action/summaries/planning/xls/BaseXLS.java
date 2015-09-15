@@ -52,14 +52,17 @@ public class BaseXLS {
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
   // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE =
-    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
+  private static String EXCEL_TEMPLATE_FILE = ServletActionContext.getServletContext().getRealPath(
+    "resources/templates/template.xlsx");
 
   // Header Style
   private static final String HEADER_FONT_NAME = "Arial";
   private static final short HEADER_FONT_SIZE = 11;
-  private static final String HEADER_FONT_COLOR_HEX = "#4E4E4F";
+  private static final String HEADER_FONT_COLOR_HEX = "#404040";
   private static final int HEADER_ROW_HEIGHT = 31;
+
+  // Box Style
+  // TODO
 
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
@@ -122,11 +125,11 @@ public class BaseXLS {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     usingTemplate = useTemplate;
-    rowStart = 12;
-    columnStart = 1;
     try {
       // validating the type of format.
       if (useTemplate) {
+        rowStart = 12;
+        columnStart = 1;
         // opening excel template.
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
@@ -143,6 +146,11 @@ public class BaseXLS {
       LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
     }
     return null;
+  }
+
+  public void newLine() {
+    rowCounter++;
+    columnCounter = columnStart;
   }
 
   /**
@@ -179,6 +187,24 @@ public class BaseXLS {
     } else {
       // TODO To develop the same algorithm but without style starting in the first row of the sheet.
     }
+  }
+
+  /**
+   * @param sheet
+   * @param text
+   */
+  public void writeTitleBox(Sheet sheet, String text) {
+    // TODO CM
+  }
+
+  /**
+   * @param sheet
+   * @param value
+   */
+  public void writeValue(Sheet sheet, Object value) {
+    // TODO CM
+
+    columnCounter++;
   }
 
   /**
