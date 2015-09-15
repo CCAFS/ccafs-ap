@@ -2559,6 +2559,56 @@ button.ipGraph-btn{
 
 /* projects List */
 
+.projectsList thead{
+  font-weight: bold !important;
+}
+
+.projectsList thead tr.header {
+  height:45px;
+  background-color: #7B9074;
+}
+
+.projectsList thead tr.subHeader {
+  height: 30px;
+}
+
+.projectsList a.submitButton {
+  background-color: #83AECC;
+  padding: 3px 12px;
+  border-radius: 2px;
+  color: #fff;
+}
+
+.projectsList a.submitButton:hover {
+  background-color: #3498db;.projectsList
+  a.submitButton {      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  background-color: #DCDCFF;
+  padding: 3px 12px;
+  border-radius: 2px;};.projectsList
+  a.submitButton {      
+  
+  
+  
+  
+  
+  
+  
+  
+  background-color: #DCDCFF;
+  padding: 3px 12px;
+  border-radius: 2px;};
+  text-decoration: none;
+}
+
 .projectsList #ids, .activities #ids {
   width: 27px !important;
 }
@@ -2576,7 +2626,7 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectBudget {
-  width: 105px;
+  width: 115px;
 }
 
 .projectsList #projectReportStatus {
@@ -2584,8 +2634,7 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectActionStatus {
-  width: 89px;
-}
+padding: 0 4px 0 6px;}
 
 .projectsList #projectType {
   width: 114px;
@@ -2594,6 +2643,11 @@ button.ipGraph-btn{
 .projectsList #lastModified {
   width: 80px;
   text-align: center;
+}
+
+.projectsList #projectDelete {
+ width: 20px;
+ padding: 0 5px 0 0;
 }
 
 .projectsList td {
