@@ -56,8 +56,8 @@ public class BaseXLS {
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
   // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE =
-    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
+  private static String EXCEL_TEMPLATE_FILE = ServletActionContext.getServletContext().getRealPath(
+    "resources/templates/template.xlsx");
 
   // Header Style
   private static final String HEADER_FONT_NAME = "Arial";
@@ -135,6 +135,8 @@ public class BaseXLS {
       if (useTemplate) {
         rowStart = 12;
         columnStart = 1;
+        rowCounter = rowStart;
+        columnCounter = columnStart;
         // opening excel template.
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
@@ -227,8 +229,7 @@ public class BaseXLS {
    * @param value is the specific information to be written.
    */
   public void writeValue(Sheet sheet, Object value, boolean centered, int position, int columnStart) {
-    rowStart = position;
-    rowCounter = rowStart;
+
     CellStyle style = workbook.createCellStyle();
     Row row = sheet.createRow((short) rowStart);
     if (centered) {
