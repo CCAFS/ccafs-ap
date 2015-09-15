@@ -16,6 +16,7 @@
 package org.cgiar.ccafs.ap.action.summaries.planning.xls;
 
 
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,10 +26,15 @@ import java.util.Date;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -49,10 +55,17 @@ public class BaseXLS {
   private static String EXCEL_TEMPLATE_FILE =
     ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
 
+  // Header Style
+  private static final String HEADER_FONT_NAME = "Arial";
+  private static final short HEADER_FONT_SIZE = 11;
+  private static final String HEADER_FONT_COLOR_HEX = "4E4E4F";
+  private static final int HEADER_ROW_HEIGHT = 11;
+
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
   private Workbook workbook; // Excel high level model.
   private boolean usingTemplate;
+  private int rowStart, columnStart, rowCounter, columnCounter;
 
 
   /**
@@ -76,7 +89,6 @@ public class BaseXLS {
     outputStream.close();
     workbook.close();
   }
-
 
   /**
    * This method return the information that is in the outputStream as an array of bytes.
@@ -106,44 +118,67 @@ public class BaseXLS {
    * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
    *         XLS format.
    */
-  public Workbook initializeXLS(String excelFormat, boolean useTemplate) {
+  public Workbook initializeXLS(boolean useTemplate) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     usingTemplate = useTemplate;
+    rowStart = 13;
+    columnStart = 2;
     try {
       // validating the type of format.
-      if (excelFormat.toLowerCase().equals("xls")) {
-        if (useTemplate) {
-          // opening excel template.
-          InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
-          // creating workbook based on the template.
-          workbook = new HSSFWorkbook(templateStream);
-          // closing input stream.
-          templateStream.close();
-          // applying header.
-          this.addHeader(workbook.getSheetAt(0));
-        } else {
-          workbook = new HSSFWorkbook();
-        }
-      } else if (excelFormat.toLowerCase().equals("xlsx")) {
-        if (useTemplate) {
-          // opening excel template.
-          InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
-          // creating workbook based on the template.
-          workbook = new XSSFWorkbook(templateStream);
-          // closing input stream.
-          templateStream.close();
-          // applying header.
-          this.addHeader(workbook.getSheetAt(0));
-        } else {
-          workbook = new XSSFWorkbook();
-        }
+      if (useTemplate) {
+        // opening excel template.
+        InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
+        // creating workbook based on the template.
+        workbook = new XSSFWorkbook(templateStream);
+        // closing input stream.
+        templateStream.close();
+        // applying header.
+        this.addHeader(workbook.getSheetAt(0));
+      } else {
+        workbook = new XSSFWorkbook();
       }
       return workbook;
     } catch (IOException e) {
       LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
     }
     return null;
+  }
+
+  /**
+   * This method writes the headers into the given sheet.
+   * 
+   * @param sheet is the sheet where you want to write the header.
+   * @param headers is the array of headers to write.
+   */
+  public void writeHeaders(Sheet sheet, String[] headers) {
+    if (usingTemplate) {
+      // ------ Preparing the style.
+      // Font
+      Font font = workbook.createFont();
+      font.setBold(true);
+      font.setFontName(HEADER_FONT_NAME);
+      font.setFontHeightInPoints(HEADER_FONT_SIZE);
+      // Style
+      XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
+      style.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
+      style.setAlignment(CellStyle.ALIGN_CENTER);
+      style.setFont(font);
+      // Row
+      Row row = sheet.createRow(rowStart - 1);
+      row.setHeightInPoints(HEADER_ROW_HEIGHT);
+
+      // Writting headers.
+      Cell cell;
+      for (int c = 0, columnCounter = columnStart; c <= headers.length; c++, columnCounter++) {
+        cell = row.createCell(columnCounter);
+        cell.setCellStyle(style);
+        cell.setCellValue(headers[c]);
+        sheet.autoSizeColumn(columnCounter);
+      }
+    } else {
+      // TODO To develop the same algorithm but without style starting in the first row of the sheet.
+    }
   }
 
   /**
