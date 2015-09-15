@@ -228,15 +228,19 @@ public class BaseXLS {
    * @param sheet is the sheet where you want to add information into.
    * @param value is the specific information to be written.
    */
-  public void writeValue(Sheet sheet, Object value, boolean centered, int position, int columnStart) {
+  public void writeValue(Sheet sheet, Object value) {
 
     CellStyle style = workbook.createCellStyle();
-    Row row = sheet.createRow((short) rowStart);
-    if (centered) {
+    Row row = sheet.createRow((short) rowCounter);
+    Cell cell = row.createCell(columnCounter);
+    if (value instanceof Integer) {
       style.setAlignment(CellStyle.ALIGN_CENTER);
+      cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+      cell.setCellValue((int) value);
+      sheet.autoSizeColumn(columnCounter);
+    } else {
+      cell.setCellValue(String.valueOf(value));
     }
-    row.createCell(columnStart).setCellValue(String.valueOf(value));
-    sheet.autoSizeColumn(position);
 
   }
 

@@ -52,11 +52,11 @@ public class LeadInstitutionPartnersSummaryXLS {
     int count = 0;
 
     for (Institution institution : projectLeadingInstitutions) {
-      xls.writeValue(sheet, institution.getId(), true, rowStart, columnStart);
-      xls.writeValue(sheet, institution.getName(), false, rowStart, 2);
-      xls.writeValue(sheet, institution.getAcronym(), true, rowStart, 3);
-      xls.writeValue(sheet, institution.getWebsiteLink(), false, rowStart, 4);
-      xls.writeValue(sheet, institution.getCountry().getName(), false, rowStart, 5);
+      xls.writeValue(sheet, institution.getId());
+      xls.writeValue(sheet, institution.getName());
+      xls.writeValue(sheet, institution.getAcronym());
+      xls.writeValue(sheet, institution.getWebsiteLink());
+      xls.writeValue(sheet, institution.getCountry().getName());
       // xls.writeValue(sheet, institution.getName(), false, rowStart, columnStart);
       // Row row = sheet.createRow((short) i);
       // CellStyle style = workBook.createCellStyle();
