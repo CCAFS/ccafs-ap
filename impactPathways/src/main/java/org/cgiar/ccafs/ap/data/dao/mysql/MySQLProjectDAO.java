@@ -177,14 +177,17 @@ public class MySQLProjectDAO implements ProjectDAO {
         + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
         + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
-    query.append("SELECT p.id, p.title, p.type, p.summary, p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
+    query.append("SELECT p.id, p.title, p.type, p.summary, p.active_since, SUM(pb.amount) as 'total_ccafs_amount', ");
+    query.append("SUM(pb2.amount) as 'total_bilateral_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
     query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
     query.append("FROM projects as p ");
-    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.budget_type IN (  ");
-    query.append(BudgetType.W1_W2.getValue() + ", ");
-    query.append(BudgetType.W3_BILATERAL.getValue() + " ) ");
-    query.append("WHERE p.is_active = TRUE ");
+    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
+    query.append(BudgetType.W1_W2.getValue());
+    query
+      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+    query.append(BudgetType.W3_BILATERAL.getValue());
+    query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -195,7 +198,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("title", rs.getString("title"));
         projectData.put("summary", rs.getString("summary"));
         projectData.put("type", rs.getString("type"));
-        projectData.put("total_budget_amount", rs.getString("total_budget_amount"));
+        projectData.put("total_ccafs_amount", rs.getString("total_ccafs_amount"));
+        projectData.put("total_bilateral_amount", rs.getString("total_bilateral_amount"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
         projectData.put("regions", rs.getString("regions"));
         projectData.put("flagships", rs.getString("flagships"));
