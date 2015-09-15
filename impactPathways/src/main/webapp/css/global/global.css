@@ -219,9 +219,10 @@ label.readOnly {
   cursor: initial;
 }
 
-p.fieldError{
+span.fieldError, p.fieldError{
   color: #F52626;
   font-weight: bold;
+  margin-right: 4px;
 }
 
 p.warning-info {

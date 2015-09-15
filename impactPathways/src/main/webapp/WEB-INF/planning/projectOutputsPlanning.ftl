@@ -70,11 +70,11 @@
                     </div>
                   [#else]
                     <div class="fullBlock">
-                      <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:</h6>  
-                      [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=true showTitle=false editable=editable /]
+                      <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:[@customForm.req required=!project.bilateralProject /]</h6>  
+                      [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=!project.bilateralProject showTitle=false editable=editable /]
                     </div>
                     <div class="fullBlock">
-                      [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" editable=editable /]
+                      [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=!project.bilateralProject editable=editable /]
                     </div>
                   [/#if]
                 </div>
