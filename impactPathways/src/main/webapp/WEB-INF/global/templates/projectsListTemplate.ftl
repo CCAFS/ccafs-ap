@@ -4,13 +4,19 @@
 [#macro projectsList projects owned=true canValidate=false isPlanning=false namespace="/"]
   <table class="projectsList" id="projects">
     <thead>
-      <tr>
+      <tr class="header">
+        <th colspan="5">General Information</th>
+        <th colspan="2">[@s.text name="preplanning.projects.projectBudget" /]</th> 
+        <th colspan="3">Actions</th> 
+      </tr>
+      <tr class="subHeader">
         <th id="ids">[@s.text name="preplanning.projects.projectids" /]</th>
         <th id="projectTitles" >[@s.text name="preplanning.projects.projectTitles" /]</th>
+        <th id="projectType">[@s.text name="preplanning.projects.projectType" /]</th>
         <th id="projectRegions">[@s.text name="preplanning.projects.projectRegions" /]</th>
         <th id="projectFlagships">[@s.text name="preplanning.projects.projectFlagships" /]</th>
-        <th id="projectBudget">[@s.text name="preplanning.projects.projectBudget" /]</th>
-        <th id="projectType">[@s.text name="preplanning.projects.projectType" /]</th>
+        <th id="projectBudget">[@s.text name="preplanning.projects.W1W2projectBudget" /]</th>
+        <th id="projectBudget">[@s.text name="preplanning.projects.W3BILATERALprojectBudget" /]</th>
         <th id="projectActionStatus">[@s.text name="preplanning.projects.projectActionStatus" /]</th>
         <th id="projectDownload">[@s.text name="preplanning.projects.download" /]</th>
         <th id="projectDelete">[@s.text name="preplanning.projects.delete" /]</th>
@@ -41,6 +47,10 @@
                 [/#if]
                
           </td>
+          [#-- Project Type --]
+          <td>
+            <p title="[@s.text name="planning.projects.type.explanation.${project.type?lower_case}" /]" id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p>
+          </td>
           [#-- Region --]
           <td> 
             [#if project.regionsAcronym?has_content]
@@ -57,22 +67,25 @@
               [@s.text name="preplanning.projects.none" /]
             [/#if]
           </td>
-          [#-- Budget --]
+          [#-- Budget W1/W2 --]
           <td class="budget"> 
             [#if project.totalBudget?has_content]
-              <p id="">US$ <span id="">${project.totalBudget?string(",##0.00")}</span></p> 
+              <p id="">US$ <span id="">${((project.totalCcafsBudget)!0)?string(",##0.00")}</span></p> 
             [#else]
               [@s.text name="preplanning.projects.none" /]
             [/#if]
           </td>
-          [#-- Project Type --]
-          <td>
-            <p title="[@s.text name="planning.projects.type.explanation.${project.type?lower_case}" /]" id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p>
+          [#-- Budget W3/ Bilateral --]
+          <td class="budget"> 
+            [#if project.totalBudget?has_content]
+              <p id="">US$ <span id="">${((project.totalBilateralBudget)!0)?string(",##0.00")}</span></p> 
+            [#else]
+              [@s.text name="preplanning.projects.none" /]
+            [/#if]
           </td>
           [#-- Project Action Status --]
-          <td> 
- 
-            <button type= "submit" onclick=""> Submit </button>
+          <td>
+            <a class="submitButton" href="#">Submit</a>
             </a>
           </td>
           [#-- Track completition of entry --]

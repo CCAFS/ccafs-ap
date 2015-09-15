@@ -22,10 +22,12 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFTextBox;
 
 
 /**
@@ -51,29 +53,10 @@ public class LeadInstitutionPartnersSummaryXLS {
   private void addContent(List<Institution> projectLeadingInstitutions, String[] projectList, Workbook workBook) {
     int i = 12;
     int count = 0;
+    XSSFDrawing draw = (XSSFDrawing) workBook.getSheetAt(0).createDrawingPatriarch();
+    XSSFTextBox textbox = draw.createTextbox(new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 2, 2));
+    textbox.setText("foooooooooooooooooooooo");
 
-    // try {
-    // InputStream input = new FileInputStream("template.xlsx");
-    // POIFSFileSystem fs = new POIFSFileSystem(input);
-    // HSSFWorkbook wb = new HSSFWorkbook(fs);
-    // HSSFSheet sheet = wb.getSheetAt(0);
-    // HSSFPatriarch pat = sheet.getDrawingPatriarch();
-    // List children = pat.getChildren();
-    //
-    // Iterator it = children.iterator();
-    // while (it.hasNext()) {
-    // HSSFShape shape = (HSSFShape) it.next();
-    // if (shape instanceof HSSFTextbox) {
-    // HSSFTextbox textbox = (HSSFTextbox) shape;
-    // HSSFRichTextString richString = textbox.getString();
-    // String str = richString.getString();
-    // System.out.println("String: " + str);
-    // System.out.println("String length: " + str.length());
-    // }
-    // }
-    // } catch (IOException ex) {
-    // ex.printStackTrace();
-    // }
 
     for (Institution institution : projectLeadingInstitutions) {
       Sheet sheet = workBook.getSheetAt(0);
@@ -115,21 +98,22 @@ public class LeadInstitutionPartnersSummaryXLS {
 
       workbook.setSheetName(0, "LeadInstitutions");
       Sheet sheet = workbook.getSheetAt(0);
-
-      Row row = sheet.createRow((short) 11);
-      Font font = workbook.createFont();
-      font.setBold(true);
-      CellStyle style = workbook.createCellStyle();
-      style.setAlignment(CellStyle.ALIGN_CENTER);
-      style.setFont(font);
-      for (int c = 1; c <= headers.length; c++) {
-        row.createCell(c).setCellValue(headers[c - 1]);
-        row.getCell(c).setCellStyle(style);
-        sheet.autoSizeColumn(c);
-      }
-
-      // this.addHeaders(headers);
-      this.addContent(projectLeadingInstitutions, projectList, workbook);
+      xls.writeTitleBox(sheet, "CCAFS Lead Institutions");
+      xls.writeHeaders(sheet, headers);
+      // Row row = sheet.createRow((short) 11);
+      // Font font = workbook.createFont();
+      // font.setBold(true);
+      // CellStyle style = workbook.createCellStyle();
+      // style.setAlignment(CellStyle.ALIGN_CENTER);
+      // style.setFont(font);
+      // for (int c = 1; c <= headers.length; c++) {
+      // row.createCell(c).setCellValue(headers[c - 1]);
+      // row.getCell(c).setCellStyle(style);
+      // sheet.autoSizeColumn(c);
+      // }
+      //
+      // // this.addHeaders(headers);
+      // this.addContent(projectLeadingInstitutions, projectList, workbook);
       // this.flush();
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();
