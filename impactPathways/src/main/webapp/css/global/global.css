@@ -2153,7 +2153,7 @@ input.userName {
 
 
 #decisionTree .addProjectButtons{
-  width: 27%;
+  width: 28%;
   padding: 0px 36px;
   margin-bottom: 20px;
 }
@@ -2165,7 +2165,7 @@ input.userName {
 }
 
 #decisionTree .addProjectButtons .addProject{
-    width: 29%;
+    width: 45%;
     float: left;
     text-align: center;
     background-color: #56C4CF;

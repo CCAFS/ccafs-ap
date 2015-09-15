@@ -25,9 +25,6 @@
         [#if securityContext.canAddCoreProject()]
           <a href="[@s.url namespace="/planning" action='addNewCoreProject'/]"><div class="addProject"><p>CCAFS <br />Core</p></div></a>
         [/#if]
-        [#if securityContext.canAddCofoundedProject()]
-          <a href="[@s.url namespace="/planning" action='addCoFundedProject'/]"><div class="addProject"><p>CCAFS <br />Co-funded</p></div></a>
-        [/#if]
         [#if securityContext.canAddBilateralProject()]
           <a href="[@s.url namespace="/planning" action='addNewBilateralProject'/]"><div class="addProject"><p>Bilateral <br />Project</p></div></a>
         [/#if]
