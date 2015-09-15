@@ -32,9 +32,13 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFTextBox;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -59,6 +63,7 @@ public class BaseXLS {
   private static final String HEADER_FONT_NAME = "Arial";
   private static final short HEADER_FONT_SIZE = 11;
   private static final String HEADER_FONT_COLOR_HEX = "#404040";
+  private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
   private static final int HEADER_ROW_HEIGHT = 31;
 
   // Box Style
@@ -171,12 +176,14 @@ public class BaseXLS {
       XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
       style.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
       style.setAlignment(CellStyle.ALIGN_CENTER);
+      style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+      style.setFillBackgroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
       style.setFont(font);
       // Row
       Row row = sheet.createRow(rowStart - 1);
       row.setHeightInPoints(HEADER_ROW_HEIGHT);
 
-      // Writting headers.
+      // Writing headers.
       Cell cell;
       for (int c = 0, columnCounter = columnStart; c < headers.length; c++, columnCounter++) {
         cell = row.createCell(columnCounter);
@@ -190,16 +197,24 @@ public class BaseXLS {
   }
 
   /**
-   * @param sheet
-   * @param text
+   * This method writes the title box into the given sheet.
+   * 
+   * @param sheet is the sheet where you want to write the title box.
+   * @param text is the title of the report.
    */
   public void writeTitleBox(Sheet sheet, String text) {
-    // TODO CM
+    XSSFDrawing draw = (XSSFDrawing) sheet.createDrawingPatriarch();
+    XSSFTextBox textbox = draw.createTextbox(new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 4, 6));
+    textbox.setText(text);
+    textbox.setFillColor(255, 204, 41);
+    textbox.setVerticalAlignment(VerticalAlignment.CENTER);
   }
 
   /**
-   * @param sheet
-   * @param value
+   * This method writes any value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
    */
   public void writeValue(Sheet sheet, Object value) {
     // TODO CM
