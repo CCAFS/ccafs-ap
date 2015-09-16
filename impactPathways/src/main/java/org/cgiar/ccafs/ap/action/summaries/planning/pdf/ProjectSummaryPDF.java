@@ -868,9 +868,7 @@ public class ProjectSummaryPDF extends BasePDF {
           + " (Responsible)" + ": ");
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
-        // TODO - Jorge please test if this works properly
         if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
-          // int personResponsibleID = deliverable.getResponsiblePartner().getPartner().getComposedName();
           stringBuilder.append(this.messageReturn(deliverable.getResponsiblePartner().getPartner().getComposedName()));
         } else {
           stringBuilder.append(this.getText("summaries.project.empty"));
@@ -908,8 +906,6 @@ public class ProjectSummaryPDF extends BasePDF {
             deliverableBlock.setFont(TABLE_BODY_FONT);
 
             if (deliverablePartner.getPartner() != null) {
-
-              // TODO fix this :S
               stringBuilder.append(this.messageReturn(deliverablePartner.getPartner().getComposedName()));
             } else {
               stringBuilder.append(this.getText("summaries.project.empty"));
@@ -1174,7 +1170,8 @@ public class ProjectSummaryPDF extends BasePDF {
         // Partner #
         paragraph.setFont(HEADING3_FONT);
         if (partner.getId() == project.getLeader().getId()) {
-          paragraph.add(this.getText("summaries.project.partner") + numberPP + " (leader) ");
+          paragraph.add(this.getText("summaries.project.partner") + numberPP + " "
+            + this.getText("summaries.project.partner.leader"));
         } else {
           paragraph.add(this.getText("summaries.project.partner") + numberPP + " ");
         }
@@ -1182,6 +1179,7 @@ public class ProjectSummaryPDF extends BasePDF {
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(Chunk.NEWLINE);
         document.add(paragraph);
+
 
         // Organization
         paragraph = new Paragraph();
@@ -1226,11 +1224,11 @@ public class ProjectSummaryPDF extends BasePDF {
         } else {
           this.addCustomTableCell(table, paragraph, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
             table.getNumberOfColumns(), 0, false);
-          paragraph.setFont(TABLE_BODY_FONT);
+
           for (ProjectPartner partnerContributing : partnersContributings) {
             paragraph = new Paragraph();
             this.addTableBodyCell(table, new Paragraph(partnerContributing.getInstitution().getComposedName(),
-              BODY_TEXT_FONT), Element.ALIGN_JUSTIFIED, 1);
+              TABLE_BODY_FONT), Element.ALIGN_JUSTIFIED, 1);
           }
         }
         document.add(table);
@@ -1240,12 +1238,10 @@ public class ProjectSummaryPDF extends BasePDF {
         document.add(paragraph);
 
         // PartnerPersons
-        int counter = 0;
-
-        table = new PdfPTable(4);
+        table = new PdfPTable(3);
         table.setTotalWidth(500);
         table.setLockedWidth(true);
-        table.setWidths(new int[] {1, 2, 4, 4});
+        table.setWidths(new int[] {1, 3, 6});
 
         paragraph = new Paragraph();
         paragraph.setFont(BODY_TEXT_BOLD_FONT);
@@ -1254,13 +1250,6 @@ public class ProjectSummaryPDF extends BasePDF {
           table.getNumberOfColumns(), 0, false);
 
         // ***** Header Partner persons
-
-        // Person type
-        paragraph = new Paragraph();
-        paragraph.setFont(TABLE_HEADER_FONT);
-        paragraph.add("#");
-        // paragraph.add(this.getText("summaries.project.partner.personnumer"));
-        this.addTableHeaderCell(table, paragraph);
 
         // Person type
         paragraph = new Paragraph();
@@ -1277,19 +1266,13 @@ public class ProjectSummaryPDF extends BasePDF {
         // responsabities
         paragraph = new Paragraph();
         paragraph.setFont(TABLE_HEADER_FONT);
+        paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
         paragraph.add(this.getText("summaries.project.partner.responsibilities"));
         this.addTableHeaderCell(table, paragraph);
 
         paragraph.setFont(TABLE_BODY_FONT);
 
         for (PartnerPerson partnerPerson : partner.getPartnerPersons()) {
-          counter++;
-
-          // counter
-          paragraph = new Paragraph();
-          paragraph.setFont(TABLE_BODY_FONT);
-          paragraph.add(String.valueOf(counter));
-          this.addTableColSpanCell(table, paragraph, Element.ALIGN_CENTER, 1, 1);
 
           // type
           paragraph = new Paragraph();
@@ -1316,7 +1299,7 @@ public class ProjectSummaryPDF extends BasePDF {
           paragraph = new Paragraph();
           paragraph.setFont(TABLE_BODY_FONT);
           paragraph.add(this.messageReturn(partnerPerson.getResponsibilities()));
-          this.addTableColSpanCell(table, paragraph, Element.ALIGN_CENTER, 1, 1);
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_JUSTIFIED, 1, 1);
 
         }
 
@@ -1515,7 +1498,7 @@ public class ProjectSummaryPDF extends BasePDF {
       } else {
 
         cell = new Paragraph(this.getText("summaries.project.ipContributions"), BODY_TEXT_BOLD_FONT);
-        this.addCustomTableCell(table, cell, Element.ALIGN_CENTER, BODY_TEXT_FONT, Color.WHITE,
+        this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
           table.getNumberOfColumns(), 0, false);
 
         cell = new Paragraph("", TABLE_HEADER_FONT);
@@ -2211,7 +2194,7 @@ public class ProjectSummaryPDF extends BasePDF {
     try {
       document.newPage();
 
-      if (project.getLeader() == null && project.getPPAPartners().isEmpty()) {
+      if (project.getLeader() == null && project.getProjectPartners().isEmpty()) {
         title = new Paragraph(this.getText("summaries.project.empty"), BODY_TEXT_FONT);
         partnersBlock.add(title);
         document.add(partnersBlock);
@@ -2222,16 +2205,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
         int c = 1;
 
-        List<ProjectPartner> listPPA = project.getPPAPartners();
-        if (!listPPA.isEmpty()) {
-          for (ProjectPartner partner : listPPA) {
+        List<ProjectPartner> partnersList = project.getProjectPartners();
+        if (!partnersList.isEmpty()) {
+          for (ProjectPartner partner : partnersList) {
             this.addPartner(partner, c);
-            partnersBlock.add(Chunk.NEWLINE);
             c++;
           }
         }
-
-
       }
 
     } catch (DocumentException e) {
