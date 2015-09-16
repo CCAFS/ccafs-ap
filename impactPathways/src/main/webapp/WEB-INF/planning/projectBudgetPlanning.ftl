@@ -124,7 +124,7 @@
                 [/#if]
               </div> <!-- End Budget by year  -->
               <div class="ccafsBudget fullPartBlock ${project.type}">
-                <h1 class="contentTitle">[@s.text name="planning.projectBudget.annualPartnerBudget" /]</h1> 
+                <h1 class="contentTitle">[@s.text name="planning.projectBudget.${project.bilateralProject?string('annualBilateralPartnerBudget','annualCorePartnerBudget')}" /]</h1> 
                 [@s.set var="counter" value="0"/]
                 [#-- Project CCAFS Partners --]
                 [#if projectPPAPartners?has_content] 
@@ -265,7 +265,9 @@
       [/#if]
     [/#if]
     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
-    <p class="title checked" ><a href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a></p>
+    <p class="title checked" >
+      <a target="_blank" href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a>
+    </p>
     <input type="hidden" class="linkedId"  name="project.linkedProjects" value="${(linkedProject.id)!'-1'}" />
     [#if project.bilateralProject]
     <input type="hidden" class="budgetId" name="${budgetName}.id" value="${(cofinancingBudget.id)!"-1"}" />

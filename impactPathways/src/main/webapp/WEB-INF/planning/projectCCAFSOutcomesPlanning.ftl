@@ -85,7 +85,7 @@
                           <div class="indicatorTargets">
                              <ul class="">
                               [#list years as year]
-                                <li class=""><a href="#target-${year}">${year}</a></li> 
+                                <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
                               [/#list]   
                             </ul>
                             [#list years as year]
@@ -94,7 +94,7 @@
                               [#else]
                                 [#assign projectIndicator = project.getIndicator(indicator.id, midOutcome.id,  year) /]
                               [/#if]
-                              <div id="target-${year}" class="targetIndicator"> 
+                              <div id="target-${year}" class="targetIndicator">
                                 [#-- Indicator ID --]
                                 [#if indicator.parent?has_content]
                                   <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
@@ -114,7 +114,7 @@
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
-                                      [#if !project.bilateralProject]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if] ${fieldEmpty}
+                                      [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if] ${fieldEmpty}
                                     [#else]
                                       <div class="select"><p>${projectIndicator.target}</p></div>
                                     [/#if]
@@ -128,7 +128,7 @@
                                     <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
-                                      [#if !project.bilateralProject]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if] ${fieldEmpty}
+                                      [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if] ${fieldEmpty}
                                     [#else]
                                       <div class="select"><p>${projectIndicator.description}</p></div>
                                     [/#if] 
@@ -152,7 +152,7 @@
                           <div class="indicatorTargets" style="display:none">
                              <ul class="">
                               [#list years as year]
-                                <li class=""><a href="#target-${year}">${year}</a></li> 
+                                <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
                               [/#list]   
                             </ul>
                             [#list years as year]
@@ -291,7 +291,7 @@
         <div class="indicatorTargetsTemplate" style="display:none">
           <ul class="">
             [#list years as year]
-              <li class=""><a href="#target-${year}">${year}</a></li> 
+              <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
             [/#list]   
           </ul>
           [#list years as year]
@@ -327,7 +327,10 @@
       </div>
     </div>
   </div>
-
+  
+  [#-- Index active tab --]
+  [#assign indexTabCurrentYear][#list years as year][#if year == currentPlanningYear]${year_index}[/#if][/#list][/#assign]
+  <input type="hidden" id="indexTabCurrentYear" value="${(indexTabCurrentYear)!0}" />
 </div>
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
