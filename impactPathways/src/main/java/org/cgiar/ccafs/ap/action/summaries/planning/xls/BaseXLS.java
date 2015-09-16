@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -237,6 +238,11 @@ public class BaseXLS {
       style.setAlignment(CellStyle.ALIGN_CENTER);
       cell.setCellType(Cell.CELL_TYPE_NUMERIC);
       cell.setCellValue((int) value);
+      sheet.autoSizeColumn(columnCounter);
+    } else if (value instanceof Double) {
+      style.setAlignment(CellStyle.ALIGN_CENTER);
+      DecimalFormat dec = new DecimalFormat("#.##");
+      cell.setCellValue(Double.valueOf(dec.format(value)));
       sheet.autoSizeColumn(columnCounter);
     } else {
       cell.setCellValue(String.valueOf(value));

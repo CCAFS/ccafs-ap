@@ -870,10 +870,8 @@ public class ProjectSummaryPDF extends BasePDF {
 
         // TODO - Jorge please test if this works properly
         if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
-          int personResponsibleID = 0;
-          // int personResponsibleID = deliverable.getResponsiblePartner().getPartnerPersons().get(0).getId();
-          // stringBuilder.append(this.messageReturn(deliverable.getResponsiblePartner().getPartner()
-          // .getPersonComposedName(personResponsibleID)));
+          // int personResponsibleID = deliverable.getResponsiblePartner().getPartner().getComposedName();
+          stringBuilder.append(this.messageReturn(deliverable.getResponsiblePartner().getPartner().getComposedName()));
         } else {
           stringBuilder.append(this.getText("summaries.project.empty"));
         }
@@ -912,7 +910,7 @@ public class ProjectSummaryPDF extends BasePDF {
             if (deliverablePartner.getPartner() != null) {
 
               // TODO fix this :S
-              // stringBuilder.append(deliverablePartner.getPartner().getComposedName());
+              stringBuilder.append(this.messageReturn(deliverablePartner.getPartner().getComposedName()));
             } else {
               stringBuilder.append(this.getText("summaries.project.empty"));
             }
@@ -1175,7 +1173,12 @@ public class ProjectSummaryPDF extends BasePDF {
 
         // Partner #
         paragraph.setFont(HEADING3_FONT);
-        paragraph.add(this.getText("summaries.project.partner") + numberPP + " ");
+        if (partner.getId() == project.getLeader().getId()) {
+          paragraph.add(this.getText("summaries.project.partner") + numberPP + " (leader) ");
+        } else {
+          paragraph.add(this.getText("summaries.project.partner") + numberPP + " ");
+        }
+
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(Chunk.NEWLINE);
         document.add(paragraph);
@@ -1201,7 +1204,6 @@ public class ProjectSummaryPDF extends BasePDF {
         paragraph = new Paragraph();
         paragraph.add(Chunk.NEWLINE);
         document.add(paragraph);
-
 
         // Partner Contributing
         table = new PdfPTable(1);
@@ -1237,169 +1239,93 @@ public class ProjectSummaryPDF extends BasePDF {
         paragraph.add(Chunk.NEWLINE);
         document.add(paragraph);
 
-
         // PartnerPersons
         int counter = 0;
 
+        table = new PdfPTable(4);
+        table.setTotalWidth(500);
+        table.setLockedWidth(true);
+        table.setWidths(new int[] {1, 2, 4, 4});
+
+        paragraph = new Paragraph();
+        paragraph.setFont(BODY_TEXT_BOLD_FONT);
+        paragraph.add(this.getText("summaries.project.partner.partnerPerson"));
+        this.addCustomTableCell(table, paragraph, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
+          table.getNumberOfColumns(), 0, false);
+
+        // ***** Header Partner persons
+
+        // Person type
+        paragraph = new Paragraph();
+        paragraph.setFont(TABLE_HEADER_FONT);
+        paragraph.add("#");
+        // paragraph.add(this.getText("summaries.project.partner.personnumer"));
+        this.addTableHeaderCell(table, paragraph);
+
+        // Person type
+        paragraph = new Paragraph();
+        paragraph.setFont(TABLE_HEADER_FONT);
+        paragraph.add(this.getText("summaries.project.partner.persontype"));
+        this.addTableHeaderCell(table, paragraph);
+
+        // contact person
+        paragraph = new Paragraph();
+        paragraph.setFont(TABLE_HEADER_FONT);
+        paragraph.add(this.getText("summaries.project.partner.contactperson"));
+        this.addTableHeaderCell(table, paragraph);
+
+        // responsabities
+        paragraph = new Paragraph();
+        paragraph.setFont(TABLE_HEADER_FONT);
+        paragraph.add(this.getText("summaries.project.partner.responsibilities"));
+        this.addTableHeaderCell(table, paragraph);
+
+        paragraph.setFont(TABLE_BODY_FONT);
+
         for (PartnerPerson partnerPerson : partner.getPartnerPersons()) {
           counter++;
-          table = new PdfPTable(2);
-          table.setTotalWidth(500);
-          table.setLockedWidth(true);
-          table.setWidths(new int[] {3, 7});
 
+          // counter
           paragraph = new Paragraph();
-          paragraph.setFont(BODY_TEXT_BOLD_FONT);
-          paragraph.add(this.getText("summaries.project.partner.partnerPerson"));
-          paragraph.add("#" + counter);
-          this.addCustomTableCell(table, paragraph, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-            table.getNumberOfColumns(), 0, false);
-
-          // Person type
-          paragraph = new Paragraph();
-          paragraph.setFont(TABLE_BODY_BOLD_FONT);
-          paragraph.add(this.getText("summaries.project.partner.persontype"));
           paragraph.setFont(TABLE_BODY_FONT);
-          paragraph.add(this.messageReturn(partnerPerson.getType()));
-          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 1);
+          paragraph.add(String.valueOf(counter));
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_CENTER, 1, 1);
+
+          // type
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (partnerPerson.getType() == null) {
+            paragraph.add(this.getText("summary.project.empty"));
+          } else if (partnerPerson.getType().equals("PL")) {
+            paragraph.add(this.getText("planning.projectPartners.types.PL"));
+          } else if (partnerPerson.getType().equals("PC")) {
+            paragraph.add(this.getText("planning.projectPartners.types.PC"));
+          } else {
+            // is CP
+            paragraph.add(this.getText("planning.projectPartners.types.CP"));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_CENTER, 1, 1);
 
           // contact person
           paragraph = new Paragraph();
-          paragraph.setFont(TABLE_BODY_BOLD_FONT);
-          paragraph.add(this.getText("summaries.project.partner.contactperson"));
           paragraph.setFont(TABLE_BODY_FONT);
           paragraph.add(this.messageReturn(partnerPerson.getComposedName()));
-          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 1);
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_CENTER, 1, 1);
 
           // Responsabilities
           paragraph = new Paragraph();
-          paragraph.setFont(TABLE_BODY_BOLD_FONT);
-          paragraph.add(this.getText("summaries.project.partner.responsibilities"));
           paragraph.setFont(TABLE_BODY_FONT);
-          paragraph.add(Chunk.NEWLINE);;
           paragraph.add(this.messageReturn(partnerPerson.getResponsibilities()));
-          this.addTableColSpanCell(table, paragraph, Element.ALIGN_JUSTIFIED, 1, 2);
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_CENTER, 1, 1);
 
-          document.add(table);
-          paragraph = new Paragraph();
-          paragraph.add(Chunk.NEWLINE);
-
-          document.add(paragraph);
         }
+
+        document.add(table);
         paragraph = new Paragraph();
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(Chunk.NEWLINE);
         document.add(paragraph);
 
-        // paragraph = new Paragraph();
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        // paragraph.setAlignment(Element.ALIGN_LEFT);
-        //
-        // paragraph.add(this.getText("summaries.project.organization"));
-        // this.addCustomTableCell(table, paragraph, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-        // table.getNumberOfColumns(), 0, false);
-        //
-        // paragraph = new Paragraph();
-        // if (partner.getInstitution() != null) {
-        // if (!((partner.getInstitution().getAcronym() == null) || (partner.getInstitution().getAcronym().isEmpty())))
-        // {
-        // paragraph.add(partner.getInstitution().getAcronym());
-        // paragraph.add(" - ");
-        //
-        // }
-        // paragraph.add(this.messageReturn(partner.getInstitution().getName()));
-        // } else {
-        // paragraph.add("Not defined");
-        // }
-        // this.addTableBodyCell(table, paragraph, Element.ALIGN_JUSTIFIED, 1);
-        //
-        // document.add(table);
-        //
-        //
-        // if (numberPP == 1) {
-        // // Leader
-        // paragraph.add(this.getText("summaries.project.organization.lead"));
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(this.messageReturn(project.getLeaderPerson().getComposedName()));
-        // paragraph.add(Chunk.NEWLINE);
-        //
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        // paragraph.add(this.getText("summaries.project.responsibilities"));
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(Chunk.NEWLINE);
-        // paragraph.add(this.messageReturn(project.getLeaderPerson().getResponsibilities()));
-        // paragraph.add(Chunk.NEWLINE);;
-        // paragraph.add(Chunk.NEWLINE);;
-        //
-        // // Coordinator
-        // if (!project.getCoordinatorPersons().isEmpty()) {
-        // for (PartnerPerson coordinator : project.getCoordinatorPersons()) {
-        // // TODO - Jorge Please update this
-        //
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        // paragraph.add("Coordinator: ");
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(this.messageReturn(coordinator.getComposedName()));
-        // paragraph.add(Chunk.NEWLINE);;
-        //
-        // // TODO - Please update this
-        // // Responsibilities
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        //
-        // paragraph.add(this.getText("summaries.project.responsibilities"));
-        // paragraph.add(Chunk.NEWLINE);
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(this.messageReturn(coordinator.getResponsibilities()));
-        //
-        // }
-        // } else {
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        // paragraph.add("Coordinator: ");
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(this.getText("summaries.project.empty"));
-        //
-        // // Responsibilities
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        //
-        // paragraph.add(this.getText("summaries.project.responsibilities"));
-        // paragraph.add(Chunk.NEWLINE);
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(this.getText("summaries.project.empty"));
-        // }
-        //
-        // } else {
-        //
-        // // TODO - Jorge please update this
-        // if (partner.getPartnerPersons().isEmpty()) {
-        // paragraph.add(this.getText("summaries.project.empty"));
-        // } else {
-        // for (PartnerPerson partnerPerson : partner.getPartnerPersons()) {
-        // if (partnerPerson != null) {
-        //
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        // paragraph.add(this.getText("summaries.project.partner.contactperson"));
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(this.messageReturn(partnerPerson.getComposedName()));
-        // paragraph.add(Chunk.NEWLINE);
-        // // Responsibilities
-        // paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        // paragraph.add(this.getText("summaries.project.responsibilities"));
-        // paragraph.add(Chunk.NEWLINE);
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // // TODO - Please update this
-        // paragraph.add(this.messageReturn(partnerPerson.getResponsibilities()));
-        // paragraph.add(Chunk.NEWLINE);
-        //
-        // }
-        // }
-        // }
-        //
-        // }
-        //
-        // paragraph.setFont(BODY_TEXT_FONT);
-        // paragraph.add(Chunk.NEWLINE);;
-        //
-        // partnersBlock.add(paragraph);
       } catch (DocumentException e) {
         LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
       }
@@ -2285,7 +2211,6 @@ public class ProjectSummaryPDF extends BasePDF {
     try {
       document.newPage();
 
-
       if (project.getLeader() == null && project.getPPAPartners().isEmpty()) {
         title = new Paragraph(this.getText("summaries.project.empty"), BODY_TEXT_FONT);
         partnersBlock.add(title);
@@ -2294,10 +2219,8 @@ public class ProjectSummaryPDF extends BasePDF {
       } else {
         document.add(partnersBlock);
         document.add(Chunk.NEWLINE);
+
         int c = 1;
-        // Get project leader PL
-        this.addPartner(project.getLeader(), c);
-        c++;
 
         List<ProjectPartner> listPPA = project.getPPAPartners();
         if (!listPPA.isEmpty()) {
