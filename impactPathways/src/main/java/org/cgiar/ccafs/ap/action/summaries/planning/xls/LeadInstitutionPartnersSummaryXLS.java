@@ -47,37 +47,18 @@ public class LeadInstitutionPartnersSummaryXLS {
    */
   private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList,
     Workbook workBook) {
-    int rowStart = 12;
-    int columnStart = 1;
-    int count = 0;
 
     for (Institution institution : projectLeadingInstitutions) {
-      xls.writeValue(sheet, institution.getId(), true, rowStart, columnStart);
-      xls.writeValue(sheet, institution.getName(), false, rowStart, 2);
-      xls.writeValue(sheet, institution.getAcronym(), true, rowStart, 3);
-      xls.writeValue(sheet, institution.getWebsiteLink(), false, rowStart, 4);
-      xls.writeValue(sheet, institution.getCountry().getName(), false, rowStart, 5);
-      // xls.writeValue(sheet, institution.getName(), false, rowStart, columnStart);
-      // Row row = sheet.createRow((short) i);
-      // CellStyle style = workBook.createCellStyle();
-      // style.setAlignment(CellStyle.ALIGN_CENTER);
-      // row.createCell(1).setCellValue(String.valueOf(institution.getId()));
-      // sheet.autoSizeColumn(1);
-      // row.getCell(1).setCellStyle(style);
-      // row.createCell(2).setCellValue(institution.getName());
-      // sheet.autoSizeColumn(2);
-      // row.createCell(3).setCellValue(institution.getAcronym());
-      // sheet.autoSizeColumn(3);
-      // row.getCell(3).setCellStyle(style);
-      // row.createCell(4).setCellValue(institution.getWebsiteLink());
-      // sheet.autoSizeColumn(4);
-      // row.createCell(5).setCellValue(institution.getCountry().getName());
-      // sheet.autoSizeColumn(5);
-      // row.createCell(6).setCellValue(projectList[count]);
-      // sheet.autoSizeColumn(6);
-      // i++;
-      // count++;
-      rowStart++;
+      xls.writeValue(sheet, institution.getId());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getName());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getAcronym());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getWebsiteLink());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getCountry().getName());
+      xls.nextRow();
     }
   }
 

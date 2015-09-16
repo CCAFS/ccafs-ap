@@ -5,20 +5,21 @@
   <div id="activity-${(activityId)}" class="activity borderBox" style="display:${template?string('none','block')}"> 
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.edit" /]</a></div>
+    [#else]
+      <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.unedit" /]</a></div>
     [/#if]
     [#if template]
       <div class="leftHead">
         <span class="index"></span>
       </div>
-      <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
     [#else]
       <div class="leftHead">
         <span class="index">${activity_index+1}</span>
         <span class="elementId">A${(activity.id)!}</span>
       </div>
-      [#if editable && canEdit && action.canDelete(activity.id)]
-        <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
-      [/#if]
+    [/#if]
+    [#if editable && canEdit && action.canDelete((activity.id)!-1)]
+      <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
     [/#if]
       <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
     [#-- Title --]

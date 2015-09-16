@@ -19,7 +19,7 @@
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className?has_content]class="${className}"[/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle && placeholder]placeholder="${labelTitle}"[/#if]/>
     [#else]
-      [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign] 
+      [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
@@ -46,7 +46,7 @@
     [#if editable]
       <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if]/>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
     [#else]
-      [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign] 
+      [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
@@ -99,7 +99,7 @@
         [@s.checkboxlist name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
       [/#if]
     [#elseif keyFieldName == ""]  
-      [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign] 
+      [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       ${requiredText}  [@s.text name="form.values.fieldEmpty" /]
     [#else]
       ${customValue}
@@ -159,7 +159,7 @@
           [/#if]
         [/#if] 
       [#else]
-        [#assign requiredText][#if required]<span class="fieldError">([@s.text name="form.values.required" /])</span>[/#if][/#assign]  
+        [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign]  
         <p>  
           [#if displayFieldName == "" ]
             [#assign key][@s.property value="${name}"/][/#assign]
