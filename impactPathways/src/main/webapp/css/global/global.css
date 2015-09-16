@@ -230,8 +230,10 @@ span.fieldError{
   color: #fff;
   padding: 0px 6px 2px 6px;
   margin-right: 4px;
+  margin-top: 2px;
   border-radius: 2px;
   font-size: 0.85em;
+  float: left;
 }
 
 p.warning-info {
@@ -2894,7 +2896,7 @@ span.partnerTag {
   border-left: 2px solid #FFFFFF;
 }
 .budget:hover {
-  border-left: 2px solid #D8D8D8 !important; 
+  /* border-left: 2px solid #D8D8D8 !important; */
 }
 
 .budget .title {
@@ -2956,6 +2958,8 @@ span.partnerTag {
 #linkedProjects a {
     text-decoration: none;
     color: #444;
+    border-bottom: 1px solid #97DCB4;
+    line-height: 1.5em;
 }
 
 #linkedProjects a:hover { 
