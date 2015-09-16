@@ -973,9 +973,6 @@ header {
 }
 
 #userInfo {
-  /* margin-right: 30px; */
-  /* margin-top: 10px; */
-  /* margin-bottom: 10px; */
   color: #fff;
   text-align: left;
   position: absolute;
@@ -1045,7 +1042,7 @@ a#userLogOut {
 
 
 #userInfo .email {
-  font-size: 1em; 
+  font-size: 1em;
   margin-right: 50px;
 }
 
@@ -1115,22 +1112,47 @@ a#userLogOut {
 
 /************* 3. MAIN MENU ***************/
 nav#mainMenu {
-  width: 100%; 
+  width: 100%;
   /* padding-top: 10px; */
   /* padding-bottom: 15px; */
   height: 64px;
-  
   background-image: url("../../images/global/header-menu-bar.png");
   font-size: 1.2em;
   font-family: 'Open Sans', sans-serif;
 } 
 
+nav#mainMenu.positionFixedTop {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  height: 36px;
+  font-size: 1.1em;
+  box-shadow: 0px 2px 2px rgba(0,0,0,0.2);
+}
+
+nav#mainMenu.positionFixedTop #userInfo{
+padding: 7px 22px 0px 20px;border: 0;height: 29px;}
+
+nav#mainMenu.positionFixedTop #userInfo .institution{
+  display:none;
+}
+nav#mainMenu.positionFixedTop #userInfo .roles{
+  display:none;
+}
+
+nav#mainMenu.positionFixedTop ul{
+  list-style-type: none;
+  padding: 8px 0px;
+} 
+
+nav#mainMenu.positionFixedTop ul li {
+  padding: 16px 24px 010px 23px; 
+}
+
+
 nav#mainMenu ul{
   list-style-type: none;
-  /* height: 40px; */
   padding: 19px 0px;
-  /* margin: 0 auto; */
-  /* text-align: center; */
 } 
 nav#mainMenu ul a{
  text-decoration: none;
@@ -1138,10 +1160,8 @@ nav#mainMenu ul a{
 
 
 nav#mainMenu ul li {
-  display: inline;
-  /* background: #FFFFFF; */
-  padding: 16px 24px 19px 23px;
-  /* border: 1px solid #dbdbdb; */
+  display: inline; 
+  padding: 16px 24px 19px 23px; 
   margin: -3px;
   color: #FFFFFF;
 }

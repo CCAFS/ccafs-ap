@@ -111,6 +111,9 @@ function addOutcome(outcomeSelectedVal) {
   $newContribution.find("#programID").val(programID);
 
   // Add the midOutcome description
+  $newContribution.find(".midOutcomeTitle .title").html($optionSelected.text().split(":")[0]);
+
+  // Add the midOutcome description
   $newContribution.find(".midOutcomeTitle p.description").html($optionSelected.text());
 
   // Add the elements into the contributesBlock

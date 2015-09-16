@@ -66,7 +66,7 @@
         </div> 
         [#-- Year  --]
         <div class="halfPartBlock chosen">
-          [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable /]
           [#if !editable]${deliverable.year}[/#if]
         </div>
       </div> 
@@ -112,17 +112,17 @@
           [/#list]  
         </table>
       </div> <!-- End dialog-->
-        <div class="helpMessage3"><p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]
-         </a></p>
+        <div class="helpMessage3">
+          <p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]</a></p>
         </div>
-        <p>&nbsp</p>
-        [#if editable]
-         <div class="note left">
-          <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
-         </div>
-        [/#if]
-            <p>&nbsp</p>
-        <div class="note left"><p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p></div>
+        <br />
+        <div class="note left">
+          [#if editable && deliverable.type.description??]
+            <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
+            <br />
+          [/#if]
+          <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
+        </div>
       [/#if]
     </div>
     
