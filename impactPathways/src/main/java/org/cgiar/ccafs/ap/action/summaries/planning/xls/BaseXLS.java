@@ -231,7 +231,7 @@ public class BaseXLS {
   public void writeValue(Sheet sheet, Object value) {
 
     CellStyle style = workbook.createCellStyle();
-    Row row = sheet.createRow((short) rowCounter);
+    Row row = sheet.getRow(rowCounter);
     Cell cell = row.createCell(columnCounter);
     if (value instanceof Integer) {
       style.setAlignment(CellStyle.ALIGN_CENTER);
