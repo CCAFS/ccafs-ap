@@ -69,6 +69,8 @@
         <div id="overhead" class="simpleBox">
           [#if (!editable && canEdit)]
             <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+          [#else]
+            <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
           [/#if]
           <h6>[@s.text name="planning.projectBudget.overhead" /]</h6> 
           <p>[@s.text name="planning.projectBudget.fullyInstitutionalCost" /]</p>
@@ -101,6 +103,8 @@
             <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix"> 
               [#if (!editable && canEdit)]
                 <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+              [#else]
+                <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
               [/#if]
               <div class="fieldset clearfix">
                 [#-- Accumulative total project budget By year --]

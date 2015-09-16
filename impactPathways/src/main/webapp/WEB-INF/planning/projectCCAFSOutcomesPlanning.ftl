@@ -44,6 +44,8 @@
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [#else]
+        <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectOutcome.contribution" /] </h1> 
       [#if contributingPrograms?has_content]
@@ -236,6 +238,8 @@
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+      [#else]
+        <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
       [/#if]
       <div class="fullBlock">
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
