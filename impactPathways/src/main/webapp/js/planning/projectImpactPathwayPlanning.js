@@ -125,7 +125,9 @@ function addOutcome(outcomeSelectedVal) {
   $("#contributionsBlock").append($newContribution).find('.emptyText').hide();
 
   $newContribution.show("slow", function() {
-    $newContribution.find(".indicatorTargetsTemplate").removeClass().addClass("indicatorTargets").tabs();
+    $newContribution.find(".indicatorTargetsTemplate").removeClass().addClass("indicatorTargets").tabs({
+      active: $('#indexTabCurrentYear').val()
+    });
   });
 
   $midOutcomesList.trigger("liszt:updated");
