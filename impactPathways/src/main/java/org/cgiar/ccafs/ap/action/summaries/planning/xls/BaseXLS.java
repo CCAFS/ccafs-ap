@@ -28,6 +28,7 @@ import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -69,11 +70,18 @@ public class BaseXLS {
   // Box Style
   // TODO
 
+  // Cell Style
+  private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
+  private static final String CELL_TRUE_BOOLEAN = "Yes";
+  private static final String CELL_FALSE_BOOLEAN = "No";
+
+
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
   private Workbook workbook; // Excel high level model.
   private boolean usingTemplate;
   private int rowStart, columnStart, rowCounter, columnCounter;
+  private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleString, styleBoolean;
 
 
   /**
@@ -118,6 +126,19 @@ public class BaseXLS {
   }
 
   /**
+   * TODO CM
+   */
+  private void initializeStyles() {
+    // TODO CM
+    styleDate = null;
+    styleInteger = null;
+    styleDecimal = null;
+    styleBudget = null;
+    styleString = null;
+    styleBoolean = null;
+  }
+
+  /**
    * Method used for to initialize an Excel Workbook object.
    * It creates a Workbook object using a predefined template.
    * 
@@ -133,6 +154,8 @@ public class BaseXLS {
     try {
       // validating the type of format.
       if (useTemplate) {
+        // Initializing styles depending on the cell type.
+        this.initializeStyles();
         rowStart = 12;
         columnStart = 1;
         rowCounter = rowStart;
@@ -231,17 +254,45 @@ public class BaseXLS {
   public void writeValue(Sheet sheet, Object value) {
 
     CellStyle style = workbook.createCellStyle();
+    style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
     Row row = sheet.getRow(rowCounter);
+    if (row == null) {
+      row = sheet.createRow(rowCounter);
+    }
+    row.setHeightInPoints((5 * sheet.getDefaultRowHeightInPoints()));
     Cell cell = row.createCell(columnCounter);
     if (value instanceof Integer) {
       style.setAlignment(CellStyle.ALIGN_CENTER);
       cell.setCellType(Cell.CELL_TYPE_NUMERIC);
       cell.setCellValue((int) value);
+      cell.setCellStyle(style);
       sheet.autoSizeColumn(columnCounter);
+    } else if (value instanceof Date) {
+      CreationHelper createHelper = workbook.getCreationHelper();
+      style.setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
+      cell.setCellValue((Date) value);
+      cell.setCellStyle(style);
+    } else if (value instanceof Boolean) {
+      if ((boolean) value == true) {
+        cell.setCellValue(CELL_TRUE_BOOLEAN);
+      } else {
+        cell.setCellValue(CELL_FALSE_BOOLEAN);
+      }
+    } else if (value instanceof String) {
+      cell.setCellValue((String) value);
+      if (value.toString().length() < 30) {
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        sheet.setColumnWidth(columnCounter, 5000);
+      } else {
+        sheet.setColumnWidth(columnCounter, 8000);
+        style.setWrapText(true);
+      }
+      cell.setCellStyle(style);
+    } else if (value == null) {
+      cell.setCellValue("");
     } else {
       cell.setCellValue(String.valueOf(value));
     }
-
   }
 
   /**
