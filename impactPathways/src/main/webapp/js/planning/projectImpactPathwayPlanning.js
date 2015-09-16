@@ -111,6 +111,9 @@ function addOutcome(outcomeSelectedVal) {
   $newContribution.find("#programID").val(programID);
 
   // Add the midOutcome description
+  $newContribution.find(".midOutcomeTitle .title").html($optionSelected.text().split(":")[0]);
+
+  // Add the midOutcome description
   $newContribution.find(".midOutcomeTitle p.description").html($optionSelected.text());
 
   // Add the elements into the contributesBlock
@@ -125,7 +128,9 @@ function addOutcome(outcomeSelectedVal) {
   $("#contributionsBlock").append($newContribution).find('.emptyText').hide();
 
   $newContribution.show("slow", function() {
-    $newContribution.find(".indicatorTargetsTemplate").removeClass().addClass("indicatorTargets").tabs();
+    $newContribution.find(".indicatorTargetsTemplate").removeClass().addClass("indicatorTargets").tabs({
+      active: $('#indexTabCurrentYear').val()
+    });
   });
 
   $midOutcomesList.trigger("liszt:updated");
@@ -205,7 +210,7 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock) {
       // If the there is only one indicator, the target must be already selected.
       if(onlyOneIndicator) {
         $newIndicator.find("input[type='hidden']").attr("disabled", false);
-        $newIndicator.find("input[type='checkbox']").attr("checked", true);
+        $newIndicator.find("input[type='checkbox']").attr("checked", true).attr("disabled", true);
         $newIndicator.find(".indicatorNarrative, .indicatorTargets, .indicatorTargetsTemplate").show("slow");
       }
     });
@@ -303,5 +308,7 @@ function addChosen() {
 }
 
 function addTabs() {
-  $("form .indicatorTargets").tabs();
+  $("form .indicatorTargets").tabs({
+    active: $('#indexTabCurrentYear').val()
+  });
 }

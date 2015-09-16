@@ -39,6 +39,8 @@
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [#else]
+        <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
       [/#if]
       <fieldset class="fullBlock">
         [#-- Project Title --]
@@ -208,7 +210,7 @@
   </article>
   [/@s.form] 
   [#-- Hidden values used by js --]
-  <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
+  <input id="minDateValue" value="${newProject?string(currentPlanningYear,startYear)}-01-01" type="hidden"/>
   <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
   <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
   <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />

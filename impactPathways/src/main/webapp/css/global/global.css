@@ -230,8 +230,10 @@ span.fieldError{
   color: #fff;
   padding: 0px 6px 2px 6px;
   margin-right: 4px;
+  margin-top: 2px;
   border-radius: 2px;
   font-size: 0.85em;
+  float: left;
 }
 
 p.warning-info {
@@ -364,14 +366,15 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   color: #fff; 
 }
 
+/* Edit Button */
+
 .editButton {
   position: absolute;
   right: 0;
   top: 0;
-  background: url(../../images/global/icon-edit.png) #8B8B8B no-repeat 11px 5px;
-  background-size: 18%;
-  padding: 3px 0px 4px 0px;
-  
+  background: url(../../images/global/icon-edit.png) #8B8B8B no-repeat 11px 2px;
+  background-size: 20%;
+  padding: 2px 0px 3px 0px;
   cursor:pointer;
   font-size: 1.1em;
   border-radius: 0 0 0 3px;
@@ -385,6 +388,33 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
 }
 .editButton:hover{
   background-color: #6C6C6C;
+}
+
+/* View Button */
+
+.viewButton.removeOption {
+  right: 43px;
+}
+.viewButton {
+  position: absolute;
+  right: 4px;
+  top: 0;
+  background: url(../../images/global/icon-view.png) #1abc9c no-repeat 9px 2px;
+  /* background-size: 18%; */
+  padding: 0px 0px 4px 0px;
+  cursor:pointer;
+  font-size: 1.1em;
+  border-radius: 0 0px 4px 4px;
+}
+.viewButton a{
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  padding: 8px 18px 6px 31px; */;
+}
+.viewButton:hover{
+  background-color: #16a085;
 }
 
 
@@ -971,9 +1001,6 @@ header {
 }
 
 #userInfo {
-  /* margin-right: 30px; */
-  /* margin-top: 10px; */
-  /* margin-bottom: 10px; */
   color: #fff;
   text-align: left;
   position: absolute;
@@ -1043,7 +1070,7 @@ a#userLogOut {
 
 
 #userInfo .email {
-  font-size: 1em; 
+  font-size: 1em;
   margin-right: 50px;
 }
 
@@ -1113,22 +1140,47 @@ a#userLogOut {
 
 /************* 3. MAIN MENU ***************/
 nav#mainMenu {
-  width: 100%; 
+  width: 100%;
   /* padding-top: 10px; */
   /* padding-bottom: 15px; */
   height: 64px;
-  
   background-image: url("../../images/global/header-menu-bar.png");
   font-size: 1.2em;
   font-family: 'Open Sans', sans-serif;
 } 
 
+nav#mainMenu.positionFixedTop {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  height: 36px;
+  font-size: 1.1em;
+  box-shadow: 0px 2px 2px rgba(0,0,0,0.2);
+}
+
+nav#mainMenu.positionFixedTop #userInfo{
+padding: 7px 22px 0px 20px;border: 0;height: 29px;}
+
+nav#mainMenu.positionFixedTop #userInfo .institution{
+  display:none;
+}
+nav#mainMenu.positionFixedTop #userInfo .roles{
+  display:none;
+}
+
+nav#mainMenu.positionFixedTop ul{
+  list-style-type: none;
+  padding: 8px 0px;
+} 
+
+nav#mainMenu.positionFixedTop ul li {
+  padding: 16px 24px 010px 23px; 
+}
+
+
 nav#mainMenu ul{
   list-style-type: none;
-  /* height: 40px; */
   padding: 19px 0px;
-  /* margin: 0 auto; */
-  /* text-align: center; */
 } 
 nav#mainMenu ul a{
  text-decoration: none;
@@ -1136,10 +1188,8 @@ nav#mainMenu ul a{
 
 
 nav#mainMenu ul li {
-  display: inline;
-  /* background: #FFFFFF; */
-  padding: 16px 24px 19px 23px;
-  /* border: 1px solid #dbdbdb; */
+  display: inline; 
+  padding: 16px 24px 19px 23px; 
   margin: -3px;
   color: #FFFFFF;
 }
@@ -2894,7 +2944,7 @@ span.partnerTag {
   border-left: 2px solid #FFFFFF;
 }
 .budget:hover {
-  border-left: 2px solid #D8D8D8 !important; 
+  /* border-left: 2px solid #D8D8D8 !important; */
 }
 
 .budget .title {
@@ -2956,6 +3006,8 @@ span.partnerTag {
 #linkedProjects a {
     text-decoration: none;
     color: #444;
+    border-bottom: 1px solid #97DCB4;
+    line-height: 1.5em;
 }
 
 #linkedProjects a:hover { 
