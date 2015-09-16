@@ -31,14 +31,19 @@ $(document).ready(function() {
   $("textarea[id!='justification']").autoGrow();
 
   // hash url animation
-
-  // $(window.location.hash).addClass('animated flipInX').css({'z-index': '9999'});
-
   if(window.location.hash) {
     $('html, body').animate({
       scrollTop: $(window.location.hash).offset().top
     }, 2000);
   }
+
+  $(window).scroll(function() {
+    if($(window).scrollTop() >= 103) {
+      $('#mainMenu').addClass('positionFixedTop');
+    } else {
+      $('#mainMenu').removeClass('positionFixedTop');
+    }
+  });
 
   function showHelpText() {
     $('.helpMessage').addClass('animated flipInX');
