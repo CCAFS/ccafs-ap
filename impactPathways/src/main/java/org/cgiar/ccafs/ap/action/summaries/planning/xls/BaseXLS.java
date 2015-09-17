@@ -83,7 +83,8 @@ public class BaseXLS {
   private Workbook workbook; // Excel high level model.
   private boolean usingTemplate;
   private int rowStart, columnStart, rowCounter, columnCounter;
-  private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleString, styleBoolean;
+  private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleLongString, styleShortString,
+    styleBoolean;
 
 
   /**
@@ -144,11 +145,13 @@ public class BaseXLS {
     styleDecimal.setAlignment(CellStyle.ALIGN_CENTER);
     styleBudget = (XSSFCellStyle) workbook.createCellStyle();
     styleBudget.setAlignment(CellStyle.ALIGN_CENTER);
-    styleString = (XSSFCellStyle) workbook.createCellStyle();
-    styleString.setVerticalAlignment(VerticalAlignment.CENTER);
-    styleString.setAlignment(HorizontalAlignment.LEFT);
-    styleString.setFillBackgroundColor((short) 1);
-    styleString.setFillBackgroundColor(new XSSFColor(Color.BLACK));
+    styleLongString = (XSSFCellStyle) workbook.createCellStyle();
+    styleLongString.setVerticalAlignment(VerticalAlignment.CENTER);
+    styleLongString.setAlignment(HorizontalAlignment.LEFT);
+    styleLongString.setWrapText(true);
+    styleShortString = (XSSFCellStyle) workbook.createCellStyle();
+    styleShortString.setVerticalAlignment(VerticalAlignment.CENTER);
+    styleShortString.setAlignment(CellStyle.ALIGN_CENTER);
     styleBoolean = (XSSFCellStyle) workbook.createCellStyle();
     styleBoolean.setAlignment(CellStyle.ALIGN_CENTER);
   }
@@ -294,13 +297,12 @@ public class BaseXLS {
       cell.setCellStyle(styleBoolean);
     } else if (value instanceof String) {
       if (value.toString().length() < 30) {
-        styleString.setAlignment(CellStyle.ALIGN_CENTER);
+        cell.setCellStyle(styleShortString);
       } else {
         sheet.setColumnWidth(columnCounter, 8000);
-        styleString.setWrapText(true);
+        cell.setCellStyle(styleLongString);
       }
       cell.setCellValue((String) value);
-      cell.setCellStyle(styleString);
     } else if (value instanceof Double) {
       DecimalFormat dec = new DecimalFormat("#.##");
       cell.setCellValue(Double.valueOf(dec.format(value)));
