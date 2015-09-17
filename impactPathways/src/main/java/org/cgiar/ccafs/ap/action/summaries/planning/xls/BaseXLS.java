@@ -31,6 +31,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -135,17 +136,20 @@ public class BaseXLS {
     styleInteger = (XSSFCellStyle) workbook.createCellStyle();
     styleInteger.setAlignment(CellStyle.ALIGN_CENTER);
     styleInteger.setVerticalAlignment(VerticalAlignment.CENTER);
-    styleDate = style;
+    styleDate = (XSSFCellStyle) workbook.createCellStyle();
     CreationHelper createHelper = workbook.getCreationHelper();
     styleDate.setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
     styleDate.setAlignment(CellStyle.ALIGN_CENTER);
-    styleDecimal = style;
+    styleDecimal = (XSSFCellStyle) workbook.createCellStyle();
     styleDecimal.setAlignment(CellStyle.ALIGN_CENTER);
-    styleBudget = style;
+    styleBudget = (XSSFCellStyle) workbook.createCellStyle();
     styleBudget.setAlignment(CellStyle.ALIGN_CENTER);
     styleString = (XSSFCellStyle) workbook.createCellStyle();
     styleString.setVerticalAlignment(VerticalAlignment.CENTER);
-    styleBoolean = style;
+    styleString.setAlignment(HorizontalAlignment.LEFT);
+    styleString.setFillBackgroundColor((short) 1);
+    styleString.setFillBackgroundColor(new XSSFColor(Color.BLACK));
+    styleBoolean = (XSSFCellStyle) workbook.createCellStyle();
     styleBoolean.setAlignment(CellStyle.ALIGN_CENTER);
   }
 
@@ -271,7 +275,7 @@ public class BaseXLS {
     if (row == null) {
       row = sheet.createRow(rowCounter);
     }
-    row.setHeightInPoints((5 * sheet.getDefaultRowHeightInPoints()));
+    row.setHeightInPoints((4 * sheet.getDefaultRowHeightInPoints()));
     Cell cell = row.createCell(columnCounter);
     if (value instanceof Integer) {
       cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -289,7 +293,6 @@ public class BaseXLS {
       }
       cell.setCellStyle(styleBoolean);
     } else if (value instanceof String) {
-      System.out.println(value.toString().length());
       if (value.toString().length() < 30) {
         styleString.setAlignment(CellStyle.ALIGN_CENTER);
       } else {
