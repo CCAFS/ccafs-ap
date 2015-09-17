@@ -6,7 +6,9 @@
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.edit" /]</a></div>
     [#else]
-      <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.unedit" /]</a></div>
+      [#if canEdit]
+        <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.unedit" /]</a></div>
+      [/#if]
     [/#if]
     [#if template]
       <div class="leftHead">
@@ -18,10 +20,14 @@
         <span class="elementId">A${(activity.id)!}</span>
       </div>
     [/#if]
-    [#if editable && canEdit && action.canDelete((activity.id)!-1)]
+    [#if template]
       <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
+    [#else]
+      [#if editable && canEdit && action.canDelete((activity.id)!-1)]
+        <div class="removeElement" title="[@s.text name="planning.activities.removeActivity" /]"></div>
+      [/#if]
     [/#if]
-      <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
+    <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
     [#-- Title --]
     <div class="fullPartBlock clearfix">
       [@customForm.input name="${activitiesName}.title" className="title" type="text" required=true i18nkey="planning.activityDescription.title" editable=editable/]
