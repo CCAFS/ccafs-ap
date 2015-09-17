@@ -225,6 +225,14 @@ p.fieldError{
   margin-right: 4px;
 }
 
+p.fieldChecked{
+  color: green;
+  font-weight: bold;
+  margin-right: 4px;
+  background: url(../../images/global/icon-check.png) no-repeat 0 40%;
+  padding-left: 21px;
+}
+
 span.fieldError{
   background-color: #F59898;
   color: #fff;
