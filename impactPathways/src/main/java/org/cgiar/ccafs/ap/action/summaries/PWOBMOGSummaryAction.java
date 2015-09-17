@@ -15,9 +15,10 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.xls.DeliverablePlanningSummaryXLS;
-import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.action.summaries.planning.xls.PWOBMOGSummaryXLS;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -34,17 +35,16 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class DeliverablePlanningSummaryAction extends BaseAction implements Summary {
+public class PWOBMOGSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
 
-  // Managers
-
-  private DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS;
+  private PWOBMOGSummaryXLS pwobSummaryXLS;
   private ProjectManager projectManager;
-  private DeliverableManager deliverableManager;
-
+  private BudgetManager budgetManager;
+  private ProjectOutcomeManager projectOutcomeManager;
+  private int startYear, endYear;
 
   // XLS bytes
   private byte[] bytesXLS;
@@ -56,19 +56,23 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   List<Project> projectsList;
 
   @Inject
-  public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager,
-    DeliverableManager deliverableManager, DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS) {
+  public PWOBMOGSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
+    PWOBMOGSummaryXLS pwobSummaryXLS, ProjectOutcomeManager projectOutcomeManager) {
     super(config);
+
     this.projectManager = projectManager;
-    this.deliverableManager = deliverableManager;
-    this.deliverablePlanningSummaryXLS = deliverablePlanningSummaryXLS;
+    this.budgetManager = budgetManager;
+    this.projectOutcomeManager = projectOutcomeManager;
+    this.pwobSummaryXLS = pwobSummaryXLS;
+    this.startYear = 9999;
+    this.endYear = 0;
   }
 
   @Override
   public String execute() throws Exception {
 
-    // Generate the xls file
-    bytesXLS = deliverablePlanningSummaryXLS.generateXLS(projectsList);
+    // Generate the csv file
+    bytesXLS = pwobSummaryXLS.generateXLS(projectsList, startYear, endYear);
 
     return SUCCESS;
   }
@@ -87,7 +91,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
-    fileName.append("Expected-deliverables-");
+    fileName.append("POWB-MOGs-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -109,8 +113,15 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
     for (Project project : projectsList) {
 
-      // ***************** Deliverables ******************************
-      project.setDeliverables(deliverableManager.getDeliverablesByProject(project.getId()));
+      // *************************Budgets ******************************
+      project.setBudgets(this.budgetManager.getBudgetsByProject(project));
+
+      // *************************Outcomes*****************************
+      project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
+
+      if (project.getStartDate().getYear() < this.startYear) {
+        startYear = project.getStartDate().getYear();
+      }
     }
 
   }

@@ -14,17 +14,14 @@
 
 package org.cgiar.ccafs.ap.action.summaries.planning.xls;
 
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
+
+import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -34,15 +31,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 /**
  * @author Jorge Leonardo Solis B.
  */
-public class PWOBSummaryXLS {
+public class DeliverablePlanningSummaryXLS {
 
   private BaseXLS xls;
-  private BudgetManager budgetManager;
+
 
   @Inject
-  public PWOBSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
+  public DeliverablePlanningSummaryXLS(BaseXLS xls) {
     this.xls = xls;
-    this.budgetManager = budgetManager;
   }
 
   /**
@@ -54,22 +50,24 @@ public class PWOBSummaryXLS {
   private void addContent(List<Project> projectsList, Workbook workbook) {
 
 
-    double W1W2, W3Bilateral;
     StringBuilder stringBuilder;
     int counter;
     Sheet sheet = workbook.getSheetAt(0);
     Project project;
-    Locale locale = new Locale("en", "US");
-    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-    currencyFormatter.setMaximumFractionDigits(0);
 
     // Iterating all the projects
     for (int a = 0; a < 2; a++) {
       project = projectsList.get(a);
 
       // Iterating all the partners
-      for (ProjectPartner projectPartnerPPA : project.getPPAPartners()) {
+      for (Deliverable deliverable : project.getDeliverables()) {
+
+        // Project id
         xls.writeValue(sheet, project.getId());
+        xls.nextColumn();
+
+        // Title
+        xls.writeValue(sheet, project.getTitle());
         xls.nextColumn();
 
         // Flashig
@@ -83,29 +81,7 @@ public class PWOBSummaryXLS {
           counter++;
         }
         xls.writeValue(sheet, stringBuilder.toString());
-        xls.nextColumn();
 
-        // Title
-        xls.writeValue(sheet, project.getTitle());
-        xls.nextColumn();
-
-        // Summary
-        xls.writeValue(sheet, project.getSummary());
-        xls.nextColumn();
-
-        if (project.getLeader() != null && project.getLeader().getInstitution() != null) {
-
-          // Acronym Leader
-          xls.writeValue(sheet, project.getLeader().getInstitution().getAcronym());
-          xls.nextColumn();
-
-          // Leader name
-          xls.writeValue(sheet, project.getLeader().getInstitution().getName());
-        } else {
-          // xls.writeValue(sheet, "");
-          xls.nextColumn();
-          // xls.writeValue(sheet, "");
-        }
         xls.nextColumn();
 
         // Region
@@ -119,36 +95,73 @@ public class PWOBSummaryXLS {
           counter++;
         }
         xls.writeValue(sheet, stringBuilder.toString());
+
         xls.nextColumn();
 
-        // W1/W2 Budget
-        W1W2 =
-          budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
-            .getInstitution().getId(), BudgetType.W1_W2.getValue());
-
-        xls.writeValue(sheet, currencyFormatter.format(W1W2));
+        // deliverable id
+        xls.writeValue(sheet, deliverable.getId());
         xls.nextColumn();
 
-        // W3/Bilateral Budget
-        W3Bilateral =
-          budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
-            .getInstitution().getId(), BudgetType.W3_BILATERAL.getValue());
-
-        xls.writeValue(sheet, W3Bilateral);
+        // Title
+        xls.writeValue(sheet, deliverable.getTitle());
         xls.nextColumn();
 
-        // Location
-        counter = 0;
-        project.getLocations();
+
+        // MOG
         stringBuilder = new StringBuilder();
-        for (Location location : project.getLocations()) {
-          if (counter != 0) {
-            stringBuilder.append(", ");
-          }
-          stringBuilder.append(location.getName());
-          counter++;
+        if (deliverable.getOutput() != null) {
+          stringBuilder.append(deliverable.getOutput().getDescription());
         }
         xls.writeValue(sheet, stringBuilder.toString());
+        xls.nextColumn();
+
+        // Year
+        xls.writeValue(sheet, deliverable.getYear());
+        xls.nextColumn();
+
+        // Main type
+        if (deliverable.getType() != null && deliverable.getType().getCategory() != null) {
+          xls.writeValue(sheet, deliverable.getType().getCategory().getName());
+        }
+        xls.nextColumn();
+
+        // Sub Type
+        if (deliverable.getType() != null) {
+          xls.writeValue(sheet, deliverable.getType().getName());
+        }
+        xls.nextColumn();
+
+        // Other Type
+        if (deliverable.getTypeOther() != null) {
+          xls.writeValue(sheet, deliverable.getTypeOther());
+        } else {
+          xls.writeValue(sheet, "Not applicable");
+        }
+        xls.nextColumn();
+
+        // Partner Responsible
+        if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getPartner() != null) {
+          xls.writeValue(sheet, deliverable.getResponsiblePartner().getPartner().getComposedName());
+        } else {
+          xls.writeValue(sheet, "Not defined");
+        }
+        xls.nextColumn();
+
+        // Other Partner
+        counter = 0;
+
+        stringBuilder = new StringBuilder();
+        for (DeliverablePartner deliverablePartner : deliverable.getOtherPartners()) {
+          if (deliverablePartner != null && deliverablePartner.getPartner() != null) {
+            if (counter != 0) {
+              stringBuilder.append(", ");
+            }
+            stringBuilder.append(deliverablePartner.getPartner().getComposedName());
+          }
+        }
+        xls.writeValue(sheet, stringBuilder.toString());
+        xls.nextColumn();
+
 
         xls.nextRow();
       }
@@ -174,12 +187,12 @@ public class PWOBSummaryXLS {
 
       // Writting headers
       String[] headers =
-        new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution acronym",
-        "Lead institution", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "locations"};
+        new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s) covered", "Deliverable Id",
+        "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+      "Others Partners"};
+
       xls.writeHeaders(sheet, headers);
-
       this.addContent(projectsList, workbook);
-
 
       // this.flush();
       xls.writeWorkbook();

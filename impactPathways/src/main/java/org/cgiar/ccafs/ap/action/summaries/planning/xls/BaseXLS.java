@@ -43,6 +43,7 @@ import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFTextBox;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,14 +64,14 @@ public class BaseXLS {
     "resources/templates/template.xlsx");
 
   // Header Style
-  private static final String HEADER_FONT_NAME = "Arial";
-  private static final short HEADER_FONT_SIZE = 11;
+  private static final String HEADER_FONT_NAME = "Tahoma";
+  private static final short HEADER_FONT_SIZE = 10;
   private static final String HEADER_FONT_COLOR_HEX = "#404040";
   private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
+  private static final String BORDER_COLOR_HEX = "#c2a5a5";
   private static final int HEADER_ROW_HEIGHT = 31;
 
   // Box Style
-  // TODO
 
   // Cell Style
   private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
@@ -84,7 +85,7 @@ public class BaseXLS {
   private boolean usingTemplate;
   private int rowStart, columnStart, rowCounter, columnCounter;
   private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleLongString, styleShortString,
-    styleBoolean;
+  styleBoolean, styleHeader;
 
 
   /**
@@ -132,28 +133,64 @@ public class BaseXLS {
    * Method used to initialize the different styles according to the type of value
    */
   private void initializeStyles() {
-    XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
-    style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+    CreationHelper createHelper = workbook.getCreationHelper();
+
+    // Style integer
     styleInteger = (XSSFCellStyle) workbook.createCellStyle();
     styleInteger.setAlignment(CellStyle.ALIGN_CENTER);
     styleInteger.setVerticalAlignment(VerticalAlignment.CENTER);
+
+    // Style date
     styleDate = (XSSFCellStyle) workbook.createCellStyle();
-    CreationHelper createHelper = workbook.getCreationHelper();
     styleDate.setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
     styleDate.setAlignment(CellStyle.ALIGN_CENTER);
+
+    // Style decimal
     styleDecimal = (XSSFCellStyle) workbook.createCellStyle();
     styleDecimal.setAlignment(CellStyle.ALIGN_CENTER);
+
+    // Style budget
     styleBudget = (XSSFCellStyle) workbook.createCellStyle();
     styleBudget.setAlignment(CellStyle.ALIGN_CENTER);
+
+    // Style long string
     styleLongString = (XSSFCellStyle) workbook.createCellStyle();
     styleLongString.setVerticalAlignment(VerticalAlignment.CENTER);
     styleLongString.setAlignment(HorizontalAlignment.LEFT);
     styleLongString.setWrapText(true);
+
+    // Style short string
     styleShortString = (XSSFCellStyle) workbook.createCellStyle();
     styleShortString.setVerticalAlignment(VerticalAlignment.CENTER);
     styleShortString.setAlignment(CellStyle.ALIGN_CENTER);
+
+    // styleBoleean
     styleBoolean = (XSSFCellStyle) workbook.createCellStyle();
     styleBoolean.setAlignment(CellStyle.ALIGN_CENTER);
+
+    // Style header
+    styleHeader = (XSSFCellStyle) workbook.createCellStyle();
+    styleHeader.setAlignment(CellStyle.ALIGN_CENTER);
+    styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+    styleHeader.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+    styleHeader.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
+
+    XSSFFont font = (XSSFFont) workbook.createFont();
+    font.setBold(true);
+    font.setFontName(HEADER_FONT_NAME);
+    font.setColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
+    font.setFontHeightInPoints(HEADER_FONT_SIZE);
+    styleHeader.setFont(font);
+
+    // Set Border
+    this.setBorder(this.styleBoolean);
+    this.setBorder(this.styleBudget);
+    this.setBorder(this.styleDate);
+    this.setBorder(this.styleDecimal);
+    this.setBorder(this.styleInteger);
+    this.setBorder(this.styleLongString);
+    this.setBorder(this.styleShortString);
   }
 
   /**
@@ -211,6 +248,15 @@ public class BaseXLS {
     columnCounter = columnStart;
   }
 
+  private void setBorder(XSSFCellStyle style) {
+    style.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+    style.setBorderTop(XSSFCellStyle.BORDER_THIN);
+
+    style.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(BORDER_COLOR_HEX)));
+    style.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(BORDER_COLOR_HEX)));
+
+  }
+
   /**
    * This method writes the headers into the given sheet.
    * 
@@ -221,17 +267,7 @@ public class BaseXLS {
     if (usingTemplate) {
       // ------ Preparing the style.
       // Font
-      XSSFFont font = (XSSFFont) workbook.createFont();
-      font.setBold(true);
-      font.setFontName(HEADER_FONT_NAME);
-      font.setColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
-      font.setFontHeightInPoints(HEADER_FONT_SIZE);
-      // Style
-      XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
-      style.setAlignment(CellStyle.ALIGN_CENTER);
-      style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-      style.setFillBackgroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
-      style.setFont(font);
+
 
       // Row
       Row row = sheet.createRow(rowStart - 1);
@@ -241,7 +277,7 @@ public class BaseXLS {
       Cell cell;
       for (int c = 0, columnCounter = columnStart; c < headers.length; c++, columnCounter++) {
         cell = row.createCell(columnCounter);
-        cell.setCellStyle(style);
+        cell.setCellStyle(styleHeader);
         cell.setCellValue(headers[c]);
         sheet.autoSizeColumn(columnCounter);
         sheet.setColumnWidth(columnCounter, 6000);
@@ -280,6 +316,11 @@ public class BaseXLS {
     }
     row.setHeightInPoints((4 * sheet.getDefaultRowHeightInPoints()));
     Cell cell = row.createCell(columnCounter);
+    XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
+    style.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+    style.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
+    style.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(BORDER_COLOR_HEX)));
+
     if (value instanceof Integer) {
       cell.setCellType(Cell.CELL_TYPE_NUMERIC);
       cell.setCellValue((int) value);
@@ -314,6 +355,7 @@ public class BaseXLS {
     }
   }
 
+
   /**
    * This Method is used for to write the Workbook instance into the output stream
    * 
@@ -322,6 +364,5 @@ public class BaseXLS {
   public void writeWorkbook() throws IOException {
     workbook.write(outputStream);
   }
-
 
 }

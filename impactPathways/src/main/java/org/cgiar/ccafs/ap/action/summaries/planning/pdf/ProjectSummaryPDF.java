@@ -546,7 +546,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(currencyFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
             valueSum = value;
@@ -750,10 +750,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
         deliverableBlock.setFont(TABLE_BODY_FONT);
         stringBuilder = new StringBuilder();
-        stringBuilder.append(deliverable.getType().getCategory().getName());
+        if (deliverable.getType() != null && deliverable.getType().getCategory() != null) {
+          stringBuilder.append(this.messageReturn(deliverable.getType().getCategory().getName()));
+        } else {
+          stringBuilder.append(this.messageReturn(""));
+        }
         deliverableBlock.add(stringBuilder.toString());
         deliverableBlock.add(Chunk.NEWLINE);
-        // document.add(deliverableBlock);
         this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
 
         // Sub Type
@@ -766,11 +769,10 @@ public class ProjectSummaryPDF extends BasePDF {
 
         deliverableBlock.setFont(TABLE_BODY_FONT);
         stringBuilder = new StringBuilder();
-
-        if (deliverable.getType().getName() != null) {
-          stringBuilder.append(deliverable.getType().getName());
+        if (deliverable.getType() != null) {
+          stringBuilder.append(this.messageReturn(deliverable.getType().getName()));
         }
-        deliverableBlock.add(stringBuilder.toString());
+        deliverableBlock.add(this.messageReturn(stringBuilder.toString()));
         deliverableBlock.add(Chunk.NEWLINE);;
         // document.add(deliverableBlock);
         this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
@@ -1596,7 +1598,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
