@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning.csv;
+package org.cgiar.ccafs.ap.action.summaries.planning.xls;
 
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
@@ -21,18 +21,22 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.Inject;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class PartnersSummaryCSV extends BaseCSV {
+public class PartnersSummaryXLS {
 
   private APConfig config;
+  private BaseXLS xls;
 
   @Inject
-  public PartnersSummaryCSV(APConfig config) {
+  public PartnersSummaryXLS(APConfig config, BaseXLS xls) {
     this.config = config;
+    this.xls = xls;
   }
 
   /**
@@ -41,32 +45,27 @@ public class PartnersSummaryCSV extends BaseCSV {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Institution> projectPartnerInstitutions, String[] projectList) {
-    int i = 0;
+  private void addContent(Sheet sheet, List<Institution> projectPartnerInstitutions, String[] projectList) {
+    int projectCount = 0;
     for (Institution institution : projectPartnerInstitutions) {
-      try {
-
-        this.writeString(String.valueOf(institution.getId()), false, true);
-
-        this.writeString(institution.getName(), false, true);
-
-        this.writeString(institution.getAcronym(), false, true);
-
-
-        this.writeString(institution.getWebsiteLink(), false, true);
-
-        this.writeString(institution.getCountry().getName(), false, true);
-
-        // Getting the project ids
-        this.writeString(projectList[i], false, false);
-        i++;
-
-        this.writeNewLine();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      xls.writeValue(sheet, institution.getId());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getName());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getAcronym());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getWebsiteLink());
+      xls.nextColumn();
+      xls.writeValue(sheet, institution.getCountry().getName());
+      xls.nextColumn();
+      // Getting the project ids
+      if (Integer.getInteger(projectList[projectCount]) instanceof Integer) {
+        xls.writeValue(sheet, Integer.valueOf(projectList[projectCount]));
+      } else {
+        xls.writeValue(sheet, projectList[projectCount]);
       }
-
+      projectCount++;
+      xls.nextRow();
     }
   }
 
@@ -75,21 +74,29 @@ public class PartnersSummaryCSV extends BaseCSV {
    *
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
+   * @return a byte array with the information provided for the xls file.
    */
   public byte[] generateCSV(List<Institution> projectPartnerInstitutions, String[] projectList) {
 
     try {
+      Workbook workbook = xls.initializeXLS(true);
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
-      this.initializeCSV();
-      this.addHeaders(headers);
-      this.addContent(projectPartnerInstitutions, projectList);
-      this.flush();
-      byte[] byteArray = this.getBytes();
+      workbook.setSheetName(0, "ProjectPartnerInstitutions");
+      Sheet sheet = workbook.getSheetAt(0);
+      xls.writeTitleBox(sheet, "CCAFS Project Partner Institutions");
+      xls.writeHeaders(sheet, headers);
+
+      this.addContent(sheet, projectPartnerInstitutions, projectList);
+
+      xls.writeWorkbook();
+      byte[] byteArray = xls.getBytes();
       // Closing streams.
-      this.closeStreams();
+      xls.closeStreams();
+
       return byteArray;
+
     } catch (IOException e) {
       e.printStackTrace();
     }

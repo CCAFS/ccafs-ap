@@ -45,9 +45,8 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList,
-    Workbook workBook) {
-
+  private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList) {
+    int projectCount = 0;
     for (Institution institution : projectLeadingInstitutions) {
       xls.writeValue(sheet, institution.getId());
       xls.nextColumn();
@@ -58,6 +57,9 @@ public class LeadInstitutionPartnersSummaryXLS {
       xls.writeValue(sheet, institution.getWebsiteLink());
       xls.nextColumn();
       xls.writeValue(sheet, institution.getCountry().getName());
+      xls.nextColumn();
+      xls.writeValue(sheet, projectList[projectCount]);
+      projectCount++;
       xls.nextRow();
     }
   }
@@ -67,6 +69,7 @@ public class LeadInstitutionPartnersSummaryXLS {
    * 
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
+   * @return a byte array with the information provided for the xls file.
    */
   public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
@@ -81,7 +84,7 @@ public class LeadInstitutionPartnersSummaryXLS {
       xls.writeTitleBox(sheet, "CCAFS Lead Institutions");
       xls.writeHeaders(sheet, headers);
 
-      this.addContent(sheet, projectLeadingInstitutions, projectList, workbook);
+      this.addContent(sheet, projectLeadingInstitutions, projectList);
 
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();

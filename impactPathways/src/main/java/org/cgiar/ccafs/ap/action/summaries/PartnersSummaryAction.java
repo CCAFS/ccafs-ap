@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.csv.PartnersSummaryCSV;
+import org.cgiar.ccafs.ap.action.summaries.planning.xls.PartnersSummaryXLS;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -39,23 +39,23 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(PartnersSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private PartnersSummaryCSV partnersCSV;
+  private PartnersSummaryXLS partnersXLS;
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   List<ProjectPartner> partners;
   List<Institution> projectPartnerInstitutions;
   String[] projectList;
   // CSV bytes
-  private byte[] bytesCSV;
+  private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
 
   @Inject
-  public PartnersSummaryAction(APConfig config, PartnersSummaryCSV partnersCSV, InstitutionManager institutionManager,
+  public PartnersSummaryAction(APConfig config, PartnersSummaryXLS partnersXLS, InstitutionManager institutionManager,
     ProjectManager projectManager) {
     super(config);
-    this.partnersCSV = partnersCSV;
+    this.partnersXLS = partnersXLS;
     this.institutionManager = institutionManager;
     this.projectManager = projectManager;
 
@@ -64,20 +64,24 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   @Override
   public String execute() throws Exception {
 
-    // Generate the csv file
-    bytesCSV = partnersCSV.generateCSV(projectPartnerInstitutions, projectList);
+    // Generate the xls file
+    bytesXLS = partnersXLS.generateCSV(projectPartnerInstitutions, projectList);
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return bytesCSV.length;
+    return bytesXLS.length;
   }
 
   @Override
   public String getContentType() {
-    return "text/csv";
+    if (this.getFileName().endsWith("xlsx")) {
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    } else {
+      return "application/vnd.ms-excel";
+    }
   }
 
 
@@ -87,7 +91,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
     StringBuffer fileName = new StringBuffer();
     fileName.append("ProjectPartner-Institutions_");
     fileName.append(date);
-    fileName.append(".csv");
+    fileName.append(".xlsx");
     return fileName.toString();
   }
 
@@ -95,7 +99,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   @Override
   public InputStream getInputStream() {
     if (inputStream == null) {
-      inputStream = new ByteArrayInputStream(bytesCSV);
+      inputStream = new ByteArrayInputStream(bytesXLS);
     }
     return inputStream;
   }
