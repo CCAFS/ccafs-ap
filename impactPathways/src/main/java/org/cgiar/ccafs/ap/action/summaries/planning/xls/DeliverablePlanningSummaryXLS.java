@@ -182,14 +182,14 @@ public class DeliverablePlanningSummaryXLS {
       Workbook workbook = xls.initializeXLS(true);
 
       // renaming sheet
-      workbook.setSheetName(0, "PWOB Report");
+      workbook.setSheetName(0, "Deliverable Report");
       Sheet sheet = workbook.getSheetAt(0);
 
       // Writting headers
       String[] headers =
         new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s) covered", "Deliverable Id",
-        "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-      "Others Partners"};
+          "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
+          "Others Partners"};
 
       xls.writeHeaders(sheet, headers);
       this.addContent(projectsList, workbook);

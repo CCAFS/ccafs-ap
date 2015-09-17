@@ -68,16 +68,18 @@ public class BaseXLS {
   private static final short HEADER_FONT_SIZE = 10;
   private static final String HEADER_FONT_COLOR_HEX = "#404040";
   private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
-  private static final String BORDER_COLOR_HEX = "#c2a5a5";
   private static final int HEADER_ROW_HEIGHT = 31;
 
-  // Box Style
+  // Border Style
+
 
   // Cell Style
   private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
   private static final String CELL_TRUE_BOOLEAN = "Yes";
   private static final String CELL_FALSE_BOOLEAN = "No";
-
+  private static final String CELL_BORDER_COLOR_HEX = "#c2a5a5";
+  private static final short CELL_BORDER_TYPE_BOTTOM = XSSFCellStyle.BORDER_THIN;
+  private static final short CELL_BORDER_TYPE_TOP = XSSFCellStyle.BORDER_THIN;
 
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
@@ -249,11 +251,13 @@ public class BaseXLS {
   }
 
   private void setBorder(XSSFCellStyle style) {
-    style.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    style.setBorderTop(XSSFCellStyle.BORDER_THIN);
+    // Create the border
+    style.setBorderBottom(CELL_BORDER_TYPE_BOTTOM);
+    style.setBorderTop(CELL_BORDER_TYPE_TOP);
 
-    style.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(BORDER_COLOR_HEX)));
-    style.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(BORDER_COLOR_HEX)));
+    // Set color border
+    style.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(CELL_BORDER_COLOR_HEX)));
+    style.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(CELL_BORDER_COLOR_HEX)));
 
   }
 
@@ -316,10 +320,6 @@ public class BaseXLS {
     }
     row.setHeightInPoints((4 * sheet.getDefaultRowHeightInPoints()));
     Cell cell = row.createCell(columnCounter);
-    XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
-    style.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
-    style.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
-    style.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(BORDER_COLOR_HEX)));
 
     if (value instanceof Integer) {
       cell.setCellType(Cell.CELL_TYPE_NUMERIC);
@@ -353,6 +353,8 @@ public class BaseXLS {
     } else {
       cell.setCellValue(String.valueOf(value));
     }
+
+
   }
 
 

@@ -104,9 +104,7 @@ public class PWOBMOGSummaryXLS {
           // Leader name
           xls.writeValue(sheet, project.getLeader().getInstitution().getName());
         } else {
-          // xls.writeValue(sheet, "");
           xls.nextColumn();
-          // xls.writeValue(sheet, "");
         }
         xls.nextColumn();
 
