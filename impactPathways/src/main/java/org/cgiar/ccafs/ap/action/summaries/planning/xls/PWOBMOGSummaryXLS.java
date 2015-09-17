@@ -34,13 +34,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 /**
  * @author Jorge Leonardo Solis B.
  */
-public class PWOBSummaryXLS {
+public class PWOBMOGSummaryXLS {
 
   private BaseXLS xls;
   private BudgetManager budgetManager;
 
   @Inject
-  public PWOBSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
+  public PWOBMOGSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
     this.xls = xls;
     this.budgetManager = budgetManager;
   }
@@ -53,6 +53,8 @@ public class PWOBSummaryXLS {
    */
   private void addContent(List<Project> projectsList, Workbook workbook) {
 
+    // {"Outcome 2019", "MOG", "Total W1/W2(USD)", "Total W3/Bilateral(USD)", "Total W1/W2 (USD)",
+    // "Total W3/Bilateral(USD)"
 
     double W1W2, W3Bilateral;
     StringBuilder stringBuilder;
@@ -102,9 +104,7 @@ public class PWOBSummaryXLS {
           // Leader name
           xls.writeValue(sheet, project.getLeader().getInstitution().getName());
         } else {
-          // xls.writeValue(sheet, "");
           xls.nextColumn();
-          // xls.writeValue(sheet, "");
         }
         xls.nextColumn();
 
@@ -163,7 +163,7 @@ public class PWOBSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Project> projectsList) {
+  public byte[] generateXLS(List<Project> projectsList, int startYear, int endYear) {
 
     try {
       Workbook workbook = xls.initializeXLS(true);
@@ -173,10 +173,19 @@ public class PWOBSummaryXLS {
       Sheet sheet = workbook.getSheetAt(0);
 
       // Writting headers
-      String[] headers =
-        new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution acronym",
-        "Lead institution", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "locations"};
-      xls.writeHeaders(sheet, headers);
+
+      StringBuilder headers = new StringBuilder();
+
+      headers.append("Outcome 2019 , ");
+      headers.append("MOG , ");
+      headers.append("Total W3/Bilateral(USD) , ");
+
+
+      // new String[] {"Outcome 2019", "MOG", "Total W1/W2(USD)", "Total W3/Bilateral(USD)", "Total W1/W2 (USD)",
+      // "Total W3/Bilateral(USD)"};
+
+
+      xls.writeHeaders(sheet, headers.toString().split(","));
 
       this.addContent(projectsList, workbook);
 

@@ -1,6 +1,7 @@
 // Global VARS
 var $allBudgetInputs, $overallInputs, $CCAFSBudgetInputs;
 var budgetByYear, genderBudgetByYear;
+var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
 $(document).ready(init);
 
 function init() {
@@ -15,8 +16,9 @@ function init() {
 
   // Remaining elements
   budgetByYear = new BudgetRemaining('#budgetByYear');
-  coFundedBudgetByYear = new BudgetRemaining('#coFundedBudgetByYear');
   genderBudgetByYear = new BudgetRemaining('#genderBudgetByYear');
+
+  coFundedBudgetByYear = new BudgetRemaining('#coFundedBudgetByYear');
   coFundedGenderBudgetByYear = new BudgetRemaining('#coFundedGenderBudgetByYear');
 
   // Attach events
@@ -88,25 +90,25 @@ function addKeyUpEvent(inputs,remaining) {
 
 function BudgetRemaining(budget) {
   this.element = $(budget).parents('.BudgetByYear');
-  this.initValue = $(budget).find('input').val();
-  this.setValue =
-      function(value) {
-        $(budget).find('span.amount').text(setCurrencyFormat(value));
-        $(budget).find('span').addClass('animated flipInY').removeClass('animated flipInX');
-        $(budget).find('span').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-            function() {
-              $(this).removeClass('animated flipInY');
-            });
-      };
-  this.setPercentage =
-      function(percentage) {
-        $(budget).find('span.percentage').text(setPercentageFormat(percentage));
-        $(budget).find('span').addClass('animated flipInY');
-        $(budget).find('span').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-            function() {
-              $(this).removeClass('animated flipInY');
-            });
-      };
+  this.initValue = removeCurrencyFormat($(budget).find('span.amount').text());
+  this.spanAmount = $(budget).find('span.amount');
+  this.spanPercentage = $(budget).find('span.percentage');
+  this.getValue = function() {
+    return removeCurrencyFormat($(this.spanAmount).text());
+  };
+  this.getPercentage = function() {
+    return removePercentageFormat($(this.spanPercentage).text());
+  };
+  this.setValue = function(value) {
+    var $value = $(this.spanAmount);
+    $value.text(setCurrencyFormat(value)).addClass('animated flipInX');
+    $value.one(animationEnd, function() {
+      $value.removeClass('animated flipInX');
+    });
+  };
+  this.setPercentage = function(percentage) {
+    $(this.spanPercentage).text(setPercentageFormat(percentage));
+  };
   this.calculateRemain = function(percentage) {
     var result = (this.initValue / 100) * percentage;
     var value = this.initValue - result;
@@ -119,12 +121,44 @@ function BudgetRemaining(budget) {
   this.removeError = function() {
     $(budget).removeClass('fieldError');
   };
+  this.setChecked = function() {
+    $(budget).addClass('fieldChecked');
+  };
+  this.setUnchecked = function() {
+    $(budget).removeClass('fieldChecked');
+  };
 }
 
 function setPercentageCurrency(inputTarget,remainBudget) {
   var percentage = removePercentageFormat($(inputTarget).val() || "0");
   var value = (remainBudget.initValue / 100) * percentage;
   $(inputTarget).parents('.budget').find('span.amount').text(setCurrencyFormat(value));
+}
+
+function checkPercentages(inputTarget,inputList,remainBudget) {
+  var totalPercentage = 0;
+  $(inputList).removeClass('fieldError');
+  // Calculate budget percentage filled out
+  $(inputList).each(function(i,input) {
+    totalPercentage += parseFloat(removePercentageFormat($(input).val() || "0"));
+  });
+  remainBudget.calculateRemain(totalPercentage);
+  // Validate total budget percentage
+  errorMessages = [];
+  remainBudget.removeError();
+  // If percentage exceed the total annual budget
+  if(totalPercentage > 100) {
+    errorMessages.push($('#budgetCanNotExcced').val());
+    $(inputTarget).addClass('fieldError');
+    remainBudget.setError();
+  }
+  // If percentage complete total annual budget
+  if(totalPercentage == 100) {
+    remainBudget.setChecked();
+  } else {
+    // errorMessages.push($('#budgetCanNotRemain').val());
+    remainBudget.setUnchecked();
+  }
 }
 
 function calculateGenderAmount(outputBudget) {
@@ -142,23 +176,6 @@ function calculateGenderAmount(outputBudget) {
     $genderBudgetInput.addClass('fieldError');
     $genderBudgetInput.parents('.budget').find('input').addClass('fieldError');
   }
-}
-
-function checkPercentages(inputTarget,inputList,remainBudget) {
-  var totalPercentage = 0;
-  errorMessages = [];
-  $(inputList).removeClass('fieldError');
-  remainBudget.removeError();
-  $(inputList).each(function(i,input) {
-    totalPercentage += parseFloat(removePercentageFormat($(input).val() || "0"));
-  });
-  if(totalPercentage > 100) {
-    errorMessages.push($('#budgetCanNotExcced').val());
-    $(inputTarget).addClass('fieldError');
-    remainBudget.setError();
-  }
-  remainBudget.calculateRemain(totalPercentage);
-
 }
 
 function setPercentage(event) {

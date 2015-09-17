@@ -247,16 +247,17 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
         deliverable.setResponsiblePartner(partners.get(0));
       } else {
         DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
+        responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
         // responsiblePartner.setInstitution(new Institution(-1));
         // responsiblePartner.setUser(new User(-1));
-        // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+
         deliverable.setResponsiblePartner(responsiblePartner);
       }
 
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
+        APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Add Deliverables
