@@ -54,7 +54,9 @@
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+        [#if canEdit]
+          <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+        [/#if]
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1>  
       <div class="fullBlock">
@@ -133,7 +135,9 @@
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.unedit" /]</a></div>
+        [#if canEdit]
+          <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.unedit" /]</a></div>
+        [/#if]
       [/#if]
       <div class="fullBlock">
         <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.nextUsers" /] </h1> 
@@ -155,7 +159,9 @@
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.unedit" /]</a></div>
+        [#if canEdit]
+          <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.unedit" /]</a></div>
+        [/#if]
       [/#if]
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
       <div class="fullBlock">
@@ -194,7 +200,9 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
+        [#if canEdit]
+          <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
+        [/#if]
       [/#if]
       <div class="fullBlock">
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
