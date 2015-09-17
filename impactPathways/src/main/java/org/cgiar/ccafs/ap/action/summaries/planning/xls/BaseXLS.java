@@ -127,16 +127,26 @@ public class BaseXLS {
   }
 
   /**
-   * TODO CM
+   * Method used to initialize the different styles according to the type of value
    */
   private void initializeStyles() {
-    // TODO CM
-    styleDate = null;
-    styleInteger = null;
-    styleDecimal = null;
-    styleBudget = null;
-    styleString = null;
-    styleBoolean = null;
+    XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
+    style.setVerticalAlignment(VerticalAlignment.CENTER);
+    styleInteger = (XSSFCellStyle) workbook.createCellStyle();
+    styleInteger.setAlignment(CellStyle.ALIGN_CENTER);
+    styleInteger.setVerticalAlignment(VerticalAlignment.CENTER);
+    styleDate = style;
+    CreationHelper createHelper = workbook.getCreationHelper();
+    styleDate.setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
+    styleDate.setAlignment(CellStyle.ALIGN_CENTER);
+    styleDecimal = style;
+    styleDecimal.setAlignment(CellStyle.ALIGN_CENTER);
+    styleBudget = style;
+    styleBudget.setAlignment(CellStyle.ALIGN_CENTER);
+    styleString = (XSSFCellStyle) workbook.createCellStyle();
+    styleString.setVerticalAlignment(VerticalAlignment.CENTER);
+    styleBoolean = style;
+    styleBoolean.setAlignment(CellStyle.ALIGN_CENTER);
   }
 
   /**
@@ -155,8 +165,6 @@ public class BaseXLS {
     try {
       // validating the type of format.
       if (useTemplate) {
-        // Initializing styles depending on the cell type.
-        this.initializeStyles();
         rowStart = 12;
         columnStart = 1;
         rowCounter = rowStart;
@@ -165,6 +173,8 @@ public class BaseXLS {
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
+        // Initializing styles depending on the cell type.
+        this.initializeStyles();
         // closing input stream.
         templateStream.close();
         // applying header.
@@ -215,6 +225,7 @@ public class BaseXLS {
       style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
       style.setFillBackgroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
       style.setFont(font);
+
       // Row
       Row row = sheet.createRow(rowStart - 1);
       row.setHeightInPoints(HEADER_ROW_HEIGHT);
@@ -226,6 +237,7 @@ public class BaseXLS {
         cell.setCellStyle(style);
         cell.setCellValue(headers[c]);
         sheet.autoSizeColumn(columnCounter);
+        sheet.setColumnWidth(columnCounter, 6000);
       }
     } else {
       // TODO To develop the same algorithm but without style starting in the first row of the sheet.
@@ -254,43 +266,39 @@ public class BaseXLS {
    */
   public void writeValue(Sheet sheet, Object value) {
 
-    CellStyle style = workbook.createCellStyle();
-    style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
     Row row = sheet.getRow(rowCounter);
+    // if there is no row index, it should create it
     if (row == null) {
       row = sheet.createRow(rowCounter);
     }
     row.setHeightInPoints((5 * sheet.getDefaultRowHeightInPoints()));
     Cell cell = row.createCell(columnCounter);
     if (value instanceof Integer) {
-      style.setAlignment(CellStyle.ALIGN_CENTER);
       cell.setCellType(Cell.CELL_TYPE_NUMERIC);
       cell.setCellValue((int) value);
-      cell.setCellStyle(style);
       sheet.autoSizeColumn(columnCounter);
+      cell.setCellStyle(styleInteger);
     } else if (value instanceof Date) {
-      CreationHelper createHelper = workbook.getCreationHelper();
-      style.setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
       cell.setCellValue((Date) value);
-      cell.setCellStyle(style);
+      cell.setCellStyle(styleDate);
     } else if (value instanceof Boolean) {
       if ((boolean) value == true) {
         cell.setCellValue(CELL_TRUE_BOOLEAN);
       } else {
         cell.setCellValue(CELL_FALSE_BOOLEAN);
       }
+      cell.setCellStyle(styleBoolean);
     } else if (value instanceof String) {
-      cell.setCellValue((String) value);
+      System.out.println(value.toString().length());
       if (value.toString().length() < 30) {
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        sheet.setColumnWidth(columnCounter, 5000);
+        styleString.setAlignment(CellStyle.ALIGN_CENTER);
       } else {
         sheet.setColumnWidth(columnCounter, 8000);
-        style.setWrapText(true);
+        styleString.setWrapText(true);
       }
-      cell.setCellStyle(style);
+      cell.setCellValue((String) value);
+      cell.setCellStyle(styleString);
     } else if (value instanceof Double) {
-      style.setAlignment(CellStyle.ALIGN_CENTER);
       DecimalFormat dec = new DecimalFormat("#.##");
       cell.setCellValue(Double.valueOf(dec.format(value)));
       sheet.autoSizeColumn(columnCounter);
