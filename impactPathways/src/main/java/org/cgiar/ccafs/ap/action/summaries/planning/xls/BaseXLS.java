@@ -80,14 +80,15 @@ public class BaseXLS {
   private static final String CELL_BORDER_COLOR_HEX = "#c2a5a5";
   private static final short CELL_BORDER_TYPE_BOTTOM = XSSFCellStyle.BORDER_THIN;
   private static final short CELL_BORDER_TYPE_TOP = XSSFCellStyle.BORDER_THIN;
+  private static final short CELL_BORDER_TYPE_LEFT = XSSFCellStyle.BORDER_THIN;
+  private static final short CELL_BORDER_TYPE_RIGHT = XSSFCellStyle.BORDER_THIN;
 
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
   private Workbook workbook; // Excel high level model.
   private boolean usingTemplate;
-  private int rowStart, columnStart, rowCounter, columnCounter;
-  private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleLongString, styleShortString,
-  styleBoolean, styleHeader;
+  public int rowStart, columnStart, columnEnd, rowCounter, columnCounter;
+  private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleLongString, styleBoolean, styleHeader;
 
 
   /**
@@ -163,9 +164,9 @@ public class BaseXLS {
     styleLongString.setWrapText(true);
 
     // Style short string
-    styleShortString = (XSSFCellStyle) workbook.createCellStyle();
-    styleShortString.setVerticalAlignment(VerticalAlignment.CENTER);
-    styleShortString.setAlignment(CellStyle.ALIGN_CENTER);
+    // styleShortString = (XSSFCellStyle) workbook.createCellStyle();
+    // styleShortString.setVerticalAlignment(VerticalAlignment.CENTER);
+    // styleShortString.setAlignment(CellStyle.ALIGN_CENTER);
 
     // styleBoleean
     styleBoolean = (XSSFCellStyle) workbook.createCellStyle();
@@ -192,7 +193,7 @@ public class BaseXLS {
     this.setBorder(this.styleDecimal);
     this.setBorder(this.styleInteger);
     this.setBorder(this.styleLongString);
-    this.setBorder(this.styleShortString);
+
   }
 
   /**
@@ -269,23 +270,21 @@ public class BaseXLS {
    */
   public void writeHeaders(Sheet sheet, String[] headers) {
     if (usingTemplate) {
-      // ------ Preparing the style.
-      // Font
-
-
       // Row
       Row row = sheet.createRow(rowStart - 1);
       row.setHeightInPoints(HEADER_ROW_HEIGHT);
 
       // Writing headers.
       Cell cell;
-      for (int c = 0, columnCounter = columnStart; c < headers.length; c++, columnCounter++) {
-        cell = row.createCell(columnCounter);
+      int counter;
+      for (counter = 1; counter <= headers.length; counter++) {
+        cell = row.createCell(counter);
         cell.setCellStyle(styleHeader);
-        cell.setCellValue(headers[c]);
-        sheet.autoSizeColumn(columnCounter);
-        sheet.setColumnWidth(columnCounter, 6000);
+        cell.setCellValue(headers[counter - 1]);
+        sheet.autoSizeColumn(counter);
+        sheet.setColumnWidth(counter, 6000);
       }
+      columnEnd = counter - 1;
     } else {
       // TODO To develop the same algorithm but without style starting in the first row of the sheet.
     }
@@ -304,6 +303,7 @@ public class BaseXLS {
     textbox.setFillColor(255, 204, 41);
     textbox.setVerticalAlignment(VerticalAlignment.CENTER);
   }
+
 
   /**
    * This method writes any value into a specific cell.
@@ -337,12 +337,11 @@ public class BaseXLS {
       }
       cell.setCellStyle(styleBoolean);
     } else if (value instanceof String) {
-      if (value.toString().length() < 30) {
-        cell.setCellStyle(styleShortString);
-      } else {
-        sheet.setColumnWidth(columnCounter, 8000);
-        cell.setCellStyle(styleLongString);
+      cell.setCellStyle(styleLongString);
+      if (value.toString().length() > 30) {
+        sheet.setColumnWidth(columnCounter, 12000);
       }
+      // sheet.autoSizeColumn(columnCounter);
       cell.setCellValue((String) value);
     } else if (value instanceof Double) {
       DecimalFormat dec = new DecimalFormat("#.##");
@@ -354,7 +353,19 @@ public class BaseXLS {
       cell.setCellValue(String.valueOf(value));
     }
 
-
+    if (columnCounter == this.columnStart) {
+      XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
+      style.cloneStyleFrom(cell.getCellStyle());
+      style.setBorderLeft(CELL_BORDER_TYPE_LEFT);
+      style.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode(CELL_BORDER_COLOR_HEX)));
+      cell.setCellStyle(style);
+    } else if (columnCounter == this.columnEnd) {
+      XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
+      style.cloneStyleFrom(cell.getCellStyle());
+      style.setBorderRight(CELL_BORDER_TYPE_RIGHT);
+      style.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(CELL_BORDER_COLOR_HEX)));
+      cell.setCellStyle(style);
+    }
   }
 
 
@@ -366,5 +377,6 @@ public class BaseXLS {
   public void writeWorkbook() throws IOException {
     workbook.write(outputStream);
   }
+
 
 }

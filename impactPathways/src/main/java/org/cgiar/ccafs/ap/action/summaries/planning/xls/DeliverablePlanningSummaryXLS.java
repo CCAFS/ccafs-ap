@@ -95,7 +95,6 @@ public class DeliverablePlanningSummaryXLS {
           counter++;
         }
         xls.writeValue(sheet, stringBuilder.toString());
-
         xls.nextColumn();
 
         // deliverable id
@@ -154,9 +153,9 @@ public class DeliverablePlanningSummaryXLS {
         for (DeliverablePartner deliverablePartner : deliverable.getOtherPartners()) {
           if (deliverablePartner != null && deliverablePartner.getPartner() != null) {
             if (counter != 0) {
-              stringBuilder.append(", ");
+              stringBuilder.append("; ");
             }
-            stringBuilder.append(deliverablePartner.getPartner().getComposedName());
+            stringBuilder.append(deliverablePartner.getPartner().getComposedName() + " - ");
           }
         }
         xls.writeValue(sheet, stringBuilder.toString());
@@ -187,9 +186,8 @@ public class DeliverablePlanningSummaryXLS {
 
       // Writting headers
       String[] headers =
-        new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s) covered", "Deliverable Id",
-          "Deliverable title", "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible",
-          "Others Partners"};
+        new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s)", "Deliverable Id", "Deliverable title",
+          "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
 
       xls.writeHeaders(sheet, headers);
       this.addContent(projectsList, workbook);
