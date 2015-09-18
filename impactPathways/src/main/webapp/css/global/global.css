@@ -229,8 +229,9 @@ p.fieldChecked{
   color: green;
   font-weight: bold;
   margin-right: 4px;
-  background: url(../../images/global/icon-check.png) no-repeat 0 40%;
+  background: url(../../images/global/checked-true.png) no-repeat 0 40%;
   padding-left: 21px;
+  margin-left: -6px !important;
 }
 
 span.fieldError{
