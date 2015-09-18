@@ -58,11 +58,18 @@ import org.slf4j.LoggerFactory;
  */
 public class BaseXLS {
 
+  public static final int COLUMN_TYPE_BUDGET = 1;
+  public static final int COLUMN_TYPE_DECIMAL = 2;
+  public static final int COLUMN_TYPE_TEXT_LONG = 3;
+  public static final int COLUMN_TYPE_TEXT_SHORT = 4;
+  public static final int COLUMN_TYPE_BOOLEAN = 5;
+  public static final int COLUMN_TYPE_NUMERIC = 6;
+
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
   // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE = ServletActionContext.getServletContext().getRealPath(
-    "resources/templates/template.xlsx");
+  private static String EXCEL_TEMPLATE_FILE =
+    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
 
   // Header Style
   private static final String HEADER_FONT_NAME = "Tahoma";
@@ -88,8 +95,11 @@ public class BaseXLS {
   private ByteArrayOutputStream outputStream; // byte stream.
   private Workbook workbook; // Excel high level model.
   private boolean usingTemplate;
-  public int rowStart, columnStart, columnEnd, rowCounter, columnCounter;
-  private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleLongString, styleBoolean, styleHeader;
+  private int rowStart, columnStart, columnEnd, rowCounter, columnCounter;
+  // private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleLongString, styleBoolean,
+  // styleHeader;
+  private XSSFCellStyle styleHeader;
+  private XSSFCellStyle[] columnStyles;
 
 
   /**
@@ -136,33 +146,41 @@ public class BaseXLS {
   /**
    * Method used to initialize the different styles according to the type of value
    */
-  private void initializeStyles() {
+  private void initializeStyles(int[] columnTypes) {
 
     CreationHelper createHelper = workbook.getCreationHelper();
 
-    // Style integer
-    styleInteger = (XSSFCellStyle) workbook.createCellStyle();
-    styleInteger.setAlignment(CellStyle.ALIGN_CENTER);
-    styleInteger.setVerticalAlignment(VerticalAlignment.CENTER);
+    for (int c = 0; c < columnTypes.length; c++) {
+      switch (columnTypes[c]) {
+        case COLUMN_TYPE_NUMERIC:
+          // Style integer
+          XSSFCellStyle styleInteger = (XSSFCellStyle) workbook.createCellStyle();
+          styleInteger.setAlignment(CellStyle.ALIGN_CENTER);
+          styleInteger.setVerticalAlignment(VerticalAlignment.CENTER);
+          this.setBorder(styleInteger);
+          columnStyles[c] = styleInteger;
+          break;
+      }
+    }
 
     // Style date
-    styleDate = (XSSFCellStyle) workbook.createCellStyle();
+    XSSFCellStyle styleDate = (XSSFCellStyle) workbook.createCellStyle();
     styleDate.setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
     styleDate.setAlignment(CellStyle.ALIGN_CENTER);
 
     // Style decimal
-    styleDecimal = (XSSFCellStyle) workbook.createCellStyle();
+    XSSFCellStyle styleDecimal = (XSSFCellStyle) workbook.createCellStyle();
     styleDecimal.setAlignment(CellStyle.ALIGN_CENTER);
     styleDecimal.setVerticalAlignment(VerticalAlignment.CENTER);
     styleDecimal.setDataFormat(workbook.createDataFormat().getFormat("0.00"));
 
     // Style budget
-    styleBudget = (XSSFCellStyle) workbook.createCellStyle();
+    XSSFCellStyle styleBudget = (XSSFCellStyle) workbook.createCellStyle();
     styleBudget.setAlignment(CellStyle.ALIGN_CENTER);
     styleDecimal.setVerticalAlignment(VerticalAlignment.CENTER);
 
     // Style long string
-    styleLongString = (XSSFCellStyle) workbook.createCellStyle();
+    XSSFCellStyle styleLongString = (XSSFCellStyle) workbook.createCellStyle();
     styleLongString.setVerticalAlignment(VerticalAlignment.CENTER);
     styleLongString.setAlignment(HorizontalAlignment.LEFT);
     styleLongString.setWrapText(true);
@@ -173,7 +191,7 @@ public class BaseXLS {
     // styleShortString.setAlignment(CellStyle.ALIGN_CENTER);
 
     // styleBoleean
-    styleBoolean = (XSSFCellStyle) workbook.createCellStyle();
+    XSSFCellStyle styleBoolean = (XSSFCellStyle) workbook.createCellStyle();
     styleBoolean.setAlignment(CellStyle.ALIGN_CENTER);
 
     // Style header
@@ -191,12 +209,12 @@ public class BaseXLS {
     styleHeader.setFont(font);
 
     // Set Border
-    this.setBorder(this.styleBoolean);
-    this.setBorder(this.styleBudget);
-    this.setBorder(this.styleDate);
-    this.setBorder(this.styleDecimal);
-    this.setBorder(this.styleInteger);
-    this.setBorder(this.styleLongString);
+    this.setBorder(styleBoolean);
+    this.setBorder(styleBudget);
+    this.setBorder(styleDate);
+    this.setBorder(styleDecimal);
+    this.setBorder(styleLongString);
+
 
   }
 
@@ -209,7 +227,7 @@ public class BaseXLS {
    * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
    *         XLS format.
    */
-  public Workbook initializeXLS(boolean useTemplate) {
+  public Workbook initializeXLS(boolean useTemplate, int[] columnTypes) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     usingTemplate = useTemplate;
@@ -225,7 +243,7 @@ public class BaseXLS {
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
         // Initializing styles depending on the cell type.
-        this.initializeStyles();
+        this.initializeStyles(columnTypes);
         // closing input stream.
         templateStream.close();
         // applying header.
@@ -347,34 +365,34 @@ public class BaseXLS {
       cell.setCellType(Cell.CELL_TYPE_NUMERIC);
       cell.setCellValue((int) value);
       sheet.autoSizeColumn(columnCounter);
-      cell.setCellStyle(styleInteger);
+      // cell.setCellStyle(styleInteger);
     } else if (value instanceof Date) {
       cell.setCellValue((Date) value);
-      cell.setCellStyle(styleDate);
+      // cell.setCellStyle(styleDate);
     } else if (value instanceof Boolean) {
       if ((boolean) value == true) {
         cell.setCellValue(CELL_TRUE_BOOLEAN);
       } else {
         cell.setCellValue(CELL_FALSE_BOOLEAN);
       }
-      cell.setCellStyle(styleBoolean);
+      // cell.setCellStyle(styleBoolean);
     } else if (value instanceof String) {
-      cell.setCellStyle(styleLongString);
+      // cell.setCellStyle(styleLongString);
       if (value.toString().length() > 30) {
         sheet.setColumnWidth(columnCounter, 12000);
       }
       // sheet.autoSizeColumn(columnCounter);
       cell.setCellValue((String) value);
     } else if (value instanceof Double) {
-      cell.setCellStyle(this.styleDecimal);
+      // cell.setCellStyle(this.styleDecimal);
       cell.setCellValue((double) value);
       sheet.autoSizeColumn(columnCounter);
     } else if (value == null) {
       cell.setCellValue("");
-      cell.setCellStyle(styleLongString);
+      // cell.setCellStyle(styleLongString);
     } else {
       cell.setCellValue(String.valueOf(value));
-      cell.setCellStyle(styleLongString);
+      // cell.setCellStyle(styleLongString);
     }
 
     if (columnCounter == this.columnStart) {

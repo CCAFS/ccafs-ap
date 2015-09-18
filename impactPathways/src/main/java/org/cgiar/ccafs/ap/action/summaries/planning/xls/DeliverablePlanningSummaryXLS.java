@@ -122,16 +122,24 @@ public class DeliverablePlanningSummaryXLS {
   public byte[] generateXLS(List<Map<String, Object>> deliverableList) {
 
     try {
-      Workbook workbook = xls.initializeXLS(true);
+      // Writting headers
+      String[] headers =
+        new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s)", "Deliverable Id", "Deliverable title",
+          "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
+
+      // defining header types.
+      int[] headerTypes = new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_NUMERIC,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_NUMERIC,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+
+      Workbook workbook = xls.initializeXLS(true, headerTypes);
 
       // renaming sheet
       workbook.setSheetName(0, "Deliverable Report");
       Sheet sheet = workbook.getSheetAt(0);
 
-      // Writting headers
-      String[] headers =
-        new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s)", "Deliverable Id", "Deliverable title",
-        "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
 
       xls.writeHeaders(sheet, headers);
       this.addContent(deliverableList, workbook);
