@@ -126,7 +126,7 @@ public class PWOBSummaryXLS {
           budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
             .getInstitution().getId(), BudgetType.W1_W2.getValue());
 
-        xls.writeValue(sheet, currencyFormatter.format(W1W2));
+        xls.writeValue(sheet, W1W2);
         xls.nextColumn();
 
         // W3/Bilateral Budget
@@ -171,6 +171,9 @@ public class PWOBSummaryXLS {
       // renaming sheet
       workbook.setSheetName(0, "PWOB Report");
       Sheet sheet = workbook.getSheetAt(0);
+
+      // Writing the sheet in the yellow box
+      xls.writeTitleBox(sheet, "PWOB Report");
 
       // Writting headers
       String[] headers =

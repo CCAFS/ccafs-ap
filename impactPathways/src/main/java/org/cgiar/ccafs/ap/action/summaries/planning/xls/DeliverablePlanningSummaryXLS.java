@@ -15,13 +15,9 @@
 package org.cgiar.ccafs.ap.action.summaries.planning.xls;
 
 
-import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.Project;
-
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -47,123 +43,71 @@ public class DeliverablePlanningSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Project> projectsList, Workbook workbook) {
+  private void addContent(List<Map<String, Object>> deliverableList, Workbook workbook) {
 
 
-    StringBuilder stringBuilder;
-    int counter;
     Sheet sheet = workbook.getSheetAt(0);
-    Project project;
 
+    Map<String, Object> deliverableMap;
     // Iterating all the projects
-    for (int a = 0; a < 2; a++) {
-      project = projectsList.get(a);
+    for (int a = 0; a < 100; a++) {
+      deliverableMap = deliverableList.get(a);
 
       // Iterating all the partners
-      for (Deliverable deliverable : project.getDeliverables()) {
 
-        // Project id
-        xls.writeValue(sheet, project.getId());
-        xls.nextColumn();
+      // Project id
+      xls.writeValue(sheet, deliverableMap.get("project_id"));
+      xls.nextColumn();
 
-        // Title
-        xls.writeValue(sheet, project.getTitle());
-        xls.nextColumn();
+      // Title
+      xls.writeValue(sheet, deliverableMap.get("project_title"));
+      xls.nextColumn();
 
-        // Flashig
-        counter = 0;
-        stringBuilder = new StringBuilder();
-        for (IPProgram flashig : project.getFlagships()) {
-          if (counter != 0) {
-            stringBuilder.append(", ");
-          }
-          stringBuilder.append(flashig.getAcronym());
-          counter++;
-        }
-        xls.writeValue(sheet, stringBuilder.toString());
+      // Flashig
+      xls.writeValue(sheet, deliverableMap.get("flagships"));
+      xls.nextColumn();
 
-        xls.nextColumn();
+      // Region
+      xls.writeValue(sheet, deliverableMap.get("regions"));
+      xls.nextColumn();
 
-        // Region
-        counter = 0;
-        stringBuilder = new StringBuilder();
-        for (IPProgram region : project.getRegions()) {
-          if (counter != 0) {
-            stringBuilder.append("-");
-          }
-          stringBuilder.append(region.getAcronym());
-          counter++;
-        }
-        xls.writeValue(sheet, stringBuilder.toString());
-        xls.nextColumn();
+      // deliverable id
+      xls.writeValue(sheet, deliverableMap.get("deliverable_id"));
+      xls.nextColumn();
 
-        // deliverable id
-        xls.writeValue(sheet, deliverable.getId());
-        xls.nextColumn();
+      // Title
+      xls.writeValue(sheet, deliverableMap.get("deliverable_title"));
+      xls.nextColumn();
 
-        // Title
-        xls.writeValue(sheet, deliverable.getTitle());
-        xls.nextColumn();
+      // MOG
+      xls.writeValue(sheet, deliverableMap.get("mog"));
+      xls.nextColumn();
 
+      // Year
+      xls.writeValue(sheet, deliverableMap.get("year"));
+      xls.nextColumn();
 
-        // MOG
-        stringBuilder = new StringBuilder();
-        if (deliverable.getOutput() != null) {
-          stringBuilder.append(deliverable.getOutput().getDescription());
-        }
-        xls.writeValue(sheet, stringBuilder.toString());
-        xls.nextColumn();
+      // Main type
+      xls.writeValue(sheet, deliverableMap.get("deliverable_type"));
+      xls.nextColumn();
 
-        // Year
-        xls.writeValue(sheet, deliverable.getYear());
-        xls.nextColumn();
+      // Sub Type
+      xls.writeValue(sheet, deliverableMap.get("deliverable_sub_type"));
+      xls.nextColumn();
 
-        // Main type
-        if (deliverable.getType() != null && deliverable.getType().getCategory() != null) {
-          xls.writeValue(sheet, deliverable.getType().getCategory().getName());
-        }
-        xls.nextColumn();
+      // Other Type
+      xls.writeValue(sheet, deliverableMap.get("other_type"));
+      xls.nextColumn();
 
-        // Sub Type
-        if (deliverable.getType() != null) {
-          xls.writeValue(sheet, deliverable.getType().getName());
-        }
-        xls.nextColumn();
+      // Partner Responsible
+      xls.writeValue(sheet, deliverableMap.get("partner_responsible"));
+      xls.nextColumn();
 
-        // Other Type
-        if (deliverable.getTypeOther() != null) {
-          xls.writeValue(sheet, deliverable.getTypeOther());
-        } else {
-          xls.writeValue(sheet, "Not applicable");
-        }
-        xls.nextColumn();
+      // Other Partner
+      xls.writeValue(sheet, deliverableMap.get("other_responsibles"));
+      xls.nextColumn();
 
-        // Partner Responsible
-        if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getPartner() != null) {
-          xls.writeValue(sheet, deliverable.getResponsiblePartner().getPartner().getComposedName());
-        } else {
-          xls.writeValue(sheet, "Not defined");
-        }
-        xls.nextColumn();
-
-        // Other Partner
-        counter = 0;
-
-        stringBuilder = new StringBuilder();
-        for (DeliverablePartner deliverablePartner : deliverable.getOtherPartners()) {
-          if (deliverablePartner != null && deliverablePartner.getPartner() != null) {
-            if (counter != 0) {
-              stringBuilder.append("; ");
-            }
-            stringBuilder.append(deliverablePartner.getPartner().getComposedName() + " - ");
-          }
-        }
-        xls.writeValue(sheet, stringBuilder.toString());
-        xls.nextColumn();
-
-
-        xls.nextRow();
-      }
+      xls.nextRow();
 
 
     }
@@ -175,7 +119,7 @@ public class DeliverablePlanningSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Project> projectsList) {
+  public byte[] generateXLS(List<Map<String, Object>> deliverableList) {
 
     try {
       Workbook workbook = xls.initializeXLS(true);
@@ -187,10 +131,10 @@ public class DeliverablePlanningSummaryXLS {
       // Writting headers
       String[] headers =
         new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s)", "Deliverable Id", "Deliverable title",
-          "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
+        "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
 
       xls.writeHeaders(sheet, headers);
-      this.addContent(projectsList, workbook);
+      this.addContent(deliverableList, workbook);
 
       // this.flush();
       xls.writeWorkbook();

@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,6 +29,7 @@ import com.opensymphony.xwork2.TextProvider;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,6 +41,7 @@ import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFTextBox;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
@@ -152,10 +153,13 @@ public class BaseXLS {
     // Style decimal
     styleDecimal = (XSSFCellStyle) workbook.createCellStyle();
     styleDecimal.setAlignment(CellStyle.ALIGN_CENTER);
+    styleDecimal.setVerticalAlignment(VerticalAlignment.CENTER);
+    styleDecimal.setDataFormat(workbook.createDataFormat().getFormat("0.00"));
 
     // Style budget
     styleBudget = (XSSFCellStyle) workbook.createCellStyle();
     styleBudget.setAlignment(CellStyle.ALIGN_CENTER);
+    styleDecimal.setVerticalAlignment(VerticalAlignment.CENTER);
 
     // Style long string
     styleLongString = (XSSFCellStyle) workbook.createCellStyle();
@@ -297,13 +301,31 @@ public class BaseXLS {
    * @param text is the title of the report.
    */
   public void writeTitleBox(Sheet sheet, String text) {
+
+
     XSSFDrawing draw = (XSSFDrawing) sheet.createDrawingPatriarch();
     XSSFTextBox textbox = draw.createTextbox(new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 4, 6));
-    textbox.setText(text);
+
+    // textbox.setTextAutofit(value);
+    // textbox.setText(text);
     textbox.setFillColor(255, 204, 41);
     textbox.setVerticalAlignment(VerticalAlignment.CENTER);
-  }
 
+    XSSFRichTextString stringX = new XSSFRichTextString();
+
+    Font font = workbook.createFont();
+    font.setFontHeightInPoints((short) 24);
+    font.setFontName("Courier New");
+    font.setItalic(true);
+    font.setStrikeout(true);
+    // TODO
+    // font.setColor(arg0);
+
+    stringX.applyFont(font);
+    stringX.append(text);
+    textbox.setText(stringX);
+
+  }
 
   /**
    * This method writes any value into a specific cell.
@@ -344,13 +366,15 @@ public class BaseXLS {
       // sheet.autoSizeColumn(columnCounter);
       cell.setCellValue((String) value);
     } else if (value instanceof Double) {
-      DecimalFormat dec = new DecimalFormat("#.##");
-      cell.setCellValue(Double.valueOf(dec.format(value)));
+      cell.setCellStyle(this.styleDecimal);
+      cell.setCellValue((double) value);
       sheet.autoSizeColumn(columnCounter);
     } else if (value == null) {
       cell.setCellValue("");
+      cell.setCellStyle(styleLongString);
     } else {
       cell.setCellValue(String.valueOf(value));
+      cell.setCellStyle(styleLongString);
     }
 
     if (columnCounter == this.columnStart) {
@@ -367,7 +391,6 @@ public class BaseXLS {
       cell.setCellStyle(style);
     }
   }
-
 
   /**
    * This Method is used for to write the Workbook instance into the output stream

@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -43,7 +44,6 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   private DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS;
   private ProjectManager projectManager;
-  private DeliverableManager deliverableManager;
 
 
   // XLS bytes
@@ -54,13 +54,13 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   // Model
   List<Project> projectsList;
+  private List<Map<String, Object>> DeliverableList;
 
   @Inject
   public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager,
     DeliverableManager deliverableManager, DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS) {
     super(config);
     this.projectManager = projectManager;
-    this.deliverableManager = deliverableManager;
     this.deliverablePlanningSummaryXLS = deliverablePlanningSummaryXLS;
   }
 
@@ -68,7 +68,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   public String execute() throws Exception {
 
     // Generate the xls file
-    bytesXLS = deliverablePlanningSummaryXLS.generateXLS(projectsList);
+    bytesXLS = deliverablePlanningSummaryXLS.generateXLS(DeliverableList);
 
     return SUCCESS;
   }
@@ -105,13 +105,8 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   @Override
   public void prepare() {
-    projectsList = this.projectManager.getAllProjectsBasicInfo();
 
-    for (Project project : projectsList) {
-
-      // ***************** Deliverables ******************************
-      project.setDeliverables(deliverableManager.getDeliverablesByProject(project.getId()));
-    }
+    DeliverableList = projectManager.summaryGetAllProjectsWithDeliverables();
 
   }
 }
