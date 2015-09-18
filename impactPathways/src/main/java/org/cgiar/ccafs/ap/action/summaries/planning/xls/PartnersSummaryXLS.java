@@ -79,9 +79,14 @@ public class PartnersSummaryXLS {
   public byte[] generateCSV(List<Institution> projectPartnerInstitutions, String[] projectList) {
 
     try {
-      Workbook workbook = xls.initializeXLS(true);
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
+      int[] headersType =
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+
+      Workbook workbook = xls.initializeXLS(true, headersType);
+
 
       workbook.setSheetName(0, "ProjectPartnerInstitutions");
       Sheet sheet = workbook.getSheetAt(0);

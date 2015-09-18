@@ -54,7 +54,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   // Model
   List<Project> projectsList;
-  private List<Map<String, Object>> DeliverableList;
+  private List<Map<String, Object>> deliverableList;
 
   @Inject
   public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager,
@@ -68,7 +68,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   public String execute() throws Exception {
 
     // Generate the xls file
-    bytesXLS = deliverablePlanningSummaryXLS.generateXLS(DeliverableList);
+    bytesXLS = deliverablePlanningSummaryXLS.generateXLS(deliverableList);
 
     return SUCCESS;
   }
@@ -106,7 +106,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   @Override
   public void prepare() {
 
-    DeliverableList = projectManager.summaryGetAllProjectsWithDeliverables();
+    deliverableList = projectManager.summaryGetAllProjectsWithDeliverables();
 
   }
 }

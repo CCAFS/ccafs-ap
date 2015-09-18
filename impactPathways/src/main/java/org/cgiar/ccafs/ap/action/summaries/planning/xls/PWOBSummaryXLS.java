@@ -166,7 +166,20 @@ public class PWOBSummaryXLS {
   public byte[] generateXLS(List<Project> projectsList) {
 
     try {
-      Workbook workbook = xls.initializeXLS(true);
+
+
+      // Writting headers
+      String[] headers =
+        new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution acronym",
+        "Lead institution", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "locations"};
+
+      // Writting style content
+      int[] headersType =
+        new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      Workbook workbook = xls.initializeXLS(true, headersType);
 
       // renaming sheet
       workbook.setSheetName(0, "PWOB Report");
@@ -175,10 +188,7 @@ public class PWOBSummaryXLS {
       // Writing the sheet in the yellow box
       xls.writeTitleBox(sheet, "PWOB Report");
 
-      // Writting headers
-      String[] headers =
-        new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution acronym",
-        "Lead institution", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "locations"};
+
       xls.writeHeaders(sheet, headers);
 
       this.addContent(projectsList, workbook);

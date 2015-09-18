@@ -74,11 +74,16 @@ public class LeadInstitutionPartnersSummaryXLS {
   public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
-      Workbook workbook = xls.initializeXLS(true);
+
 
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
+      int[] headerTypes =
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+
+      Workbook workbook = xls.initializeXLS(true, headerTypes);
       workbook.setSheetName(0, "LeadInstitutions");
       Sheet sheet = workbook.getSheetAt(0);
       xls.writeTitleBox(sheet, "CCAFS Lead Institutions");

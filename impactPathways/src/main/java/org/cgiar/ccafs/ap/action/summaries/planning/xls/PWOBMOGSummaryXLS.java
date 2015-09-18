@@ -166,29 +166,32 @@ public class PWOBMOGSummaryXLS {
   public byte[] generateXLS(List<Project> projectsList, int startYear, int endYear) {
 
     try {
-      Workbook workbook = xls.initializeXLS(true);
 
-      // renaming sheet
-      workbook.setSheetName(0, "PWOB Report");
-      Sheet sheet = workbook.getSheetAt(0);
 
       // Writting headers
 
       StringBuilder headers = new StringBuilder();
 
-      headers.append("Outcome 2019 , ");
+      headers.append("Outcome 2019, ");
       headers.append("MOG , ");
+      headers.append("Total W1/W2(USD) , ");
       headers.append("Total W3/Bilateral(USD) , ");
+      headers.append("Total W1/W2(USD) , ");
+      headers.append("Total W3/Bilateral(USD)");
+
+      int[] headersType =
+      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
 
-      // new String[] {"Outcome 2019", "MOG", "Total W1/W2(USD)", "Total W3/Bilateral(USD)", "Total W1/W2 (USD)",
-      // "Total W3/Bilateral(USD)"};
+      Workbook workbook = xls.initializeXLS(true, headersType);
 
-
-      xls.writeHeaders(sheet, headers.toString().split(","));
-
+      // renaming sheet
+      workbook.setSheetName(0, "PWOB Report");
+      Sheet sheet = workbook.getSheetAt(0);
       this.addContent(projectsList, workbook);
 
+      xls.writeHeaders(sheet, headers.toString().split(","));
 
       // this.flush();
       xls.writeWorkbook();
