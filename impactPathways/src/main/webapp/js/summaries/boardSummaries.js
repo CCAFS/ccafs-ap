@@ -1,12 +1,13 @@
 $(document).ready(init);
 
 function init() {
+  addChosen();
   attachEvents();
 }
 
 function attachEvents() {
   $('.summariesSection a, .summariesSection span').on('click', selectSummariesSection);
-  $('input[name=projectsOptions]').on('change', selectTypeReport);
+  $('input[name=formOptions]').on('change', selectTypeReport);
 }
 
 function selectSummariesSection(e) {
@@ -20,5 +21,14 @@ function selectSummariesSection(e) {
 }
 
 function selectTypeReport(e) {
-  console.log(e.target.id + ' - ' + e.target.checked);
+  var $option = $(e.target).parent();
+  $option.parent().find('.extraOptions').hide();
+  $option.find('.extraOptions').fadeIn();
+}
+// https://172.22.98.87:8443/impactPathways/summaries/project.do?projectID=1
+// Activate the chosen plugin.
+function addChosen() {
+  $("form select").chosen({
+    search_contains: true
+  });
 }

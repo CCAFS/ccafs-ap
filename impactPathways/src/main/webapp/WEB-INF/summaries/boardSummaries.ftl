@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Summaries Section" /]
-[#assign globalLibs = ["jquery", "noty"] /]
+[#assign globalLibs = ["jquery", "noty", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/summaries/boardSummaries.js"] /]
 [#assign customCSS = [] /]
 [#assign currentSection = "summaries" /]
@@ -46,8 +46,8 @@
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="projectPortfolio" value="projects" />
             <label for="projectPortfolio">Project portfolio <span>PDF</span></label>
-            <div class="extraOptions">
-              <select name="" id=""></select>
+            <div class="extraOptions" style="display:none"> 
+              [@customForm.select name="projectID" label="" i18nkey="" listName="allProjects" keyFieldName="id" displayFieldName="composedName" className=""/]
             </div>
           </div>
         </div>
