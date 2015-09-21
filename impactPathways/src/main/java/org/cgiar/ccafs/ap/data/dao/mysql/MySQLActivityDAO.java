@@ -284,7 +284,6 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[5] = activityData.get("modified_by");
       values[6] = activityData.get("modification_justification");
       values[7] = activityData.get("id");
-      System.out.println();
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",
