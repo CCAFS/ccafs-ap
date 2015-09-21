@@ -190,6 +190,10 @@ public class Project {
     return null;
   }
 
+  public String getComposedName() {
+    return this.id + " - " + this.title;
+  }
+
   public ProjectPartner getCoordinator() {
     return coordinator;
   }
