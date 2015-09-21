@@ -84,7 +84,63 @@ public class MySQLSubmissionDAO implements SubmissionDAO {
   @Override
   public int saveProjectSubmission(int projectID, Map<String, String> submissionData) {
     // TODO Auto-generated method stub
-    return 0;
+    LOG.debug(">> saveProjectSubmission(submissionData={})", submissionData);
+    StringBuilder query = new StringBuilder();
+    String[] values;
+    int result = -1;
+    // Insert new submission record.
+    if (submissionData.get("id") == null) {
+
+    } else {
+      // Updating submission record.
+    }
+    /*
+     * StringBuilder query = new StringBuilder();
+     * Object[] values;
+     * int result = -1;
+     * if (activityData.get("id") == null) {
+     * // Insert new activity record
+     * query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, ");
+     * query.append("modified_by, modification_justification) ");
+     * query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+     * values = new Object[8];
+     * values[0] = projectID;
+     * values[1] = activityData.get("title");
+     * values[2] = activityData.get("description");
+     * values[3] = activityData.get("startDate");
+     * values[4] = activityData.get("endDate");
+     * values[5] = activityData.get("leader_id");
+     * values[6] = activityData.get("modified_by");
+     * values[7] = activityData.get("modification_justification");
+     * result = databaseManager.saveData(query.toString(), values);
+     * if (result <= 0) {
+     * LOG.error("A problem happened trying to add a new activity with id={}", activityData.get("id"));
+     * }
+     * } else {
+     * // update activity record
+     * query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, ");
+     * query.append("leader_id = ?, modified_by = ?, modification_justification = ? ");
+     * query.append("WHERE id = ? ");
+     * values = new Object[8];
+     * values[0] = activityData.get("title");
+     * values[1] = activityData.get("description");
+     * values[2] = activityData.get("startDate");
+     * values[3] = activityData.get("endDate");
+     * values[4] = activityData.get("leader_id");
+     * values[5] = activityData.get("modified_by");
+     * values[6] = activityData.get("modification_justification");
+     * values[7] = activityData.get("id");
+     * System.out.println();
+     * result = databaseManager.saveData(query.toString(), values);
+     * if (result == -1) {
+     * LOG.error("A problem happened trying to update the activity identified with the id = {}",
+     * activityData.get("id"));
+     * }
+     * }
+     * return result;
+     */
+
+    return result;
   }
 
 }
