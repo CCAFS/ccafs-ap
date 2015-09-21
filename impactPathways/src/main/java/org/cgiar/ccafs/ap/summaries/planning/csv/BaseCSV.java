@@ -13,7 +13,7 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafs.ap.action.summaries.planning.csv;
+package org.cgiar.ccafs.ap.summaries.planning.csv;
 
 
 import java.io.BufferedWriter;

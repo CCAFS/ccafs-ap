@@ -15,11 +15,12 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.xls.DeliverablePlanningSummaryXLS;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.DeliverablePlanningSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.summaries.Summary;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

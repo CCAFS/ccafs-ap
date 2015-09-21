@@ -12,15 +12,18 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries;
+package org.cgiar.ccafs.utils.summaries;
 
 import java.io.InputStream;
 
 
 /**
+ * This interface has to be implemented for all the summary actions that will return a file (PDF, XLS, CSV) for a
+ * specific report.
+ * 
  * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R. CCAFS/CIAT
  */
-
 public interface Summary {
 
   /**

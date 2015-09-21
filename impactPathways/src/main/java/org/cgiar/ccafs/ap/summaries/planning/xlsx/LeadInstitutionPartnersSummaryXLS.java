@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning.xls;
+package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
@@ -28,26 +28,26 @@ import org.apache.poi.ss.usermodel.Workbook;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class PartnersSummaryXLS {
+public class LeadInstitutionPartnersSummaryXLS {
 
   private APConfig config;
   private BaseXLS xls;
 
   @Inject
-  public PartnersSummaryXLS(APConfig config, BaseXLS xls) {
+  public LeadInstitutionPartnersSummaryXLS(APConfig config, BaseXLS xls) {
     this.config = config;
     this.xls = xls;
   }
 
   /**
-   * This method is used to add an institution being a project partner
-   *
-   * @param projectPartnerInstitutions is the list of institutions to be added
+   * This method is used to add an institution being a project leader
+   * 
+   * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(Sheet sheet, List<Institution> projectPartnerInstitutions, String[] projectList) {
+  private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList) {
     int projectCount = 0;
-    for (Institution institution : projectPartnerInstitutions) {
+    for (Institution institution : projectLeadingInstitutions) {
       xls.writeValue(sheet, institution.getId());
       xls.nextColumn();
       xls.writeValue(sheet, institution.getName());
@@ -58,42 +58,38 @@ public class PartnersSummaryXLS {
       xls.nextColumn();
       xls.writeValue(sheet, institution.getCountry().getName());
       xls.nextColumn();
-      // Getting the project ids
-      if (Integer.getInteger(projectList[projectCount]) instanceof Integer) {
-        xls.writeValue(sheet, Integer.valueOf(projectList[projectCount]));
-      } else {
-        xls.writeValue(sheet, projectList[projectCount]);
-      }
+      xls.writeValue(sheet, projectList[projectCount]);
       projectCount++;
       xls.nextRow();
     }
   }
 
   /**
-   * This method is used to generate the csv file for the ProjectPartner institutions.
-   *
+   * This method is used to generate the csv file for the ProjectLeading institutions.
+   * 
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    * @return a byte array with the information provided for the xls file.
    */
-  public byte[] generateCSV(List<Institution> projectPartnerInstitutions, String[] projectList) {
+  public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
 
     try {
+
+
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
-      int[] headersType =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+
+      int[] headerTypes =
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
         BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
-      Workbook workbook = xls.initializeXLS(true, headersType);
-
-
-      workbook.setSheetName(0, "ProjectPartnerInstitutions");
+      Workbook workbook = xls.initializeXLS(true, headerTypes);
+      workbook.setSheetName(0, "LeadInstitutions");
       Sheet sheet = workbook.getSheetAt(0);
-      xls.writeTitleBox(sheet, "CCAFS Project Partner Institutions");
+      xls.writeTitleBox(sheet, "CCAFS Lead Institutions");
       xls.writeHeaders(sheet, headers);
 
-      this.addContent(sheet, projectPartnerInstitutions, projectList);
+      this.addContent(sheet, projectLeadingInstitutions, projectList);
 
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();

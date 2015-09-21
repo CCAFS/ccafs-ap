@@ -13,7 +13,7 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafs.ap.action.summaries.planning.xls;
+package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 
 import java.awt.Color;

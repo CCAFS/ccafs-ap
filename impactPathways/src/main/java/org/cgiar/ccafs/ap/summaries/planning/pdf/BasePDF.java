@@ -1,4 +1,4 @@
-package org.cgiar.ccafs.ap.action.summaries.planning.pdf;
+package org.cgiar.ccafs.ap.summaries.planning.pdf;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;

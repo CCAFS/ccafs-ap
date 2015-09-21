@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.xls.PWOBSummaryXLS;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -23,7 +22,9 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.PWOBSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.summaries.Summary;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning.xls;
+package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 
 import java.io.IOException;

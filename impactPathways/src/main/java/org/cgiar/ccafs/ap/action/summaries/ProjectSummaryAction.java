@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.action.summaries.planning.pdf.ProjectSummaryPDF;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
@@ -41,7 +40,9 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.summaries.planning.pdf.ProjectSummaryPDF;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.summaries.Summary;
 
 import java.io.File;
 import java.io.InputStream;
