@@ -39,10 +39,9 @@ public interface SubmissionDAO {
   /**
    * This method saves a specific submission data into the project_submissions table.
    * 
-   * @param projectID is a project identifier where it is going to be saved the submission data.
    * @param submissionData is the submission information to be saved.
    * @return a number greater than 0 with the id of the new record added, a number equal to 0 if the information was
    *         updated, or -1 if some error occurred.
    */
-  public int saveProjectSubmission(int projectID, Map<String, String> submissionData);
+  public int saveProjectSubmission(Map<String, String> submissionData);
 }
