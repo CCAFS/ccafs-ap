@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,9 +76,17 @@ public class SubmissionManagerImpl implements SubmissionManager {
   }
 
   @Override
-  public boolean saveProjectSubmission(Project project, Submission submission) {
+  public int saveProjectSubmission(Project project, Submission submission) {
     // TODO Auto-generated method stub
-    return false;
+    Map<String, Object> submissionData = new HashMap<>();
+    if (submission.getId() > 0) {
+      submissionData.put("id", submission.getId());
+    }
+    submissionData.put("cycle", submission.getCycle());
+    submissionData.put("year", submission.getYear());
+    submissionData.put("project_id", project.getId());
+    submissionData.put("user_id", submission.getUser().getId());
+    return submissionDAO.saveProjectSubmission(submissionData);
   }
 
 }

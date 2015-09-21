@@ -82,20 +82,19 @@ public class MySQLSubmissionDAO implements SubmissionDAO {
   }
 
   @Override
-  public int saveProjectSubmission(Map<String, String> submissionData) {
+  public int saveProjectSubmission(Map<String, Object> submissionData) {
     LOG.debug(">> saveProjectSubmission(submissionData={})", submissionData);
     StringBuilder query = new StringBuilder();
     Object[] values;
     int result = -1;
     if (submissionData.get("id") == null) {
-      query.append("INSERT INTO project_submissions (cycle, year, project_id, user_id, date_time) ");
+      query.append("INSERT INTO project_submissions (cycle, year, project_id, user_id) ");
       query.append("VALUES (?, ?, ?, ?, ?) ");
-      values = new Object[5];
+      values = new Object[4];
       values[0] = submissionData.get("cycle");
       values[1] = submissionData.get("year");
       values[2] = submissionData.get("project_id");
       values[3] = submissionData.get("user_id");
-      values[4] = submissionData.get("date_time");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
         LOG.error("A problem happened trying to add a new project_submission for the project_id={}",
@@ -103,15 +102,14 @@ public class MySQLSubmissionDAO implements SubmissionDAO {
       }
     } else {
       // Updating submission record.
-      query.append("UPDATE project_submissions SET cycle = ?, year = ?, project_id = ?, user_id = ?, date_time = ? ");
+      query.append("UPDATE project_submissions SET cycle = ?, year = ?, project_id = ?, user_id = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[5];
       values[0] = submissionData.get("cycle");
       values[1] = submissionData.get("year");
       values[2] = submissionData.get("project_id");
       values[3] = submissionData.get("user_id");
-      values[4] = submissionData.get("date_time");
-      values[5] = submissionData.get("id");
+      values[4] = submissionData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the project_submission identified with the id = {}",

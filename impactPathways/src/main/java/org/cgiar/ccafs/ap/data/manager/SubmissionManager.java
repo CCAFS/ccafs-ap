@@ -42,7 +42,8 @@ public interface SubmissionManager {
    * 
    * @param project is some existing project where it is going to be saved the submission.
    * @param submission is the submission to be saved.
-   * @return true if the submission was successfully saved, or false otherwise.
+   * @return a number greater than 0 with the id of the new record added, a number equal to 0 if the information was
+   *         updated, or -1 if some error occurred.
    */
-  public boolean saveProjectSubmission(Project project, Submission submission);
+  public int saveProjectSubmission(Project project, Submission submission);
 }
