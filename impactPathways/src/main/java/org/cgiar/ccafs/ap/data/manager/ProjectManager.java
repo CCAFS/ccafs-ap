@@ -119,7 +119,7 @@ public interface ProjectManager {
    * @param projectID is a project identifier.
    * @return a Project Object with the information requested.
    */
-  public Project getProject(int projectId);
+  public Project getProject(int projectID);
 
   /**
    * This method returns the basic information of the project identified
