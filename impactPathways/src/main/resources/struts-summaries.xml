@@ -4,7 +4,7 @@
 
   <package extends="ccafsap-default" name="summaries" namespace="/summaries">
 
-  <action name="board" class="org.cgiar.ccafs.ap.action.BaseAction">
+  <action name="board" class="org.cgiar.ccafs.ap.action.summaries.SummaryBoardAction">
      <result name="input">/WEB-INF/summaries/boardSummaries.ftl</result>
    </action>
   
