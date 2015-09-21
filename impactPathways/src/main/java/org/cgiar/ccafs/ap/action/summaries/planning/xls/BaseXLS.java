@@ -26,6 +26,7 @@ import java.util.Date;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -79,8 +80,9 @@ public class BaseXLS {
   private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
   private static final int HEADER_ROW_HEIGHT = 31;
 
-  // Border Style
-
+  // Textbox Style
+  private static final Color TEXTBOX_BACKGROUND_COLOR_RGB = new Color(255, 204, 41);
+  private static final short TEXTBOX_FONT_COLOR_INDEX = HSSFColor.WHITE.index;
 
   // Cell Style
   private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
@@ -96,8 +98,6 @@ public class BaseXLS {
   private Workbook workbook; // Excel high level model.
   private boolean usingTemplate;
   private int rowStart, columnStart, rowCounter, columnCounter;
-  // private XSSFCellStyle styleDate, styleInteger, styleDecimal, styleBudget, styleLongString, styleBoolean,
-  // styleHeader;
   private XSSFCellStyle styleHeader;
   private XSSFCellStyle[] columnStyles;
 
@@ -171,18 +171,18 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-        // Style numeric
+      // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // Style date
+        // Style date
         case COLUMN_TYPE_DATE:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // styleBoleean
+          // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("0.00"));
@@ -193,19 +193,19 @@ public class BaseXLS {
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // Style decimal
+        // Style decimal
         case COLUMN_TYPE_DECIMAL:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("0.00"));
           break;
 
-          // Style long string
+        // Style long string
         case COLUMN_TYPE_TEXT_LONG:
           columnStyles[c].setAlignment(HorizontalAlignment.LEFT);
           columnStyles[c].setWrapText(true);
           break;
 
-        // Style short string
+          // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
@@ -329,9 +329,8 @@ public class BaseXLS {
     XSSFDrawing draw = (XSSFDrawing) sheet.createDrawingPatriarch();
     XSSFTextBox textbox = draw.createTextbox(new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 4, 6));
 
-    // textbox.setTextAutofit(value);
-    // textbox.setText(text);
-    textbox.setFillColor(255, 204, 41);
+    textbox.setFillColor(TEXTBOX_BACKGROUND_COLOR_RGB.getRed(), TEXTBOX_BACKGROUND_COLOR_RGB.getGreen(),
+      TEXTBOX_BACKGROUND_COLOR_RGB.getBlue());
     textbox.setVerticalAlignment(VerticalAlignment.CENTER);
 
     XSSFRichTextString stringX = new XSSFRichTextString();
@@ -341,11 +340,9 @@ public class BaseXLS {
     font.setFontName("Courier New");
     font.setItalic(true);
     font.setStrikeout(true);
-    // TODO
-    // font.setColor(arg0);
-
-    stringX.applyFont(font);
+    font.setColor(TEXTBOX_FONT_COLOR_INDEX);
     stringX.append(text);
+    stringX.applyFont(font);
     textbox.setText(stringX);
 
   }
@@ -363,42 +360,43 @@ public class BaseXLS {
     if (row == null) {
       row = sheet.createRow(rowCounter);
     }
-
     row.setHeightInPoints((5 * sheet.getDefaultRowHeightInPoints()));
+
     Cell cell = row.createCell(columnCounter);
     cell.setCellStyle(columnStyles[columnCounter - 1]);
 
+    // Here, the value is evaluated depending of its type
+    // if value is Integer
     if (value instanceof Integer) {
       cell.setCellValue((int) value);
       sheet.autoSizeColumn(columnCounter);
-
-    } else if (value instanceof Date) {
+    } // if value is Date
+    else if (value instanceof Date) {
       cell.setCellValue((Date) value);
-      // cell.setCellStyle(styleDate);
-    } else if (value instanceof Boolean) {
+    } // if value is Boolean
+    else if (value instanceof Boolean) {
       if ((boolean) value == true) {
         cell.setCellValue(CELL_TRUE_BOOLEAN);
       } else {
         cell.setCellValue(CELL_FALSE_BOOLEAN);
       }
-      // cell.setCellStyle(styleBoolean);
-    } else if (value instanceof String) {
-      // cell.setCellStyle(styleLongString);
+    } // if value is String
+    else if (value instanceof String) {
       if (value.toString().length() > 30) {
         sheet.setColumnWidth(columnCounter, 12000);
       }
-      // sheet.autoSizeColumn(columnCounter);
       cell.setCellValue((String) value);
-    } else if (value instanceof Double) {
-      // cell.setCellStyle(this.styleDecimal);
+    } // if value is Double
+    else if (value instanceof Double) {
       cell.setCellValue((double) value);
       sheet.autoSizeColumn(columnCounter);
-    } else if (value == null) {
-
-      // cell.setCellStyle(styleLongString);
-    } else {
+    } // if value is null
+    else if (value == null) {
+      cell.setCellValue("");
+    } // Default action
+    else {
       cell.setCellValue(String.valueOf(value));
-      // cell.setCellStyle(styleLongString);
+
     }
 
 
