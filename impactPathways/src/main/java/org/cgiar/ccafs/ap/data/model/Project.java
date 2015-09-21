@@ -40,7 +40,6 @@ public class Project {
   private Date endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private ProjectPartner leader; // Project Leader.
   private ProjectPartner coordinator; // Project Coordinator.
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
@@ -74,33 +73,13 @@ public class Project {
     this.id = id;
   }
 
-  // TODO To document
-  public boolean containsOutput(int outputID) {
-    if (this.outputs != null) {
-      for (IPElement output : this.outputs) {
-        if (output.getId() == outputID) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
-  // TODO To document
-  public boolean containsOutput(int outputID, int outcomeID) {
-    if (this.outputs != null) {
-      for (IPElement output : this.outputs) {
-        if (output.getId() == outputID) {
-          if (output.getContributesTo().contains(new IPElement(outcomeID))) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  // TODO To document
+  /**
+   * this method validates if the current project contributes to a given output (MOG).
+   * 
+   * @param output is some output to be compared.
+   * @return true if the project contributes to the specified output (MOG), or false otherwise.
+   */
   public boolean containsOutput(IPElement output) {
     if (this.outputs != null) {
       for (IPElement projectOutput : this.outputs) {
@@ -110,7 +89,6 @@ public class Project {
         if (projectOutput.getId() == output.getId()) {
           int projectOutcome = projectOutput.getContributesToIDs()[0];
           int outcome = output.getContributesToIDs()[0];
-
           if (outcome == projectOutcome) {
             return true;
           }
@@ -160,7 +138,11 @@ public class Project {
     return allYears;
   }
 
-  // TODO To document
+  /**
+   * This method returns the name of the file that was uploaded with the bilateral contract.
+   * 
+   * @return an String with the name of the bilateral contract file.
+   */
   public String getBilateralContractProposalName() {
     if (bilateralContractProposalName == null) {
       return "";
@@ -168,7 +150,14 @@ public class Project {
     return bilateralContractProposalName;
   }
 
-  // TODO To document
+  /**
+   * This method returns a Budget object that contains the given parameters.
+   * 
+   * @param institutionID is an institution identifier.
+   * @param budgetType is a budget type (W1/W2, W3/Bilateral, etc).
+   * @param year is a specific year.
+   * @return a Budget object that belongs to the specific project.
+   */
   public Budget getBudget(int institutionID, int budgetType, int year) {
     if (budgets != null) {
       for (Budget budget : budgets) {
@@ -182,33 +171,6 @@ public class Project {
   }
 
   public List<Budget> getBudgets() {
-    return budgets;
-  }
-
-  // TODO To document
-  public Budget getCofinancingBudget(int confinancingProjectID, int year) {
-    if (this.getBudgets() != null) {
-      for (Budget budget : this.getBudgets()) {
-        if (budget.getCofinancingProject() != null) {
-          if (budget.getCofinancingProject().getId() == confinancingProjectID && budget.getYear() == year) {
-            return budget;
-          }
-        }
-      }
-    }
-    return null;
-  }
-
-  // TODO To document
-  public List<Budget> getCofinancingBudgets() {
-    List<Budget> budgets = new ArrayList<>();
-    if (this.getBudgets() != null) {
-      for (Budget budget : this.getBudgets()) {
-        if (budget.getCofinancingProject() != null) {
-          budgets.add(budget);
-        }
-      }
-    }
     return budgets;
   }
 
@@ -276,45 +238,21 @@ public class Project {
     return flagships;
   }
 
-  // TODO To document
-  public String getFlagshipsAcronym() {
-    StringBuilder flagshipAcronym = new StringBuilder();
-    if (flagships != null) {
-      for (int i = 0; i < flagships.size(); i++) {
-        flagshipAcronym.append(flagships.get(i).getAcronym());
-        if (i != (flagships.size() - 1)) {
-          flagshipAcronym.append(", ");
-        }
-      }
-    }
-    return flagshipAcronym.toString();
-  }
-
   public int getId() {
     return id;
-  }
-
-  // TODO To document
-  public IPIndicator getIndicator(int parentIndicatorID, int outcomeID, int year) {
-    IPIndicator emptyIndicator = new IPIndicator(-1);
-    if (indicators != null) {
-      for (IPIndicator indicator : this.indicators) {
-        if (indicator.getParent() != null) {
-          if (indicator.getParent().getId() == parentIndicatorID && indicator.getYear() == year
-            && indicator.getOutcome().getId() == outcomeID) {
-            return indicator;
-          }
-        }
-      }
-    }
-    return emptyIndicator;
   }
 
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
 
-  // TODO To document
+  /**
+   * This method returns a list of project Indicators where its parent is the the indicator identified with the given
+   * parameter.
+   * 
+   * @param parentIndicatorID is the parent indicator edentifier.
+   * @return a List of IPIndicator objects with the information requested.
+   */
   public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
     List<IPIndicator> indicators = new ArrayList<>();
     if (indicators != null) {
@@ -403,23 +341,18 @@ public class Project {
     return outcomes;
   }
 
-  // TODO To document
+  /**
+   * This method returns the output (MOG) represented with the given identifier.
+   * 
+   * @param outputID is some IPElement (MOG) identifier.
+   * @return an IPElement object representing an output (MOG) identified with the given id.
+   */
   public IPElement getOutput(int outputID) {
     if (outputs != null) {
       for (IPElement output : outputs) {
         if (output.getId() == outputID) {
           return output;
         }
-      }
-    }
-    return null;
-  }
-
-  // TODO To document
-  public OutputOverview getOutputOverview(int outputID, int year) {
-    for (OutputOverview overview : outputsOverview) {
-      if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
-        return overview;
       }
     }
     return null;
@@ -471,20 +404,6 @@ public class Project {
     return regions;
   }
 
-  // TODO To document
-  public String getRegionsAcronym() {
-    StringBuilder regionAcronym = new StringBuilder();
-    if (regions != null) {
-      for (int i = 0; i < regions.size(); i++) {
-        regionAcronym.append(regions.get(i).getAcronym());
-        if (i != (regions.size() - 1)) {
-          regionAcronym.append(", ");
-        }
-      }
-    }
-    return regionAcronym.toString();
-  }
-
   public Date getStartDate() {
     return startDate;
   }
@@ -495,39 +414,6 @@ public class Project {
 
   public String getTitle() {
     return title;
-  }
-
-  // TODO To document
-  public double getTotalBilateralBudget() {
-    double totalBudget = 0.0;
-    if (budgets != null) {
-      for (Budget budget : this.getBudgets()) {
-        totalBudget += (budget.getType().isBilateral()) ? budget.getAmount() : 0;
-      }
-    }
-    return totalBudget;
-  }
-
-  // TODO To document
-  public double getTotalBudget() {
-    double totalBudget = 0.0;
-    if (budgets != null) {
-      for (Budget budget : this.getBudgets()) {
-        totalBudget += budget.getAmount();
-      }
-    }
-    return totalBudget;
-  }
-
-  // TODO To document
-  public double getTotalCcafsBudget() {
-    double totalBudget = 0.0;
-    if (budgets != null) {
-      for (Budget budget : this.getBudgets()) {
-        totalBudget += (budget.getType().isCCAFSBudget()) ? budget.getAmount() : 0;
-      }
-    }
-    return totalBudget;
   }
 
   public String getType() {
@@ -656,10 +542,6 @@ public class Project {
 
   public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
-  }
-
-  public void setLeader(ProjectPartner leader) {
-    this.leader = leader;
   }
 
   public void setLeaderResponsabilities(String leaderResponsabilities) {
