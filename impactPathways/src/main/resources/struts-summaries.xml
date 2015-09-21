@@ -8,7 +8,7 @@
      <result name="input">/WEB-INF/summaries/boardSummaries.ftl</result>
    </action>
   
-  <action name="project" class="org.cgiar.ccafs.ap.action.summaries.ProjectSummaryAction">
+  <action name="project" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">application/pdf</param>
@@ -16,7 +16,7 @@
      </result>
    </action>
    
-  <action  name="deliverablePlanning" class="org.cgiar.ccafs.ap.action.summaries.DeliverablePlanningSummaryAction">
+  <action  name="deliverablePlanning" class="org.cgiar.ccafs.ap.action.summaries.planning.DeliverablePlanningSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -24,7 +24,7 @@
      </result>
    </action>
    
-   <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.PartnersSummaryAction">
+   <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.PartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -32,7 +32,7 @@
      </result>
    </action>
    
-   <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.LeadInstitutionPartnersSummaryAction">
+   <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadInstitutionPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
@@ -40,7 +40,7 @@
      </result>
    </action>
    
-    <action name="pwob" class="org.cgiar.ccafs.ap.action.summaries.PWOBSummaryAction">
+    <action name="pwob" class="org.cgiar.ccafs.ap.action.summaries.planning.PWOBSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
