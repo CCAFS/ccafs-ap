@@ -4,8 +4,11 @@
 
   <package extends="ccafsap-default" name="summaries" namespace="/summaries">
 
+  <action name="board" class="org.cgiar.ccafs.ap.action.BaseAction">
+     <result name="input">/WEB-INF/summaries/boardSummaries.ftl</result>
+   </action>
+  
   <action name="project" class="org.cgiar.ccafs.ap.action.summaries.ProjectSummaryAction">
-      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">application/pdf</param>
@@ -13,9 +16,7 @@
      </result>
    </action>
    
-   
   <action  name="deliverablePlanning" class="org.cgiar.ccafs.ap.action.summaries.DeliverablePlanningSummaryAction">
-      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -24,7 +25,6 @@
    </action>
    
    <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.PartnersSummaryAction">
-      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -33,7 +33,6 @@
    </action>
    
    <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.LeadInstitutionPartnersSummaryAction">
-      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
@@ -42,7 +41,6 @@
    </action>
    
     <action name="pwob" class="org.cgiar.ccafs.ap.action.summaries.PWOBSummaryAction">
-      <result name="input">/WEB-INF/summaries/activitiesSummaries.ftl</result>
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
