@@ -73,13 +73,19 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       canEditProject = (securityContext.isAdmin()) ? true : projectsEditable.contains(new Integer(projectID));
 
       boolean editParameter = false;
-      if (parameters.get(APConstants.EDITABLE_REQUEST) != null) {
-        String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
-        editParameter = stringEditable.equals("true");
 
-        // If the user is not asking for edition privileges we don't need to validate them.
-        if (!editParameter) {
-          baseAction.setEditableParameter(hasPermissionToEdit);
+      // Validate if the project is new. If so, the interface will be displayed as editable always.
+      if (projectManager.getProjectBasicInfo(projectID).isNew(baseAction.getConfig().getCurrentPlanningStartDate())) {
+        editParameter = true;
+      } else {
+        if (parameters.get(APConstants.EDITABLE_REQUEST) != null) {
+          String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
+          editParameter = stringEditable.equals("true");
+
+          // If the user is not asking for edition privileges we don't need to validate them.
+          if (!editParameter) {
+            baseAction.setEditableParameter(hasPermissionToEdit);
+          }
         }
       }
 
