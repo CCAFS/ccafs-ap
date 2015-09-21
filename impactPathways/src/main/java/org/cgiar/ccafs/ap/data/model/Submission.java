@@ -25,12 +25,16 @@ import java.util.Date;
 public class Submission {
 
   private int id;
-  private String type;
+  private String cycle;
   private short year;
   private User user;
   private Date dateTime;
 
   public Submission() {
+  }
+
+  public String getCycle() {
+    return cycle;
   }
 
   public Date getDateTime() {
@@ -41,10 +45,6 @@ public class Submission {
     return id;
   }
 
-  public String getType() {
-    return type;
-  }
-
   public User getUser() {
     return user;
   }
@@ -53,16 +53,16 @@ public class Submission {
     return year;
   }
 
+  public void setCycle(String cycle) {
+    this.cycle = cycle;
+  }
+
   public void setDateTime(Date dateTime) {
     this.dateTime = dateTime;
   }
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 
   public void setUser(User user) {
