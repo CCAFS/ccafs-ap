@@ -15,7 +15,11 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
+
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -28,23 +32,33 @@ import org.slf4j.LoggerFactory;
  */
 public class SummaryBoardAction extends BaseAction {
 
+  private static final long serialVersionUID = -272234808885074479L;
   public static Logger LOG = LoggerFactory.getLogger(SummaryBoardAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;
+
+  // Managers
+  private ProjectManager projectManager;
+
+  // Model
+  private List<Project> allProjects;
 
   @Inject
-  public SummaryBoardAction(APConfig config) {
+  public SummaryBoardAction(APConfig config, ProjectManager projectManager) {
     super(config);
+    this.projectManager = projectManager;
   }
 
   @Override
   public String execute() throws Exception {
-
     return INPUT;
   }
 
 
+  public List<Project> getAllProjects() {
+    return allProjects;
+  }
+
   @Override
   public void prepare() {
-    // TODO
+    allProjects = projectManager.getAllProjectsBasicInfo();
   }
 }
