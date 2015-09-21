@@ -65,7 +65,7 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
     this.budgetManager = budgetManager;
     this.projectOutcomeManager = projectOutcomeManager;
     this.pwobSummaryXLS = pwobSummaryXLS;
-    this.startYear = 9999;
+    this.startYear = 2016;
     this.endYear = 0;
   }
 
@@ -120,10 +120,6 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
       // *************************Outcomes*****************************
       project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
-      if (project.getStartDate().getYear() < this.startYear) {
-        startYear = project.getStartDate().getYear();
-      }
     }
-
   }
 }
