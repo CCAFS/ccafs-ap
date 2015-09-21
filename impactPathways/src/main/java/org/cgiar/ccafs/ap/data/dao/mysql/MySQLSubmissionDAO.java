@@ -82,64 +82,42 @@ public class MySQLSubmissionDAO implements SubmissionDAO {
   }
 
   @Override
-  public int saveProjectSubmission(int projectID, Map<String, String> submissionData) {
-    // TODO Auto-generated method stub
+  public int saveProjectSubmission(Map<String, String> submissionData) {
     LOG.debug(">> saveProjectSubmission(submissionData={})", submissionData);
     StringBuilder query = new StringBuilder();
-    String[] values;
+    Object[] values;
     int result = -1;
-    // Insert new submission record.
     if (submissionData.get("id") == null) {
-
+      query.append("INSERT INTO project_submissions (cycle, year, project_id, user_id, date_time) ");
+      query.append("VALUES (?, ?, ?, ?, ?) ");
+      values = new Object[5];
+      values[0] = submissionData.get("cycle");
+      values[1] = submissionData.get("year");
+      values[2] = submissionData.get("project_id");
+      values[3] = submissionData.get("user_id");
+      values[4] = submissionData.get("date_time");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result <= 0) {
+        LOG.error("A problem happened trying to add a new project_submission for the project_id={}",
+          submissionData.get("project_id"));
+      }
     } else {
       // Updating submission record.
+      query.append("UPDATE project_submissions SET cycle = ?, year = ?, project_id = ?, user_id = ?, date_time = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[6];
+      values[0] = submissionData.get("cycle");
+      values[1] = submissionData.get("year");
+      values[2] = submissionData.get("project_id");
+      values[3] = submissionData.get("user_id");
+      values[4] = submissionData.get("date_time");
+      values[5] = submissionData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result == -1) {
+        LOG.error("A problem happened trying to update the project_submission identified with the id = {}",
+          submissionData.get("id"));
+      }
     }
-    /*
-     * StringBuilder query = new StringBuilder();
-     * Object[] values;
-     * int result = -1;
-     * if (activityData.get("id") == null) {
-     * // Insert new activity record
-     * query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, ");
-     * query.append("modified_by, modification_justification) ");
-     * query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
-     * values = new Object[8];
-     * values[0] = projectID;
-     * values[1] = activityData.get("title");
-     * values[2] = activityData.get("description");
-     * values[3] = activityData.get("startDate");
-     * values[4] = activityData.get("endDate");
-     * values[5] = activityData.get("leader_id");
-     * values[6] = activityData.get("modified_by");
-     * values[7] = activityData.get("modification_justification");
-     * result = databaseManager.saveData(query.toString(), values);
-     * if (result <= 0) {
-     * LOG.error("A problem happened trying to add a new activity with id={}", activityData.get("id"));
-     * }
-     * } else {
-     * // update activity record
-     * query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, ");
-     * query.append("leader_id = ?, modified_by = ?, modification_justification = ? ");
-     * query.append("WHERE id = ? ");
-     * values = new Object[8];
-     * values[0] = activityData.get("title");
-     * values[1] = activityData.get("description");
-     * values[2] = activityData.get("startDate");
-     * values[3] = activityData.get("endDate");
-     * values[4] = activityData.get("leader_id");
-     * values[5] = activityData.get("modified_by");
-     * values[6] = activityData.get("modification_justification");
-     * values[7] = activityData.get("id");
-     * System.out.println();
-     * result = databaseManager.saveData(query.toString(), values);
-     * if (result == -1) {
-     * LOG.error("A problem happened trying to update the activity identified with the id = {}",
-     * activityData.get("id"));
-     * }
-     * }
-     * return result;
-     */
-
     return result;
   }
 
