@@ -12,16 +12,17 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries;
+package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.csv.BudgetSummaryCSV;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.PWOBSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -36,87 +37,94 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Carlos Alberto Martínez M.
+ * @author Jorge Leonardo Solis B. CCAFS
  */
-public class BudgetSummaryAction extends BaseAction implements Summary {
+public class PWOBSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(BudgetSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private BudgetSummaryCSV budgetCSV;
-  private InstitutionManager institutionManager;
-  private ProjectPartnerManager projectPartnerManager;
+
+  // Managers
+  private LocationManager locationManager;
+  private PWOBSummaryXLS pwobSummaryXLS;
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
-  List<Project> projectList;
-  // CSV bytes
-  private byte[] bytesCSV;
+  private ProjectPartnerManager projectPartnerManager;
+
+  // XLS bytes
+  private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
 
+  // Model
+  List<Project> projectsList;
+
   @Inject
-  public BudgetSummaryAction(APConfig config, BudgetSummaryCSV budgetCSV, InstitutionManager institutionManager,
-    ProjectManager projectManager, ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager) {
+  public PWOBSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
+    ProjectPartnerManager projectPartnerManager, LocationManager locationManager, PWOBSummaryXLS pwobSummaryXLS) {
     super(config);
-    this.budgetCSV = budgetCSV;
-    this.institutionManager = institutionManager;
+    this.locationManager = locationManager;
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
-
+    this.pwobSummaryXLS = pwobSummaryXLS;
   }
 
   @Override
   public String execute() throws Exception {
 
     // Generate the csv file
-    // bytesCSV = budgetCSV.generateCSV(projectPartnerInstitutions, projectList);
+    bytesXLS = pwobSummaryXLS.generateXLS(projectsList);
 
     return SUCCESS;
   }
 
   @Override
   public int getContentLength() {
-    return bytesCSV.length;
+    return bytesXLS.length;
   }
 
   @Override
   public String getContentType() {
-    // TODO Auto-generated method stub
-    return null;
+    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
   }
 
 
   @Override
   public String getFileName() {
-    String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("Budget_");
-    fileName.append(date);
-    fileName.append(".csv");
-    return fileName.toString();
-  }
+    fileName.append("PWOB-");
+    fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
+    fileName.append(".xlsx");
 
+    return fileName.toString();
+
+  }
 
   @Override
   public InputStream getInputStream() {
     if (inputStream == null) {
-      inputStream = new ByteArrayInputStream(bytesCSV);
+      inputStream = new ByteArrayInputStream(bytesXLS);
     }
     return inputStream;
   }
 
   @Override
   public void prepare() {
-
-    projectList = projectManager.getAllProjectsBasicInfo();
+    projectsList = this.projectManager.getAllProjectsBasicInfo();
     List<ProjectPartner> partnersList;
+    List<Location> locationsList;
 
-    for (Project project : projectList) {
+    for (Project project : projectsList) {
 
       // ***************** Partners ******************************
       partnersList = projectPartnerManager.getProjectPartners(project);
       project.setProjectPartners(partnersList);
+
+      // ***************** Locations ******************************
+      locationsList = this.locationManager.getProjectLocations(project.getId());
+      project.setLocations(locationsList);
 
       // *************************Budgets ******************************
       project.setBudgets(this.budgetManager.getBudgetsByProject(project));

@@ -12,16 +12,13 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries;
+package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadInstitutionPartnersSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.DeliverablePlanningSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -30,47 +27,49 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Carlos Alberto Martínez M.
+ * @author Jorge Leonardo Solis B. CCAFS
  */
-public class LeadProjectPartnersSummaryAction extends BaseAction implements Summary {
+public class DeliverablePlanningSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(LeadProjectPartnersSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
-  private InstitutionManager institutionManager;
+
+  // Managers
+
+  private DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS;
   private ProjectManager projectManager;
-  private ProjectPartnerManager projectPartnerManager;
-  List<ProjectPartner> leadPartners;
-  List<Institution> projectLeadingInstitutions;
-  List<Project> projectList;
-  // CSV bytes
+
+
+  // XLS bytes
   private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
 
-  @Inject
-  public LeadProjectPartnersSummaryAction(APConfig config,
-    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS, InstitutionManager institutionManager,
-    ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
-    super(config);
-    this.leadInstitutionPartnersSummaryXLS = leadInstitutionPartnersSummaryXLS;
-    this.institutionManager = institutionManager;
-    this.projectManager = projectManager;
-    this.projectPartnerManager = projectPartnerManager;
+  // Model
+  List<Project> projectsList;
+  private List<Map<String, Object>> deliverableList;
 
+  @Inject
+  public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager,
+    DeliverableManager deliverableManager, DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS) {
+    super(config);
+    this.projectManager = projectManager;
+    this.deliverablePlanningSummaryXLS = deliverablePlanningSummaryXLS;
   }
 
   @Override
   public String execute() throws Exception {
+
     // Generate the xls file
-    // bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions, projectList);
+    bytesXLS = deliverablePlanningSummaryXLS.generateXLS(deliverableList);
 
     return SUCCESS;
   }
@@ -82,23 +81,20 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
 
   @Override
   public String getContentType() {
-    if (this.getFileName().endsWith("xlsx")) {
-      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    } else {
-      return "application/vnd.ms-excel";
-    }
+    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
   }
+
 
   @Override
   public String getFileName() {
-    String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("LeadProjectPartners_");
-    fileName.append(date);
+    fileName.append("Expected-deliverables-");
+    fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
-    return fileName.toString();
-  }
 
+    return fileName.toString();
+
+  }
 
   @Override
   public InputStream getInputStream() {
@@ -111,11 +107,7 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
   @Override
   public void prepare() {
 
-    projectList = projectManager.getAllProjectsBasicInfo();
-    // Getting the project partner leaders
-    for (int k = 0; k < projectList.size(); k++) {
-    }
-
+    deliverableList = projectManager.summaryGetAllProjectsWithDeliverables();
 
   }
 }
