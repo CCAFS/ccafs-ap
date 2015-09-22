@@ -56,14 +56,13 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
     }
   }
 
   public void validateBilateralContractProposalName(BaseAction action, String proposalName) {
     if (!projectValidator.isValidBilateralContractProposalName(proposalName)) {
-      // TODO - Add the i18n key
       this.addMessage(this.getText("preplanning.projectDescription.uploadBilateral.readText").toLowerCase());
     }
   }
