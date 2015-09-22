@@ -21,10 +21,12 @@ public class BaseValidator extends ActionSupport {
   @Inject
   protected APConfig config;
   protected StringBuilder validationMessage;
+  private StringBuilder missingFields;
 
   @Inject
   public BaseValidator() {
     validationMessage = new StringBuilder();
+    missingFields = new StringBuilder();
   }
 
   protected void addMessage(String message) {
@@ -32,6 +34,18 @@ public class BaseValidator extends ActionSupport {
       validationMessage.append(", ");
     }
     validationMessage.append(message);
+  }
+
+  /**
+   * This method add a missing field separated by a semicolon (;).
+   * 
+   * @param field is the name of the field.
+   */
+  protected void addMissingField(String field) {
+    if (missingFields.length() != 0) {
+      missingFields.append(";");
+    }
+    missingFields.append(field);
   }
 
   protected boolean isValidEmail(String email) {
