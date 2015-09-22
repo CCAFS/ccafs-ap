@@ -418,15 +418,12 @@ public class Project {
     return ipOtherContribution;
   }
 
-<<<<<<< HEAD
-
   /**
    * This method returns the project partner institution that is leading the project.
    * 
    * @return a ProjectPartner object with the information requested. Or null if the project doesn't have a leader.
    */
-=======
->>>>>>> branch 'develop' of https://github.com/CCAFS/ccafs-ap.git
+
   public ProjectPartner getLeader() {
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
