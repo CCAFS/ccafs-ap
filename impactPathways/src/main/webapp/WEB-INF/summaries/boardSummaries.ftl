@@ -24,6 +24,7 @@
       <div id="budget" class="summariesSection"><span></span><a href="">Budget</a></div>
     </div>
     <div class="summariesContent borderBox">
+      <div class="loading" style="display:none"></div>
       <form action="">
       <h6>What Phase of report would you like to generate</h6>
       <div class="summariesOption">
@@ -40,8 +41,8 @@
         [#-- Projects reports --]
         <div id="projects-contentOptions">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="projectsPartners" value="projectsPartners" />
-            <label for="projectsPartners">List of all projects and their leading partners <span>XLS</span></label>
+            <input type="radio" name="formOptions" id="projectPartnersSummary" value="projectPartnersSummary" />
+            <label for="projectPartnersSummary">List of all projects and their leading partners <span>XLS</span></label>
           </div>
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="projectPortfolio" value="project" />
@@ -72,8 +73,12 @@
         [#-- Budget reports --]
         <div id="budget-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="powb" value="powb" />
+            <input type="radio" name="formOptions" id="powb" value="pwob" />
             <label for="powb">POWB Report <span>PDF</span></label>
+          </div>
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="powbMOG" value="pwobMOG" />
+            <label for="powbMOG">POWB Report by MOG <span>PDF</span></label>
           </div>
         </div>
       </div>
