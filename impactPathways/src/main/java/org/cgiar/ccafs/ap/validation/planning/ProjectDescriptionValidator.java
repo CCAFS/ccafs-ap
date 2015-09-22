@@ -62,7 +62,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Reporting missing fields into the database.
@@ -101,7 +101,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
         this.addMessage(this.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
-        this.addMissingField("project.projectWorkplan");
+        this.addMissingField("project.workplanName");
       }
     }
   }
