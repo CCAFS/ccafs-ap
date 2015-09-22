@@ -19,6 +19,9 @@ function selectSummariesSection(e) {
   $section.addClass('current');
   $content.siblings().hide();
   $content.fadeIn();
+
+  // Uncheck from formOptions the option selected
+  $('input[name=formOptions]').attr('checked', false);
 }
 
 function selectTypeReport(e) {
@@ -34,18 +37,31 @@ function generateReport(e) {
   e.preventDefault();
   var $formOptions = $('input[name=formOptions]:checked');
   var formOption = $formOptions.val() || 0;
-  var extraOptions = $('form [name!="formOptions"][name!="phase"]').serialize();
+  var extraOptions = $('form [name!="formOptions"][name!="phase"]').serialize() || 0;
   var generateUrl = "";
   if(formOption != 0) {
     generateUrl = baseURL + "/summaries/" + formOption + ".do";
     if(extraOptions != 0) {
       generateUrl += '?' + extraOptions;
     }
-    /*
-     * $.ajax({ url: generateUrl, type: 'POST', success: function() { window.location = generateUrl; } });
-     */
-    console.log('https://172.22.98.87:8443/impactPathways/summaries/project.do?projectID=1');
+    $.ajax({
+        url: generateUrl,
+        type: 'POST',
+        beforeSend: function() {
+          $('.loading').fadeIn();
+        },
+        success: function() {
+          window.location = generateUrl;
+        },
+        complete: function() {
+          $('.loading').hide();
+        }
+    });
     console.log(generateUrl);
+  } else {
+    var notyOptions = jQuery.extend({}, notyDefaultOptions);
+    notyOptions.text = 'You must to select a report option';
+    noty(notyOptions);
   }
 
 }
