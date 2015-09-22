@@ -50,7 +50,7 @@ public class DeliverablePlanningSummaryXLS {
 
     Map<String, Object> deliverableMap;
     // Iterating all the projects
-    for (int a = 0; a < 100; a++) {
+    for (int a = 0; a < deliverableList.size(); a++) {
       deliverableMap = deliverableList.get(a);
 
       // Iterating all the partners
@@ -145,6 +145,8 @@ public class DeliverablePlanningSummaryXLS {
       xls.writeHeaders(sheet, headers);
       this.addContent(deliverableList, workbook);
 
+      // autosize columns
+      // xls.autoSizeColumns(sheet);
 
       // this.flush();
       xls.writeWorkbook();

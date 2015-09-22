@@ -70,7 +70,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
     // Generate the xls file
     bytesXLS = deliverablePlanningSummaryXLS.generateXLS(deliverableList);
-
+    // System.out.println(new Date());
     return SUCCESS;
   }
 
@@ -106,7 +106,7 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   @Override
   public void prepare() {
-
+    // System.out.println(new Date());
     deliverableList = projectManager.summaryGetAllProjectsWithDeliverables();
 
   }
