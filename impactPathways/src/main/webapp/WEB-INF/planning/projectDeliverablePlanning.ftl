@@ -54,7 +54,7 @@
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        [#if canEdit]
+        [#if canEdit && !newProject]
           <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
@@ -135,7 +135,7 @@
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        [#if canEdit]
+        [#if canEdit && !newProject]
           <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
@@ -159,7 +159,7 @@
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        [#if canEdit]
+        [#if canEdit && !newProject]
           <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
@@ -200,7 +200,7 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        [#if canEdit]
+        [#if canEdit && !newProject]
           <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
