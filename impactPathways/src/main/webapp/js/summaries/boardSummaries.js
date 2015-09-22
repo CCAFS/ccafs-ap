@@ -51,13 +51,17 @@ function generateReport(e) {
           $('.loading').fadeIn();
         },
         success: function() {
-          window.location = generateUrl;
+          window.open(generateUrl);
+        },
+        error: function(data) {
+          var notyOptions = jQuery.extend({}, notyDefaultOptions);
+          notyOptions.text = data.status + ': ' + data.statusText;
+          noty(notyOptions);
         },
         complete: function() {
           $('.loading').hide();
         }
     });
-    console.log(generateUrl);
   } else {
     var notyOptions = jQuery.extend({}, notyDefaultOptions);
     notyOptions.text = 'You must to select a report option';
