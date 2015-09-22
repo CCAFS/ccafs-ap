@@ -1,5 +1,5 @@
 [#ftl] 
-[#assign currCss= "class='currentSection'"]
+[#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
 <nav id="secondaryMenu" class="${(project.type)!''}">
 <h1><center> 
@@ -21,66 +21,66 @@
 </h1></center>
   [#--]<h3> <a class="goBack"  href="[@s.url namespace='/planning' action='projectsList'][/@s.url]"> [@s.text name="planning.project" /] Menu</a></h3>--]
   <ul> 
-    <li [#if currentStage == "description"]${currCss}[/#if]>
+    <li class="[#if currentStage == "description"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.description" /]</p>
       <ul>
-        <li [#if currentSubStage == "description"] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "description"]${currCss}[/#if]">
           <a href="[@s.url action='description'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.planning.submenu.projectDescription" /]
           </a>
         </li>
-        <li [#if currentSubStage == "partners" ] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "partners" ]${currCss}[/#if]">
           <a href="[@s.url action='partners'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.planning.submenu.projectPartners" /]
           </a>
         </li>
-        <li [#if currentSubStage == "locations" ] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "locations" ]${currCss}[/#if]">
           <a href="[@s.url action='locations'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.planning.submenu.projectLocations" /]
           </a>
         </li> 
       </ul>
     </li>
-    <li [#if currentStage == "outcomes"]${currCss}[/#if]>
+    <li class="[#if currentStage == "outcomes"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.outcome" /]</p>
       <ul>
-        <li [#if currentSubStage == "outcomes"] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "outcomes"]${currCss}[/#if]">
           <a href="[@s.url action='outcomes'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutcomes" /]</a>
         </li>
-        <li [#if currentSubStage == "ccafsOutcomes" ] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "ccafsOutcomes" ]${currCss}[/#if]">
           <a href="[@s.url action='ccafsOutcomes'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.ccafsOutcomes" /]</a>
         </li> 
-        <li [#if currentSubStage == "otherContributions" ] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "otherContributions" ]${currCss}[/#if]">
           <a href="[@s.url action='otherContributions'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.otherContributions" /]</a>
         </li> 
       </ul>
     </li>
-    <li [#if currentStage == "outputs"]${currCss}[/#if]>
+    <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.outputs" /]</p>
       <ul>
-        <li [#if currentSubStage == "overviewByMogs"] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "overviewByMogs"]${currCss}[/#if]">
           <a href="[@s.url action='outputs'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutputs.overviewByMogs" /]</a>
         </li>
-        <li [#if currentSubStage == "deliverables" ] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "deliverables" ]${currCss}[/#if]">
           <a href="[@s.url action='deliverablesList'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutputs.deliverables" /]</a>
         </li> 
       </ul>
     </li>
-    <li [#if currentStage == "activities"]${currCss}[/#if]>
+    <li class="[#if currentStage == "activities"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.activities" /]</p>
       <ul>
-        <li [#if currentSubStage == "activities" ] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "activities" ]${currCss}[/#if]">
           <a href="[@s.url action='activities'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectActivities.activitiesList" /]</a>
         </li> 
       </ul>
     </li>
-    <li [#if currentStage == "budget"]${currCss}[/#if]>
+    <li class="[#if currentStage == "budget"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.budget" /]</p>
       <ul>
-        <li [#if currentSubStage == "budgetByPartner"] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "budgetByPartner"]${currCss}[/#if]">
           <a href="[@s.url action='budget'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectBudget.budgetByPartner" /]</a>
         </li>
-        <li [#if currentSubStage == "budgetByMog" ] class="currentSection" [/#if]>
+        <li class="[#if currentSubStage == "budgetByMog" ]${currCss}[/#if]">
           <a href="[@s.url action='budgetByMog'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectBudget.budgetByMog" /]</a>
         </li> 
       </ul>

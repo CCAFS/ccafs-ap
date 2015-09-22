@@ -6,7 +6,7 @@
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.edit" /]</a></div>
     [#else]
-      [#if canEdit]
+      [#if canEdit && !newProject]
         <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#activity-${(activity.id)!}">[@s.text name="form.buttons.unedit" /]</a></div>
       [/#if]
     [/#if]
