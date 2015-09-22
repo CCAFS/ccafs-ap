@@ -44,6 +44,23 @@ public class ProjectStatus {
     return missingFields;
   }
 
+  /**
+   * This method returns all the missing fields separated by a semicolon ";"
+   * 
+   * @return a String with all the missing fields.
+   */
+  public String getMissingFieldsWithPrefix() {
+    StringBuilder str = new StringBuilder();
+    for (String field : this.missingFields) {
+      str.append(field);
+      str.append(";");
+    }
+    if (str.length() > 0) {
+      str.setLength(str.length() - 1);
+    }
+    return str.toString();
+  }
+
   public String getSection() {
     return section;
   }
