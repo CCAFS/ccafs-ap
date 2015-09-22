@@ -34,13 +34,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 /**
  * @author Jorge Leonardo Solis B.
  */
-public class PWOBSummaryXLS {
+public class POWBMOGSummaryXLS {
 
   private BaseXLS xls;
   private BudgetManager budgetManager;
 
   @Inject
-  public PWOBSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
+  public POWBMOGSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
     this.xls = xls;
     this.budgetManager = budgetManager;
   }
@@ -53,6 +53,8 @@ public class PWOBSummaryXLS {
    */
   private void addContent(List<Project> projectsList, Workbook workbook) {
 
+    // {"Outcome 2019", "MOG", "Total W1/W2(USD)", "Total W3/Bilateral(USD)", "Total W1/W2 (USD)",
+    // "Total W3/Bilateral(USD)"
 
     double W1W2, W3Bilateral;
     StringBuilder stringBuilder;
@@ -69,7 +71,7 @@ public class PWOBSummaryXLS {
 
       // Iterating all the partners
       for (ProjectPartner projectPartnerPPA : project.getPPAPartners()) {
-        xls.writeValue(sheet, project.getId());
+        xls.writeInteger(sheet, project.getId());
         xls.nextColumn();
 
         // Flashig
@@ -82,29 +84,27 @@ public class PWOBSummaryXLS {
           stringBuilder.append(flashig.getAcronym());
           counter++;
         }
-        xls.writeValue(sheet, stringBuilder.toString());
+        xls.writeString(sheet, stringBuilder.toString());
         xls.nextColumn();
 
         // Title
-        xls.writeValue(sheet, project.getTitle());
+        xls.writeString(sheet, project.getTitle());
         xls.nextColumn();
 
         // Summary
-        xls.writeValue(sheet, project.getSummary());
+        xls.writeString(sheet, project.getSummary());
         xls.nextColumn();
 
         if (project.getLeader() != null && project.getLeader().getInstitution() != null) {
 
           // Acronym Leader
-          xls.writeValue(sheet, project.getLeader().getInstitution().getAcronym());
+          xls.writeString(sheet, project.getLeader().getInstitution().getAcronym());
           xls.nextColumn();
 
           // Leader name
-          xls.writeValue(sheet, project.getLeader().getInstitution().getName());
+          xls.writeString(sheet, project.getLeader().getInstitution().getName());
         } else {
-          // xls.writeValue(sheet, "");
           xls.nextColumn();
-          // xls.writeValue(sheet, "");
         }
         xls.nextColumn();
 
@@ -118,7 +118,7 @@ public class PWOBSummaryXLS {
           stringBuilder.append(region.getAcronym());
           counter++;
         }
-        xls.writeValue(sheet, stringBuilder.toString());
+        xls.writeString(sheet, stringBuilder.toString());
         xls.nextColumn();
 
         // W1/W2 Budget
@@ -126,7 +126,7 @@ public class PWOBSummaryXLS {
           budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
             .getInstitution().getId(), BudgetType.W1_W2.getValue());
 
-        xls.writeValue(sheet, W1W2);
+        xls.writeString(sheet, currencyFormatter.format(W1W2));
         xls.nextColumn();
 
         // W3/Bilateral Budget
@@ -134,7 +134,7 @@ public class PWOBSummaryXLS {
           budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
             .getInstitution().getId(), BudgetType.W3_BILATERAL.getValue());
 
-        xls.writeValue(sheet, W3Bilateral);
+        xls.writeDouble(sheet, W3Bilateral);
         xls.nextColumn();
 
         // Location
@@ -148,7 +148,7 @@ public class PWOBSummaryXLS {
           stringBuilder.append(location.getName());
           counter++;
         }
-        xls.writeValue(sheet, stringBuilder.toString());
+        xls.writeString(sheet, stringBuilder.toString());
 
         xls.nextRow();
       }
@@ -163,36 +163,36 @@ public class PWOBSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Project> projectsList) {
+  public byte[] generateXLS(List<Project> projectsList, int startYear, int endYear) {
 
     try {
 
 
       // Writting headers
-      String[] headers =
-        new String[] {"Project Id", "Flagship(s)", "Project title", "Project summary", "Lead institution acronym",
-        "Lead institution", "Region(s) covered", "W1/W2 Budget", "W3/Bilateral Budget", "locations"};
 
-      // Writting style content
+      StringBuilder headers = new StringBuilder();
+
+      headers.append("Outcome 2019, ");
+      headers.append("MOG , ");
+      headers.append("Total W1/W2(USD) , ");
+      headers.append("Total W3/Bilateral(USD) , ");
+      headers.append("Total W1/W2(USD) , ");
+      headers.append("Total W3/Bilateral(USD)");
+
+
+      // Writting type headers.
       int[] headersType =
-        new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+
       Workbook workbook = xls.initializeXLS(true, headersType);
 
       // renaming sheet
-      workbook.setSheetName(0, "PWOB Report");
+      workbook.setSheetName(0, "PWOB MOG Report");
       Sheet sheet = workbook.getSheetAt(0);
-
-      // Writing the sheet in the yellow box
-      xls.writeTitleBox(sheet, "PWOB Report");
-
-
-      xls.writeHeaders(sheet, headers);
-
       this.addContent(projectsList, workbook);
 
+      xls.writeHeaders(sheet, headers.toString().split(","));
 
       // this.flush();
       xls.writeWorkbook();

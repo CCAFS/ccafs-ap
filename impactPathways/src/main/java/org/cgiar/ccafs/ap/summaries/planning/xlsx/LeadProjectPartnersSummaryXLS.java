@@ -14,11 +14,11 @@
 
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -28,13 +28,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class LeadInstitutionPartnersSummaryXLS {
+public class LeadProjectPartnersSummaryXLS {
 
   private APConfig config;
   private BaseXLS xls;
 
   @Inject
-  public LeadInstitutionPartnersSummaryXLS(APConfig config, BaseXLS xls) {
+  public LeadProjectPartnersSummaryXLS(APConfig config, BaseXLS xls) {
     this.config = config;
     this.xls = xls;
   }
@@ -45,51 +45,59 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList) {
-    int projectCount = 0;
-    for (Institution institution : projectLeadingInstitutions) {
-      xls.writeInteger(sheet, institution.getId());
+  private void addContent(Sheet sheet, List<Map<String, Object>> projectList) {
+
+    Map<String, Object> projectPartnerLeader;
+    for (int i = 0; i < projectList.size(); i++) {
+      projectPartnerLeader = projectList.get(i);
+      xls.writeValue(sheet, projectPartnerLeader.get("project_id"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getName());
+      xls.writeValue(sheet, projectPartnerLeader.get("project_type").toString().replace("_", " "));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getAcronym());
+      xls.writeValue(sheet, projectPartnerLeader.get("project_title"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getWebsiteLink());
+      xls.writeValue(sheet, projectPartnerLeader.get("project_summary"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getCountry().getName());
+      xls.writeValue(sheet, projectPartnerLeader.get("flagships"));
       xls.nextColumn();
-      xls.writeString(sheet, projectList[projectCount]);
-      projectCount++;
+      xls.writeValue(sheet, projectPartnerLeader.get("regions"));
+      xls.nextColumn();
+      xls.writeValue(sheet, projectPartnerLeader.get("lead_institution"));
+      xls.nextColumn();
+      xls.writeValue(sheet, projectPartnerLeader.get("project_leader"));
+      xls.nextColumn();
       xls.nextRow();
     }
   }
 
   /**
-   * This method is used to generate the csv file for the ProjectLeading institutions.
+   * This method is used to generate the xls file for the ProjectLeading institutions.
    * 
-   * @param projectPartnerInstitutions is the list of institutions to be added
-   * @param projectList is the list with the projects related to each institution
+   * @param projectList is the list with the projects partner leaders
    * @return a byte array with the information provided for the xls file.
    */
-  public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
+  public byte[] generateXLS(List<Map<String, Object>> projectList) {
 
     try {
 
-
+      // Defining headers
       String[] headers =
-        new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
+        new String[] {"Project Id", "Type", "Title", "Summary", "Flagship(s)", "Region(s)", "Lead institution",
+      "Leader"};
 
+      // Defining header types
       int[] headerTypes =
-        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeXLS(true, headerTypes);
-      workbook.setSheetName(0, "LeadInstitutions");
+      workbook.setSheetName(0, "LeadProjectPartners");
       Sheet sheet = workbook.getSheetAt(0);
-      xls.writeTitleBox(sheet, "CCAFS Lead Institutions");
+      xls.writeTitleBox(sheet, "CCAFS Lead Project Partners");
       xls.writeHeaders(sheet, headers);
 
-      this.addContent(sheet, projectLeadingInstitutions, projectList);
+      this.addContent(sheet, projectList);
 
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();

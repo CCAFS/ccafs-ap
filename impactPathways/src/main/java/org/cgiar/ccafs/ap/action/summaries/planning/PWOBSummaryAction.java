@@ -22,7 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.PWOBSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -46,7 +46,7 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
 
   // Managers
   private LocationManager locationManager;
-  private PWOBSummaryXLS pwobSummaryXLS;
+  private POWBSummaryXLS pwobSummaryXLS;
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
   private ProjectPartnerManager projectPartnerManager;
@@ -62,7 +62,7 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
 
   @Inject
   public PWOBSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
-    ProjectPartnerManager projectPartnerManager, LocationManager locationManager, PWOBSummaryXLS pwobSummaryXLS) {
+    ProjectPartnerManager projectPartnerManager, LocationManager locationManager, POWBSummaryXLS pwobSummaryXLS) {
     super(config);
     this.locationManager = locationManager;
     this.projectManager = projectManager;

@@ -14,15 +14,13 @@
 
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.SubmissionDAO;
+import org.cgiar.ccafs.ap.data.dao.ProjectStatusDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -33,42 +31,45 @@ import org.slf4j.LoggerFactory;
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
-public class MySQLSubmissionDAO implements SubmissionDAO {
+public class MySQLProjectStatusDAO implements ProjectStatusDAO {
 
   // Logger
-  private static Logger LOG = LoggerFactory.getLogger(MySQLSubmissionDAO.class);
+  private static Logger LOG = LoggerFactory.getLogger(MySQLProjectStatusDAO.class);
 
   private DAOManager databaseManager;
 
   @Inject
-  public MySQLSubmissionDAO(DAOManager databaseManager) {
+  public MySQLProjectStatusDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
   }
 
   @Override
-  public List<Map<String, String>> getProjectSubmissions(int projectID) {
-    LOG.debug(">> getProjectSubmissions projectID = {} )", projectID);
+  public Map<String, String> getProjectStatus(int projectID, String cycle, String section) {
+    LOG.debug(">> getProjectStatus projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
-    query.append("FROM project_submissions ");
+    query.append("FROM project_statuses ");
     query.append("WHERE project_id = ");
     query.append(projectID);
+    query.append(" AND cycle = '");
+    query.append(cycle);
+    query.append("' AND section_name = '");
+    query.append(section);
+    query.append("'");
 
-    LOG.debug("<< getProjectSubmissions() > Calling method executeQuery to get the results");
+    LOG.debug(">> getProjectStatus() > Calling method executeQuery to get the results");
 
-    List<Map<String, String>> submissionsList = new ArrayList<>();
+    Map<String, String> statusData = new HashMap<>();
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> submissionData = new HashMap<>();
-        submissionData.put("id", rs.getString("id"));
-        submissionData.put("cycle", rs.getString("cycle"));
-        submissionData.put("year", rs.getString("year"));
-        submissionData.put("user_id", rs.getString("user_id"));
-        submissionData.put("date_time", rs.getDate("date_time").toString());
-        submissionsList.add(submissionData);
+      if (rs.next()) {
+        statusData.put("id", rs.getString("id"));
+        statusData.put("project_id", rs.getString("project_id"));
+        statusData.put("cycle", rs.getString("cycle"));
+        statusData.put("section_name", rs.getString("section_name"));
+        statusData.put("missing_fields", rs.getString("missing_fields"));
       }
       rs.close();
       rs = null; // For the garbage collector to find it easily.
@@ -78,42 +79,43 @@ public class MySQLSubmissionDAO implements SubmissionDAO {
       LOG.error(exceptionMessage, e);
       return null;
     }
-    return submissionsList;
+    LOG.debug("<< getProjectStatus() > Calling method executeQuery to get the results");
+    return statusData;
   }
 
   @Override
-  public int saveProjectSubmission(Map<String, Object> submissionData) {
-    LOG.debug(">> saveProjectSubmission(submissionData={})", submissionData);
+  public int saveProjectStatus(Map<String, Object> statusData) {
+    LOG.debug(">> saveProjectStatus(statusData={})", new Object[] {statusData});
     StringBuilder query = new StringBuilder();
     Object[] values;
     int result = -1;
-    if (submissionData.get("id") == null) {
-      query.append("INSERT INTO project_submissions (cycle, year, project_id, user_id) ");
+    if (statusData.get("id") == null) {
+      query.append("INSERT INTO project_statuses (project_id, cycle, section_name, missing_fields) ");
       query.append("VALUES (?, ?, ?, ?) ");
       values = new Object[4];
-      values[0] = submissionData.get("cycle");
-      values[1] = submissionData.get("year");
-      values[2] = submissionData.get("project_id");
-      values[3] = submissionData.get("user_id");
+      values[0] = statusData.get("project_id");;
+      values[1] = statusData.get("cycle");
+      values[2] = statusData.get("section_name");
+      values[3] = statusData.get("missing_fields");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
-        LOG.error("A problem happened trying to add a new project_submission for the project_id={}",
-          submissionData.get("project_id"));
+        LOG.error("A problem happened trying to add a new project_status for the project_id={}",
+          statusData.get("project_id"));
       }
     } else {
       // Updating submission record.
-      query.append("UPDATE project_submissions SET cycle = ?, year = ?, project_id = ?, user_id = ? ");
+      query.append("UPDATE project_statuses SET project_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
-      values[0] = submissionData.get("cycle");
-      values[1] = submissionData.get("year");
-      values[2] = submissionData.get("project_id");
-      values[3] = submissionData.get("user_id");
-      values[4] = submissionData.get("id");
+      values[0] = statusData.get("project_id");
+      values[1] = statusData.get("cycle");
+      values[2] = statusData.get("section_name");
+      values[3] = statusData.get("missing_fields");
+      values[4] = statusData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
-        LOG.error("A problem happened trying to update the project_submission identified with the id = {}",
-          submissionData.get("id"));
+        LOG.error("A problem happened trying to update the project_status identified with the id = {}",
+          statusData.get("id"));
       }
     }
     return result;

@@ -43,5 +43,5 @@ public interface SubmissionDAO {
    * @return a number greater than 0 with the id of the new record added, a number equal to 0 if the information was
    *         updated, or -1 if some error occurred.
    */
-  public int saveProjectSubmission(Map<String, String> submissionData);
+  public int saveProjectSubmission(Map<String, Object> submissionData);
 }

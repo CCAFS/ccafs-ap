@@ -75,6 +75,44 @@ public class Project {
 
 
   /**
+   * This method validates if the current project contributes to a specific output (MOG).
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @return true if the project contributes to the given MOG, false otherwise.
+   */
+  public boolean containsOutput(int outputID) {
+    if (this.outputs != null) {
+      for (IPElement output : this.outputs) {
+        if (output.getId() == outputID) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * This method validates if the current project contributes to a specific output and if the given output contributes
+   * to a specific outcome.
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @param outcomeID is an outcome (2019) identifier.
+   * @return tru if the project actualle contributes to the MOG, false otherwise.
+   */
+  public boolean containsOutput(int outputID, int outcomeID) {
+    if (this.outputs != null) {
+      for (IPElement output : this.outputs) {
+        if (output.getId() == outputID) {
+          if (output.getContributesTo().contains(new IPElement(outcomeID))) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
    * this method validates if the current project contributes to a given output (MOG).
    * 
    * @param output is some output to be compared.
@@ -175,6 +213,43 @@ public class Project {
   }
 
   /**
+   * This method gets the budget of a specific project that is co-financing the current one in a specific year.
+   * 
+   * @param confinancingProjectID is a project identifier.
+   * @param year is a year.
+   * @return a Budget object with the information.
+   */
+  public Budget getCofinancingBudget(int confinancingProjectID, int year) {
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        if (budget.getCofinancingProject() != null) {
+          if (budget.getCofinancingProject().getId() == confinancingProjectID && budget.getYear() == year) {
+            return budget;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * This method gets all the budgets from the projects that are co-financing the curren project.
+   * 
+   * @return a List of Budget object with the information requested.
+   */
+  public List<Budget> getCofinancingBudgets() {
+    List<Budget> budgets = new ArrayList<>();
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        if (budget.getCofinancingProject() != null) {
+          budgets.add(budget);
+        }
+      }
+    }
+    return budgets;
+  }
+
+  /**
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creationg date of the project.
    * yyyy-project.id => e.g. 2014-46
@@ -190,13 +265,21 @@ public class Project {
     return null;
   }
 
+  public String getComposedName() {
+    return "P" + this.id + " - " + this.title;
+  }
+
   public ProjectPartner getCoordinator() {
     return coordinator;
   }
 
+  /**
+   * This method gets all the coordinators working for this project.
+   * 
+   * @return a list of PartnerPerson with the information requested.
+   */
   public List<PartnerPerson> getCoordinatorPersons() {
     List<PartnerPerson> projectCoordinators = new ArrayList<>();
-
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
         for (PartnerPerson person : partner.getPartnerPersons()) {
@@ -206,7 +289,6 @@ public class Project {
         }
       }
     }
-
     return projectCoordinators;
   }
 
@@ -238,8 +320,50 @@ public class Project {
     return flagships;
   }
 
+  /**
+   * This method gets the list of Flagships acronyms separated by comma (, ).
+   * 
+   * @return a String with the list of flagships which are contributing to this project.
+   */
+  public String getFlagshipsAcronym() {
+    StringBuilder flagshipAcronym = new StringBuilder();
+    if (flagships != null) {
+      for (int i = 0; i < flagships.size(); i++) {
+        flagshipAcronym.append(flagships.get(i).getAcronym());
+        if (i != (flagships.size() - 1)) {
+          flagshipAcronym.append(", ");
+        }
+      }
+    }
+    return flagshipAcronym.toString();
+  }
+
   public int getId() {
     return id;
+  }
+
+
+  /**
+   * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
+   * 
+   * @param parentIndicatorID
+   * @param outcomeID is some outcome (2019) identifier.
+   * @param year is a year.
+   * @return and IPIndicator object with the information requested.
+   */
+  public IPIndicator getIndicator(int parentIndicatorID, int outcomeID, int year) {
+    IPIndicator emptyIndicator = new IPIndicator(-1);
+    if (indicators != null) {
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID && indicator.getYear() == year
+            && indicator.getOutcome().getId() == outcomeID) {
+            return indicator;
+          }
+        }
+      }
+    }
+    return emptyIndicator;
   }
 
   public List<IPIndicator> getIndicators() {
@@ -250,7 +374,7 @@ public class Project {
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
    * parameter.
    * 
-   * @param parentIndicatorID is the parent indicator edentifier.
+   * @param parentIndicatorID is the parent indicator identifier.
    * @return a List of IPIndicator objects with the information requested.
    */
   public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
@@ -294,12 +418,15 @@ public class Project {
     return ipOtherContribution;
   }
 
+<<<<<<< HEAD
 
   /**
    * This method returns the project partner institution that is leading the project.
    * 
    * @return a ProjectPartner object with the information requested. Or null if the project doesn't have a leader.
    */
+=======
+>>>>>>> branch 'develop' of https://github.com/CCAFS/ccafs-ap.git
   public ProjectPartner getLeader() {
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
@@ -312,6 +439,7 @@ public class Project {
     }
     return null;
   }
+
 
   /**
    * This method returns the project partner person who is leading the project.
@@ -368,6 +496,22 @@ public class Project {
     return null;
   }
 
+  /**
+   * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @param year is a year.
+   * @return an OutputOverview object with the information requested.
+   */
+  public OutputOverview getOutputOverview(int outputID, int year) {
+    for (OutputOverview overview : outputsOverview) {
+      if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
+        return overview;
+      }
+    }
+    return null;
+  }
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
@@ -414,6 +558,24 @@ public class Project {
     return regions;
   }
 
+  /**
+   * This method gets the list of Region acronyms separated by comma (, ).
+   * 
+   * @return a String with the list of regions which are contributing to this project.
+   */
+  public String getRegionsAcronym() {
+    StringBuilder regionAcronym = new StringBuilder();
+    if (regions != null) {
+      for (int i = 0; i < regions.size(); i++) {
+        regionAcronym.append(regions.get(i).getAcronym());
+        if (i != (regions.size() - 1)) {
+          regionAcronym.append(", ");
+        }
+      }
+    }
+    return regionAcronym.toString();
+  }
+
   public Date getStartDate() {
     return startDate;
   }
@@ -424,6 +586,51 @@ public class Project {
 
   public String getTitle() {
     return title;
+  }
+
+  /**
+   * This method gets the total bilateral budget for the current project.
+   * 
+   * @return a double representing the amount of the total bilateral budget.
+   */
+  public double getTotalBilateralBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isBilateral()) ? budget.getAmount() : 0;
+      }
+    }
+    return totalBudget;
+  }
+
+  /**
+   * this method gets the total budget for this project.
+   * 
+   * @return a double representing the total amount of budget for this project.
+   */
+  public double getTotalBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += budget.getAmount();
+      }
+    }
+    return totalBudget;
+  }
+
+  /**
+   * This method gets the total W1/W2 budget for this project.
+   * 
+   * @return a double representing the amount.
+   */
+  public double getTotalCcafsBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isCCAFSBudget()) ? budget.getAmount() : 0;
+      }
+    }
+    return totalBudget;
   }
 
   public String getType() {

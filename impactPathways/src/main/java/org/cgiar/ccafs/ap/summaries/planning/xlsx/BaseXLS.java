@@ -37,6 +37,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -79,6 +80,8 @@ public class BaseXLS {
   private static final String HEADER_FONT_COLOR_HEX = "#404040";
   private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
   private static final int HEADER_ROW_HEIGHT = 31;
+  private static final String HEADER_BORDER_COLOR_HEX = "#fbbf77";
+
 
   // Textbox Style
   private static final Color TEXTBOX_BACKGROUND_COLOR_RGB = new Color(255, 204, 41);
@@ -98,8 +101,13 @@ public class BaseXLS {
   private Workbook workbook; // Excel high level model.
   private boolean usingTemplate;
   private int rowStart, columnStart, rowCounter, columnCounter;
+
+  // styleHeader;
   private XSSFCellStyle styleHeader;
   private XSSFCellStyle[] columnStyles;
+
+  // cell
+  private Cell cell;
 
 
   /**
@@ -112,6 +120,13 @@ public class BaseXLS {
     String date = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z").format(new Date());
     header.setLeft("CCAFS Planning and Reporting Platform");
     header.setRight("Report generated on " + date);
+  }
+
+  public void autoSizeColumns(Sheet sheet) {
+    for (int a = 1; a <= this.columnStyles.length; a++) {
+      sheet.autoSizeColumn(a);
+    }
+
   }
 
   /**
@@ -156,12 +171,16 @@ public class BaseXLS {
     styleHeader.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
     styleHeader.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
 
+    // Font
     XSSFFont font = (XSSFFont) workbook.createFont();
     font.setBold(true);
     font.setFontName(HEADER_FONT_NAME);
     font.setColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
     font.setFontHeightInPoints(HEADER_FONT_SIZE);
     styleHeader.setFont(font);
+
+    // border
+    this.setBottomBorderCell(styleHeader, Color.decode(HEADER_BORDER_COLOR_HEX));
 
     CreationHelper createHelper = workbook.getCreationHelper();
 
@@ -171,46 +190,48 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-      // Style numeric
+        // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style date
+          // Style date
         case COLUMN_TYPE_DATE:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // styleBoleean
+        // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
-          columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("0.00"));
-
+          columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
+        // styleBudget
         case COLUMN_TYPE_BUDGET:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
+          columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("$#,##0.00"));
+          // "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"
           break;
 
-        // Style decimal
+          // Style decimal
         case COLUMN_TYPE_DECIMAL:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
-          columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("0.00"));
+          columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // Style long string
+          // Style long string
         case COLUMN_TYPE_TEXT_LONG:
           columnStyles[c].setAlignment(HorizontalAlignment.LEFT);
           columnStyles[c].setWrapText(true);
           break;
 
-          // Style short string
+        // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
       }
-      this.setBorder(columnStyles[c]);
+      this.setBottomBorderCell(columnStyles[c], Color.decode(CELL_BORDER_COLOR_HEX));
       if (c == 0) {
         columnStyles[c].setBorderLeft(CELL_BORDER_TYPE_LEFT);
         columnStyles[c].setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode(CELL_BORDER_COLOR_HEX)));
@@ -254,6 +275,17 @@ public class BaseXLS {
         templateStream.close();
         // applying header.
         this.addHeader(workbook.getSheetAt(0));
+
+        // Set filter in cell
+        StringBuilder rangeString = new StringBuilder();
+        char initialColumn = 'B';
+        rangeString.append(initialColumn);
+        rangeString.append("12:");
+        rangeString.append((char) (initialColumn + (columnTypes.length - 1)));
+        rangeString.append("12");
+
+        workbook.getSheetAt(0).setAutoFilter(CellRangeAddress.valueOf(rangeString.toString()));
+
       } else {
         workbook = new XSSFWorkbook();
       }
@@ -279,15 +311,74 @@ public class BaseXLS {
     columnCounter = columnStart;
   }
 
-  private void setBorder(XSSFCellStyle cellStyle) {
+  /**
+   * This method writes any value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void prepareCell(Sheet sheet) {
+
+    Row row = sheet.getRow(rowCounter);
+    // if there is no row index, it should create it
+    if (row == null) {
+      row = sheet.createRow(rowCounter);
+    }
+    row.setHeightInPoints((5 * sheet.getDefaultRowHeightInPoints()));
+    cell = row.createCell(columnCounter);
+    cell.setCellStyle(columnStyles[columnCounter - 1]);
+  }
+
+
+  private void setBottomBorderCell(XSSFCellStyle cellStyle, Color color) {
     // Create the border
     cellStyle.setBorderBottom(CELL_BORDER_TYPE_BOTTOM);
 
     // Set color border
-    cellStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(CELL_BORDER_COLOR_HEX)));
+    cellStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(color));
 
     cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+  }
 
+
+  /**
+   * This method writes boolean value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void writeBoolean(Sheet sheet, boolean value) {
+    this.prepareCell(sheet);
+    if (value == true) {
+      cell.setCellValue(CELL_TRUE_BOOLEAN);
+    } else {
+      cell.setCellValue(CELL_FALSE_BOOLEAN);
+    }
+  }
+
+
+  /**
+   * This method writes date value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void writeDate(Sheet sheet, Date value) {
+    this.prepareCell(sheet);
+    cell.setCellValue(value);
+  }
+
+
+  /**
+   * This method writes integer value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void writeDouble(Sheet sheet, double value) {
+    this.prepareCell(sheet);
+    cell.setCellValue(value);
+    // sheet.autoSizeColumn(columnCounter);
   }
 
   /**
@@ -318,13 +409,46 @@ public class BaseXLS {
   }
 
   /**
+   * This method writes integer value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void writeInteger(Sheet sheet, int value) {
+    this.prepareCell(sheet);
+    cell.setCellValue(value);
+    // sheet.autoSizeColumn(columnCounter);
+  }
+
+
+  /**
+   * This method writes string value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void writeString(Sheet sheet, String value) {
+    this.prepareCell(sheet);
+
+    if (value == null) {
+      cell.setCellValue("");
+    } else {
+      if (value.toString().length() > 30) {
+        sheet.setColumnWidth(columnCounter, 12000);
+      }
+      cell.setCellValue(value);
+    }
+
+  }
+
+
+  /**
    * This method writes the title box into the given sheet.
    * 
    * @param sheet is the sheet where you want to write the title box.
    * @param text is the title of the report.
    */
   public void writeTitleBox(Sheet sheet, String text) {
-
 
     XSSFDrawing draw = (XSSFDrawing) sheet.createDrawingPatriarch();
     XSSFTextBox textbox = draw.createTextbox(new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 4, 6));
@@ -336,71 +460,15 @@ public class BaseXLS {
     XSSFRichTextString stringX = new XSSFRichTextString();
 
     Font font = workbook.createFont();
-    font.setFontHeightInPoints((short) 24);
-    font.setFontName("Courier New");
-    font.setItalic(true);
-    font.setStrikeout(true);
+    font.setFontHeightInPoints((short) 20);
+    font.setFontName("Tahoma");
     font.setColor(TEXTBOX_FONT_COLOR_INDEX);
     stringX.append(text);
+
     stringX.applyFont(font);
     textbox.setText(stringX);
-
   }
 
-  /**
-   * This method writes any value into a specific cell.
-   * 
-   * @param sheet is the sheet where you want to add information into.
-   * @param value is the specific information to be written.
-   */
-  public void writeValue(Sheet sheet, Object value) {
-
-    Row row = sheet.getRow(rowCounter);
-    // if there is no row index, it should create it
-    if (row == null) {
-      row = sheet.createRow(rowCounter);
-    }
-    row.setHeightInPoints((5 * sheet.getDefaultRowHeightInPoints()));
-
-    Cell cell = row.createCell(columnCounter);
-    cell.setCellStyle(columnStyles[columnCounter - 1]);
-
-    // Here, the value is evaluated depending of its type
-    // if value is Integer
-    if (value instanceof Integer) {
-      cell.setCellValue((int) value);
-      sheet.autoSizeColumn(columnCounter);
-    } // if value is Date
-    else if (value instanceof Date) {
-      cell.setCellValue((Date) value);
-    } // if value is Boolean
-    else if (value instanceof Boolean) {
-      if ((boolean) value == true) {
-        cell.setCellValue(CELL_TRUE_BOOLEAN);
-      } else {
-        cell.setCellValue(CELL_FALSE_BOOLEAN);
-      }
-    } // if value is String
-    else if (value instanceof String) {
-      if (value.toString().length() > 30) {
-        sheet.setColumnWidth(columnCounter, 12000);
-      }
-      cell.setCellValue((String) value);
-    } // if value is Double
-    else if (value instanceof Double) {
-      cell.setCellValue((double) value);
-      sheet.autoSizeColumn(columnCounter);
-    } // if value is null
-    else if (value == null) {
-      cell.setCellValue("");
-    } // Default action
-    else {
-      cell.setCellValue(String.valueOf(value));
-
-    }
-
-
-  }
 
   /**
    * This Method is used for to write the Workbook instance into the output stream

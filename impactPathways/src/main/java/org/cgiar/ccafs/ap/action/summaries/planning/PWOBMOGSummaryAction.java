@@ -19,7 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.PWOBMOGSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBMOGSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -41,7 +41,7 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
 
-  private PWOBMOGSummaryXLS pwobSummaryXLS;
+  private POWBMOGSummaryXLS pwobSummaryXLS;
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
   private ProjectOutcomeManager projectOutcomeManager;
@@ -58,14 +58,14 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
 
   @Inject
   public PWOBMOGSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
-    PWOBMOGSummaryXLS pwobSummaryXLS, ProjectOutcomeManager projectOutcomeManager) {
+    POWBMOGSummaryXLS pwobSummaryXLS, ProjectOutcomeManager projectOutcomeManager) {
     super(config);
 
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
     this.projectOutcomeManager = projectOutcomeManager;
     this.pwobSummaryXLS = pwobSummaryXLS;
-    this.startYear = 9999;
+    this.startYear = 2016;
     this.endYear = 0;
   }
 
@@ -120,10 +120,6 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
       // *************************Outcomes*****************************
       project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
-      if (project.getStartDate().getYear() < this.startYear) {
-        startYear = project.getStartDate().getYear();
-      }
     }
-
   }
 }
