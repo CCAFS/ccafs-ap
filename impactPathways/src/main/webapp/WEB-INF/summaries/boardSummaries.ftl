@@ -78,7 +78,7 @@
           </div>
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="powbMOG" value="pwobMOG" />
-            <label for="powbMOG">POWB Report by MOG <span>XLS</span></label>
+            <label for="powbMOG">POWB Report by MOGs <span>XLS</span></label>
           </div>
         </div>
       </div>

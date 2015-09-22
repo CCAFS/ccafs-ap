@@ -29,7 +29,7 @@
             [@s.text name="menu.planning.submenu.projectDescription" /]
           </a>
         </li>
-        <li class="[#if currentSubStage == "partners" ]${currCss}[/#if] submitted">
+        <li class="[#if currentSubStage == "partners" ]${currCss}[/#if]">
           <a href="[@s.url action='partners'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.planning.submenu.projectPartners" /]
           </a>
