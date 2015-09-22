@@ -74,6 +74,32 @@ public class Project {
   }
 
 
+  // TODO To document
+  public boolean containsOutput(int outputID) {
+    if (this.outputs != null) {
+      for (IPElement output : this.outputs) {
+        if (output.getId() == outputID) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // TODO To document
+  public boolean containsOutput(int outputID, int outcomeID) {
+    if (this.outputs != null) {
+      for (IPElement output : this.outputs) {
+        if (output.getId() == outputID) {
+          if (output.getContributesTo().contains(new IPElement(outcomeID))) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   /**
    * this method validates if the current project contributes to a given output (MOG).
    * 
