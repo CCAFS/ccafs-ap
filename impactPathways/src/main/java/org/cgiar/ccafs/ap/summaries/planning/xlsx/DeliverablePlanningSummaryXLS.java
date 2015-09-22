@@ -50,61 +50,61 @@ public class DeliverablePlanningSummaryXLS {
 
     Map<String, Object> deliverableMap;
     // Iterating all the projects
-    for (int a = 0; a < deliverableList.size(); a++) {
+    for (int a = 0; a < 100; a++) {
       deliverableMap = deliverableList.get(a);
 
       // Iterating all the partners
 
       // Project id
-      xls.writeValue(sheet, deliverableMap.get("project_id"));
+      xls.writeInteger(sheet, (int) deliverableMap.get("project_id"));
       xls.nextColumn();
 
       // Title
-      xls.writeValue(sheet, deliverableMap.get("project_title"));
+      xls.writeString(sheet, (String) deliverableMap.get("project_title"));
       xls.nextColumn();
 
       // Flashig
-      xls.writeValue(sheet, deliverableMap.get("flagships"));
+      xls.writeString(sheet, (String) deliverableMap.get("flagships"));
       xls.nextColumn();
 
       // Region
-      xls.writeValue(sheet, deliverableMap.get("regions"));
+      xls.writeString(sheet, (String) deliverableMap.get("regions"));
       xls.nextColumn();
 
       // deliverable id
-      xls.writeValue(sheet, deliverableMap.get("deliverable_id"));
+      xls.writeInteger(sheet, (int) deliverableMap.get("deliverable_id"));
       xls.nextColumn();
 
       // Title
-      xls.writeValue(sheet, deliverableMap.get("deliverable_title"));
+      xls.writeString(sheet, (String) deliverableMap.get("deliverable_title"));
       xls.nextColumn();
 
       // MOG
-      xls.writeValue(sheet, deliverableMap.get("mog"));
+      xls.writeString(sheet, (String) deliverableMap.get("mog"));
       xls.nextColumn();
 
       // Year
-      xls.writeValue(sheet, deliverableMap.get("year"));
+      xls.writeInteger(sheet, (int) deliverableMap.get("year"));
       xls.nextColumn();
 
       // Main type
-      xls.writeValue(sheet, deliverableMap.get("deliverable_type"));
+      xls.writeString(sheet, (String) deliverableMap.get("deliverable_type"));
       xls.nextColumn();
 
       // Sub Type
-      xls.writeValue(sheet, deliverableMap.get("deliverable_sub_type"));
+      xls.writeString(sheet, (String) deliverableMap.get("deliverable_sub_type"));
       xls.nextColumn();
 
       // Other Type
-      xls.writeValue(sheet, deliverableMap.get("other_type"));
+      xls.writeString(sheet, (String) deliverableMap.get("other_type"));
       xls.nextColumn();
 
       // Partner Responsible
-      xls.writeValue(sheet, deliverableMap.get("partner_responsible"));
+      xls.writeString(sheet, (String) deliverableMap.get("partner_responsible"));
       xls.nextColumn();
 
       // Other Partner
-      xls.writeValue(sheet, deliverableMap.get("other_responsibles"));
+      xls.writeString(sheet, (String) deliverableMap.get("other_responsibles"));
       xls.nextColumn();
 
       xls.nextRow();
@@ -144,6 +144,7 @@ public class DeliverablePlanningSummaryXLS {
 
       xls.writeHeaders(sheet, headers);
       this.addContent(deliverableList, workbook);
+
 
       // this.flush();
       xls.writeWorkbook();

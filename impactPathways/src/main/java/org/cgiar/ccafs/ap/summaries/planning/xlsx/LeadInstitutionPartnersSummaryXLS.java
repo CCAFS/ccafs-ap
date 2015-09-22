@@ -48,17 +48,17 @@ public class LeadInstitutionPartnersSummaryXLS {
   private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList) {
     int projectCount = 0;
     for (Institution institution : projectLeadingInstitutions) {
-      xls.writeValue(sheet, institution.getId());
+      xls.writeInteger(sheet, institution.getId());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getName());
+      xls.writeString(sheet, institution.getName());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getAcronym());
+      xls.writeString(sheet, institution.getAcronym());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getWebsiteLink());
+      xls.writeString(sheet, institution.getWebsiteLink());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getCountry().getName());
+      xls.writeString(sheet, institution.getCountry().getName());
       xls.nextColumn();
-      xls.writeValue(sheet, projectList[projectCount]);
+      xls.writeString(sheet, projectList[projectCount]);
       projectCount++;
       xls.nextRow();
     }
@@ -80,8 +80,8 @@ public class LeadInstitutionPartnersSummaryXLS {
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
 
       int[] headerTypes =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeXLS(true, headerTypes);
       workbook.setSheetName(0, "LeadInstitutions");

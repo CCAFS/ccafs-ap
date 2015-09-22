@@ -30,12 +30,11 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public class PartnersSummaryXLS {
 
-  private APConfig config;
+
   private BaseXLS xls;
 
   @Inject
   public PartnersSummaryXLS(APConfig config, BaseXLS xls) {
-    this.config = config;
     this.xls = xls;
   }
 
@@ -48,21 +47,21 @@ public class PartnersSummaryXLS {
   private void addContent(Sheet sheet, List<Institution> projectPartnerInstitutions, String[] projectList) {
     int projectCount = 0;
     for (Institution institution : projectPartnerInstitutions) {
-      xls.writeValue(sheet, institution.getId());
+      xls.writeInteger(sheet, institution.getId());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getName());
+      xls.writeString(sheet, institution.getName());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getAcronym());
+      xls.writeString(sheet, institution.getAcronym());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getWebsiteLink());
+      xls.writeString(sheet, institution.getWebsiteLink());
       xls.nextColumn();
-      xls.writeValue(sheet, institution.getCountry().getName());
+      xls.writeString(sheet, institution.getCountry().getName());
       xls.nextColumn();
       // Getting the project ids
       if (Integer.getInteger(projectList[projectCount]) instanceof Integer) {
-        xls.writeValue(sheet, Integer.valueOf(projectList[projectCount]));
+        xls.writeInteger(sheet, Integer.valueOf(projectList[projectCount]));
       } else {
-        xls.writeValue(sheet, projectList[projectCount]);
+        xls.writeString(sheet, projectList[projectCount]);
       }
       projectCount++;
       xls.nextRow();

@@ -34,13 +34,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 /**
  * @author Jorge Leonardo Solis B.
  */
-public class PWOBMOGSummaryXLS {
+public class POWBMOGSummaryXLS {
 
   private BaseXLS xls;
   private BudgetManager budgetManager;
 
   @Inject
-  public PWOBMOGSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
+  public POWBMOGSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
     this.xls = xls;
     this.budgetManager = budgetManager;
   }
@@ -71,7 +71,7 @@ public class PWOBMOGSummaryXLS {
 
       // Iterating all the partners
       for (ProjectPartner projectPartnerPPA : project.getPPAPartners()) {
-        xls.writeValue(sheet, project.getId());
+        xls.writeInteger(sheet, project.getId());
         xls.nextColumn();
 
         // Flashig
@@ -84,25 +84,25 @@ public class PWOBMOGSummaryXLS {
           stringBuilder.append(flashig.getAcronym());
           counter++;
         }
-        xls.writeValue(sheet, stringBuilder.toString());
+        xls.writeString(sheet, stringBuilder.toString());
         xls.nextColumn();
 
         // Title
-        xls.writeValue(sheet, project.getTitle());
+        xls.writeString(sheet, project.getTitle());
         xls.nextColumn();
 
         // Summary
-        xls.writeValue(sheet, project.getSummary());
+        xls.writeString(sheet, project.getSummary());
         xls.nextColumn();
 
         if (project.getLeader() != null && project.getLeader().getInstitution() != null) {
 
           // Acronym Leader
-          xls.writeValue(sheet, project.getLeader().getInstitution().getAcronym());
+          xls.writeString(sheet, project.getLeader().getInstitution().getAcronym());
           xls.nextColumn();
 
           // Leader name
-          xls.writeValue(sheet, project.getLeader().getInstitution().getName());
+          xls.writeString(sheet, project.getLeader().getInstitution().getName());
         } else {
           xls.nextColumn();
         }
@@ -118,7 +118,7 @@ public class PWOBMOGSummaryXLS {
           stringBuilder.append(region.getAcronym());
           counter++;
         }
-        xls.writeValue(sheet, stringBuilder.toString());
+        xls.writeString(sheet, stringBuilder.toString());
         xls.nextColumn();
 
         // W1/W2 Budget
@@ -126,7 +126,7 @@ public class PWOBMOGSummaryXLS {
           budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
             .getInstitution().getId(), BudgetType.W1_W2.getValue());
 
-        xls.writeValue(sheet, currencyFormatter.format(W1W2));
+        xls.writeString(sheet, currencyFormatter.format(W1W2));
         xls.nextColumn();
 
         // W3/Bilateral Budget
@@ -134,7 +134,7 @@ public class PWOBMOGSummaryXLS {
           budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
             .getInstitution().getId(), BudgetType.W3_BILATERAL.getValue());
 
-        xls.writeValue(sheet, W3Bilateral);
+        xls.writeDouble(sheet, W3Bilateral);
         xls.nextColumn();
 
         // Location
@@ -148,7 +148,7 @@ public class PWOBMOGSummaryXLS {
           stringBuilder.append(location.getName());
           counter++;
         }
-        xls.writeValue(sheet, stringBuilder.toString());
+        xls.writeString(sheet, stringBuilder.toString());
 
         xls.nextRow();
       }
@@ -182,8 +182,8 @@ public class PWOBMOGSummaryXLS {
 
       // Writting type headers.
       int[] headersType =
-        {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
       Workbook workbook = xls.initializeXLS(true, headersType);
 
