@@ -74,7 +74,12 @@ public class Project {
   }
 
 
-  // TODO To document
+  /**
+   * This method validates if the current project contributes to a specific output (MOG).
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @return true if the project contributes to the given MOG, false otherwise.
+   */
   public boolean containsOutput(int outputID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -86,7 +91,14 @@ public class Project {
     return false;
   }
 
-  // TODO To document
+  /**
+   * This method validates if the current project contributes to a specific output and if the given output contributes
+   * to a specific outcome.
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @param outcomeID is an outcome (2019) identifier.
+   * @return tru if the project actualle contributes to the MOG, false otherwise.
+   */
   public boolean containsOutput(int outputID, int outcomeID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -308,7 +320,11 @@ public class Project {
     return flagships;
   }
 
-  // TODO To document
+  /**
+   * This method gets the list of Flagships acronyms separated by comma (, ).
+   * 
+   * @return a String with the list of flagships which are contributing to this project.
+   */
   public String getFlagshipsAcronym() {
     StringBuilder flagshipAcronym = new StringBuilder();
     if (flagships != null) {
@@ -327,7 +343,14 @@ public class Project {
   }
 
 
-  // TODO To document
+  /**
+   * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
+   * 
+   * @param parentIndicatorID
+   * @param outcomeID is some outcome (2019) identifier.
+   * @param year is a year.
+   * @return and IPIndicator object with the information requested.
+   */
   public IPIndicator getIndicator(int parentIndicatorID, int outcomeID, int year) {
     IPIndicator emptyIndicator = new IPIndicator(-1);
     if (indicators != null) {
@@ -351,7 +374,7 @@ public class Project {
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
    * parameter.
    * 
-   * @param parentIndicatorID is the parent indicator edentifier.
+   * @param parentIndicatorID is the parent indicator identifier.
    * @return a List of IPIndicator objects with the information requested.
    */
   public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
@@ -459,7 +482,13 @@ public class Project {
     return null;
   }
 
-  // TODO To document
+  /**
+   * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @param year is a year.
+   * @return an OutputOverview object with the information requested.
+   */
   public OutputOverview getOutputOverview(int outputID, int year) {
     for (OutputOverview overview : outputsOverview) {
       if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
@@ -515,7 +544,11 @@ public class Project {
     return regions;
   }
 
-  // TODO To document
+  /**
+   * This method gets the list of Region acronyms separated by comma (, ).
+   * 
+   * @return a String with the list of regions which are contributing to this project.
+   */
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
     if (regions != null) {
@@ -541,7 +574,11 @@ public class Project {
     return title;
   }
 
-  // TODO To document
+  /**
+   * This method gets the total bilateral budget for the current project.
+   * 
+   * @return a double representing the amount of the total bilateral budget.
+   */
   public double getTotalBilateralBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -552,7 +589,11 @@ public class Project {
     return totalBudget;
   }
 
-  // TODO To document
+  /**
+   * this method gets the total budget for this project.
+   * 
+   * @return a double representing the total amount of budget for this project.
+   */
   public double getTotalBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -563,7 +604,11 @@ public class Project {
     return totalBudget;
   }
 
-  // TODO To document
+  /**
+   * This method gets the total W1/W2 budget for this project.
+   * 
+   * @return a double representing the amount.
+   */
   public double getTotalCcafsBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
