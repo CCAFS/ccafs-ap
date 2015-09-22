@@ -4105,18 +4105,22 @@ span.elementId{
 /* -------------- SUMMARIES -----------------*/
 
 .summariesButtons {
-  width: 104%;
+  width: 100%;
   margin: 0 auto;
 }
 
 .summariesSection {
   width: 20%;
   float: left;
-  margin: 0 2%;
+  margin-right:6.4%;
   border: 1px solid #ccc;
   border-radius: 2px;
   box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
   /* text-align: center; */
+}
+
+.summariesSection:last-child {
+  margin-right:0;
 }
 
 .summariesSection a {

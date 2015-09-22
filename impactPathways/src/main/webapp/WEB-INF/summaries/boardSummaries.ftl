@@ -26,7 +26,7 @@
     <div class="summariesContent borderBox">
       <div class="loading" style="display:none"></div>
       <form action="">
-      <h6>What Phase of report would you like to generate</h6>
+      <h6>What Phase of report would you like to generate?</h6>
       <div class="summariesOption">
         <input type="radio" name="phase" id="planning" value="planning" checked="checked"/>
         <label for="planning">Planning</label>
@@ -74,11 +74,11 @@
         <div id="budget-contentOptions" style="display:none">
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="powb" value="pwob" />
-            <label for="powb">POWB Report <span>PDF</span></label>
+            <label for="powb">POWB Report <span>XLS</span></label>
           </div>
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="powbMOG" value="pwobMOG" />
-            <label for="powbMOG">POWB Report by MOG <span>PDF</span></label>
+            <label for="powbMOG">POWB Report by MOG <span>XLS</span></label>
           </div>
         </div>
       </div>
