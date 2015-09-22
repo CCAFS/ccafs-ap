@@ -174,7 +174,13 @@ public class Project {
     return budgets;
   }
 
-  // TODO To document
+  /**
+   * This method gets the budget of a specific project that is co-financing the current one in a specific year.
+   * 
+   * @param confinancingProjectID is a project identifier.
+   * @param year is a year.
+   * @return a Budget object with the information.
+   */
   public Budget getCofinancingBudget(int confinancingProjectID, int year) {
     if (this.getBudgets() != null) {
       for (Budget budget : this.getBudgets()) {
@@ -188,7 +194,11 @@ public class Project {
     return null;
   }
 
-  // TODO To document
+  /**
+   * This method gets all the budgets from the projects that are co-financing the curren project.
+   * 
+   * @return a List of Budget object with the information requested.
+   */
   public List<Budget> getCofinancingBudgets() {
     List<Budget> budgets = new ArrayList<>();
     if (this.getBudgets() != null) {
@@ -225,9 +235,13 @@ public class Project {
     return coordinator;
   }
 
+  /**
+   * This method gets all the coordinators working for this project.
+   * 
+   * @return a list of PartnerPerson with the information requested.
+   */
   public List<PartnerPerson> getCoordinatorPersons() {
     List<PartnerPerson> projectCoordinators = new ArrayList<>();
-
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
         for (PartnerPerson person : partner.getPartnerPersons()) {
@@ -237,7 +251,6 @@ public class Project {
         }
       }
     }
-
     return projectCoordinators;
   }
 
