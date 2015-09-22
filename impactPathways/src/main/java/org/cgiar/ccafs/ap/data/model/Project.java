@@ -295,6 +295,11 @@ public class Project {
   }
 
 
+  /**
+   * This method returns the project partner institution that is leading the project.
+   * 
+   * @return a ProjectPartner object with the information requested. Or null if the project doesn't have a leader.
+   */
   public ProjectPartner getLeader() {
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
@@ -308,6 +313,11 @@ public class Project {
     return null;
   }
 
+  /**
+   * This method returns the project partner person who is leading the project.
+   * 
+   * @return a PartnerPerson object with the information requested. Or null if the project doesn't have a leader.
+   */
   public PartnerPerson getLeaderPerson() {
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {

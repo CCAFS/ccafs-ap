@@ -221,6 +221,16 @@ public interface ProjectManager {
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
 
   /**
+   * This method will return the list of all the projects and their respective leaders.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary report project partner leaders.
+   * 
+   * @return a list of Project objects with the Project Partner Leader information.
+   */
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
+
+  /**
    * This method will return the list of all the projects and all their respective deliverables.
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
@@ -231,7 +241,7 @@ public interface ProjectManager {
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
 
   /**
-   * This method updates the project type into the database accordign to the values contained in the project received by
+   * This method updates the project type into the database according to the values contained in the project received by
    * parameter.
    * 
    * @param project - Project object to update the type
