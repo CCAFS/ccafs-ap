@@ -258,4 +258,21 @@ public class Permission {
   public static final String PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE = "planning:projects:budgetByMog:update";
 
   // --------------------------- End of project Budget ---------------------------------
+
+  /*
+   * --------------------------------------------------------------
+   * PERMISSIONS APPLIED TO ALL THE SUMMARIES SECTION
+   * --------------------------------------------------------------
+   */
+
+  /**
+   * Can update all the summaries contents
+   */
+  public static final String SUMMARIES_ALL = "summaries:*";
+
+  /**
+   * Can use all the functions in the summaries board
+   */
+  public static final String SUMMARIES_BOARD_ALL = "summaries:board:*";
+
 }

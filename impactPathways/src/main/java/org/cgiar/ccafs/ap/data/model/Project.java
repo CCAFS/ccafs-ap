@@ -174,6 +174,33 @@ public class Project {
     return budgets;
   }
 
+  // TODO To document
+  public Budget getCofinancingBudget(int confinancingProjectID, int year) {
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        if (budget.getCofinancingProject() != null) {
+          if (budget.getCofinancingProject().getId() == confinancingProjectID && budget.getYear() == year) {
+            return budget;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  // TODO To document
+  public List<Budget> getCofinancingBudgets() {
+    List<Budget> budgets = new ArrayList<>();
+    if (this.getBudgets() != null) {
+      for (Budget budget : this.getBudgets()) {
+        if (budget.getCofinancingProject() != null) {
+          budgets.add(budget);
+        }
+      }
+    }
+    return budgets;
+  }
+
   /**
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creationg date of the project.
@@ -191,7 +218,7 @@ public class Project {
   }
 
   public String getComposedName() {
-    return this.id + " - " + this.title;
+    return "P" + this.id + " - " + this.title;
   }
 
   public ProjectPartner getCoordinator() {
@@ -242,8 +269,39 @@ public class Project {
     return flagships;
   }
 
+  // TODO To document
+  public String getFlagshipsAcronym() {
+    StringBuilder flagshipAcronym = new StringBuilder();
+    if (flagships != null) {
+      for (int i = 0; i < flagships.size(); i++) {
+        flagshipAcronym.append(flagships.get(i).getAcronym());
+        if (i != (flagships.size() - 1)) {
+          flagshipAcronym.append(", ");
+        }
+      }
+    }
+    return flagshipAcronym.toString();
+  }
+
   public int getId() {
     return id;
+  }
+
+
+  // TODO To document
+  public IPIndicator getIndicator(int parentIndicatorID, int outcomeID, int year) {
+    IPIndicator emptyIndicator = new IPIndicator(-1);
+    if (indicators != null) {
+      for (IPIndicator indicator : this.indicators) {
+        if (indicator.getParent() != null) {
+          if (indicator.getParent().getId() == parentIndicatorID && indicator.getYear() == year
+            && indicator.getOutcome().getId() == outcomeID) {
+            return indicator;
+          }
+        }
+      }
+    }
+    return emptyIndicator;
   }
 
   public List<IPIndicator> getIndicators() {
@@ -298,7 +356,6 @@ public class Project {
     return ipOtherContribution;
   }
 
-
   public ProjectPartner getLeader() {
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
@@ -311,6 +368,7 @@ public class Project {
     }
     return null;
   }
+
 
   public PartnerPerson getLeaderPerson() {
     if (projectPartners != null) {
@@ -362,6 +420,16 @@ public class Project {
     return null;
   }
 
+  // TODO To document
+  public OutputOverview getOutputOverview(int outputID, int year) {
+    for (OutputOverview overview : outputsOverview) {
+      if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
+        return overview;
+      }
+    }
+    return null;
+  }
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
@@ -408,6 +476,20 @@ public class Project {
     return regions;
   }
 
+  // TODO To document
+  public String getRegionsAcronym() {
+    StringBuilder regionAcronym = new StringBuilder();
+    if (regions != null) {
+      for (int i = 0; i < regions.size(); i++) {
+        regionAcronym.append(regions.get(i).getAcronym());
+        if (i != (regions.size() - 1)) {
+          regionAcronym.append(", ");
+        }
+      }
+    }
+    return regionAcronym.toString();
+  }
+
   public Date getStartDate() {
     return startDate;
   }
@@ -418,6 +500,39 @@ public class Project {
 
   public String getTitle() {
     return title;
+  }
+
+  // TODO To document
+  public double getTotalBilateralBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isBilateral()) ? budget.getAmount() : 0;
+      }
+    }
+    return totalBudget;
+  }
+
+  // TODO To document
+  public double getTotalBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += budget.getAmount();
+      }
+    }
+    return totalBudget;
+  }
+
+  // TODO To document
+  public double getTotalCcafsBudget() {
+    double totalBudget = 0.0;
+    if (budgets != null) {
+      for (Budget budget : this.getBudgets()) {
+        totalBudget += (budget.getType().isCCAFSBudget()) ? budget.getAmount() : 0;
+      }
+    }
+    return totalBudget;
   }
 
   public String getType() {

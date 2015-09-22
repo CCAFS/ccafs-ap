@@ -16,8 +16,7 @@
     
 <section class="content">
   <article id="" class="fullBlock" > 
-    <br />
-    <h1 class="contentTitle">Summaries Section</h1>
+    <br /> 
     <div class="summariesButtons clearfix">
       <div id="projects" class="summariesSection current"><span></span><a href="">Projects</a></div>
       <div id="partners" class="summariesSection"><span></span><a href="">Partners</a></div>
@@ -38,25 +37,39 @@
       
       <h6>What kind of report would you like to generate?</h6>
       <div class="summariesOptions">
+        [#-- Projects reports --]
         <div id="projects-contentOptions">
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="projectsPartners" value="projectsPartners" />
             <label for="projectsPartners">List of all projects and their leading partners <span>XLS</span></label>
           </div>
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="projectPortfolio" value="projects" />
+            <input type="radio" name="formOptions" id="projectPortfolio" value="project" />
             <label for="projectPortfolio">Project portfolio <span>PDF</span></label>
             <div class="extraOptions" style="display:none"> 
-              [@customForm.select name="projectID" label="" i18nkey="" listName="allProjects" keyFieldName="id" displayFieldName="composedName" className=""/]
+              [@customForm.select name="projectID" label="" i18nkey="" listName="allProjects" keyFieldName="id" displayFieldName="composedName" className="" disabled=true/]
             </div>
           </div>
         </div>
+        [#-- Partners reports --]
         <div id="partners-contentOptions" style="display:none">
-          Soon
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="leadProjectInstitutionsSummary" value="leadProjectInstitutionsSummary" />
+            <label for="leadProjectInstitutionsSummary">Partners that are leading projects currently  <span>XLS</span></label>
+          </div>
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="partnersWorkingWithProjects" value="" disabled="disabled"/>
+            <label for="partnersWorkingWithProjects">Partners currently working with projects  <span>XLS</span></label>
+          </div>
         </div>
+        [#-- Deliverables reports --]
         <div id="deliverables-contentOptions" style="display:none">
-          Soon
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="deliverablePlanning" value="deliverablePlanning" />
+            <label for="deliverablePlanning">Expected deliverables <span>XLS</span></label>
+          </div>
         </div>
+        [#-- Budget reports --]
         <div id="budget-contentOptions" style="display:none">
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="powb" value="powb" />
@@ -65,7 +78,7 @@
         </div>
       </div>
       <br />
-      <a class="addButton" href="#">Generate</a>
+      <a id="generateReport" class="addButton" href="#">Generate</a>
       </form>
     </div> 
   </article>
