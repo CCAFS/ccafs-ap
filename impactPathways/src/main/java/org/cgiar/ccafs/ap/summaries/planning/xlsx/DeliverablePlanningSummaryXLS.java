@@ -50,7 +50,7 @@ public class DeliverablePlanningSummaryXLS {
 
     Map<String, Object> deliverableMap;
     // Iterating all the projects
-    for (int a = 0; a < 100; a++) {
+    for (int a = 0; a < deliverableList.size(); a++) {
       deliverableMap = deliverableList.get(a);
 
       // Iterating all the partners
@@ -128,11 +128,12 @@ public class DeliverablePlanningSummaryXLS {
           "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
 
       // defining header types.
-      int[] headerTypes = new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_NUMERIC,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_NUMERIC,
+      int[] headerTypes =
+        new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG,
         BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeXLS(true, headerTypes);
 

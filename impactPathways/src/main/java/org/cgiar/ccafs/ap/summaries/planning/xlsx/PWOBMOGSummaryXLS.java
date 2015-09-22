@@ -179,15 +179,16 @@ public class PWOBMOGSummaryXLS {
       headers.append("Total W1/W2(USD) , ");
       headers.append("Total W3/Bilateral(USD)");
 
-      int[] headersType =
-      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
+      // Writting type headers.
+      int[] headersType =
+        {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
       Workbook workbook = xls.initializeXLS(true, headersType);
 
       // renaming sheet
-      workbook.setSheetName(0, "PWOB Report");
+      workbook.setSheetName(0, "PWOB MOG Report");
       Sheet sheet = workbook.getSheetAt(0);
       this.addContent(projectsList, workbook);
 
