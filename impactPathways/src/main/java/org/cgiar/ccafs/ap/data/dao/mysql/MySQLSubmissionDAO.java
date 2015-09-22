@@ -89,7 +89,7 @@ public class MySQLSubmissionDAO implements SubmissionDAO {
     int result = -1;
     if (submissionData.get("id") == null) {
       query.append("INSERT INTO project_submissions (cycle, year, project_id, user_id) ");
-      query.append("VALUES (?, ?, ?, ?, ?) ");
+      query.append("VALUES (?, ?, ?, ?) ");
       values = new Object[4];
       values[0] = submissionData.get("cycle");
       values[1] = submissionData.get("year");
