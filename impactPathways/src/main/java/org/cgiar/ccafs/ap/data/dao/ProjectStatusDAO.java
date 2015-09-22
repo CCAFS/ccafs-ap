@@ -31,9 +31,10 @@ public interface ProjectStatusDAO {
    * 
    * @param projectID is the project identifier related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
+   * @param section is the name of the section
    * @return a Map with the information requested. An empty Map if no data was found, or null if some error occurred.
    */
-  public Map<String, String> getProjectStatus(int projectID, String cycle);
+  public Map<String, String> getProjectStatus(int projectID, String cycle, String section);
 
   /**
    * This method saves into the database the current project status with regards the missing fields.

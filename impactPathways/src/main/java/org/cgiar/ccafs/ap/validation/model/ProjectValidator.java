@@ -179,11 +179,11 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidSummary(String summary) {
-    return (this.isValidString(summary)) ? true : false;
+    return (this.isValidString(summary) && this.wordCount(summary) <= 150) ? true : false;
   }
 
   public boolean isValidTitle(String title) {
-    return (this.isValidString(title)) ? true : false;
+    return (this.isValidString(title) && this.wordCount(title) <= 20) ? true : false;
   }
 
   public boolean isValidType() {

@@ -15,9 +15,11 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.manager.ProjectStatusManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectStatus;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
@@ -37,10 +39,14 @@ public class ProjectDescriptionValidator extends BaseValidator {
   private static final long serialVersionUID = -4871185832403702671L;
   private ProjectValidator projectValidator;
 
+  // Managers
+  private ProjectStatusManager statusManager;
+
   @Inject
-  public ProjectDescriptionValidator(ProjectValidator projectValidator) {
+  public ProjectDescriptionValidator(ProjectValidator projectValidator, ProjectStatusManager statusManager) {
     super();
     this.projectValidator = projectValidator;
+    this.statusManager = statusManager;
   }
 
   public void validate(BaseAction action, Project project) {
@@ -56,8 +62,16 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
+
+      // Reporting missing fields into the database.
+      ProjectStatus status = statusManager.getProjectStatus(project, "Planning", action.getActionName());
+      if (status == null) {
+        status = new ProjectStatus("Planning", action.getActionName());
+      }
+      status.setMissingFields(this.missingFields.toString());
+      statusManager.saveProjectStatus(status, project);
     }
   }
 
@@ -85,55 +99,66 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateFlagships(action, project.getFlagships());
 
     if (project.isWorkplanRequired()) {
-      projectValidator.isValidProjectWorkplanName(project.getWorkplanName());
+      if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
+        this.addMessage(this.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
+        this.addMissingField("project.projectWorkplan");
+      }
     }
   }
 
   public void validateEndDate(BaseAction action, Date endDate) {
     if (!projectValidator.isValidEndDate(endDate)) {
       this.addMessage(this.getText("preplanning.projectDescription.endDate").toLowerCase());
+      this.addMissingField("project.endDate");
     }
   }
 
   public void validateFlagships(BaseAction action, List<IPProgram> flagships) {
     if (!projectValidator.isValidFlagships(flagships)) {
       this.addMessage(this.getText("preplanning.projectDescription.flagships").toLowerCase());
+      this.addMissingField("project.regions");
     }
   }
 
   public void validateLiaisonContactPerson(BaseAction action, User user) {
     if (!projectValidator.isValidOwner(user)) {
       this.addMessage(this.getText("preplanning.projectDescription.projectownercontactperson").toLowerCase());
+      this.addMissingField("project.owner");
     }
   }
 
   public void validateManagementLiaison(BaseAction action, LiaisonInstitution institution) {
     if (!projectValidator.isValidLiaisonInstitution(institution)) {
       this.addMessage(this.getText("planning.projectDescription.programCreator").toLowerCase());
+      this.addMissingField("project.liaisonInstitution");
     }
   }
 
   public void validateRegions(BaseAction action, List<IPProgram> regions) {
     if (!projectValidator.isValidRegions(regions)) {
       this.addMessage(this.getText("preplanning.projectDescription.regions").toLowerCase());
+      this.addMissingField("project.flagships");
     }
   }
 
   public void validateStartDate(BaseAction action, Date startDate) {
     if (!projectValidator.isValidStartDate(startDate)) {
       this.addMessage(this.getText("preplanning.projectDescription.startDate").toLowerCase());
+      this.addMissingField("project.startDate");
     }
   }
 
   public void validateSummary(BaseAction action, String summary) {
     if (!projectValidator.isValidSummary(summary)) {
       this.addMessage(this.getText("preplanning.projectDescription.projectSummary").toLowerCase());
+      this.addMissingField("project.summary");
     }
   }
 
   public void validateTitle(BaseAction action, String title) {
     if (!projectValidator.isValidTitle(title)) {
       this.addMessage(this.getText("planning.projectDescription.projectTitle").toLowerCase());
+      this.addMissingField("project.title");
     }
   }
 }

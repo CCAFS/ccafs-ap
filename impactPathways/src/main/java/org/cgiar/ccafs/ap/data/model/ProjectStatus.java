@@ -32,6 +32,11 @@ public class ProjectStatus {
   public ProjectStatus() {
   }
 
+  public ProjectStatus(String cycle, String section) {
+    this.cycle = cycle;
+    this.section = section;
+  }
+
   public String getCycle() {
     return cycle;
   }

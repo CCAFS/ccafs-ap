@@ -21,7 +21,7 @@ public class BaseValidator extends ActionSupport {
   @Inject
   protected APConfig config;
   protected StringBuilder validationMessage;
-  private StringBuilder missingFields;
+  protected StringBuilder missingFields;
 
   @Inject
   public BaseValidator() {
@@ -89,5 +89,16 @@ public class BaseValidator extends ActionSupport {
         action.addFieldError("justification", this.getText("validation.field.required"));
       }
     }
+  }
+
+  /**
+   * This method counts the number of words in a given text.
+   * 
+   * @param text is some text to be validated.
+   * @return the number of words.
+   */
+  protected int wordCount(String text) {
+    text = text.trim();
+    return text.isEmpty() ? 0 : text.split("\\s+").length;
   }
 }

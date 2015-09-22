@@ -47,8 +47,8 @@ public class ProjectStatusManagerImpl implements ProjectStatusManager {
   }
 
   @Override
-  public ProjectStatus getProjectStatus(Project project, String cycle) {
-    Map<String, String> statusData = statusDAO.getProjectStatus(project.getId(), cycle);
+  public ProjectStatus getProjectStatus(Project project, String cycle, String section) {
+    Map<String, String> statusData = statusDAO.getProjectStatus(project.getId(), cycle, section);
     if (statusData != null && !statusData.isEmpty()) {
       ProjectStatus status = new ProjectStatus();
       status.setId(Integer.parseInt(statusData.get("id")));

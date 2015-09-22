@@ -27,9 +27,10 @@ public interface ProjectStatusManager {
    * 
    * @param project is the project related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
+   * @param section is the name of a section.
    * @return ProjectStatus object with all the information encapsulated on it.
    */
-  public ProjectStatus getProjectStatus(Project project, String cycle);
+  public ProjectStatus getProjectStatus(Project project, String cycle, String section);
 
   /**
    * This method saves into the database the current project status with regards the missing fields.

@@ -44,7 +44,7 @@ public class MySQLProjectStatusDAO implements ProjectStatusDAO {
   }
 
   @Override
-  public Map<String, String> getProjectStatus(int projectID, String cycle) {
+  public Map<String, String> getProjectStatus(int projectID, String cycle, String section) {
     LOG.debug(">> getProjectStatus projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
 
     StringBuilder query = new StringBuilder();
@@ -54,6 +54,8 @@ public class MySQLProjectStatusDAO implements ProjectStatusDAO {
     query.append(projectID);
     query.append(" AND cycle = '");
     query.append(cycle);
+    query.append("' AND section_name = '");
+    query.append(section);
     query.append("'");
 
     LOG.debug(">> getProjectStatus() > Calling method executeQuery to get the results");
