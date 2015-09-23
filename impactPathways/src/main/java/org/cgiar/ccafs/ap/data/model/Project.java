@@ -40,7 +40,6 @@ public class Project {
   private Date endDate;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private ProjectPartner leader; // Project Leader.
   private ProjectPartner coordinator; // Project Coordinator.
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
@@ -74,7 +73,13 @@ public class Project {
     this.id = id;
   }
 
-  // TODO To document
+
+  /**
+   * This method validates if the current project contributes to a specific output (MOG).
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @return true if the project contributes to the given MOG, false otherwise.
+   */
   public boolean containsOutput(int outputID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -86,7 +91,14 @@ public class Project {
     return false;
   }
 
-  // TODO To document
+  /**
+   * This method validates if the current project contributes to a specific output and if the given output contributes
+   * to a specific outcome.
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @param outcomeID is an outcome (2019) identifier.
+   * @return tru if the project actualle contributes to the MOG, false otherwise.
+   */
   public boolean containsOutput(int outputID, int outcomeID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
@@ -100,7 +112,12 @@ public class Project {
     return false;
   }
 
-  // TODO To document
+  /**
+   * this method validates if the current project contributes to a given output (MOG).
+   * 
+   * @param output is some output to be compared.
+   * @return true if the project contributes to the specified output (MOG), or false otherwise.
+   */
   public boolean containsOutput(IPElement output) {
     if (this.outputs != null) {
       for (IPElement projectOutput : this.outputs) {
@@ -110,7 +127,6 @@ public class Project {
         if (projectOutput.getId() == output.getId()) {
           int projectOutcome = projectOutput.getContributesToIDs()[0];
           int outcome = output.getContributesToIDs()[0];
-
           if (outcome == projectOutcome) {
             return true;
           }
@@ -160,7 +176,11 @@ public class Project {
     return allYears;
   }
 
-  // TODO To document
+  /**
+   * This method returns the name of the file that was uploaded with the bilateral contract.
+   * 
+   * @return an String with the name of the bilateral contract file.
+   */
   public String getBilateralContractProposalName() {
     if (bilateralContractProposalName == null) {
       return "";
@@ -168,7 +188,14 @@ public class Project {
     return bilateralContractProposalName;
   }
 
-  // TODO To document
+  /**
+   * This method returns a Budget object that contains the given parameters.
+   * 
+   * @param institutionID is an institution identifier.
+   * @param budgetType is a budget type (W1/W2, W3/Bilateral, etc).
+   * @param year is a specific year.
+   * @return a Budget object that belongs to the specific project.
+   */
   public Budget getBudget(int institutionID, int budgetType, int year) {
     if (budgets != null) {
       for (Budget budget : budgets) {
@@ -185,7 +212,13 @@ public class Project {
     return budgets;
   }
 
-  // TODO To document
+  /**
+   * This method gets the budget of a specific project that is co-financing the current one in a specific year.
+   * 
+   * @param confinancingProjectID is a project identifier.
+   * @param year is a year.
+   * @return a Budget object with the information.
+   */
   public Budget getCofinancingBudget(int confinancingProjectID, int year) {
     if (this.getBudgets() != null) {
       for (Budget budget : this.getBudgets()) {
@@ -199,7 +232,11 @@ public class Project {
     return null;
   }
 
-  // TODO To document
+  /**
+   * This method gets all the budgets from the projects that are co-financing the curren project.
+   * 
+   * @return a List of Budget object with the information requested.
+   */
   public List<Budget> getCofinancingBudgets() {
     List<Budget> budgets = new ArrayList<>();
     if (this.getBudgets() != null) {
@@ -228,13 +265,21 @@ public class Project {
     return null;
   }
 
+  public String getComposedName() {
+    return "P" + this.id + " - " + this.title;
+  }
+
   public ProjectPartner getCoordinator() {
     return coordinator;
   }
 
+  /**
+   * This method gets all the coordinators working for this project.
+   * 
+   * @return a list of PartnerPerson with the information requested.
+   */
   public List<PartnerPerson> getCoordinatorPersons() {
     List<PartnerPerson> projectCoordinators = new ArrayList<>();
-
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
         for (PartnerPerson person : partner.getPartnerPersons()) {
@@ -244,7 +289,6 @@ public class Project {
         }
       }
     }
-
     return projectCoordinators;
   }
 
@@ -276,7 +320,11 @@ public class Project {
     return flagships;
   }
 
-  // TODO To document
+  /**
+   * This method gets the list of Flagships acronyms separated by comma (, ).
+   * 
+   * @return a String with the list of flagships which are contributing to this project.
+   */
   public String getFlagshipsAcronym() {
     StringBuilder flagshipAcronym = new StringBuilder();
     if (flagships != null) {
@@ -294,7 +342,15 @@ public class Project {
     return id;
   }
 
-  // TODO To document
+
+  /**
+   * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
+   * 
+   * @param parentIndicatorID
+   * @param outcomeID is some outcome (2019) identifier.
+   * @param year is a year.
+   * @return and IPIndicator object with the information requested.
+   */
   public IPIndicator getIndicator(int parentIndicatorID, int outcomeID, int year) {
     IPIndicator emptyIndicator = new IPIndicator(-1);
     if (indicators != null) {
@@ -314,7 +370,13 @@ public class Project {
     return indicators;
   }
 
-  // TODO To document
+  /**
+   * This method returns a list of project Indicators where its parent is the the indicator identified with the given
+   * parameter.
+   * 
+   * @param parentIndicatorID is the parent indicator identifier.
+   * @return a List of IPIndicator objects with the information requested.
+   */
   public List<IPIndicator> getIndicatorsByParent(int parentIndicatorID) {
     List<IPIndicator> indicators = new ArrayList<>();
     if (indicators != null) {
@@ -356,6 +418,11 @@ public class Project {
     return ipOtherContribution;
   }
 
+  /**
+   * This method returns the project partner institution that is leading the project.
+   * 
+   * @return a ProjectPartner object with the information requested. Or null if the project doesn't have a leader.
+   */
 
   public ProjectPartner getLeader() {
     if (projectPartners != null) {
@@ -370,6 +437,12 @@ public class Project {
     return null;
   }
 
+
+  /**
+   * This method returns the project partner person who is leading the project.
+   * 
+   * @return a PartnerPerson object with the information requested. Or null if the project doesn't have a leader.
+   */
   public PartnerPerson getLeaderPerson() {
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
@@ -403,7 +476,12 @@ public class Project {
     return outcomes;
   }
 
-  // TODO To document
+  /**
+   * This method returns the output (MOG) represented with the given identifier.
+   * 
+   * @param outputID is some IPElement (MOG) identifier.
+   * @return an IPElement object representing an output (MOG) identified with the given id.
+   */
   public IPElement getOutput(int outputID) {
     if (outputs != null) {
       for (IPElement output : outputs) {
@@ -415,7 +493,13 @@ public class Project {
     return null;
   }
 
-  // TODO To document
+  /**
+   * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
+   * 
+   * @param outputID is an output (MOG) identifier.
+   * @param year is a year.
+   * @return an OutputOverview object with the information requested.
+   */
   public OutputOverview getOutputOverview(int outputID, int year) {
     for (OutputOverview overview : outputsOverview) {
       if (overview.getOutput().getId() == outputID && overview.getYear() == year) {
@@ -471,7 +555,11 @@ public class Project {
     return regions;
   }
 
-  // TODO To document
+  /**
+   * This method gets the list of Region acronyms separated by comma (, ).
+   * 
+   * @return a String with the list of regions which are contributing to this project.
+   */
   public String getRegionsAcronym() {
     StringBuilder regionAcronym = new StringBuilder();
     if (regions != null) {
@@ -497,7 +585,11 @@ public class Project {
     return title;
   }
 
-  // TODO To document
+  /**
+   * This method gets the total bilateral budget for the current project.
+   * 
+   * @return a double representing the amount of the total bilateral budget.
+   */
   public double getTotalBilateralBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -508,7 +600,11 @@ public class Project {
     return totalBudget;
   }
 
-  // TODO To document
+  /**
+   * this method gets the total budget for this project.
+   * 
+   * @return a double representing the total amount of budget for this project.
+   */
   public double getTotalBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -519,7 +615,11 @@ public class Project {
     return totalBudget;
   }
 
-  // TODO To document
+  /**
+   * This method gets the total W1/W2 budget for this project.
+   * 
+   * @return a double representing the amount.
+   */
   public double getTotalCcafsBudget() {
     double totalBudget = 0.0;
     if (budgets != null) {
@@ -656,10 +756,6 @@ public class Project {
 
   public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
-  }
-
-  public void setLeader(ProjectPartner leader) {
-    this.leader = leader;
   }
 
   public void setLeaderResponsabilities(String leaderResponsabilities) {

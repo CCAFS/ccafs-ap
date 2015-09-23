@@ -53,10 +53,9 @@
 	      [/#if]	      
 	     
 	      [#-- Summaries section --]
-	      [#--
-	      [#if securityContext.CU || securityContext.FPL || securityContext.RPL || securityContext.admin ]
+	      [#if !securityContext.guest ] 
 	        [#if summariesActive ]
-	          <a href="${baseUrl}/summaries/activities.do" /]" >
+	          <a href="${baseUrl}/summaries/board.do" /]" >
 	              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
 	          </a>
 	        [#else]
@@ -65,7 +64,7 @@
 	          </a>
 	        [/#if]
 	      [/#if]
-	      --]
+	      
 	      [#-- Admin section --]
 	      [#--
 	      [#if securityContext.admin ]

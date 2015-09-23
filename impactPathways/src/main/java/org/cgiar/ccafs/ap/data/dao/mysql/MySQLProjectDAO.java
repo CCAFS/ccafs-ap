@@ -928,6 +928,86 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
+    LOG.debug(">> getAllProjectPartnerLeaders ");
+    // TODO
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    // Formatted query:
+    query.append("SELECT p.id as 'project_id', ");
+    query.append("p.type as 'project_type', ");
+    query.append("p.title as 'project_title', ");
+    query.append("p.summary as 'project_summary', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(DISTINCT CONCAT(' ',pro.acronym)) ");
+    query.append("FROM ip_programs pro ");
+    query.append("INNER JOIN project_focuses pf ON pro.id = pf.program_id ");
+    query.append("WHERE pf.project_id = p.id ");
+    query.append("AND pro.region_id IS NULL ");
+    query.append(") as 'flagships', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(DISTINCT CONCAT(' ',pro.acronym)) ");
+    query.append("FROM ip_programs pro ");
+    query.append("INNER JOIN project_focuses pf ON pro.id = pf.program_id  ");
+    query.append("WHERE pf.project_id = p.id ");
+    query.append("AND pro.region_id IS NOT NULL ");
+    query.append(") as 'regions', ");
+    query.append("IFNULL ");
+    query.append("( ");
+    query.append("( ");
+    query.append("SELECT CONCAT(i.acronym, ' - ', i.name) ");
+    query.append("), ");
+    query.append("i.name");
+    query.append(") as 'Lead_institution', ");
+    query.append("( ");
+    query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
+    query.append("FROM users u ");
+    query.append("INNER JOIN project_partner_persons ppp ON u.id = ppp.user_id ");
+    query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PL' ");
+    query.append(") as 'project_leader', ");
+    query.append("( ");
+    query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
+    query.append("FROM users u ");
+    query.append("INNER JOIN project_partner_persons ppp ON u.id = ppp.user_id ");
+    query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PC' ");
+    query.append(") as 'project_coordinator' ");
+    query.append("FROM projects p ");
+    query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id ");
+    query.append("LEFT JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("WHERE ppp.contact_type = 'PL' ");
+    query.append("ORDER BY p.id ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> csvData = new HashMap<>();
+        csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("project_type", rs.getString("project_type"));
+        csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("project_summary", rs.getString("project_summary"));
+        csvData.put("lead_institution", rs.getString("lead_institution"));
+        csvData.put("project_leader", rs.getString("project_leader"));
+        csvData.put("project_coordinator", rs.getString("project_coordinator"));
+        csvData.put("flagships", rs.getString("flagships"));
+        csvData.put("regions", rs.getString("regions"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllProjectPartnerLeaders() > Exception raised trying ";
+      exceptionMessage += "to get the summary report for projectPartnerLeaders: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getAllProjectsPartnerLeaders ");
+    return csvRecords;
+  }
+
+  @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
     LOG.debug(">> getAllProjectsWithDeliverables ");
     // TODO
@@ -1006,6 +1086,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         csvData.put("regions", rs.getString("regions"));
         csvData.put("deliverable_id", rs.getInt("deliverable_id"));
         csvData.put("deliverable_title", rs.getString("deliverable_title"));
+        csvData.put("year", rs.getInt("deliverable_year"));
         csvData.put("mog", rs.getString("mog"));
         csvData.put("deliverable_type", rs.getString("deliverable_type"));
         csvData.put("deliverable_sub_type", rs.getString("deliverable_sub_type"));

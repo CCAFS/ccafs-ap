@@ -21,10 +21,12 @@ public class BaseValidator extends ActionSupport {
   @Inject
   protected APConfig config;
   protected StringBuilder validationMessage;
+  protected StringBuilder missingFields;
 
   @Inject
   public BaseValidator() {
     validationMessage = new StringBuilder();
+    missingFields = new StringBuilder();
   }
 
   protected void addMessage(String message) {
@@ -32,6 +34,18 @@ public class BaseValidator extends ActionSupport {
       validationMessage.append(", ");
     }
     validationMessage.append(message);
+  }
+
+  /**
+   * This method add a missing field separated by a semicolon (;).
+   * 
+   * @param field is the name of the field.
+   */
+  protected void addMissingField(String field) {
+    if (missingFields.length() != 0) {
+      missingFields.append(";");
+    }
+    missingFields.append(field);
   }
 
   protected boolean isValidEmail(String email) {
@@ -75,5 +89,16 @@ public class BaseValidator extends ActionSupport {
         action.addFieldError("justification", this.getText("validation.field.required"));
       }
     }
+  }
+
+  /**
+   * This method counts the number of words in a given text.
+   * 
+   * @param text is some text to be validated.
+   * @return the number of words.
+   */
+  protected int wordCount(String text) {
+    text = text.trim();
+    return text.isEmpty() ? 0 : text.split("\\s+").length;
   }
 }

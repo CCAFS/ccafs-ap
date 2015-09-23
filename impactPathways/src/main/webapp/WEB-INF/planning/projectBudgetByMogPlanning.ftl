@@ -57,7 +57,9 @@
             [#if (!editable && canEdit)]
               <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
             [#else]
-              <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+              [#if canEdit && !newProject]
+                <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+              [/#if]
             [/#if]
 
             <div class="fieldset clearfix">
@@ -68,7 +70,6 @@
                   <h6 class="subTitle">Total ${year} ${projectTypeLabel} budget: US$ <span>${ccafsBudgetByYear?number?string(",##0.00")}</span></h6> 
                   <p id="budgetByYear">
                     ${projectTypeLabel} budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${ccafsBudgetByYear?number?string(",##0.00")}</span>
-                    <input type="hidden" value="${ccafsBudgetByYear?number}" />
                   </p>
                 </div>
   
@@ -77,7 +78,6 @@
                   <h6 class="subTitle">Total ${year} ${projectTypeLabel} Gender budget: US$ <span>${ccafsGenderPercentage?number?string(",##0.00")}</span></h6> 
                   <p id="genderBudgetByYear">
                     ${projectTypeLabel} budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${ccafsGenderPercentage?number?string(",##0.00")}</span>
-                    <input type="hidden" value="${ccafsGenderPercentage?number}" />
                   </p>
                 </div>
               [/#if]
@@ -89,7 +89,6 @@
                   <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${bilateralGenderPercentage?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedBudgetByYear">
                     [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${bilateralGenderPercentage?number?string(",##0.00")}</span>
-                    <input type="hidden" value="${bilateralGenderPercentage?number}" />
                   </p>
                 </div>
 
@@ -99,7 +98,6 @@
                   <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] Gender budget : US$ <span>${totalBilateralGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedGenderBudgetByYear">
                     [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${totalBilateralGenderBudgetByYear?number?string(",##0.00")}</span>
-                    <input type="hidden" value="${totalBilateralGenderBudgetByYear?number}" />
                   </p>
                 </div>
               [/#if]
@@ -226,5 +224,6 @@
 
 [#-- Hidden values used by js --]
 <input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceedPercentage" /]" />
+<input type="hidden" id="budgetCanNotRemain" value="[@s.text name="planning.projectBudget.canNotRemainPercentage" /]" />
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

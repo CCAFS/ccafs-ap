@@ -246,7 +246,6 @@ function word_count(field) {
     var matches = value.match(/\b/g);
     return number = (matches) ? matches.length / 2 : 0;
   }
-
 }
 
 /**

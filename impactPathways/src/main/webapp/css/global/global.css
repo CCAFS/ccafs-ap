@@ -225,6 +225,15 @@ p.fieldError{
   margin-right: 4px;
 }
 
+p.fieldChecked{
+  color: green;
+  font-weight: bold;
+  margin-right: 4px;
+  background: url(../../images/global/checked-true.png) no-repeat 0 40%;
+  padding-left: 21px;
+  margin-left: -6px !important;
+}
+
 span.fieldError{
   background-color: #F59898;
   color: #fff;
@@ -1384,10 +1393,9 @@ nav#mainMenu ul a.disabled li{
 /*************** SECONDARY MENU ***********/
 #secondaryMenu {
   /* background-color: #FFFFFF; */
-  float: left; 
+  float: left;
   padding: 0px;
-  width: 184px;
-  
+  width: 200px;
   margin-top: 31px;
   font-family: 'Open Sans', sans-serif;
 }
@@ -1502,29 +1510,38 @@ a.currentReportingSection li #i-additionalInformation{
 }
 
 #secondaryMenu ul li ul li{
-    background-image: url("../../images/global/list-icon.png");
-    background-repeat: no-repeat;
-    background-size: 11px;
-    background-position: 10px 45%;
+  background-image: url("../../images/global/list-icon.png");
+  background-repeat: no-repeat;
+  background-size: 11px;
+  background-position: 10px 45%;
 }
 
 #secondaryMenu ul li ul li.currentSection{
-    font-weight: bold;
+  font-weight: bold;
 }
 
 #secondaryMenu ul li ul li {
-  
   padding: 0;
   border-bottom: 1px solid rgba(219, 219, 219, 0.78);
   padding: 10px 0 2px 0px;
   height: 27px;
-  width: 182px;
+  width: 198px;
+}
+
+#secondaryMenu ul li ul li.submitted a{
+  background-image: url("../../images/global/submitted.png");
+  background-repeat: no-repeat;
+  background-position: 172px 0;
 }
 
 #secondaryMenu ul li ul li a{
+  display: block;
   text-decoration: none;
   color: #5E5E5E;
-  padding: 10px 0px 10px 24px; */;
+  padding: 0px 0px 5px 26px;*/;
+  background-image: url("../../images/global/submitted.png");
+  background-repeat: no-repeat;
+  background-position: 172px -33px;
 }
 
 #secondaryMenu ul li ul li:hover{
@@ -1567,8 +1584,8 @@ a.currentReportingSection li #i-additionalInformation{
   background-repeat: no-repeat;
   background-position-y: -2px;
   margin-left: -13px;
-  width: 191px;
-  padding: 0px 0px 0px 13px;  
+  width: 199px;
+  padding: 0px 0px 0px 13px;
 }
 
 #secondaryMenu > ul > li.currentSection ul{
@@ -1587,7 +1604,7 @@ a.currentReportingSection li #i-additionalInformation{
   font-weight: bold;
   background-color: #47939C;
   height: 17px;
-  width: 173px;
+  width: 189px;
   border-radius: 1px;
 }
 
@@ -4095,27 +4112,102 @@ span.elementId{
 
 /* -------------- SUMMARIES -----------------*/
 
-#activitiesSummaries h6{
-  margin-top : 10px;
-  margin-bottom : 5px;
+.summariesButtons {
+  width: 93%;
+  margin: 0 auto;
 }
 
-#activitiesSummaries .reportOptions{
-  margin-top : 5px;
-  margin-left : 30px;
+.summariesSection {
+  width: 23%;
+  float: left;
+  margin-right: 1.4%;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+  /* text-align: center; */
 }
 
-#activitiesSummaries .thirdPartBlock{
-  width: 25%;
+.summariesSection:last-child {
+  margin-right:0;
 }
 
-#activitiesSummaries .thirdPartBlock .input input{
-  width: 35%;
+.summariesSection a {
+display: block;line-height: 50px;text-decoration: none;color: #5F5F5F;font-size: 1.2em;}
+
+.summariesSection.current {
+background-color: #1DA5CE;}
+
+.summariesSection.current a {
+color: #fff;font-weight: bold;}
+
+.summariesSection span {
+  background-image: url(../../images/summaries/summaries-icons.png);
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 50px;
+  margin-left: 35px;
+  display: block;
+  float: left;
+  cursor: pointer;
 }
 
-#activitiesSummaries .selectList{
-  width: 39%;
+.summariesOptions {
+  margin: 8px 0;
 }
+
+.summariesOption {
+  margin: 11px 0px;
+}
+
+.summariesOption input { 
+vertical-align: middle;}
+
+.summariesOption label { 
+}
+
+.summariesOption label span{ 
+background-color: #f1f1f1;font-size: 0.9em;padding: 0 7px;border-radius: 4px;}
+
+.extraOptions {
+  margin: 10px 16px;
+  width: 60.4%;
+}
+
+/* Summaries Section icons*/
+
+#projects.summariesSection span {
+  background-position: 6px 10px;
+}
+
+#projects.summariesSection.current span {
+  background-position: -89px 10px;
+}
+
+#partners.summariesSection span {
+  background-position: 9px -31px;
+}
+
+#partners.summariesSection.current span {
+  background-position: -88px -31px;
+}
+
+#deliverables.summariesSection span {
+  background-position: 8px -78px;
+}
+
+#deliverables.summariesSection.current span {
+  background-position: -92px -78px;
+}
+
+#budget.summariesSection span {
+  background-position: 5px -173px;
+}
+
+#budget.summariesSection.current span {
+  background-position: -92px -173px;
+}
+
+
 
 /*************** FOOTER ****************/
 footer {
