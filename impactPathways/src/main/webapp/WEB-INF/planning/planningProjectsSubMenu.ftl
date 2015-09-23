@@ -22,11 +22,11 @@
   [#--]<h3> <a class="goBack"  href="[@s.url namespace='/planning' action='projectsList'][/@s.url]"> [@s.text name="planning.project" /] Menu</a></h3>--]
   <ul> 
     <li class="[#if currentStage == "description"]${currCss}[/#if]">
-      <p>[@s.text name="menu.secondary.planning.project.description" /]</p>
+      <p>[@s.text name="menu.planning.submenu.projectDescription" /]</p>
       <ul>
         <li class="[#if currentSubStage == "description"]${currCss}[/#if]">
           <a href="[@s.url action='description'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
-            [@s.text name="menu.planning.submenu.projectDescription" /]
+            [@s.text name="menu.secondary.planning.project.description" /]
           </a>
         </li>
         <li class="[#if currentSubStage == "partners" ]${currCss}[/#if]">
