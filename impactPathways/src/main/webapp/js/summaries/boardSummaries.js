@@ -23,6 +23,7 @@ function selectSummariesSection(e) {
 
   // Uncheck from formOptions the option selected
   $('input[name=formOptions]').attr('checked', false);
+
   // Clean URL
   setUrl('#');
 }
@@ -58,12 +59,18 @@ function updateUrl() {
     if(extraOptions != 0) {
       generateUrl += '?' + extraOptions;
     }
+    setUrl(generateUrl);
+  } else {
+    setUrl('#');
   }
-  setUrl(generateUrl);
 }
 
 function setUrl(url) {
-  $('#generateReport').attr('href', url);
+  if(url == '#') {
+    $('#generateReport').hide();
+  } else {
+    $('#generateReport').attr('href', url).fadeIn();
+  }
 }
 
 // Activate the chosen plugin.

@@ -83,7 +83,7 @@
         </div>
       </div>
       <br />
-      <a id="generateReport" target="_blank" class="addButton" href="#">Generate</a>
+      <a id="generateReport" target="_blank" class="addButton" style="display:none" href="#">Generate</a>
       </form>
     </div> 
   </article>
