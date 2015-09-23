@@ -276,6 +276,16 @@ public interface ProjectDAO {
   public int saveProjectOutput(Map<String, String> outputData);
 
   /**
+   * This method returns the information of all the projects with their partner leaders to be used in the summary report
+   * of
+   * project partner leaders.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
+
+  /**
    * This method returns the information of all the deliverables and their projects to be used in the summary report of
    * expected deliverables.
    * 
@@ -283,6 +293,15 @@ public interface ProjectDAO {
    *         occurs.
    */
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
+
+  /**
+   * This method returns the information of all project MOG with your budget by Year and their information to be used in
+   * the summary report of POWBMOGs summary.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year);
 
   /**
    * This method updates the project type into the database according to the values received by parameter.

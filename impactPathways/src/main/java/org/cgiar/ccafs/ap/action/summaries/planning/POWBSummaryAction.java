@@ -16,10 +16,13 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBMOGSummaryXLS;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -36,16 +39,17 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class PWOBMOGSummaryAction extends BaseAction implements Summary {
+public class POWBSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
 
-  private POWBMOGSummaryXLS pwobSummaryXLS;
+  // Managers
+  private LocationManager locationManager;
+  private POWBSummaryXLS pwobSummaryXLS;
   private ProjectManager projectManager;
   private BudgetManager budgetManager;
-  private ProjectOutcomeManager projectOutcomeManager;
-  private int startYear, endYear;
+  private ProjectPartnerManager projectPartnerManager;
 
   // XLS bytes
   private byte[] bytesXLS;
@@ -57,23 +61,21 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
   List<Project> projectsList;
 
   @Inject
-  public PWOBMOGSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
-    POWBMOGSummaryXLS pwobSummaryXLS, ProjectOutcomeManager projectOutcomeManager) {
+  public POWBSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
+    ProjectPartnerManager projectPartnerManager, LocationManager locationManager, POWBSummaryXLS pwobSummaryXLS) {
     super(config);
-
+    this.locationManager = locationManager;
     this.projectManager = projectManager;
     this.budgetManager = budgetManager;
-    this.projectOutcomeManager = projectOutcomeManager;
+    this.projectPartnerManager = projectPartnerManager;
     this.pwobSummaryXLS = pwobSummaryXLS;
-    this.startYear = 2016;
-    this.endYear = 0;
   }
 
   @Override
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = pwobSummaryXLS.generateXLS(projectsList, startYear, endYear);
+    bytesXLS = pwobSummaryXLS.generateXLS(projectsList);
 
     return SUCCESS;
   }
@@ -92,7 +94,7 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
   @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
-    fileName.append("POWB-MOGs-");
+    fileName.append("POWB-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -111,15 +113,22 @@ public class PWOBMOGSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
     projectsList = this.projectManager.getAllProjectsBasicInfo();
+    List<ProjectPartner> partnersList;
+    List<Location> locationsList;
 
     for (Project project : projectsList) {
 
+      // ***************** Partners ******************************
+      partnersList = projectPartnerManager.getProjectPartners(project);
+      project.setProjectPartners(partnersList);
+
+      // ***************** Locations ******************************
+      locationsList = this.locationManager.getProjectLocations(project.getId());
+      project.setLocations(locationsList);
+
       // *************************Budgets ******************************
       project.setBudgets(this.budgetManager.getBudgetsByProject(project));
-
-      // *************************Outcomes*****************************
-      project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
-
     }
+
   }
 }

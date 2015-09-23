@@ -8,6 +8,7 @@ function init() {
 function attachEvents() {
   $('.summariesSection a, .summariesSection span').on('click', selectSummariesSection);
   $('input[name=formOptions]').on('change', selectTypeReport);
+  $('select[name=projectID]').on('change', updateUrl);
   $('#generateReport').on('click', generateReport);
 }
 
@@ -22,6 +23,9 @@ function selectSummariesSection(e) {
 
   // Uncheck from formOptions the option selected
   $('input[name=formOptions]').attr('checked', false);
+
+  // Clean URL
+  setUrl('#');
 }
 
 function selectTypeReport(e) {
@@ -30,44 +34,43 @@ function selectTypeReport(e) {
   $option.parent().parent().find('.extraOptions').hide();
   $option.find('.extraOptions select').attr('disabled', false).trigger("liszt:updated");
   $option.find('.extraOptions').fadeIn();
+
+  updateUrl();
 }
-// https://172.22.98.87:8443/impactPathways/summaries/project.do?projectID=1
 
 function generateReport(e) {
-  e.preventDefault();
+  var $formOptions = $('input[name=formOptions]:checked');
+  var formOption = $formOptions.val() || 0;
+  if(formOption == 0) {
+    e.preventDefault();
+    var notyOptions = jQuery.extend({}, notyDefaultOptions);
+    notyOptions.text = 'You must to select a report option';
+    noty(notyOptions);
+  }
+}
+
+function updateUrl() {
+  var generateUrl = "";
   var $formOptions = $('input[name=formOptions]:checked');
   var formOption = $formOptions.val() || 0;
   var extraOptions = $('form [name!="formOptions"][name!="phase"]').serialize() || 0;
-  var generateUrl = "";
   if(formOption != 0) {
     generateUrl = baseURL + "/summaries/" + formOption + ".do";
     if(extraOptions != 0) {
       generateUrl += '?' + extraOptions;
     }
-    $.ajax({
-        url: generateUrl,
-        type: 'POST',
-        beforeSend: function() {
-          $('.loading').fadeIn();
-        },
-        success: function() {
-          window.open(generateUrl);
-        },
-        error: function(data) {
-          var notyOptions = jQuery.extend({}, notyDefaultOptions);
-          notyOptions.text = data.status + ': ' + data.statusText;
-          noty(notyOptions);
-        },
-        complete: function() {
-          $('.loading').hide();
-        }
-    });
+    setUrl(generateUrl);
   } else {
-    var notyOptions = jQuery.extend({}, notyDefaultOptions);
-    notyOptions.text = 'You must to select a report option';
-    noty(notyOptions);
+    setUrl('#');
   }
+}
 
+function setUrl(url) {
+  if(url == '#') {
+    $('#generateReport').hide();
+  } else {
+    $('#generateReport').attr('href', url).fadeIn();
+  }
 }
 
 // Activate the chosen plugin.

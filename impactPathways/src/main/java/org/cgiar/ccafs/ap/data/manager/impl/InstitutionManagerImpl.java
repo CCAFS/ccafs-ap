@@ -358,6 +358,12 @@ public class InstitutionManagerImpl implements InstitutionManager {
       institution.setName(iData.get("name"));
       institution.setAcronym(iData.get("acronym"));
       institution.setWebsiteLink(iData.get("website_link"));
+      // Institution type object
+      InstitutionType it = new InstitutionType();
+      it.setId(Integer.parseInt(iData.get("institution_type_id")));
+      it.setAcronym(iData.get("institution_type_acronym"));
+      it.setName(iData.get("institution_type_name"));
+      institution.setType(it);
 
       // Location Object
       Country country = new Country();
@@ -387,7 +393,6 @@ public class InstitutionManagerImpl implements InstitutionManager {
         IPProgram program = new IPProgram();
         program.setId(Integer.parseInt(iData.get("program_id")));
         program.setName(iData.get("program_name"));
-        program.setAcronym(iData.get("program_acronym"));
         institution.setProgram(program);
       }
 
@@ -395,6 +400,7 @@ public class InstitutionManagerImpl implements InstitutionManager {
       InstitutionType it = new InstitutionType();
       it.setId(Integer.parseInt(iData.get("institution_type_id")));
       it.setAcronym(iData.get("institution_type_acronym"));
+      it.setName(iData.get("institution_type_name"));
       institution.setType(it);
 
       return institution;

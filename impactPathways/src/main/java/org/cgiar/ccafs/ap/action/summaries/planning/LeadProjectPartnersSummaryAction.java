@@ -19,9 +19,9 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadInstitutionPartnersSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadProjectPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -46,9 +47,10 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   private ProjectPartnerManager projectPartnerManager;
+  private LeadProjectPartnersSummaryXLS leadProjectPatnersSummaryXLS;
   List<ProjectPartner> leadPartners;
   List<Institution> projectLeadingInstitutions;
-  List<Project> projectList;
+  List<Map<String, Object>> projectList;
   // CSV bytes
   private byte[] bytesXLS;
 
@@ -56,11 +58,10 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
   InputStream inputStream;
 
   @Inject
-  public LeadProjectPartnersSummaryAction(APConfig config,
-    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS, InstitutionManager institutionManager,
-    ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
+  public LeadProjectPartnersSummaryAction(APConfig config, LeadProjectPartnersSummaryXLS leadProjectPartnersSummaryXLS,
+    InstitutionManager institutionManager, ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
-    this.leadInstitutionPartnersSummaryXLS = leadInstitutionPartnersSummaryXLS;
+    this.leadProjectPatnersSummaryXLS = leadProjectPartnersSummaryXLS;
     this.institutionManager = institutionManager;
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -70,7 +71,7 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    // bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions, projectList);
+    bytesXLS = leadProjectPatnersSummaryXLS.generateXLS(projectList);
 
     return SUCCESS;
   }
@@ -82,11 +83,8 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
 
   @Override
   public String getContentType() {
-    if (this.getFileName().endsWith("xlsx")) {
-      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    } else {
-      return "application/vnd.ms-excel";
-    }
+    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
   }
 
   @Override
@@ -111,11 +109,16 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
   @Override
   public void prepare() {
 
-    projectList = projectManager.getAllProjectsBasicInfo();
+    projectList = projectManager.summaryGetAllProjectPartnerLeaders();
     // Getting the project partner leaders
-    for (int k = 0; k < projectList.size(); k++) {
-    }
-
+    // for (Project project : projectList) {
+    // project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    //
+    // if (project.getLeader() != null && project.getLeaderPerson() != null) {
+    // System.out.println(project.getLeader().getInstitution().getName() + " - "
+    // + project.getLeaderPerson().getUser().getFirstName());
+    // }
+    // }
 
   }
 }

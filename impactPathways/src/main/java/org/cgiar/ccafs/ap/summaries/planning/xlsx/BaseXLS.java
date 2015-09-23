@@ -122,12 +122,6 @@ public class BaseXLS {
     header.setRight("Report generated on " + date);
   }
 
-  public void autoSizeColumns(Sheet sheet) {
-    for (int a = 1; a <= this.columnStyles.length; a++) {
-      sheet.autoSizeColumn(a);
-    }
-
-  }
 
   /**
    * This method closes all the streams opened in the process.
@@ -156,6 +150,42 @@ public class BaseXLS {
    */
   protected String getText(String key) {
     return textProvider.getText(key);
+  }
+
+  /**
+   * Method used for to initialize an Excel Workbook object.
+   * It creates a Workbook object using a predefined template.
+   * 
+   * @param excelFormat is the format that you want to create (i.e. 'xls' or 'xlsx').
+   * @param useTemplate is true if you want to use a templa, false if you want to create the Workbook empty.
+   * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
+   *         XLS format.
+   */
+  public void initializeSheet(Sheet sheet, int[] columnTypes) {
+
+    // initializing values
+    rowStart = 12;
+    columnStart = 1;
+    rowCounter = rowStart;
+    columnCounter = columnStart;
+
+    // Initializing styles depending on the cell type.
+    this.initializeStyles(columnTypes);
+
+    // applying header.
+    this.addHeader(sheet);
+
+    // Set filter in cell
+    StringBuilder rangeString = new StringBuilder();
+    char initialColumn = 'B';
+    rangeString.append(initialColumn);
+    rangeString.append("12:");
+    rangeString.append((char) (initialColumn + (columnTypes.length - 1)));
+    rangeString.append("12");
+
+    sheet.setAutoFilter(CellRangeAddress.valueOf(rangeString.toString()));
+
+
   }
 
   /**
@@ -249,47 +279,32 @@ public class BaseXLS {
    * Method used for to initialize an Excel Workbook object.
    * It creates a Workbook object using a predefined template.
    * 
-   * @param excelFormat is the format that you want to create (i.e. 'xls' or 'xlsx').
    * @param useTemplate is true if you want to use a templa, false if you want to create the Workbook empty.
    * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
    *         XLS format.
    */
-  public Workbook initializeXLS(boolean useTemplate, int[] columnTypes) {
+  public Workbook initializeWorkbook(boolean useTemplate) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     usingTemplate = useTemplate;
+
     try {
       // validating the type of format.
       if (useTemplate) {
-        rowStart = 12;
-        columnStart = 1;
-        rowCounter = rowStart;
-        columnCounter = columnStart;
+
         // opening excel template.
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
-        // Initializing styles depending on the cell type.
-        this.initializeStyles(columnTypes);
+
         // closing input stream.
         templateStream.close();
-        // applying header.
-        this.addHeader(workbook.getSheetAt(0));
-
-        // Set filter in cell
-        StringBuilder rangeString = new StringBuilder();
-        char initialColumn = 'B';
-        rangeString.append(initialColumn);
-        rangeString.append("12:");
-        rangeString.append((char) (initialColumn + (columnTypes.length - 1)));
-        rangeString.append("12");
-
-        workbook.getSheetAt(0).setAutoFilter(CellRangeAddress.valueOf(rangeString.toString()));
 
       } else {
         workbook = new XSSFWorkbook();
       }
       return workbook;
+
     } catch (IOException e) {
       LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
     }
@@ -357,6 +372,12 @@ public class BaseXLS {
   }
 
 
+  public void writeBudget(Sheet sheet, double value) {
+    this.prepareCell(sheet);
+    cell.setCellValue(value);
+  }
+
+
   /**
    * This method writes date value into a specific cell.
    * 
@@ -367,7 +388,6 @@ public class BaseXLS {
     this.prepareCell(sheet);
     cell.setCellValue(value);
   }
-
 
   /**
    * This method writes integer value into a specific cell.
@@ -401,12 +421,12 @@ public class BaseXLS {
         cell.setCellStyle(styleHeader);
         cell.setCellValue(headers[counter - 1]);
         sheet.autoSizeColumn(counter);
-        sheet.setColumnWidth(counter, 6000);
       }
     } else {
       // TODO To develop the same algorithm but without style starting in the first row of the sheet.
     }
   }
+
 
   /**
    * This method writes integer value into a specific cell.
@@ -468,7 +488,6 @@ public class BaseXLS {
     stringX.applyFont(font);
     textbox.setText(stringX);
   }
-
 
   /**
    * This Method is used for to write the Workbook instance into the output stream

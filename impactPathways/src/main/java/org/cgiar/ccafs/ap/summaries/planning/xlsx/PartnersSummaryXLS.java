@@ -53,6 +53,12 @@ public class PartnersSummaryXLS {
       xls.nextColumn();
       xls.writeString(sheet, institution.getAcronym());
       xls.nextColumn();
+      if (institution.getType() != null) {
+        xls.writeString(sheet, institution.getType().getName());
+        xls.nextColumn();
+      } else {
+        xls.nextColumn();
+      }
       xls.writeString(sheet, institution.getWebsiteLink());
       xls.nextColumn();
       xls.writeString(sheet, institution.getCountry().getName());
@@ -79,16 +85,17 @@ public class PartnersSummaryXLS {
 
     try {
       String[] headers =
-        new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
+        new String[] {"Institution ID", "Institution name", "Institution acronym", "Partner type", "Web site",
+          "Location", "Projects"};
       int[] headersType =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
-      Workbook workbook = xls.initializeXLS(true, headersType);
-
-
+      Workbook workbook = xls.initializeWorkbook(true);
       workbook.setSheetName(0, "ProjectPartnerInstitutions");
       Sheet sheet = workbook.getSheetAt(0);
+      xls.initializeSheet(sheet, headersType);
       xls.writeTitleBox(sheet, "CCAFS Project Partner Institutions");
       xls.writeHeaders(sheet, headers);
 
