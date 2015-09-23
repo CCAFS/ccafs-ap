@@ -50,22 +50,23 @@ public class LeadProjectPartnersSummaryXLS {
     Map<String, Object> projectPartnerLeader;
     for (int i = 0; i < projectList.size(); i++) {
       projectPartnerLeader = projectList.get(i);
-      xls.writeValue(sheet, projectPartnerLeader.get("project_id"));
+      xls.writeInteger(sheet, (int) projectPartnerLeader.get("project_id"));
       xls.nextColumn();
-      xls.writeValue(sheet, projectPartnerLeader.get("project_type").toString().replace("_", " "));
+      xls.writeString(sheet, projectPartnerLeader.get("project_type").toString().replace("_", " "));
       xls.nextColumn();
-      xls.writeValue(sheet, projectPartnerLeader.get("project_title"));
+      xls.writeString(sheet, (String) projectPartnerLeader.get("project_title"));
       xls.nextColumn();
-      xls.writeValue(sheet, projectPartnerLeader.get("project_summary"));
+      xls.writeString(sheet, (String) projectPartnerLeader.get("project_summary"));
       xls.nextColumn();
-      xls.writeValue(sheet, projectPartnerLeader.get("flagships"));
+      xls.writeString(sheet, (String) projectPartnerLeader.get("flagships"));
       xls.nextColumn();
-      xls.writeValue(sheet, projectPartnerLeader.get("regions"));
+      xls.writeString(sheet, (String) projectPartnerLeader.get("regions"));
       xls.nextColumn();
-      xls.writeValue(sheet, projectPartnerLeader.get("lead_institution"));
+      xls.writeString(sheet, (String) projectPartnerLeader.get("lead_institution"));
       xls.nextColumn();
-      xls.writeValue(sheet, projectPartnerLeader.get("project_leader"));
+      xls.writeString(sheet, (String) projectPartnerLeader.get("project_leader"));
       xls.nextColumn();
+      xls.writeString(sheet, (String) projectPartnerLeader.get("project_coordinator"));
       xls.nextRow();
     }
   }
@@ -83,13 +84,13 @@ public class LeadProjectPartnersSummaryXLS {
       // Defining headers
       String[] headers =
         new String[] {"Project Id", "Type", "Title", "Summary", "Flagship(s)", "Region(s)", "Lead institution",
-      "Leader"};
+          "Leader", "Coordinator"};
 
       // Defining header types
       int[] headerTypes =
-        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeXLS(true, headerTypes);
       workbook.setSheetName(0, "LeadProjectPartners");
