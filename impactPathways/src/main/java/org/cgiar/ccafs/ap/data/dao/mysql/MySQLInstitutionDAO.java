@@ -373,10 +373,13 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("pp.id as 'project_partner_id', ");
     query.append("pp.project_id as 'project_id', ");
     query.append("le.id as 'country_id', ");
-    query.append("le.name as 'country_name' ");
+    query.append("le.name as 'country_name', ");
+    query.append("it.id as institution_type_id, it.acronym as 'institution_type_acronym', ");
+    query.append("it.name as 'institution_type_name' ");
     query.append("FROM institutions i ");
     query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
     query.append("LEFT JOIN loc_elements le ON le.id = i.country_id ");
+    query.append("LEFT JOIN institution_types it ON i.institution_type_id = it.id ");
     query.append("ORDER BY i.id");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -391,6 +394,9 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("project_id", rs.getString("project_id"));
         institutionData.put("country_id", rs.getString("country_id"));
         institutionData.put("country_name", rs.getString("country_name"));
+        institutionData.put("institution_type_id", rs.getString("institution_type_id"));
+        institutionData.put("institution_type_acronym", rs.getString("institution_type_acronym"));
+        institutionData.put("institution_type_name", rs.getString("institution_type_name"));
 
         institutionsDataList.add(institutionData);
       }
@@ -464,7 +470,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     StringBuilder query = new StringBuilder();
 
     query
-      .append("SELECT COUNT(*) FROM project_partners pp WHERE pp.project_id = (SELECT pp2.project_id FROM project_partners pp2 WHERE pp2.id = ");
+    .append("SELECT COUNT(*) FROM project_partners pp WHERE pp.project_id = (SELECT pp2.project_id FROM project_partners pp2 WHERE pp2.id = ");
     query.append(projectPartnerID);
     query.append(") AND pp.partner_id = (SELECT pp3.partner_id FROM project_partners pp3 WHERE pp3.id = ");
     query.append(projectPartnerID);
