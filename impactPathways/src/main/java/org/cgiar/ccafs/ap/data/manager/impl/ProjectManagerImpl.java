@@ -499,6 +499,14 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectDAO.summaryGetAllProjectsWithDeliverables();
   }
 
+
+  @Override
+  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year) {
+    return projectDAO.summaryGetInformationDetailPOWB(year);
+
+  }
+
+
   @Override
   public boolean updateProjectType(Project project) {
     return projectDAO.updateProjectType(project.getId(), project.getType());

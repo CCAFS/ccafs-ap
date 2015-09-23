@@ -1027,6 +1027,70 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year) {
+    LOG.debug(">> getBudgetByMogAndByYear ");
+    // TODO
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    // Formatted query:
+    query.append("SELECT p.id as 'project_id', ");
+    query.append("p.title as 'project_title', ");
+    query.append("ipr.acronym as 'flagship', ");
+    query.append("ipe.description AS 'mog_description', ");
+    query.append("ipco.anual_contribution as 'anual_contribution', ");
+    query.append("ipco.gender_contribution as 'gender_contribution', ");
+    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 1 THEN pmb.total_contribution  END, 0)) ");
+    query.append("AS 'budget_W1_W2' , ");
+    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 1 THEN pmb.gender_contribution  END, 0)) ");
+    query.append("AS 'gender_W1_W2' , ");
+    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 2 THEN pmb.total_contribution  END, 0)) ");
+    query.append("AS 'budget_W3_Bilateral' , ");
+    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 2 THEN pmb.gender_contribution  END, 0)) ");
+    query.append("AS 'gender_W3_Bilateral'  ");
+    query.append("FROM projects p ");
+    query.append("LEFT JOIN project_mog_budgets pmb ON p.id = pmb.project_id ");
+    query.append("INNER JOIN ip_project_contributions ipcs ON pmb.mog_id = ipcs.mog_id ");
+    query.append("INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipcs.mog_id ");
+    query.append("AND ipco.year = ");
+    query.append(year + " ");
+    query.append("AND p.id = ipco.project_id ");
+    query.append("INNER JOIN ip_elements ipe ON pmb.mog_id = ipe.id ");
+    query.append("INNER JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id ");
+    query.append("WHERE pmb.year = ");
+    query.append(year + " ");
+    query.append("GROUP BY ipcs.mog_id ");
+
+    System.out.println(query);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> csvData = new HashMap<>();
+        csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("flagship", rs.getString("flagship"));
+        csvData.put("mog_description", rs.getString("mog_description"));
+        csvData.put("anual_contribution", rs.getString("anual_contribution"));
+        csvData.put("gender_contribution", rs.getString("gender_contribution"));
+        csvData.put("budget_W1_W2", rs.getDouble("budget_W1_W2"));
+        csvData.put("gender_W1_W2", rs.getDouble("gender_W1_W2"));
+        csvData.put("budget_W3_Bilateral", rs.getDouble("budget_W3_Bilateral"));
+        csvData.put("gender_W3_Bilateral", rs.getDouble("gender_W3_Bilateral"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllProjectsWithDeliverables() > Exception raised trying ";
+      exceptionMessage += "to get the summary report budget By MOG POWB Report: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getBudgetByMogAndByYear ");
+    return csvRecords;
+  }
+
+  @Override
   public boolean updateProjectType(int projectID, String type) {
     int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE id = ?", new Object[] {projectID, type});
     return !(result == -1);
