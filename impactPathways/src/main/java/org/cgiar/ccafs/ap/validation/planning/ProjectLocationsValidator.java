@@ -62,10 +62,10 @@ public class ProjectLocationsValidator extends BaseValidator {
       }
 
       if (problem) {
-        action.addActionError(this.getText("planning.projectLocations.type"));
+        action.addActionError(action.getText("planning.projectLocations.type"));
       }
       if (fields) {
-        action.addActionError(this.getText("saving.fields.required"));
+        action.addActionError(action.getText("saving.fields.required"));
       }
     }
   }

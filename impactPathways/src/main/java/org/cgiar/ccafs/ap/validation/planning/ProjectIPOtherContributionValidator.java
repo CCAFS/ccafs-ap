@@ -57,7 +57,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
       }
 
       if (validationMessage.length() > 0) {
-        String msg = " " + this.getText("saving.missingFields", new String[] {validationMessage.toString()});
+        String msg = " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()});
         action.addActionMessage(msg);
       }
     }
@@ -65,28 +65,28 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
   private void validateAdditionalContribution(BaseAction action, String additionalContribution) {
     if (!otherContributionValidator.isValidAdditionalContribution(additionalContribution)) {
-      this.addMessage(this.getText("planning.impactPathways.otherContributions.additionalcontribution.readText")
-        .toLowerCase());
+      this.addMessage(
+        action.getText("planning.impactPathways.otherContributions.additionalcontribution.readText").toLowerCase());
     }
   }
 
   private void validateContribution(BaseAction action, String contribution) {
     if (!otherContributionValidator.isValidContribution(contribution)) {
-      this.addMessage(this.getText("planning.impactPathways.otherContributions.contribution.readText").toLowerCase());
+      this.addMessage(action.getText("planning.impactPathways.otherContributions.contribution.readText").toLowerCase());
     }
   }
 
   private void validateCrpCollaborationNature(BaseAction action, String crpCollaborationNature) {
     if (!otherContributionValidator.isValidContribution(crpCollaborationNature)) {
-      this.addMessage(this.getText("planning.impactPathways.otherContributions.collaborationNature.readText")
-        .toLowerCase());
+      this.addMessage(
+        action.getText("planning.impactPathways.otherContributions.collaborationNature.readText").toLowerCase());
     }
   }
 
   private void validateCrpContributions(BaseAction action, List<CRP> crpContributions) {
     if (!projectValidator.isValidCrpContributions(crpContributions)) {
-      this.addMessage(this.getText("planning.impactPathways.otherContributions.collaboratingCRPs.readText")
-        .toLowerCase());
+      this.addMessage(
+        action.getText("planning.impactPathways.otherContributions.collaboratingCRPs.readText").toLowerCase());
     }
 
   }

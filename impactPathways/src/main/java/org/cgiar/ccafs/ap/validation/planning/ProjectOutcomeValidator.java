@@ -50,9 +50,9 @@ public class ProjectOutcomeValidator extends BaseValidator {
           // Validate the outcome statement
           if (!projectValidator.isValidOutcomeStatement(project.getOutcomes(), year)) {
             if (year == midOutcomeYear) {
-              message = this.getText("planning.projectOutcome.statement.readText");
+              message = action.getText("planning.projectOutcome.statement.readText");
             } else {
-              message = this.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
+              message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
             }
 
             this.addMessage(message.toLowerCase());
@@ -61,11 +61,10 @@ public class ProjectOutcomeValidator extends BaseValidator {
           // Validate the outcome gender dimension
           if (!projectValidator.isValidOutcomeGenderDimension(project.getOutcomes(), year)) {
             if (year == midOutcomeYear) {
-              message = this.getText("planning.projectOutcome.genderAndSocialStatement.readText");
+              message = action.getText("planning.projectOutcome.genderAndSocialStatement.readText");
             } else {
-              message =
-                this
-                  .getText("planning.projectOutcome.genderAndSocialAnnualProgress.readText", new String[] {year + ""});
+              message = action.getText("planning.projectOutcome.genderAndSocialAnnualProgress.readText",
+                new String[] {year + ""});
             }
 
             this.addMessage(message.toLowerCase());
@@ -77,7 +76,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
     }
   }

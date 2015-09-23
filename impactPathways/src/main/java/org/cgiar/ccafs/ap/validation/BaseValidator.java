@@ -7,12 +7,11 @@ import org.cgiar.ccafs.utils.APConfig;
 import javax.mail.internet.InternetAddress;
 
 import com.google.inject.Inject;
-import com.opensymphony.xwork2.ActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class BaseValidator extends ActionSupport {
+public class BaseValidator {
 
   private static final long serialVersionUID = -7486776113435920241L;
 
@@ -85,8 +84,8 @@ public class BaseValidator extends ActionSupport {
   protected void validateProjectJustification(BaseAction action, Project project) {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
       if (action.getJustification() == null || action.getJustification().isEmpty()) {
-        action.addActionError(this.getText("validation.justification"));
-        action.addFieldError("justification", this.getText("validation.field.required"));
+        action.addActionError(action.getText("validation.justification"));
+        action.addFieldError("justification", action.getText("validation.field.required"));
       }
     }
   }

@@ -32,6 +32,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class ProjectDescriptionValidator extends BaseValidator {
@@ -62,13 +63,13 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Reporting missing fields into the database.
-      ProjectStatus status = statusManager.getProjectStatus(project, "Planning", action.getActionName());
+      ProjectStatus status = statusManager.getProjectStatus(project, "Planning", "description");
       if (status == null) {
-        status = new ProjectStatus("Planning", action.getActionName());
+        status = new ProjectStatus("Planning", "description");
       }
       status.setMissingFields(this.missingFields.toString());
       statusManager.saveProjectStatus(status, project);
@@ -77,7 +78,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
   public void validateBilateralContractProposalName(BaseAction action, String proposalName) {
     if (!projectValidator.isValidBilateralContractProposalName(proposalName)) {
-      this.addMessage(this.getText("preplanning.projectDescription.uploadBilateral.readText").toLowerCase());
+      this.addMessage(action.getText("preplanning.projectDescription.uploadBilateral.readText").toLowerCase());
       this.addMissingField("project.bilateralContractProposalName");
     }
   }
@@ -101,7 +102,8 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
-        this.addMessage(this.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
+        this
+          .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
         this.addMissingField("project.workplanName");
       }
     }
@@ -109,56 +111,56 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
   public void validateEndDate(BaseAction action, Date endDate) {
     if (!projectValidator.isValidEndDate(endDate)) {
-      this.addMessage(this.getText("preplanning.projectDescription.endDate").toLowerCase());
+      this.addMessage(action.getText("preplanning.projectDescription.endDate").toLowerCase());
       this.addMissingField("project.endDate");
     }
   }
 
   public void validateFlagships(BaseAction action, List<IPProgram> flagships) {
     if (!projectValidator.isValidFlagships(flagships)) {
-      this.addMessage(this.getText("preplanning.projectDescription.flagships").toLowerCase());
+      this.addMessage(action.getText("preplanning.projectDescription.flagships").toLowerCase());
       this.addMissingField("project.regions");
     }
   }
 
   public void validateLiaisonContactPerson(BaseAction action, User user) {
     if (!projectValidator.isValidOwner(user)) {
-      this.addMessage(this.getText("preplanning.projectDescription.projectownercontactperson").toLowerCase());
+      this.addMessage(action.getText("preplanning.projectDescription.projectownercontactperson").toLowerCase());
       this.addMissingField("project.owner");
     }
   }
 
   public void validateManagementLiaison(BaseAction action, LiaisonInstitution institution) {
     if (!projectValidator.isValidLiaisonInstitution(institution)) {
-      this.addMessage(this.getText("planning.projectDescription.programCreator").toLowerCase());
+      this.addMessage(action.getText("planning.projectDescription.programCreator").toLowerCase());
       this.addMissingField("project.liaisonInstitution");
     }
   }
 
   public void validateRegions(BaseAction action, List<IPProgram> regions) {
     if (!projectValidator.isValidRegions(regions)) {
-      this.addMessage(this.getText("preplanning.projectDescription.regions").toLowerCase());
+      this.addMessage(action.getText("preplanning.projectDescription.regions").toLowerCase());
       this.addMissingField("project.flagships");
     }
   }
 
   public void validateStartDate(BaseAction action, Date startDate) {
     if (!projectValidator.isValidStartDate(startDate)) {
-      this.addMessage(this.getText("preplanning.projectDescription.startDate").toLowerCase());
+      this.addMessage(action.getText("preplanning.projectDescription.startDate").toLowerCase());
       this.addMissingField("project.startDate");
     }
   }
 
   public void validateSummary(BaseAction action, String summary) {
     if (!projectValidator.isValidSummary(summary)) {
-      this.addMessage(this.getText("preplanning.projectDescription.projectSummary").toLowerCase());
+      this.addMessage(action.getText("preplanning.projectDescription.projectSummary").toLowerCase());
       this.addMissingField("project.summary");
     }
   }
 
   public void validateTitle(BaseAction action, String title) {
     if (!projectValidator.isValidTitle(title)) {
-      this.addMessage(this.getText("planning.projectDescription.projectTitle").toLowerCase());
+      this.addMessage(action.getText("planning.projectDescription.projectTitle").toLowerCase());
       this.addMissingField("project.title");
     }
   }
