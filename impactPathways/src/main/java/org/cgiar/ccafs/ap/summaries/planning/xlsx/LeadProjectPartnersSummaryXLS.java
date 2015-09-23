@@ -84,17 +84,19 @@ public class LeadProjectPartnersSummaryXLS {
       // Defining headers
       String[] headers =
         new String[] {"Project Id", "Type", "Title", "Summary", "Flagship(s)", "Region(s)", "Lead institution",
-          "Leader", "Coordinator"};
+        "Leader", "Coordinator"};
 
       // Defining header types
       int[] headerTypes =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
-      Workbook workbook = xls.initializeXLS(true, headerTypes);
+      Workbook workbook = xls.initializeWorkbook(true);
+
       workbook.setSheetName(0, "LeadProjectPartners");
       Sheet sheet = workbook.getSheetAt(0);
+      xls.initializeSheet(sheet, headerTypes);
       xls.writeTitleBox(sheet, "CCAFS Lead Project Partners");
       xls.writeHeaders(sheet, headers);
 

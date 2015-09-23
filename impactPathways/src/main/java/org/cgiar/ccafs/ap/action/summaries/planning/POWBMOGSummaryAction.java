@@ -15,14 +15,9 @@
 package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBMOGSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -31,6 +26,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -39,17 +35,13 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class PWOBSummaryAction extends BaseAction implements Summary {
+public class POWBMOGSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
 
-  // Managers
-  private LocationManager locationManager;
-  private POWBSummaryXLS pwobSummaryXLS;
+  private POWBMOGSummaryXLS pwobMOGSummaryXLS;
   private ProjectManager projectManager;
-  private BudgetManager budgetManager;
-  private ProjectPartnerManager projectPartnerManager;
 
   // XLS bytes
   private byte[] bytesXLS;
@@ -59,23 +51,21 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
 
   // Model
   List<Project> projectsList;
+  private List<Map<String, Object>> informationPWOBReport;
 
   @Inject
-  public PWOBSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
-    ProjectPartnerManager projectPartnerManager, LocationManager locationManager, POWBSummaryXLS pwobSummaryXLS) {
+  public POWBMOGSummaryAction(APConfig config, ProjectManager projectManager, POWBMOGSummaryXLS pwobMOGSummaryXLS) {
     super(config);
-    this.locationManager = locationManager;
     this.projectManager = projectManager;
-    this.budgetManager = budgetManager;
-    this.projectPartnerManager = projectPartnerManager;
-    this.pwobSummaryXLS = pwobSummaryXLS;
+    this.pwobMOGSummaryXLS = pwobMOGSummaryXLS;
+
   }
 
   @Override
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = pwobSummaryXLS.generateXLS(projectsList);
+    bytesXLS = pwobMOGSummaryXLS.generateXLS(informationPWOBReport);
 
     return SUCCESS;
   }
@@ -94,7 +84,7 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
   @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
-    fileName.append("PWOB-");
+    fileName.append("POWB-MOGs-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -112,23 +102,6 @@ public class PWOBSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    projectsList = this.projectManager.getAllProjectsBasicInfo();
-    List<ProjectPartner> partnersList;
-    List<Location> locationsList;
-
-    for (Project project : projectsList) {
-
-      // ***************** Partners ******************************
-      partnersList = projectPartnerManager.getProjectPartners(project);
-      project.setProjectPartners(partnersList);
-
-      // ***************** Locations ******************************
-      locationsList = this.locationManager.getProjectLocations(project.getId());
-      project.setLocations(locationsList);
-
-      // *************************Budgets ******************************
-      project.setBudgets(this.budgetManager.getBudgetsByProject(project));
-    }
-
+    informationPWOBReport = projectManager.summaryGetInformationDetailPOWB(config.getPlanningCurrentYear());
   }
 }

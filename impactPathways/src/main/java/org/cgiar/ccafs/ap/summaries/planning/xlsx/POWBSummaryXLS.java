@@ -51,13 +51,13 @@ public class POWBSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Project> projectsList, Workbook workbook) {
+  private void addContent(List<Project> projectsList, Sheet sheet) {
 
 
     double W1W2, W3Bilateral;
     StringBuilder stringBuilder;
     int counter;
-    Sheet sheet = workbook.getSheetAt(0);
+
     Project project;
     Locale locale = new Locale("en", "US");
     NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
@@ -178,18 +178,20 @@ public class POWBSummaryXLS {
           BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
           BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET,
           BaseXLS.COLUMN_TYPE_TEXT_LONG};
-      Workbook workbook = xls.initializeXLS(true, headersType);
+      Workbook workbook = xls.initializeWorkbook(true);
 
       // renaming sheet
-      workbook.setSheetName(0, "PWOB Report");
+      workbook.setSheetName(0, "POWB Report");
       Sheet sheet = workbook.getSheetAt(0);
 
+      xls.initializeSheet(sheet, headersType);
+
       // Writing the sheet in the yellow box
-      xls.writeTitleBox(sheet, "PWOB Report");
+      xls.writeTitleBox(sheet, "POWB Report");
 
       xls.writeHeaders(sheet, headers);
 
-      this.addContent(projectsList, workbook);
+      this.addContent(projectsList, sheet);
 
       // this.flush();
       xls.writeWorkbook();
