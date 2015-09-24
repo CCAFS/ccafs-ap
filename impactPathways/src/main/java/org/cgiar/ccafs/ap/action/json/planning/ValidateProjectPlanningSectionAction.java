@@ -5,10 +5,12 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -42,12 +44,17 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   @Inject
   private ProjectManager projectManager;
   @Inject
-  private ProjectDescriptionValidator descriptionValidator;
-  @Inject
   private IPProgramManager ipProgramManager;
   @Inject
   private ProjectCofinancingLinkageManager linkedProjectManager;
+  @Inject
+  private ProjectPartnerManager projectPartnerManager;
 
+  // Validators
+  @Inject
+  private ProjectDescriptionValidator descriptionValidator;
+  @Inject
+  private ProjectPartnersValidator projectPartnersValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -62,11 +69,15 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
         case "description":
           this.validateProjectDescription();
           break;
+        case "partners":
+          break;
         default:
+          this.validateProjectPartners();
           // Do nothing.
+          break;
       }
-
       sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
+
     }
     return SUCCESS;
   }
@@ -120,5 +131,14 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Validate.
     descriptionValidator.validate(this, project, "Planning");
 
+  }
+
+  private void validateProjectPartners() {
+    // Getting information.
+    Project project = new Project(projectID);
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+
+    // Validating.
+    projectPartnersValidator.validate(this, project);
   }
 }
