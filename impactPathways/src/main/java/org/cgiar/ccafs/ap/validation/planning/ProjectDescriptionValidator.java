@@ -15,11 +15,11 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.ProjectStatusManager;
+import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectStatus;
+import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
@@ -41,16 +41,16 @@ public class ProjectDescriptionValidator extends BaseValidator {
   private ProjectValidator projectValidator;
 
   // Managers
-  private ProjectStatusManager statusManager;
+  private SectionStatusManager statusManager;
 
   @Inject
-  public ProjectDescriptionValidator(ProjectValidator projectValidator, ProjectStatusManager statusManager) {
+  public ProjectDescriptionValidator(ProjectValidator projectValidator, SectionStatusManager statusManager) {
     super();
     this.projectValidator = projectValidator;
     this.statusManager = statusManager;
   }
 
-  public void validate(BaseAction action, Project project) {
+  public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
 
@@ -67,12 +67,12 @@ public class ProjectDescriptionValidator extends BaseValidator {
       }
 
       // Reporting missing fields into the database.
-      ProjectStatus status = statusManager.getProjectStatus(project, "Planning", "description");
+      SectionStatus status = statusManager.getSectionStatus(project, cycle, "description");
       if (status == null) {
-        status = new ProjectStatus("Planning", "description");
+        status = new SectionStatus(cycle, "description");
       }
       status.setMissingFields(this.missingFields.toString());
-      statusManager.saveProjectStatus(status, project);
+      statusManager.saveSectionStatus(status, project);
     }
   }
 

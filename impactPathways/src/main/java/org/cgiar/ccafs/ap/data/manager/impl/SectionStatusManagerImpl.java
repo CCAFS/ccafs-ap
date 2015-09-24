@@ -14,43 +14,35 @@
 
 package org.cgiar.ccafs.ap.data.manager.impl;
 
-import org.cgiar.ccafs.ap.data.dao.ProjectStatusDAO;
-import org.cgiar.ccafs.ap.data.manager.ProjectStatusManager;
+import org.cgiar.ccafs.ap.data.dao.SectionStatusDAO;
+import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectStatus;
+import org.cgiar.ccafs.ap.data.model.SectionStatus;
 
-import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
-public class ProjectStatusManagerImpl implements ProjectStatusManager {
-
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectStatusManagerImpl.class);
+public class SectionStatusManagerImpl implements SectionStatusManager {
 
   // DAO
-  private ProjectStatusDAO statusDAO;
-
-  private DateFormat dateFormatter;
+  private SectionStatusDAO statusDAO;
 
   @Inject
-  public ProjectStatusManagerImpl(ProjectStatusDAO statusDAO) {
+  public SectionStatusManagerImpl(SectionStatusDAO statusDAO) {
     this.statusDAO = statusDAO;
   }
 
   @Override
-  public ProjectStatus getProjectStatus(Project project, String cycle, String section) {
-    Map<String, String> statusData = statusDAO.getProjectStatus(project.getId(), cycle, section);
+  public SectionStatus getSectionStatus(Project project, String cycle, String section) {
+    Map<String, String> statusData = statusDAO.getSectionStatus(project.getId(), cycle, section);
     if (statusData != null && !statusData.isEmpty()) {
-      ProjectStatus status = new ProjectStatus();
+      SectionStatus status = new SectionStatus();
       status.setId(Integer.parseInt(statusData.get("id")));
       status.setCycle(statusData.get("cycle"));
       status.setSection(statusData.get("section_name"));
@@ -61,7 +53,7 @@ public class ProjectStatusManagerImpl implements ProjectStatusManager {
   }
 
   @Override
-  public int saveProjectStatus(ProjectStatus status, Project project) {
+  public int saveSectionStatus(SectionStatus status, Project project) {
     Map<String, Object> statusData = new HashMap<>();
     if (status.getId() > 0) {
       statusData.put("id", status.getId());
@@ -70,7 +62,7 @@ public class ProjectStatusManagerImpl implements ProjectStatusManager {
     statusData.put("section_name", status.getSection());
     statusData.put("project_id", project.getId());
     statusData.put("missing_fields", status.getMissingFieldsWithPrefix());
-    return statusDAO.saveProjectStatus(statusData);
+    return statusDAO.saveSectionStatus(statusData);
   }
 
 }

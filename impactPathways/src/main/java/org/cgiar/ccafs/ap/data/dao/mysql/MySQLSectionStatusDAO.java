@@ -14,7 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.data.dao.ProjectStatusDAO;
+import org.cgiar.ccafs.ap.data.dao.SectionStatusDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -31,25 +31,25 @@ import org.slf4j.LoggerFactory;
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
-public class MySQLProjectStatusDAO implements ProjectStatusDAO {
+public class MySQLSectionStatusDAO implements SectionStatusDAO {
 
   // Logger
-  private static Logger LOG = LoggerFactory.getLogger(MySQLProjectStatusDAO.class);
+  private static Logger LOG = LoggerFactory.getLogger(MySQLSectionStatusDAO.class);
 
   private DAOManager databaseManager;
 
   @Inject
-  public MySQLProjectStatusDAO(DAOManager databaseManager) {
+  public MySQLSectionStatusDAO(DAOManager databaseManager) {
     this.databaseManager = databaseManager;
   }
 
   @Override
-  public Map<String, String> getProjectStatus(int projectID, String cycle, String section) {
-    LOG.debug(">> getProjectStatus projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
+  public Map<String, String> getSectionStatus(int projectID, String cycle, String section) {
+    LOG.debug(">> getSectionStatus projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
-    query.append("FROM project_statuses ");
+    query.append("FROM section_statuses ");
     query.append("WHERE project_id = ");
     query.append(projectID);
     query.append(" AND cycle = '");
@@ -58,7 +58,7 @@ public class MySQLProjectStatusDAO implements ProjectStatusDAO {
     query.append(section);
     query.append("'");
 
-    LOG.debug(">> getProjectStatus() > Calling method executeQuery to get the results");
+    LOG.debug(">> getSectionStatus() > Calling method executeQuery to get the results");
 
     Map<String, String> statusData = new HashMap<>();
 
@@ -79,18 +79,18 @@ public class MySQLProjectStatusDAO implements ProjectStatusDAO {
       LOG.error(exceptionMessage, e);
       return null;
     }
-    LOG.debug("<< getProjectStatus() > Calling method executeQuery to get the results");
+    LOG.debug("<< getSectionStatus() > Calling method executeQuery to get the results");
     return statusData;
   }
 
   @Override
-  public int saveProjectStatus(Map<String, Object> statusData) {
-    LOG.debug(">> saveProjectStatus(statusData={})", new Object[] {statusData});
+  public int saveSectionStatus(Map<String, Object> statusData) {
+    LOG.debug(">> saveSectionStatus(statusData={})", new Object[] {statusData});
     StringBuilder query = new StringBuilder();
     Object[] values;
     int result = -1;
     if (statusData.get("id") == null) {
-      query.append("INSERT INTO project_statuses (project_id, cycle, section_name, missing_fields) ");
+      query.append("INSERT INTO section_statuses (project_id, cycle, section_name, missing_fields) ");
       query.append("VALUES (?, ?, ?, ?) ");
       values = new Object[4];
       values[0] = statusData.get("project_id");;
@@ -99,12 +99,12 @@ public class MySQLProjectStatusDAO implements ProjectStatusDAO {
       values[3] = statusData.get("missing_fields");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
-        LOG.error("A problem happened trying to add a new project_status for the project_id={}",
+        LOG.error("A problem happened trying to add a new section_status for the project_id={}",
           statusData.get("project_id"));
       }
     } else {
       // Updating submission record.
-      query.append("UPDATE project_statuses SET project_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
+      query.append("UPDATE section_statuses SET project_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
       values[0] = statusData.get("project_id");
@@ -114,7 +114,7 @@ public class MySQLProjectStatusDAO implements ProjectStatusDAO {
       values[4] = statusData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
-        LOG.error("A problem happened trying to update the project_status identified with the id = {}",
+        LOG.error("A problem happened trying to update the section_status identified with the id = {}",
           statusData.get("id"));
       }
     }

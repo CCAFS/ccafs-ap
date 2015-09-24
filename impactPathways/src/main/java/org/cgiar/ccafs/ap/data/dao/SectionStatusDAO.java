@@ -14,7 +14,7 @@
  */
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectStatusDAO;
+import org.cgiar.ccafs.ap.data.dao.mysql.MySQLSectionStatusDAO;
 
 import java.util.Map;
 
@@ -23,25 +23,25 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
-@ImplementedBy(MySQLProjectStatusDAO.class)
-public interface ProjectStatusDAO {
+@ImplementedBy(MySQLSectionStatusDAO.class)
+public interface SectionStatusDAO {
 
   /**
-   * This method gets the project status information of a given project in a given cycle.
+   * This method gets the section status information of a given project in a given cycle.
    * 
    * @param projectID is the project identifier related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
    * @param section is the name of the section
    * @return a Map with the information requested. An empty Map if no data was found, or null if some error occurred.
    */
-  public Map<String, String> getProjectStatus(int projectID, String cycle, String section);
+  public Map<String, String> getSectionStatus(int projectID, String cycle, String section);
 
   /**
-   * This method saves into the database the current project status with regards the missing fields.
+   * This method saves into the database the current section status with regards the missing fields.
    * 
    * @param statusData - corresponds to a given project status information to be saved into the database.
    * @return a number greater than 0 meaning the identifier of the new record that was added, 0 if the information was
    *         updated, or -1 if some error occurred.
    */
-  public int saveProjectStatus(Map<String, Object> statusData);
+  public int saveSectionStatus(Map<String, Object> statusData);
 }
