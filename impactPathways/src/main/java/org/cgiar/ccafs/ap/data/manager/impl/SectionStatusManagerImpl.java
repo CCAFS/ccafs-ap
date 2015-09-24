@@ -19,7 +19,9 @@ import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -40,7 +42,7 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
 
   @Override
   public SectionStatus getSectionStatus(Project project, String cycle, String section) {
-    Map<String, String> statusData = statusDAO.getSectionStatus(project.getId(), cycle, section);
+    Map<String, String> statusData = statusDAO.getProjectSectionStatus(project.getId(), cycle, section);
     if (statusData != null && !statusData.isEmpty()) {
       SectionStatus status = new SectionStatus();
       status.setId(Integer.parseInt(statusData.get("id")));
@@ -48,6 +50,24 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
       status.setSection(statusData.get("section_name"));
       status.setMissingFields(statusData.get("missing_fields"));
       return status;
+    }
+    return null;
+  }
+
+  @Override
+  public List<SectionStatus> getSectionStatuses(Project project, String cycle) {
+    List<SectionStatus> statuses = new ArrayList<>();
+    List<Map<String, String>> statusDataList = statusDAO.getProjectSectionStatuses(project.getId(), cycle);
+    if (statusDataList != null) {
+      for (Map<String, String> statusData : statusDataList) {
+        SectionStatus status = new SectionStatus();
+        status.setId(Integer.parseInt(statusData.get("id")));
+        status.setCycle(statusData.get("cycle"));
+        status.setSection(statusData.get("section_name"));
+        status.setMissingFields(statusData.get("missing_fields"));
+        statuses.add(status);
+      }
+      return statuses;
     }
     return null;
   }

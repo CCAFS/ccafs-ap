@@ -20,7 +20,9 @@ import org.cgiar.ccafs.utils.db.DAOManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -44,8 +46,9 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
   }
 
   @Override
-  public Map<String, String> getSectionStatus(int projectID, String cycle, String section) {
-    LOG.debug(">> getSectionStatus projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
+  public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section) {
+    LOG.debug(">> getProjectSectionStatus projectID = {}, cycle = {} and section = {})",
+      new Object[] {projectID, cycle, section});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
@@ -58,7 +61,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     query.append(section);
     query.append("'");
 
-    LOG.debug(">> getSectionStatus() > Calling method executeQuery to get the results");
+    LOG.debug(">> getProjectSectionStatus() > Calling method executeQuery to get the results");
 
     Map<String, String> statusData = new HashMap<>();
 
@@ -79,8 +82,46 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
       LOG.error(exceptionMessage, e);
       return null;
     }
-    LOG.debug("<< getSectionStatus() > Calling method executeQuery to get the results");
+    LOG.debug("<< getProjectSectionStatus() > Calling method executeQuery to get the results");
     return statusData;
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle) {
+    LOG.debug(">> getProjectSectionStatuses projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * ");
+    query.append("FROM section_statuses ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND cycle = '");
+    query.append(cycle);
+    query.append("'");
+
+    LOG.debug(">> getProjectSectionStatuses() > Calling method executeQuery to get the results");
+    List<Map<String, String>> statusDataList = new ArrayList<>();
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> statusData = new HashMap<>();
+        statusData.put("id", rs.getString("id"));
+        statusData.put("project_id", rs.getString("project_id"));
+        statusData.put("cycle", rs.getString("cycle"));
+        statusData.put("section_name", rs.getString("section_name"));
+        statusData.put("missing_fields", rs.getString("missing_fields"));
+        statusDataList.add(statusData);
+      }
+      rs.close();
+      rs = null; // For the garbage collector to find it easily.
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getProjectSectionStatuses() > Calling method executeQuery to get the results");
+    return statusDataList;
   }
 
   @Override

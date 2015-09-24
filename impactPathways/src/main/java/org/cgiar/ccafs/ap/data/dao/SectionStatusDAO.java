@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLSectionStatusDAO;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
@@ -27,6 +28,15 @@ import com.google.inject.ImplementedBy;
 public interface SectionStatusDAO {
 
   /**
+   * This method gets a list of Section Status data from a specific project in a specific cycle.
+   * 
+   * @param projectID is some project identifier.
+   * @param cycle is the name of the cycle ('Planning' or 'Reporting').
+   * @return a list of Map with the information requested.
+   */
+  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle);
+
+  /**
    * This method gets the section status information of a given project in a given cycle.
    * 
    * @param projectID is the project identifier related to the status.
@@ -34,7 +44,7 @@ public interface SectionStatusDAO {
    * @param section is the name of the section
    * @return a Map with the information requested. An empty Map if no data was found, or null if some error occurred.
    */
-  public Map<String, String> getSectionStatus(int projectID, String cycle, String section);
+  public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section);
 
   /**
    * This method saves into the database the current section status with regards the missing fields.

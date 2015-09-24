@@ -16,16 +16,16 @@ package org.cgiar.ccafs.ap.action;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectStatusManager;
+import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.LogHistory;
-import org.cgiar.ccafs.ap.data.model.ProjectStatus;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -84,7 +84,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private ComponentLesson projectLessons;
   private Map<String, Object> session;
   private HttpServletRequest request;
-  private Map<String, ProjectStatus> sectionStatuses;
+  private List<SectionStatus> sectionStatuses;
 
   // Config
   protected APConfig config;
@@ -98,7 +98,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private ProjectLessonsManager lessonManager;
 
   @Inject
-  private ProjectStatusManager sectionStatusManager;
+  private SectionStatusManager sectionStatusManager;
 
 
   @Inject
@@ -107,7 +107,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.saveable = true;
     this.fullEditable = true;
     this.justification = "";
-    sectionStatuses = new HashMap<>();
   }
 
   /* Override this method depending of the save action. */
@@ -223,20 +222,25 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
   }
 
-  public HttpServletRequest getRequest() {
-    return request;
+  /**
+   * This method gets the specific section status from the sectionStatuses array.
+   * 
+   * @param section is the name of some section.
+   * @return a SectionStatus object with the information requested.
+   */
+  public SectionStatus getProjectSectionStatus(String section) {
+    if (this.sectionStatuses != null) {
+      for (SectionStatus status : this.sectionStatuses) {
+        if (status.getSection().equals(section)) {
+          return status;
+        }
+      }
+    }
+    return null;
   }
 
-  /**
-   * This method returns the status of the given section in a specific cycle (Planning or Reporting).
-   * 
-   * @param sections is an array of sections.
-   * @param cycle could be 'Planning' or 'Reporting'.
-   * @return a Map array with the name of the sections as keys and the status of the section as values, or null if some
-   *         error occurred.
-   */
-  public Map<String, ProjectStatus> getSectionStatuses(String[] sections, String cycle) {
-    return null;
+  public HttpServletRequest getRequest() {
+    return request;
   }
 
   public SecurityContext getSecurityContext() {
@@ -245,6 +249,19 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public Map<String, Object> getSession() {
     return session;
+  }
+
+  /**
+   * This method returns the status of the given section in a specific cycle (Planning or Reporting).
+   * 
+   * @param project is the project that you want to look for the missing fields.
+   * @param sections is an array of sections.
+   * @param cycle could be 'Planning' or 'Reporting'.
+   * @return a Map array with the name of the sections as keys and the status of the section as values, or null if some
+   *         error occurred.
+   */
+  public void initializeProjectSectionStatuses(Project project, String cycle) {
+    this.sectionStatuses = sectionStatusManager.getSectionStatuses(project, cycle);
   }
 
   public boolean isCanEdit() {

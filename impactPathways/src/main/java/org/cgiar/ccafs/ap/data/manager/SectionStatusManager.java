@@ -17,6 +17,8 @@ import org.cgiar.ccafs.ap.data.manager.impl.SectionStatusManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(SectionStatusManagerImpl.class)
@@ -31,6 +33,15 @@ public interface SectionStatusManager {
    * @return SectionStatus object with all the information encapsulated on it.
    */
   public SectionStatus getSectionStatus(Project project, String cycle, String section);
+
+  /**
+   * This method gets all the statuses of a project for a given a specific cycle.
+   * 
+   * @param project is some project.
+   * @param cycle could be 'Planning' or 'Reporting'.
+   * @return a List if SectionStatus objects with the information requested.
+   */
+  public List<SectionStatus> getSectionStatuses(Project project, String cycle);
 
   /**
    * This method saves into the database the current section status with regards the missing fields.
