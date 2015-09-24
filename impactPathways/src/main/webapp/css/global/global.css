@@ -2654,36 +2654,27 @@ button.ipGraph-btn{
   padding: 3px 12px;
   border-radius: 2px;
   color: #fff;
+  text-decoration: none;
 }
 
 .projectsList a.submitButton:hover {
-  background-color: #3498db;.projectsList
-  a.submitButton {      
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  background-color: #DCDCFF;
-  padding: 3px 12px;
-  border-radius: 2px;};.projectsList
-  a.submitButton {      
-  
-  
-  
-  
-  
-  
-  
-  
-  background-color: #DCDCFF;
-  padding: 3px 12px;
-  border-radius: 2px;};
-  text-decoration: none;
+  background-color: #3498db;
+}
+
+div#projectSubmitButton {
+  background-color: #83AECC;
+  padding: 11px 12px;
+  margin: 0px 10px;
+  border-radius: 2px;
+  color: #fff;
+  font-weight: lighter;
+  font-size: 1.3em;
+  text-align: center;
+  cursor: pointer;
+}
+
+div#projectSubmitButton:hover {
+  background-color: #3498db;
 }
 
 .projectsList #ids, .activities #ids {

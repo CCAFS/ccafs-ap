@@ -86,6 +86,8 @@
       </ul>
     </li>
   </ul>
+  <br />
+  <div id="projectSubmitButton">Submit</div>
 </nav>
 
 [#macro sectionStatus actionName]
