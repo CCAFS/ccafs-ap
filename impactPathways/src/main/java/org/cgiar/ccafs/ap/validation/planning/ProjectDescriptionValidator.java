@@ -15,11 +15,9 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
@@ -40,14 +38,10 @@ public class ProjectDescriptionValidator extends BaseValidator {
   private static final long serialVersionUID = -4871185832403702671L;
   private ProjectValidator projectValidator;
 
-  // Managers
-  private SectionStatusManager statusManager;
-
   @Inject
-  public ProjectDescriptionValidator(ProjectValidator projectValidator, SectionStatusManager statusManager) {
+  public ProjectDescriptionValidator(ProjectValidator projectValidator) {
     super();
     this.projectValidator = projectValidator;
-    this.statusManager = statusManager;
   }
 
   public void validate(BaseAction action, Project project, String cycle) {
@@ -63,16 +57,11 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
-      // Reporting missing fields into the database.
-      SectionStatus status = statusManager.getSectionStatus(project, cycle, "description");
-      if (status == null) {
-        status = new SectionStatus(cycle, "description");
-      }
-      status.setMissingFields(this.missingFields.toString());
-      statusManager.saveSectionStatus(status, project);
+      // Saving missing fields.
+      this.saveMissingFields(project, cycle, "description");
     }
   }
 
@@ -103,7 +92,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
         this
-          .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
+        .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
         this.addMissingField("project.workplanName");
       }
     }

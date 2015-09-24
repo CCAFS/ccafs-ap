@@ -1,7 +1,9 @@
 package org.cgiar.ccafs.ap.validation;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.utils.APConfig;
 
 import javax.mail.internet.InternetAddress;
@@ -21,6 +23,10 @@ public class BaseValidator {
   protected APConfig config;
   protected StringBuilder validationMessage;
   protected StringBuilder missingFields;
+
+  // Managers
+  @Inject
+  private SectionStatusManager statusManager;
 
   @Inject
   public BaseValidator() {
@@ -72,6 +78,23 @@ public class BaseValidator {
       return !string.trim().isEmpty();
     }
     return false;
+  }
+
+  /**
+   * This method saves the missing fields into the database.
+   * 
+   * @param project is a project.
+   * @param cycle could be 'Planning' or 'Reporting'
+   * @param sectionName is the name of the section (description, partners, etc.).
+   */
+  protected void saveMissingFields(Project project, String cycle, String sectionName) {
+    // Reporting missing fields into the database.
+    SectionStatus status = statusManager.getSectionStatus(project, cycle, sectionName);
+    if (status == null) {
+      status = new SectionStatus(cycle, sectionName);
+    }
+    status.setMissingFields(this.missingFields.toString());
+    statusManager.saveSectionStatus(status, project);
   }
 
   /**
