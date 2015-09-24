@@ -2,10 +2,13 @@ package org.cgiar.ccafs.ap.action.json.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
+import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -38,6 +41,13 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
   @Inject
   private ProjectManager projectManager;
+  @Inject
+  private ProjectDescriptionValidator descriptionValidator;
+  @Inject
+  private IPProgramManager ipProgramManager;
+  @Inject
+  private ProjectCofinancingLinkageManager linkedProjectManager;
+
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -48,8 +58,6 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   public String execute() throws Exception {
     if (existProject && validSection) {
       // getting the current section status.
-      sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
-
       switch (sectionName) {
         case "description":
           this.validateProjectDescription();
@@ -57,16 +65,9 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
         default:
           // Do nothing.
       }
-    }
-    // try {
-    //
-    // typeID = Integer.parseInt(deliverableTypeID);
-    // } catch (NumberFormatException e) {
-    // LOG.error("There was an exception trying to parse the project id = {} ", projectID);
-    // }
-    //
-    // subTypes = deliverableTypeManager.getDeliverableTypes(typeID);
 
+      sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
+    }
     return SUCCESS;
   }
 
@@ -102,7 +103,22 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
    */
   private void validateProjectDescription() {
     // Getting information.
-    Project project = projectManager.getProjectBasicInfo(projectID);
-    // TODO
+    Project project = projectManager.getProject(projectID);
+    if (project != null) {
+      // Getting the information of the Flagships Program associated with the project
+      project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
+      // Getting the information of the Regions Program associated with the project
+      project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
+    }
+
+    // If project is CCAFS cofounded, we should load the core projects linked to it.
+    if (!project.isBilateralProject()) {
+      project.setLinkedProjects(linkedProjectManager.getLinkedBilateralProjects(projectID));
+    } else {
+      project.setLinkedProjects(linkedProjectManager.getLinkedCoreProjects(projectID));
+    }
+    // Validate.
+    descriptionValidator.validate(this, project, "Planning");
+
   }
 }
