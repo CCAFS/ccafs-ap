@@ -2662,8 +2662,10 @@ button.ipGraph-btn{
 }
 
 div#projectSubmitButton {
+  background: url(../../images/global/submit-icon.png) no-repeat;
   background-color: #83AECC;
-  padding: 11px 12px;
+  background-position: 46px 9px;
+  padding: 11px 0 11px 18px;
   margin: 0px 10px;
   border-radius: 2px;
   color: #fff;
