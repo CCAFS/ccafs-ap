@@ -25,7 +25,6 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
@@ -64,7 +63,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private List<LiaisonInstitution> liaisonInstitutions;
   private List<User> allOwners;
   private Map<String, String> projectTypes;
-  private Map<String, SectionStatus> sectionStatuses;
 
   // Model for the back-end
   private Project previousProject;
@@ -210,10 +208,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     return null;
   }
 
-  public Map<String, SectionStatus> getSectionStatuses() {
-    return sectionStatuses;
-  }
-
   public int getStartYear() {
     return config.getStartYear();
   }
@@ -331,6 +325,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       project.setWorkplanName("");
       project.setBilateralContractProposalName("");
     }
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
   }
 
   @Override
