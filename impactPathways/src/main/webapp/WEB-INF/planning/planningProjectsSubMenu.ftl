@@ -1,7 +1,7 @@
 [#ftl] 
 [#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
-<nav id="secondaryMenu" class="${(project.type)!''}">
+<nav id="secondaryMenu" class="projectMenu ${(project.type)!''}">
 <h1><center> 
   [#if project.coreProject]
     <div id="projectType-quote" class="aux-quote-core" title="[@s.text name="planning.projects.type.ccafs_core" /] project">
@@ -64,16 +64,18 @@
 
 [#-- Menu element --]
 [#macro menu actionName stageName textName]
-  <li class="[#if currentSubStage == stageName]${currCss}[/#if] [@sectionStatus actionName=actionName/]">
+  <li id="menu-${actionName}" class="[#if currentSubStage == stageName]${currCss}[/#if] [@sectionStatus actionName=actionName/]">
     <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a>
   </li> 
 [/#macro]
 
 [#-- Submitted CSS class for section status--]
 [#macro sectionStatus actionName]
+[#compress]
     [#if action.getProjectSectionStatus(actionName)??]
       [#if !((action.getProjectSectionStatus(actionName)).missingFieldsWithPrefix)?has_content]
        submitted
       [/#if]
     [/#if]
+[/#compress]
 [/#macro]
