@@ -434,8 +434,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved = true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+                this.getJustification());
           }
         }
 
@@ -454,8 +455,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              saved
+                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                  this.getJustification());
           }
         }
 

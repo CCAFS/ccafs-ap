@@ -24,17 +24,17 @@
     <li class="[#if currentStage == "description"]${currCss}[/#if]">
       <p>[@s.text name="menu.planning.submenu.projectDescription" /]</p>
       <ul>
-        <li class="[#if currentSubStage == "description"]${currCss}[/#if] [@sectionStatus action="description"/]">
+        <li class="[#if currentSubStage == "description"]${currCss}[/#if] [@sectionStatus actionName="description"/]">
           <a href="[@s.url action='description'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.secondary.planning.project.description" /]
           </a>
         </li>
-        <li class="[#if currentSubStage == "partners" ]${currCss}[/#if]" [@sectionStatus action="partners"/]>
+        <li class="[#if currentSubStage == "partners" ]${currCss}[/#if]" [@sectionStatus actionName="partners"/]>
           <a href="[@s.url action='partners'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.planning.submenu.projectPartners" /]
           </a>
         </li>
-        <li class="[#if currentSubStage == "locations" ]${currCss}[/#if] [@sectionStatus action="locations"/]">
+        <li class="[#if currentSubStage == "locations" ]${currCss}[/#if] [@sectionStatus actionName="locations"/]">
           <a href="[@s.url action='locations'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">
             [@s.text name="menu.planning.submenu.projectLocations" /]
           </a>
@@ -44,13 +44,13 @@
     <li class="[#if currentStage == "outcomes"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.outcome" /]</p>
       <ul>
-        <li class="[#if currentSubStage == "outcomes"]${currCss}[/#if] [@sectionStatus action="outcomes"/]">
+        <li class="[#if currentSubStage == "outcomes"]${currCss}[/#if] [@sectionStatus actionName="outcomes"/]">
           <a href="[@s.url action='outcomes'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutcomes" /]</a>
         </li>
-        <li class="[#if currentSubStage == "ccafsOutcomes" ]${currCss}[/#if] [@sectionStatus action="ccafsOutcomes"/]">
+        <li class="[#if currentSubStage == "ccafsOutcomes" ]${currCss}[/#if] [@sectionStatus actionName="ccafsOutcomes"/]">
           <a href="[@s.url action='ccafsOutcomes'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.ccafsOutcomes" /]</a>
         </li> 
-        <li class="[#if currentSubStage == "otherContributions" ]${currCss}[/#if] [@sectionStatus action="otherContributions"/]">
+        <li class="[#if currentSubStage == "otherContributions" ]${currCss}[/#if] [@sectionStatus actionName="otherContributions"/]">
           <a href="[@s.url action='otherContributions'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.otherContributions" /]</a>
         </li> 
       </ul>
@@ -58,10 +58,10 @@
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.outputs" /]</p>
       <ul>
-        <li class="[#if currentSubStage == "overviewByMogs"]${currCss}[/#if] [@sectionStatus action="overviewByMogs"/]">
+        <li class="[#if currentSubStage == "overviewByMogs"]${currCss}[/#if] [@sectionStatus actionName="overviewByMogs"/]">
           <a href="[@s.url action='outputs'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutputs.overviewByMogs" /]</a>
         </li>
-        <li class="[#if currentSubStage == "deliverables" ]${currCss}[/#if] [@sectionStatus action="deliverablesList"/]">
+        <li class="[#if currentSubStage == "deliverables" ]${currCss}[/#if] [@sectionStatus actionName="deliverablesList"/]">
           <a href="[@s.url action='deliverablesList'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectOutputs.deliverables" /]</a>
         </li> 
       </ul>
@@ -69,7 +69,7 @@
     <li class="[#if currentStage == "activities"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.activities" /]</p>
       <ul>
-        <li class="[#if currentSubStage == "activities" ]${currCss}[/#if] [@sectionStatus action="activities"/]">
+        <li class="[#if currentSubStage == "activities" ]${currCss}[/#if] [@sectionStatus actionName="activities"/]">
           <a href="[@s.url action='activities'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectActivities.activitiesList" /]</a>
         </li> 
       </ul>
@@ -77,10 +77,10 @@
     <li class="[#if currentStage == "budget"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.budget" /]</p>
       <ul>
-        <li class="[#if currentSubStage == "budgetByPartner"]${currCss}[/#if] [@sectionStatus action="budgetByPartner"/]">
+        <li class="[#if currentSubStage == "budgetByPartner"]${currCss}[/#if] [@sectionStatus actionName="budgetByPartner"/]">
           <a href="[@s.url action='budget'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectBudget.budgetByPartner" /]</a>
         </li>
-        <li class="[#if currentSubStage == "budgetByMog" ]${currCss}[/#if] [@sectionStatus action="budgetByMog"/]">
+        <li class="[#if currentSubStage == "budgetByMog" ]${currCss}[/#if] [@sectionStatus actionName="budgetByMog"/]">
           <a href="[@s.url action='budgetByMog'][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name="menu.planning.submenu.projectBudget.budgetByMog" /]</a>
         </li> 
       </ul>
@@ -88,12 +88,10 @@
   </ul>
 </nav>
 
-[#macro sectionStatus action]
-  [#if sectionsStatuses??]
-    [#if sectionsStatuses[action]??]
-      [#if (sectionsStatuses[action].missedFields)?has_content]
+[#macro sectionStatus actionName]
+    [#if action.getProjectSectionStatus(actionName)??]
+      [#if !((action.getProjectSectionStatus(actionName)).missingFieldsWithPrefix)?has_content]
        submitted
       [/#if]
     [/#if]
-  [/#if]
 [/#macro]
