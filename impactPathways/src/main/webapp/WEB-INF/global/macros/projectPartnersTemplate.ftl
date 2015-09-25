@@ -116,7 +116,7 @@
        [#assign canEditLeader=editable /]
       [/#if]
       <div class="partnerPerson-type halfPartBlock clearfix">
-        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=canEditLeader required=true /]
+        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
         [#if !canEditLeader]
           <div class="select">
             [#if (!securityContext.canUpdatePPAPartners()) && (contact.leader)!false]
