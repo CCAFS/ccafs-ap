@@ -680,8 +680,8 @@ function PartnerPersonObject(partnerPerson) {
     $(partnerPerson).find(".partnerPersonId").attr("name", elementName + "id");
     $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
 
-    $(partnerPerson).find(".userName").attr("name", "partner[" + partnerIndex + "].person[" + index + "].user");
-    $(partnerPerson).find(".userName").attr("id", "partner[" + partnerIndex + "].person[" + index + "].user");
+    $(partnerPerson).find(".userName").attr("name", "partner-" + partnerIndex + "-person-" + index);
+    $(partnerPerson).find(".userName").attr("id", "partner-" + partnerIndex + "-person-" + index);
 
     $(partnerPerson).find(".userId").attr("name", elementName + "user.id");
     $(partnerPerson).find(".resp").attr("name", elementName + "responsibilities");
