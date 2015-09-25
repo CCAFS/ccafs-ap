@@ -134,7 +134,7 @@
                      [#if location.type.id == ccafsSiteTypeID] 
                       [@customForm.select name="project.locations" className="locationName" i18nkey="planning.project.locations.level" listName="ccafsSites" keyFieldName="id" showTitle=false  displayFieldName="name" value="${location.id}" disabled=!editable/]
                      [#else]
-                      [@customForm.input name="" className="locationName" i18nkey="planning.project.locations.name" required=true showTitle=false value="${location.name}" disabled=!editable/]
+                      [@customForm.input name="location-${location_index}" className="locationName" i18nkey="planning.project.locations.name" required=true showTitle=false value="${location.name}" disabled=!editable/]
                       <input type="hidden" class="locationId" value="${location.id}"/>
                       <input type="hidden" name="project.locations" value="${location.type.id}|s|${location.geoPosition.latitude}|s|${location.geoPosition.longitude}|s|${location.name}|s|${location.id}"/>
                      [/#if]
