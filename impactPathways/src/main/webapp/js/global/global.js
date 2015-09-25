@@ -147,7 +147,6 @@ function processTasks(tasks,menus,urlDoTask) {
               $(menus[index]).removeClass('submitted');
             } else {
               if(data.sectionStatus.missingFieldsWithPrefix == "") {
-                console.log(data.sectionStatus);
                 $(menus[index]).addClass('submitted');
               } else {
                 $(menus[index]).removeClass('submitted');

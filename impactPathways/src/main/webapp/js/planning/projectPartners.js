@@ -565,7 +565,7 @@ function PartnerObject(partner) {
     // Update index for partner persons
     $(partner).find('.contactPerson').each(function(i,partnerPerson) {
       var contact = new PartnerPersonObject($(partnerPerson));
-      contact.setIndex(elementName, i);
+      contact.setIndex(elementName, index, i);
     });
   };
   this.hasPartnerContributions = function() {
@@ -675,10 +675,14 @@ function PartnerPersonObject(partnerPerson) {
   this.getRelations = function(relation) {
     return $(partnerPerson).find('.tag.' + relation).next().find('ul').html();
   };
-  this.setIndex = function(name,index) {
+  this.setIndex = function(name,partnerIndex,index) {
     var elementName = name + "partnerPersons[" + index + "].";
     $(partnerPerson).find(".partnerPersonId").attr("name", elementName + "id");
     $(partnerPerson).find(".partnerPersonType").attr("name", elementName + "type");
+
+    $(partnerPerson).find(".userName").attr("name", "partner[" + partnerIndex + "].person[" + index + "].user");
+    $(partnerPerson).find(".userName").attr("id", "partner[" + partnerIndex + "].person[" + index + "].user");
+
     $(partnerPerson).find(".userId").attr("name", elementName + "user.id");
     $(partnerPerson).find(".resp").attr("name", elementName + "responsibilities");
   };
