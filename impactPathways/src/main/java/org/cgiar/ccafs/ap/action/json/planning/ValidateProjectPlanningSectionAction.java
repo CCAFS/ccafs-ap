@@ -139,6 +139,6 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
     // Validating.
-    projectPartnersValidator.validate(this, project);
+    projectPartnersValidator.validate(this, project, "Planning");
   }
 }

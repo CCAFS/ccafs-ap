@@ -683,7 +683,7 @@ function PartnerPersonObject(partnerPerson) {
     $(partnerPerson).find(".userName").attr("name", "partner-" + partnerIndex + "-person-" + index);
     $(partnerPerson).find(".userName").attr("id", "partner-" + partnerIndex + "-person-" + index);
 
-    $(partnerPerson).find(".userId").attr("name", elementName + "user.id");
+    $(partnerPerson).find(".userId").attr("name", elementName + "user");
     $(partnerPerson).find(".resp").attr("name", elementName + "responsibilities");
   };
   this.isLeader = function() {

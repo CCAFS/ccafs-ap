@@ -35,7 +35,6 @@ import com.google.inject.Inject;
 
 public class ProjectDescriptionValidator extends BaseValidator {
 
-  private static final long serialVersionUID = -4871185832403702671L;
   private ProjectValidator projectValidator;
 
   @Inject
@@ -47,8 +46,8 @@ public class ProjectDescriptionValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
-      System.out.println();
-      // The projects will be validated according to their type
+
+      // The projects will be validated according to their type.
       if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateCoreProject(action, project);
       } else {
@@ -57,7 +56,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -92,7 +91,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
         this
-        .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
+          .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
         this.addMissingField("project.workplanName");
       }
     }
