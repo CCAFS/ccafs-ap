@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ValidateProjectPlanningSectionAction extends BaseAction {
 
+  private static final long serialVersionUID = -9075503855862433753L;
+
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(ValidateProjectPlanningSectionAction.class);
 
@@ -70,9 +72,9 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           this.validateProjectDescription();
           break;
         case "partners":
+          this.validateProjectPartners();
           break;
         default:
-          this.validateProjectPartners();
           // Do nothing.
           break;
       }
