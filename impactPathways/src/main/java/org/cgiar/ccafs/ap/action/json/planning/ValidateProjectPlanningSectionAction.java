@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.action.json.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -10,6 +11,7 @@ import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -51,12 +53,16 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectCofinancingLinkageManager linkedProjectManager;
   @Inject
   private ProjectPartnerManager projectPartnerManager;
+  @Inject
+  private LocationManager locationManager;
 
   // Validators
   @Inject
   private ProjectDescriptionValidator descriptionValidator;
   @Inject
   private ProjectPartnersValidator projectPartnersValidator;
+  @Inject
+  private ProjectLocationsValidator locationValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -74,6 +80,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
         case "partners":
           this.validateProjectPartners();
           break;
+        case "locations":
+          this.validateProjectLocations();
         default:
           // Do nothing.
           break;
@@ -145,6 +153,13 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Validate.
     descriptionValidator.validate(this, project, "Planning");
 
+  }
+
+  private void validateProjectLocations() {
+    Project project = new Project(projectID);
+    project.setLocations(locationManager.getProjectLocations(projectID));
+
+    locationValidator.validate(this, project, "Planning");
   }
 
   private void validateProjectPartners() {

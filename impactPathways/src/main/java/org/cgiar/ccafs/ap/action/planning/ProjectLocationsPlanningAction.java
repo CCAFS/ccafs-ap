@@ -30,6 +30,7 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -235,9 +236,8 @@ public class ProjectLocationsPlanningAction extends BaseAction {
         success = false;
       }
 
-      boolean added =
-        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
-          this.getJustification());
+      boolean added = locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+        this.getJustification());
       if (!added) {
         success = false;
       }
@@ -254,15 +254,20 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       if (success == false) {
         this.addActionError(this.getText("planning.project.locations.saving.problem"));
         return BaseAction.INPUT;
-      } else if (project.getLocations().size() > previousLocationsSize
-        || project.getLocations().size() < previousLocationsSize) {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("planning.project.locations.title")}));
       }
-      if (project.getLocations().size() == previousLocationsSize) {
-        this.addActionWarning(this.getText("planning.project.locations.noChange"));
+
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        // Action messages coming from the validation.
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
       }
-      return BaseAction.SUCCESS;
+      return SUCCESS;
+
     } else {
       return BaseAction.NOT_AUTHORIZED;
     }
@@ -308,7 +313,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   public void validate() {
     LOG.debug(">> validate() ");
     if (save) {
-      validator.validate(this, project);
+      validator.validate(this, project, "Planning");
     }
   }
 }
