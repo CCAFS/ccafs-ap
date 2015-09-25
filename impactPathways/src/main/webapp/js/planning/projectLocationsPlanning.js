@@ -144,8 +144,10 @@ function changeTypeEvent(e) {
     $parent.find(".locationName").empty().html($newInputType.html());
     $parent.find("input.latitude, input.longitude").removeClass("notApplicable").attr("disabled", false);
     $parent.find("input.locationName").attr("placeholder", "Name");
-    $latitudeField.val(map.getCenter().k);
-    $longitudeField.val(map.getCenter().B);
+    var lat = map.getCenter().K || map.getCenter().L;
+    var lng = map.getCenter().G || map.getCenter().H;
+    $latitudeField.val(lat);
+    $longitudeField.val(lng);
 
     var latitude = $latitudeField.val();
     var longitude = $longitudeField.val();
