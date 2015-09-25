@@ -51,7 +51,7 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
 
   // Model
   List<Project> projectsList;
-  private List<Map<String, Object>> informationPWOBReport;
+  private List<Map<String, Object>> informationPWOBReportDetail;
 
   @Inject
   public POWBMOGSummaryAction(APConfig config, ProjectManager projectManager, POWBMOGSummaryXLS pwobMOGSummaryXLS) {
@@ -65,7 +65,7 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = pwobMOGSummaryXLS.generateXLS(informationPWOBReport);
+    bytesXLS = pwobMOGSummaryXLS.generateXLS(informationPWOBReportDetail);
 
     return SUCCESS;
   }
@@ -102,6 +102,6 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    informationPWOBReport = projectManager.summaryGetInformationDetailPOWB(config.getPlanningCurrentYear());
+    informationPWOBReportDetail = projectManager.summaryGetInformationDetailPOWB(config.getPlanningCurrentYear());
   }
 }

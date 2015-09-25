@@ -45,8 +45,9 @@ public class POWBMOGSummaryXLS {
    */
   private void addContent(List<Map<String, Object>> informationDetailPOWB, Sheet sheet) {
 
-
     Map<String, Object> mapObject;
+    StringBuilder stringBuilder;
+    String valueOne, valueTwo;
     // Iterating all the projects
     for (int a = 0; a < informationDetailPOWB.size(); a++) {
       mapObject = informationDetailPOWB.get(a);
@@ -62,7 +63,22 @@ public class POWBMOGSummaryXLS {
       xls.nextColumn();
 
       // MOG description
-      xls.writeString(sheet, (String) mapObject.get("mog_description"));
+      stringBuilder = new StringBuilder();
+
+
+      valueOne = (String) mapObject.get("flagship");
+      valueTwo = (String) mapObject.get("mog_description");
+
+      if (valueOne != null && valueTwo != null) {
+        stringBuilder.append(valueOne);
+        stringBuilder.append(" - ");
+        stringBuilder.append(valueTwo);
+      } else {
+        stringBuilder.append("");
+      }
+
+
+      xls.writeString(sheet, stringBuilder.toString());
       xls.nextColumn();
 
       // Annual description
@@ -89,9 +105,7 @@ public class POWBMOGSummaryXLS {
       xls.writeBudget(sheet, (double) mapObject.get("gender_W3_Bilateral"));
       xls.nextColumn();
 
-
       xls.nextRow();
-
 
     }
   }
@@ -112,14 +126,14 @@ public class POWBMOGSummaryXLS {
       // Writting headers
       String[] _headersPOWBDetail =
         new String[] {"Project Id", "Project title", "MOG", "Expected annual contribution",
-          "Expected plan of the gender and social inclusion", " Budget Total W1/W2 (USD)",
-          "Budget Total W3/Bilateral (USD)", " Budget Total W1/W2 (USD)", "Budget Total W3/Bilateral (USD)"};
+        "Expected plan of the gender and social inclusion", " Budget Total W1/W2 (USD)",
+        "Budget Total W3/Bilateral (USD)", " Budget Total W1/W2 (USD)", "Budget Total W3/Bilateral (USD)"};
 
       // defining header types.
       int[] headerTypesPOWBDetail =
         new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
         BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
 
       // renaming sheet
@@ -131,6 +145,11 @@ public class POWBMOGSummaryXLS {
 
       xls.writeHeaders(sheet, _headersPOWBDetail);
       this.addContent(informationDetailPOWB, sheet);
+
+      xls.setDescription(sheet, "Invenire praesent moderatius ut sit, autem nonumy ei nec. Diceret tibique eu sea."
+        + " In altera contentiones est, pro noster fuisset dissentias eu. Pro nonumes detracto ne. "
+        + "t dicam iisque ocurreret ius, eum an liber tritani. Has vocibus ceteros definiebas ex.");
+
 
       // this.flush();
       xls.writeWorkbook();
