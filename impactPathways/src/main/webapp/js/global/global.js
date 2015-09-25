@@ -112,10 +112,11 @@ $(document).ready(function() {
   // Generating hash from form information
   setFormHash();
 
-  $('#projectSubmitButton').on('click', function(e) {
+  $('.projectSubmitButton').on('click', function(e) {
     $(this).fadeOut();
     var $menus = $('#secondaryMenu.projectMenu ul li ul li');
-    var pID = $('input[name=projectID]').val();
+    var pID = $(e.target).attr('id').split('-')[1];
+    console.log(pID);
     var sections = [];
     var menus = [];
     $menus.each(function(i,menu) {
@@ -127,7 +128,7 @@ $(document).ready(function() {
     });
     // Execute ajax process for each section
     processTasks(sections, menus, '/planning/validateProjectPlanningSection.do');
-    $(this).fadeIn();
+
   });
 });
 
@@ -157,6 +158,9 @@ function processTasks(tasks,menus,urlDoTask) {
             $(menus[index]).addClass('animated flipInX');
             // Do next ajax call
             ++index;
+            if(index == tasks.length) {
+              $('.projectSubmitButton').fadeIn();
+            }
             nextTask();
           }
       });

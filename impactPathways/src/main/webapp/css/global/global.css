@@ -2661,7 +2661,7 @@ button.ipGraph-btn{
   background-color: #3498db;
 }
 
-div#projectSubmitButton {
+.projectSubmitButton {
   background: url(../../images/global/submit-icon.png) no-repeat;
   background-color: #83AECC;
   background-position: 46px 9px;
@@ -2675,7 +2675,7 @@ div#projectSubmitButton {
   cursor: pointer;
 }
 
-div#projectSubmitButton:hover {
+.projectSubmitButton:hover {
   background-color: #3498db;
 }
 
