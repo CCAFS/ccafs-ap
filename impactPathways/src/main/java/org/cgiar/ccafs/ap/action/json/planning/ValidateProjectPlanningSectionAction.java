@@ -107,6 +107,18 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Validate if the section exists.
     List<String> sections = new ArrayList<>();
     sections.add("description");
+    sections.add("partners");
+    sections.add("locations");
+    sections.add("outcomes");
+    sections.add("ccafsOutcomes");
+    sections.add("otherContributions");
+    sections.add("outputs");
+    sections.add("deliverable");
+    sections.add("activities");
+    sections.add("impactPathway");
+    sections.add("budget");
+    sections.add("budgetByMog");
+
     validSection = sections.contains(sectionName);
 
   }
@@ -124,7 +136,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
       project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
     }
 
-    // If project is CCAFS cofounded, we should load the core projects linked to it.
+    // If project is CCAFS co-funded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
       project.setLinkedProjects(linkedProjectManager.getLinkedBilateralProjects(projectID));
     } else {
