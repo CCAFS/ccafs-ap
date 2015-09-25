@@ -139,17 +139,20 @@ public class POWBMOGSummaryXLS {
       // renaming sheet
       workbook.setSheetName(0, "P&R - POWB Detail");
       Sheet sheet = workbook.getSheetAt(0);
-      xls.initializeSheet(sheet, headerTypesPOWBDetail);
 
+      // write text box
       xls.writeTitleBox(sheet, "POWBMOG Summary Detail");
+
+      // write text box
+      xls.createLogo(workbook, sheet);
+
+      xls.initializeSheet(sheet, headerTypesPOWBDetail);
 
       xls.writeHeaders(sheet, _headersPOWBDetail);
       this.addContent(informationDetailPOWB, sheet);
 
-      xls.writeDescription(sheet, "Invenire praesent moderatius ut sit, autem nonumy ei nec. Diceret tibique eu sea."
-        + " In altera contentiones est, pro noster fuisset dissentias eu. Pro nonumes detracto ne. "
-        + "t dicam iisque ocurreret ius, eum an liber tritani. Has vocibus ceteros definiebas ex.");
-
+      // Set description
+      xls.writeDescription(sheet, xls.getText("summaries.powb.mog.sheetone.description"));
 
       // this.flush();
       xls.writeWorkbook();
