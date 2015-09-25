@@ -47,9 +47,9 @@ public class ProjectDescriptionValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
-
+      System.out.println();
       // The projects will be validated according to their type
-      if (project.isCoreProject()) {
+      if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateCoreProject(action, project);
       } else {
         this.validateBilateralProject(action, project);
