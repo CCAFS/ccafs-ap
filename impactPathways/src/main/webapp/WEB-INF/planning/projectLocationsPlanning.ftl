@@ -176,10 +176,10 @@
     </div>
     [/#if]
     
+    [#-- Project identifier --]
+    <input type="hidden" name="projectID" value="${project.id?c}">
     [#if editable] 
       <!-- internal parameter --> 
-      [#-- Project identifier --]
-      <input type="hidden" name="projectID" value="${project.id?c}">
       <div class="[#if !newProject]borderBox[/#if]" >
         [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
