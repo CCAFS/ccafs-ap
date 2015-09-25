@@ -193,7 +193,9 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     partnerPersonManager.deletePartnerPersons(projectPartner);
     if (projectPartner.getPartnerPersons() != null) {
       for (PartnerPerson person : projectPartner.getPartnerPersons()) {
-        partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
+        if (person.getUser().getId() != -1) {
+          partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
+        }
       }
     }
 

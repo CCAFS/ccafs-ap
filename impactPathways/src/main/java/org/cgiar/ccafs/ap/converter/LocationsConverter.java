@@ -63,7 +63,7 @@ public class LocationsConverter extends StrutsTypeConverter {
           String name = tokens[3];
           String locationID = tokens[4];
 
-          if (typeID.isEmpty() || latitude.isEmpty() || longitude.isEmpty() || name.isEmpty()) {
+          if (typeID.isEmpty() || latitude.isEmpty() || longitude.isEmpty()) {
             continue;
           }
           OtherLocation newLocation = new OtherLocation();

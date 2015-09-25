@@ -97,12 +97,19 @@ public class BaseValidator {
     statusManager.saveSectionStatus(status, project);
   }
 
+  protected void validateLessonsLearn(BaseAction action, Project project) {
+    if (!project.isNew(config.getCurrentPlanningStartDate())) {
+      if (action.getProjectLessons() == null || action.getProjectLessons().getLessons().isEmpty()) {
+        action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
+      }
+    }
+  }
+
   /**
    * This method verify if the project was created in the current planning phase, if it was created previously the user
    * should provide a justification of the changes.
    * 
    * @param project
-   * @return
    */
   protected void validateProjectJustification(BaseAction action, Project project) {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {

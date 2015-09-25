@@ -447,7 +447,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    LOG.debug("saving... ");
     if (securityContext.canUpdateProjectPartners(project.getId())) {
 
       if (!this.isNewProject()) {
@@ -518,7 +517,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      projectPartnersValidator.validate(this, project);
+      projectPartnersValidator.validate(this, project, "Planning");
     }
   }
 
