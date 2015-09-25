@@ -222,6 +222,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
   }
 
+  public ComponentLesson getProjectLessons(int projectID, String sectionName) {
+    return lessonManager.getProjectComponentLesson(projectID, sectionName, this.getCurrentPlanningYear());
+  }
+
   /**
    * This method gets the specific section status from the sectionStatuses array.
    * 

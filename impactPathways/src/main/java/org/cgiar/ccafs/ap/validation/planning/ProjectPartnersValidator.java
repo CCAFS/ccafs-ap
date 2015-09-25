@@ -43,6 +43,7 @@ public class ProjectPartnersValidator extends BaseValidator {
     if (project != null) {
       this.validateProjectJustification(action, project);
       if (project.isCoreProject() || project.isCoFundedProject()) {
+        this.validateLessonsLearn(action, project, "partners");
         this.validateCCAFSProject(action, project);
       } else {
         this.validateBilateralProject(action, project);
@@ -52,7 +53,7 @@ public class ProjectPartnersValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.

@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.validation;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
+import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.utils.APConfig;
@@ -97,10 +98,12 @@ public class BaseValidator {
     statusManager.saveSectionStatus(status, project);
   }
 
-  protected void validateLessonsLearn(BaseAction action, Project project) {
+  protected void validateLessonsLearn(BaseAction action, Project project, String section) {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
-      if (action.getProjectLessons() == null || action.getProjectLessons().getLessons().isEmpty()) {
+      ComponentLesson lesson = action.getProjectLessons(project.getId(), section);
+      if (lesson == null || !this.isValidString(lesson.getLessons())) {
         action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
+        this.addMissingField("projectLessons.lessons");
       }
     }
   }

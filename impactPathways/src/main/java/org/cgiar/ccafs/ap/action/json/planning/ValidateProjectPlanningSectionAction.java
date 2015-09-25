@@ -156,7 +156,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   }
 
   private void validateProjectLocations() {
-    Project project = new Project(projectID);
+    Project project = projectManager.getProject(projectID);
     project.setLocations(locationManager.getProjectLocations(projectID));
 
     locationValidator.validate(this, project, "Planning");
@@ -164,7 +164,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
   private void validateProjectPartners() {
     // Getting information.
-    Project project = new Project(projectID);
+    Project project = projectManager.getProject(projectID);
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
     // Validating.
