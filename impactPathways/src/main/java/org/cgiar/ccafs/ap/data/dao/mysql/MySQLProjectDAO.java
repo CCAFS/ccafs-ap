@@ -1113,6 +1113,38 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
+
+    // SELECT
+    // p.id AS project_id,
+    // p.title AS project_title,
+    // ipr.acronym AS flagship,
+    // ipe.description AS MOG_description,
+    // ipco.anual_contribution AS anual_contribution,
+    // ipco.gender_contribution AS gender_contribution,
+    //
+    // SUM(IF(pb.budget_type = 1 , pb.amount, 0)) * IF(pmb.budget_type = 1 , pmb.total_contribution, 0) * 0.01 AS
+    // budget_W1_W2,
+
+    // SUM(IF(pb.budget_type = 1 , (pb.amount * pb.gender_percentage * 0.01), 0)) * IF(pmb.budget_type = 1 ,
+    // pmb.gender_contribution, 0) * 0.01 AS gender_W3_Bilateral,
+
+    // SUM(IF(pb.budget_type = 2 , pb.amount, 0)) * IF(pmb.budget_type = 2 , pmb.total_contribution, 0) * 0.01 AS
+    // budget_W1_W2,
+    // SUM(IF(pb.budget_type = 2 , (pb.amount * pb.gender_percentage * 0.01), 0)) * IF(pmb.budget_type = 2 ,
+    // pmb.gender_contribution, 0) * 0.01 AS gender_W3_Bilateral
+    //
+    // FROM projects p
+    // LEFT JOIN project_mog_budgets pmb ON p.id = pmb.project_id
+    // LEFT JOIN ip_elements ipe ON pmb.mog_id = ipe.id
+    // LEFT JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipe.id AND p.id = ipco.project_id
+    // LEFT JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id
+    // LEFT JOIN project_budgets pb ON pmb.project_id = pb.project_id
+    //
+    // WHERE (pmb.year = 2016 OR pmb.year IS NULL)
+    // AND (ipco.year = 2016 OR ipco.year IS NULL)
+    // AND (pb.year = 2016 OR pb.year IS NULL)
+    // GROUP BY p.id
+
     // Formatted query:
     query.append("SELECT p.id as 'project_id', ");
     query.append("p.title as 'project_title', ");
@@ -1120,27 +1152,46 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("ipe.description AS 'mog_description', ");
     query.append("ipco.anual_contribution as 'anual_contribution', ");
     query.append("ipco.gender_contribution as 'gender_contribution', ");
-    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 1 THEN pmb.total_contribution  END, 0)) ");
-    query.append("AS 'budget_W1_W2' , ");
-    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 1 THEN pmb.gender_contribution  END, 0)) ");
-    query.append("AS 'gender_W1_W2' , ");
-    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 2 THEN pmb.total_contribution  END, 0)) ");
-    query.append("AS 'budget_W3_Bilateral' , ");
-    query.append("( SELECT  IFNULL (CASE pmb.budget_type WHEN 2 THEN pmb.gender_contribution  END, 0)) ");
-    query.append("AS 'gender_W3_Bilateral'  ");
-    query.append("FROM projects p ");
-    query.append("LEFT JOIN project_mog_budgets pmb ON p.id = pmb.project_id ");
-    query.append("INNER JOIN ip_project_contributions ipcs ON pmb.mog_id = ipcs.mog_id ");
-    query.append("INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipcs.mog_id ");
-    query.append("AND ipco.year = ");
-    query.append(year + " ");
-    query.append("AND p.id = ipco.project_id ");
-    query.append("INNER JOIN ip_elements ipe ON pmb.mog_id = ipe.id ");
-    query.append("INNER JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id ");
-    query.append("WHERE pmb.year = ");
-    query.append(year + " ");
-    query.append("GROUP BY ipcs.mog_id ");
 
+    // Sum of contribution budget W1_W2 of the project for the MOG
+    query.append("SUM(IF(pb.budget_type = 1 , pb.amount, 0)) * ");
+    query.append("IF(pmb.budget_type = 1 , pmb.total_contribution, 0) * 0.01 ");
+    query.append("AS 'budget_W1_W2' , ");
+
+    // Sum of contribution gender W1_W2 of the project for the MOG
+    query.append("SUM(IF(pb.budget_type = 1 , (pb.amount * pb.gender_percentage * 0.01), 0)) * ");
+    query.append("IF(pmb.budget_type = 1 , pmb.gender_contribution, 0) * 0.01 ");
+    query.append("AS 'gender_W1_W2' , ");
+
+    // Sum of contribution budget W3_Bilateral of the project for the MOG
+    query.append("SUM(IF(pb.budget_type = 2 , pb.amount, 0)) * ");
+    query.append("IF(pmb.budget_type = 2 , pmb.total_contribution, 0) * 0.01 ");
+    query.append("AS 'budget_W3_Bilateral' , ");
+
+    // Sum of contribution gender W3_Bilateral of the project for the MOG
+    query.append("SUM(IF(pb.budget_type = 2 , (pb.amount * pb.gender_percentage * 0.01), 0)) * ");
+    query.append("IF(pmb.budget_type = 2 , pmb.gender_contribution, 0) * 0.01 ");
+    query.append("AS 'gender_W3_Bilateral' ");
+
+    query.append("FROM projects p ");
+
+    query.append("LEFT JOIN project_mog_budgets pmb ON p.id = pmb.project_id ");
+    query.append("LEFT JOIN ip_elements ipe ON pmb.mog_id = ipe.id ");
+    query.append("LEFT JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipe.id  ");
+    query.append("AND p.id = ipco.project_id ");
+
+    query.append("LEFT JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id ");
+    query.append("LEFT JOIN project_budgets pb ON pmb.project_id = pb.project_id ");
+    query.append("WHERE (pmb.year = ");
+    query.append(year + " ");
+    query.append("OR pmb.year IS NULL) ");
+    query.append("AND (ipco.year = ");
+    query.append(year + " ");
+    query.append("OR ipco.year IS NULL) ");
+    query.append("AND (pb.year = ");
+    query.append(year + " ");
+    query.append("OR pb.year IS NULL) ");
+    query.append("GROUP BY p.id , pmb.id");
     System.out.println(query);
 
     try (Connection con = databaseManager.getConnection()) {
