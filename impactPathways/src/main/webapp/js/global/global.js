@@ -278,7 +278,6 @@ function applyWordCounter($textArea,wordCount) {
   $textArea.on("keyup", function(event) {
     var $charCount = $(event.target).parent().find(".charCount");
     if(word_count($(event.target)) > wordCount) {
-      $(event.target).val($(event.target).val().slice(0, -2));
       $(event.target).addClass('fieldError');
       $charCount.addClass('fieldError');
     } else {
