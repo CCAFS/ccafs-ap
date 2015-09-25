@@ -146,7 +146,7 @@ public class POWBMOGSummaryXLS {
       xls.writeHeaders(sheet, _headersPOWBDetail);
       this.addContent(informationDetailPOWB, sheet);
 
-      xls.setDescription(sheet, "Invenire praesent moderatius ut sit, autem nonumy ei nec. Diceret tibique eu sea."
+      xls.writeDescription(sheet, "Invenire praesent moderatius ut sit, autem nonumy ei nec. Diceret tibique eu sea."
         + " In altera contentiones est, pro noster fuisset dissentias eu. Pro nonumes detracto ne. "
         + "t dicam iisque ocurreret ius, eum an liber tritani. Has vocibus ceteros definiebas ex.");
 

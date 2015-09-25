@@ -365,7 +365,7 @@ public class BaseXLS {
    * @param sheet is the sheet where you want to add information into.
    * @param value is the specific information to be written.
    */
-  public void setDescription(Sheet sheet, String description) {
+  public void writeDescription(Sheet sheet, String description) {
     // Set description
     Row row = sheet.getRow(7);
     Cell cell = row.getCell(1);
