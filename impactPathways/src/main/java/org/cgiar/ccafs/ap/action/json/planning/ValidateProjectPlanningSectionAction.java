@@ -6,17 +6,23 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -55,6 +61,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   @Inject
   private LocationManager locationManager;
+  @Inject
+  private ProjectOutcomeManager projectOutcomeManager;
 
   // Validators
   @Inject
@@ -63,6 +71,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectPartnersValidator projectPartnersValidator;
   @Inject
   private ProjectLocationsValidator locationValidator;
+  @Inject
+  private ProjectOutcomeValidator projectOutcomeValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -82,6 +92,9 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           break;
         case "locations":
           this.validateProjectLocations();
+        case "outcomes":
+          this.validateProjectOutcomes();
+          break;
         default:
           // Do nothing.
           break;
@@ -160,6 +173,31 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     project.setLocations(locationManager.getProjectLocations(projectID));
 
     locationValidator.validate(this, project, "Planning");
+  }
+
+  private void validateProjectOutcomes() {
+    // Getting information.
+    Project project = projectManager.getProject(projectID);
+    int currentPlanningYear = this.config.getPlanningCurrentYear();
+    int midOutcomeYear = this.config.getMidOutcomeYear();
+    // Load the project outcomes
+    Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(project.getStartDate());
+
+    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+      ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
+      if (projectOutcome == null) {
+        projectOutcome = new ProjectOutcome(-1);
+        projectOutcome.setYear(year);
+      }
+      projectOutcomes.put(String.valueOf(year), projectOutcome);
+    }
+    project.setOutcomes(projectOutcomes);
+
+    projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
+
   }
 
   private void validateProjectPartners() {

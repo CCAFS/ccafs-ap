@@ -130,16 +130,18 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     if (securityContext.canUpdateProjectOutcomes()) {
       boolean success = true;
 
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
+
       // Saving outcomes lessons
       super.saveProjectLessons(projectID);
 
       // Saving Project Outcome
       for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
         ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
-        success =
-          success
-            && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
-              this.getJustification());
+        success = success && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
+          this.getJustification());
       }
 
       if (success) {
@@ -150,10 +152,9 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
           this.setActionMessages(null);
           this.addActionWarning(this.getText("saving.saved") + validationMessage);
         } else {
-          this.addActionMessage(this.getText("saving.success",
-            new String[] {this.getText("planning.projectOutcome.title")}));
+          this.addActionMessage(
+            this.getText("saving.success", new String[] {this.getText("planning.projectOutcome.title")}));
         }
-
         return SUCCESS;
       } else {
         this.addActionError(this.getText("saving.problem"));
@@ -179,7 +180,7 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, midOutcomeYear, currentPlanningYear);
+      validator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
     }
   }
 }

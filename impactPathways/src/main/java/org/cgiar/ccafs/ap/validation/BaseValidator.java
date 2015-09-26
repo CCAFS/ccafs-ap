@@ -16,8 +16,6 @@ import org.slf4j.LoggerFactory;
 
 public class BaseValidator {
 
-  private static final long serialVersionUID = -7486776113435920241L;
-
   private static final Logger LOG = LoggerFactory.getLogger(BaseValidator.class);
 
   @Inject
@@ -100,6 +98,10 @@ public class BaseValidator {
 
   protected void validateLessonsLearn(BaseAction action, Project project, String section) {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
+      // TODO HT - No se puede extraer esta info de la base deatos. En vez de eso se necesita extraer la infor que viene
+      // de la interface. Se recomienda desarrollar todo el baseAction para traer la info del front-end.
+      // Y en la parte del validador (Boton Submit) se mete la data que se extrae desde la base de datos manualmente a
+      // la acción para engañar al validador y que crea que la info está en base action.
       ComponentLesson lesson = action.getProjectLessons(project.getId(), section);
       if (lesson == null || !this.isValidString(lesson.getLessons())) {
         action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));

@@ -61,14 +61,17 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   private List<IPElement> midOutcomes;
   private List<IPProgram> projectFocusList;
   private Activity activity;
-
   private List<IPElement> midOutcomesSelected;
   private List<IPElement> previousOutputs;
   private List<IPIndicator> previousIndicators;
 
+  // Front-end
   private int activityID;
   private int projectID;
   private Project project;
+
+  // Validator
+  // private ProjectCCAFSOutcomeValidator validator;
 
   @Inject
   public ProjectCCAFSOutcomesPlanningAction(APConfig config, IPProgramManager programManager,
@@ -222,8 +225,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
         IPElement midOutcome = elements.get(i);
         if (this.isValidMidoutcome(midOutcome)) {
           midOutcome
-            .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-              + " #" + (i + 1) + ": " + midOutcome.getDescription());
+          .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
+          + " #" + (i + 1) + ": " + midOutcome.getDescription());
           midOutcomes.add(midOutcome);
         }
 
@@ -432,6 +435,13 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  @Override
+  public void validate() {
+    if (save) {
+      // validator.validate(this, project, "Planning");
+    }
   }
 
 }
