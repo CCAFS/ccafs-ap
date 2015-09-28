@@ -112,7 +112,9 @@ $(document).ready(function() {
   setFormHash();
 
   $('.projectSubmitButton').on('click', function(e) {
-    $(this).fadeOut();
+    $(this).fadeOut(function() {
+      $(this).next().fadeIn();
+    });
     var $menus = $('#secondaryMenu.projectMenu ul li ul li');
     var pID = $(e.target).attr('id').split('-')[1];
     var sections = [];
@@ -156,7 +158,9 @@ function processTasks(tasks,menus,urlDoTask) {
             // Do next ajax call
             ++index;
             if(index == tasks.length) {
-              $('.projectSubmitButton').fadeIn("slow");
+              $('.projectSubmitButton').next().fadeOut(function() {
+                $('.projectSubmitButton').fadeIn("slow");
+              });
             }
             nextTask();
           }
