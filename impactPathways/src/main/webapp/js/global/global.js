@@ -52,7 +52,7 @@ $(document).ready(function() {
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {
       // Validate if the notification is a warning checking if the text contains --warn--
-      var message = $(this).text();
+      var message = $(this).html();
       var messageType;
       if(message.lastIndexOf("--warn--", 0) === 0) {
         message = message.replace("--warn--", " ");
@@ -60,7 +60,6 @@ $(document).ready(function() {
       } else {
         messageType = $(this).attr("class");
       }
-
       $('#generalMessages').noty({
           theme: 'relax',
           layout: 'top',
@@ -116,7 +115,6 @@ $(document).ready(function() {
     $(this).fadeOut();
     var $menus = $('#secondaryMenu.projectMenu ul li ul li');
     var pID = $(e.target).attr('id').split('-')[1];
-    console.log(pID);
     var sections = [];
     var menus = [];
     $menus.each(function(i,menu) {
@@ -128,7 +126,6 @@ $(document).ready(function() {
     });
     // Execute ajax process for each section
     processTasks(sections, menus, '/planning/validateProjectPlanningSection.do');
-
   });
 });
 
@@ -159,7 +156,7 @@ function processTasks(tasks,menus,urlDoTask) {
             // Do next ajax call
             ++index;
             if(index == tasks.length) {
-              $('.projectSubmitButton').fadeIn();
+              $('.projectSubmitButton').fadeIn("slow");
             }
             nextTask();
           }

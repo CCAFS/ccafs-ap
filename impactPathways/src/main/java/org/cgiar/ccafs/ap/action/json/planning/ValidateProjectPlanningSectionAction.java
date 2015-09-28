@@ -2,21 +2,29 @@ package org.cgiar.ccafs.ap.action.json.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectOutputsPlanningValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -55,6 +63,12 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   @Inject
   private LocationManager locationManager;
+  @Inject
+  private ProjectOutcomeManager projectOutcomeManager;
+  @Inject
+  private IPElementManager ipElementManager;
+  @Inject
+  private ProjectContributionOverviewManager overviewManager;
 
   // Validators
   @Inject
@@ -63,6 +77,10 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectPartnersValidator projectPartnersValidator;
   @Inject
   private ProjectLocationsValidator locationValidator;
+  @Inject
+  private ProjectOutcomeValidator projectOutcomeValidator;
+  @Inject
+  private ProjectOutputsPlanningValidator projectOutputValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -82,6 +100,31 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           break;
         case "locations":
           this.validateProjectLocations();
+          break;
+        case "outcomes":
+          this.validateProjectOutcomes();
+          break;
+        case "ccafsOutcomes":
+          // TODO
+          break;
+        case "otherContributions":
+          // TODO
+          break;
+        case "outputs":
+          this.validateOverviewByMOGS();
+          break;
+        case "deliverableList":
+          // TODO
+          break;
+        case "activities":
+          // TODO
+          break;
+        case "budget":
+          // TODO
+          break;
+        case "budgetByMog":
+          // TODO
+          break;
         default:
           // Do nothing.
           break;
@@ -112,6 +155,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Validate if project exists.
     existProject = projectManager.existProject(projectID);
+
     // Validate if the section exists.
     List<String> sections = new ArrayList<>();
     sections.add("description");
@@ -121,14 +165,28 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     sections.add("ccafsOutcomes");
     sections.add("otherContributions");
     sections.add("outputs");
-    sections.add("deliverable");
+    sections.add("deliverableList");
     sections.add("activities");
-    sections.add("impactPathway");
     sections.add("budget");
     sections.add("budgetByMog");
-
     validSection = sections.contains(sectionName);
 
+  }
+
+  private void validateOverviewByMOGS() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // getting all the outputs (MOGs) related to this project.
+    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    // Get the project MOG overviews for this project
+    project.setOutputsOverview(overviewManager.getProjectContributionOverviews(project));
+
+    // Getting the Project lessons for this section.
+    this
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+
+    // Validate
+    projectOutputValidator.validate(this, project, "Planning");
   }
 
   /**
@@ -156,16 +214,51 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   }
 
   private void validateProjectLocations() {
-    Project project = new Project(projectID);
+    // Getting the project information.
+    Project project = projectManager.getProject(projectID);
     project.setLocations(locationManager.getProjectLocations(projectID));
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "locations", this.getCurrentPlanningYear()));
 
     locationValidator.validate(this, project, "Planning");
   }
 
-  private void validateProjectPartners() {
+  private void validateProjectOutcomes() {
     // Getting information.
-    Project project = new Project(projectID);
+    Project project = projectManager.getProject(projectID);
+    int currentPlanningYear = this.config.getPlanningCurrentYear();
+    int midOutcomeYear = this.config.getMidOutcomeYear();
+
+    // Loading the project outcomes
+    Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
+    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+      ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
+      if (projectOutcome == null) {
+        projectOutcome = new ProjectOutcome(-1);
+        projectOutcome.setYear(year);
+      }
+      projectOutcomes.put(String.valueOf(year), projectOutcome);
+    }
+    project.setOutcomes(projectOutcomes);
+
+    // Getting the Project lessons for this section.
+    this
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+
+    projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
+
+  }
+
+  private void validateProjectPartners() {
+    // Getting the Project information.
+    Project project = projectManager.getProject(projectID);
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+
+    // Getting the Project lessons for this section.
+    this
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

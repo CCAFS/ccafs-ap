@@ -58,6 +58,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   private int projectID;
   private List<OutputOverview> previousOverviews;
 
+  // Validator
   private ProjectOutputsPlanningValidator validator;
 
   @Inject
@@ -82,16 +83,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   }
 
   public int getMOGIndex(IPElement mog) {
-    int index = 0;
-    List<IPElement> allMOGs = ipElementManager.getIPElements(mog.getProgram(), mog.getType());
-
-    for (int i = 0; i < allMOGs.size(); i++) {
-      if (allMOGs.get(i).getId() == mog.getId()) {
-        return (i + 1);
-      }
-    }
-
-    return index;
+    return ipElementManager.getMOGIndex(mog);
   }
 
   public Project getProject() {
@@ -128,7 +120,10 @@ public class ProjectOutputsPlanningAction extends BaseAction {
       previousOverviews.add(new OutputOverview(output.getId()));
     }
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+
     this.setHistory(historyManager.getProjectOutputsHistory(projectID));
   }
 
@@ -137,14 +132,15 @@ public class ProjectOutputsPlanningAction extends BaseAction {
     boolean success = true;
     if (securityContext.canUpdateProjectOverviewMOGs()) {
 
-      super.saveProjectLessons(projectID);
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       // Check if there are output overviews to delete
       for (OutputOverview overview : previousOverviews) {
         if (!project.getOutputsOverview().contains(overview)) {
-          success =
-            overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
-              this.getJustification());
+          success = overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
+            this.getJustification());
         }
       }
 
@@ -179,7 +175,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project);
+      validator.validate(this, project, "Planning");
     }
   }
 }

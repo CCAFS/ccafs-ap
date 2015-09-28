@@ -77,8 +77,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   private boolean fullEditable; // If user is able to edit all the form.
 
-  // Justification of the changes
+  @SuppressWarnings("rawtypes")
   private List<LogHistory> history;
+
+  // Justification of the changes
   private String justification;
 
   private ComponentLesson projectLessons;
@@ -95,7 +97,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private BoardMessageManager boardMessageManager;
 
   @Inject
-  private ProjectLessonsManager lessonManager;
+  protected ProjectLessonsManager lessonManager;
 
   @Inject
   private SectionStatusManager sectionStatusManager;
@@ -190,6 +192,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
+  @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
   }
@@ -214,12 +217,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public ComponentLesson getProjectLessons() {
     return projectLessons;
-  }
-
-
-  protected void getProjectLessons(int projectID) {
-    projectLessons =
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
   }
 
   /**
@@ -366,6 +363,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.fullEditable = fullEditable;
   }
 
+  @SuppressWarnings("rawtypes")
   public void setHistory(List<LogHistory> history) {
     this.history = history;
   }

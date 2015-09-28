@@ -10,32 +10,39 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************/
+ * ***************************************************************
+ */
+package org.cgiar.ccafs.ap.action.home;
 
-package org.cgiar.ccafs.ap.validation.model;
-
-import org.cgiar.ccafs.ap.validation.BaseValidator;
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * @author Hernán David Carvajal B. - CIAT/CCAFS
- * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * This action will be in charge of show all the P&R facts that can be stand out.
+ * 
+ * @author Héctor Fabio Tobón R.
  */
+public class OverviewAction extends BaseAction {
 
-public class OutputOverviewValidator extends BaseValidator {
+  private static final long serialVersionUID = -8002068803922618439L;
+
+  // Logging
+  private static final Logger LOG = LoggerFactory.getLogger(OverviewAction.class);
+
 
   @Inject
-  public OutputOverviewValidator() {
+  public OverviewAction(APConfig config) {
+    super(config);
   }
 
-  public boolean isValidExpectedAnnualContribution(String annualContribution) {
-    return (this.isValidString(annualContribution) && this.wordCount(annualContribution) <= 50) ? true : false;
+  @Override
+  public void prepare() throws Exception {
+
   }
 
-  public boolean isValidSocialInclusionDimmension(String socialDimmension) {
-    return (this.isValidString(socialDimmension) && this.wordCount(socialDimmension) <= 50) ? true : false;
-  }
 
 }

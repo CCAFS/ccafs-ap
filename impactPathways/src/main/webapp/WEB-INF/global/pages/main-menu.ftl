@@ -13,11 +13,16 @@
 	               <img class="icon-15" src="${baseUrl}/images/global/icon-home-menu-selected.png" />
 	            [/#if]
 	          </span>
-	          <span class="text">
-	            [@s.text name="menu.home" /]
-	          </span>
+	          <span class="text">[@s.text name="menu.home" /]</span>
 	        </li>
 	      </a>
+	      
+	      [#-- P&R Overview--]
+        <a href="${baseUrl}/overview.do">
+          <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
+            <span class="text">[@s.text name="menu.overview" /]</span>
+          </li>
+        </a>
 	      
 	      [#-- PRE-Planning section --]
 	      [#if securityContext.FPL || securityContext.RPL || securityContext.CU || securityContext.admin ]
@@ -76,6 +81,14 @@
 	    [#else]
 	      [#-- If the user is not logged show the login element in menu --]
 	      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.login" /]</li></a>
+	      
+	      [#-- P&R Overview--]
+        <a href="${baseUrl}/overview.do">
+          <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
+            <span class="text">[@s.text name="menu.overview" /]</span>
+          </li>
+        </a>
+	      
 	    [/#if]
 	  </ul>
 	  

@@ -330,7 +330,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");

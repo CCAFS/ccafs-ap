@@ -23,7 +23,6 @@ import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,10 +106,7 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     // Load the project outcomes
     Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
 
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(project.getStartDate());
-
-    for (int year = calendar.get(Calendar.YEAR); year <= midOutcomeYear; year++) {
+    for (int year = this.getCurrentPlanningYear(); year <= midOutcomeYear; year++) {
       ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
       if (projectOutcome == null) {
         projectOutcome = new ProjectOutcome(-1);
@@ -121,7 +117,10 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     }
     project.setOutcomes(projectOutcomes);
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+
     super.setHistory(historyManager.getProjectOutcomeHistory(project.getId()));
   }
 
@@ -130,16 +129,15 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     if (securityContext.canUpdateProjectOutcomes()) {
       boolean success = true;
 
-      // Saving outcomes lessons
-      super.saveProjectLessons(projectID);
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       // Saving Project Outcome
       for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
         ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
-        success =
-          success
-            && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
-              this.getJustification());
+        success = success && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
+          this.getJustification());
       }
 
       if (success) {
@@ -150,10 +148,9 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
           this.setActionMessages(null);
           this.addActionWarning(this.getText("saving.saved") + validationMessage);
         } else {
-          this.addActionMessage(this.getText("saving.success",
-            new String[] {this.getText("planning.projectOutcome.title")}));
+          this.addActionMessage(
+            this.getText("saving.success", new String[] {this.getText("planning.projectOutcome.title")}));
         }
-
         return SUCCESS;
       } else {
         this.addActionError(this.getText("saving.problem"));
@@ -179,7 +176,7 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, midOutcomeYear, currentPlanningYear);
+      validator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
     }
   }
 }

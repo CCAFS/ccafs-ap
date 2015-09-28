@@ -2172,6 +2172,12 @@ input.userName {
   border-bottom: 1px solid #9D9D9D;
 }
 
+/***************** OVERVIEW *******************/
+
+#overviewHome {
+  min-height: 545px;
+}
+
 /*************** HOME DASHBOARD****************/
 
 /*  Home page*/
@@ -4150,6 +4156,11 @@ color: #fff;font-weight: bold;}
 
 .summariesOption {
   margin: 11px 0px;
+}
+
+.summariesOption .description {
+  margin: 4px 33px 13px 33px;
+  color: #868686;
 }
 
 .summariesOption input { 
