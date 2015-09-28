@@ -41,12 +41,12 @@
         [#-- Projects reports --]
         <div id="projects-contentOptions">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="projectPartnersSummary" value="projectPartnersSummary" disabled="disabled"/>
+            <input type="radio" name="formOptions" id="projectPartnersSummary" value="projectPartnersSummary"/>
             <label for="projectPartnersSummary">List of all projects and their leading institution  <span>XLSx</span></label>
             <p class="description">Here you find a list of all projects entered in P&R with basic information; e.g. title, description, start/end date, leader, etc. </p>
           </div>
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="projectPortfolio" value="project" disabled="disabled"/>
+            <input type="radio" name="formOptions" id="projectPortfolio" value="project"/>
             <label for="projectPortfolio">Full Project Report <span>PDF</span></label>
             <p class="description">The “Full Project Report comprises of detail information of all sections completed in P&R; i.e. General Information, Outcomes, Outputs, Activities and Budget. Submission status can be found at the header. </p>
             <div class="extraOptions" style="display:none"> 
@@ -57,7 +57,7 @@
         [#-- Partners reports --]
         <div id="partners-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="leadProjectInstitutionsSummary" value="leadProjectInstitutionsSummary" disabled="disabled"/>
+            <input type="radio" name="formOptions" id="leadProjectInstitutionsSummary" value="leadProjectInstitutionsSummary"/>
             <label for="leadProjectInstitutionsSummary">Partners and lead projects  <span>XLSx</span></label>
             <p class="description">List of partners and the projects they are currently leading. </p>
           </div>
@@ -70,7 +70,7 @@
         [#-- Deliverables reports --]
         <div id="deliverables-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="deliverablePlanning" value="deliverablePlanning" disabled="disabled"/>
+            <input type="radio" name="formOptions" id="deliverablePlanning" value="deliverablePlanning"/>
             <label for="deliverablePlanning">Expected deliverables <span>XLSx</span></label>
             <p class="description">List of deliverables indicating: Project, Flagship, Region, Title, MOG, Year, Type/Sub-Type and responsible partners </p>
           </div>

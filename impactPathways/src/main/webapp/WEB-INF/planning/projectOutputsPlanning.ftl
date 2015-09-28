@@ -64,7 +64,7 @@
                   <div class="fullPartBlock">
                     <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
                   </div>
-                  [#if (currentPlanningYear == year) || (midOutcomeYear == year)]
+                  [#if (currentPlanningYear == year)]
                     <div class="fullBlock">
                       <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:[@customForm.req required=!project.bilateralProject /]</h6>  
                       [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=!project.bilateralProject showTitle=false editable=editable /]
