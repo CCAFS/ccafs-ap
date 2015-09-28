@@ -82,7 +82,9 @@
 [#compress]
     [#if action.getProjectSectionStatus(actionName)??]
       [#if !((action.getProjectSectionStatus(actionName)).missingFieldsWithPrefix)?has_content]
-       submitted
+        submitted
+      [#else]
+        toSubmit 
       [/#if]
     [/#if]
 [/#compress]

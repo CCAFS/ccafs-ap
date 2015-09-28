@@ -1534,14 +1534,25 @@ a.currentReportingSection li #i-additionalInformation{
   background-position: 172px 0;
 }
 
+#secondaryMenu ul li ul li.toSubmit a{
+  background-image: url("../../images/global/submitted.png");
+  background-repeat: no-repeat;
+  background-position: 172px -33px;
+}
+
+#secondaryMenu ul li ul li.loadingSection a{
+  background-image: url("../../images/global/loading_3.gif");
+  background-repeat: no-repeat;
+  background-position: 172px 0px;
+}
+
+
+
 #secondaryMenu ul li ul li a{
   display: block;
   text-decoration: none;
   color: #5E5E5E;
   padding: 0px 0px 5px 26px;*/;
-  background-image: url("../../images/global/submitted.png");
-  background-repeat: no-repeat;
-  background-position: 172px -33px;
 }
 
 #secondaryMenu ul li ul li:hover{

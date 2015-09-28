@@ -140,6 +140,7 @@ function processTasks(tasks,menus,urlDoTask) {
           data: tasks[index],
           beforeSend: function() {
             $(menus[index]).removeClass('animated flipInX');
+            $(menus[index]).addClass('loadingSection');
           },
           success: function(data) {
             // Process Ajax results here
@@ -148,10 +149,13 @@ function processTasks(tasks,menus,urlDoTask) {
             } else {
               if(data.sectionStatus.missingFieldsWithPrefix == "") {
                 $(menus[index]).addClass('submitted');
+                $(menus[index]).removeClass('toSubmit');
               } else {
                 $(menus[index]).removeClass('submitted');
+                $(menus[index]).addClass('toSubmit');
               }
             }
+            $(menus[index]).removeClass('loadingSection');
           },
           complete: function(data) {
             $(menus[index]).addClass('animated flipInX');
