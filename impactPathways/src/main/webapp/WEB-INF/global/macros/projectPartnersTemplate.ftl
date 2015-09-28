@@ -81,10 +81,10 @@
       <div class="fullPartBlock">
       [#if projectPartner.partnerPersons?has_content]
         [#list projectPartner.partnerPersons as partnerPerson]
-          [@contactPerson contact=partnerPerson contactName="${projectPartnerName}[${projectPartnerIndex}].partnerPersons" contactIndex="${partnerPerson_index}" /]
+          [@contactPerson contact=partnerPerson contactName="${projectPartnerName}[${projectPartnerIndex}].partnerPersons" partnerIndex="${projectPartnerIndex}" contactIndex="${partnerPerson_index}" /]
         [/#list]
       [#else]
-        [@contactPerson contactName="${projectPartnerName}[${projectPartnerIndex}].partnerPersons" contactIndex="0" /]
+        [@contactPerson contactName="${projectPartnerName}[${projectPartnerIndex}].partnerPersons" partnerIndex="0" contactIndex="0" /]
       [/#if]  
       [#if (editable && canEdit)]
         <div class="addContact"><a href="" class="addLink">[@s.text name="planning.projectPartners.addContact"/]</a></div> 
@@ -95,7 +95,7 @@
   </div>
 [/#macro]
 
-[#macro contactPerson contact={} contactName="" contactIndex="-1" template=false]
+[#macro contactPerson contact={} contactName="" partnerIndex="-1" contactIndex="-1" template=false]
   <div id="contactPerson-${template?string('template',(contact.id)!)}" class="contactPerson simpleBox ${(contact.type)!}" style="display:${template?string('none','block')}">
     [#-- Remove link for all partners --]
     [#if editable]
@@ -116,7 +116,7 @@
        [#assign canEditLeader=editable /]
       [/#if]
       <div class="partnerPerson-type halfPartBlock clearfix">
-        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!-1}'" editable=canEditLeader required=true /]
+        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
         [#if !canEditLeader]
           <div class="select">
             [#if (!securityContext.canUpdatePPAPartners()) && (contact.leader)!false]
@@ -130,8 +130,8 @@
         [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.user.id)!-1)?has_content) /]
         <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-        [@customForm.input name="" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditLeader /]
-        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user.id" value="${(contact.user.id)!'-1'}" />   
+        [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditLeader /]
+        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />   
         [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>

@@ -38,11 +38,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFTextBox;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -67,6 +69,15 @@ public class BaseXLS {
   public static final int COLUMN_TYPE_BOOLEAN = 5;
   public static final int COLUMN_TYPE_NUMERIC = 6;
   public static final int COLUMN_TYPE_DATE = 7;
+
+  // Constants for write description
+  public static final int REPORT_DESCRIPTION_ROW = 7;
+  public static final int REPORT_DESCRIPTION_COLUMN = 1;
+
+  // Constants for logo position
+  public static final int LOGO_POSITION_ROW = 1;
+  public static final int LOGO_POSITION_COLUMN = 5;
+
 
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
@@ -122,12 +133,6 @@ public class BaseXLS {
     header.setRight("Report generated on " + date);
   }
 
-  public void autoSizeColumns(Sheet sheet) {
-    for (int a = 1; a <= this.columnStyles.length; a++) {
-      sheet.autoSizeColumn(a);
-    }
-
-  }
 
   /**
    * This method closes all the streams opened in the process.
@@ -137,6 +142,37 @@ public class BaseXLS {
   public void closeStreams() throws IOException {
     outputStream.close();
     workbook.close();
+  }
+
+  /**
+   * @throws IOException
+   */
+  public void createLogo(Workbook workbook, Sheet sheet) throws IOException {
+    // FileInputStream obtains input bytes from the image file
+    InputStream inputStream =
+      new FileInputStream(ServletActionContext.getServletContext().getRealPath("images/global/logo-ccafs.png"));
+    // Get the contents of an InputStream as a byte[].
+    byte[] bytes = IOUtils.toByteArray(inputStream);
+    // Adds a picture to the workbook
+    int pictureIdx = workbook.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+    // close the input stream
+    inputStream.close();
+
+    // Creates the top-level drawing patriarch.
+    XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch();
+
+    // Set top-left corner for the image
+    XSSFClientAnchor anchor = new XSSFClientAnchor();
+    anchor.setAnchorType(2);
+    anchor.setCol1(LOGO_POSITION_COLUMN);
+    anchor.setRow1(LOGO_POSITION_ROW);
+
+    // Creates a picture
+    XSSFPicture pict = drawing.createPicture(anchor, pictureIdx);
+
+    // Reset the image to the original size
+    pict.resize();
+
   }
 
   /**
@@ -156,6 +192,46 @@ public class BaseXLS {
    */
   protected String getText(String key) {
     return textProvider.getText(key);
+  }
+
+  /**
+   * Method used for to initialize an Excel Workbook object.
+   * It creates a Workbook object using a predefined template.
+   * 
+   * @param excelFormat is the format that you want to create (i.e. 'xls' or 'xlsx').
+   * @param useTemplate is true if you want to use a templa, false if you want to create the Workbook empty.
+   * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
+   *         XLS format.
+   * @throws IOException
+   */
+  public void initializeSheet(Sheet sheet, int[] columnTypes) throws IOException {
+
+    // initializing values
+    rowStart = 12;
+    columnStart = 1;
+    rowCounter = rowStart;
+    columnCounter = columnStart;
+
+    // Initializing styles depending on the cell type.
+    this.initializeStyles(columnTypes);
+
+    // applying header.
+    this.addHeader(sheet);
+
+    StringBuilder rangeString = new StringBuilder();
+    char initialColumn = 'B';
+    char endColumn = (char) (initialColumn + (columnTypes.length - 1));
+
+    // Set filter in cell
+    rangeString = new StringBuilder();
+    rangeString.append(initialColumn);
+    rangeString.append("12:");
+    rangeString.append(endColumn);
+    rangeString.append("12");
+
+
+    sheet.setAutoFilter(CellRangeAddress.valueOf(rangeString.toString()));
+
   }
 
   /**
@@ -249,47 +325,32 @@ public class BaseXLS {
    * Method used for to initialize an Excel Workbook object.
    * It creates a Workbook object using a predefined template.
    * 
-   * @param excelFormat is the format that you want to create (i.e. 'xls' or 'xlsx').
    * @param useTemplate is true if you want to use a templa, false if you want to create the Workbook empty.
    * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
    *         XLS format.
    */
-  public Workbook initializeXLS(boolean useTemplate, int[] columnTypes) {
+  public Workbook initializeWorkbook(boolean useTemplate) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     usingTemplate = useTemplate;
+
     try {
       // validating the type of format.
       if (useTemplate) {
-        rowStart = 12;
-        columnStart = 1;
-        rowCounter = rowStart;
-        columnCounter = columnStart;
+
         // opening excel template.
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
-        // Initializing styles depending on the cell type.
-        this.initializeStyles(columnTypes);
+
         // closing input stream.
         templateStream.close();
-        // applying header.
-        this.addHeader(workbook.getSheetAt(0));
-
-        // Set filter in cell
-        StringBuilder rangeString = new StringBuilder();
-        char initialColumn = 'B';
-        rangeString.append(initialColumn);
-        rangeString.append("12:");
-        rangeString.append((char) (initialColumn + (columnTypes.length - 1)));
-        rangeString.append("12");
-
-        workbook.getSheetAt(0).setAutoFilter(CellRangeAddress.valueOf(rangeString.toString()));
 
       } else {
         workbook = new XSSFWorkbook();
       }
       return workbook;
+
     } catch (IOException e) {
       LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
     }
@@ -310,6 +371,7 @@ public class BaseXLS {
     rowCounter++;
     columnCounter = columnStart;
   }
+
 
   /**
    * This method writes any value into a specific cell.
@@ -340,7 +402,6 @@ public class BaseXLS {
     cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
   }
 
-
   /**
    * This method writes boolean value into a specific cell.
    * 
@@ -358,6 +419,17 @@ public class BaseXLS {
 
 
   /**
+   * This method writes double value with format budget into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void writeBudget(Sheet sheet, double value) {
+    this.prepareCell(sheet);
+    cell.setCellValue(value);
+  }
+
+  /**
    * This method writes date value into a specific cell.
    * 
    * @param sheet is the sheet where you want to add information into.
@@ -368,6 +440,21 @@ public class BaseXLS {
     cell.setCellValue(value);
   }
 
+  /**
+   * This method writes double value with format budget into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   */
+  public void writeDescription(Sheet sheet, String description) {
+    // Set description
+    Row row = sheet.getRow(REPORT_DESCRIPTION_ROW);
+    Cell cell = row.getCell(REPORT_DESCRIPTION_COLUMN);
+    cell.getCellStyle().setAlignment(CellStyle.ALIGN_LEFT);
+    cell.getCellStyle().setWrapText(true);
+    cell.setCellValue(description);
+
+  }
 
   /**
    * This method writes integer value into a specific cell.
@@ -378,8 +465,8 @@ public class BaseXLS {
   public void writeDouble(Sheet sheet, double value) {
     this.prepareCell(sheet);
     cell.setCellValue(value);
-    // sheet.autoSizeColumn(columnCounter);
   }
+
 
   /**
    * This method writes the headers into the given sheet.
@@ -401,12 +488,12 @@ public class BaseXLS {
         cell.setCellStyle(styleHeader);
         cell.setCellValue(headers[counter - 1]);
         sheet.autoSizeColumn(counter);
-        sheet.setColumnWidth(counter, 6000);
       }
     } else {
       // TODO To develop the same algorithm but without style starting in the first row of the sheet.
     }
   }
+
 
   /**
    * This method writes integer value into a specific cell.
@@ -441,7 +528,6 @@ public class BaseXLS {
 
   }
 
-
   /**
    * This method writes the title box into the given sheet.
    * 
@@ -451,7 +537,11 @@ public class BaseXLS {
   public void writeTitleBox(Sheet sheet, String text) {
 
     XSSFDrawing draw = (XSSFDrawing) sheet.createDrawingPatriarch();
-    XSSFTextBox textbox = draw.createTextbox(new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 4, 6));
+    XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 4, 6);
+
+
+    anchor.setAnchorType(2);
+    XSSFTextBox textbox = draw.createTextbox(anchor);
 
     textbox.setFillColor(TEXTBOX_BACKGROUND_COLOR_RGB.getRed(), TEXTBOX_BACKGROUND_COLOR_RGB.getGreen(),
       TEXTBOX_BACKGROUND_COLOR_RGB.getBlue());

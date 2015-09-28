@@ -32,6 +32,14 @@
      </result>
    </action>
    
+      <action name="genderContributionSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.GenderSummaryAction">
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">${contentType}</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+     </result>
+   </action>
+   
         <action name="leadProjectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadProjectPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
@@ -48,7 +56,7 @@
      </result>
    </action>
    
-    <action name="pwob" class="org.cgiar.ccafs.ap.action.summaries.planning.POWBSummaryAction">
+    <action name="powb" class="org.cgiar.ccafs.ap.action.summaries.planning.POWBSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -56,7 +64,7 @@
      </result>
    </action>
    
-   <action name="pwobMOG" class="org.cgiar.ccafs.ap.action.summaries.planning.POWBMOGSummaryAction">
+   <action name="powbMOG" class="org.cgiar.ccafs.ap.action.summaries.planning.POWBMOGSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>

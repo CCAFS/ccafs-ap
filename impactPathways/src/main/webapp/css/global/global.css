@@ -2172,6 +2172,12 @@ input.userName {
   border-bottom: 1px solid #9D9D9D;
 }
 
+/***************** OVERVIEW *******************/
+
+#overviewHome {
+  min-height: 545px;
+}
+
 /*************** HOME DASHBOARD****************/
 
 /*  Home page*/
@@ -2654,36 +2660,29 @@ button.ipGraph-btn{
   padding: 3px 12px;
   border-radius: 2px;
   color: #fff;
+  text-decoration: none;
 }
 
 .projectsList a.submitButton:hover {
-  background-color: #3498db;.projectsList
-  a.submitButton {      
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  background-color: #DCDCFF;
-  padding: 3px 12px;
-  border-radius: 2px;};.projectsList
-  a.submitButton {      
-  
-  
-  
-  
-  
-  
-  
-  
-  background-color: #DCDCFF;
-  padding: 3px 12px;
-  border-radius: 2px;};
-  text-decoration: none;
+  background-color: #3498db;
+}
+
+.projectSubmitButton {
+  background: url(../../images/global/submit-icon.png) no-repeat;
+  background-color: #83AECC;
+  background-position: 46px 9px;
+  padding: 11px 0 11px 18px;
+  margin: 0px 10px;
+  border-radius: 2px;
+  color: #fff;
+  font-weight: lighter;
+  font-size: 1.3em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.projectSubmitButton:hover {
+  background-color: #3498db;
 }
 
 .projectsList #ids, .activities #ids {
@@ -4157,6 +4156,11 @@ color: #fff;font-weight: bold;}
 
 .summariesOption {
   margin: 11px 0px;
+}
+
+.summariesOption .description {
+  margin: 4px 33px 13px 33px;
+  color: #868686;
 }
 
 .summariesOption input { 

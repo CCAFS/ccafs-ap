@@ -61,7 +61,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
   private List<LiaisonInstitution> liaisonInstitutions;
-  // private List<IPCrossCutting> ipCrossCuttings;
   private List<User> allOwners;
   private Map<String, String> projectTypes;
 
@@ -96,6 +95,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   public List<User> getAllOwners() {
     return allOwners;
   }
+
 
   public String getBilateralContractURL() {
     return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
@@ -325,6 +325,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       project.setWorkplanName("");
       project.setBilateralContractProposalName("");
     }
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
   }
 
   @Override
@@ -542,7 +545,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project);
+      validator.validate(this, project, "Planning");
     }
   }
 }

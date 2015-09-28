@@ -52,7 +52,7 @@ $(document).ready(function() {
   function showNotificationMessages() {
     $('#generalMessages #messages').children("li").each(function(index) {
       // Validate if the notification is a warning checking if the text contains --warn--
-      var message = $(this).text();
+      var message = $(this).html();
       var messageType;
       if(message.lastIndexOf("--warn--", 0) === 0) {
         message = message.replace("--warn--", " ");
@@ -60,7 +60,6 @@ $(document).ready(function() {
       } else {
         messageType = $(this).attr("class");
       }
-
       $('#generalMessages').noty({
           theme: 'relax',
           layout: 'top',
@@ -111,7 +110,66 @@ $(document).ready(function() {
 
   // Generating hash from form information
   setFormHash();
+
+  $('.projectSubmitButton').on('click', function(e) {
+    $(this).fadeOut(function() {
+      $(this).next().fadeIn();
+    });
+    var $menus = $('#secondaryMenu.projectMenu ul li ul li');
+    var pID = $(e.target).attr('id').split('-')[1];
+    var sections = [];
+    var menus = [];
+    $menus.each(function(i,menu) {
+      sections.push({
+          projectID: pID,
+          sectionName: (menu.id).split('-')[1]
+      });
+      menus.push(menu);
+    });
+    // Execute ajax process for each section
+    processTasks(sections, menus, '/planning/validateProjectPlanningSection.do');
+  });
 });
+
+function processTasks(tasks,menus,urlDoTask) {
+  var index = 0;
+  function nextTask() {
+    if(index < tasks.length) {
+      $.ajax({
+          url: baseURL + urlDoTask,
+          data: tasks[index],
+          beforeSend: function() {
+            $(menus[index]).removeClass('animated flipInX');
+          },
+          success: function(data) {
+            // Process Ajax results here
+            if(jQuery.isEmptyObject(data)) {
+              $(menus[index]).removeClass('submitted');
+            } else {
+              if(data.sectionStatus.missingFieldsWithPrefix == "") {
+                $(menus[index]).addClass('submitted');
+              } else {
+                $(menus[index]).removeClass('submitted');
+              }
+            }
+          },
+          complete: function(data) {
+            $(menus[index]).addClass('animated flipInX');
+            // Do next ajax call
+            ++index;
+            if(index == tasks.length) {
+              $('.projectSubmitButton').next().fadeOut(function() {
+                $('.projectSubmitButton').fadeIn("slow");
+              });
+            }
+            nextTask();
+          }
+      });
+    }
+  }
+  // Start first Ajax call
+  nextTask();
+}
 
 /**
  * Validate fields length when click to any button
@@ -224,7 +282,6 @@ function applyWordCounter($textArea,wordCount) {
   $textArea.on("keyup", function(event) {
     var $charCount = $(event.target).parent().find(".charCount");
     if(word_count($(event.target)) > wordCount) {
-      $(event.target).val($(event.target).val().slice(0, -2));
       $(event.target).addClass('fieldError');
       $charCount.addClass('fieldError');
     } else {

@@ -37,47 +37,58 @@ public class ProjectOutcomeValidator extends BaseValidator {
     this.projectValidator = projectValidator;
   }
 
-  public void validate(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear) {
+  public void validate(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear, String cycle) {
 
     if (project != null) {
       this.validateProjectJustification(action, project);
 
       // The projects will be validated according to their type
-      if (project.isCoreProject()) {
-        String message;
-        for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
-
-          // Validate the outcome statement
-          if (!projectValidator.isValidOutcomeStatement(project.getOutcomes(), year)) {
-            if (year == midOutcomeYear) {
-              message = this.getText("planning.projectOutcome.statement.readText");
-            } else {
-              message = this.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
-            }
-
-            this.addMessage(message.toLowerCase());
-          }
-
-          // Validate the outcome gender dimension
-          if (!projectValidator.isValidOutcomeGenderDimension(project.getOutcomes(), year)) {
-            if (year == midOutcomeYear) {
-              message = this.getText("planning.projectOutcome.genderAndSocialStatement.readText");
-            } else {
-              message =
-                this
-                  .getText("planning.projectOutcome.genderAndSocialAnnualProgress.readText", new String[] {year + ""});
-            }
-
-            this.addMessage(message.toLowerCase());
-          }
-        }
+      if (project.isCoreProject() || project.isCoFundedProject()) {
+        this.validateLessonsLearn(action, project, "outcomes");
+        this.validateCoreProject(action, project, midOutcomeYear, currentPlanningYear, cycle);
       } else {
         // We don't validate the project outcomes for the bilateral projects.
       }
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      }
+
+      // Saving missing fields.
+      this.saveMissingFields(project, cycle, "outcomes");
+    }
+  }
+
+  private void validateCoreProject(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear,
+    String cycle) {
+    String message;
+    // Validate for each year.
+    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+      // Validate only two years ahead and the last year which is 2019.
+      if (year < (currentPlanningYear + 2) || year == midOutcomeYear) {
+        // Validate the outcome statement
+        if (!projectValidator.isValidOutcomeStatement(project.getOutcomes(), year)) {
+          if (year == midOutcomeYear) {
+            message = action.getText("planning.projectOutcome.statement.readText");
+          } else {
+            message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
+          }
+          this.addMessage(message.toLowerCase());
+          this.addMissingField("project.outcomes[" + year + "].statement");
+        }
+
+        // Validate the outcome gender dimension
+        if (!projectValidator.isValidOutcomeGenderDimension(project.getOutcomes(), year)) {
+          if (year == midOutcomeYear) {
+            message = action.getText("planning.projectOutcome.genderAndSocialStatement.readText");
+          } else {
+            message = action.getText("planning.projectOutcome.genderAndSocialAnnualProgress.readText",
+              new String[] {year + ""});
+          }
+          this.addMessage(message.toLowerCase());
+          this.addMissingField("project.outcomes[" + year + "].genderDimension");
+        }
       }
     }
   }

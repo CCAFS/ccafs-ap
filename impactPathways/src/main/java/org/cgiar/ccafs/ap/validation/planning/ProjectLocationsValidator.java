@@ -29,7 +29,6 @@ import com.google.inject.Inject;
 
 public class ProjectLocationsValidator extends BaseValidator {
 
-  private static final long serialVersionUID = -4871185832403702671L;
   private ProjectValidator projectValidator;
   boolean problem = false;
   boolean fields = false;
@@ -40,39 +39,45 @@ public class ProjectLocationsValidator extends BaseValidator {
     this.projectValidator = projectValidator;
   }
 
-  public boolean isValidLocation(Location location) {
-    boolean result = true;
-    if (location.getName().isEmpty()) {
-      result = false;
-    }
-    return result;
+  private boolean isValidLocation(Location location) {
+    return !location.getName().isEmpty();
   }
 
-
-  public void validate(BaseAction action, Project project) {
+  public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
-
       this.validateProjectJustification(action, project);
-      // Projects are validated checking if they are not global and their locations are valid ones.
-      if ((!project.isGlobal()) && (!projectValidator.isValidListLocations(project.getLocations()))) {
-        problem = true;
-      }
-      if (!project.isGlobal()) {
-        this.validateLocations(action, project);
-      }
 
-      if (problem) {
-        action.addActionError(this.getText("planning.projectLocations.type"));
+      // If project is CORE or CO-FUNDED
+      if (project.isCoreProject() || project.isCoFundedProject()) {
+        this.validateLessonsLearn(action, project, "locations");
+        // Projects are validated checking if they are not global and their locations are valid ones.
+        if ((!project.isGlobal()) && (!projectValidator.isValidListLocations(project.getLocations()))) {
+          this.addMissingField("project.locations.empty");
+          action.addActionError(action.getText("planning.projectLocations.type"));
+        } else {
+          this.validateLocations(action, project);
+        }
+      } else {
+        // Do Nothing
       }
       if (fields) {
-        action.addActionError(this.getText("saving.fields.required"));
+        action.addActionError(action.getText("saving.fields.required"));
+      } else if (validationMessage.length() > 0) {
+        action
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
+
+      // Saving missing fields.
+      this.saveMissingFields(project, cycle, "locations");
     }
   }
 
-  public void validateLocations(BaseAction action, Project project) {
+  private void validateLocations(BaseAction action, Project project) {
     for (int i = 0; i < project.getLocations().size(); i++) {
       if (!this.isValidLocation(project.getLocations().get(i))) {
+        this.addMessage("location #" + (i + 1));
+        action.addFieldError("location-" + i, action.getText("validation.field.required"));
+        // No need to add missing fields as the information is not saved yet.
         fields = true;
       }
     }

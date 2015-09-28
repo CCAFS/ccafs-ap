@@ -255,7 +255,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    System.out.println("preparing....");
     super.prepare();
     actionName = ActionContext.getContext().getName();
     // Getting the project id from the URL parameter
@@ -331,7 +330,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
     }
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
 
   }
 
@@ -445,7 +449,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    LOG.debug("saving... ");
     if (securityContext.canUpdateProjectPartners(project.getId())) {
 
       if (!this.isNewProject()) {
@@ -516,7 +519,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      projectPartnersValidator.validate(this, project);
+      projectPartnersValidator.validate(this, project, "Planning");
     }
   }
 

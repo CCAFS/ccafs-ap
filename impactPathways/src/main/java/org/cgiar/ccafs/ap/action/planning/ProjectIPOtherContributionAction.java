@@ -122,7 +122,11 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       previousCRPs.add(new CRP(crp.getId()));
     }
 
-    super.getProjectLessons(projectID);
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
     if (this.isHttpPost()) {
@@ -137,18 +141,15 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       super.saveProjectLessons(projectID);
 
       // Saving Activity IP Other Contribution
-      boolean saved =
-        ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
-          this.getCurrentUser(), this.getJustification());
+      boolean saved = ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
+        this.getCurrentUser(), this.getJustification());
 
 
       // Delete the CRPs that were un-selected
       for (CRP crp : previousCRPs) {
         if (!project.getCrpContributions().contains(crp)) {
-          saved =
-            saved
-              && crpManager.removeCrpContribution(project.getId(), crp.getId(), this.getCurrentUser().getId(),
-                this.getJustification());
+          saved = saved && crpManager.removeCrpContribution(project.getId(), crp.getId(), this.getCurrentUser().getId(),
+            this.getJustification());
         }
       }
 

@@ -72,7 +72,7 @@
         <div class="fullBlock">
           [#-- Project Type --]
           <div class="halfPartBlock"> 
-            [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" required=true disabled=true /]
+            [@customForm.select name="project.type" value="project.type" i18nkey="planning.projectDescription.projectType" listName="projectTypes" disabled=true editable=editable /]
             <input name="project.type" value="${project.type}" type="hidden"/>
           </div>
         </div> 
@@ -116,7 +116,7 @@
               [#if editable] 
                 [@customForm.inputFile name="file"  /]
               [#else]  
-                [@s.text name="form.values.notFileUploaded" /]
+                <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
               [/#if] 
             [/#if]
           </div>  
@@ -136,11 +136,15 @@
             <div class="checkboxGroup">  
               [#if editable && securityContext.canEditProjectFlagships()]
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-                [@s.checkboxlist name="project.flagships" disabled=!securityContext.canEditProjectFlagships() list="ipProgramFlagships" listKey="id" listValue="getComposedName(id)" cssClass="checkbox" value="flagshipIds" /]
-              [#else] 
-                [#list project.flagships as element]
-                 <p class="checked">${element.name}</p>
-                [/#list]
+                [@s.checkboxlist name="project.flagships" disabled=!securityContext.canEditProjectFlagships() list="ipProgramFlagships" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="flagshipIds" /]
+              [#else]
+                [#if project.flagships?has_content]
+                  [#list project.flagships as element]
+                   <p class="checked">${element.composedName}</p>
+                  [/#list]
+                [#else]
+                  [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if]
+                [/#if]
               [/#if]
             </div>
           </div> 
@@ -150,11 +154,15 @@
             <div class="checkboxGroup">
               [#if editable && securityContext.canEditProjectRegions()]
                 [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-                [@s.checkboxlist name="project.regions" disabled=!securityContext.canEditProjectRegions()  list="ipProgramRegions" listKey="id" listValue="name" cssClass="checkbox" value="regionIds" /]
-              [#else]  
-                [#list project.regions as element]
-                  <p class="checked">${element.name}</p>
-                [/#list]
+                [@s.checkboxlist name="project.regions" disabled=!securityContext.canEditProjectRegions()  list="ipProgramRegions" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="regionIds" /]
+              [#else]
+                [#if project.regions?has_content]
+                  [#list project.regions as element]
+                    <p class="checked">${element.composedName}</p>
+                  [/#list]
+                [#else]
+                  [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if]
+                [/#if]
               [/#if]
             </div>
           </div> 
@@ -193,9 +201,9 @@
       </div>
 
     </div> 
+    [#-- Project identifier --]
+    <input name="projectID" type="hidden" value="${project.id?c}" />
     [#if editable]
-      [#-- Project identifier --]
-      <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="[#if !newProject]borderBox[/#if]" >
         [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">

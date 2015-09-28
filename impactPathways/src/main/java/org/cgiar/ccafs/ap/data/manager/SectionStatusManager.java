@@ -13,32 +13,43 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
-import org.cgiar.ccafs.ap.data.manager.impl.ProjectStatusManagerImpl;
+import org.cgiar.ccafs.ap.data.manager.impl.SectionStatusManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectStatus;
+import org.cgiar.ccafs.ap.data.model.SectionStatus;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(ProjectStatusManagerImpl.class)
-public interface ProjectStatusManager {
+@ImplementedBy(SectionStatusManagerImpl.class)
+public interface SectionStatusManager {
 
   /**
-   * This method gets the project status of a given project in a given cycle.
+   * This method gets the section status of a given project in a given cycle.
    * 
    * @param project is the project related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
    * @param section is the name of a section.
-   * @return ProjectStatus object with all the information encapsulated on it.
+   * @return SectionStatus object with all the information encapsulated on it.
    */
-  public ProjectStatus getProjectStatus(Project project, String cycle, String section);
+  public SectionStatus getSectionStatus(Project project, String cycle, String section);
 
   /**
-   * This method saves into the database the current project status with regards the missing fields.
+   * This method gets all the statuses of a project for a given a specific cycle.
+   * 
+   * @param project is some project.
+   * @param cycle could be 'Planning' or 'Reporting'.
+   * @return a List if SectionStatus objects with the information requested.
+   */
+  public List<SectionStatus> getSectionStatuses(Project project, String cycle);
+
+  /**
+   * This method saves into the database the current section status with regards the missing fields.
    * 
    * @param status - corresponds to a given project status
    * @param project - is the project where the status will be related to.
-   * @return a number greater than 0 meaning the identifier of the new record that was added, 0 if the nformation was
+   * @return a number greater than 0 meaning the identifier of the new record that was added, 0 if the information was
    *         updated, or -1 if some error occurred.
    */
-  public int saveProjectStatus(ProjectStatus status, Project project);
+  public int saveSectionStatus(SectionStatus status, Project project);
 }

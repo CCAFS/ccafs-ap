@@ -14,17 +14,10 @@
 
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.Location;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -37,12 +30,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class POWBMOGSummaryXLS {
 
   private BaseXLS xls;
-  private BudgetManager budgetManager;
+
 
   @Inject
-  public POWBMOGSummaryXLS(BaseXLS xls, BudgetManager budgetManager) {
+  public POWBMOGSummaryXLS(BaseXLS xls) {
     this.xls = xls;
-    this.budgetManager = budgetManager;
   }
 
   /**
@@ -51,108 +43,69 @@ public class POWBMOGSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Project> projectsList, Workbook workbook) {
+  private void addContent(List<Map<String, Object>> informationDetailPOWB, Sheet sheet) {
 
-    // {"Outcome 2019", "MOG", "Total W1/W2(USD)", "Total W3/Bilateral(USD)", "Total W1/W2 (USD)",
-    // "Total W3/Bilateral(USD)"
-
-    double W1W2, W3Bilateral;
+    Map<String, Object> mapObject;
     StringBuilder stringBuilder;
-    int counter;
-    Sheet sheet = workbook.getSheetAt(0);
-    Project project;
-    Locale locale = new Locale("en", "US");
-    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-    currencyFormatter.setMaximumFractionDigits(0);
-
+    String valueOne, valueTwo;
     // Iterating all the projects
-    for (int a = 0; a < 2; a++) {
-      project = projectsList.get(a);
+    for (int a = 0; a < informationDetailPOWB.size(); a++) {
+      mapObject = informationDetailPOWB.get(a);
 
       // Iterating all the partners
-      for (ProjectPartner projectPartnerPPA : project.getPPAPartners()) {
-        xls.writeInteger(sheet, project.getId());
-        xls.nextColumn();
 
-        // Flashig
-        counter = 0;
-        stringBuilder = new StringBuilder();
-        for (IPProgram flashig : project.getFlagships()) {
-          if (counter != 0) {
-            stringBuilder.append(", ");
-          }
-          stringBuilder.append(flashig.getAcronym());
-          counter++;
-        }
-        xls.writeString(sheet, stringBuilder.toString());
-        xls.nextColumn();
+      // Project id
+      xls.writeInteger(sheet, (int) mapObject.get("project_id"));
+      xls.nextColumn();
 
-        // Title
-        xls.writeString(sheet, project.getTitle());
-        xls.nextColumn();
+      // Title
+      xls.writeString(sheet, (String) mapObject.get("project_title"));
+      xls.nextColumn();
 
-        // Summary
-        xls.writeString(sheet, project.getSummary());
-        xls.nextColumn();
+      // MOG description
+      stringBuilder = new StringBuilder();
 
-        if (project.getLeader() != null && project.getLeader().getInstitution() != null) {
 
-          // Acronym Leader
-          xls.writeString(sheet, project.getLeader().getInstitution().getAcronym());
-          xls.nextColumn();
+      valueOne = (String) mapObject.get("flagship");
+      valueTwo = (String) mapObject.get("mog_description");
 
-          // Leader name
-          xls.writeString(sheet, project.getLeader().getInstitution().getName());
-        } else {
-          xls.nextColumn();
-        }
-        xls.nextColumn();
-
-        // Region
-        counter = 0;
-        stringBuilder = new StringBuilder();
-        for (IPProgram region : project.getRegions()) {
-          if (counter != 0) {
-            stringBuilder.append("-");
-          }
-          stringBuilder.append(region.getAcronym());
-          counter++;
-        }
-        xls.writeString(sheet, stringBuilder.toString());
-        xls.nextColumn();
-
-        // W1/W2 Budget
-        W1W2 =
-          budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
-            .getInstitution().getId(), BudgetType.W1_W2.getValue());
-
-        xls.writeString(sheet, currencyFormatter.format(W1W2));
-        xls.nextColumn();
-
-        // W3/Bilateral Budget
-        W3Bilateral =
-          budgetManager.calculateTotalCCAFSBudgetByInstitutionAndType(project.getId(), projectPartnerPPA
-            .getInstitution().getId(), BudgetType.W3_BILATERAL.getValue());
-
-        xls.writeDouble(sheet, W3Bilateral);
-        xls.nextColumn();
-
-        // Location
-        counter = 0;
-        project.getLocations();
-        stringBuilder = new StringBuilder();
-        for (Location location : project.getLocations()) {
-          if (counter != 0) {
-            stringBuilder.append(", ");
-          }
-          stringBuilder.append(location.getName());
-          counter++;
-        }
-        xls.writeString(sheet, stringBuilder.toString());
-
-        xls.nextRow();
+      if (valueOne != null && valueTwo != null) {
+        stringBuilder.append(valueOne);
+        stringBuilder.append(" - ");
+        stringBuilder.append(valueTwo);
+      } else {
+        stringBuilder.append("");
       }
 
+
+      xls.writeString(sheet, stringBuilder.toString());
+      xls.nextColumn();
+
+      // Annual description
+      xls.writeString(sheet, (String) mapObject.get("anual_contribution"));
+      xls.nextColumn();
+
+      // Gender description
+      xls.writeString(sheet, (String) mapObject.get("gender_contribution"));
+      xls.nextColumn();
+
+      // budget_W1_W2
+      xls.writeBudget(sheet, (double) mapObject.get("budget_W1_W2"));
+      xls.nextColumn();
+
+      // gender_W1_W2
+      xls.writeBudget(sheet, (double) mapObject.get("gender_W1_W2"));
+      xls.nextColumn();
+
+      // budget_W3_Bilateral
+      xls.writeBudget(sheet, (double) mapObject.get("budget_W3_Bilateral"));
+      xls.nextColumn();
+
+      // gender_W3_Bilateral
+      xls.writeBudget(sheet, (double) mapObject.get("gender_W3_Bilateral"));
+      xls.nextColumn();
+
+      xls.nextRow();
 
     }
   }
@@ -163,36 +116,43 @@ public class POWBMOGSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Project> projectsList, int startYear, int endYear) {
+  public byte[] generateXLS(List<Map<String, Object>> informationDetailPOWB) {
 
     try {
 
+      Workbook workbook = xls.initializeWorkbook(true);
 
+      /***************** POWB MOG Report Detail ******************/
       // Writting headers
+      String[] _headersPOWBDetail =
+        new String[] {"Project Id", "Project title", "MOG", "Expected annual contribution",
+        "Expected plan of the gender and social inclusion", " Budget Total W1/W2 (USD)",
+        "Budget Total W3/Bilateral (USD)", " Budget Total W1/W2 (USD)", "Budget Total W3/Bilateral (USD)"};
 
-      StringBuilder headers = new StringBuilder();
-
-      headers.append("Outcome 2019, ");
-      headers.append("MOG , ");
-      headers.append("Total W1/W2(USD) , ");
-      headers.append("Total W3/Bilateral(USD) , ");
-      headers.append("Total W1/W2(USD) , ");
-      headers.append("Total W3/Bilateral(USD)");
-
-
-      // Writting type headers.
-      int[] headersType =
-      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+      // defining header types.
+      int[] headerTypesPOWBDetail =
+        new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
         BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
-      Workbook workbook = xls.initializeXLS(true, headersType);
 
       // renaming sheet
-      workbook.setSheetName(0, "PWOB MOG Report");
+      workbook.setSheetName(0, "P&R - POWB Detail");
       Sheet sheet = workbook.getSheetAt(0);
-      this.addContent(projectsList, workbook);
 
-      xls.writeHeaders(sheet, headers.toString().split(","));
+      // write text box
+      xls.writeTitleBox(sheet, "POWBMOG Summary Detail");
+
+      // write text box
+      xls.createLogo(workbook, sheet);
+
+      xls.initializeSheet(sheet, headerTypesPOWBDetail);
+
+      xls.writeHeaders(sheet, _headersPOWBDetail);
+      this.addContent(informationDetailPOWB, sheet);
+
+      // Set description
+      xls.writeDescription(sheet, xls.getText("summaries.powb.mog.sheetone.description"));
 
       // this.flush();
       xls.writeWorkbook();

@@ -14,11 +14,14 @@
 package org.cgiar.ccafs.ap.action;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectLessonsManager;
+import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.LogHistory;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 import org.cgiar.ccafs.utils.APConfig;
@@ -58,6 +61,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // Loggin
   private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
+
   // button actions
   protected boolean save;
   protected boolean next;
@@ -73,13 +77,16 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   private boolean fullEditable; // If user is able to edit all the form.
 
-  // Justification of the changes
+  @SuppressWarnings("rawtypes")
   private List<LogHistory> history;
+
+  // Justification of the changes
   private String justification;
 
   private ComponentLesson projectLessons;
   private Map<String, Object> session;
   private HttpServletRequest request;
+  private List<SectionStatus> sectionStatuses;
 
   // Config
   protected APConfig config;
@@ -90,7 +97,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private BoardMessageManager boardMessageManager;
 
   @Inject
-  private ProjectLessonsManager lessonManager;
+  protected ProjectLessonsManager lessonManager;
+
+  @Inject
+  private SectionStatusManager sectionStatusManager;
+
 
   @Inject
   public BaseAction(APConfig config) {
@@ -166,7 +177,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getPlanningCurrentYear();
   }
 
-
   /**
    * Get the user that is currently saved in the session.
    * 
@@ -182,14 +192,16 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
-
+  @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
   }
 
+
   public String getJustification() {
     return justification;
   }
+
 
   /**
    * Define default locale while we decide to support other languages in the future.
@@ -199,7 +211,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
-
   public String getOrganizationIdentifier() {
     return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
   }
@@ -208,9 +219,21 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return projectLessons;
   }
 
-  protected void getProjectLessons(int projectID) {
-    projectLessons =
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
+  /**
+   * This method gets the specific section status from the sectionStatuses array.
+   * 
+   * @param section is the name of some section.
+   * @return a SectionStatus object with the information requested.
+   */
+  public SectionStatus getProjectSectionStatus(String section) {
+    if (this.sectionStatuses != null) {
+      for (SectionStatus status : this.sectionStatuses) {
+        if (status.getSection().equals(section)) {
+          return status;
+        }
+      }
+    }
+    return null;
   }
 
   public HttpServletRequest getRequest() {
@@ -223,6 +246,19 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public Map<String, Object> getSession() {
     return session;
+  }
+
+  /**
+   * This method returns the status of the given section in a specific cycle (Planning or Reporting).
+   * 
+   * @param project is the project that you want to look for the missing fields.
+   * @param sections is an array of sections.
+   * @param cycle could be 'Planning' or 'Reporting'.
+   * @return a Map array with the name of the sections as keys and the status of the section as values, or null if some
+   *         error occurred.
+   */
+  public void initializeProjectSectionStatuses(Project project, String cycle) {
+    this.sectionStatuses = sectionStatusManager.getSectionStatuses(project, cycle);
   }
 
   public boolean isCanEdit() {
@@ -327,6 +363,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.fullEditable = fullEditable;
   }
 
+  @SuppressWarnings("rawtypes")
   public void setHistory(List<LogHistory> history) {
     this.history = history;
   }

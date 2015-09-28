@@ -56,7 +56,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
     }
   }
@@ -64,11 +64,11 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
   private void validateProjectBudgets(BaseAction action, List<Budget> budgets) {
     for (Budget budget : budgets) {
       if (!budgetValidator.isValidAmount(budget.getAmount())) {
-        this.addMessage(this.getText("planning.projectBudget.annualBudget"));
+        this.addMessage(action.getText("planning.projectBudget.annualBudget"));
       }
 
       if (!budgetValidator.isValidGenderPercentage(budget.getGenderPercentage())) {
-        this.addMessage(this.getText("planning.projectBudget.genderPercentage"));
+        this.addMessage(action.getText("planning.projectBudget.genderPercentage"));
       }
     }
 

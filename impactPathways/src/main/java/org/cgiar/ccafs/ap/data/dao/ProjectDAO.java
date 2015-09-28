@@ -295,6 +295,24 @@ public interface ProjectDAO {
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
 
   /**
+   * This method returns the information of all the projects and their gender contribution to be used in the summary
+   * report of
+   * the same name.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+   
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution();
+  /**
+   * This method returns the information of all project MOG with your budget by Year and their information to be used in
+   * the summary report of POWBMOGs summary.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year);
+  /**
    * This method updates the project type into the database according to the values received by parameter.
    * 
    * @param projectID - project identifier

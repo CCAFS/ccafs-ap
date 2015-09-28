@@ -116,10 +116,26 @@ public class ProjectValidator extends BaseValidator {
     if (outcomes != null && !outcomes.isEmpty()) {
       ProjectOutcome outcome = outcomes.get(String.valueOf(year));
       if (outcome != null) {
-        if (outcome.getGenderDimension() != null && !outcome.getGenderDimension().isEmpty()) {
-          return true;
+        if (this.isValidString(outcome.getGenderDimension())) {
+          if (year == this.config.getMidOutcomeYear()) {
+            // Number of words for outcome 2019
+            return this.wordCount(outcome.getGenderDimension()) <= 150;
+          } else {
+            // Number of words for outcomes between 2014-2018.
+            return this.wordCount(outcome.getGenderDimension()) <= 80;
+          }
+        }
+        if (this.isValidString(outcome.getGenderDimension())) {
+          if (year == this.config.getMidOutcomeYear()) {
+            // Number of words for gender dimension 2019.
+            return this.wordCount(outcome.getGenderDimension()) <= 150;
+          } else {
+            // Number of words for gender dimension between 2014-2018
+            return this.wordCount(outcome.getGenderDimension()) <= 100;
+          }
         }
       }
+
     }
     return false;
   }
@@ -130,7 +146,7 @@ public class ProjectValidator extends BaseValidator {
     if (outcomes != null && !outcomes.isEmpty()) {
       ProjectOutcome outcome = outcomes.get(String.valueOf(year));
       if (outcome != null) {
-        if (outcome.getStatement() != null && !outcome.getStatement().isEmpty()) {
+        if (this.isValidString(outcome.getStatement())) {
           return true;
         }
       }

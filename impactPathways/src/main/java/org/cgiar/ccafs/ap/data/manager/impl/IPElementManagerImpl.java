@@ -64,8 +64,7 @@ public class IPElementManagerImpl implements IPElementManager {
   // TODO - This method deletes ip_program_elements, we need to check where is it called in order to know if it is
   // really
   // required.
-    public
-    boolean deleteIPElements(IPProgram program, IPElementType type) {
+  public boolean deleteIPElements(IPProgram program, IPElementType type) {
     return ipElementDAO.deleteIpElements(program.getId(), type.getId());
   }
 
@@ -165,6 +164,20 @@ public class IPElementManagerImpl implements IPElementManager {
   public List<IPElement> getIPElementsByParent(IPElement parent, int relationTypeID) {
     List<Map<String, String>> ipElementDataList = ipElementDAO.getIPElementsByParent(parent.getId(), relationTypeID);
     return this.setDataToIPElementObjects(ipElementDataList);
+  }
+
+  @Override
+  public int getMOGIndex(IPElement mog) {
+    int index = 0;
+    // Getting all the MOGs
+    List<IPElement> allMOGs = this.getIPElements(mog.getProgram(), mog.getType());
+    // Getting the mog position.
+    for (int i = 0; i < allMOGs.size(); i++) {
+      if (allMOGs.get(i).getId() == mog.getId()) {
+        return (i + 1);
+      }
+    }
+    return index;
   }
 
   @Override
@@ -276,8 +289,8 @@ public class IPElementManagerImpl implements IPElementManager {
         // Save the relations of type translation if any
         if (element.getTranslatedOf() != null) {
           for (IPElement parentElement : element.getTranslatedOf()) {
-            ipRelationshipDAO
-              .saveIPRelation(parentElement.getId(), elementId, APConstants.ELEMENT_RELATION_TRANSLATION);
+            ipRelationshipDAO.saveIPRelation(parentElement.getId(), elementId,
+              APConstants.ELEMENT_RELATION_TRANSLATION);
           }
         }
       } else {

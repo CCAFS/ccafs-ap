@@ -45,7 +45,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
       }
       // Adding general error.
       if (problem) {
-        action.addActionError(this.getText("saving.fields.required"));
+        action.addActionError(action.getText("saving.fields.required"));
       } else {
         this.validateOptionalFields(action, deliverable);
       }
@@ -80,7 +80,8 @@ public class ProjectDeliverableValidator extends BaseValidator {
     // }
 
     if (this.validationMessage.length() > 0) {
-      action.addActionWarning(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      action
+        .addActionWarning(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
     }
   }
 
@@ -89,40 +90,40 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
     // Validating the title
     if (!this.isValidString(deliverable.getTitle())) {
-      action.addFieldError("deliverable.title", this.getText("validation.field.required"));
+      action.addFieldError("deliverable.title", action.getText("validation.field.required"));
       problem = true;
     }
 
     // Validating that a MOG is selected.
     if (deliverable.getOutput() == null) {
-      action.addFieldError("deliverable.output", this.getText("validation.field.required"));
+      action.addFieldError("deliverable.output", action.getText("validation.field.required"));
       problem = true;
     }
 
     // Validating that a year is selected.
     if (deliverable.getYear() == -1) {
-      action.addFieldError("deliverable.year", this.getText("validation.field.required"));
+      action.addFieldError("deliverable.year", action.getText("validation.field.required"));
       problem = true;
     }
 
     // Validating that some sub-type is selected.
     if (deliverable.getType() == null) {
       // Indicate problem in the missing field.
-      action.addFieldError("deliverable.type", this.getText("validation.field.required"));
+      action.addFieldError("deliverable.type", action.getText("validation.field.required"));
       problem = true;
     }
 
     if (deliverable.getType() != null && deliverable.getType().getId() == APConstants.DELIVERABLE_SUBTYPE_OTHER_ID
       && !this.isValidString(deliverable.getTypeOther())) {
       // Indicate problem in the missing field.
-      action.addFieldError("deliverable.typeOther", this.getText("validation.field.required"));
+      action.addFieldError("deliverable.typeOther", action.getText("validation.field.required"));
       problem = true;
     }
 
     // Validating that some year is selected.
     if (deliverable.getYear() == -1) {
       // Indicate problem in the missing field.
-      action.addFieldError("deliverable.year", this.getText("validation.field.required"));
+      action.addFieldError("deliverable.year", action.getText("validation.field.required"));
       problem = true;
     }
 

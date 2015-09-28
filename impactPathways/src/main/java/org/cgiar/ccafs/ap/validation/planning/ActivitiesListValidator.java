@@ -53,7 +53,7 @@ public class ActivitiesListValidator extends BaseValidator {
       // }
 
       if (problem) {
-        action.addActionError(this.getText("saving.fields.required"));
+        action.addActionError(action.getText("saving.fields.required"));
       }
       // else {
       // this.validateOptionalFields(action, deliverable);
@@ -69,29 +69,29 @@ public class ActivitiesListValidator extends BaseValidator {
 
       // Validating title.
       if (!this.isValidString(activity.getTitle())) {
-        action.addFieldError("project.activities[" + c + "].title", this.getText("validation.field.required"));
+        action.addFieldError("project.activities[" + c + "].title", action.getText("validation.field.required"));
         problem = true;
       }
       // Validating description
       if (!this.isValidString(activity.getDescription())) {
-        action.addFieldError("project.activities[" + c + "].description", this.getText("validation.field.required"));
+        action.addFieldError("project.activities[" + c + "].description", action.getText("validation.field.required"));
         problem = true;
       }
 
       // Validating start date
       if (activity.getStartDate() == null) {
-        action.addFieldError("project.activities[" + c + "].startDate", this.getText("validation.field.required"));
+        action.addFieldError("project.activities[" + c + "].startDate", action.getText("validation.field.required"));
         problem = true;
       }
       // Validating end date
       if (activity.getEndDate() == null) {
-        action.addFieldError("project.activities[" + c + "].endDate", this.getText("validation.field.required"));
+        action.addFieldError("project.activities[" + c + "].endDate", action.getText("validation.field.required"));
         problem = true;
       }
 
       // Validating leader
       if (activity.getLeader() == null) {
-        action.addFieldError("project.activities[" + c + "].leader", this.getText("validation.field.required"));
+        action.addFieldError("project.activities[" + c + "].leader", action.getText("validation.field.required"));
         problem = true;
       }
     }
