@@ -2172,6 +2172,12 @@ input.userName {
   border-bottom: 1px solid #9D9D9D;
 }
 
+/***************** OVERVIEW *******************/
+
+#overviewHome {
+  min-height: 545px;
+}
+
 /*************** HOME DASHBOARD****************/
 
 /*  Home page*/
