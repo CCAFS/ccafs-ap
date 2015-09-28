@@ -100,6 +100,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           break;
         case "locations":
           this.validateProjectLocations();
+          break;
         case "outcomes":
           this.validateProjectOutcomes();
           break;
@@ -182,7 +183,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
 
     // Validate
     projectOutputValidator.validate(this, project, "Planning");
@@ -244,7 +245,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
@@ -257,7 +258,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");
