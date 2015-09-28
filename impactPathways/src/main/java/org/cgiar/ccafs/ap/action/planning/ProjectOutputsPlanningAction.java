@@ -82,6 +82,10 @@ public class ProjectOutputsPlanningAction extends BaseAction {
     return config.getMidOutcomeYear();
   }
 
+  public int getMOGIndex(IPElement mog) {
+    return ipElementManager.getMOGIndex(mog);
+  }
+
   public Project getProject() {
     return project;
   }

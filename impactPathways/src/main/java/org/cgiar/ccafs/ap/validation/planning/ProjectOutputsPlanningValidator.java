@@ -58,8 +58,9 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
       } else {
         // If project is bilateral, do nothing.
       }
-
-      if (validationMessage.length() > 0) {
+      if (!action.getFieldErrors().isEmpty()) {
+        action.addActionError(action.getText("saving.fields.required"));
+      } else if (validationMessage.length() > 0) {
         String msg = " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()});
         action.addActionMessage(msg);
       }
@@ -82,7 +83,7 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
       msg.append(output.getProgram().getAcronym());
       msg.append(" - MOG #");
       msg.append(index);
-      msg.append(") ");
+      msg.append(") <br />");
 
       this.addMessage(msg.toString());
       this.addMissingField("project.outputsOverview[" + counter + "].expectedAnnualContribution");
@@ -114,7 +115,7 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
       msg.append(output.getProgram().getAcronym());
       msg.append(" - MOG #");
       msg.append(index);
-      msg.append(") ");
+      msg.append(")  <br />");
       this.addMessage(msg.toString());
       this.addMissingField("project.outputsOverview[" + counter + "].socialInclusionDimmension");
     }
