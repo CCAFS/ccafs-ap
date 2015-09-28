@@ -133,9 +133,6 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
         super.saveProjectLessons(projectID);
       }
 
-      // Saving outcomes lessons
-      super.saveProjectLessons(projectID);
-
       // Saving Project Outcome
       for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
         ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
