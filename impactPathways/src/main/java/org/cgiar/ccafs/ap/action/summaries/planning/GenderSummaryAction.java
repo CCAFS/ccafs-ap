@@ -20,7 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadInstitutionPartnersSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.GenderSummaryXLS;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadProjectPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
@@ -42,8 +42,8 @@ import org.slf4j.LoggerFactory;
 public class GenderSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(GenderSummaryAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;
-  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
+  private static final long serialVersionUID = 5110987672008315842L;;
+  private GenderSummaryXLS genderSummaryXLS;
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   private ProjectPartnerManager projectPartnerManager;
@@ -58,10 +58,10 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   InputStream inputStream;
 
   @Inject
-  public GenderSummaryAction(APConfig config, LeadProjectPartnersSummaryXLS leadProjectPartnersSummaryXLS,
-    InstitutionManager institutionManager, ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
+  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, InstitutionManager institutionManager,
+    ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
-    this.leadProjectPatnersSummaryXLS = leadProjectPartnersSummaryXLS;
+    this.genderSummaryXLS = genderSummaryXLS;
     this.institutionManager = institutionManager;
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -71,7 +71,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = leadProjectPatnersSummaryXLS.generateXLS(projectList);
+    bytesXLS = genderSummaryXLS.generateXLS(projectList);
 
     return SUCCESS;
   }
@@ -91,7 +91,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("LeadProjectPartners_");
+    fileName.append("GenderContribution_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -110,15 +110,6 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public void prepare() {
 
     projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
-    // Getting the project partner leaders
-    // for (Project project : projectList) {
-    // project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
-    //
-    // if (project.getLeader() != null && project.getLeaderPerson() != null) {
-    // System.out.println(project.getLeader().getInstitution().getName() + " - "
-    // + project.getLeaderPerson().getUser().getFirstName());
-    // }
-    // }
 
   }
 }

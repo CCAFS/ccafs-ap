@@ -47,29 +47,40 @@ public class GenderSummaryXLS {
    */
   private void addContent(Sheet sheet, List<Map<String, Object>> projectList) {
 
-    // TODO undone
-    // Map<String, Object> projectPartnerLeader;
-    // for (int i = 0; i < projectList.size(); i++) {
-    // projectPartnerLeader = projectList.get(i);
-    // xls.writeInteger(sheet, (int) projectPartnerLeader.get("project_id"));
-    // xls.nextColumn();
-    // xls.writeString(sheet, projectPartnerLeader.get("project_type").toString().replace("_", " "));
-    // xls.nextColumn();
-    // xls.writeString(sheet, (String) projectPartnerLeader.get("project_title"));
-    // xls.nextColumn();
-    // xls.writeString(sheet, (String) projectPartnerLeader.get("project_summary"));
-    // xls.nextColumn();
-    // xls.writeString(sheet, (String) projectPartnerLeader.get("flagships"));
-    // xls.nextColumn();
-    // xls.writeString(sheet, (String) projectPartnerLeader.get("regions"));
-    // xls.nextColumn();
-    // xls.writeString(sheet, (String) projectPartnerLeader.get("lead_institution"));
-    // xls.nextColumn();
-    // xls.writeString(sheet, (String) projectPartnerLeader.get("project_leader"));
-    // xls.nextColumn();
-    // xls.writeString(sheet, (String) projectPartnerLeader.get("project_coordinator"));
-    // xls.nextRow();
-    // }
+    Map<String, Object> genderContribution;
+    for (int i = 0; i < projectList.size(); i++) {
+      genderContribution = projectList.get(i);
+      xls.writeInteger(sheet, (int) genderContribution.get("project_id"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("project_title"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("project_summary"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("outcome_statement"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("start_date"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("end_date"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("flagships"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("regions"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("lead_institution"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("project_leader"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("project_coordinator"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("budget_w1w2"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("budget_w3bilateral"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("gender_w1w2"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) genderContribution.get("gender_w3bilateral"));
+      xls.nextRow();
+    }
   }
 
   /**
@@ -86,16 +97,16 @@ public class GenderSummaryXLS {
       // Defining headers
       String[] headers =
         new String[] {"Project Id", "Title", "Summary", "Outcome statement", "Start date", "End date", "Flagship(s)",
-        "Region(s)", "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral",
-        "Total gender W1/W2", "Total gende W3/Bilateral"};
+          "Region(s)", "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral",
+          "Total gender W1/W2", "Total gender W3/Bilateral"};
 
       // Defining header types
       int[] headerTypes =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
-          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
       Workbook workbook = xls.initializeWorkbook(true);
       workbook.setSheetName(0, "GenderContribution");
