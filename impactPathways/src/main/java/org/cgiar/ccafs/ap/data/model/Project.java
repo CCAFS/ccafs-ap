@@ -251,7 +251,7 @@ public class Project {
 
   /**
    * This method returns a composed Identifier that is going to be used in the front-end.
-   * The convention is going to be used depending on the creationg date of the project.
+   * The convention is going to be used depending on the creation date of the project.
    * yyyy-project.id => e.g. 2014-46
    * 
    * @return the composed identifier or null if the created date is null.
