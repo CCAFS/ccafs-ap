@@ -63,9 +63,9 @@ public class ProjectOutcomeValidator extends BaseValidator {
   private void validateCoreProject(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear,
     String cycle) {
     String message;
-    // Validate for each project.
+    // Validate for each year.
     for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
-      // Validate only two years ahead or the last year which is 2019.
+      // Validate only two years ahead and the last year which is 2019.
       if (year < (currentPlanningYear + 2) || year == midOutcomeYear) {
         // Validate the outcome statement
         if (!projectValidator.isValidOutcomeStatement(project.getOutcomes(), year)) {

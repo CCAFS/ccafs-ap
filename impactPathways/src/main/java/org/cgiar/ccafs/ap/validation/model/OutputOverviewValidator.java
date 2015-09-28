@@ -21,22 +21,21 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class OutputOverviewValidator extends BaseValidator {
-
-  private static final long serialVersionUID = -594717134481126232L;
 
   @Inject
   public OutputOverviewValidator() {
   }
 
   public boolean isValidExpectedAnnualContribution(String annualContribution) {
-    return (this.isValidString(annualContribution)) ? true : false;
+    return (this.isValidString(annualContribution) && this.wordCount(annualContribution) <= 50) ? true : false;
   }
 
   public boolean isValidSocialInclusionDimmension(String socialDimmension) {
-    return (this.isValidString(socialDimmension)) ? true : false;
+    return (this.isValidString(socialDimmension) && this.wordCount(socialDimmension) <= 50) ? true : false;
   }
 
 }
