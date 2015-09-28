@@ -112,7 +112,7 @@ public class POWBSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    projectsList = this.projectManager.getAllProjectsBasicInfo();
+    // projectsList = this.projectManager.getAllProjectsBasicInfo();
     List<ProjectPartner> partnersList;
     List<Location> locationsList;
 

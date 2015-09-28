@@ -59,7 +59,7 @@
     </li>
   </ul>
   <br />
-  <div id="projectSubmitButton">Submit</div>
+  <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
 </nav>
 
 [#-- Menu element --]

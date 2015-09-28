@@ -144,8 +144,10 @@ function changeTypeEvent(e) {
     $parent.find(".locationName").empty().html($newInputType.html());
     $parent.find("input.latitude, input.longitude").removeClass("notApplicable").attr("disabled", false);
     $parent.find("input.locationName").attr("placeholder", "Name");
-    $latitudeField.val(map.getCenter().k);
-    $longitudeField.val(map.getCenter().B);
+    var lat = map.getCenter().K || map.getCenter().L;
+    var lng = map.getCenter().G || map.getCenter().H;
+    $latitudeField.val(lat);
+    $longitudeField.val(lng);
 
     var latitude = $latitudeField.val();
     var longitude = $longitudeField.val();
@@ -319,8 +321,10 @@ function makeMarker(data) {
   });
   // Event when marker is dragged
   google.maps.event.addListener(marker, 'dragend', function() {
-    $("#location-" + marker.id).find("input.longitude").val(marker.position.K).trigger("change");
-    $("#location-" + marker.id).find("input.latitude").val(marker.position.G).trigger("change");
+    var longitude = marker.position.K || marker.position.L;
+    var latitude = marker.position.G || marker.position.H;
+    $("#location-" + marker.id).find("input.longitude").val(longitude).trigger("change");
+    $("#location-" + marker.id).find("input.latitude").val(latitude).trigger("change");
   });
 
   markers[data.id] = marker;

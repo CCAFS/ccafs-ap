@@ -112,39 +112,63 @@ $(document).ready(function() {
   // Generating hash from form information
   setFormHash();
 
-  $('#projectSubmitButton').on('click', function(e) {
+  $('.projectSubmitButton').on('click', function(e) {
+    $(this).fadeOut();
     var $menus = $('#secondaryMenu.projectMenu ul li ul li');
-    var pID = $('#programID').val();
+    var pID = $(e.target).attr('id').split('-')[1];
+    console.log(pID);
+    var sections = [];
+    var menus = [];
     $menus.each(function(i,menu) {
-      var dataSection = {
+      sections.push({
           projectID: pID,
           sectionName: (menu.id).split('-')[1]
-      };
+      });
+      menus.push(menu);
+    });
+    // Execute ajax process for each section
+    processTasks(sections, menus, '/planning/validateProjectPlanningSection.do');
+
+  });
+});
+
+function processTasks(tasks,menus,urlDoTask) {
+  var index = 0;
+  function nextTask() {
+    if(index < tasks.length) {
       $.ajax({
-          'url': baseURL + '/planning/validateProjectPlanningSection.do',
-          data: dataSection,
+          url: baseURL + urlDoTask,
+          data: tasks[index],
           beforeSend: function() {
-            $(menu).removeClass('animated flipInX');
+            $(menus[index]).removeClass('animated flipInX');
           },
           success: function(data) {
+            // Process Ajax results here
             if(jQuery.isEmptyObject(data)) {
-              $(menu).removeClass('submitted');
+              $(menus[index]).removeClass('submitted');
             } else {
               if(data.sectionStatus.missingFieldsWithPrefix == "") {
-                $(menu).addClass('submitted');
+                $(menus[index]).addClass('submitted');
               } else {
-                $(menu).removeClass('submitted');
+                $(menus[index]).removeClass('submitted');
               }
             }
           },
           complete: function(data) {
-            $(menu).addClass('animated flipInX');
+            $(menus[index]).addClass('animated flipInX');
+            // Do next ajax call
+            ++index;
+            if(index == tasks.length) {
+              $('.projectSubmitButton').fadeIn();
+            }
+            nextTask();
           }
       });
-
-    });
-  });
-});
+    }
+  }
+  // Start first Ajax call
+  nextTask();
+}
 
 /**
  * Validate fields length when click to any button
@@ -257,7 +281,6 @@ function applyWordCounter($textArea,wordCount) {
   $textArea.on("keyup", function(event) {
     var $charCount = $(event.target).parent().find(".charCount");
     if(word_count($(event.target)) > wordCount) {
-      $(event.target).val($(event.target).val().slice(0, -2));
       $(event.target).addClass('fieldError');
       $charCount.addClass('fieldError');
     } else {

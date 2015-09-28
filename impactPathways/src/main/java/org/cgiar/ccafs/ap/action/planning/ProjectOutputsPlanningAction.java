@@ -128,7 +128,10 @@ public class ProjectOutputsPlanningAction extends BaseAction {
       previousOverviews.add(new OutputOverview(output.getId()));
     }
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+
     this.setHistory(historyManager.getProjectOutputsHistory(projectID));
   }
 
@@ -142,9 +145,8 @@ public class ProjectOutputsPlanningAction extends BaseAction {
       // Check if there are output overviews to delete
       for (OutputOverview overview : previousOverviews) {
         if (!project.getOutputsOverview().contains(overview)) {
-          success =
-            overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
-              this.getJustification());
+          success = overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
+            this.getJustification());
         }
       }
 

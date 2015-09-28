@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.validation;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
+import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.utils.APConfig;
@@ -14,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 
 public class BaseValidator {
-
-  private static final long serialVersionUID = -7486776113435920241L;
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseValidator.class);
 
@@ -97,12 +96,21 @@ public class BaseValidator {
     statusManager.saveSectionStatus(status, project);
   }
 
+  protected void validateLessonsLearn(BaseAction action, Project project, String section) {
+    if (!project.isNew(config.getCurrentPlanningStartDate())) {
+      ComponentLesson lesson = action.getProjectLessons();
+      if (!this.isValidString(lesson.getLessons())) {
+        action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
+        this.addMissingField("projectLessons.lessons");
+      }
+    }
+  }
+
   /**
    * This method verify if the project was created in the current planning phase, if it was created previously the user
    * should provide a justification of the changes.
    * 
    * @param project
-   * @return
    */
   protected void validateProjectJustification(BaseAction action, Project project) {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {

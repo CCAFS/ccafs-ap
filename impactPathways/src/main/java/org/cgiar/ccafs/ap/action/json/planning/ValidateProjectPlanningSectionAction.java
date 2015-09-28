@@ -3,18 +3,25 @@ package org.cgiar.ccafs.ap.action.json.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -26,6 +33,8 @@ import org.slf4j.LoggerFactory;
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class ValidateProjectPlanningSectionAction extends BaseAction {
+
+  private static final long serialVersionUID = -9075503855862433753L;
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(ValidateProjectPlanningSectionAction.class);
@@ -49,12 +58,20 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectCofinancingLinkageManager linkedProjectManager;
   @Inject
   private ProjectPartnerManager projectPartnerManager;
+  @Inject
+  private LocationManager locationManager;
+  @Inject
+  private ProjectOutcomeManager projectOutcomeManager;
 
   // Validators
   @Inject
   private ProjectDescriptionValidator descriptionValidator;
   @Inject
   private ProjectPartnersValidator projectPartnersValidator;
+  @Inject
+  private ProjectLocationsValidator locationValidator;
+  @Inject
+  private ProjectOutcomeValidator projectOutcomeValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -70,9 +87,14 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           this.validateProjectDescription();
           break;
         case "partners":
+          this.validateProjectPartners();
+          break;
+        case "locations":
+          this.validateProjectLocations();
+        case "outcomes":
+          this.validateProjectOutcomes();
           break;
         default:
-          this.validateProjectPartners();
           // Do nothing.
           break;
       }
@@ -102,9 +124,21 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Validate if project exists.
     existProject = projectManager.existProject(projectID);
+
     // Validate if the section exists.
     List<String> sections = new ArrayList<>();
     sections.add("description");
+    sections.add("partners");
+    sections.add("locations");
+    sections.add("outcomes");
+    sections.add("ccafsOutcomes");
+    sections.add("otherContributions");
+    sections.add("outputs");
+    sections.add("deliverable");
+    sections.add("activities");
+    sections.add("impactPathway");
+    sections.add("budget");
+    sections.add("budgetByMog");
     validSection = sections.contains(sectionName);
 
   }
@@ -122,7 +156,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
       project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
     }
 
-    // If project is CCAFS cofounded, we should load the core projects linked to it.
+    // If project is CCAFS co-funded, we should load the core projects linked to it.
     if (!project.isBilateralProject()) {
       project.setLinkedProjects(linkedProjectManager.getLinkedBilateralProjects(projectID));
     } else {
@@ -133,12 +167,55 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
   }
 
-  private void validateProjectPartners() {
+  private void validateProjectLocations() {
+    // Getting the project information.
+    Project project = projectManager.getProject(projectID);
+    project.setLocations(locationManager.getProjectLocations(projectID));
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "locations", this.getCurrentPlanningYear()));
+
+    locationValidator.validate(this, project, "Planning");
+  }
+
+  private void validateProjectOutcomes() {
     // Getting information.
-    Project project = new Project(projectID);
+    Project project = projectManager.getProject(projectID);
+    int currentPlanningYear = this.config.getPlanningCurrentYear();
+    int midOutcomeYear = this.config.getMidOutcomeYear();
+
+    // Loading the project outcomes
+    Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
+
+    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+      ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
+      if (projectOutcome == null) {
+        projectOutcome = new ProjectOutcome(-1);
+        projectOutcome.setYear(year);
+      }
+      projectOutcomes.put(String.valueOf(year), projectOutcome);
+    }
+    project.setOutcomes(projectOutcomes);
+
+    // Getting the Project lessons for this section.
+    this
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+
+    projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
+
+  }
+
+  private void validateProjectPartners() {
+    // Getting the Project information.
+    Project project = projectManager.getProject(projectID);
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "description", this.getCurrentPlanningYear()));
+
     // Validating.
-    projectPartnersValidator.validate(this, project);
+    projectPartnersValidator.validate(this, project, "Planning");
   }
 }

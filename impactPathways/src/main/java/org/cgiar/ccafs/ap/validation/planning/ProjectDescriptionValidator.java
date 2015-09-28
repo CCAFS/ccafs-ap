@@ -35,7 +35,6 @@ import com.google.inject.Inject;
 
 public class ProjectDescriptionValidator extends BaseValidator {
 
-  private static final long serialVersionUID = -4871185832403702671L;
   private ProjectValidator projectValidator;
 
   @Inject
@@ -48,8 +47,8 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (project != null) {
       this.validateProjectJustification(action, project);
 
-      // The projects will be validated according to their type
-      if (project.isCoreProject()) {
+      // The projects will be validated according to their type.
+      if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateCoreProject(action, project);
       } else {
         this.validateBilateralProject(action, project);
@@ -57,7 +56,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -92,62 +91,62 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
         this
-        .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
+          .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
         this.addMissingField("project.workplanName");
       }
     }
   }
 
-  public void validateEndDate(BaseAction action, Date endDate) {
+  private void validateEndDate(BaseAction action, Date endDate) {
     if (!projectValidator.isValidEndDate(endDate)) {
       this.addMessage(action.getText("preplanning.projectDescription.endDate").toLowerCase());
       this.addMissingField("project.endDate");
     }
   }
 
-  public void validateFlagships(BaseAction action, List<IPProgram> flagships) {
+  private void validateFlagships(BaseAction action, List<IPProgram> flagships) {
     if (!projectValidator.isValidFlagships(flagships)) {
       this.addMessage(action.getText("preplanning.projectDescription.flagships").toLowerCase());
       this.addMissingField("project.regions");
     }
   }
 
-  public void validateLiaisonContactPerson(BaseAction action, User user) {
+  private void validateLiaisonContactPerson(BaseAction action, User user) {
     if (!projectValidator.isValidOwner(user)) {
       this.addMessage(action.getText("preplanning.projectDescription.projectownercontactperson").toLowerCase());
       this.addMissingField("project.owner");
     }
   }
 
-  public void validateManagementLiaison(BaseAction action, LiaisonInstitution institution) {
+  private void validateManagementLiaison(BaseAction action, LiaisonInstitution institution) {
     if (!projectValidator.isValidLiaisonInstitution(institution)) {
       this.addMessage(action.getText("planning.projectDescription.programCreator").toLowerCase());
       this.addMissingField("project.liaisonInstitution");
     }
   }
 
-  public void validateRegions(BaseAction action, List<IPProgram> regions) {
+  private void validateRegions(BaseAction action, List<IPProgram> regions) {
     if (!projectValidator.isValidRegions(regions)) {
       this.addMessage(action.getText("preplanning.projectDescription.regions").toLowerCase());
       this.addMissingField("project.flagships");
     }
   }
 
-  public void validateStartDate(BaseAction action, Date startDate) {
+  private void validateStartDate(BaseAction action, Date startDate) {
     if (!projectValidator.isValidStartDate(startDate)) {
       this.addMessage(action.getText("preplanning.projectDescription.startDate").toLowerCase());
       this.addMissingField("project.startDate");
     }
   }
 
-  public void validateSummary(BaseAction action, String summary) {
+  private void validateSummary(BaseAction action, String summary) {
     if (!projectValidator.isValidSummary(summary)) {
       this.addMessage(action.getText("preplanning.projectDescription.projectSummary").toLowerCase());
       this.addMissingField("project.summary");
     }
   }
 
-  public void validateTitle(BaseAction action, String title) {
+  private void validateTitle(BaseAction action, String title) {
     if (!projectValidator.isValidTitle(title)) {
       this.addMessage(action.getText("planning.projectDescription.projectTitle").toLowerCase());
       this.addMissingField("project.title");

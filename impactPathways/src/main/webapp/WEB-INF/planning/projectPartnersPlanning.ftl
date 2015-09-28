@@ -80,9 +80,9 @@
     </div>
     [/#if]
     
+    [#-- Project identifier --]
+    <input name="projectID" type="hidden" value="${project.id?c}" />
     [#if editable]  
-      [#-- Project identifier --]
-      <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="clearfix [#if !newProject]borderBox[/#if]" >
         [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
