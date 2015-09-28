@@ -85,19 +85,23 @@ public class GenderSummaryXLS {
       // TODO This is undone at this moment
       // Defining headers
       String[] headers =
-        new String[] {"Project Id", "Type", "Title", "Summary", "Flagship(s)", "Region(s)", "Lead institution",
-          "Leader", "Coordinator"};
+        new String[] {"Project Id", "Title", "Summary", "Outcome statement", "Start date", "End date", "Flagship(s)",
+        "Region(s)", "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral",
+        "Total gender W1/W2", "Total gende W3/Bilateral"};
 
       // Defining header types
       int[] headerTypes =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
+          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
-      Workbook workbook = xls.initializeXLS(true, headerTypes);
-      workbook.setSheetName(0, "LeadProjectPartners");
+      Workbook workbook = xls.initializeWorkbook(true);
+      workbook.setSheetName(0, "GenderContribution");
       Sheet sheet = workbook.getSheetAt(0);
-      xls.writeTitleBox(sheet, "CCAFS Lead Project Partners");
+      xls.initializeSheet(sheet, headerTypes);
+      xls.writeTitleBox(sheet, "CCAFS Project Gender Contribution");
       xls.writeHeaders(sheet, headers);
 
       this.addContent(sheet, projectList);

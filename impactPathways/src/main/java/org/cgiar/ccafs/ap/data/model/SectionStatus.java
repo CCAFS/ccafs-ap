@@ -14,6 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents the status of a specific project.
@@ -22,17 +23,17 @@ package org.cgiar.ccafs.ap.data.model;
  * 
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
-public class ProjectStatus {
+public class SectionStatus {
 
   private int id;
   private String section;
   private String cycle;
   private String[] missingFields;
 
-  public ProjectStatus() {
+  public SectionStatus() {
   }
 
-  public ProjectStatus(String cycle, String section) {
+  public SectionStatus(String cycle, String section) {
     this.cycle = cycle;
     this.section = section;
   }
@@ -90,6 +91,11 @@ public class ProjectStatus {
 
   public void setSection(String section) {
     this.section = section;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
 

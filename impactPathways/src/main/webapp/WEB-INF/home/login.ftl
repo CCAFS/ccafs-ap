@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Welcome to CCAFS P&R" /]
-[#assign globalLibs = ["jquery", "jreject"] /]
-[#assign customJS = ["${baseUrl}/js/home/login.js"] /]
+[#assign globalLibs = ["jquery", "jreject", "highcharts" ] /]
+[#assign customJS = ["${baseUrl}/js/home/login.js" ] /]
 [#assign currentSection = "home" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

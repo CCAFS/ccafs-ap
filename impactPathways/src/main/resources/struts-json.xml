@@ -108,6 +108,17 @@
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
+    </action>    
+  </package>
+  
+  <!-- JSON Set that are being used by planning only -->
+  <package name="json-planning" namespace="/planning" extends="json-default">
+    <action name="validateProjectPlanningSection" class="org.cgiar.ccafs.ap.action.json.planning.ValidateProjectPlanningSectionAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
     </action>
   </package>
+  
 </struts>

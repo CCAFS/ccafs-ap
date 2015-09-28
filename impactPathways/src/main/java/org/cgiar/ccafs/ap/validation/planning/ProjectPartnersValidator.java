@@ -53,7 +53,7 @@ public class ProjectPartnersValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + this.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
     }
@@ -68,7 +68,8 @@ public class ProjectPartnersValidator extends BaseValidator {
   private void validateProjectLeader(BaseAction action, Project project) {
     // All projects must specify the project leader
     if (!projectValidator.isValidLeader(project.getLeader(), project.isBilateralProject())) {
-      this.addMessage(this.getText("home.glossary.projectLeader").toLowerCase());
+      this.addMessage(action.getText("home.glossary.projectLeader").toLowerCase());
+      this.addMissingField("project.leader");
     }
   }
 

@@ -111,6 +111,39 @@ $(document).ready(function() {
 
   // Generating hash from form information
   setFormHash();
+
+  $('#projectSubmitButton').on('click', function(e) {
+    var $menus = $('#secondaryMenu.projectMenu ul li ul li');
+    var pID = $('#programID').val();
+    $menus.each(function(i,menu) {
+      var dataSection = {
+          projectID: pID,
+          sectionName: (menu.id).split('-')[1]
+      };
+      $.ajax({
+          'url': baseURL + '/planning/validateProjectPlanningSection.do',
+          data: dataSection,
+          beforeSend: function() {
+            $(menu).removeClass('animated flipInX');
+          },
+          success: function(data) {
+            if(jQuery.isEmptyObject(data)) {
+              $(menu).removeClass('submitted');
+            } else {
+              if(data.sectionStatus.missingFieldsWithPrefix == "") {
+                $(menu).addClass('submitted');
+              } else {
+                $(menu).removeClass('submitted');
+              }
+            }
+          },
+          complete: function(data) {
+            $(menu).addClass('animated flipInX');
+          }
+      });
+
+    });
+  });
 });
 
 /**

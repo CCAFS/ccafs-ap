@@ -30,10 +30,18 @@
         <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
       [/#if]
       
-      [#if libraryName="jqueryAndUI"]          
+      [#if libraryName="jqueryAndUI"]
         <script src="${baseUrl}/js/libs/jqueryUI/jquery-ui-1.10.0.custom.min.js"></script>
       [/#if]
-
+      
+      [#if libraryName="highcharts"]
+        <script src="${baseUrl}/js/libs/highcharts-4.1.8/highcharts.js"></script>
+      [/#if]
+      
+      [#if libraryName="highmaps"]
+        <script src="${baseUrl}/js/libs/highmaps-1.1.8/highmaps.js"></script>
+      [/#if]
+      
       [#if libraryName="noty"]
         [#-- Additional information visit: http://needim.github.com/noty/ --]
         [#-- Style can be found on /noty/layouts/inline.js and /noty/themes/default.js --] 

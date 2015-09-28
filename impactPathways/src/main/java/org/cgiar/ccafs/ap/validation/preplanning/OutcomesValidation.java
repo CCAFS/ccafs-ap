@@ -30,7 +30,7 @@ public class OutcomesValidation extends BaseValidator {
 
     for (IPElement outcome : outcomes) {
       if (outcome.getDescription().isEmpty()) {
-        validationMessage.append(getText("validation.preplanning.outcomes.description") + ", ");
+        // validationMessage.append(getText("validation.preplanning.outcomes.description") + ", ");
       }
 
       for (int i = 0; i < outcome.getIndicators().size(); i++) {

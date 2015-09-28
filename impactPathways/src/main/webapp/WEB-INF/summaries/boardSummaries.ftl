@@ -26,7 +26,7 @@
     <div class="summariesContent borderBox">
       <div class="loading" style="display:none"></div>
       <form action="">
-      <h6>What Phase of report would you like to generate?</h6>
+      <h6>Select the project research cycle:</h6>
       <div class="summariesOption">
         <input type="radio" name="phase" id="planning" value="planning" checked="checked"/>
         <label for="planning">Planning</label>
@@ -36,7 +36,7 @@
         <label for="reporting">Reporting</label>
       </div>
       
-      <h6>What kind of report would you like to generate?</h6>
+      <h6>Select a type of report:</h6>
       <div class="summariesOptions">
         [#-- Projects reports --]
         <div id="projects-contentOptions">
@@ -83,7 +83,7 @@
         </div>
       </div>
       <br />
-      <a id="generateReport" class="addButton" href="#">Generate</a>
+      <a id="generateReport" target="_blank" class="addButton" style="display:none" href="#">Generate</a>
       </form>
     </div> 
   </article>
