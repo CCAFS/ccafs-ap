@@ -2,9 +2,11 @@ package org.cgiar.ccafs.ap.action.json.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -15,6 +17,7 @@ import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectOutputsPlanningValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -62,6 +65,10 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private LocationManager locationManager;
   @Inject
   private ProjectOutcomeManager projectOutcomeManager;
+  @Inject
+  private IPElementManager ipElementManager;
+  @Inject
+  private ProjectContributionOverviewManager overviewManager;
 
   // Validators
   @Inject
@@ -72,6 +79,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectLocationsValidator locationValidator;
   @Inject
   private ProjectOutcomeValidator projectOutcomeValidator;
+  @Inject
+  private ProjectOutputsPlanningValidator projectOutputValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -93,6 +102,27 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           this.validateProjectLocations();
         case "outcomes":
           this.validateProjectOutcomes();
+          break;
+        case "ccafsOutcomes":
+          // TODO
+          break;
+        case "otherContributions":
+          // TODO
+          break;
+        case "outputs":
+          this.validateOverviewByMOGS();
+          break;
+        case "deliverableList":
+          // TODO
+          break;
+        case "activities":
+          // TODO
+          break;
+        case "budget":
+          // TODO
+          break;
+        case "budgetByMog":
+          // TODO
           break;
         default:
           // Do nothing.
@@ -134,13 +164,28 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     sections.add("ccafsOutcomes");
     sections.add("otherContributions");
     sections.add("outputs");
-    sections.add("deliverable");
+    sections.add("deliverableList");
     sections.add("activities");
-    sections.add("impactPathway");
     sections.add("budget");
     sections.add("budgetByMog");
     validSection = sections.contains(sectionName);
 
+  }
+
+  private void validateOverviewByMOGS() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // getting all the outputs (MOGs) related to this project.
+    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    // Get the project MOG overviews for this project
+    project.setOutputsOverview(overviewManager.getProjectContributionOverviews(project));
+
+    // Getting the Project lessons for this section.
+    this
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+
+    // Validate
+    projectOutputValidator.validate(this, project, "Planning");
   }
 
   /**
@@ -187,7 +232,6 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Loading the project outcomes
     Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
-
     for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
       ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
       if (projectOutcome == null) {
@@ -200,7 +244,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
@@ -212,8 +256,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, "description", this.getCurrentPlanningYear()));
+    this
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

@@ -4152,6 +4152,11 @@ color: #fff;font-weight: bold;}
   margin: 11px 0px;
 }
 
+.summariesOption .description {
+  margin: 4px 33px 13px 33px;
+  color: #868686;
+}
+
 .summariesOption input { 
 vertical-align: middle;}
 

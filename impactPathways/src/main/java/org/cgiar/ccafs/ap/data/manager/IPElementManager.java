@@ -123,6 +123,14 @@ public interface IPElementManager {
   public List<IPElement> getIPElementsByParent(IPElement parent, int relationTypeID);
 
   /**
+   * This method returns the index of a specific MOG from the database.
+   * 
+   * @param mog is some IPElement representing a MOG.
+   * @return an index representing the position within the impact parthway
+   */
+  public int getMOGIndex(IPElement mog);
+
+  /**
    * Get all the ipElements (outputs) presents in the database and linked to the project identified by the value
    * received by parameter.
    * 
