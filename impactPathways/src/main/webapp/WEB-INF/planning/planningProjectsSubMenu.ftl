@@ -34,7 +34,7 @@
       <ul>
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes"/]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes"/]
-        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions"/]
+        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" disabled=true/]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
@@ -60,12 +60,20 @@
   </ul>
   <br />
   <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
+  <div class="center" style="display:none">
+    <img src="${baseUrl}/images/global/loading_2.gif" alt="" width="50px"/>
+  </div>
+  
 </nav>
 
 [#-- Menu element --]
-[#macro menu actionName stageName textName]
+[#macro menu actionName stageName textName disabled=false]
   <li id="menu-${actionName}" class="[#if currentSubStage == stageName]${currCss}[/#if] [@sectionStatus actionName=actionName/]">
-    <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a>
+    [#if disabled]
+      <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
+    [#else]
+      <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+    [/#if]
   </li> 
 [/#macro]
 
