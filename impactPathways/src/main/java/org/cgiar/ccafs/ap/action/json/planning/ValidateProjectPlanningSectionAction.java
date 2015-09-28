@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,6 +124,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Validate if project exists.
     existProject = projectManager.existProject(projectID);
+
     // Validate if the section exists.
     List<String> sections = new ArrayList<>();
     sections.add("description");
@@ -139,7 +139,6 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     sections.add("impactPathway");
     sections.add("budget");
     sections.add("budgetByMog");
-
     validSection = sections.contains(sectionName);
 
   }
@@ -169,8 +168,13 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   }
 
   private void validateProjectLocations() {
+    // Getting the project information.
     Project project = projectManager.getProject(projectID);
     project.setLocations(locationManager.getProjectLocations(projectID));
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "locations", this.getCurrentPlanningYear()));
 
     locationValidator.validate(this, project, "Planning");
   }
@@ -180,11 +184,9 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     Project project = projectManager.getProject(projectID);
     int currentPlanningYear = this.config.getPlanningCurrentYear();
     int midOutcomeYear = this.config.getMidOutcomeYear();
-    // Load the project outcomes
-    Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
 
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(project.getStartDate());
+    // Loading the project outcomes
+    Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
 
     for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
       ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
@@ -196,14 +198,22 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     }
     project.setOutcomes(projectOutcomes);
 
+    // Getting the Project lessons for this section.
+    this
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
   }
 
   private void validateProjectPartners() {
-    // Getting information.
+    // Getting the Project information.
     Project project = projectManager.getProject(projectID);
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "description", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");
