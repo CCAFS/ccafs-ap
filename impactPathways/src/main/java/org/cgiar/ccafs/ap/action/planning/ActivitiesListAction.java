@@ -165,7 +165,10 @@ public class ActivitiesListAction extends BaseAction {
       }
     }
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+
     super.setHistory(historyManager.getActivitiesHistory(project.getId()));
   }
 

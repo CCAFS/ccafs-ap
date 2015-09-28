@@ -121,7 +121,10 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     }
     project.setOutcomes(projectOutcomes);
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+
     super.setHistory(historyManager.getProjectOutcomeHistory(project.getId()));
   }
 

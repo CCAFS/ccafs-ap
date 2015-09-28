@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
+import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
@@ -225,8 +226,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
         IPElement midOutcome = elements.get(i);
         if (this.isValidMidoutcome(midOutcome)) {
           midOutcome
-          .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-          + " #" + (i + 1) + ": " + midOutcome.getDescription());
+            .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
+              + " #" + (i + 1) + ": " + midOutcome.getDescription());
           midOutcomes.add(midOutcome);
         }
 
@@ -353,7 +354,11 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     previousIndicators = new ArrayList<>();
     previousIndicators.addAll(project.getIndicators());
 
-    super.getProjectLessons(projectID);
+    // Getting the Project lessons for this section.
+    ComponentLesson lessons =
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
+    this.setProjectLessons(lessons);
+
     super.setHistory(historyManager.getCCAFSOutcomesHistory(projectID));
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
