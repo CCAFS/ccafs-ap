@@ -185,7 +185,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
     query.append(BudgetType.W1_W2.getValue());
     query
-      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+    .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
     query.append(BudgetType.W3_BILATERAL.getValue());
     query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
@@ -615,7 +615,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       rs.close();
     } catch (SQLException e) {
       LOG
-        .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
+      .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
     return projectIds;
@@ -791,7 +791,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
       query
-        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+      .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -1040,7 +1040,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("d.type_other as 'other_type', ");
     query.append("( ");
     query
-      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1050,7 +1050,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append(") as 'partner_responsible', ");
     query.append("( ");
     query
-      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1103,6 +1103,122 @@ public class MySQLProjectDAO implements ProjectDAO {
       return null;
     }
     LOG.debug("<< getAllProjectsWithDeliverables ");
+    return csvRecords;
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
+    LOG.debug(">> getAllProjectsGenderContribution ");
+    // TODO
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    // Formatted query:
+    query.append("SELECT p.id as 'project_id', ");
+    query.append("p.title as 'project_title', ");
+    query.append("p.summary as 'project_summary', ");
+    query.append("( ");
+    query.append("SELECT po.statement ");
+    query.append("FROM project_outcomes po ");
+    query.append("WHERE p.id = po.project_id AND po.year = 2016 ");
+    query.append(") as 'outcome_statement', ");
+    query.append("p.start_date as 'start_date', ");
+    query.append("p.end_date as 'end_date', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(DISTINCT CONCAT(' ',pro.acronym)) ");
+    query.append("FROM ip_programs pro ");
+    query.append("INNER JOIN project_focuses pf ON pro.id = pf.program_id ");
+    query.append("WHERE pf.project_id = p.id ");
+    query.append("AND pro.region_id IS NULL ");
+    query.append(") as 'flagships', ");
+    query.append("( ");
+    query.append("SELECT GROUP_CONCAT(DISTINCT CONCAT(' ',pro.acronym)) ");
+    query.append("FROM ip_programs pro ");
+    query.append("INNER JOIN project_focuses pf ON pro.id = pf.program_id  ");
+    query.append("WHERE pf.project_id = p.id ");
+    query.append("AND pro.region_id IS NOT NULL ");
+    query.append(") as 'regions', ");
+    query.append("IFNULL ");
+    query.append("( ");
+    query.append("( ");
+    query.append("SELECT CONCAT(i.acronym, ' - ', i.name) ");
+    query.append("), ");
+    query.append("i.name");
+    query.append(") as 'Lead_institution', ");
+    query.append("( ");
+    query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
+    query.append("FROM users u ");
+    query.append("INNER JOIN project_partner_persons ppp ON u.id = ppp.user_id ");
+    query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PL' ");
+    query.append(") as 'project_leader', ");
+    query.append("( ");
+    query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
+    query.append("FROM users u ");
+    query.append("INNER JOIN project_partner_persons ppp ON u.id = ppp.user_id ");
+    query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PC' ");
+    query.append(") as 'project_coordinator', ");
+    query.append("( ");
+    query.append("SELECT SUM(pb.amount) ");
+    query.append("FROM project_budgets pb ");
+    query.append("WHERE p.id = pb.project_id AND pb.year = 2016 and pb.budget_type = 1 ");
+    query.append("GROUP BY p.id ");
+    query.append(") as 'budget_w1w2', ");
+    query.append("( ");
+    query.append("SELECT SUM(pb.amount) ");
+    query.append("FROM project_budgets pb ");
+    query.append("WHERE p.id = pb.project_id AND pb.year = 2016 and pb.budget_type = 2 ");
+    query.append("GROUP BY p.id ");
+    query.append(") as 'budget_w3bilateral', ");
+    query.append("( ");
+    query.append("SELECT SUM(pb.amount * pb.gender_percentage *  0.01) ");
+    query.append("FROM project_budgets pb ");
+    query.append("WHERE p.id = pb.project_id AND pb.year = 2016 and pb.budget_type = 1 ");
+    query.append("GROUP BY p.id ");
+    query.append(") as 'gender_w1w2', ");
+    query.append("( ");
+    query.append("SELECT SUM(pb.amount * pb.gender_percentage *  0.01) ");
+    query.append("FROM project_budgets pb ");
+    query.append("WHERE p.id = pb.project_id AND pb.year = 2016 and pb.budget_type = 2 ");
+    query.append("GROUP BY p.id ");
+    query.append(") as 'gender_w3bilateral' ");
+    query.append("FROM projects p ");
+    query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id ");
+    query.append("LEFT JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("WHERE ppp.contact_type = 'PL' ");
+    query.append("ORDER BY p.id ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> csvData = new HashMap<>();
+        csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("project_summary", rs.getString("project_summary"));
+        csvData.put("outcome_statement", rs.getString("outcome_statement"));
+        csvData.put("start_date", rs.getString("start_date"));
+        csvData.put("end_date", rs.getString("end_date"));
+        csvData.put("lead_institution", rs.getString("lead_institution"));
+        csvData.put("project_leader", rs.getString("project_leader"));
+        csvData.put("project_coordinator", rs.getString("project_coordinator"));
+        csvData.put("flagships", rs.getString("flagships"));
+        csvData.put("regions", rs.getString("regions"));
+        csvData.put("budget_w1w2", rs.getString("budget_w1w2"));
+        csvData.put("budget_w3bilateral", rs.getString("budget_w3bilateral"));
+        csvData.put("gender_w1w2", rs.getString("gender_w1w2"));
+        csvData.put("gender_w3bilateral", rs.getString("gender_w3bilateral"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllProjectsGenderContribution() > Exception raised trying ";
+      exceptionMessage += "to get the summary report for projectsGenderContribution: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getAllProjectsGenderContribution ");
     return csvRecords;
   }
 
