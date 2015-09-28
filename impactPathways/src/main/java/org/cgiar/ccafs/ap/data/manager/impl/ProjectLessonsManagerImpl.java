@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectLessonsDAO;
-import org.cgiar.ccafs.ap.data.dao.ProjectLessonsManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.User;
 
