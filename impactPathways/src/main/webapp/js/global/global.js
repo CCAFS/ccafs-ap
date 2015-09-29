@@ -219,7 +219,8 @@ function applyCharCounter($textArea,charCount) {
 
 /* Add a word counter to a specific text area */
 function applyWordCounter($textArea,wordCount) {
-  $textArea.parent().append("<p class='charCount'>(<span>" + wordCount + "</span> words remaining)</p>");
+  $textArea.parent().append(
+      "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>");
   $textArea.parent().find(".charCount").find("span").text(wordCount - word_count($textArea));
   $textArea.on("keyup", function(event) {
     var $charCount = $(event.target).parent().find(".charCount");
