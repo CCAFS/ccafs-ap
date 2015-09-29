@@ -33,7 +33,7 @@ $(document).ready(function() {
   // hash url animation
   if(window.location.hash) {
     $('html, body').animate({
-      scrollTop: $(window.location.hash).offset().top
+      scrollTop: ($(window.location.hash).offset().top || 20) - 20
     }, 2000);
   }
 
@@ -130,6 +130,9 @@ function validateEvent(fields) {
       e.preventDefault();
       $parent.find('.loading').fadeOut(500);
       var notyOptions = jQuery.extend({}, notyDefaultOptions);
+      $('html, body').animate({
+        scrollTop: $('.fieldError').offset().top - 80
+      }, 700);
       notyOptions.text = 'Something is wrong in this section, please fix it then save';
       noty(notyOptions);
     } else {
