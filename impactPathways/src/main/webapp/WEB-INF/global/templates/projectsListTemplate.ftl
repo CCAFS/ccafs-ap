@@ -85,7 +85,8 @@
           </td>
           [#-- Project Action Status --]
           <td>
-            <a class="submitButton" href="#">Submit</a>
+            <a id="submitProject-${project.id}" class="submitButton" href="#">Submit</a>
+            <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
             </a>
           </td>
           [#-- Track completition of entry --]

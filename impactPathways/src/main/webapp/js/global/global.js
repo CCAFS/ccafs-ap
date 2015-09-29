@@ -111,69 +111,7 @@ $(document).ready(function() {
   // Generating hash from form information
   setFormHash();
 
-  $('.projectSubmitButton').on('click', function(e) {
-    $(this).fadeOut(function() {
-      $(this).next().fadeIn();
-    });
-    var $menus = $('#secondaryMenu.projectMenu ul li ul li');
-    var pID = $(e.target).attr('id').split('-')[1];
-    var sections = [];
-    var menus = [];
-    $menus.each(function(i,menu) {
-      sections.push({
-          projectID: pID,
-          sectionName: (menu.id).split('-')[1]
-      });
-      menus.push(menu);
-    });
-    // Execute ajax process for each section
-    processTasks(sections, menus, '/planning/validateProjectPlanningSection.do');
-  });
 });
-
-function processTasks(tasks,menus,urlDoTask) {
-  var index = 0;
-  function nextTask() {
-    if(index < tasks.length) {
-      $.ajax({
-          url: baseURL + urlDoTask,
-          data: tasks[index],
-          beforeSend: function() {
-            $(menus[index]).removeClass('animated flipInX');
-            $(menus[index]).addClass('loadingSection');
-          },
-          success: function(data) {
-            // Process Ajax results here
-            if(jQuery.isEmptyObject(data)) {
-              $(menus[index]).removeClass('submitted');
-            } else {
-              if(data.sectionStatus.missingFieldsWithPrefix == "") {
-                $(menus[index]).addClass('submitted');
-                $(menus[index]).removeClass('toSubmit');
-              } else {
-                $(menus[index]).removeClass('submitted');
-                $(menus[index]).addClass('toSubmit');
-              }
-            }
-            $(menus[index]).removeClass('loadingSection');
-          },
-          complete: function(data) {
-            $(menus[index]).addClass('animated flipInX');
-            // Do next ajax call
-            ++index;
-            if(index == tasks.length) {
-              $('.projectSubmitButton').next().fadeOut(function() {
-                $('.projectSubmitButton').fadeIn("slow");
-              });
-            }
-            nextTask();
-          }
-      });
-    }
-  }
-  // Start first Ajax call
-  nextTask();
-}
 
 /**
  * Validate fields length when click to any button
