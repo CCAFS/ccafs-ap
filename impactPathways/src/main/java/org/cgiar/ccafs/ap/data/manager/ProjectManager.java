@@ -259,7 +259,19 @@ public interface ProjectManager {
    * @return a list of columns with the information summary
    */
   public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year);
-  
+
+
+  /**
+   * @param year - Specific year for to search in the report.
+   *        This method will return the list of all the MOG of a specific year with your budgets.
+   *        This method also gets all the information in one single query to the database, improving its performance and
+   *        letting the charge to the RAM memory.
+   *        This method should be used to the summary POWBMOGs Report.
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGetInformationPOWB(int year);
+
+
   /**
    * This method updates the project type into the database according to the values contained in the project received by
    * parameter.

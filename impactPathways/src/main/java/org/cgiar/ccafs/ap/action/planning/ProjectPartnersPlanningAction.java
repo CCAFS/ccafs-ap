@@ -280,7 +280,17 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Getting all Project Leaders
     allUsers = userManager.getAllUsers();
 
+    // Getting all the project partners.
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+
+    // Positioning project leader to be the first in the list.
+    ProjectPartner leader = project.getLeader();
+    if (leader != null) {
+      // First we remove the element from the array.
+      project.getProjectPartners().remove(leader);
+      // then we add it to the first position.
+      project.getProjectPartners().add(0, leader);
+    }
 
     // Getting the list of PPA Partners for this project
     this.projectPPAPartners = new ArrayList<ProjectPartner>();
