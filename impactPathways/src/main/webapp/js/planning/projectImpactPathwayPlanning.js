@@ -241,7 +241,7 @@ function setIndicatorIndexes() {
       $(indicator).find("input[type='checkbox']").attr("id", "indicatorIndex-" + indicatorIndex);
       if($(indicator).find("input[type='checkbox']").is(":checked")) {
 
-        $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent.id");
+        $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent");
         $(target).find("input[type='hidden']").attr("disabled", false);
         $(target).find(".projectIndicatorID").attr("id", indicatorsName + "-" + indicatorIndex);
         $(target).find(".projectIndicatorID").attr("name", indicatorsName + "[" + index + "].id");
