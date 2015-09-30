@@ -171,11 +171,11 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
-  public boolean isValidPPAPartners(List<ProjectPartner> ppaPartners) {
-    return false;
+  public boolean isValidPersonResponsibilities(String responsibilities) {
+    return (this.isValidString(responsibilities) && this.wordCount(responsibilities) <= 100);
   }
 
-  public boolean isValidProjectPartners(List<ProjectPartner> projectPartners) {
+  public boolean isValidPPAPartners(List<ProjectPartner> ppaPartners) {
     return false;
   }
 
@@ -202,8 +202,5 @@ public class ProjectValidator extends BaseValidator {
     return (this.isValidString(title) && this.wordCount(title) <= 20) ? true : false;
   }
 
-  public boolean isValidType() {
-    return false;
-  }
 
 }
