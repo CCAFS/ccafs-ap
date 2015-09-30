@@ -447,7 +447,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       if (securityContext.canEditProjectRegions()) {
         List<IPProgram> previousRegions = previousProject.getRegions();
-        List<IPProgram> regions = project.getRegions();
         boolean saved = true;
 
         // Save only the new regions
