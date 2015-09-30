@@ -308,7 +308,7 @@
           <ul class="">
             [#list years as year]
               <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
-            [/#list]   
+            [/#list]
           </ul>
           [#list years as year]
           <div id="target-${year}" class="targetIndicator" >
