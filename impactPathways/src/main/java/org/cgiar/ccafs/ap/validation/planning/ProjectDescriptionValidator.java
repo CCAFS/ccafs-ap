@@ -46,6 +46,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
+      this.validateRequiredFields(action, project);
 
       // The projects will be validated according to their type.
       if (project.isCoreProject() || project.isCoFundedProject()) {
@@ -54,7 +55,9 @@ public class ProjectDescriptionValidator extends BaseValidator {
         this.validateBilateralProject(action, project);
       }
 
-      if (validationMessage.length() > 0) {
+      if (!action.getFieldErrors().isEmpty()) {
+        action.addActionError(action.getText("saving.fields.required"));
+      } else if (validationMessage.length() > 0) {
         action
         .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
@@ -91,7 +94,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
         this
-          .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
+        .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
         this.addMissingField("project.workplanName");
       }
     }
@@ -129,6 +132,20 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (!projectValidator.isValidRegions(regions)) {
       this.addMessage(action.getText("preplanning.projectDescription.regions").toLowerCase());
       this.addMissingField("project.flagships");
+    }
+  }
+
+  private void validateRequiredFields(BaseAction action, Project project) {
+    // Validating Management Liaison (Project owner).
+    if (project.getOwner() == null) {
+      action.addFieldError("project.owner", action.getText("validation.field.required"));
+      this.addMissingField("project.owner");
+    }
+
+    // Liaison institution
+    if (project.getLiaisonInstitution() == null) {
+      action.addFieldError("project.liaisonInstitution", action.getText("validation.field.required"));
+      this.addMissingField("project.liaisonInstitution");
     }
   }
 

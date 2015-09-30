@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Project Outcomes" /]
+[#assign title = "CCAFS Outcomes" /]
 [#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
@@ -113,7 +113,11 @@
                                 
                                 [#-- Indicator target value --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=!project.bilateralProject /]</h6></label>
+                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
+                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
+                                    [@customForm.req required=!project.bilateralProject /]
+                                  [/#if]
+                                  </h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
@@ -127,7 +131,11 @@
                                 
                                 [#-- Indicator target description --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /][@customForm.req required=!project.bilateralProject /]</h6></label>
+                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]
+                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
+                                    [@customForm.req required=!project.bilateralProject /]
+                                  [/#if] 
+                                  </h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
                                     <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
@@ -300,7 +308,7 @@
           <ul class="">
             [#list years as year]
               <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
-            [/#list]   
+            [/#list]
           </ul>
           [#list years as year]
           <div id="target-${year}" class="targetIndicator" >
@@ -310,10 +318,18 @@
             <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome" /> 
             <div class="checkboxGroup vertical indicatorNarrative">
               [#-- Target value --]
-              <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=!project.bilateralProject /]</h6></label>
+              <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
+              [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
+                [@customForm.req required=!project.bilateralProject /]
+              [/#if]
+              </h6></label>
               <input type="text"  class="projectIndicatorTarget" name="project_indicator_target" />
               [#-- Target description --]
-              <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /][@customForm.req required=!project.bilateralProject /]</h6></label>
+              <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]
+              [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
+                [@customForm.req required=!project.bilateralProject /]
+              [/#if]
+              </h6></label>
               <textarea rows="4" class="projectIndicatorDescription" name="project_indicator_description" ></textarea>
             </div>
           </div>

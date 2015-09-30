@@ -64,7 +64,7 @@
         <param name="projectID">${project.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">partnerLead</param>
+        <param name="actionName">partners</param>
         <param name="projectID">${project.id}</param>
       </result>
       <result name="cancel" type="redirectAction">

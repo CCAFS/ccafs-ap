@@ -1,4 +1,7 @@
-[#ftl] 
+[#ftl]
+[#-- Submit controller --]
+<script src="${baseUrl}/js/planning/projectSubmit.js"></script>
+
 [#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
 <nav id="secondaryMenu" class="projectMenu ${(project.type)!''}">
@@ -60,9 +63,7 @@
   </ul>
   <br />
   <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
-  <div class="center" style="display:none">
-    <img src="${baseUrl}/images/global/loading_2.gif" alt="" width="50px"/>
-  </div>
+  <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
   
 </nav>
 
@@ -82,7 +83,9 @@
 [#compress]
     [#if action.getProjectSectionStatus(actionName)??]
       [#if !((action.getProjectSectionStatus(actionName)).missingFieldsWithPrefix)?has_content]
-       submitted
+        submitted
+      [#else]
+        toSubmit 
       [/#if]
     [/#if]
 [/#compress]
