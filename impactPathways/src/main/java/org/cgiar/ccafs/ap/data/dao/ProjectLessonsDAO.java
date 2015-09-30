@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectLessonsDAO;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.ImplementedBy;
@@ -27,6 +28,15 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(MySQLProjectLessonsDAO.class)
 public interface ProjectLessonsDAO {
+
+
+  /**
+   * This method get the component lessons list for a specific project.
+   * 
+   * @param projectID - Project identifier
+   * @return a map list with the information.
+   */
+  public List<Map<String, String>> getComponentLessonByProject(int projectID);
 
   /**
    * This method get the lessons on a given component for a specific project.
