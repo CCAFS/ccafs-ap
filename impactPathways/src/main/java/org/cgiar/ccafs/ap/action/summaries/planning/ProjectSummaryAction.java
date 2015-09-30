@@ -30,6 +30,7 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
@@ -84,6 +85,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private PartnerPersonManager partnerPersonManager;
   private ProjectOutcomeManager projectOutcomeManager;
   private IPIndicatorManager indicatorManager;
+  private ProjectLessonsManager projectLessonsManager;
 
 
   // Model
@@ -100,7 +102,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager,
     InstitutionManager institutionManager, DeliverableManager deliverableManager, NextUserManager nextUserManager,
     DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
-    CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager) {
+    CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager,
+    ProjectLessonsManager projectLessonsManager) {
     super(config);
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
@@ -120,6 +123,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.crpManager = crpManager;
     this.partnerPersonManager = partnerPersonManager;
     this.indicatorManager = indicatorManager;
+    this.projectLessonsManager = projectLessonsManager;
   }
 
 
@@ -279,5 +283,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // *************************Budgets ******************************
 
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));
+
+    // Get Leasson regarding
+    project.setComponentLessons(this.projectLessonsManager.getComponentLessonsByProject(projectID));
+
   }
 }

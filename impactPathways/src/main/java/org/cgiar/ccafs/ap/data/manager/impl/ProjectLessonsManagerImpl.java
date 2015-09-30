@@ -19,7 +19,9 @@ import org.cgiar.ccafs.ap.data.manager.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -38,6 +40,24 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
     this.lessonDAO = lessonDAO;
   }
 
+
+  @Override
+  public List<ComponentLesson> getComponentLessonsByProject(int projectID) {
+    List<ComponentLesson> leassonList = new ArrayList<>();
+    ComponentLesson componentLesson;
+    List<Map<String, String>> lessonsDataList = lessonDAO.getComponentLessonByProject(projectID);
+    for (Map<String, String> lessonData : lessonsDataList) {
+      componentLesson = new ComponentLesson();
+      componentLesson.setId(Integer.parseInt(lessonData.get("id")));
+      componentLesson.setYear(Integer.parseInt(lessonData.get("year")));
+      componentLesson.setComponentName(lessonData.get("component_name"));
+      componentLesson.setLessons(lessonData.get("lessons"));
+      leassonList.add(componentLesson);
+    }
+    // TODO Auto-generated method stub
+    return leassonList;
+  }
+
   @Override
   public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year) {
     ComponentLesson lesson = new ComponentLesson();
@@ -49,9 +69,9 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
       lesson.setLessons(lessonData.get("lessons"));
       lesson.setYear(year);
     }
-
     return lesson;
   }
+
 
   @Override
   public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification) {
