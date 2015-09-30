@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Project Outputs" /]
+[#assign title = "Overview by MOGs" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/planning/projectOutputsPlanning.js"] /]
 [#assign currentSection = "planning" /]

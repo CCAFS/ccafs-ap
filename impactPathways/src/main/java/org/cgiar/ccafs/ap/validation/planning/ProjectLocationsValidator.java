@@ -25,6 +25,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Carlos Alberto Martínez. - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class ProjectLocationsValidator extends BaseValidator {
@@ -57,8 +58,9 @@ public class ProjectLocationsValidator extends BaseValidator {
         } else {
           this.validateLocations(action, project);
         }
+
       } else {
-        // Do Nothing
+        // If project is bilateral, do nothing.
       }
       if (fields) {
         action.addActionError(action.getText("saving.fields.required"));
@@ -77,7 +79,7 @@ public class ProjectLocationsValidator extends BaseValidator {
       if (!this.isValidLocation(project.getLocations().get(i))) {
         this.addMessage("location #" + (i + 1));
         action.addFieldError("location-" + i, action.getText("validation.field.required"));
-        // No need to add missing fields as the information is not saved yet.
+        this.addMissingField("project.location[" + i + "].name");
         fields = true;
       }
     }

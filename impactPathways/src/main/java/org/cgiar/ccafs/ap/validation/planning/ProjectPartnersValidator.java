@@ -125,7 +125,7 @@ public class ProjectPartnersValidator extends BaseValidator {
 
   private void validatePersonResponsibilities(BaseAction action, int partnerCounter, int personCounter,
     PartnerPerson person) {
-    if (person.getResponsibilities() == null || person.getResponsibilities().isEmpty()) {
+    if (!projectValidator.isValidPersonResponsibilities(person.getResponsibilities())) {
       if (person.getUser() != null && person.getUser().getId() != -1) {
         this.addMessage(action.getText("planning.projectPartners.responsibilities.for",
           new String[] {person.getUser().getFirstName() + " " + person.getUser().getLastName()}));

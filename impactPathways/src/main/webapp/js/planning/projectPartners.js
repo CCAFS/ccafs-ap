@@ -38,6 +38,7 @@ function init() {
     validateEvent([
       "#justification"
     ]);
+
   }
   // Attaching listeners
   attachEvents();
@@ -45,6 +46,8 @@ function init() {
     $("a.addProjectPartner").trigger('click');
   }
   $('.loadingBlock').hide().next().fadeIn(500);
+
+  $("textarea[id!='justification']").autoGrow();
 }
 
 function attachEvents() {
