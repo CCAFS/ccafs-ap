@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.action.json.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
@@ -69,6 +70,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private IPElementManager ipElementManager;
   @Inject
   private ProjectContributionOverviewManager overviewManager;
+  @Inject
+  private IPIndicatorManager indicatorManager;
 
   // Validators
   @Inject
@@ -105,7 +108,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           this.validateProjectOutcomes();
           break;
         case "ccafsOutcomes":
-          // TODO
+          this.validateCCAFSOutcomes();
           break;
         case "otherContributions":
           // TODO
@@ -171,6 +174,18 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     sections.add("budgetByMog");
     validSection = sections.contains(sectionName);
 
+  }
+
+  private void validateCCAFSOutcomes() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Get the project outputs from database
+    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    // Get the project indicators from database
+    project.setIndicators(indicatorManager.getProjectIndicators(projectID));
+
+
+    // TODO Auto-generated method stub
   }
 
   private void validateOverviewByMOGS() {

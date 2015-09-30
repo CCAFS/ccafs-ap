@@ -170,6 +170,10 @@ public class SecurityContext extends BaseSecurityContext {
     return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE);
   }
 
+  public boolean canSubmitProject() {
+    return this.hasPermission(Permission.PLANNING_SUBMIT_BUTTON);
+  }
+
   /**
    * Verify if can update the annual W3/Bilateral budget in project budgets section
    * 

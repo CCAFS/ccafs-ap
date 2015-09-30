@@ -14,7 +14,6 @@
 
 package org.cgiar.ccafs.ap.validation.model;
 
-import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -48,20 +47,12 @@ public class ProjectValidator extends BaseValidator {
   public ProjectValidator() {
   }
 
-  public boolean isValidActivities(List<Activity> activities) {
-    return false;
-  }
-
   public boolean isValidBilateralContractProposalName(String proposalName) {
     return (this.isValidString(proposalName)) ? true : false;
   }
 
   public boolean isValidBudget(List<Budget> budgets) {
     return (budgets != null && !budgets.isEmpty());
-  }
-
-  public boolean isValidCoordinator(ProjectPartner coordinator) {
-    return false;
   }
 
   public boolean isValidCrpContributions(List<CRP> crpContributions) {
@@ -77,7 +68,7 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidIndicators(List<IPIndicator> indicators) {
-    return false;
+    return (indicators != null && !indicators.isEmpty());
   }
 
   public boolean isValidLeader(ProjectPartner leader, boolean isBilateral) {
@@ -196,6 +187,14 @@ public class ProjectValidator extends BaseValidator {
 
   public boolean isValidSummary(String summary) {
     return (this.isValidString(summary) && this.wordCount(summary) <= 150) ? true : false;
+  }
+
+  public boolean isValidTargetNarrative(String targetNarrative) {
+    return (this.isValidString(targetNarrative) && this.wordCount(targetNarrative) <= 100);
+  }
+
+  public boolean isValidTargetValue(String targetValue) {
+    return (this.isValidString(targetValue) && this.isValidNumber(targetValue));
   }
 
   public boolean isValidTitle(String title) {
