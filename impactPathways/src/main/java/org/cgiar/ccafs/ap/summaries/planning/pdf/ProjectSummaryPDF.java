@@ -36,7 +36,6 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.NextUser;
-import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
@@ -227,6 +226,21 @@ public class ProjectSummaryPDF extends BasePDF {
           }
         }
       }
+
+      // Leason regardins
+      activityBlock = new Paragraph();
+      activityBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+      activityBlock.setFont(BODY_TEXT_BOLD_FONT);
+      activityBlock.add(this.getText("summaries.project.activities.lessonsRegarding"));
+      activityBlock.setFont(BODY_TEXT_FONT);
+
+      if (project.getComponentLesson("activities") != null) {
+        activityBlock.add(this.messageReturn(project.getComponentLesson("activities").getLessons()));
+      } else {
+        activityBlock.add(this.messageReturn(null));
+      }
+      document.add(activityBlock);
+
 
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project activities to the project summary pdf of project {} ", e,
@@ -571,7 +585,6 @@ public class ProjectSummaryPDF extends BasePDF {
             value =
               this.budgetManager
                 .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
-
             cell = new Paragraph(this.budgetFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
             valueSum = value;
@@ -1511,7 +1524,6 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
-
   private void addProjectCCAFSOutcomes() {
     PdfPTable table = new PdfPTable(3);
 
@@ -1607,7 +1619,11 @@ public class ProjectSummaryPDF extends BasePDF {
       indicatorsBlock.setFont(BODY_TEXT_BOLD_FONT);
       indicatorsBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.lessonRegarding"));
       indicatorsBlock.setFont(BODY_TEXT_FONT);
-      indicatorsBlock.add(this.messageReturn(project.getComponentLesson("ccafsOutcomes").getLessons()));
+      if (project.getComponentLesson("ccafsOutcomes") != null) {
+        indicatorsBlock.add(this.messageReturn(project.getComponentLesson("ccafsOutcomes").getLessons()));
+      } else {
+        indicatorsBlock.add(this.messageReturn(null));
+      }
       document.add(indicatorsBlock);
 
     } catch (DocumentException e) {
@@ -1773,7 +1789,6 @@ public class ProjectSummaryPDF extends BasePDF {
 
   }
 
-
   private void addProjectLocations() {
     Paragraph title = new Paragraph("3. " + this.getText("summaries.projectLocation.title"), HEADING3_FONT);
     Paragraph cell;
@@ -1894,6 +1909,21 @@ public class ProjectSummaryPDF extends BasePDF {
         title.add(Chunk.NEWLINE);
         document.add(title);
         document.add(table);
+
+        Paragraph locationsBlock = new Paragraph();
+        locationsBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        locationsBlock.add(Chunk.NEWLINE);
+        locationsBlock.add(Chunk.NEWLINE);
+        locationsBlock.setFont(BODY_TEXT_BOLD_FONT);
+        locationsBlock.add(this.getText("summaries.project.location.lessonRegarding"));
+        locationsBlock.setFont(BODY_TEXT_FONT);
+        if (project.getComponentLesson("locations") != null) {
+          locationsBlock.add(this.messageReturn(project.getComponentLesson("locations").getLessons()));
+        } else {
+          locationsBlock.add(this.messageReturn(null));
+        }
+        document.add(locationsBlock);
+
       }
 
     } catch (DocumentException e) {
@@ -2027,8 +2057,18 @@ public class ProjectSummaryPDF extends BasePDF {
       outcomesBlock.add(outcomeProgress);
       outcomesBlock.add(Chunk.NEWLINE);
       outcomesBlock.add(Chunk.NEWLINE);
-
     }
+    // Leason regardins
+    outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+    outcomesBlock.add(this.getText("summaries.project.outcome.leasonRegarding"));
+    outcomesBlock.setFont(BODY_TEXT_FONT);
+    if (project.getComponentLesson("outcomes") != null) {
+      outcomesBlock.add(this.messageReturn(project.getComponentLesson("outcomes").getLessons()));
+    } else {
+      outcomesBlock.add(this.messageReturn(null));
+    }
+
     // Add paragraphs to document
     try {
       document.add(outcomesBlock);
@@ -2040,56 +2080,56 @@ public class ProjectSummaryPDF extends BasePDF {
     this.addProjectCCAFSOutcomes();
 
     // ******************* Other contributions***************/
-    OtherContribution otherContribution = project.getIpOtherContribution();
-
-    outcomesBlock = new Paragraph();
-    outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-
-    title =
-      new Paragraph("4.4 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"),
-        HEADING3_FONT);
-    outcomesBlock.add(Chunk.NEWLINE);
-    outcomesBlock.add(title);
-    outcomesBlock.add(Chunk.NEWLINE);
-
-    // Contribution to other Impact Pathways:
-    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
-
-    outcomesBlock.setFont(BODY_TEXT_FONT);
-
-    if (otherContribution == null || otherContribution.getContribution() == null
-      || otherContribution.getContribution().equals("")) {
-      outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-    } else {
-      outcomesBlock.add(Chunk.NEWLINE);
-      outcomesBlock.add(otherContribution.getContribution());
-    }
-
-    outcomesBlock.add(Chunk.NEWLINE);
-    outcomesBlock.add(Chunk.NEWLINE);
-
-    // Contribution to another Center activity:
-    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.center"));
-    outcomesBlock.setFont(BODY_TEXT_FONT);
-    if (otherContribution == null || otherContribution.getAdditionalContribution() == null
-      || otherContribution.getAdditionalContribution().equals("")) {
-      outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-    } else {
-      outcomesBlock.add(Chunk.NEWLINE);
-      outcomesBlock.add(otherContribution.getAdditionalContribution());
-    }
-    outcomesBlock.add(Chunk.NEWLINE);
-    outcomesBlock.add(Chunk.NEWLINE);
-
-    // Collaboration with other CRPs
-    boolean addParagraph = false;
+    // OtherContribution otherContribution = project.getIpOtherContribution();
+    //
+    // outcomesBlock = new Paragraph();
+    // outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+    //
+    // title =
+    // new Paragraph("4.4 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"),
+    // HEADING3_FONT);
+    // outcomesBlock.add(Chunk.NEWLINE);
+    // outcomesBlock.add(title);
+    // outcomesBlock.add(Chunk.NEWLINE);
+    //
+    // // Contribution to other Impact Pathways:
+    // outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+    // outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
+    //
+    // outcomesBlock.setFont(BODY_TEXT_FONT);
+    //
+    // if (otherContribution == null || otherContribution.getContribution() == null
+    // || otherContribution.getContribution().equals("")) {
+    // outcomesBlock.add(": " + this.getText("summaries.project.empty"));
+    // } else {
+    // outcomesBlock.add(Chunk.NEWLINE);
+    // outcomesBlock.add(otherContribution.getContribution());
+    // }
+    //
+    // outcomesBlock.add(Chunk.NEWLINE);
+    // outcomesBlock.add(Chunk.NEWLINE);
+    //
+    // // Contribution to another Center activity:
+    // outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+    // outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.center"));
+    // outcomesBlock.setFont(BODY_TEXT_FONT);
+    // if (otherContribution == null || otherContribution.getAdditionalContribution() == null
+    // || otherContribution.getAdditionalContribution().equals("")) {
+    // outcomesBlock.add(": " + this.getText("summaries.project.empty"));
+    // } else {
+    // outcomesBlock.add(Chunk.NEWLINE);
+    // outcomesBlock.add(otherContribution.getAdditionalContribution());
+    // }
+    // outcomesBlock.add(Chunk.NEWLINE);
+    // outcomesBlock.add(Chunk.NEWLINE);
+    //
+    // // Collaboration with other CRPs
+    // boolean addParagraph = false;
     // List<CRP> listCRP = project.getCrpContributions();
-    Paragraph cell = new Paragraph();;
-    cell.setFont(BODY_TEXT_BOLD_FONT);
-    cell.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.covered"));
-    PdfPTable table = new PdfPTable(1);
+    // Paragraph cell = new Paragraph();;
+    // cell.setFont(BODY_TEXT_BOLD_FONT);
+    // cell.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.covered"));
+    // PdfPTable table = new PdfPTable(1);
     // if (listCRP.isEmpty()) {
     // cell.setFont(BODY_TEXT_FONT);
     // cell.add(": " + this.getText("summaries.project.empty"));
@@ -2107,33 +2147,33 @@ public class ProjectSummaryPDF extends BasePDF {
     // this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
     // }
     // }
-    try {
-      document.add(outcomesBlock);
-
-      // CNature of the collaboration:
-      outcomesBlock = new Paragraph();
-      outcomesBlock.add(Chunk.NEWLINE);
-      outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-      outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.nature"));
-      outcomesBlock.setFont(BODY_TEXT_FONT);
-      // if (otherContribution == null || otherContribution.getCrpCollaborationNature() == null
-      // || otherContribution.getCrpCollaborationNature().equals("")) {
-      // outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-      // } else {
-      // outcomesBlock.add(Chunk.NEWLINE);
-      // outcomesBlock.add(otherContribution.getCrpCollaborationNature());
-      // }
-
-      // Add paragraphs to document
-      if (addParagraph) {
-        document.add(cell);
-      } else {
-        document.add(table);
-      }
-      document.add(outcomesBlock);
-    } catch (DocumentException e) {
-      LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
-    }
+    // try {
+    // document.add(outcomesBlock);
+    //
+    // // CNature of the collaboration:
+    // outcomesBlock = new Paragraph();
+    // outcomesBlock.add(Chunk.NEWLINE);
+    // outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+    // outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.nature"));
+    // outcomesBlock.setFont(BODY_TEXT_FONT);
+    // if (otherContribution == null || otherContribution.getCrpCollaborationNature() == null
+    // || otherContribution.getCrpCollaborationNature().equals("")) {
+    // outcomesBlock.add(": " + this.getText("summaries.project.empty"));
+    // } else {
+    // outcomesBlock.add(Chunk.NEWLINE);
+    // outcomesBlock.add(otherContribution.getCrpCollaborationNature());
+    // }
+    //
+    // // Add paragraphs to document
+    // if (addParagraph) {
+    // document.add(cell);
+    // } else {
+    // document.add(table);
+    // }
+    // document.add(outcomesBlock);
+    // } catch (DocumentException e) {
+    // LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
+    // }
 
   }
 
@@ -2197,9 +2237,23 @@ public class ProjectSummaryPDF extends BasePDF {
           document.add(table);
         }
       }
+
+      // Leason regardins
       paragraph = new Paragraph();
       paragraph.add(Chunk.NEWLINE);
+      paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+      paragraph.setFont(BODY_TEXT_BOLD_FONT);
+      paragraph.add(this.getText("summaries.project.partner.lessonRegarding"));
+      paragraph.setFont(BODY_TEXT_FONT);
+      if (project.getComponentLesson("outputs") != null) {
+        paragraph.add(this.messageReturn(project.getComponentLesson("outputs").getLessons()));
+      } else {
+        paragraph.add(this.messageReturn(null));
+      }
+      paragraph.add(Chunk.NEWLINE);
+      paragraph.add(Chunk.NEWLINE);
       document.add(paragraph);
+
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project title to the project summary pdf", e);
     }
@@ -2268,6 +2322,20 @@ public class ProjectSummaryPDF extends BasePDF {
           }
         }
       }
+
+      // Leason regardins
+      partnersBlock = new Paragraph();
+      partnersBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+      partnersBlock.setFont(BODY_TEXT_BOLD_FONT);
+      partnersBlock.add(this.getText("summaries.project.partner.lessonRegarding"));
+      partnersBlock.setFont(BODY_TEXT_FONT);
+      if (project.getComponentLesson("partners") != null) {
+        partnersBlock.add(this.messageReturn(project.getComponentLesson("partners").getLessons()));
+      } else {
+        partnersBlock.add(this.messageReturn(null));
+      }
+      document.add(partnersBlock);
+
 
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
