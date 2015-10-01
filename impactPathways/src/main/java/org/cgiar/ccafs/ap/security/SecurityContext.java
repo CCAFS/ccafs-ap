@@ -325,7 +325,6 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canUpdateProjectPartners(int projectID) {
-    System.out.println(user.getComposedName());
     return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_UPDATE);
   }
 

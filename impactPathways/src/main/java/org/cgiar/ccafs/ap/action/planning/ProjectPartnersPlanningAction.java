@@ -483,6 +483,13 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       PartnerPerson previousLeader = previousProject.getLeaderPerson();
       PartnerPerson leader = project.getLeaderPerson();
 
+      // TODO HT: Activate leader in case it is inactive.
+      if (!leader.getUser().isActive()) {
+        leader.getUser().setActive(true);
+        userManager.saveUser(leader.getUser(), this.getCurrentUser());
+        // TODO HT: Send email with login credentials.
+      }
+
       Role plRole = new Role(APConstants.ROLE_PROJECT_LEADER);
       if (previousLeader == null && leader != null) {
         roleManager.saveRole(leader.getUser(), plRole);

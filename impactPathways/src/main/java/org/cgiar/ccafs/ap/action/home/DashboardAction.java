@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.action.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -42,24 +41,16 @@ public class DashboardAction extends BaseAction {
 
   // Test Objects
   private List<Project> projects;
-  private List<Activity> activities;
   private Project project;
   private Activity activity;
 
   // Manager
   private ProjectManager projectManager;
-  private ActivityManager activityManager;
 
   @Inject
-  public DashboardAction(APConfig config, ProjectManager projectManager, ActivityManager activityManager) {
+  public DashboardAction(APConfig config, ProjectManager projectManager) {
     super(config);
-    this.activityManager = activityManager;
     this.projectManager = projectManager;
-  }
-
-
-  public List<Activity> getActivities() {
-    return activities;
   }
 
   public Activity getActivity() {
@@ -93,10 +84,6 @@ public class DashboardAction extends BaseAction {
       }
 
     }
-  }
-
-  public void setActivities(List<Activity> activities) {
-    this.activities = activities;
   }
 
   public void setActivity(Activity activity) {
