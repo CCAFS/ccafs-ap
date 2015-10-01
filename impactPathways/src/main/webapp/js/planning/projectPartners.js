@@ -44,6 +44,11 @@ function init() {
   attachEvents();
   if(($partnersBlock.find('.projectPartner').length == 0) && editable) {
     $("a.addProjectPartner").trigger('click');
+    var person = new PartnerPersonObject($partnersBlock.find('.contactPerson'));
+    person.setPartnerType(leaderType);
+    person.changeType();
+    var partner = new PartnerObject($partnersBlock.find('.projectPartner'));
+    partner.changeType();
   }
   $('.loadingBlock').hide().next().fadeIn(500);
 
@@ -666,7 +671,11 @@ function PartnerPersonObject(partnerPerson) {
   this.contactInfo = $(partnerPerson).find('.userName').val();
   this.canEditEmail = ($(partnerPerson).find('input.canEditEmail').val() === "true");
   this.setPartnerType = function(type) {
+    this.type = type;
     $(partnerPerson).find('.partnerPersonType').val(type).trigger("liszt:updated");
+  };
+  this.getPartnerType = function() {
+    return $(partnerPerson).find('.partnerPersonType').val();
   };
   this.changeType = function() {
     $(partnerPerson).removeClass(partnerPersonTypes.join(' ')).addClass(this.type);
