@@ -12,6 +12,13 @@ $(document).ready(function() {
   });
   // Event for submit button inside each project
   $('.projectSubmitButton, .submitButton').on('click', submitButtonEvent);
+
+  $('table.projectsList').on('draw.dt', function() {
+    $('.projectSubmitButton, .submitButton').on('click', submitButtonEvent);
+    $(".progressbar").progressbar({
+      max: tasksLength
+    });
+  });
 });
 
 function submitButtonEvent(e) {
