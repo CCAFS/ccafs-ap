@@ -213,7 +213,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append("INNER JOIN ip_element_types ipt ON ipe.element_type_id = ipt.id ");
     query.append("WHERE ipd.deliverable_id= ");
     query.append(deliverableID);
-    System.out.println(query);
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
@@ -223,7 +223,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverableContributionData.put("element_type_id", rs.getString("element_type_id"));
         deliverableContributionData.put("element_type_name", rs.getString("element_type_name"));
       }
-      // System.out.println("esto es lo que impirmr " + rs.getString("ip_program_id"));
+
       rs.close();
     } catch (SQLException e) {
       String exceptionMessage = "-- executeQuery() > Exception raised trying ";
@@ -322,7 +322,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     } else {
       // Updating existing deliverable record
       query
-      .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+        .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = deliverableData.get("title");
