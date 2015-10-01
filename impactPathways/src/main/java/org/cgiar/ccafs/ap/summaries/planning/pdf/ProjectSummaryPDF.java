@@ -31,6 +31,7 @@ import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
@@ -107,7 +108,7 @@ public class ProjectSummaryPDF extends BasePDF {
   private DecimalFormat budgetFormatter, genderFormatter;
   // Attributes
   private String summaryTitle;
-
+  private List<IPElement> allMOGs;
 
   // Budget
   @Inject
@@ -124,7 +125,9 @@ public class ProjectSummaryPDF extends BasePDF {
     this.projectOutcomeManager = projectOutcomeManager;
     this.budgetByMogManager = budgetByMogManager;
     this.projectManager = projectManager;
-    this.prepareFormatter();
+    this.allMOGs = elementManager.getIPElementList();
+
+
   }
 
   /**
@@ -1375,6 +1378,7 @@ public class ProjectSummaryPDF extends BasePDF {
     int endYear = 0;
 
     Paragraph paragraph = new Paragraph();
+    this.prepareFormatter();
 
     Calendar startDate = Calendar.getInstance();
     Calendar endDate = Calendar.getInstance();
@@ -2458,6 +2462,7 @@ public class ProjectSummaryPDF extends BasePDF {
     // Open document
     document.open();
 
+
     // Summary content
     this.addProjectTitle();
     this.addMainInformationTable();
@@ -2499,6 +2504,18 @@ public class ProjectSummaryPDF extends BasePDF {
    */
   public int getContentLength() {
     return contentLength;
+  }
+
+  public List<IPElement> getElementMOGsByType(IPElement ipeElement, IPElementType elementType) {
+
+    List<IPElement> listIPElement = new ArrayList<>();
+    for (IPElement IPElementIterator : this.allMOGs) {
+      if (IPElementIterator.getType().getId() == elementType.getId()
+        && ipeElement.getProgram().getId() == IPElementIterator.getProgram().getId()) {
+        listIPElement.add(IPElementIterator);
+      }
+    }
+    return listIPElement;
   }
 
   /**
@@ -2559,9 +2576,10 @@ public class ProjectSummaryPDF extends BasePDF {
    */
   public int getMOGIndex(IPElement mog) {
     int index = 0;
-    List<IPElement> allMOGs = elementManager.getIPElements(mog.getProgram(), mog.getType());
-    for (int i = 0; i < allMOGs.size(); i++) {
-      if (allMOGs.get(i).getId() == mog.getId()) {
+
+    List<IPElement> IPElements = this.getElementMOGsByType(mog, mog.getType());
+    for (int i = 0; i < IPElements.size(); i++) {
+      if (IPElements.get(i).getId() == mog.getId()) {
         return i + 1;
       }
     }
