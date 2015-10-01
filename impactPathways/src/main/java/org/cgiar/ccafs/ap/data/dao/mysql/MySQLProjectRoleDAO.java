@@ -43,7 +43,7 @@ public class MySQLProjectRoleDAO implements ProjectRoleDAO {
     query.append("SELECT pp.project_id, ppp.user_id, (SELECT id FROM roles WHERE acronym = ppp.contact_type) ");
     query.append("FROM `project_partner_persons` ppp ");
     query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
-    query.append("WHERE (ppp.contact_type = 'PL' OR ppp.contact_type = 'PC' ) ");
+    query.append("WHERE ((ppp.contact_type = 'PL' OR ppp.contact_type = 'PC') AND ppp.is_active = 1) ");
     query.append("AND pp.project_id = ?");
 
     int result = daoManager.saveData(query.toString(), new Object[] {projectID});

@@ -52,7 +52,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -73,7 +73,6 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         c++;
       }
     }
-
   }
 
   private void validateTargetNarrative(BaseAction action, String targetNarrative, int c) {
