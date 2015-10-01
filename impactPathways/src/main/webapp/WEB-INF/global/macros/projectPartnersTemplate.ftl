@@ -109,9 +109,9 @@
     [#-- Partner Person type and email--]
     <div class="fullPartBlock"> 
       [#if (contact.leader)!false ]
-       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != contact.user.id)/]
+       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != (contact.user.id)!-1)/]
       [#elseif (contact.coordinator)!false]
-       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != contact.user.id)/]
+       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != (contact.user.id)!-1)/]
       [#else]
        [#assign canEditLeader=editable /]
       [/#if]
