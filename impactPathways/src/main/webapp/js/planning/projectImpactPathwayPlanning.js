@@ -246,7 +246,7 @@ function setIndicatorIndexes() {
         $(target).find(".projectIndicatorID").attr("id", indicatorsName + "-" + indicatorIndex);
         $(target).find(".projectIndicatorID").attr("name", indicatorsName + "[" + index + "].id");
         $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
-        $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome.id");
+        $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
 
