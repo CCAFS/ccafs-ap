@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Project Outcomes" /]
+[#assign title = "CCAFS Outcomes" /]
 [#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
@@ -101,9 +101,9 @@
                               <div id="target-${year}" class="targetIndicator">
                                 [#-- Indicator ID --]
                                 [#if indicator.parent?has_content]
-                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
+                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.parent.id}"  />
                                 [#else]
-                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.id}"  />
                                 [/#if]
                                 
                                 [#-- Hidden values --]
@@ -171,9 +171,9 @@
                             <div id="target-${year}" class="targetIndicator"> 
                               [#-- Indicator ID --]
                               [#if indicator.parent?has_content]
-                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
+                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.parent.id}"  />
                               [#else]
-                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.id}"  />
                               [/#if]
                               
                               [#-- Check if the value of this hidden input should be arbitrarily -1 --]
@@ -312,7 +312,7 @@
           </ul>
           [#list years as year]
           <div id="target-${year}" class="targetIndicator" >
-            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id"   />
+            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent"   />
             <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="-1"/>
             <input type="hidden" class="projectIndicatorYear" name="project_indicator_year"  value="${year}" />
             <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome" /> 

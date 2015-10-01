@@ -65,6 +65,20 @@ public class BaseValidator {
     return false;
   }
 
+  protected boolean isValidNumber(String number) {
+    if (this.isValidString(number)) {
+      try {
+        Double.parseDouble(number);
+        // If is a number the code comes to here.
+        return true;
+      } catch (NumberFormatException e) {
+        // if not a number.
+        return false;
+      }
+    }
+    return false;
+  }
+
   /**
    * This method validates that the string received is not null and is not empty.
    * 

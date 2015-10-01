@@ -28,7 +28,6 @@ $(document).ready(function() {
   showNotificationMessages();
   showHelpText();
   applyWordCounter($("#justification"), justificationLimitWords);
-  $("textarea[id!='justification']").autoGrow();
 
   // hash url animation
   if(window.location.hash) {
@@ -107,6 +106,8 @@ $(document).ready(function() {
   function toggleInputs(e) {
     $(this).parent().parent().parent().find('.tickBox-toggle').slideToggle($(e.target).is(':checked'));
   }
+
+  $("textarea[id!='justification']").autoGrow();
 
   // Generating hash from form information
   setFormHash();

@@ -241,12 +241,12 @@ function setIndicatorIndexes() {
       $(indicator).find("input[type='checkbox']").attr("id", "indicatorIndex-" + indicatorIndex);
       if($(indicator).find("input[type='checkbox']").is(":checked")) {
 
-        $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent.id");
+        $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent");
         $(target).find("input[type='hidden']").attr("disabled", false);
         $(target).find(".projectIndicatorID").attr("id", indicatorsName + "-" + indicatorIndex);
         $(target).find(".projectIndicatorID").attr("name", indicatorsName + "[" + index + "].id");
         $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
-        $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome.id");
+        $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
 

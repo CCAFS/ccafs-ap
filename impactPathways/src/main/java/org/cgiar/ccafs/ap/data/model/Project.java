@@ -59,8 +59,6 @@ public class Project {
   private List<ComponentLesson> componentLessons;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
-  private List<CRP> crpContributions;
-  private String crpContributionsNature;
   private boolean workplanRequired;
   private String workplanName;
   private String bilateralContractProposalName;
@@ -321,13 +319,6 @@ public class Project {
     return new Date(created);
   }
 
-  public List<CRP> getCrpContributions() {
-    return crpContributions;
-  }
-
-  public String getCrpContributionsNature() {
-    return crpContributionsNature;
-  }
 
   public List<Deliverable> getDeliverables() {
     return deliverables;
@@ -748,14 +739,6 @@ public class Project {
 
   public void setCreated(long created) {
     this.created = created;
-  }
-
-  public void setCrpContributions(List<CRP> crpContributions) {
-    this.crpContributions = crpContributions;
-  }
-
-  public void setCrpContributionsNature(String crpContributionsNature) {
-    this.crpContributionsNature = crpContributionsNature;
   }
 
   public void setDeliverables(List<Deliverable> deliverables) {

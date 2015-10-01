@@ -1,7 +1,7 @@
 // Limits for textarea input
 var lWordsDTitle = 15;
 var lWordsNextUsers = 20;
-var lWordsNextUsersDesc = 80;
+var lWordsNextUsersDesc = 50;
 var lWordsLessons = 100;
 var $deliverablesTypes, $deliverablesSubTypes;
 var hashRegenerated = false;
