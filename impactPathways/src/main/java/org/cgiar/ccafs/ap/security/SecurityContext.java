@@ -392,6 +392,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if the user has the FPL role
+   * 
+   * @return
+   */
+  public boolean isML() {
+    return this.hasRole(Role.ML);
+  }
+
+  /**
    * Verify if the user has the Project leader role
    * 
    * @return
