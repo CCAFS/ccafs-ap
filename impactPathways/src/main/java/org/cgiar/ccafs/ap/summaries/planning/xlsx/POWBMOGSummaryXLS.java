@@ -59,8 +59,8 @@ public class POWBMOGSummaryXLS {
         // Outcome
         stringBuilder = new StringBuilder();
 
-        valueOne = (String) mapObject.get("flagship_outcome");
-        valueTwo = (String) mapObject.get("outcome_2019");
+        valueOne = (String) mapObject.get("outcome_flagship");
+        valueTwo = (String) mapObject.get("outcome_description");
 
         if (valueOne != null && valueTwo != null) {
           stringBuilder.append(valueOne);
@@ -76,7 +76,7 @@ public class POWBMOGSummaryXLS {
         // MOG description
         stringBuilder = new StringBuilder();
 
-        valueOne = (String) mapObject.get("flagship_mog");
+        valueOne = (String) mapObject.get("mog_flagship");
         valueTwo = (String) mapObject.get("mog_description");
 
         if (valueOne != null && valueTwo != null) {
@@ -104,8 +104,6 @@ public class POWBMOGSummaryXLS {
 
         // gender_W3_Bilateral
         xls.writeBudget(sheet, (double) mapObject.get("gender_W3_Bilateral"));
-        xls.nextColumn();
-
         xls.nextRow();
 
       }
