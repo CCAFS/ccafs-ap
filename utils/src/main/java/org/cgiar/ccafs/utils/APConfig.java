@@ -32,7 +32,7 @@ public class APConfig {
   public static final String MYSQL_DATABASE = "mysql.database";
   public static final String MYSQL_PORT = "mysql.port";
 
-  private static final String PRODUCTION = "ccafs.production";
+  private static final String PRODUCTION = "ccafsap.production";
   private static final String BASE_URL = "ccafsap.baseUrl";
   private static final String REPORTING_CURRENT_YEAR = "ccafsap.reporting.currentYear";
   private static final String CURRENT_REPORTING_START_DATE = "ccafsap.reporting.startDate";

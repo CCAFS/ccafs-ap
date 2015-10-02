@@ -31,6 +31,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -42,6 +43,7 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +81,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private int projectID;
   private Project previousProject;
   private Project project;
-  private String actionName;
 
   // Model for the view
   private List<InstitutionType> intitutionTypes;
@@ -90,6 +91,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<ProjectPartner> projectPPAPartners; // Is used to list all the PPA partners that belongs to the project.
   private List<User> allUsers; // will be used to list all the project leaders that have the system.
 
+  // Util
+  private SendMail sendMail;
+
   // private List<Institution> contributionPartners; // this would get the partners contributing to others
 
   @Inject
@@ -97,7 +101,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
     DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
-    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager) {
+    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager,
+    SendMail sendMail) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
@@ -109,6 +114,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.deliverableManager = deliverableManager;
     this.projectPartnersValidator = projectPartnersValidator;
     this.roleManager = roleManager;
+    this.sendMail = sendMail;
     // this.budgetManager = budgetManager;
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
@@ -131,16 +137,64 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   //
   // }
 
+  /**
+   * This method will validate if the user is deactivated. If so, it will send an email indicating the credentials to
+   * access.
+   * 
+   * @param leader is a PartnerPerson object that could be the leader or the coordinator.
+   */
+  private void activateAndSendCredentials(User user) {
+    if (!user.isActive()) {
+      user.setActive(true);
+
+      // Sending email only if we are in production environment.
+      StringBuilder message = new StringBuilder();
+
+      // Building the Email message:
+      message.append(this.getText("planning.manageUsers.email.arrangement.part1"));
+      message.append(user.getFirstName());
+      message.append(this.getText("planning.manageUsers.email.arrangement.part2"));
+      message.append(this.getText("planning.manageUsers.email.arrangement.part3"));
+      message.append(this.getText("planning.manageUsers.email.arrangement.part4"));
+      message.append(this.getText("planning.manageUsers.email.arrangement.part5"));
+      message.append(user.getEmail());
+      message.append(this.getText("planning.manageUsers.email.arrangement.part6"));
+      if (user.isCcafsUser()) {
+        message.append(this.getText("planning.manageUsers.email.arrangement.part7"));
+      } else {
+        // Generating a random password.
+        String newPassword = RandomStringUtils.randomNumeric(6);
+        // Applying the password to the user.
+        user.setMD5Password(newPassword);
+        // Appending the password.
+        message.append(newPassword);
+      }
+      message.append(this.getText("planning.manageUsers.email.arrangement.part8"));
+      message.append(this.getText("planning.manageUsers.email.arrangement.part9"));
+      message.append(this.getText("planning.manageUsers.email.arrangement.part10"));
+
+      // Saving the new user configuration.
+      userManager.saveUser(user, this.getCurrentUser());
+
+      String toEmail = null;
+      if (config.isProduction()) {
+        // Send email to the new user and the P&R notification email.
+        // TO
+        toEmail = user.getEmail();
+      }
+      // BBC
+      String bbcEmails = this.config.getEmailNotification();
+      sendMail.send(toEmail, null, bbcEmails, this.getText("planning.manageUsers.email.arrangement.credentials"),
+        message.toString());
+    }
+  }
+
   public List<Activity> getActivitiesLedByUser(int userID) {
     return activityManager.getProjectActivitiesLedByUser(projectID, userID);
   }
 
   public List<Institution> getAllInstitutions() {
     return allInstitutions;
-  }
-
-  public List<Institution> getAllPPAInstitutions() {
-    return allPPAInstitutions;
   }
 
   // private boolean deletePartner(ProjectPartner partnerToDelete, List<ProjectPartner> partners) {
@@ -190,6 +244,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   // this.getJustification());
   // return deleted;
   // }
+
+  public List<Institution> getAllPPAInstitutions() {
+    return allPPAInstitutions;
+  }
 
   public List<Institution> getAllPPAPartners() {
     return allPPAInstitutions;
@@ -256,7 +314,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    actionName = ActionContext.getContext().getName();
     // Getting the project id from the URL parameter
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -347,10 +404,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
 
-  }
-
-  public List<ProjectPartner> projectPPAPartners() {
-    return this.projectPPAPartners;
   }
 
   // private String savePartnerLead() {
@@ -457,6 +510,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   //
   // }
 
+  public List<ProjectPartner> projectPPAPartners() {
+    return this.projectPPAPartners;
+  }
+
   @Override
   public String save() {
     if (securityContext.canUpdateProjectPartners(project.getId())) {
@@ -483,15 +540,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       PartnerPerson previousLeader = previousProject.getLeaderPerson();
       PartnerPerson leader = project.getLeaderPerson();
 
-      // TODO HT: Activate leader in case it is inactive.
-      if (!leader.getUser().isActive()) {
-        leader.getUser().setActive(true);
-        userManager.saveUser(leader.getUser(), this.getCurrentUser());
-        // TODO HT: Send email with login credentials.
-      }
 
       Role plRole = new Role(APConstants.ROLE_PROJECT_LEADER);
       if (previousLeader == null && leader != null) {
+        this.activateAndSendCredentials(leader.getUser());
         roleManager.saveRole(leader.getUser(), plRole);
         // TODO - Send message notifying to the new project leader
       } else if (previousLeader != null && leader == null) {
@@ -499,6 +551,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         // TODO - Send message notifying to the user that is not the project leader anymore
       } else if (previousLeader != null && leader != null) {
         if (!leader.equals(previousLeader)) {
+          this.activateAndSendCredentials(leader.getUser());
           roleManager.saveRole(leader.getUser(), plRole);
           roleManager.deleteRole(previousLeader.getUser(), plRole);
           // TODO - Send message to leader notifying that he/she is the new project leader
