@@ -566,7 +566,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       PartnerPerson previousLeader = previousProject.getLeaderPerson();
       PartnerPerson leader = project.getLeaderPerson();
       // Notify user if the project leader was created.
-      this.notifyNewUserCreated(leader.getUser());
+      if (leader != null) {
+        this.notifyNewUserCreated(leader.getUser());
+      }
       Role plRole = new Role(APConstants.ROLE_PROJECT_LEADER);
       // Update roles into the database and notify project assignment.
       this.updateRoles(previousLeader, leader, plRole);
@@ -581,7 +583,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         coordinator = project.getCoordinatorPersons().get(0);
       }
       // Notify user if the project coordinator was created.
-      this.notifyNewUserCreated(coordinator.getUser());
+      if (coordinator != null) {
+        this.notifyNewUserCreated(coordinator.getUser());
+      }
       Role pcRole = new Role(APConstants.ROLE_PROJECT_COORDINATOR);
       // Update roles into the database and notify project assignment.
       this.updateRoles(previousCoordinator, coordinator, pcRole);
