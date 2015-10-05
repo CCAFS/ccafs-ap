@@ -128,6 +128,9 @@ public class CRPManagerImpl implements CRPManager {
     for (CRPContribution crp : project.getIpOtherContribution().getCrpContributions()) {
       Map<String, Object> data = new HashMap<>();
       data.put("projectID", project.getId());
+      if (crp.getId() != -1) {
+        data.put("id", crp.getId());
+      }
       data.put("crp_id", crp.getCrp().getId());
       data.put("collaboration_nature", crp.getNatureCollaboration());
       data.put("user_id", user.getId());

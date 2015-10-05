@@ -184,20 +184,45 @@ public class MySQLCrpDAO implements CrpDAO {
   @Override
   public boolean saveCrpContributionsNature(int projectID, Map<String, Object> contributionData) {
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_crp_contributions (project_id, crp_id, collaboration_nature, created_by, ");
-    query.append(" modified_by, modification_justification) VALUES (?,?,?,?,?,?) ");
-    query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, modified_by = VALUES(modified_by), ");
-    query.append("modification_justification = VALUES(modification_justification) ");
+    LOG.debug(">> saveCrpContributionsNature(contributionNatureArray={})", contributionData);
+    boolean saved = true;
+    int result = -1;
+    if (contributionData.get("id") == null) {
+      // Insert new project_crp_contributions record
+      query.append("INSERT INTO project_crp_contributions (project_id, crp_id, collaboration_nature, created_by, ");
+      query.append(" modified_by, modification_justification) VALUES (?,?,?,?,?,?) ");
+      Object[] values = new Object[6];
+      values[0] = projectID;
+      values[1] = contributionData.get("crp_id");
+      values[2] = contributionData.get("collaboration_nature");
+      values[3] = contributionData.get("user_id");
+      values[4] = contributionData.get("user_id");
+      values[5] = contributionData.get("justification");
+      System.out.println(query.toString());
+      result = daoManager.saveData(query.toString(), values);
+      if (result < 0) {
+        saved = false;
+      }
+    } else {
+      // update project_crp_contributions record
+      query.append("UPDATE project_crp_contributions SET project_id = ?, crp_id = ?, collaboration_nature = ?,  ");
+      query.append("created_by = ?, modified_by = ?, modification_justification = ? ");
+      query.append("WHERE id = ? ");
+      Object[] values = new Object[7];
+      values[0] = projectID;
+      values[1] = contributionData.get("crp_id");
+      values[2] = contributionData.get("collaboration_nature");
+      values[3] = contributionData.get("user_id");
+      values[4] = contributionData.get("user_id");
+      values[5] = contributionData.get("justification");
+      values[6] = contributionData.get("id");
+      result = daoManager.saveData(query.toString(), values);
+      System.out.println(result);
+      if (result <= 0) {
+        saved = false;
+      }
+    }
 
-    Object[] values = new Object[5];
-    values[0] = projectID;
-    values[1] = contributionData.get("crp_id");
-    values[2] = contributionData.get("collaboration_nature");
-    values[3] = contributionData.get("user_id");
-    values[4] = contributionData.get("user_id");
-    values[5] = contributionData.get("justification");
-
-    int result = daoManager.saveData(query.toString(), values);
-    return (result == -1) ? false : true;
+    return saved;
   }
 }
