@@ -54,8 +54,10 @@ public class SendMail {
   /**
    * This method send an email from the main email system.
    * 
-   * @param toEmail is the email or the list of emails separated by a single space.
+   * @param toEmail is the email or the list of emails separated by a single space. This parameter can be null.
    * @param ccEmail is the email or the list of emails separated by a single space that will be as CC. This parameter
+   *        can be null.
+   * @param bbcEmail is the email or the list of emails separated by a single space that will be in BBC. This parameter
    *        can be null.
    * @param subject is the email title.
    * @param messageContent the content of the email

@@ -319,10 +319,10 @@ public class Project {
     return new Date(created);
   }
 
-
   public List<Deliverable> getDeliverables() {
     return deliverables;
   }
+
 
   public Date getEndDate() {
     return endDate;
@@ -331,7 +331,6 @@ public class Project {
   public List<IPProgram> getFlagships() {
     return flagships;
   }
-
 
   /**
    * This method gets the list of Flagships acronyms separated by comma (, ).
@@ -350,6 +349,7 @@ public class Project {
     }
     return flagshipAcronym.toString();
   }
+
 
   public int getId() {
     return id;
@@ -426,10 +426,10 @@ public class Project {
     return emptyIndicator;
   }
 
-
   public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
+
 
   /**
    * This method returns the project partner institution that is leading the project.
@@ -583,6 +583,28 @@ public class Project {
       }
     }
     return regionAcronym.toString();
+  }
+
+  /**
+   * This method returns the project identifier whether using composed codification (that is with the organization IATI
+   * standard id) or a simple id.
+   * 
+   * @param project , the project to get the standard identifier from.
+   * @param useComposedCodification , true if you want to get the full IATI standard codification or false for simple
+   *        form.
+   * @return a String with the standard identifier.
+   */
+  public String getStandardIdentifier(boolean useComposedCodification) {
+    StringBuilder result = new StringBuilder();
+    if (useComposedCodification) {
+      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
+      result.append("-P");
+      result.append(this.getId());
+    } else {
+      result.append("P");
+      result.append(this.getId());
+    }
+    return result.toString();
   }
 
   public Date getStartDate() {
