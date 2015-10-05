@@ -14,8 +14,8 @@
 package org.cgiar.ccafs.ap.action;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.manager.BoardMessageManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.BoardMessage;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;

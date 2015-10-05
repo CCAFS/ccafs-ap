@@ -10,24 +10,39 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************/
+ * ***************************************************************
+ */
+package org.cgiar.ccafs.ap.action.home;
 
-package org.cgiar.ccafs.security;
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.utils.APConfig;
 
+import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * @author Hernán David Carvajal
+ * This action will be in charge of show all the P&R facts that can be stand out.
+ * 
+ * @author Héctor Fabio Tobón R.
  */
+public class OverviewAction extends BaseAction {
 
-public enum Role {
+  private static final long serialVersionUID = -8002068803922618439L;
 
-  Admin("Admin"), FPL("FPL"), RPL("RPL"), CP("CP"), AL("AL"), CU("CU"), GUEST("G"), PL("PL"), ML("ML");
+  // Logging
+  private static final Logger LOG = LoggerFactory.getLogger(OverviewAction.class);
 
-  private String acronym;
 
-
-  private Role(String acronym) {
-    this.acronym = acronym;
+  @Inject
+  public OverviewAction(APConfig config) {
+    super(config);
   }
+
+  @Override
+  public void prepare() throws Exception {
+
+  }
+
 
 }

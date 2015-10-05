@@ -22,6 +22,10 @@
       <interceptor-ref name="defaultStack" />
       <result name="input">/WEB-INF/home/home.ftl</result>
     </action>
+    
+    <action name="overview" class="org.cgiar.ccafs.ap.action.home.OverviewAction">
+      <result name="input">/WEB-INF/home/overviewHome.ftl</result>
+    </action>
 
     <action name="selectInstitution" class="org.cgiar.ccafs.ap.action.home.ChangeInstitutionAction">
       <result name="success" type="redirectAction">

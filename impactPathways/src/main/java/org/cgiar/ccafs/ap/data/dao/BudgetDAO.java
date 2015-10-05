@@ -118,6 +118,19 @@ public interface BudgetDAO {
   public double calculateTotalGenderBudget(int projectID);
 
   /**
+   * This method calculates the total gender Budget which is the addition for ALL years depending of partner.
+   * 
+   * @param projectID is the project id
+   * @param institutionID is the institution id
+   * @param budgetTypeID is the budget type id
+   * @return a decimal number representing the amount of the total gender Budget for that specific project in the given
+   *         institution and type budget, if no data found the method will return 0.0 and if some error happen a
+   *         -1.0will be returned.
+   */
+
+  public double calculateTotalGenderBudgetByInstitutionAndType(int projectID, int institutionID, int budgetTypeID);
+
+  /**
    * This method calculates the total of the Gender Budget which is the percentage of the amount in a given year
    * 
    * @param projectID is the project identifier.
@@ -205,6 +218,7 @@ public interface BudgetDAO {
    */
   public boolean deleteBudgetsWithNoLinkToInstitutions(int projectID, int currentYear);
 
+
   /**
    * This method deletes all the cofounded budgets that correspond between two projects that has not a link anymore.
    * 
@@ -230,7 +244,6 @@ public interface BudgetDAO {
    * @return a list of Map of the Budgets related with the year and the project id
    */
   public List<Map<String, String>> getBudgetsByYear(int projectID, int year);
-
 
   /**
    * This method saves the Budget and the Project Budget relation

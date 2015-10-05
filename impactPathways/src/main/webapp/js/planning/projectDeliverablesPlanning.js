@@ -1,6 +1,7 @@
 // Limits for textarea input
 var lWordsDTitle = 15;
-var lWordsNextUsers = 150;
+var lWordsNextUsers = 20;
+var lWordsNextUsersDesc = 50;
 var lWordsLessons = 100;
 var $deliverablesTypes, $deliverablesSubTypes;
 var hashRegenerated = false;
@@ -12,7 +13,10 @@ function init() {
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
   attachEvents();
   addChosen();
+
   applyWordCounter($(".deliverableTitle"), lWordsDTitle);
+  applyWordCounter($(".projectNextUser .input input"), lWordsNextUsers);
+  applyWordCounter($(".projectNextUser .textArea textarea"), lWordsNextUsersDesc);
   applyWordCounter($("#lessons textarea"), lWordsLessons);
   $deliverablesTypes.trigger('change');
 
@@ -76,6 +80,8 @@ function addNextUserEvent(e) {
   $(e.target).parent().before($newElement);
   $('#deliverable-nextUsers').find('.emptyText').hide();
   $newElement.fadeIn("slow");
+  applyWordCounter($newElement.find(".input input"), lWordsNextUsers);
+  applyWordCounter($newElement.find(".textArea textarea"), lWordsNextUsersDesc);
   setDeliverablesIndexes();
 }
 

@@ -34,10 +34,9 @@ public class BaseValidator {
   }
 
   protected void addMessage(String message) {
-    if (validationMessage.length() != 0) {
-      validationMessage.append(", ");
-    }
+    validationMessage.append("<p> -");
     validationMessage.append(message);
+    validationMessage.append("</p>");
   }
 
   /**
@@ -61,6 +60,20 @@ public class BaseValidator {
       } catch (javax.mail.internet.AddressException e) {
         email = (email == null) ? "" : email;
         LOG.debug("Email address was invalid: " + email);
+      }
+    }
+    return false;
+  }
+
+  protected boolean isValidNumber(String number) {
+    if (this.isValidString(number)) {
+      try {
+        Double.parseDouble(number);
+        // If is a number the code comes to here.
+        return true;
+      } catch (NumberFormatException e) {
+        // if not a number.
+        return false;
       }
     }
     return false;

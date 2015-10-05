@@ -185,7 +185,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
     query.append(BudgetType.W1_W2.getValue());
     query
-    .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
     query.append(BudgetType.W3_BILATERAL.getValue());
     query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
@@ -592,7 +592,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append(APConstants.PROJECT_PARTNER_PL);
       query.append("' AND pp.project_id = p.id AND ppp.user_id = ");
       query.append(userID);
-      query.append(") ");
+      query.append(" AND ppp.is_active = 1) ");
       // If the project is bilateral and the user is a focal point of the lead institution
       query.append("OR ( p.type = '");
       query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
@@ -615,7 +615,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       rs.close();
     } catch (SQLException e) {
       LOG
-      .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
+        .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
     return projectIds;
@@ -791,7 +791,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
       query
-      .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -1010,7 +1010,6 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
     LOG.debug(">> getAllProjectsWithDeliverables ");
-    // TODO
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
@@ -1040,7 +1039,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("d.type_other as 'other_type', ");
     query.append("( ");
     query
-    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1050,7 +1049,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append(") as 'partner_responsible', ");
     query.append("( ");
     query
-    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1229,38 +1228,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-
-    // SELECT
-    // p.id AS project_id,
-    // p.title AS project_title,
-    // ipr.acronym AS flagship,
-    // ipe.description AS MOG_description,
-    // ipco.anual_contribution AS anual_contribution,
-    // ipco.gender_contribution AS gender_contribution,
-    //
-    // SUM(IF(pb.budget_type = 1 , pb.amount, 0)) * IF(pmb.budget_type = 1 , pmb.total_contribution, 0) * 0.01 AS
-    // budget_W1_W2,
-
-    // SUM(IF(pb.budget_type = 1 , (pb.amount * pb.gender_percentage * 0.01), 0)) * IF(pmb.budget_type = 1 ,
-    // pmb.gender_contribution, 0) * 0.01 AS gender_W3_Bilateral,
-
-    // SUM(IF(pb.budget_type = 2 , pb.amount, 0)) * IF(pmb.budget_type = 2 , pmb.total_contribution, 0) * 0.01 AS
-    // budget_W1_W2,
-    // SUM(IF(pb.budget_type = 2 , (pb.amount * pb.gender_percentage * 0.01), 0)) * IF(pmb.budget_type = 2 ,
-    // pmb.gender_contribution, 0) * 0.01 AS gender_W3_Bilateral
-    //
-    // FROM projects p
-    // LEFT JOIN project_mog_budgets pmb ON p.id = pmb.project_id
-    // LEFT JOIN ip_elements ipe ON pmb.mog_id = ipe.id
-    // LEFT JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipe.id AND p.id = ipco.project_id
-    // LEFT JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id
-    // LEFT JOIN project_budgets pb ON pmb.project_id = pb.project_id
-    //
-    // WHERE (pmb.year = 2016 OR pmb.year IS NULL)
-    // AND (ipco.year = 2016 OR ipco.year IS NULL)
-    // AND (pb.year = 2016 OR pb.year IS NULL)
-    // GROUP BY p.id
-
     // Formatted query:
     query.append("SELECT p.id as 'project_id', ");
     query.append("p.title as 'project_title', ");
@@ -1270,45 +1237,40 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("ipco.gender_contribution as 'gender_contribution', ");
 
     // Sum of contribution budget W1_W2 of the project for the MOG
-    query.append("SUM(IF(pb.budget_type = 1 , pb.amount, 0)) * ");
-    query.append("IF(pmb.budget_type = 1 , pmb.total_contribution, 0) * 0.01 ");
-    query.append("AS 'budget_W1_W2' , ");
+    query.append("IF(pmb.budget_type = 1 , (SELECT SUM(pb.amount) FROM project_budgets pb WHERE pb.project_id = p.id ");
+    query
+      .append("AND pb.year = " + year + " AND pb.budget_type = 1) * IFNULL(pmb.total_contribution, 0) * 0.01 , 0 ) ");
+    query.append(" AS 'budget_W1_W2' , ");
 
     // Sum of contribution gender W1_W2 of the project for the MOG
-    query.append("SUM(IF(pb.budget_type = 1 , (pb.amount * pb.gender_percentage * 0.01), 0)) * ");
-    query.append("IF(pmb.budget_type = 1 , pmb.gender_contribution, 0) * 0.01 ");
-    query.append("AS 'gender_W1_W2' , ");
+    query.append("IF(pmb.budget_type = 1 , (SELECT SUM(pb.amount * pb.gender_percentage * 0.01) FROM project_budgets ");
+    query.append("pb WHERE pb.project_id = p.id AND pb.year = " + year + " AND pb.budget_type = 1)   ");
+    query.append("* IFNULL(pmb.gender_contribution,0) * 0.01 , 0 ) AS gender_W1_W2,");
 
     // Sum of contribution budget W3_Bilateral of the project for the MOG
-    query.append("SUM(IF(pb.budget_type = 2 , pb.amount, 0)) * ");
-    query.append("IF(pmb.budget_type = 2 , pmb.total_contribution, 0) * 0.01 ");
+    query.append("IF(pmb.budget_type = 2 , (SELECT SUM(pb.amount) FROM project_budgets pb WHERE pb.project_id = p.id ");
+    query.append("AND pb.year =  " + year
+      + " AND pb.budget_type = 2) * IFNULL(pmb.total_contribution, 0) * 0.01 , 0 ) ");
     query.append("AS 'budget_W3_Bilateral' , ");
 
     // Sum of contribution gender W3_Bilateral of the project for the MOG
-    query.append("SUM(IF(pb.budget_type = 2 , (pb.amount * pb.gender_percentage * 0.01), 0)) * ");
-    query.append("IF(pmb.budget_type = 2 , pmb.gender_contribution, 0) * 0.01 ");
-    query.append("AS 'gender_W3_Bilateral' ");
+    query.append("IF(pmb.budget_type = 2 , (SELECT SUM(pb.amount * pb.gender_percentage * 0.01) FROM project_budgets ");
+    query.append("pb WHERE pb.project_id = p.id AND pb.year = " + year + " AND pb.budget_type = 2)   ");
+    query.append("* IFNULL(pmb.gender_contribution,0) * 0.01 , 0 )AS gender_W3_Bilateral ");
 
     query.append("FROM projects p ");
-
-    query.append("LEFT JOIN project_mog_budgets pmb ON p.id = pmb.project_id ");
-    query.append("LEFT JOIN ip_elements ipe ON pmb.mog_id = ipe.id ");
-    query.append("LEFT JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipe.id  ");
+    query.append("LEFT JOIN ip_project_contributions ipc ON p.id = ipc.project_id ");
+    query.append("LEFT JOIN ip_elements ipe ON ipc.mog_id = ipe.id ");
+    query.append("LEFT JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id ");
+    query.append("LEFT JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipe.id ");
     query.append("AND p.id = ipco.project_id ");
 
-    query.append("LEFT JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id ");
-    query.append("LEFT JOIN project_budgets pb ON pmb.project_id = pb.project_id ");
-    query.append("WHERE (pmb.year = ");
+    query.append("LEFT JOIN project_mog_budgets pmb ON p.id = pmb.project_id AND pmb.mog_id = ipe.id ");
+    query.append("WHERE (ipco.year = ");
+    query.append(year + " ");
+    query.append("OR ipco.year IS NULL) AND (pmb.year = ");
     query.append(year + " ");
     query.append("OR pmb.year IS NULL) ");
-    query.append("AND (ipco.year = ");
-    query.append(year + " ");
-    query.append("OR ipco.year IS NULL) ");
-    query.append("AND (pb.year = ");
-    query.append(year + " ");
-    query.append("OR pb.year IS NULL) ");
-    query.append("GROUP BY p.id , pmb.id");
-    System.out.println(query);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -1337,6 +1299,85 @@ public class MySQLProjectDAO implements ProjectDAO {
     return csvRecords;
   }
 
+
+  @Override
+  public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
+
+    LOG.debug(">> summaryGetInformationPOWB ");
+    // TODO
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    // Formatted query:
+    query.append("SELECT ipr.acronym as 'outcome_flagship', ");
+    query.append("ipe.description as 'outcome_description' , ");
+    query.append("iprm.acronym AS 'mog_flagship'  ,");
+    query.append("ipem.description as  'mog_description', ");
+
+    // Sum of contribution budget W1_W2 of the project for the MOG
+    query.append(" (SELECT  (SUM(IFNULL(pb.amount,0)) * pmb.total_contribution * 0.01) FROM project_mog_budgets pmb  ");
+    query.append(" INNER JOIN  project_budgets pb  ON pmb.project_id = pb.project_id  ");
+    query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year);
+    query.append(" AND pb.budget_type = 1  AND  pmb.budget_type = 1 ) AS 'budget_W1_W2'  ,");
+
+    // Sum of contribution gender W1_W2 of the project for the MOG
+    query
+      .append(" (SELECT (SUM(IFNULL(pb.amount,0) * IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
+    query.append(" FROM project_mog_budgets pmb INNER JOIN project_budgets pb ON pmb.project_id = pb.project_id  ");
+    query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year + " ");
+    query.append(" AND  pb.budget_type = 1  AND  pmb.budget_type = 1 )  ");
+    query.append(" AS  'gender_W1_W2' ,");
+
+    // Sum of contribution budget W3_Bilateral of the project for the MOG
+    query.append(" (SELECT  (SUM(IFNULL(pb.amount,0)) * pmb.total_contribution * 0.01) FROM project_mog_budgets pmb  ");
+    query.append(" INNER JOIN  project_budgets pb  ON pmb.project_id = pb.project_id  ");
+    query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year);
+    query.append(" AND pb.budget_type = 2  AND  pmb.budget_type = 2 ) AS 'budget_W3_Bilateral'  ,");
+
+    // Sum of contribution gender W3_Bilateral of the project for the MOG
+    query
+      .append(" (SELECT (SUM(IFNULL(pb.amount,0)* IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
+    query.append(" FROM project_mog_budgets pmb INNER JOIN project_budgets pb ON pmb.project_id = pb.project_id  ");
+    query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year + " ");
+    query.append(" AND  pb.budget_type = 2  AND  pmb.budget_type = 2 )  ");
+    query.append(" AS  'gender_W3_Bilateral' ");
+
+    query.append("FROM ip_elements ipe ");
+    query.append("INNER JOIN ip_project_contributions ipco ON ipe.id = ipco.midOutcome_id ");
+    query.append("INNER JOIN ip_programs ipr ON ipe.ip_program_id = ipr.id ");
+    query.append("INNER JOIN ip_elements ipem ON ipco.mog_id = ipem.id ");
+    query.append("INNER JOIN ip_programs iprm ON ipem.ip_program_id = iprm.id ");
+    query.append("WHERE ipe.element_type_id = 3 ");
+    query.append("GROUP BY ipem.id");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      Map<String, Object> csvData;
+      while (rs.next()) {
+        csvData = new HashMap<>();
+        csvData.put("outcome_flagship", rs.getString("outcome_flagship"));
+        csvData.put("outcome_description", rs.getString("outcome_description"));
+        csvData.put("mog_flagship", rs.getString("mog_flagship"));
+        csvData.put("mog_description", rs.getString("mog_description"));
+        csvData.put("budget_W1_W2", rs.getDouble("budget_W1_W2"));
+        csvData.put("gender_W1_W2", rs.getDouble("gender_W1_W2"));
+        csvData.put("budget_W3_Bilateral", rs.getDouble("budget_W3_Bilateral"));
+        csvData.put("gender_W3_Bilateral", rs.getDouble("gender_W3_Bilateral"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- summaryGetInformationPOWB() > Exception raised trying ";
+      exceptionMessage += "to get the summary report budget By MOG POWB Report: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< summaryGetInformationPOWB ");
+    return csvRecords;
+
+  }
+
   @Override
   public boolean updateProjectType(int projectID, String type) {
     int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE id = ?", new Object[] {projectID, type});
@@ -1350,12 +1391,14 @@ public class MySQLProjectDAO implements ProjectDAO {
       databaseManager.saveData("UPDATE projects SET type = ? WHERE type = ?", new Object[] {APConstants.PROJECT_CORE,
         APConstants.PROJECT_CCAFS_COFUNDED});
 
-    StringBuilder query = new StringBuilder();
-    query.append("UPDATE projects p ");
-    query.append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
-    query.append("SET p.type = ?");
-
-    result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
+    if (result != -1) {
+      StringBuilder query = new StringBuilder();
+      query.append("UPDATE projects p ");
+      query
+      .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
+      query.append("SET p.type = ?");
+      result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
+    }
 
     return result != -1;
   }

@@ -8,13 +8,14 @@ $(document).ready(function() {
   ]);
 
   $('#mogsTabs').tabs({
+      active: $('#indexTabCurrentYear').val(),
       show: {
           effect: "fadeIn",
-          duration: 800
+          duration: 500
       },
       hide: {
           effect: "fadeOut",
-          duration: 500
+          duration: 300
       }
   });
   applyWordCounter($textAreas, limitWords);

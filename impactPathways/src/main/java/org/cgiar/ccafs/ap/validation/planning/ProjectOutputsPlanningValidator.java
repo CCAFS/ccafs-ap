@@ -72,18 +72,21 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
 
   public void validateAnnualContribution(BaseAction action, Project project, OutputOverview overview, int counter) {
     StringBuilder msg = new StringBuilder();
-
+    StringBuilder msgMOG = new StringBuilder();
     if (!overviewValidator.isValidExpectedAnnualContribution(overview.getExpectedAnnualContribution())) {
       IPElement output = project.getOutput(overview.getOutput().getId());
       int index = ipElementManager.getMOGIndex(output);
       msg.setLength(0);
-      msg.append(action.getText("planning.projectOutputs.expectedBulletPoints.readText",
-        new String[] {String.valueOf(overview.getYear())}).toLowerCase());
-      msg.append("( ");
-      msg.append(output.getProgram().getAcronym());
-      msg.append(" - MOG #");
-      msg.append(index);
-      msg.append(") <br />");
+      msgMOG.setLength(0);
+
+      msgMOG.append("( ");
+      msgMOG.append(output.getProgram().getAcronym());
+      msgMOG.append(" - MOG #");
+      msgMOG.append(index);
+      msgMOG.append(")");
+      msg.append(action.getText("planning.projectOutputs.expectedBulletPoints.readText.short",
+        new String[] {String.valueOf(overview.getYear()), msgMOG.toString()}));
+
 
       this.addMessage(msg.toString());
       this.addMissingField("project.outputsOverview[" + counter + "].expectedAnnualContribution");
@@ -94,9 +97,12 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
     if (projectValidator.isValidOutputOverviews(project.getOutputsOverview())) {
       int c = 0;
       for (OutputOverview overview : project.getOutputsOverview()) {
-        this.validateAnnualContribution(action, project, overview, c);
-        this.validateSocialDimmension(action, project, overview, c);
-        c++;
+        // Validate only current planning year which is 2016 at this moment.
+        if (overview.getYear() == this.config.getPlanningCurrentYear()) {
+          this.validateAnnualContribution(action, project, overview, c);
+          this.validateSocialDimmension(action, project, overview, c);
+          c++;
+        }
       }
     } else {
       action.addActionMessage(action.getText("planning.projectOutputs.validation.empty"));
@@ -105,17 +111,22 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
 
   public void validateSocialDimmension(BaseAction action, Project project, OutputOverview overview, int counter) {
     StringBuilder msg = new StringBuilder();
+    StringBuilder msgMOG = new StringBuilder();
     if (!overviewValidator.isValidExpectedAnnualContribution(overview.getSocialInclusionDimmension())) {
       IPElement output = project.getOutput(overview.getOutput().getId());
       int index = ipElementManager.getMOGIndex(output);
       msg.setLength(0);
-      msg.append(action.getText("planning.projectOutputs.expectedSocialAndGenderPlan.readText",
-        new String[] {String.valueOf(overview.getYear())}).toLowerCase());
-      msg.append("( ");
-      msg.append(output.getProgram().getAcronym());
-      msg.append(" - MOG #");
-      msg.append(index);
-      msg.append(")  <br />");
+      msgMOG.setLength(0);
+
+      msgMOG.append("( ");
+      msgMOG.append(output.getProgram().getAcronym());
+      msgMOG.append(" - MOG #");
+      msgMOG.append(index);
+      msgMOG.append(")");
+
+      msg.append(action.getText("planning.projectOutputs.expectedSocialAndGenderPlan.readText.short",
+        new String[] {String.valueOf(overview.getYear()), msgMOG.toString()}));
+
       this.addMessage(msg.toString());
       this.addMissingField("project.outputsOverview[" + counter + "].socialInclusionDimmension");
     }

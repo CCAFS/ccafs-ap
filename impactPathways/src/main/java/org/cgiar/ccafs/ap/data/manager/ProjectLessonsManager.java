@@ -12,20 +12,31 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.dao;
+package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectLessonsManagerImpl;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Jorge Leonardo Solis B. - CIAT/CCAFS
  */
 @ImplementedBy(ProjectLessonsManagerImpl.class)
 public interface ProjectLessonsManager {
+
+  /**
+   * This method get the list of lessons on a given component for a specific project.
+   * 
+   * @param projectID - Project identifier
+   * @return A ComponentLesson list with the information.
+   */
+  public List<ComponentLesson> getComponentLessonsByProject(int projectID);
 
   /**
    * This method get the lessons on a given component for a specific project.
@@ -36,6 +47,7 @@ public interface ProjectLessonsManager {
    * @return A ComponentLesson object with the information.
    */
   public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year);
+
 
   /**
    * This method saves the lessons of a project component in the database.

@@ -20,19 +20,16 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
-import org.cgiar.ccafs.ap.data.model.OtherContribution;
+import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal B.
@@ -40,7 +37,6 @@ import org.slf4j.LoggerFactory;
 public class ProjectIPOtherContributionAction extends BaseAction {
 
   // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectIPOtherContributionAction.class);
   private static final long serialVersionUID = 5866456304533553208L;
 
   // Manager
@@ -51,13 +47,18 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   private HistoryManager historyManager;
 
   // Model for the back-end
-  private OtherContribution ipOtherContribution;
   private List<CRP> previousCRPs;
+  private List<CRPContribution> previousCRPContributions;
+
 
   // Model for the front-end
   private int projectID;
+
+
   private Project project;
+
   private List<CRP> crps;
+  private List<CRPContribution> crpContributions;
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
@@ -71,12 +72,17 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.historyManager = historyManager;
   }
 
+  public List<CRPContribution> getCrpContributions() {
+    return crpContributions;
+  }
+
+
   public List<CRP> getCrps() {
     return crps;
   }
 
-  public OtherContribution getIpOtherContribution() {
-    return ipOtherContribution;
+  public List<CRPContribution> getPreviousCRPContributions() {
+    return previousCRPContributions;
   }
 
   public Project getProject() {
@@ -107,30 +113,28 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
-    // Getting the activity information
+    // Getting the project information
     project = projectManager.getProject(projectID);
     crps = crpManager.getCRPsList();
 
     // Getting the information for the IP Other Contribution
-    ipOtherContribution = ipOtherContributionManager.getIPOtherContributionByProjectId(projectID);
+    project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
 
-    project.setCrpContributions(crpManager.getCrpContributions(projectID));
-    project.setIpOtherContribution(ipOtherContribution);
+    // project.setCrpContributionsNature(crpManager.getCrpContributionsNature(projectID));
 
-    previousCRPs = new ArrayList<>();
-    for (CRP crp : project.getCrpContributions()) {
-      previousCRPs.add(new CRP(crp.getId()));
-    }
-
+// previousCRPContributions = new ArrayList<>();
+// for (CRPContribution crpContributions : project.getCrpContributionsNature()) {
+// previousCRPContributions.add(new CRPContribution(crpContributions.getId()));
+// }
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+      this.getCurrentPlanningYear()));
 
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
     if (this.isHttpPost()) {
-      project.getCrpContributions().clear();
+      project.getIpOtherContribution().getCrpContributions().clear();
     }
   }
 
@@ -141,19 +145,22 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       super.saveProjectLessons(projectID);
 
       // Saving Activity IP Other Contribution
-      boolean saved = ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
-        this.getCurrentUser(), this.getJustification());
+      boolean saved =
+        ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
+          this.getCurrentUser(), this.getJustification());
 
 
       // Delete the CRPs that were un-selected
       for (CRP crp : previousCRPs) {
-        if (!project.getCrpContributions().contains(crp)) {
-          saved = saved && crpManager.removeCrpContribution(project.getId(), crp.getId(), this.getCurrentUser().getId(),
-            this.getJustification());
+        if (!project.getIpOtherContribution().getCrpContributions().contains(crp)) {
+          saved =
+            saved
+              && crpManager.removeCrpContributionNature(project.getId(), crp.getId(), this.getCurrentUser().getId(),
+                this.getJustification());
         }
       }
 
-      saved = saved && crpManager.saveCrpContributions(project, this.getCurrentUser(), this.getJustification());
+      saved = saved && crpManager.saveCrpContributionsNature(project, this.getCurrentUser(), this.getJustification());
 
       if (!saved) {
         this.addActionError(this.getText("saving.problem"));
@@ -175,8 +182,12 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     return BaseAction.NOT_AUTHORIZED;
   }
 
-  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
-    this.ipOtherContribution = ipOtherContribution;
+  public void setCrpContributions(List<CRPContribution> crpContributions) {
+    this.crpContributions = crpContributions;
+  }
+
+  public void setPreviousCRPContributions(List<CRPContribution> previousCRPContributions) {
+    this.previousCRPContributions = previousCRPContributions;
   }
 
   public void setProject(Project project) {

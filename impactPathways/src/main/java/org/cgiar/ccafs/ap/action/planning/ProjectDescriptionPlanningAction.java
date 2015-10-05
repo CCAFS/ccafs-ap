@@ -370,7 +370,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       }
 
       if (securityContext.canAllowProjectWorkplanUpload()) {
-        // TODO - Check if this permission changes when the checkbox is disabled.
         previousProject.setWorkplanRequired(project.isWorkplanRequired());
       }
 
@@ -390,7 +389,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
       }
 
-      // TODO - Update the type and all the implications
+      // TODO - Update the type of projects and all the implications.
       // previousProject.setType(project.getType());
 
       if (project.isBilateralProject()) {
@@ -434,9 +433,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved =
-              true && ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-                this.getJustification());
+            saved = ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 
@@ -449,16 +447,13 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       if (securityContext.canEditProjectRegions()) {
         List<IPProgram> previousRegions = previousProject.getRegions();
-        List<IPProgram> regions = project.getRegions();
         boolean saved = true;
 
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved =
-              saved
-                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-                  this.getJustification());
+            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 

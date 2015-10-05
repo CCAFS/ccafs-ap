@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Projects" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty","autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/planning/projectsListPlanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/planning/projectsListPlanning.js", "${baseUrl}/js/planning/projectSubmit.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = "planning" /]
 

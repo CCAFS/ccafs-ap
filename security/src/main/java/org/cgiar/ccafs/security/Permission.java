@@ -72,6 +72,7 @@ public class Permission {
    */
   public static final String PLANNING_DELETE_PROJECT_BUTTON = "planning:projects:projectList:deleteProjectButton:*";
 
+
   // --------------------------- End of Project list ---------------------------------
 
   // --------------------------- Project Description ---------------------------------

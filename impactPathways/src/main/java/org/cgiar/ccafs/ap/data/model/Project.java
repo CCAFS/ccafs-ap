@@ -56,10 +56,9 @@ public class Project {
   private List<IPElement> outputs;
   private List<OutputOverview> outputsOverview;
   private List<OutputBudget> outputsBudgets;
+  private List<ComponentLesson> componentLessons;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
-  private List<CRP> crpContributions;
-  private String crpContributionsNature;
   private boolean workplanRequired;
   private String workplanName;
   private String bilateralContractProposalName;
@@ -250,8 +249,28 @@ public class Project {
   }
 
   /**
+   * @param componentName is the name of the lesson to search
+   * @return the founded ComponentLesson, null if the lesson doesn't exist
+   */
+  public ComponentLesson getComponentLesson(String componentName) {
+    for (ComponentLesson componentLesson : this.getComponentLessons()) {
+      if (componentLesson.getComponentName().equals(componentName)) {
+        return componentLesson;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return the componentLessons
+   */
+  public List<ComponentLesson> getComponentLessons() {
+    return componentLessons;
+  }
+
+  /**
    * This method returns a composed Identifier that is going to be used in the front-end.
-   * The convention is going to be used depending on the creationg date of the project.
+   * The convention is going to be used depending on the creation date of the project.
    * yyyy-project.id => e.g. 2014-46
    * 
    * @return the composed identifier or null if the created date is null.
@@ -300,13 +319,6 @@ public class Project {
     return new Date(created);
   }
 
-  public List<CRP> getCrpContributions() {
-    return crpContributions;
-  }
-
-  public String getCrpContributionsNature() {
-    return crpContributionsNature;
-  }
 
   public List<Deliverable> getDeliverables() {
     return deliverables;
@@ -319,6 +331,7 @@ public class Project {
   public List<IPProgram> getFlagships() {
     return flagships;
   }
+
 
   /**
    * This method gets the list of Flagships acronyms separated by comma (, ).
@@ -341,7 +354,6 @@ public class Project {
   public int getId() {
     return id;
   }
-
 
   /**
    * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
@@ -414,6 +426,7 @@ public class Project {
     return emptyIndicator;
   }
 
+
   public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
@@ -436,7 +449,6 @@ public class Project {
     }
     return null;
   }
-
 
   /**
    * This method returns the project partner person who is leading the project.
@@ -714,20 +726,19 @@ public class Project {
     this.isCofinancing = isCofinancing;
   }
 
+  /**
+   * @param componentLessons the componentLessons to set
+   */
+  public void setComponentLessons(List<ComponentLesson> componentLessons) {
+    this.componentLessons = componentLessons;
+  }
+
   public void setCoordinator(ProjectPartner coordinator) {
     this.coordinator = coordinator;
   }
 
   public void setCreated(long created) {
     this.created = created;
-  }
-
-  public void setCrpContributions(List<CRP> crpContributions) {
-    this.crpContributions = crpContributions;
-  }
-
-  public void setCrpContributionsNature(String crpContributionsNature) {
-    this.crpContributionsNature = crpContributionsNature;
   }
 
   public void setDeliverables(List<Deliverable> deliverables) {

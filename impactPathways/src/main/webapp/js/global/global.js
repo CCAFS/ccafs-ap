@@ -28,12 +28,11 @@ $(document).ready(function() {
   showNotificationMessages();
   showHelpText();
   applyWordCounter($("#justification"), justificationLimitWords);
-  $("textarea[id!='justification']").autoGrow();
 
   // hash url animation
   if(window.location.hash) {
     $('html, body').animate({
-      scrollTop: $(window.location.hash).offset().top
+      scrollTop: ($(window.location.hash).offset().top || 20) - 20
     }, 2000);
   }
 
@@ -108,64 +107,12 @@ $(document).ready(function() {
     $(this).parent().parent().parent().find('.tickBox-toggle').slideToggle($(e.target).is(':checked'));
   }
 
+  $("textarea[id!='justification']").autoGrow();
+
   // Generating hash from form information
   setFormHash();
 
-  $('.projectSubmitButton').on('click', function(e) {
-    $(this).fadeOut();
-    var $menus = $('#secondaryMenu.projectMenu ul li ul li');
-    var pID = $(e.target).attr('id').split('-')[1];
-    var sections = [];
-    var menus = [];
-    $menus.each(function(i,menu) {
-      sections.push({
-          projectID: pID,
-          sectionName: (menu.id).split('-')[1]
-      });
-      menus.push(menu);
-    });
-    // Execute ajax process for each section
-    processTasks(sections, menus, '/planning/validateProjectPlanningSection.do');
-  });
 });
-
-function processTasks(tasks,menus,urlDoTask) {
-  var index = 0;
-  function nextTask() {
-    if(index < tasks.length) {
-      $.ajax({
-          url: baseURL + urlDoTask,
-          data: tasks[index],
-          beforeSend: function() {
-            $(menus[index]).removeClass('animated flipInX');
-          },
-          success: function(data) {
-            // Process Ajax results here
-            if(jQuery.isEmptyObject(data)) {
-              $(menus[index]).removeClass('submitted');
-            } else {
-              if(data.sectionStatus.missingFieldsWithPrefix == "") {
-                $(menus[index]).addClass('submitted');
-              } else {
-                $(menus[index]).removeClass('submitted');
-              }
-            }
-          },
-          complete: function(data) {
-            $(menus[index]).addClass('animated flipInX');
-            // Do next ajax call
-            ++index;
-            if(index == tasks.length) {
-              $('.projectSubmitButton').fadeIn("slow");
-            }
-            nextTask();
-          }
-      });
-    }
-  }
-  // Start first Ajax call
-  nextTask();
-}
 
 /**
  * Validate fields length when click to any button
@@ -184,6 +131,9 @@ function validateEvent(fields) {
       e.preventDefault();
       $parent.find('.loading').fadeOut(500);
       var notyOptions = jQuery.extend({}, notyDefaultOptions);
+      $('html, body').animate({
+        scrollTop: $('.fieldError').offset().top - 80
+      }, 700);
       notyOptions.text = 'Something is wrong in this section, please fix it then save';
       noty(notyOptions);
     } else {
@@ -273,7 +223,8 @@ function applyCharCounter($textArea,charCount) {
 
 /* Add a word counter to a specific text area */
 function applyWordCounter($textArea,wordCount) {
-  $textArea.parent().append("<p class='charCount'>(<span>" + wordCount + "</span> words remaining)</p>");
+  $textArea.parent().append(
+      "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>");
   $textArea.parent().find(".charCount").find("span").text(wordCount - word_count($textArea));
   $textArea.on("keyup", function(event) {
     var $charCount = $(event.target).parent().find(".charCount");

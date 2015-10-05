@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.action.json.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
@@ -69,6 +70,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private IPElementManager ipElementManager;
   @Inject
   private ProjectContributionOverviewManager overviewManager;
+  @Inject
+  private IPIndicatorManager indicatorManager;
 
   // Validators
   @Inject
@@ -100,11 +103,12 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           break;
         case "locations":
           this.validateProjectLocations();
+          break;
         case "outcomes":
           this.validateProjectOutcomes();
           break;
         case "ccafsOutcomes":
-          // TODO
+          this.validateCCAFSOutcomes();
           break;
         case "otherContributions":
           // TODO
@@ -172,6 +176,18 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
   }
 
+  private void validateCCAFSOutcomes() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Get the project outputs from database
+    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    // Get the project indicators from database
+    project.setIndicators(indicatorManager.getProjectIndicators(projectID));
+
+
+    // TODO Auto-generated method stub
+  }
+
   private void validateOverviewByMOGS() {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
@@ -182,7 +198,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
 
     // Validate
     projectOutputValidator.validate(this, project, "Planning");
@@ -244,7 +260,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
@@ -257,7 +273,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

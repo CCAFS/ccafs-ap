@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Permission denied!" /]
+[#assign title = "Page you requested was not found!" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]

@@ -63,17 +63,17 @@
           <div class="panel-head">[@customForm.text name="planning.impactPathways.otherContributions.collaboratingCRPs" readText=!editable /]</div> 
           <div class="panel-body"> 
             <ul id="contributionsBlock" class="list">
-            [#if project.crpContributions?has_content]  
-              [#list project.crpContributions as crp]
+            [#if project.ipOtherContribution.crpContributions?has_content]  
+              [#list project.ipOtherContribution.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
-                  <input class="id" type="hidden" name="project.crpContributions[${crp_index}].id" value="${crp.id}" />
+                  <input class="id" type="hidden" name="project.ipOtherContribution.crpContributions[${crp_index}].id" value="${crp.id}" />
                   [#-- CRP Title --]
                   <div class="fullPartBlock clearfix">
-                    <span class="name">${crp.name}</span>
+                    <span class="name">${crp.crp.name}</span>
                   </div>
                   [#-- CRP Collaboration nature --]
                   <div class="fullPartBlock">
-                    [@customForm.textArea name="project.crpContributions[${crp_index}].crpCollaborationNature" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
+                    [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
                   </div>
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
