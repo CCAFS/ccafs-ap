@@ -415,20 +415,6 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public String getStandardIdentifier(Project project, boolean useComposedCodification) {
-    StringBuilder result = new StringBuilder();
-    if (useComposedCodification) {
-      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
-      result.append("-P");
-      result.append(project.getId());
-    } else {
-      result.append("P");
-      result.append(project.getId());
-    }
-    return result.toString();
-  }
-
-  @Override
   public int saveProjectDescription(Project project, User user, String justification) {
     Map<String, Object> projectData = new HashMap<>();
     if (project.getId() == -1) {
@@ -472,8 +458,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-  public
-  boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+    public
+    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

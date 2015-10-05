@@ -282,7 +282,18 @@ public interface ProjectDAO {
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
+
   public List<Map<String, Object>> summaryGenderSummaryWithAllDeliverables();
+
+  /**
+   * This method returns the information of all the activities by project and their gender contribution to be used in
+   * the summary report of the same name
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
 
   /**
    * This method returns the information of all the projects with their partner leaders to be used in the summary report

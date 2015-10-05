@@ -54,13 +54,15 @@ public class SendMail {
   /**
    * This method send an email from the main email system.
    * 
-   * @param toEmail is the email or the list of emails separated by a single space.
+   * @param toEmail is the email or the list of emails separated by a single space. This parameter can be null.
    * @param ccEmail is the email or the list of emails separated by a single space that will be as CC. This parameter
+   *        can be null.
+   * @param bbcEmail is the email or the list of emails separated by a single space that will be in BBC. This parameter
    *        can be null.
    * @param subject is the email title.
    * @param messageContent the content of the email
    */
-  public void send(String toEmail, String ccEmail, String subject, String messageContent) {
+  public void send(String toEmail, String ccEmail, String bbcEmail, String subject, String messageContent) {
 
     // Get a Properties object
     Properties properties = System.getProperties();
@@ -89,9 +91,18 @@ public class SendMail {
     // Set the FROM and TO fields
     try {
       msg.setFrom(new InternetAddress(config.getEmailUsername()));
-      msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+      if (toEmail != null) {
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+      }
       if (ccEmail != null) {
         msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccEmail, false));
+      }
+      if (bbcEmail != null) {
+        msg.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bbcEmail, false));
+      }
+      // Adding TEST word at the beginning of the subject.
+      if (!config.isProduction()) {
+        subject = "TEST " + subject;
       }
       msg.setSubject(subject);
       msg.setText(messageContent);

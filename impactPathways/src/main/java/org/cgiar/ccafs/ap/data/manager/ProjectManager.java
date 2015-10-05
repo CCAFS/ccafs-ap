@@ -186,16 +186,6 @@ public interface ProjectManager {
    */
   public List<Project> getProjectsList(String[] values);
 
-  /**
-   * This method returns the project identifier whether using composed codification (that is with the organization IATI
-   * standard id) or a simple id.
-   * 
-   * @param project , the project to get the standard identifier from.
-   * @param useComposedCodification , true if you want to get the full IATI standard codification or false for simple
-   *        form.
-   * @return a String with the standard identifier.
-   */
-  public String getStandardIdentifier(Project project, boolean useComposedCodification);
 
   /**
    * This method create or updates a project into the database.
