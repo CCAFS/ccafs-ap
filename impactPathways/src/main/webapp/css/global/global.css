@@ -329,7 +329,7 @@ textarea#justification {
 .textArea p, .input p, .select p {
   text-align: justify;
   width: 98%;
-  font-size: 1.07em;
+  font-size: 1.1em;
   margin-top: 1px;
   word-wrap: break-word;
   color: #6D6D6D;
