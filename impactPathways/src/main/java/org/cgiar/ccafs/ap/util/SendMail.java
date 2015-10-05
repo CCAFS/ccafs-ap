@@ -100,6 +100,10 @@ public class SendMail {
       if (bbcEmail != null) {
         msg.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bbcEmail, false));
       }
+      // Adding TEST word at the beginning of the subject.
+      if (!config.isProduction()) {
+        subject = "TEST " + subject;
+      }
       msg.setSubject(subject);
       msg.setText(messageContent);
       msg.setSentDate(new Date());
