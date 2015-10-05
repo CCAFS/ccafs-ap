@@ -221,6 +221,16 @@ public interface ProjectManager {
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
 
   /**
+   * This method will return the list of all the deliverables with your next users.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary Gender Report.
+   * 
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGenderSummaryWithAllDeliverables();
+
+  /**
    * This method will return the list of all the projects and their respective leaders.
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
@@ -229,6 +239,7 @@ public interface ProjectManager {
    * @return a list of Project objects with the Project Partner Leader information.
    */
   public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
+
 
   /**
    * This method will return the list of all the projects and all their respective deliverables.
