@@ -387,10 +387,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getBudgetsByProject(project));
 
@@ -412,20 +412,6 @@ public class ProjectManagerImpl implements ProjectManager {
       }
     }
     return projects;
-  }
-
-  @Override
-  public String getStandardIdentifier(Project project, boolean useComposedCodification) {
-    StringBuilder result = new StringBuilder();
-    if (useComposedCodification) {
-      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
-      result.append("-P");
-      result.append(project.getId());
-    } else {
-      result.append("P");
-      result.append(project.getId());
-    }
-    return result.toString();
   }
 
   @Override
@@ -472,8 +458,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 
