@@ -299,7 +299,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
       // BBC
       String bbcEmails = this.config.getEmailNotification();
-      sendMail.send(toEmail, null, bbcEmails, this.getText("planning.manageUsers.email.newUser.subject"),
+      sendMail.send(toEmail, null, bbcEmails,
+        this.getText("planning.manageUsers.email.newUser.subject", new String[] {user.getComposedName()}),
         message.toString());
     }
   }
