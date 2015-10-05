@@ -928,6 +928,64 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
+    LOG.debug(">> getAllActivitiesGenderContribution ");
+    // TODO
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    // Formatted query:
+    query.append("SELECT p.id as 'project_id', ");
+    query.append("p.title as 'project_title', ");
+    query.append("a.id as 'activity_id', ");
+    query.append("a.title as 'activity_title', ");
+    query.append("a.description as 'activity_description', ");
+    query.append("a.startDate as 'activity_startDate', ");
+    query.append("a.endDate as 'activity_endDate', ");
+    query.append("IFNULL ");
+    query.append("( ");
+    query.append("CONCAT (i.acronym, ' - ', i.name), i.name ");
+    query.append(") ");
+    query.append("as 'institution', ");
+    query.append("CONCAT (u.last_name, ', ',u.fist_name, ' <', u.email, '>') ");
+    query.append("as 'activity_leader', ");
+    query.append("FROM activities a ");
+    query.append("INNER JOIN projects p ON ");
+    query.append("a.project_id = p.id ");
+    query.append("INNER JOIN project_partner_persons ppp ON ");
+    query.append("a.leader_id = ppp.id ");
+    query.append("INNER JOIN project_partners pp ON ");
+    query.append("ppp.project_partner_id = pp.id ");
+    query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("INER JOIN users u ON ppp.user_id = u.id ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> csvData = new HashMap<>();
+        csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("activity_id", rs.getString("activity_id"));
+        csvData.put("activity_title", rs.getString("activity_title"));
+        csvData.put("activity_description", rs.getString("activity_description"));
+        csvData.put("activity_startDate", rs.getString("activity_startDate"));
+        csvData.put("activity_endDate", rs.getString("activity_endDate"));
+        csvData.put("institution", rs.getString("institution"));
+        csvData.put("activity_leader", rs.getString("activity_leader"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getAllActivitiesGenderContribution() > Exception raised trying ";
+      exceptionMessage += "to get the summary report for activitiesGenderContribution: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getAllActivitiesGenderContribution ");
+    return csvRecords;
+  }
+
+  @Override
   public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
     LOG.debug(">> getAllProjectPartnerLeaders ");
     // TODO
