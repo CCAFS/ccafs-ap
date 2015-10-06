@@ -556,6 +556,14 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.projectID = projectID;
   }
 
+  /**
+   * This method updates the role for each user (Leader/Coordinator) into the database, and notifies by email what has
+   * been done.
+   * 
+   * @param previousPartnerPerson is the previous leader/coordinator that has assigned the project before.
+   * @param partnerPerson the current leader/coordinator associated to the project.
+   * @param role is the new role assginated (leader/coordinator).
+   */
   private void updateRoles(PartnerPerson previousPartnerPerson, PartnerPerson partnerPerson, Role role) {
     if (previousPartnerPerson == null && partnerPerson != null) {
       roleManager.saveRole(partnerPerson.getUser(), role);
@@ -565,7 +573,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       roleManager.deleteRole(previousPartnerPerson.getUser(), role);
       // Notifying user that is not the project leader anymore
       this.notifyRoleUnassigned(previousPartnerPerson.getUser(), role);
-      // TODO - Send message notifying to the user that is not the project leader anymore
     } else if (previousPartnerPerson != null && partnerPerson != null) {
       if (!partnerPerson.equals(previousPartnerPerson)) {
         roleManager.saveRole(partnerPerson.getUser(), role);
