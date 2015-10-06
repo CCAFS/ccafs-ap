@@ -283,7 +283,7 @@ public interface ProjectDAO {
    *         occurs.
    */
 
-  public List<Map<String, Object>> summaryGenderSummaryWithAllDeliverables();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
 
   /**
    * This method returns the information of all the activities by project and their gender contribution to be used in

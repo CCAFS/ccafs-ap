@@ -480,9 +480,15 @@ public class ProjectManagerImpl implements ProjectManager {
     return saved;
   }
 
+
   @Override
-  public List<Map<String, Object>> summaryGenderSummaryWithAllDeliverables() {
-    return projectDAO.summaryGenderSummaryWithAllDeliverables();
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
+    return projectDAO.summaryGetAllActivitiesWithGenderContribution();
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution() {
+    return projectDAO.summaryGetAllDeliverablesWithGenderContribution();
   }
 
   @Override
@@ -503,14 +509,20 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year) {
-    return projectDAO.summaryGetInformationDetailPOWB(year);
+  public List<Map<String, Object>> summaryGetInformationBudgetByPartners(int year) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Override
   public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
     return projectDAO.summaryGetInformationPOWB(year);
 
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year) {
+    return projectDAO.summaryGetInformationDetailPOWB(year);
   }
 
   @Override
