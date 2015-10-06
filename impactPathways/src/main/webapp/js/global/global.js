@@ -113,15 +113,16 @@ $(document).ready(function() {
   // Adding Tawk.to plugin
   Tawk_API = Tawk_API || {};
   Tawk_LoadStart = new Date();
+  Tawk_API.visitor = {
+    name: $('#userInfo p.email').text() || 'Unknow User',
+  };
 
   Tawk_API.onLoad = function() {
-    Tawk_API.visitor = {
-      name: $('#userInfo p.email').text() || 'Unknow user',
-    };
     Tawk_API.setAttributes({
-      'userName': $('#userInfo p.email').text() || 'Unknow user'
+        'userName': $('#userInfo p.name').text() || 'Unknow User',
+        'userId': $('#userInfo p.userId').text() || 'Unknow Id',
+        'roles': $('#userInfo p.roles').text()
     }, function(error) {
-      console.log(error);
     });
   };
   (function() {

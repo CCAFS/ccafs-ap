@@ -95,7 +95,8 @@
 	  [#if logged]
         <div id="userInfo">
           <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
-          <p class="email">${currentUser.firstName} ${currentUser.lastName}</p>  
+          <p class="userId" style="display:none">${currentUser.id}</p> 
+          <p class="name">${currentUser.firstName} ${currentUser.lastName}</p>  
           <p class="institution">${currentUser.email}</p>
           <p class="roles">${securityContext.roles}</p>
         </div>
