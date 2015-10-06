@@ -1079,7 +1079,7 @@ a#userLogOut {
 }
 
 
-#userInfo .email {
+#userInfo .name {
   font-size: 1em;
   margin-right: 50px;
 }
@@ -1132,6 +1132,12 @@ a#userLogOut {
   font-size: 2.5em;
   color: #444;
   font-weight: 200;
+}
+
+#mainLogo p#testingMessage {
+  color: #FF7474;
+  font-weight: bold;
+  font-size: 0.7em;
 }
 
 #mainLogo img {
