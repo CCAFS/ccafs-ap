@@ -101,7 +101,10 @@ public class LeadProjectPartnersSummaryXLS {
       xls.writeHeaders(sheet, headers);
 
       this.addContent(sheet, projectList);
-
+      // Adding CCAFS logo
+      xls.createLogo(workbook, sheet);
+      // Set description
+      xls.writeDescription(sheet, xls.getText("summaries.leadProjectPartners.summary.description"));
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();
       // Closing streams.
