@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -26,12 +27,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class OtherContribution {
 
-  private int id;
-  private String contribution;
   private String additionalContribution;
+  private String contribution;
   private List<CRPContribution> crpContributions;
+  private int id;
 
   public OtherContribution() {
+    crpContributions=new ArrayList<CRPContribution>();
   }
 
   @Override
