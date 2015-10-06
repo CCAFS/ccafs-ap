@@ -17,7 +17,6 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.CRPManagerImpl;
 import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -81,9 +80,9 @@ public interface CRPManager {
    * @param justification
    * @return true if the information was saved succesfully. False otherwise.
    */
-  public boolean removeCrpContributionNature(int projectID, int crpID, int userID, String justification);
+  public boolean removeCrpContribution(int projectID, CRP crpID, int userID, String justification);
 
-  /**
+  /** 
    * This method saved the list of CRPs that are linked to the project received by parameter.
    * 
    * @param project - Project object with the information to save
@@ -91,5 +90,5 @@ public interface CRPManager {
    * @param Justification
    * @return
    */
-  public boolean saveCrpContributionsNature(Project project, User user, String Justification);
+  public boolean saveCrpContributions(int id_project, List<CRPContribution>crps,User user, String Justification);
 }
