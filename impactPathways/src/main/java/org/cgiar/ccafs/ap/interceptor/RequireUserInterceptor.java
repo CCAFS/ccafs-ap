@@ -19,11 +19,10 @@ import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This interceptor is responsible for validating if the user is actually logged or not, in order to be able to access
@@ -47,6 +46,14 @@ public class RequireUserInterceptor extends AbstractInterceptor {
     if (user != null) {
       return invocation.invoke();
     }
+    /*
+     * TODO HT - I tried to save the requested URL so the user can be redirected ones he is logged in.
+     * else {
+     * HttpServletRequest request = ServletActionContext.getRequest();
+     * session.put("savedUrl",
+     * request.getRequestURI() + (request.getQueryString() == null ? "" : ("?" + request.getQueryString())));
+     * }
+     */
     return BaseAction.NOT_LOGGED;
   }
 
