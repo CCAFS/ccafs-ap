@@ -44,6 +44,12 @@ public interface CrpDAO {
   public List<Map<String, String>> getCrpContributions(int projectID);
 
   /**
+   * TODO Falta por comentar
+   * @param projectID
+   * @return
+   */
+  public List<Map<String, String>> getCrpContributionsInactive(int projectID,Object crpid);
+  /**
    * This method gets the list of Nature of Collaboration that a CRPs collaborate to Other Contribution linked to the
    * project identified by the value received by parameter.
    * 

@@ -66,13 +66,15 @@
             [#if project.ipOtherContribution.crpContributions?has_content]  
               [#list project.ipOtherContribution.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
-                  <input class="id" type="hidden" name="project.ipOtherContribution.crpContributions[${crp_index}].id" value="${crp.id}" />
+                
+                  <input class="id" type="hidden" name="project.ipOtherContribution.crpContributions[${crp_index}].crp.id" value="${crp.crp.id}" />
                   [#-- CRP Title --]
                   <div class="fullPartBlock clearfix">
                     <span class="name">${crp.crp.name}</span>
                   </div>
                   [#-- CRP Collaboration nature --]
                   <div class="fullPartBlock">
+                    [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" /]
                     [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
                   </div>
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
@@ -113,7 +115,7 @@
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>
     [/#if]
     [#if editable] 
-      <input type="hidden" id="crpsName" value="project.crpContributions"/>
+      <input type="hidden" id="crpsName" value="project.ipOtherContribution.crpContributions"/>
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="[#if !newProject]borderBox[/#if]" >
