@@ -211,6 +211,16 @@ public interface ProjectManager {
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
 
   /**
+   * This method will return the list of all the activities with their corresponding projects
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary Gender Report.
+   * 
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
+
+  /**
    * This method will return the list of all the deliverables with your next users.
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
@@ -218,7 +228,7 @@ public interface ProjectManager {
    * 
    * @return a list of columns with the information summary
    */
-  public List<Map<String, Object>> summaryGenderSummaryWithAllDeliverables();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
 
   /**
    * This method will return the list of all the projects and their respective leaders.
@@ -259,7 +269,7 @@ public interface ProjectManager {
    *        This method should be used to the summary POWBMOGs Report.
    * @return a list of columns with the information summary
    */
-  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year);
+  public List<Map<String, Object>> summaryGetInformationBudgetByPartners(int year);
 
 
   /**
@@ -271,6 +281,17 @@ public interface ProjectManager {
    * @return a list of columns with the information summary
    */
   public List<Map<String, Object>> summaryGetInformationPOWB(int year);
+
+
+  /**
+   * @param year - Specific year for to search in the report.
+   *        This method will return the list of all the MOG of a specific year with your budgets.
+   *        This method also gets all the information in one single query to the database, improving its performance and
+   *        letting the charge to the RAM memory.
+   *        This method should be used to the summary POWBMOGs Report.
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year);
 
 
   /**

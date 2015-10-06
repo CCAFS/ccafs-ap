@@ -185,7 +185,7 @@ public class POWBMOGSummaryXLS {
 
       /***************** POWB MOG Report ******************/
       // Writting headers
-      String[] _headersPOWB =
+      String[] headersPOWB =
         new String[] {"Outcome 2019", "MOG", " Budget Total W1/W2 (USD)", " Budget Total W1/W2 (USD)",
           "Budget Total W3/Bilateral (USD) ", "Budget Total W3/Bilateral (USD)"};
 
@@ -204,7 +204,7 @@ public class POWBMOGSummaryXLS {
 
       xls.initializeSheet(sheets[0], headerTypesPOWB);
 
-      xls.writeHeaders(sheets[0], _headersPOWB);
+      xls.writeHeaders(sheets[0], headersPOWB);
       this.addContent(informationPOWB, sheets[0], 0);
 
       // Set description
@@ -220,7 +220,7 @@ public class POWBMOGSummaryXLS {
       // Sheet cleanSheet =
       // Writting headers
 
-      String[] _headersPOWBDetail =
+      String[] headersPOWBDetail =
         new String[] {"Project Id", "Project title", "MOG", "Expected annual contribution",
         "Expected plan of the gender and social inclusion", " Budget Total W1/W2 (USD)",
           " Budget Gender W1/W2 (USD)", "Budget Total W3/Bilateral (USD)", "Budget Gender W3/Bilateral (USD)"};
@@ -236,7 +236,7 @@ public class POWBMOGSummaryXLS {
 
       xls.initializeSheet(sheets[1], headerTypesPOWBDetail);
 
-      xls.writeHeaders(sheets[1], _headersPOWBDetail);
+      xls.writeHeaders(sheets[1], headersPOWBDetail);
       this.addContent(informationDetailPOWB, sheets[1], 1);
 
       // Set description

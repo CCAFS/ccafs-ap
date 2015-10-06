@@ -18,10 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.Institution;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.GenderSummaryXLS;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadProjectPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -44,13 +41,9 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public static Logger LOG = LoggerFactory.getLogger(GenderSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;;
   private GenderSummaryXLS genderSummaryXLS;
-  private InstitutionManager institutionManager;
   private ProjectManager projectManager;
-  private ProjectPartnerManager projectPartnerManager;
-  private LeadProjectPartnersSummaryXLS leadProjectPatnersSummaryXLS;
-  List<ProjectPartner> leadPartners;
-  List<Institution> projectLeadingInstitutions;
-  List<Map<String, Object>> projectList;
+
+  private List<Map<String, Object>> projectList, deliverableList, activityList;
   // CSV bytes
   private byte[] bytesXLS;
 
@@ -62,16 +55,15 @@ public class GenderSummaryAction extends BaseAction implements Summary {
     ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
     this.genderSummaryXLS = genderSummaryXLS;
-    this.institutionManager = institutionManager;
+
     this.projectManager = projectManager;
-    this.projectPartnerManager = projectPartnerManager;
 
   }
 
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = genderSummaryXLS.generateXLS(projectList);
+    bytesXLS = genderSummaryXLS.generateXLS(projectList, activityList, deliverableList);
 
     return SUCCESS;
   }
@@ -110,6 +102,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public void prepare() {
 
     projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
-
+    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
+    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
   }
 }

@@ -104,6 +104,6 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
     informationPWOBReport = projectManager.summaryGetInformationPOWB(config.getPlanningCurrentYear());
-    informationPWOBReportDetail = projectManager.summaryGetInformationDetailPOWB(config.getPlanningCurrentYear());
+    informationPWOBReportDetail = projectManager.summaryGetInformationPOWBDetail(config.getPlanningCurrentYear());
   }
 }
