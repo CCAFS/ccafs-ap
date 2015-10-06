@@ -114,7 +114,7 @@ $(document).ready(function() {
   Tawk_API = Tawk_API || {};
   Tawk_LoadStart = new Date();
   Tawk_API.visitor = {
-    name: $('#userInfo p.email').text() || 'Unknow User',
+    name: $('#userInfo p.name').text() || 'Unknow User',
   };
 
   Tawk_API.onLoad = function() {
