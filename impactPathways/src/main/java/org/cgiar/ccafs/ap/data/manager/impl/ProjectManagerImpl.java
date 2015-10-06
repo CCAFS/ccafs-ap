@@ -415,20 +415,6 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public String getStandardIdentifier(Project project, boolean useComposedCodification) {
-    StringBuilder result = new StringBuilder();
-    if (useComposedCodification) {
-      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
-      result.append("-P");
-      result.append(project.getId());
-    } else {
-      result.append("P");
-      result.append(project.getId());
-    }
-    return result.toString();
-  }
-
-  @Override
   public int saveProjectDescription(Project project, User user, String justification) {
     Map<String, Object> projectData = new HashMap<>();
     if (project.getId() == -1) {
@@ -494,32 +480,49 @@ public class ProjectManagerImpl implements ProjectManager {
     return saved;
   }
 
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
+    return projectDAO.summaryGetAllActivitiesWithGenderContribution();
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution() {
+    return projectDAO.summaryGetAllDeliverablesWithGenderContribution();
+  }
+
   @Override
   public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
     return projectDAO.summaryGetAllProjectPartnerLeaders();
   }
+
 
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
     return projectDAO.summaryGetAllProjectsWithDeliverables();
   }
 
-
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
     return projectDAO.summaryGetAllProjectsWithGenderContribution();
   }
 
-  @Override
-  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year) {
-    return projectDAO.summaryGetInformationDetailPOWB(year);
-  }
 
+  @Override
+  public List<Map<String, Object>> summaryGetInformationBudgetByPartners(int year) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
   @Override
   public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
     return projectDAO.summaryGetInformationPOWB(year);
 
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year) {
+    return projectDAO.summaryGetInformationDetailPOWB(year);
   }
 
   @Override

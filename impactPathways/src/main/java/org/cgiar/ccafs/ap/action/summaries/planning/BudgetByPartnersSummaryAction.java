@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class POWBSummaryAction extends BaseAction implements Summary {
+public class BudgetByPartnersSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
@@ -61,7 +61,7 @@ public class POWBSummaryAction extends BaseAction implements Summary {
   List<Project> projectsList;
 
   @Inject
-  public POWBSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
+  public BudgetByPartnersSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
     ProjectPartnerManager projectPartnerManager, LocationManager locationManager, POWBSummaryXLS pwobSummaryXLS) {
     super(config);
     this.locationManager = locationManager;

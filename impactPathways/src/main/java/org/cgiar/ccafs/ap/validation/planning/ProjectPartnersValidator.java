@@ -53,7 +53,7 @@ public class ProjectPartnersValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -103,12 +103,7 @@ public class ProjectPartnersValidator extends BaseValidator {
     }
   }
 
-  /**
-   * validate that an institution is selected.
-   * 
-   * @param action
-   * @param project
-   */
+  // Validate that an institution is selected.
   private void validateInstitutionsEmpty(BaseAction action, Project project) {
     int c = 0;
     for (ProjectPartner partner : project.getProjectPartners()) {

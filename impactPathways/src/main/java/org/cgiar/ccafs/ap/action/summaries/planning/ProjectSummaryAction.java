@@ -245,6 +245,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       // Getting next users.
       deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
+      deliverable.setOutput(deliverableManager.getDeliverableOutput(deliverable.getId()));
+
       // Getting the responsible partner.
       List<DeliverablePartner> partners =
         deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
@@ -273,7 +275,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Getting the informations
 
-    project.setCrpContributions(crpManager.getCrpContributions(projectID));
+    // project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
 
     project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));

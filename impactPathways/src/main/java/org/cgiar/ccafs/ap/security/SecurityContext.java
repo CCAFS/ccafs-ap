@@ -170,6 +170,10 @@ public class SecurityContext extends BaseSecurityContext {
     return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE);
   }
 
+  public boolean canSubmitProject() {
+    return this.hasPermission(Permission.PLANNING_SUBMIT_BUTTON);
+  }
+
   /**
    * Verify if can update the annual W3/Bilateral budget in project budgets section
    * 
@@ -321,7 +325,6 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canUpdateProjectPartners(int projectID) {
-    System.out.println(user.getComposedName());
     return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_UPDATE);
   }
 
@@ -386,6 +389,15 @@ public class SecurityContext extends BaseSecurityContext {
    */
   public boolean isGuest() {
     return this.hasRole(Role.GUEST);
+  }
+
+  /**
+   * Verify if the user has the FPL role
+   * 
+   * @return
+   */
+  public boolean isML() {
+    return this.hasRole(Role.ML);
   }
 
   /**

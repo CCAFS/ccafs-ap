@@ -51,9 +51,9 @@ public class AutoLoginInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user == null) {
-      User loggedUser = userManager.login("admin@cgiar.org", "123");
+      User loggedUser = userManager.login("h.f.tobon@cgiar.org", "123");
       // user = userManager.getUserByEmail("h.d.carvajal@cgiar.org");
-      user = userManager.getUserByEmail("admin@cgiar.org");
+      user = userManager.getUserByEmail("h.f.tobon@cgiar.org");
       // user = userManager.getUserByEmail("d.m.baron@cgiar.org");
       // user = userManager.getUserByEmail("d.giraldo@cgiar.org");
       // Get the institutions related to the user

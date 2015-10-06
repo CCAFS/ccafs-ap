@@ -62,8 +62,10 @@
     </li>
   </ul>
   <br />
-  <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
-  <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
+  [#if securityContext.canSubmitProject()]
+    <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
+    <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
+  [/#if]
   
 </nav>
 

@@ -74,11 +74,21 @@ $(document).ready(function() {
     $dialogContent.find('.warning-info').empty().hide();
     var invalidFields = [];
     var user = {};
-    if($dialogContent.find("#isCCAFS").is(':checked')) {
+    user.email = $dialogContent.find("#email").val().trim();
+    var isCGIAREmail = ((user.email).indexOf("cgiar") > -1);
+    if(!isCGIAREmail) {
+      $('#isCCAFS').prop('checked', true);
+      $dialogContent.find(".tickBox-toggle").show();
+    } else {
+      $('#isCCAFS').prop('checked', false);
+      $dialogContent.find(".tickBox-toggle").hide();
+    }
+
+    if($dialogContent.find("#isCCAFS").is(':checked') && !isCGIAREmail) {
       user.firstName = $dialogContent.find("#firstName").val();
       user.lastName = $dialogContent.find("#lastName").val();
     }
-    user.email = $dialogContent.find("#email").val().trim();
+
     user.isActive = $dialogContent.find("#isActive").val();
 
     // Validate if fields are filled

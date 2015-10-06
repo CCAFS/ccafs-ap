@@ -59,8 +59,8 @@ public class POWBMOGSummaryXLS {
         // Outcome
         stringBuilder = new StringBuilder();
 
-        valueOne = (String) mapObject.get("flagship_outcome");
-        valueTwo = (String) mapObject.get("outcome_2019");
+        valueOne = (String) mapObject.get("outcome_flagship");
+        valueTwo = (String) mapObject.get("outcome_description");
 
         if (valueOne != null && valueTwo != null) {
           stringBuilder.append(valueOne);
@@ -76,7 +76,7 @@ public class POWBMOGSummaryXLS {
         // MOG description
         stringBuilder = new StringBuilder();
 
-        valueOne = (String) mapObject.get("flagship");
+        valueOne = (String) mapObject.get("mog_flagship");
         valueTwo = (String) mapObject.get("mog_description");
 
         if (valueOne != null && valueTwo != null) {
@@ -104,8 +104,6 @@ public class POWBMOGSummaryXLS {
 
         // gender_W3_Bilateral
         xls.writeBudget(sheet, (double) mapObject.get("gender_W3_Bilateral"));
-        xls.nextColumn();
-
         xls.nextRow();
 
       }
@@ -187,7 +185,7 @@ public class POWBMOGSummaryXLS {
 
       /***************** POWB MOG Report ******************/
       // Writting headers
-      String[] _headersPOWB =
+      String[] headersPOWB =
         new String[] {"Outcome 2019", "MOG", " Budget Total W1/W2 (USD)", " Budget Total W1/W2 (USD)",
           "Budget Total W3/Bilateral (USD) ", "Budget Total W3/Bilateral (USD)"};
 
@@ -196,30 +194,33 @@ public class POWBMOGSummaryXLS {
         new int[] {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
         BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
-      // renaming sheet
-      workbook.setSheetName(0, "P&R - POWB Summary");
-      Sheet cleanSheet = workbook.cloneSheet(0);
+      // creating sheet
+      Sheet[] sheets = new Sheet[2];
+      sheets[0] = workbook.getSheetAt(0);
+      sheets[1] = workbook.cloneSheet(0);
 
-      Sheet sheet = workbook.getSheetAt(0);
 
-      // write text box
-      xls.writeTitleBox(sheet, "POWB Summary ");
+      workbook.setSheetName(0, "P&R - POWB Summary ");
 
-      // write text box
-      xls.createLogo(workbook, sheet);
+      xls.initializeSheet(sheets[0], headerTypesPOWB);
 
-      xls.initializeSheet(sheet, headerTypesPOWB);
-
-      xls.writeHeaders(sheet, _headersPOWB);
-      this.addContent(informationPOWB, sheet, 0);
+      xls.writeHeaders(sheets[0], headersPOWB);
+      this.addContent(informationPOWB, sheets[0], 0);
 
       // Set description
-      xls.writeDescription(sheet, xls.getText("summaries.powb.mog.sheetone.description"));
+      xls.writeDescription(sheets[0], xls.getText("summaries.powb.mog.sheetone.description"));
 
+      // write text box
+      xls.writeTitleBox(sheets[0], "POWB Summary ");
+
+      // write text box
+      xls.createLogo(workbook, sheets[0]);
 
       /***************** POWB MOG Report Detail ******************/
+      // Sheet cleanSheet =
       // Writting headers
-      String[] _headersPOWBDetail =
+
+      String[] headersPOWBDetail =
         new String[] {"Project Id", "Project title", "MOG", "Expected annual contribution",
         "Expected plan of the gender and social inclusion", " Budget Total W1/W2 (USD)",
           " Budget Gender W1/W2 (USD)", "Budget Total W3/Bilateral (USD)", "Budget Gender W3/Bilateral (USD)"};
@@ -231,24 +232,21 @@ public class POWBMOGSummaryXLS {
         BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
 
-      // renaming sheet
-      workbook.createSheet("P&R - POWB Detail");
-      sheet = workbook.getSheetAt(1);
+      workbook.setSheetName(1, "P&R - POWB Summary Detail");
 
+      xls.initializeSheet(sheets[1], headerTypesPOWBDetail);
 
-      // write text box
-      xls.writeTitleBox(sheet, "POWB Summary Detail");
-
-      // write text box
-      xls.createLogo(workbook, sheet);
-
-      xls.initializeSheet(sheet, headerTypesPOWBDetail);
-
-      xls.writeHeaders(sheet, _headersPOWBDetail);
-      this.addContent(informationDetailPOWB, sheet, 1);
+      xls.writeHeaders(sheets[1], headersPOWBDetail);
+      this.addContent(informationDetailPOWB, sheets[1], 1);
 
       // Set description
-      xls.writeDescription(sheet, xls.getText("summaries.powb.mog.sheetone.description"));
+      xls.writeDescription(sheets[1], xls.getText("summaries.powb.mog.sheetone.description"));
+
+      // write text box
+      xls.writeTitleBox(sheets[1], "POWB Summary Detail");
+
+      // write text box
+      xls.createLogo(workbook, sheets[1]);
 
       // this.flush();
       xls.writeWorkbook();

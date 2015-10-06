@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.CRPManagerImpl;
 import org.cgiar.ccafs.ap.data.model.CRP;
+import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -31,12 +32,30 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(CRPManagerImpl.class)
 public interface CRPManager {
 
+
+  /**
+   * This method gets the CRP information by a given CRP ID.
+   * The activity has to be active.
+   * 
+   * @param crpID is the CRP identifier.
+   * @return an CRP object with the information requested, or null if the CRP was not found or is not active.
+   */
+  public CRP getCRPById(int crpID);
+
   /**
    * This method gets the list of CRPs that are linked to the project identified by the value received by parameter.
    * 
    * @return a list of CRPs objects with the information.
    */
   public List<CRP> getCrpContributions(int projectID);
+
+  /**
+   * This method gets the list of the Contributions Nature of the CRPs that are linked to the project identified by the
+   * value received by parameter.
+   * 
+   * @return a list of CRP Contributions objects with the information.
+   */
+  public List<CRPContribution> getCrpContributionsNature(int projectID);
 
   /**
    * This method gets the list of CRPs corresponding to the identifiers in the list received by parameter.
@@ -62,7 +81,7 @@ public interface CRPManager {
    * @param justification
    * @return true if the information was saved succesfully. False otherwise.
    */
-  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification);
+  public boolean removeCrpContributionNature(int projectID, int crpID, int userID, String justification);
 
   /**
    * This method saved the list of CRPs that are linked to the project received by parameter.
@@ -72,5 +91,5 @@ public interface CRPManager {
    * @param Justification
    * @return
    */
-  public boolean saveCrpContributions(Project project, User user, String Justification);
+  public boolean saveCrpContributionsNature(Project project, User user, String Justification);
 }

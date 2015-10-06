@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
+import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -38,11 +39,12 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   private ProjectOtherContributionDAO ipOtherContributionDAO;
 
   // Managers
-
+  private CRPManager crpManager;
 
   @Inject
-  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO) {
+  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO, CRPManager crpManager) {
     this.ipOtherContributionDAO = ipOtherContributionDAO;
+    this.crpManager = crpManager;
   }
 
   @Override
@@ -54,7 +56,8 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
-      ipOtherContribution.setCrpCollaborationNature(ipOtherContributionData.get("crp_contributions_nature"));
+      // ipOtherContribution.setCrpCollaborationNature(crpManager.getCrpContributionsNature()); // TODO JG modify method
+// to bring project ID
       return ipOtherContribution;
     }
     return null;
@@ -68,7 +71,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
-      ipOtherContribution.setCrpCollaborationNature(ipOtherContributionData.get("crp_contributions_nature"));
+      ipOtherContribution.setCrpCollaborationNature(crpManager.getCrpContributionsNature(projectID));
       return ipOtherContribution;
     }
     return null;
@@ -84,7 +87,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
     }
     contributionData.put("contribution", ipOtherContribution.getContribution());
     contributionData.put("additional_contribution", ipOtherContribution.getAdditionalContribution());
-    contributionData.put("crp_contributions_nature", ipOtherContribution.getCrpCollaborationNature());
+    // contributionData.put("crp_contributions_nature", ipOtherContribution.getCrpCollaborationNature());
     contributionData.put("user_id", user.getId());
     contributionData.put("justification", justification);
 

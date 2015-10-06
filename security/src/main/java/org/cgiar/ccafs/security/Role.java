@@ -21,7 +21,7 @@ package org.cgiar.ccafs.security;
 
 public enum Role {
 
-  Admin("Admin"), FPL("FPL"), RPL("RPL"), CP("CP"), AL("AL"), CU("CU"), GUEST("G"), PL("PL");
+  Admin("Admin"), FPL("FPL"), RPL("RPL"), CP("CP"), AL("AL"), CU("CU"), GUEST("G"), PL("PL"), ML("ML");
 
   private String acronym;
 

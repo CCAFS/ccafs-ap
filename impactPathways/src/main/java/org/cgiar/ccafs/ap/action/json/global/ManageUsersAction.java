@@ -117,10 +117,6 @@ public class ManageUsersAction extends BaseAction {
         } else {
           // If user was found, let's add it into our database.
           this.addUser();
-          // If user is active, we need to send an email with the instructions on how to login:
-          if (newUser.isActive()) {
-            this.sendNewUserEmail(null);
-          }
         }
       } else {
         // If the email does not belong to the CGIAR.
@@ -130,13 +126,7 @@ public class ManageUsersAction extends BaseAction {
           // String newPassword = RandomStringUtils.random(6, "0123456789abcdefghijkmnpqrstuvwxyz");
           String newPassword = RandomStringUtils.randomNumeric(6);
           newUser.setPassword(newPassword);
-          if (this.addUser()) {
-            // If user was successfully added and is active, we need to send an email with the instructions on how to
-            // login:
-            if (newUser.isActive()) {
-              this.sendNewUserEmail(newPassword);
-            }
-          } else {
+          if (!this.addUser()) {
             // If user could not be added.
             newUser = null;
             message = this.getText("planning.manageUsers.email.notAdded");
@@ -202,43 +192,6 @@ public class ManageUsersAction extends BaseAction {
 
     LOG.info("The search of users by '{}' was made successfully.", queryParameter);
     return SUCCESS;
-  }
-
-  /**
-   * This method sends an email to the user confirming the password assigned by the system and the instructions on how
-   * to login.
-   * 
-   * @param newPassword is the generated password.
-   */
-  private void sendNewUserEmail(String newPassword) {
-    StringBuilder message = new StringBuilder();
-
-    // Building the message:
-    message.append(this.getText("planning.manageUsers.email.arrangement.part1"));
-    message.append(newUser.getFirstName());
-    message.append(this.getText("planning.manageUsers.email.arrangement.part2"));
-
-    message.append(this.getText("planning.manageUsers.email.arrangement.part3"));
-    message.append(this.getText("planning.manageUsers.email.arrangement.part4"));
-    message.append(this.getText("planning.manageUsers.email.arrangement.part5"));
-    message.append(newUser.getEmail());
-    message.append(this.getText("planning.manageUsers.email.arrangement.part6"));
-    if (newPassword == null) {
-      message.append(this.getText("planning.manageUsers.email.arrangement.part7"));
-    } else {
-      message.append(newPassword);
-    }
-    message.append(this.getText("planning.manageUsers.email.arrangement.part8"));
-    message.append(this.getText("planning.manageUsers.email.arrangement.part9"));
-    message.append(this.getText("planning.manageUsers.email.arrangement.part10"));
-
-    // To
-    String toEmail = newUser.getEmail();
-    // CC
-    String ccEmails = this.getCurrentUser().getEmail() + " " + this.config.getEmailNotification();
-    sendMail.send(toEmail, ccEmails, this.getText("planning.manageUsers.email.arrangement.credentials"),
-      message.toString());
-
   }
 
   /**

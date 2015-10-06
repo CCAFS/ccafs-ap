@@ -28,17 +28,17 @@ import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.validation.planning.ProjectCCAFSOutcomesValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -47,9 +47,7 @@ import org.slf4j.LoggerFactory;
 
 public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
-  private static final long serialVersionUID = -8936156831650257748L;
-  private static Logger LOG = LoggerFactory.getLogger(ProjectCCAFSOutcomesPlanningAction.class);
-
+  private static final long serialVersionUID = 1911430786026486532L;
 
   // Manager
   private IPProgramManager programManager;
@@ -72,18 +70,19 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   private Project project;
 
   // Validator
-  // private ProjectCCAFSOutcomeValidator validator;
+  private ProjectCCAFSOutcomesValidator validator;
 
   @Inject
   public ProjectCCAFSOutcomesPlanningAction(APConfig config, IPProgramManager programManager,
     IPElementManager ipElementManager, ProjectManager projectManager, HistoryManager historyManager,
-    IPIndicatorManager indicatorManager) {
+    IPIndicatorManager indicatorManager, ProjectCCAFSOutcomesValidator validator) {
     super(config);
     this.programManager = programManager;
     this.ipElementManager = ipElementManager;
     this.projectManager = projectManager;
     this.historyManager = historyManager;
     this.indicatorManager = indicatorManager;
+    this.validator = validator;
   }
 
   public Activity getActivity() {
@@ -226,8 +225,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
         IPElement midOutcome = elements.get(i);
         if (this.isValidMidoutcome(midOutcome)) {
           midOutcome
-            .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-              + " #" + (i + 1) + ": " + midOutcome.getDescription());
+          .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
+          + " #" + (i + 1) + ": " + midOutcome.getDescription());
           midOutcomes.add(midOutcome);
         }
 
@@ -361,6 +360,9 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
     super.setHistory(historyManager.getCCAFSOutcomesHistory(projectID));
 
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
+
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getIndicators() != null) {
@@ -417,14 +419,25 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
 
       success = success && indicatorManager.saveProjectIndicators(project.getIndicators(), projectID,
         this.getCurrentUser(), this.getJustification());
-      if (success) {
-        this.addActionMessage(
-          this.getText("saving.success", new String[] {this.getText("planning.projectOutcome.title")}));
-        return SUCCESS;
-      } else {
+
+      // Displaying user messages.
+      if (success == false) {
         this.addActionError(this.getText("saving.problem"));
-        return INPUT;
+        return BaseAction.INPUT;
       }
+
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        // Action messages coming from the validation.
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
+      return SUCCESS;
+
     } else {
       return BaseAction.NOT_AUTHORIZED;
     }
@@ -445,7 +458,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      // validator.validate(this, project, "Planning");
+      validator.validate(this, project, "Planning");
     }
   }
 

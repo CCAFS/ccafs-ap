@@ -130,7 +130,9 @@
   
   [#-- Project PPA Partners --]
   <select id="projectPPAPartners" style="display:none">
+  [#if project.PPAPartners??]
     [#list project.PPAPartners as ppaPartner]<option value="${ppaPartner.institution.id}">${ppaPartner.institution.getComposedName()}</option>[/#list]
+  [/#if]  
   </select>
   
   [#-- Remove Partner Dialog --]

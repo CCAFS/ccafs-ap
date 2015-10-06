@@ -25,7 +25,7 @@
         </a>
 	      --]
 	      [#-- PRE-Planning section --]
-	      [#if securityContext.FPL || securityContext.RPL || securityContext.CU || securityContext.admin ]
+	      [#if securityContext.FPL || securityContext.RPL || securityContext.ML || securityContext.CU || securityContext.admin ]
 	        [#if preplanningActive ]
   	          <a  href="[@s.url namespace="/pre-planning" action='intro'/]">
 	        [#else]
@@ -95,8 +95,9 @@
 	  [#if logged]
         <div id="userInfo">
           <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
-          <p class="email">${currentUser.firstName} ${currentUser.lastName}</p>  
-          <p class="institution">${currentUser.email} </p>
+          <p class="userId" style="display:none">${currentUser.id}</p> 
+          <p class="name">${currentUser.firstName} ${currentUser.lastName}</p>  
+          <p class="institution">${currentUser.email}</p>
           <p class="roles">${securityContext.roles}</p>
         </div>
   	[/#if]
