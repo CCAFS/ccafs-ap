@@ -80,7 +80,7 @@ public class CRPManagerImpl implements CRPManager {
     for (Map<String, String> crpData : crpsData) {
       CRPContribution crp = new CRPContribution();
       crp.setId(Integer.parseInt(crpData.get("id")));
-      crp.setCrp(getCRPById(Integer.parseInt(crpData.get("crp_id"))));
+      crp.setCrp(this.getCRPById(Integer.parseInt(crpData.get("crp_id"))));
       crp.setNatureCollaboration(crpData.get("collaboration_nature"));
       crpContributions.add(crp);
     }
@@ -128,7 +128,7 @@ public class CRPManagerImpl implements CRPManager {
     for (CRPContribution crp : project.getIpOtherContribution().getCrpContributions()) {
       Map<String, Object> data = new HashMap<>();
       data.put("projectID", project.getId());
-      if (crp.getId() != -1) {
+      if (crp.getId()!=-1) {
         data.put("id", crp.getId());
       }
       data.put("crp_id", crp.getCrp().getId());
