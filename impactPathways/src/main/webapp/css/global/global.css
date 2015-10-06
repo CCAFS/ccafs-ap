@@ -1134,6 +1134,12 @@ a#userLogOut {
   font-weight: 200;
 }
 
+#mainLogo p#testingMessage {
+  color: #FF7474;
+  font-weight: bold;
+  font-size: 0.7em;
+}
+
 #mainLogo img {
   /* margin-left: 75px; */
   /* margin-top: 20px; */

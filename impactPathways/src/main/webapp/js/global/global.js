@@ -1,4 +1,4 @@
-var baseURL, editable;
+var baseURL, editable, production;
 var formBefore;
 var justificationLimitWords = 100;
 var errorMessages = [];
@@ -26,6 +26,7 @@ jQuery.fn.exists = function() {
 $(document).ready(function() {
   baseURL = $("#baseURL").val();
   editable = ($("#editable").val() === "true");
+  production = ($("#production").val() === "true");
   showNotificationMessages();
   showHelpText();
   applyWordCounter($("#justification"), justificationLimitWords);
@@ -128,7 +129,11 @@ $(document).ready(function() {
   (function() {
     var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
     s1.async = true;
-    s1.src = 'https://embed.tawk.to/56128da200d3af75029e5645/default';
+    if(production) {
+      s1.src = 'https://embed.tawk.to/56128da200d3af75029e5645/default';
+    } else {
+      s1.src = 'https://embed.tawk.to/5613e7282ee46dc72a5c89c5/default';
+    }
     s1.charset = 'UTF-8';
     s1.setAttribute('crossorigin', '*');
     s0.parentNode.insertBefore(s1, s0);
