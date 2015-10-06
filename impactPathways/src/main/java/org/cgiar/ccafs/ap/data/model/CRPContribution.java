@@ -14,8 +14,6 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
-import java.util.List;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
@@ -25,13 +23,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class CRPContribution {
 
-  private CRP crp;
   private int id;
+  private CRP crp;
   private String natureCollaboration;
 
-
   public CRPContribution() {
-    id=-1;
+    id = -1;
   }
 
   public CRPContribution(int id) {
@@ -40,55 +37,44 @@ public class CRPContribution {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof CRP) {
+    if (obj instanceof CRPContribution) {
       CRPContribution v = (CRPContribution) obj;
-      return  v.crp.getId()==this.getCrp().getId();
+      return v.getId() == this.getId();
     }
     return false;
   }
 
-
   public CRP getCrp() {
     return crp;
   }
+
   public int getId() {
     return id;
   }
-
 
   public String getNatureCollaboration() {
     return natureCollaboration;
   }
 
+  @Override
+  public int hashCode() {
+    return this.id;
+  }
 
   public void setCrp(CRP crp) {
     this.crp = crp;
   }
 
-
   public void setId(int id) {
     this.id = id;
   }
-
 
   public void setNatureCollaboration(String natureCollaboration) {
     this.natureCollaboration = natureCollaboration;
   }
 
-
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
-  }
-
-
-  public boolean validateList(List<CRPContribution> list){
-
-    for (CRPContribution crpContribution : list) {
-      if (crpContribution.getId()==this.getId()) {
-        return true;
-      }
-    }
-    return false;
   }
 }
