@@ -6,7 +6,11 @@
 [#if !(avoidHeader!false)]
   <div class="container">  
     <header class="clearfix">
-      <div id="mainLogo">Planning & Reporting Platform</div>
+      <div id="mainLogo">Planning & Reporting Platform
+      [#if !config.production]
+      <p id="testingMessage">Test platform</p>
+      [/#if]
+      </div>
       <div id="ccafsLogo"><img src="${baseUrl}/images/global/logo-ccafs.png" alt="CCAFS Logo" width="300px"></div>
       <div id="autoSavingMessages">
         <p id="saving" style="display:none;" >
