@@ -9,6 +9,7 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
@@ -17,6 +18,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.validation.planning.ProjectCCAFSOutcomesValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutputsPlanningValidator;
@@ -39,54 +41,63 @@ import org.slf4j.LoggerFactory;
  */
 public class ValidateProjectPlanningSectionAction extends BaseAction {
 
-  private static final long serialVersionUID = -9075503855862433753L;
-
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(ValidateProjectPlanningSectionAction.class);
 
-  // Model
-  private SectionStatus sectionStatus;
-  private boolean existProject;
-  private boolean validSection;
-  private String sectionName;
-  private int projectID;
-
-  // Managers
-  @Inject
-  private SectionStatusManager sectionStatusManager;
-
-  @Inject
-  private ProjectManager projectManager;
-  @Inject
-  private IPProgramManager ipProgramManager;
-  @Inject
-  private ProjectCofinancingLinkageManager linkedProjectManager;
-  @Inject
-  private ProjectPartnerManager projectPartnerManager;
-  @Inject
-  private LocationManager locationManager;
-  @Inject
-  private ProjectOutcomeManager projectOutcomeManager;
-  @Inject
-  private IPElementManager ipElementManager;
-  @Inject
-  private ProjectContributionOverviewManager overviewManager;
-  @Inject
-  private IPIndicatorManager indicatorManager;
+  private static final long serialVersionUID = -9075503855862433753L;
 
   // Validators
   @Inject
   private ProjectDescriptionValidator descriptionValidator;
+  private boolean existProject;
   @Inject
-  private ProjectPartnersValidator projectPartnersValidator;
+  private IPIndicatorManager indicatorManager;
+  @Inject
+  private IPElementManager ipElementManager;
+  @Inject
+  private ProjectOtherContributionManager ipOtherContributionManager;
+
+  @Inject
+  private IPProgramManager ipProgramManager;
+
+  @Inject
+  private ProjectCofinancingLinkageManager linkedProjectManager;
+  @Inject
+  private LocationManager locationManager;
   @Inject
   private ProjectLocationsValidator locationValidator;
   @Inject
-  private ProjectOutcomeValidator projectOutcomeValidator;
-  @Inject
-  private ProjectOutputsPlanningValidator projectOutputValidator;
+  private ProjectContributionOverviewManager overviewManager;
   @Inject
   private ProjectCCAFSOutcomesValidator projectCCAFSOutcomesValidator;
+  private int projectID;
+  @Inject
+  private ProjectManager projectManager;
+
+
+  @Inject
+  private ProjectIPOtherContributionValidator projectOtherContributionValidator;
+
+  @Inject
+  private ProjectOutcomeManager projectOutcomeManager;
+  @Inject
+  private ProjectOutcomeValidator projectOutcomeValidator;
+
+  @Inject
+  private ProjectOutputsPlanningValidator projectOutputValidator;
+
+
+  @Inject
+  private ProjectPartnerManager projectPartnerManager;
+  @Inject
+  private ProjectPartnersValidator projectPartnersValidator;
+  private String sectionName;
+  // Model
+  private SectionStatus sectionStatus;
+  // Managers
+  @Inject
+  private SectionStatusManager sectionStatusManager;
+  private boolean validSection;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -114,7 +125,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           this.validateCCAFSOutcomes();
           break;
         case "otherContributions":
-          // TODO
+          this.validateProjectOtherContributions();
           break;
         case "outputs":
           this.validateOverviewByMOGS();
@@ -243,6 +254,22 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     locationValidator.validate(this, project, "Planning");
   }
 
+  private void validateProjectOtherContributions() {
+    // Getting the Project information.
+    Project project = projectManager.getProject(projectID);
+    project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+    // Getting the Project lessons for this section.
+    this
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "otherContributions", this.getCurrentPlanningYear()));
+
+
+
+    // Validating.
+    projectOtherContributionValidator.validate(this, project);
+
+
+  }
+
   private void validateProjectOutcomes() {
     // Getting information.
     Project project = projectManager.getProject(projectID);
@@ -269,6 +296,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
   }
 
+
   private void validateProjectPartners() {
     // Getting the Project information.
     Project project = projectManager.getProject(projectID);
@@ -276,7 +304,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

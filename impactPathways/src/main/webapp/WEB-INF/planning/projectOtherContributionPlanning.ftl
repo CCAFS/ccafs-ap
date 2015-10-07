@@ -74,7 +74,7 @@
                   </div>
                   [#-- CRP Collaboration nature --]
                   <div class="fullPartBlock">
-                    [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" /]
+                    [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" showTitle=false /]
                     [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
                   </div>
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
