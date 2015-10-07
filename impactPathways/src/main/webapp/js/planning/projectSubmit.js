@@ -10,11 +10,12 @@ $(document).ready(function() {
   $(".progressbar").progressbar({
     max: tasksLength
   });
-  // Event for submit button inside each project
-  $('.projectSubmitButton, .submitButton').on('click', submitButtonEvent);
+  // Event for validate button inside each project
+  $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
 
+  // Refresh event when table is reloaded in project list section
   $('table.projectsList').on('draw.dt', function() {
-    $('.projectSubmitButton, .submitButton').on('click', submitButtonEvent);
+    $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
     $(".progressbar").progressbar({
       max: tasksLength
     });
@@ -69,10 +70,21 @@ function processTasks(tasks,projectId,button) {
             $(button).next().progressbar("value", index + 1);
             ++index;
             if(index == tasksLength) {
-              console.log(completed + " completed of " + tasksLength);
               if(completed == tasksLength) {
-                console.log("Project completed");
+                var notyOptions = jQuery.extend({}, notyDefaultOptions);
+                notyOptions.text = 'The project can be submmited now';
+                notyOptions.type = 'success';
+                notyOptions.layout = 'center';
+                noty(notyOptions);
+                $(button).next().fadeOut(function() {
+                  $(this).next().fadeIn("slow");
+                });
               } else {
+                var notyOptions = jQuery.extend({}, notyDefaultOptions);
+                notyOptions.text = "The project progress is " + Math.round(completed / tasksLength * 100) + "%";
+                notyOptions.type = 'alert';
+                notyOptions.layout = 'center';
+                noty(notyOptions);
                 $(button).next().fadeOut(function() {
                   $(button).fadeIn("slow").on('click', submitButtonEvent);
                 });
