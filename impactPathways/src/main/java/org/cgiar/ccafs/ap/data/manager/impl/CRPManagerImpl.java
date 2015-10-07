@@ -130,7 +130,7 @@ public class CRPManagerImpl implements CRPManager {
     for (CRPContribution crp :crps) {
       Map<String, Object> data = new HashMap<>();
       data.put("projectID", id_project);
-      if (crp.getId()>0-1) {
+      if (crp.getId()>0) {
         data.put("id", crp.getId());
       }
       data.put("crp_id", crp.getCrp().getId());
