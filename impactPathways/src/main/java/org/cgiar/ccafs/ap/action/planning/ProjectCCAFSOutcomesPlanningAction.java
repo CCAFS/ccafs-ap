@@ -460,16 +460,6 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      // Populating MOGs selected as it seems there is an issue with struts2 when trying to convert directly to an
-      // ArrayList of IPElements.
-      if (project.getOutputs() != null) {
-        int mogID;
-        for (int c = 0; c < project.getOutputs().size(); c++) {
-          mogID = project.getOutputs().get(c).getId();
-          project.getOutputs().remove(c);
-          project.getOutputs().add(c, ipElementManager.getIPElement(mogID));
-        }
-      }
       // Validating.
       validator.validate(this, project, "Planning");
     }

@@ -73,11 +73,13 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         // section.
       }
 
-      if (!action.getFieldErrors().isEmpty()) {
-        action.addActionError(action.getText("saving.fields.required"));
-      } else if (validationMessage.length() > 0) {
-        action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      if (action.getActionErrors().isEmpty()) {
+        if (!action.getFieldErrors().isEmpty()) {
+          action.addActionError(action.getText("saving.fields.required"));
+        } else if (validationMessage.length() > 0) {
+          action.addActionMessage(
+            " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        }
       }
 
       // Saving missing fields.
