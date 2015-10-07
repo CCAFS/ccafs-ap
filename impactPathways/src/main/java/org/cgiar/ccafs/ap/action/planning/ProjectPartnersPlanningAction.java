@@ -484,8 +484,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   public String save() {
     if (securityContext.canUpdateProjectPartners(project.getId())) {
 
+      // Saving Lessons
       if (!this.isNewProject()) {
-        super.saveProjectLessons(projectID);
+        this.saveProjectLessons(project.getId());
       }
 
       // First, delete the partners that are not active anymore

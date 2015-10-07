@@ -287,8 +287,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
     projectTypes = new HashMap<>();
     projectTypes.put(APConstants.PROJECT_CORE, this.getText("planning.projectDescription.projectType.core"));
-    projectTypes.put(APConstants.PROJECT_BILATERAL,
-      this.getText("planning.projectDescription.projectType.bilateral"));
+    projectTypes.put(APConstants.PROJECT_BILATERAL, this.getText("planning.projectDescription.projectType.bilateral"));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -333,6 +332,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public String save() {
     if (securityContext.canUpdateProjectDescription()) {
+
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       // If the user can edit the dates, delete the budgets that correspond to years that are not linked to the
       // project anymore to prevent errors in the project budget section.

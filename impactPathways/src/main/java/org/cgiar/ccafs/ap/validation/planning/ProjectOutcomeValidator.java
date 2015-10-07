@@ -40,7 +40,6 @@ public class ProjectOutcomeValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear, String cycle) {
 
     if (project != null) {
-
       // The projects will be validated according to their type
       if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateProjectJustification(action, project);
@@ -52,7 +51,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
 
       if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
