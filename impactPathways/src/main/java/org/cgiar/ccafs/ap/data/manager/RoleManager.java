@@ -41,15 +41,6 @@ public interface RoleManager {
   public List<Role> getAllRoles();
 
   /**
-   * This method get the role of the user given according to the
-   * user identifier and the current institution of the user
-   * 
-   * @param user
-   * @return a Role object with the information
-   */
-  public Role getRole(User user);
-
-  /**
    * This method saves into the database the role assigned to the user.
    * 
    * @param user - User who is been assigned the role

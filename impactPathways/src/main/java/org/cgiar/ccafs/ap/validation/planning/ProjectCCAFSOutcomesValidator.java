@@ -112,6 +112,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
           for (IPIndicator indicator : indicatorsMap.get(outcome)) {
             // Validate only those indicators for 2016 and 2019.
             if (indicator.getYear() == config.getPlanningCurrentYear()
+              || indicator.getYear() == (config.getPlanningCurrentYear() + 1)
               || indicator.getYear() == config.getMidOutcomeYear()) {
               this.validateTargetValue(action, indicator.getTarget(), c);
               this.validateTargetNarrative(action, indicator.getDescription(), outcomeAcronym.toString(),

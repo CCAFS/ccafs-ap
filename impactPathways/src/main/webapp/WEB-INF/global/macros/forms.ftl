@@ -125,7 +125,7 @@
   </div>
 [/#macro]
 
-[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false editable=true]
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false stringKey=false editable=true]
   <div class="select[#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]>
     [#assign placeholderText][@s.text name="form.select.placeholder" /][/#assign]
     [#if showTitle]
@@ -163,8 +163,8 @@
         <p>  
           [#if displayFieldName == "" ]
             [#assign key][@s.property value="${name}"/][/#assign]
-            [#assign customValue][@s.property value="${listName}['${key}']"/][/#assign]
-            [#if customValue?has_content] 
+            [#assign customValue][#if !stringKey][@s.property value="${listName}[${key}]"/][#else][@s.property value="${listName}['${key}']"/][/#if][/#assign]
+            [#if customValue?has_content]
                 ${customValue}
               [#else]
                 [#if !(key?has_content)]
@@ -182,7 +182,7 @@
               [#else]
                 ${customValue}
               [/#if]
-            [#else]  
+            [#else]
               [#if customValue?has_content]
                 ${customValue}
               [#elseif value=="-1"]

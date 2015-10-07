@@ -42,23 +42,23 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   // LOG
   private static final long serialVersionUID = 5866456304533553208L;
 
+  private List<CRPContribution> crpContributions;
+  private CRPManager crpManager;
+  private List<CRP> crps;
+  private HistoryManager historyManager;
+
   // Manager
   private ProjectOtherContributionManager ipOtherContributionManager;
-  private HistoryManager historyManager;
-  private CRPManager crpManager;
-  private ProjectManager projectManager;
 
   // Validator
   private ProjectIPOtherContributionValidator otherContributionValidator;
 
   // Model for the back-end
   private List<CRPContribution> previousCRPContributions;
-
+  private Project project;
   // Model for the front-end
   private int projectID;
-  private List<CRP> crps;
-  private List<CRPContribution> crpContributions;
-  private Project project;
+  private ProjectManager projectManager;
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
@@ -119,7 +119,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     // Getting the information for the IP Other Contribution
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
     if (project.getIpOtherContribution() == null) {
-      // TODO SA - Please ask Sebastian to fix this in the front end.
+
       project.setIpOtherContribution(new OtherContribution());
     }
 
@@ -153,12 +153,13 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       // Delete the CRPs that were un-selected
       for (CRPContribution crp : previousCRPContributions) {
         if (!project.getIpOtherContribution().getCrpContributions().contains(crp)) {
-          saved = saved && crpManager.removeCrpContributionNature(project.getId(), crp.getCrp().getId(),
+          saved = saved && crpManager.removeCrpContribution(project.getId(), crp.getCrp(),
             this.getCurrentUser().getId(), this.getJustification());
         }
       }
 
-      saved = saved && crpManager.saveCrpContributionsNature(project, this.getCurrentUser(), this.getJustification());
+      saved = saved && crpManager.saveCrpContributions(project.getId(),
+        project.getIpOtherContribution().getCrpContributions(), this.getCurrentUser(), this.getJustification());
 
       if (!saved) {
         this.addActionError(this.getText("saving.problem"));

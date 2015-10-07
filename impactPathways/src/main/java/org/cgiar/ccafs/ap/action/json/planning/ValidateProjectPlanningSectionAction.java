@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.action.json.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
@@ -73,6 +74,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectContributionOverviewManager overviewManager;
   @Inject
   private IPIndicatorManager indicatorManager;
+  @Inject
+  private ActivityManager activityManager;
 
   // Validators
   @Inject
@@ -123,7 +126,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           // TODO
           break;
         case "activities":
-          // TODO
+          this.validateActivities();
           break;
         case "budget":
           // TODO
@@ -179,6 +182,17 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
   }
 
+  private void validateActivities() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Getting the activities from the database.
+    project.setActivities(activityManager.getActivitiesByProject(projectID));
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "activities", this.getCurrentPlanningYear()));
+  }
+
   private void validateCCAFSOutcomes() {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
@@ -186,6 +200,10 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     project.setOutputs(ipElementManager.getProjectOutputs(projectID));
     // Get the project indicators from database
     project.setIndicators(indicatorManager.getProjectIndicators(projectID));
+
+    // Getting the Project lessons for this section.
+    this
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     // Validating
     projectCCAFSOutcomesValidator.validate(this, project, "Planning");

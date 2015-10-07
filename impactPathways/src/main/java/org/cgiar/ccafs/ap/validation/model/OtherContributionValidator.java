@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Christian David Garcia -CIAT/CCAFS
  */
 
 public class OtherContributionValidator extends BaseValidator {
@@ -31,15 +32,21 @@ public class OtherContributionValidator extends BaseValidator {
   public OtherContributionValidator() {
   }
 
-  public boolean isValidAdditionalContribution(String contribution) {
-    return (this.isValidString(contribution)) ? true : false;
+  public boolean isValidAdditionalContribution(String additionalContribution) {
+    return (this.wordCount(additionalContribution) <= 100) ? true : false;
   }
 
-  public boolean isValidContribution(String additionalContribution) {
-    return (this.isValidString(additionalContribution)) ? true : false;
+
+  public boolean isValidContribution(String contribution) {
+    return (this.wordCount(contribution) <= 100) ? true : false;
   }
 
   public boolean isValidCrpCollaborationNature(String crpCollaborationNature) {
-    return (this.isValidString(crpCollaborationNature)) ? true : false;
+    return (this.isValidString(crpCollaborationNature) && this.wordCount(crpCollaborationNature) <= 50) ? true : false;
+  }
+
+
+  public boolean isValidLesson(String lesson) {
+    return (this.wordCount(lesson) <= 100) && (this.isValidString(lesson)) ? true : false;
   }
 }

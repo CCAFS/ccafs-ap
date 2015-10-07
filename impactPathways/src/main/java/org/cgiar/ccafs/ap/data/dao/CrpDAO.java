@@ -43,12 +43,7 @@ public interface CrpDAO {
    */
   public List<Map<String, String>> getCrpContributions(int projectID);
 
-  /**
-   * TODO Falta por comentar
-   * @param projectID
-   * @return
-   */
-  public List<Map<String, String>> getCrpContributionsInactive(int projectID,Object crpid);
+
   /**
    * This method gets the list of Nature of Collaboration that a CRPs collaborate to Other Contribution linked to the
    * project identified by the value received by parameter.
@@ -73,7 +68,7 @@ public interface CrpDAO {
    * @param justification
    * @return true if the information was saved succesfully. False otherwise.
    */
-  public boolean removeCrpContributionNature(int projectID, int crpID, int userID, String justification);
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification);
 
   /**
    * This method saves into the database the CRP contributions made by the project received by parameter.
@@ -91,6 +86,6 @@ public interface CrpDAO {
    * @param contributionNatureData - Information to save
    * @return True if the information was saved successfully. False otherwise.
    */
-  public boolean saveCrpContributionsNature(int projectID, Map<String, Object> contributionData);
+  public boolean saveCrpContributions( Map<String, Object> contributionData);
 
 }

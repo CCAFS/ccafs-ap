@@ -1,5 +1,4 @@
  [#ftl]
-
   [#if globalLibs??]
    [#list globalLibs as libraryName]
       [#if libraryName="chosen"]

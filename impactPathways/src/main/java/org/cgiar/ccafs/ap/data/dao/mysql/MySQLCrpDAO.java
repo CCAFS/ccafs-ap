@@ -95,34 +95,7 @@ public class MySQLCrpDAO implements CrpDAO {
     return crps;
   }
 
-  @Override
-  public List<Map<String, String>> getCrpContributionsInactive(int projectID, Object crpid) {
-    List<Map<String, String>> crpCollaborationsNature = new ArrayList<>();
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM project_crp_contributions  ");
 
-    query.append("WHERE ");
-    query.append("project_id = ");
-    query.append(projectID);
-    query.append(" AND is_active = false ");
-    query.append(" AND crp_id=");
-    query.append(crpid);
-
-    try (Connection con = daoManager.getConnection()) {
-      ResultSet rs = daoManager.makeQuery(query.toString(), con);
-      while (rs.next()) {
-        Map<String, String> collaborationNature = new HashMap<>();
-        collaborationNature.put("id", rs.getString("id"));
-        collaborationNature.put("crp_id", rs.getString("crp_id"));
-        collaborationNature.put("collaboration_nature", rs.getString("collaboration_nature"));
-        crpCollaborationsNature.add(collaborationNature);
-      }
-    } catch (SQLException e) {
-      LOG.error("getCrpsList() > Exception raised trying to get the list of Collaborations Nature of the CRPs.", e);
-    }
-
-    return crpCollaborationsNature;
-  }
 
   @Override
   public List<Map<String, String>> getCrpContributionsNature(int projectID) {
@@ -174,7 +147,7 @@ public class MySQLCrpDAO implements CrpDAO {
   }
 
   @Override
-  public boolean removeCrpContributionNature(int projectID, int crpID, int userID, String justification) {
+  public boolean removeCrpContribution(int projectID, int crpID, int userID, String justification) {
     StringBuilder query = new StringBuilder();
     query.append("UPDATE project_crp_contributions SET is_active = FALSE, ");
     query.append("modified_by = ?, modification_justification = ? ");
@@ -211,21 +184,19 @@ public class MySQLCrpDAO implements CrpDAO {
   }
 
   @Override
-  public boolean saveCrpContributionsNature(int projectID, Map<String, Object> contributionData) {
+  public boolean saveCrpContributions( Map<String, Object> contributionData) {
     StringBuilder query = new StringBuilder();
-    StringBuilder query_inactive = new StringBuilder();
+
     LOG.debug(">> saveCrpContributionsNature(contributionNatureArray={})", contributionData);
     boolean saved = true;
     int result = -1;
-    List<Map<String, String>>inactiveList=this.getCrpContributionsInactive(projectID,  contributionData.get("crp_id"));
-    boolean isInactive =  inactiveList.size()>0;
 
-    if (contributionData.get("id") == null && !isInactive) {
+    if (contributionData.get("id") == null) {
       // Insert new project_crp_contributions record
       query.append("INSERT INTO project_crp_contributions (project_id, crp_id, collaboration_nature, created_by, ");
       query.append(" modified_by, modification_justification) VALUES (?,?,?,?,?,?) ");
       Object[] values = new Object[6];
-      values[0] = projectID;
+      values[0] =  contributionData.get("projectID");
       values[1] = contributionData.get("crp_id");
       values[2] = contributionData.get("collaboration_nature");
       values[3] = contributionData.get("user_id");
@@ -241,11 +212,9 @@ public class MySQLCrpDAO implements CrpDAO {
       query.append("UPDATE project_crp_contributions SET project_id = ?, crp_id = ?, collaboration_nature = ?,  ");
       query.append("created_by = ?, modified_by = ?, modification_justification = ?, is_active=TRUE ");
       query.append("WHERE id = ? ");
-      if (isInactive) {
-        contributionData.put("id", inactiveList.get(0).get("id"));
-      }
+
       Object[] values = new Object[7];
-      values[0] = projectID;
+      values[0] = contributionData.get("projectID");
       values[1] = contributionData.get("crp_id");
       values[2] = contributionData.get("collaboration_nature");
       values[3] = contributionData.get("user_id");
@@ -253,10 +222,12 @@ public class MySQLCrpDAO implements CrpDAO {
       values[5] = contributionData.get("justification");
       values[6] = contributionData.get("id");
       result = daoManager.saveData(query.toString(), values);
-      System.out.println(result);
+
 
     }
 
     return saved;
   }
+
+
 }
