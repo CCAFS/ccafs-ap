@@ -287,7 +287,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
     projectTypes = new HashMap<>();
     projectTypes.put(APConstants.PROJECT_CORE, this.getText("planning.projectDescription.projectType.core"));
-    projectTypes.put(APConstants.PROJECT_BILATERAL_STANDALONE,
+    projectTypes.put(APConstants.PROJECT_BILATERAL,
       this.getText("planning.projectDescription.projectType.bilateral"));
 
     // If the user is not admin or the project owner, we should keep some information

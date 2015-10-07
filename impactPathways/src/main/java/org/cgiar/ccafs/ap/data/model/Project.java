@@ -678,7 +678,17 @@ public class Project {
   }
 
   public boolean isBilateralProject() {
-    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL_STANDALONE) : false;
+    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL) : false;
+  }
+
+  /**
+   * A project is bilateral stand alone if it is bilateral and it is NOT contributing to any Core project.
+   * 
+   * @return true if the project is bilateral stand alone, false if is bilateral and is contributing to some core
+   *         project.
+   */
+  public boolean isBilateralStandAlone() {
+    return (type != null) ? (this.isBilateralProject() && !this.isCofinancing) : false;
   }
 
   public boolean isCofinancing() {

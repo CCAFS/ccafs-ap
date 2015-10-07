@@ -46,10 +46,9 @@ public class ProjectLocationsValidator extends BaseValidator {
 
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
-      this.validateProjectJustification(action, project);
-
       // If project is CORE or CO-FUNDED
       if (project.isCoreProject() || project.isCoFundedProject()) {
+        this.validateProjectJustification(action, project);
         this.validateLessonsLearn(action, project, "locations");
         // Projects are validated checking if they are not global and their locations are valid ones.
         if ((!project.isGlobal()) && (!projectValidator.isValidListLocations(project.getLocations()))) {
@@ -58,7 +57,6 @@ public class ProjectLocationsValidator extends BaseValidator {
         } else {
           this.validateLocations(action, project);
         }
-
       } else {
         // If project is bilateral, do nothing.
       }
@@ -66,7 +64,7 @@ public class ProjectLocationsValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.

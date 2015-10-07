@@ -152,7 +152,7 @@ public class ProjectValidator extends BaseValidator {
   }
 
   public boolean isValidOutputs(List<IPElement> outputs) {
-    return false;
+    return (outputs != null && !outputs.isEmpty());
   }
 
   public boolean isValidOwner(User owner) {
