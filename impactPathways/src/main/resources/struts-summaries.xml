@@ -16,7 +16,7 @@
      </result>
    </action>
    
-  <action  name="deliverablePlanning" class="org.cgiar.ccafs.ap.action.summaries.planning.DeliverablePlanningSummaryAction">
+  <action  name="expectedDeliverables" class="org.cgiar.ccafs.ap.action.summaries.planning.DeliverablePlanningSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>

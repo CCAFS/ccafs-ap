@@ -261,16 +261,6 @@ public interface ProjectManager {
    */
   public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution();
 
-  /**
-   * @param year - Specific year for to search in the report.
-   *        This method will return the list of all the MOG of a specific year with your budgets.
-   *        This method also gets all the information in one single query to the database, improving its performance and
-   *        letting the charge to the RAM memory.
-   *        This method should be used to the summary POWBMOGs Report.
-   * @return a list of columns with the information summary
-   */
-  public List<Map<String, Object>> summaryGetInformationBudgetByPartners(int year);
-
 
   /**
    * This method will return the list of all the MOG with the budget information for a specific year.
@@ -285,13 +275,13 @@ public interface ProjectManager {
 
 
   /**
-   * This method will return the list of all the MOG with the budget information for a specific year.
+   * This method will return the list of all the project with the budget contribution information for a specific year.
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
    * This method should be used to the summary POWBMOGs Report.
    * 
    * @param year - Specific year to search in the report.
-   * @return a list of columns with the information summary
+   * @return a list of columns with the information detail summary
    */
   public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year);
 
