@@ -62,11 +62,11 @@
     </li>
   </ul>
   <br />
+  <div id="validateProject-${projectId}" class="projectValidateButton">[@s.text name="form.buttons.validate" /]</div>
+  <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
   [#if securityContext.canSubmitProject()]
-    <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
-    <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
+    <div id="submitProject-${projectId}" class="projectSubmitButton" style="display:none">[@s.text name="form.buttons.submit" /]</div>
   [/#if]
-  
 </nav>
 
 [#-- Menu element --]

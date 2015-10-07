@@ -113,16 +113,17 @@
                                 
                                 [#-- Indicator target value --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
-                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
-                                    [@customForm.req required=!project.bilateralProject /]
-                                  [/#if]
+                                  <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
+                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)][@customForm.req required=!project.bilateralProject /][/#if]
                                   </h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
-                                      [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if] ${fieldEmpty}
+                                      [#if (!project.bilateralProject) && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
+                                      [/#if]
+                                      [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${projectIndicator.target}</p></div>
                                     [/#if]
@@ -132,15 +133,16 @@
                                 [#-- Indicator target description --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]
-                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
-                                    [@customForm.req required=!project.bilateralProject /]
-                                  [/#if] 
+                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)][@customForm.req required=!project.bilateralProject /][/#if] 
                                   </h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
                                     <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
-                                      [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if] ${fieldEmpty}
+                                      [#if (!project.bilateralProject) && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
+                                      [/#if] 
+                                      [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${projectIndicator.description}</p></div>
                                     [/#if] 

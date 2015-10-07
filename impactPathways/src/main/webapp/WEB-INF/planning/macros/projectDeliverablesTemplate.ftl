@@ -78,7 +78,7 @@
     [#if !isResponsable]
     <div class="leftHead">
       <span class="index">${dp_index+1}</span>
-    </div>
+    </div> 
     [/#if]
     [#assign customName]${dp_name}[#if !isResponsable][${dp_index}][/#if][/#assign]
     <input class="id" type="hidden" name="${customName}.id" value="${(dp.id)!'-1'}">
@@ -92,7 +92,7 @@
       [#-- Partner Name --]
       [#assign partnerId][#if dp.partner??]${dp.partner.id}[#else]-1[/#if][/#assign]
       <div class="fullPartBlock partnerName chosen"> 
-        [@customForm.select name="${customName}.partner" value="${partnerId}" className="partner" required=isResponsable label="" i18nkey="planning.projectDeliverable.partner" listName="projectPartnerPersons" editable=editable/]
+        [@customForm.select name="${customName}.partner" value="${partnerId}" className="partner" required=isResponsable label="" i18nkey="planning.projectDeliverable.partner" listName="projectPartnerPersons" displayFieldName="" editable=editable/]
       </div>
     [/#if] 
   </div> 
