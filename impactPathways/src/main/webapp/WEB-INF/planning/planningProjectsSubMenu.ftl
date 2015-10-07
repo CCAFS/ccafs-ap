@@ -37,7 +37,7 @@
       <ul>
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes"/]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes"/]
-        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" disabled=true/]
+        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions"/]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
