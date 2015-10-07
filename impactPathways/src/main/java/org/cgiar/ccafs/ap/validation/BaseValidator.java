@@ -34,7 +34,7 @@ public class BaseValidator {
   }
 
   protected void addMessage(String message) {
-    validationMessage.append("<p> -");
+    validationMessage.append("<p> - ");
     validationMessage.append(message);
     validationMessage.append("</p>");
   }
