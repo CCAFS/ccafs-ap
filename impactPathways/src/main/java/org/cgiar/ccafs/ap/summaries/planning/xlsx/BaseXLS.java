@@ -44,6 +44,7 @@ import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFTextBox;
@@ -69,6 +70,7 @@ public class BaseXLS {
   public static final int COLUMN_TYPE_BOOLEAN = 5;
   public static final int COLUMN_TYPE_NUMERIC = 6;
   public static final int COLUMN_TYPE_DATE = 7;
+  public static final int COLUMN_TYPE_HYPERLINK = 8;
 
   // Constants for write description
   public static final int REPORT_DESCRIPTION_ROW = 7;
@@ -76,8 +78,7 @@ public class BaseXLS {
 
   // Constants for logo position
   public static final int LOGO_POSITION_ROW = 1;
-  public static final int LOGO_POSITION_COLUMN = 5;
-
+  public static final int LOGO_POSITION_COLUMN = 4;
 
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
@@ -92,7 +93,6 @@ public class BaseXLS {
   private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
   private static final int HEADER_ROW_HEIGHT = 31;
   private static final String HEADER_BORDER_COLOR_HEX = "#fbbf77";
-
 
   // Textbox Style
   private static final Color TEXTBOX_BACKGROUND_COLOR_RGB = new Color(255, 204, 41);
@@ -266,44 +266,53 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-      // Style numeric
+        // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style date
+          // Style date
         case COLUMN_TYPE_DATE:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // styleBoleean
+        // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-          // styleBudget
+        // styleBudget
         case COLUMN_TYPE_BUDGET:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("$#,##0.00"));
           // "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"
           break;
 
-        // Style decimal
+          // Style decimal
         case COLUMN_TYPE_DECIMAL:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // Style long string
+          // Style long string
         case COLUMN_TYPE_TEXT_LONG:
           columnStyles[c].setAlignment(HorizontalAlignment.LEFT);
           columnStyles[c].setWrapText(true);
           break;
 
-          // Style short string
+        // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
+          columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
+          break;
+
+        // Style hyperlink
+        case COLUMN_TYPE_HYPERLINK:
+          XSSFFont hlinkfont = (XSSFFont) workbook.createFont();
+          hlinkfont.setUnderline(XSSFFont.U_SINGLE);
+          hlinkfont.setColor(HSSFColor.BLUE.index);
+          columnStyles[c].setFont(hlinkfont);
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
       }
@@ -329,7 +338,7 @@ public class BaseXLS {
    * @return a Workbook Object representing the Workbook instance where is going to be written all the information in
    *         XLS format.
    */
-  public Workbook initializeWorkbook(boolean useTemplate) {
+  public XSSFWorkbook initializeWorkbook(boolean useTemplate) {
     textProvider = new DefaultTextProvider();
     outputStream = new ByteArrayOutputStream();
     usingTemplate = useTemplate;
@@ -349,7 +358,7 @@ public class BaseXLS {
       } else {
         workbook = new XSSFWorkbook();
       }
-      return workbook;
+      return (XSSFWorkbook) workbook;
 
     } catch (IOException e) {
       LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
@@ -456,6 +465,7 @@ public class BaseXLS {
 
   }
 
+
   /**
    * This method writes integer value into a specific cell.
    * 
@@ -466,7 +476,6 @@ public class BaseXLS {
     this.prepareCell(sheet);
     cell.setCellValue(value);
   }
-
 
   /**
    * This method writes the headers into the given sheet.
@@ -492,6 +501,21 @@ public class BaseXLS {
     } else {
       // TODO To develop the same algorithm but without style starting in the first row of the sheet.
     }
+  }
+
+
+  /**
+   * This method writes string value with hyperlink url into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   * @param link is the specific link with the to reference
+   */
+  public void writeHyperlink(Sheet sheet, String value, XSSFHyperlink link) {
+    // Set description
+    this.prepareCell(sheet);
+    cell.setCellValue(value);
+    cell.setHyperlink(link);
   }
 
 
@@ -537,9 +561,7 @@ public class BaseXLS {
   public void writeTitleBox(Sheet sheet, String text) {
 
     XSSFDrawing draw = (XSSFDrawing) sheet.createDrawingPatriarch();
-    XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 4, 6);
-
-
+    XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 1, 1, 1, 1, 3, 6);
     anchor.setAnchorType(2);
     XSSFTextBox textbox = draw.createTextbox(anchor);
 
