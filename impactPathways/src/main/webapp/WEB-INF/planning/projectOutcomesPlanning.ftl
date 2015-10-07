@@ -108,7 +108,7 @@
       </div>
     </div>
     [#else]
-      <p class="simpleBox center">[@s.text name="projectOutcome.message.dateUndefined" /]</p>
+      <p class="simpleBox center">[@s.text name="planning.projectOutcome.message.dateUndefined" /]</p>
     [/#if]
     [#if !newProject]
     <div id="lessons" class="borderBox">

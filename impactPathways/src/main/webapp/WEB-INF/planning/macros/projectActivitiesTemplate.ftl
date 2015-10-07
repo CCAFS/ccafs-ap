@@ -47,7 +47,18 @@
     </div>
     [#-- Project Leader --]
     <div class="fullPartBlock">
-      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable/]
-    </div>  
+      [#if editable]
+       [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable/]
+      [#else]
+      <h6>[@s.text name="planning.activityDescription.leaderName" /]: </h6> 
+      <div class="select">
+        <p>
+          ${(activity.leader.user.composedName?html)!}, 
+          ${(activity.leader.user.liaisonInstitution.acronym)!} - ${(activity.leader.user.liaisonInstitution.name)!}
+        </p>
+      </div>
+      [/#if]
+      
+    </div>
   </div><!-- End ${activityId} -->
 [/#macro]

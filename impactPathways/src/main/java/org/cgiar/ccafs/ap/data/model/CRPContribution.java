@@ -27,8 +27,8 @@ public class CRPContribution {
   private CRP crp;
   private String natureCollaboration;
 
-
   public CRPContribution() {
+    id = -1;
   }
 
   public CRPContribution(int id) {
@@ -37,9 +37,9 @@ public class CRPContribution {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof CRP) {
+    if (obj instanceof CRPContribution) {
       CRPContribution v = (CRPContribution) obj;
-      return v.id == this.id;
+      return v.getId() == this.getId();
     }
     return false;
   }
@@ -48,31 +48,30 @@ public class CRPContribution {
     return crp;
   }
 
-
   public int getId() {
     return id;
   }
-
 
   public String getNatureCollaboration() {
     return natureCollaboration;
   }
 
+  @Override
+  public int hashCode() {
+    return this.id;
+  }
 
   public void setCrp(CRP crp) {
     this.crp = crp;
   }
 
-
   public void setId(int id) {
     this.id = id;
   }
 
-
   public void setNatureCollaboration(String natureCollaboration) {
     this.natureCollaboration = natureCollaboration;
   }
-
 
   @Override
   public String toString() {

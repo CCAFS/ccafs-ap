@@ -21,10 +21,12 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Hernán David Carvajal B.
+ * @author Christian David García - CIAT/CCAFS
  */
 public class ProjectIPOtherContributionAction extends BaseAction {
 
@@ -41,24 +44,21 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   // Manager
   private ProjectOtherContributionManager ipOtherContributionManager;
+  private HistoryManager historyManager;
   private CRPManager crpManager;
   private ProjectManager projectManager;
+
+  // Validator
   private ProjectIPOtherContributionValidator otherContributionValidator;
-  private HistoryManager historyManager;
 
   // Model for the back-end
-  private List<CRP> previousCRPs;
   private List<CRPContribution> previousCRPContributions;
-
 
   // Model for the front-end
   private int projectID;
-
-
-  private Project project;
-
   private List<CRP> crps;
   private List<CRPContribution> crpContributions;
+  private Project project;
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
@@ -75,7 +75,6 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   public List<CRPContribution> getCrpContributions() {
     return crpContributions;
   }
-
 
   public List<CRP> getCrps() {
     return crps;
@@ -119,17 +118,18 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     // Getting the information for the IP Other Contribution
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+    if (project.getIpOtherContribution() == null) {
+      // TODO SA - Please ask Sebastian to fix this in the front end.
+      project.setIpOtherContribution(new OtherContribution());
+    }
 
-    // project.setCrpContributionsNature(crpManager.getCrpContributionsNature(projectID));
-
-// previousCRPContributions = new ArrayList<>();
-// for (CRPContribution crpContributions : project.getCrpContributionsNature()) {
-// previousCRPContributions.add(new CRPContribution(crpContributions.getId()));
-// }
+    // Getting the previous contributions.
+    previousCRPContributions = new ArrayList<>();
+    previousCRPContributions.addAll(project.getIpOtherContribution().getCrpContributions());
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
 
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
@@ -142,21 +142,19 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   public String save() {
     if (securityContext.canUpdateProjectOtherContributions()) {
 
-      super.saveProjectLessons(projectID);
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       // Saving Activity IP Other Contribution
-      boolean saved =
-        ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
-          this.getCurrentUser(), this.getJustification());
-
+      boolean saved = ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
+        this.getCurrentUser(), this.getJustification());
 
       // Delete the CRPs that were un-selected
-      for (CRP crp : previousCRPs) {
+      for (CRPContribution crp : previousCRPContributions) {
         if (!project.getIpOtherContribution().getCrpContributions().contains(crp)) {
-          saved =
-            saved
-              && crpManager.removeCrpContributionNature(project.getId(), crp.getId(), this.getCurrentUser().getId(),
-                this.getJustification());
+          saved = saved && crpManager.removeCrpContributionNature(project.getId(), crp.getCrp().getId(),
+            this.getCurrentUser().getId(), this.getJustification());
         }
       }
 
@@ -186,7 +184,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.crpContributions = crpContributions;
   }
 
-  public void setPreviousCRPContributions(List<CRPContribution> previousCRPContributions) {
+  public void setPreviousCRPContributions(ArrayList<CRPContribution> previousCRPContributions) {
     this.previousCRPContributions = previousCRPContributions;
   }
 

@@ -70,9 +70,12 @@ function addItemList($option) {
 
 function setIndexes() {
   $contributionsBlock.find('li').each(function(i,item) {
-    var elementName = crpContributionName + '.[' + i + ']';
-    $(item).find('.id').attr('name', elementName + '.id');
-    $(item).find('.crpCollaborationNature').attr('name', elementName + '.crpCollaborationNature');
+    var elementName = crpContributionName + '[' + i + ']';
+    $(item).find('.id').attr('name', elementName + '.crp.id');
+    $(item).find('.crpContributionId').attr('name', elementName + '.id');
+
+    $(item).find('.crpCollaborationNature').attr('name', elementName + '.natureCollaboration');
+
   });
 }
 

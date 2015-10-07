@@ -375,6 +375,12 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   color: #fff; 
 }
 
+/* Noty messages */
+
+ul#noty_bottomRight_layout_container {
+  z-index: 2147483648 !important;
+}
+
 /* Edit Button */
 
 .editButton {

@@ -390,7 +390,9 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
     if (securityContext.canUpdateProjectCCAFSOutcomes()) {
       boolean success = true;
 
-      super.saveProjectLessons(projectID);
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {
@@ -458,6 +460,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
+      // Validating.
       validator.validate(this, project, "Planning");
     }
   }
