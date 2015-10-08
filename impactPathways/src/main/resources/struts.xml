@@ -66,7 +66,7 @@
         <interceptor-ref name="requireUser" />
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="accessibleStage" />
-        <interceptor-ref name="preplanningIPAccess" />
+        <!--  interceptor-ref name="preplanningIPAccess" /-->
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
@@ -85,7 +85,7 @@
       
       <interceptor-stack name="planningStackProjects">
         <!-- Uncomment the following interceptor only for DEVELOPING purposes -->
-        <!-- interceptor-ref name="autoLogin" / -->
+        <!--  interceptor-ref name="autoLogin" /-->
         <interceptor-ref name="requireUser" />
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="validateProjectParameter" />
@@ -97,7 +97,7 @@
       
       <interceptor-stack name="planningStackDeliverables">
         <!-- Uncomment the following interceptor only for DEVELOPING purposes -->
-        <!-- interceptor-ref name="autoLogin" /-->
+        <!--  interceptor-ref name="autoLogin" /-->
         <interceptor-ref name="requireUser" />
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="accessibleStage" />
@@ -109,7 +109,7 @@
       
       <interceptor-stack name="planningStackActivities">
         <!-- Uncomment the following interceptor only for DEVELOPING purposes -->
-        <!-- interceptor-ref name="autoLogin" /-->
+        <!--  interceptor-ref name="autoLogin" /-->
         <interceptor-ref name="requireUser" />
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="accessibleStage" />
@@ -171,7 +171,6 @@
   <include file="struts-home.xml" />
   <include file="struts-planning.xml" />
   <include file="struts-pre-planning.xml" />
-  <include file="struts-user.xml" />
   <include file="struts-json.xml" />
   <include file="struts-summaries.xml" />
 

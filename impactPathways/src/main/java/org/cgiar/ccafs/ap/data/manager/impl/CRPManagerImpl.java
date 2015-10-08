@@ -18,7 +18,6 @@ import org.cgiar.ccafs.ap.data.dao.CrpDAO;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Christian David Garcia -CIAT/CCAFS
  */
 
 public class CRPManagerImpl implements CRPManager {
@@ -80,7 +80,7 @@ public class CRPManagerImpl implements CRPManager {
     for (Map<String, String> crpData : crpsData) {
       CRPContribution crp = new CRPContribution();
       crp.setId(Integer.parseInt(crpData.get("id")));
-      crp.setCrp(getCRPById(Integer.parseInt(crpData.get("crp_id"))));
+      crp.setCrp(this.getCRPById(Integer.parseInt(crpData.get("crp_id"))));
       crp.setNatureCollaboration(crpData.get("collaboration_nature"));
       crpContributions.add(crp);
     }
@@ -117,18 +117,20 @@ public class CRPManagerImpl implements CRPManager {
   }
 
   @Override
-  public boolean removeCrpContributionNature(int projectID, int crpID, int userID, String justification) {
-    return crpDAO.removeCrpContributionNature(projectID, crpID, userID, justification);
+  public boolean removeCrpContribution(int projectID, CRP crpID, int userID, String justification) {
+    return crpDAO.removeCrpContribution(projectID, crpID.getId(), userID, justification);
   }
-
+  /**
+   */
   @Override
-  public boolean saveCrpContributionsNature(Project project, User user, String justification) {
+
+  public boolean saveCrpContributions(int id_project,List<CRPContribution>crps, User user, String justification) {
     boolean saved = true;
 
-    for (CRPContribution crp : project.getIpOtherContribution().getCrpContributions()) {
+    for (CRPContribution crp :crps) {
       Map<String, Object> data = new HashMap<>();
-      data.put("projectID", project.getId());
-      if (crp.getId() != -1) {
+      data.put("projectID", id_project);
+      if (crp.getId()>0) {
         data.put("id", crp.getId());
       }
       data.put("crp_id", crp.getCrp().getId());
@@ -136,7 +138,7 @@ public class CRPManagerImpl implements CRPManager {
       data.put("user_id", user.getId());
       data.put("justification", justification);
 
-      saved = saved && crpDAO.saveCrpContributionsNature(project.getId(), data);
+      saved = saved && crpDAO.saveCrpContributions(data);
     }
 
     return saved;

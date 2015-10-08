@@ -62,29 +62,6 @@ public class UserManagerImp implements UserManager {
   }
 
 
-  @Deprecated
-  @Override
-  public List<User> getAllEmployees() {
-    List<User> employees = new ArrayList<>();
-    List<Map<String, String>> employeesDataList = userDAO.getAllEmployees();
-    for (Map<String, String> eData : employeesDataList) {
-      User employee = new User();
-      employee.setId(Integer.parseInt(eData.get("id")));
-      employee.setFirstName(eData.get("first_name"));
-      employee.setLastName(eData.get("last_name"));
-      employee.setEmail(eData.get("email"));
-      // Institution
-      if (eData.get("institution_id") != null) {
-        employee
-        .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(eData.get("institution_id"))));
-      }
-
-      // Adding object to the array.
-      employees.add(employee);
-    }
-    return employees;
-  }
-
   @Override
   public List<User> getAllOwners() {
     List<User> projectContacts = new ArrayList<>();
@@ -115,8 +92,8 @@ public class UserManagerImp implements UserManager {
       projectContact.setEmail(pData.get("email"));
 
       // Institution
-      projectContact
-        .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
+      // projectContact
+      // .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
       // Adding object to the array.
       projectContacts.add(projectContact);
     }
@@ -139,55 +116,6 @@ public class UserManagerImp implements UserManager {
     return projectLeaders;
   }
 
-
-  @Deprecated
-  @Override
-  public int getEmployeeID(User user) {
-    int userId = user.getId();
-    int institutionId = user.getCurrentInstitution().getId();
-    // TODO HC - Adjust this code, perhaps we can delete it.
-    int roleId = -1; // user.getRole().getId();
-    int result = userDAO.getEmployeeID(userId, institutionId, roleId);
-
-    return result;
-  }
-
-  @Override
-  public User getOwner(int ownerId) {
-
-    Map<String, String> userData = userDAO.getOwner(ownerId);
-    // User
-    User owner = new User();
-    owner.setId(Integer.parseInt(userData.get("id")));
-    owner.setFirstName(userData.get("first_name"));
-    owner.setLastName(userData.get("last_name"));
-    owner.setEmail(userData.get("email"));
-    // Institution
-    owner.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(userData.get("institution_id"))));
-
-    return owner;
-  }
-
-  @Override
-  public User getOwnerByProjectId(int projectID) {
-    Map<String, String> userData = userDAO.getOwnerByProjectId(projectID);
-    if (!userData.isEmpty()) {
-      User user = new User();
-      user.setId(Integer.parseInt(userData.get("id")));
-      user.setFirstName(userData.get("first_name"));
-      user.setLastName(userData.get("last_name"));
-      user.setEmail(userData.get("email"));
-      // Institution
-      user.setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(userData.get("institution_id"))));
-
-      return user;
-    }
-    LOG.warn("Information related to the user with Project id {} wasn't found.", projectID);
-
-    return null;
-  }
-
-
   @Override
   public User getUser(int userId) {
     Map<String, String> userData = userDAO.getUser(userId);
@@ -200,7 +128,7 @@ public class UserManagerImp implements UserManager {
       user.setFirstName(userData.get("first_name"));
       user.setLastName(userData.get("last_name"));
       user.setEmail(userData.get("email"));
-      user.setPhone(userData.get("phone"));
+      user.setActive(userData.get("is_active").equals("1"));
       user.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitutionByUser(user.getId()));
       try {
         if (userData.get("last_login") != null) {

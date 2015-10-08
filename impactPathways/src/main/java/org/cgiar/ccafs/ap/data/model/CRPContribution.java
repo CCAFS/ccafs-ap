@@ -23,12 +23,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class CRPContribution {
 
-  private int id;
   private CRP crp;
+  private int id;
   private String natureCollaboration;
 
-
   public CRPContribution() {
+
   }
 
   public CRPContribution(int id) {
@@ -37,9 +37,9 @@ public class CRPContribution {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof CRP) {
+    if (obj instanceof CRPContribution) {
       CRPContribution v = (CRPContribution) obj;
-      return v.id == this.id;
+      return v.getId() == this.getId();
     }
     return false;
   }
@@ -48,31 +48,30 @@ public class CRPContribution {
     return crp;
   }
 
-
   public int getId() {
     return id;
   }
-
 
   public String getNatureCollaboration() {
     return natureCollaboration;
   }
 
+  @Override
+  public int hashCode() {
+    return this.id;
+  }
 
   public void setCrp(CRP crp) {
     this.crp = crp;
   }
 
-
   public void setId(int id) {
     this.id = id;
   }
 
-
   public void setNatureCollaboration(String natureCollaboration) {
     this.natureCollaboration = natureCollaboration;
   }
-
 
   @Override
   public String toString() {

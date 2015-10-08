@@ -32,38 +32,38 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Project {
 
-  private int id;
-  private String title;
-  private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
-  private String summary;
-  private Date startDate;
-  private Date endDate;
-  private List<IPProgram> regions; // The list of regions in which this project works with.
-  private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private ProjectPartner coordinator; // Project Coordinator.
-  private String leaderResponsabilities;
-  private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
-  private boolean isGlobal;
-  private boolean isCofinancing;
-  private User owner;
-  private List<ProjectPartner> projectPartners; // Project partners.
-  private List<Deliverable> deliverables; // Project research outputs - deliverables.
-  private List<Budget> budgets;
-  private BudgetOverhead overhead;
-  private Map<String, ProjectOutcome> outcomes;
-  private List<Location> locations; // Project locations.
   private List<Activity> activities;
-  private List<IPElement> outputs;
-  private List<OutputOverview> outputsOverview;
-  private List<OutputBudget> outputsBudgets;
+  private String bilateralContractProposalName;
+  private List<Budget> budgets;
   private List<ComponentLesson> componentLessons;
+  private ProjectPartner coordinator; // Project Coordinator.
+  private long created; // Timestamp number when the project was created
+  private List<Deliverable> deliverables; // Project research outputs - deliverables.
+  private Date endDate;
+  private List<IPProgram> flagships; // The list of flagships in which this project works with.
+  private int id;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
-  private boolean workplanRequired;
-  private String workplanName;
-  private String bilateralContractProposalName;
+  private boolean isCofinancing;
+  private boolean isGlobal;
+  private String leaderResponsabilities;
+  private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private List<Project> linkedProjects;
-  private long created; // Timestamp number when the project was created
+  private List<Location> locations; // Project locations.
+  private Map<String, ProjectOutcome> outcomes;
+  private List<IPElement> outputs;
+  private List<OutputBudget> outputsBudgets;
+  private List<OutputOverview> outputsOverview;
+  private BudgetOverhead overhead;
+  private User owner;
+  private List<ProjectPartner> projectPartners; // Project partners.
+  private List<IPProgram> regions; // The list of regions in which this project works with.
+  private Date startDate;
+  private String summary;
+  private String title;
+  private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
+  private String workplanName;
+  private boolean workplanRequired;
 
   public Project() {
   }
@@ -678,7 +678,17 @@ public class Project {
   }
 
   public boolean isBilateralProject() {
-    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL_STANDALONE) : false;
+    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL) : false;
+  }
+
+  /**
+   * A project is bilateral stand alone if it is bilateral and it is NOT contributing to any Core project.
+   * 
+   * @return true if the project is bilateral stand alone, false if is bilateral and is contributing to some core
+   *         project.
+   */
+  public boolean isBilateralStandAlone() {
+    return (type != null) ? (this.isBilateralProject() && !this.isCofinancing) : false;
   }
 
   public boolean isCofinancing() {

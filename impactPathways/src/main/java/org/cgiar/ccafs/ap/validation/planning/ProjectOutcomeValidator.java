@@ -40,10 +40,9 @@ public class ProjectOutcomeValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear, String cycle) {
 
     if (project != null) {
-      this.validateProjectJustification(action, project);
-
       // The projects will be validated according to their type
       if (project.isCoreProject() || project.isCoFundedProject()) {
+        this.validateProjectJustification(action, project);
         this.validateLessonsLearn(action, project, "outcomes");
         this.validateCoreProject(action, project, midOutcomeYear, currentPlanningYear, cycle);
       } else {

@@ -186,7 +186,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
     query.append(BudgetType.W1_W2.getValue());
     query
-    .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
     query.append(BudgetType.W3_BILATERAL.getValue());
     query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
@@ -228,7 +228,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects as p ");
     query.append("WHERE p.type = '");
-    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+    query.append(APConstants.PROJECT_BILATERAL);
     query.append("' AND is_cofinancing = TRUE ");
 
     if (flagshipID != -1) {
@@ -269,7 +269,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects as p ");
     query.append("WHERE p.type = '");
-    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+    query.append(APConstants.PROJECT_BILATERAL);
     query.append("' ");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -298,7 +298,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("SELECT p.id, p.title ");
     query.append("FROM projects as p ");
     query.append("WHERE p.type != '");
-    query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+    query.append(APConstants.PROJECT_BILATERAL);
     query.append("' ");
 
     if (flagshipID != -1) {
@@ -596,7 +596,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append(" AND ppp.is_active = 1) ");
       // If the project is bilateral and the user is a focal point of the lead institution
       query.append("OR ( p.type = '");
-      query.append(APConstants.PROJECT_BILATERAL_STANDALONE);
+      query.append(APConstants.PROJECT_BILATERAL);
       query.append("' AND ( SELECT institution_id FROM liaison_institutions WHERE id = p.liaison_institution_id) = ");
       query.append(" ( SELECT li.institution_id FROM liaison_institutions li ");
       query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
@@ -1153,13 +1153,14 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("d.id as 'deliverable_id', ");
     query.append("d.title as 'deliverable_title', ");
     query.append("ip.description as 'mog', ");
+    query.append("d.type_id  as 'deliverable_type_id', ");
     query.append("d.year as 'deliverable_year', ");
     query.append("dtype.name as 'deliverable_type', ");
     query.append("dsubtype.name as 'deliverable_sub_type', ");
     query.append("d.type_other as 'other_type', ");
     query.append("( ");
     query
-      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1169,7 +1170,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append(") as 'partner_responsible', ");
     query.append("( ");
     query
-      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; \n') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1207,6 +1208,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         csvData.put("deliverable_title", rs.getString("deliverable_title"));
         csvData.put("year", rs.getInt("deliverable_year"));
         csvData.put("mog", rs.getString("mog"));
+        csvData.put("deliverable_type_id", rs.getInt("deliverable_type_id"));
         csvData.put("deliverable_type", rs.getString("deliverable_type"));
         csvData.put("deliverable_sub_type", rs.getString("deliverable_sub_type"));
         csvData.put("other_type", rs.getString("other_type"));
@@ -1360,7 +1362,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     // Sum of contribution budget W1_W2 of the project for the MOG
     query.append("IF(pmb.budget_type = 1 , (SELECT SUM(pb.amount) FROM project_budgets pb WHERE pb.project_id = p.id ");
     query
-      .append("AND pb.year = " + year + " AND pb.budget_type = 1) * IFNULL(pmb.total_contribution, 0) * 0.01 , 0 ) ");
+    .append("AND pb.year = " + year + " AND pb.budget_type = 1) * IFNULL(pmb.total_contribution, 0) * 0.01 , 0 ) ");
     query.append(" AS 'budget_W1_W2' , ");
 
     // Sum of contribution gender W1_W2 of the project for the MOG
@@ -1442,7 +1444,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     // Sum of contribution gender W1_W2 of the project for the MOG
     query
-      .append(" (SELECT (SUM(IFNULL(pb.amount,0) * IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
+    .append(" (SELECT (SUM(IFNULL(pb.amount,0) * IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
     query.append(" FROM project_mog_budgets pmb INNER JOIN project_budgets pb ON pmb.project_id = pb.project_id  ");
     query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year + " ");
     query.append(" AND  pb.budget_type = 1  AND  pmb.budget_type = 1 )  ");
@@ -1456,7 +1458,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     // Sum of contribution gender W3_Bilateral of the project for the MOG
     query
-      .append(" (SELECT (SUM(IFNULL(pb.amount,0)* IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
+    .append(" (SELECT (SUM(IFNULL(pb.amount,0)* IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
     query.append(" FROM project_mog_budgets pmb INNER JOIN project_budgets pb ON pmb.project_id = pb.project_id  ");
     query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year + " ");
     query.append(" AND  pb.budget_type = 2  AND  pmb.budget_type = 2 )  ");
@@ -1515,7 +1517,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       StringBuilder query = new StringBuilder();
       query.append("UPDATE projects p ");
       query
-        .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
+      .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
       query.append("SET p.type = ?");
       result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
     }

@@ -1,5 +1,4 @@
  [#ftl]
-
   [#if globalLibs??]
    [#list globalLibs as libraryName]
       [#if libraryName="chosen"]
@@ -94,6 +93,36 @@
       <script src="${js}"></script>
     [/#list]
   [/#if]
+  
+  [#-- Tawk.to Live chat --]
+  <script type="text/javascript">
+    Tawk_API = Tawk_API || {};
+    Tawk_LoadStart = new Date();
+    Tawk_API.visitor = {
+      name: '${(currentUser.firstName)!} ${(currentUser.lastName)!}',
+    };
+    Tawk_API.onLoad = function() {
+      Tawk_API.setAttributes({
+          'userName': $('#userInfo p.name').text() || 'Unknow User',
+          'userId': $('#userInfo p.userId').text() || 'Unknow Id',
+          'roles': $('#userInfo p.roles').text()
+      }, function(error) {
+      });
+    };
+    (function() {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      if(production) {
+        s1.src = 'https://embed.tawk.to/56128da200d3af75029e5645/default';
+      } else {
+        s1.src = 'https://embed.tawk.to/5613e7282ee46dc72a5c89c5/default';
+      }
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
+    })();
+  </script>
+  <!--End of Tawk.to Script-->
 
   [#-- Last, import the google analytics code --]
   [#include "/WEB-INF/global/pages/analytics.ftl" /]

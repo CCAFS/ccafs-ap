@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.action.preplanning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -74,16 +73,17 @@ public class ProjectsListPreplanningAction extends BaseAction {
   private int createNewProject() {
     Project newProject = new Project(-1);
     newProject.setOwner(this.getCurrentUser());
-    IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
-    if (userProgram != null) {
-      // Now the creator is a liaison isntitution not a ipProgram
-      // newProject.setProgramCreator(userProgram);
-    } else {
-      LOG
-        .error(
-          "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific program!",
-          new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
-    }
+    // IPProgram userProgram = this.getCurrentUser().getCurrentInstitution().getProgram();
+    // if (userProgram != null) {
+    // // Now the creator is a liaison isntitution not a ipProgram
+    // // newProject.setProgramCreator(userProgram);
+    // } else {
+    // LOG
+    // .error(
+    // "-- execute() > the current user identify with id={} and institution_id={} does not belong to a specific
+    // program!",
+    // new Object[] {this.getCurrentUser().getId(), this.getCurrentUser().getCurrentInstitution().getId()});
+    // }
     newProject.setCreated(new Date().getTime());
     return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());
 

@@ -112,7 +112,7 @@ public class ProjectsListPlanningAction extends BaseAction {
     if (isCoreProject) {
       newProject.setType(APConstants.PROJECT_CORE);
     } else {
-      newProject.setType(APConstants.PROJECT_BILATERAL_STANDALONE);
+      newProject.setType(APConstants.PROJECT_BILATERAL);
     }
 
     newProject.setOwner(this.getCurrentUser());

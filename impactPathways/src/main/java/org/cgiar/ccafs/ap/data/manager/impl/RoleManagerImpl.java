@@ -57,20 +57,6 @@ public class RoleManagerImpl implements RoleManager {
   }
 
   @Override
-  public Role getRole(User user) {
-    Map<String, String> roleData = roleDAO.getRole(user.getId(), user.getCurrentInstitution().getId());
-    if (!roleData.isEmpty()) {
-      Role role = new Role();
-      role.setId(Integer.parseInt(roleData.get("id")));
-      role.setName(roleData.get("acronym"));
-      role.setAcronym(roleData.get("acronym"));
-
-      return role;
-    }
-    return null;
-  }
-
-  @Override
   public boolean saveRole(User user, Role role) {
     return roleDAO.saveRole(user.getId(), role.getId());
   }

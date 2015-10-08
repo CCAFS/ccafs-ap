@@ -375,6 +375,12 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   color: #fff; 
 }
 
+/* Noty messages */
+
+ul#noty_bottomRight_layout_container {
+  z-index: 2147483648 !important;
+}
+
 /* Edit Button */
 
 .editButton {
@@ -2681,6 +2687,14 @@ button.ipGraph-btn{
   text-decoration: none;
 }
 
+.projectsList a.validateButton {
+  background-color: #7FB06F;
+  padding: 3px 12px;
+  border-radius: 2px;
+  color: #fff;
+  text-decoration: none;
+}
+
 .projectsList a.submitButton:hover {
   background-color: #3498db;
 }
@@ -2689,6 +2703,20 @@ button.ipGraph-btn{
   background: url(../../images/global/submit-icon.png) no-repeat;
   background-color: #83AECC;
   background-position: 46px 9px;
+  padding: 11px 0 11px 18px;
+  margin: 0px 10px;
+  border-radius: 2px;
+  color: #fff;
+  font-weight: lighter;
+  font-size: 1.3em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.projectValidateButton {
+  background: url(../../images/global/validate-icon.png) no-repeat;
+  background-color: #7FB06F;
+  background-position: 44px 11px;
   padding: 11px 0 11px 18px;
   margin: 0px 10px;
   border-radius: 2px;

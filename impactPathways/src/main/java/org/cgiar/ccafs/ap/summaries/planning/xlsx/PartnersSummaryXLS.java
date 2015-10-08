@@ -86,11 +86,11 @@ public class PartnersSummaryXLS {
     try {
       String[] headers =
         new String[] {"Institution ID", "Institution name", "Institution acronym", "Partner type", "Web site",
-          "Location", "Projects"};
+        "Location", "Projects"};
       int[] headersType =
-        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeWorkbook(true);
       workbook.setSheetName(0, "ProjectPartnerInstitutions");
@@ -100,7 +100,10 @@ public class PartnersSummaryXLS {
       xls.writeHeaders(sheet, headers);
 
       this.addContent(sheet, projectPartnerInstitutions, projectList);
-
+      // Adding CCAFS logo
+      xls.createLogo(workbook, sheet);
+      // Set description
+      xls.writeDescription(sheet, xls.getText("summaries.projectPartners.summary.description"));
       xls.writeWorkbook();
       byte[] byteArray = xls.getBytes();
       // Closing streams.

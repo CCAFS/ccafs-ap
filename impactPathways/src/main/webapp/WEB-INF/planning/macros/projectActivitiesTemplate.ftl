@@ -48,6 +48,6 @@
     [#-- Project Leader --]
     <div class="fullPartBlock">
       [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable/]
-    </div>  
+    </div>
   </div><!-- End ${activityId} -->
 [/#macro]

@@ -222,7 +222,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
     boolean saved = true;
 
     for (IPIndicator indicator : indicators) {
-      if (indicator == null) {
+      if (indicator == null || indicator.getId() == 0) {
         continue;
       }
       indicatorData = new HashMap<>();

@@ -15,10 +15,16 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 
@@ -30,6 +36,7 @@ import com.google.inject.Inject;
 public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   private ProjectValidator projectValidator;
+  private Map<IPElement, List<IPIndicator>> indicatorsMap; // Outcomes vs indicators
 
   @Inject
   public ProjectCCAFSOutcomesValidator(ProjectValidator projectValidator) {
@@ -37,22 +44,42 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
     this.projectValidator = projectValidator;
   }
 
+  // This method populates the maps. The idea is to have the information organized per outcome. In that way it is easier
+  // to validate.
+  private void populateOutcomeMaps(BaseAction action, Project project) {
+    indicatorsMap = new HashMap<>();
+    for (IPIndicator indicator : project.getIndicators()) {
+      // Insert new Outcome if it doesn't exist.
+      if (indicator.getId() != 0) {
+        if (indicatorsMap.get(indicator.getOutcome()) == null) {
+          indicatorsMap.put(indicator.getOutcome(), new ArrayList<IPIndicator>());
+        }
+        // Adding the indicator to the list.
+        indicatorsMap.get(indicator.getOutcome()).add(indicator);
+      }
+    }
+  }
+
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
-      this.validateProjectJustification(action, project);
-
-      // The projects will be validated according to their type.
-      if (project.isCoreProject() || project.isCoFundedProject()) {
+      // Projects that are Core, Co-Funded and Bilateral stand-alone needs to fill this section.
+      if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
+        this.validateProjectJustification(action, project);
+        this.validateLessonsLearn(action, project, "ccafsOutcomes");
+        this.populateOutcomeMaps(action, project);
         this.validateCoreProject(action, project);
       } else {
-        // TODO
+        // If project is bilateral but is co-financing other core projects, thus, there is not need to validate this
+        // section.
       }
 
-      if (!action.getFieldErrors().isEmpty()) {
-        action.addActionError(action.getText("saving.fields.required"));
-      } else if (validationMessage.length() > 0) {
-        action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      if (action.getActionErrors().isEmpty()) {
+        if (!action.getFieldErrors().isEmpty()) {
+          action.addActionError(action.getText("saving.fields.required"));
+        } else if (validationMessage.length() > 0) {
+          action.addActionMessage(
+            " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        }
       }
 
       // Saving missing fields.
@@ -62,23 +89,58 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   private void validateCoreProject(BaseAction action, Project project) {
     this.validateIndicators(action, project);
+    this.validateMOGs(action, project);
   }
 
+  // This method validates the indicators selected in the ccafs outcomes section.
   private void validateIndicators(BaseAction action, Project project) {
     if (projectValidator.isValidIndicators(project.getIndicators())) {
-      int c = 0;
-      for (IPIndicator indicator : project.getIndicators()) {
-        this.validateTargetValue(action, indicator.getTarget(), c);
-        this.validateTargetNarrative(action, indicator.getDescription(), c);
-        c++;
+      int c = 0; // Not the best solution with this counter. But at least it works.
+      // Looping the map.
+      for (IPElement outcome : indicatorsMap.keySet()) {
+        // getting the outcome acronym
+        StringBuilder outcomeAcronym = new StringBuilder();
+        outcomeAcronym.append(outcome.getProgram().getAcronym());
+        outcomeAcronym.append(" - ");
+        outcomeAcronym.append(outcome.getType().getName());
+        if (indicatorsMap.get(outcome).isEmpty()) {
+          action.addActionError(action.getText("planning.projectImpactPathways.outcome.indicators.empty",
+            new String[] {outcomeAcronym.toString()}));
+          // setting the missing field and writing it in parenthesis because we are referring to the outcome id.
+          this.addMissingField("project.outcome(" + outcome.getId() + ").indicators.empty");
+        } else {
+          for (IPIndicator indicator : indicatorsMap.get(outcome)) {
+            // Validate only those indicators for 2016 and 2019.
+            if (indicator.getYear() == config.getPlanningCurrentYear()
+              || indicator.getYear() == (config.getPlanningCurrentYear() + 1)
+              || indicator.getYear() == config.getMidOutcomeYear()) {
+              this.validateTargetValue(action, indicator.getTarget(), c);
+              this.validateTargetNarrative(action, indicator.getDescription(), outcomeAcronym.toString(),
+                indicator.getYear(), c);
+            }
+            c++;
+          }
+        }
       }
+    } else {
+      action.addActionError(action.getText("planning.projectImpactPathways.indicators.empty"));
+      this.addMissingField("project.indicators.empty");
     }
   }
 
-  private void validateTargetNarrative(BaseAction action, String targetNarrative, int c) {
+  // For now, we are just validating that at least there is a MOPG selected.
+  private void validateMOGs(BaseAction action, Project project) {
+    if (!projectValidator.isValidOutputs(project.getOutputs())) {
+      action.addActionError(action.getText("planning.projectImpactPathways.outputs.empty"));
+      this.addMissingField("project.outputs.empty");
+    }
+
+  }
+
+  private void validateTargetNarrative(BaseAction action, String targetNarrative, String outcomeAcronym, int year,
+    int c) {
     if (!projectValidator.isValidTargetNarrative(targetNarrative)) {
-      // TODO
-      this.addMessage("project.indicators[" + c + "].description");
+      this.addMessage("Target narrative for '" + outcomeAcronym + "' in '" + year + "' year");
       this.addMissingField("project.indicators[" + c + "].description");
     }
   }
@@ -86,7 +148,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
   private void validateTargetValue(BaseAction action, String targetValue, int c) {
     if (!projectValidator.isValidTargetValue(targetValue)) {
       action.addFieldError("project.indicators[" + c + "].target", action.getText("validation.number.format"));
-      this.addMissingField("project.indicators[" + c + "].targe");
+      this.addMissingField("project.indicators[" + c + "].target");
     }
 
   }

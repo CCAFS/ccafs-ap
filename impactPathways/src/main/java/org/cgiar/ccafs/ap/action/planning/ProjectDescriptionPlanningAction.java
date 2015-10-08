@@ -287,8 +287,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
     projectTypes = new HashMap<>();
     projectTypes.put(APConstants.PROJECT_CORE, this.getText("planning.projectDescription.projectType.core"));
-    projectTypes.put(APConstants.PROJECT_BILATERAL_STANDALONE,
-      this.getText("planning.projectDescription.projectType.bilateral"));
+    projectTypes.put(APConstants.PROJECT_BILATERAL, this.getText("planning.projectDescription.projectType.bilateral"));
+    projectTypes.put(APConstants.PROJECT_CCAFS_COFUNDED,
+      this.getText("planning.projectDescription.projectType.cofounded"));
+    projectTypes.put(APConstants.PROJECT_BILATERAL, this.getText("planning.projectDescription.projectType.bilateral"));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -333,6 +335,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public String save() {
     if (securityContext.canUpdateProjectDescription()) {
+
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       // If the user can edit the dates, delete the budgets that correspond to years that are not linked to the
       // project anymore to prevent errors in the project budget section.
@@ -433,8 +439,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved = ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+                this.getJustification());
           }
         }
 
@@ -452,8 +459,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              saved
+                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                  this.getJustification());
           }
         }
 

@@ -427,7 +427,7 @@ public class ProjectManagerImpl implements ProjectManager {
       if (project.isCoreProject()) {
         projectData.put("type", APConstants.PROJECT_CORE);
       } else {
-        projectData.put("type", APConstants.PROJECT_BILATERAL_STANDALONE);
+        projectData.put("type", APConstants.PROJECT_BILATERAL);
       }
     } else {
       // Update project
@@ -507,12 +507,6 @@ public class ProjectManagerImpl implements ProjectManager {
     return projectDAO.summaryGetAllProjectsWithGenderContribution();
   }
 
-
-  @Override
-  public List<Map<String, Object>> summaryGetInformationBudgetByPartners(int year) {
-    // TODO Auto-generated method stub
-    return null;
-  }
 
   @Override
   public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
