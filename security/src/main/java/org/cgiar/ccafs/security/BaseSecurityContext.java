@@ -33,7 +33,7 @@ public class BaseSecurityContext {
 
   public List<Role> getRoles() {
     List<Role> roles = new ArrayList<>();
-    Subject subject = getSubject();
+    Subject subject = this.getSubject();
 
     if (subject != null) {
 
@@ -64,7 +64,7 @@ public class BaseSecurityContext {
    * @return
    */
   public boolean hasAllPermissions(String... permissions) {
-    Subject subject = getSubject();
+    Subject subject = this.getSubject();
     return subject == null ? false : subject.isPermittedAll(permissions);
   }
 
@@ -76,7 +76,7 @@ public class BaseSecurityContext {
    * @return
    */
   public boolean hasAnyPermission(String[] permissions) {
-    Subject subject = getSubject();
+    Subject subject = this.getSubject();
     if (subject != null && permissions != null) {
       for (String permission : permissions) {
         if (permission != null && subject.isPermitted(permission.trim())) {
@@ -94,7 +94,7 @@ public class BaseSecurityContext {
    * @return
    */
   public boolean hasPermission(String permission) {
-    Subject subject = getSubject();
+    Subject subject = this.getSubject();
     return subject == null ? false : subject.isPermitted(permission);
   }
 
@@ -105,7 +105,7 @@ public class BaseSecurityContext {
    * @return
    */
   public boolean hasRole(Role role) {
-    Subject subject = getSubject();
+    Subject subject = this.getSubject();
     return subject == null ? false : subject.hasRole(role.toString());
   }
 
@@ -115,7 +115,7 @@ public class BaseSecurityContext {
    * @return true if the session exists, false otherwise.
    */
   public boolean isAuthenticated() {
-    Subject subject = getSubject();
+    Subject subject = this.getSubject();
     if (subject == null) {
       return false;
     }
