@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
 
 public class V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships implements JdbcMigration {
 
-  private static Logger LOG = LoggerFactory
-    .getLogger(V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships.class);
+  private static Logger LOG =
+    LoggerFactory.getLogger(V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships.class);
 
   @Override
   public void migrate(Connection connection) throws Exception {
@@ -60,25 +60,30 @@ public class V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships impl
 
     try {
 
-      if (!dbManager.isLogDatabaseAvailable()) {
-        // And create the database again
-        dbManager.createHistoryDatabase();
-      }
+      // if (!dbManager.isLogDatabaseAvailable()) {
+      // And create the database again
+      dbManager.createHistoryDatabase();
+      // }
 
 
       for (String tableName : tableNames) {
-        dbManager.useHistoryDatabase();
-        tableManager.dropLogTable(tableName);
-        tableManager.createLogTable(tableName);
+        try {
+          dbManager.useHistoryDatabase();
+          tableManager.dropLogTable(tableName);
+          tableManager.createLogTable(tableName);
 
-        triggerManager = new LogTriggersManager(connection, dbName, tableName);
+          triggerManager = new LogTriggersManager(connection, dbName, tableName);
 
-        triggerManager.createTrigger("insert");
-        triggerManager.createTrigger("update");
+          triggerManager.createTrigger("insert");
+          triggerManager.createTrigger("update");
+        } catch (Exception e) {
+          LOG.error("There was an error running the migration. on table " + tableName);
+          tableManager.dropLogTable(tableName);
+        }
       }
     } catch (SQLException e) {
       LOG.error("There was an error running the migration.");
-      throw e;
+      // throw e;
     }
 
   }
