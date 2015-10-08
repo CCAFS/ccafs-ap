@@ -362,8 +362,8 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjectPartnerInstitutions() {
-    List<Map<String, String>> institutionsDataList = new ArrayList<>();
+  public List<Map<String, Object>> getProjectPartnerInstitutions() {
+    List<Map<String, Object>> institutionsDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
     query.append("SELECT i.id as 'institution_id', ");
@@ -375,7 +375,17 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("le.id as 'country_id', ");
     query.append("le.name as 'country_name', ");
     query.append("it.id as institution_type_id, it.acronym as 'institution_type_acronym', ");
-    query.append("it.name as 'institution_type_name' ");
+    query.append("it.name as 'institution_type_name', ");
+    query.append("(SELECT ");
+    query.append("(SELECT GROUP_CONCAT('P', p.id ORDER BY p.id asc SEPARATOR ', ') ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN projects p ON p.id = pp.project_id ");
+    query.append("WHERE pp.institution_id = ins.id ");
+    query.append("GROUP BY pp.institution_id ");
+    query.append(") ");
+    query.append("FROM institutions ins ");
+    query.append("WHERE ins.id = i.id ");
+    query.append(") as 'projects' ");
     query.append("FROM institutions i ");
     query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
     query.append("LEFT JOIN loc_elements le ON le.id = i.country_id ");
@@ -385,7 +395,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
-        Map<String, String> institutionData = new HashMap<String, String>();
+        Map<String, Object> institutionData = new HashMap<String, Object>();
         institutionData.put("id", rs.getString("institution_id"));
         institutionData.put("name", rs.getString("institution_name"));
         institutionData.put("acronym", rs.getString("institution_acronym"));
@@ -397,6 +407,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
         institutionData.put("institution_type_id", rs.getString("institution_type_id"));
         institutionData.put("institution_type_acronym", rs.getString("institution_type_acronym"));
         institutionData.put("institution_type_name", rs.getString("institution_type_name"));
+        institutionData.put("projects", rs.getString("projects"));
 
         institutionsDataList.add(institutionData);
       }

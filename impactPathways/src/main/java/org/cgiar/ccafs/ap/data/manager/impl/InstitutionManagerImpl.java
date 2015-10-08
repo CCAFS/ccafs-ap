@@ -349,33 +349,8 @@ public class InstitutionManagerImpl implements InstitutionManager {
   }
 
   @Override
-  public List<Institution> getProjectPartnerInstitutions() {
-    List<Institution> institutions = new ArrayList<>();
-    List<Map<String, String>> institutionDataList = institutionDAO.getProjectPartnerInstitutions();
-    for (Map<String, String> iData : institutionDataList) {
-      Institution institution = new Institution();
-      institution.setId(Integer.parseInt(iData.get("id")));
-      institution.setName(iData.get("name"));
-      institution.setAcronym(iData.get("acronym"));
-      institution.setWebsiteLink(iData.get("website_link"));
-      // Institution type object
-      InstitutionType it = new InstitutionType();
-      it.setId(Integer.parseInt(iData.get("institution_type_id")));
-      it.setAcronym(iData.get("institution_type_acronym"));
-      it.setName(iData.get("institution_type_name"));
-      institution.setType(it);
-
-      // Location Object
-      Country country = new Country();
-      if (iData.get("country_id") != null) {
-        country.setId(Integer.parseInt(iData.get("country_id")));
-        country.setName(iData.get("country_name"));
-        institution.setCountry(country);
-      }
-
-      institutions.add(institution);
-    }
-    return institutions;
+  public List<Map<String, Object>> getProjectPartnerInstitutions() {
+    return institutionDAO.getProjectPartnerInstitutions();
   }
 
   @Override
@@ -436,6 +411,35 @@ public class InstitutionManagerImpl implements InstitutionManager {
     return result;
   }
 
+  // @Override
+  // public List<Institution> getProjectPartnerInstitutions() {
+  // List<Institution> institutions = new ArrayList<>();
+  // List<Map<String, String>> institutionDataList = institutionDAO.getProjectPartnerInstitutions();
+  // for (Map<String, String> iData : institutionDataList) {
+  // Institution institution = new Institution();
+  // institution.setId(Integer.parseInt(iData.get("id")));
+  // institution.setName(iData.get("name"));
+  // institution.setAcronym(iData.get("acronym"));
+  // institution.setWebsiteLink(iData.get("website_link"));
+  // // Institution type object
+  // InstitutionType it = new InstitutionType();
+  // it.setId(Integer.parseInt(iData.get("institution_type_id")));
+  // it.setAcronym(iData.get("institution_type_acronym"));
+  // it.setName(iData.get("institution_type_name"));
+  // institution.setType(it);
+  //
+  // // Location Object
+  // Country country = new Country();
+  // if (iData.get("country_id") != null) {
+  // country.setId(Integer.parseInt(iData.get("country_id")));
+  // country.setName(iData.get("country_name"));
+  // institution.setCountry(country);
+  // }
+  //
+  // institutions.add(institution);
+  // }
+  // return institutions;
+  // }
   @Override
   public boolean
     saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions) {

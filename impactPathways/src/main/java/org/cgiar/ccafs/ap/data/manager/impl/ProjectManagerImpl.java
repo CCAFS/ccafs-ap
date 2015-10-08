@@ -343,7 +343,7 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getProjectsByInstitution(int institutionID) {
+  public List<Project> getProjectsByInstitution(Object institutionID) {
     List<Map<String, String>> projectDataList = projectDAO.getProjectsByInstitution(institutionID);
     List<Project> projectsList = new ArrayList<>();
     for (Map<String, String> elementData : projectDataList) {
@@ -387,10 +387,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(
-        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
+        APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getBudgetsByProject(project));
 
@@ -458,7 +458,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+    public
+    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 
