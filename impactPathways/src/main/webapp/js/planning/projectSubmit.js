@@ -1,26 +1,28 @@
 var tasksLength;
-var sections =
-    [
-        "description", "partners", "locations", "outcomes", "ccafsOutcomes", "otherContributions", "outputs",
-        "deliverablesList", "activities", "budget", "budgetByMog"
-    ];
+var sections;
 
-$(document).ready(function() {
-  tasksLength = sections.length;
-  $(".progressbar").progressbar({
-    max: tasksLength
-  });
-  // Event for validate button inside each project
-  $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
+$(document).ready(
+    function() {
+      sections =
+          [
+              "description", "partners", "locations", "outcomes", "ccafsOutcomes", "otherContributions", "outputs",
+              "deliverablesList", "activities", "budget", "budgetByMog"
+          ];
+      tasksLength = sections.length;
+      $(".progressbar").progressbar({
+        max: tasksLength
+      });
+      // Event for validate button inside each project
+      $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
 
-  // Refresh event when table is reloaded in project list section
-  $('table.projectsList').on('draw.dt', function() {
-    $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
-    $(".progressbar").progressbar({
-      max: tasksLength
+      // Refresh event when table is reloaded in project list section
+      $('table.projectsList').on('draw.dt', function() {
+        $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
+        $(".progressbar").progressbar({
+          max: tasksLength
+        });
+      });
     });
-  });
-});
 
 function submitButtonEvent(e) {
   e.stopImmediatePropagation();
