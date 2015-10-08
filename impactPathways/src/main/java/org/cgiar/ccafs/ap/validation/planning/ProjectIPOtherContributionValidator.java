@@ -114,6 +114,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
           this.addMessage(action.getText("planning.impactPathways.otherContributions.lessons.readText").toLowerCase());
           this.addMissingField("project.lessons");
+          develop
         }
       } else {
         this.addMessage(action.getText("planning.impactPathways.otherContributions.lessons.readText").toLowerCase());
