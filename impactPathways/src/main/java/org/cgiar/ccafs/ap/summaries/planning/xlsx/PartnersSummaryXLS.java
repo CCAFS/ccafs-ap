@@ -21,8 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.poi.common.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 
 
 /**
@@ -32,10 +35,12 @@ public class PartnersSummaryXLS {
 
 
   private BaseXLS xls;
+  private APConfig config;
 
   @Inject
   public PartnersSummaryXLS(APConfig config, BaseXLS xls) {
     this.xls = xls;
+    this.config = config;
   }
 
   /**
@@ -44,6 +49,11 @@ public class PartnersSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    */
   private void addContent(Sheet sheet, List<Map<String, Object>> projectPartnerInstitutions) {
+    String[] projects;
+    String project;
+    CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();
+    XSSFHyperlink link;
+    link = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
     for (Map<String, Object> institution : projectPartnerInstitutions) {
       xls.writeString(sheet, (String) institution.get("name"));
       xls.nextColumn();
@@ -76,10 +86,10 @@ public class PartnersSummaryXLS {
     try {
       String[] headers =
         new String[] {"Institution name", "Institution acronym", "Partner type", "Web site", "Country location",
-      "Projects"};
+          "Projects"};
       int[] headersType =
-      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeWorkbook(true);
       workbook.setSheetName(0, "Institutions as Project Partners");
