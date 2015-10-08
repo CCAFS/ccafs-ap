@@ -414,6 +414,15 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if the user has the Project coordinator role
+   * 
+   * @return
+   */
+  public boolean isPC() {
+    return this.hasRole(Role.PC);
+  }
+
+  /**
    * Verify if the user has the Project leader role
    * 
    * @return
@@ -421,6 +430,7 @@ public class SecurityContext extends BaseSecurityContext {
   public boolean isPL() {
     return this.hasRole(Role.PL);
   }
+
 
   /**
    * Verify if the user has the RPL role

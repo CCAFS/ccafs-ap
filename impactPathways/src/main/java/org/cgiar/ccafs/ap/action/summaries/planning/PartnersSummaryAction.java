@@ -42,7 +42,6 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   private static final long serialVersionUID = 5110987672008315842L;
   private PartnersSummaryXLS partnersXLS;
   private InstitutionManager institutionManager;
-  private ProjectManager projectManager;
   List<ProjectPartner> partners;
   List<Map<String, Object>> projectPartnerInstitutions;
   String[] projectList;
@@ -58,7 +57,6 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
     super(config);
     this.partnersXLS = partnersXLS;
     this.institutionManager = institutionManager;
-    this.projectManager = projectManager;
 
   }
 
