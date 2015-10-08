@@ -47,7 +47,6 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
       if (project.getIpOtherContribution() == null) {
         this.addMissingField("project.ipOtherContribution");
-        this.saveMissingFields(project, "Planning", "otherContributions");
       } else {
         // Validate only if the project is CCAFS Core or Co Funded Project
         if (project.isCoreProject() || project.isCoFundedProject()) {
@@ -70,9 +69,9 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
           action.addActionMessage(msg);
         }
 
-        // Saving missing fields.
-        this.saveMissingFields(project, "Planning", "otherContributions");
       }
+      // Saving missing fields.
+      this.saveMissingFields(project, "Planning", "otherContributions");
     }
   }
 
