@@ -108,8 +108,14 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
       ComponentLesson lesson = action.getProjectLessons();
-      if (!this.isValidString(lesson.getLessons()) && this.wordCount(lesson.getLessons()) <= 100) {
 
+      if (lesson != null) {
+        if (!this.isValidString(lesson.getLessons()) && this.wordCount(lesson.getLessons()) <= 100) {
+
+          this.addMessage(action.getText("planning.impactPathways.otherContributions.lessons.readText").toLowerCase());
+          this.addMissingField("project.lessons");
+        }
+      } else {
         this.addMessage(action.getText("planning.impactPathways.otherContributions.lessons.readText").toLowerCase());
         this.addMissingField("project.lessons");
       }
