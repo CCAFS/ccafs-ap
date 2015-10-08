@@ -109,10 +109,13 @@ public interface InstitutionManager {
 
   /**
    * This method gets the institutions leading projects
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary report project leading institutions.
    * 
-   * @return a list of institution objects with the information
+   * @return a list of objects with the leading project institutions information
    */
-  public List<Institution> getProjectLeadingInstitutions();
+  public List<Map<String, Object>> getProjectLeadingInstitutions();
 
   /**
    * This method will return the list of all the institutions that are project partners.
