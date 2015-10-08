@@ -109,7 +109,7 @@ public interface InstitutionDAO {
    * 
    * @return a list of maps with the information with the Institutions being projectPartners
    */
-  public List<Map<String, String>> getProjectPartnerInstitutions();
+  public List<Map<String, Object>> getProjectPartnerInstitutions();
 
   /**
    * This method returns the information of the institution marked as

@@ -17,7 +17,6 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.PartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
@@ -28,6 +27,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   private InstitutionManager institutionManager;
   private ProjectManager projectManager;
   List<ProjectPartner> partners;
-  List<Institution> projectPartnerInstitutions;
+  List<Map<String, Object>> projectPartnerInstitutions;
   String[] projectList;
   // CSV bytes
   private byte[] bytesXLS;
@@ -66,7 +66,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   public String execute() throws Exception {
 
     // Generate the xls file
-    bytesXLS = partnersXLS.generateCSV(projectPartnerInstitutions, projectList);
+    bytesXLS = partnersXLS.generateCSV(projectPartnerInstitutions);
 
     return SUCCESS;
   }
@@ -117,25 +117,10 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
     // Remove repeated institutions
     for (int k = 0; k < projectPartnerInstitutions.size(); k++) {
       for (int l = projectPartnerInstitutions.size() - 1; l > k; l--) {
-        if (projectPartnerInstitutions.get(k).getId() == projectPartnerInstitutions.get(l).getId()) {
+        if (projectPartnerInstitutions.get(k).get("id").equals(projectPartnerInstitutions.get(l).get("id"))) {
           projectPartnerInstitutions.remove(l);
         }
       }
-    }
-    // Generate the list with projectIDs for each institution
-    int count = 0;
-    for (int i = 0; i < projectPartnerInstitutions.size(); i++) {
-      int stop = projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).size();
-      for (int j = 0; j < stop; j++) {
-        if (j == stop - 1) {
-          projectList[count] +=
-            projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId();
-        } else {
-          projectList[count] +=
-            (projectManager.getProjectsByInstitution(projectPartnerInstitutions.get(i).getId()).get(j).getId() + ", ");
-        }
-      }
-      count++;
     }
 
   }
