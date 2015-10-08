@@ -40,7 +40,7 @@ public class V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships impl
   @Override
   public void migrate(Connection connection) throws Exception {
     Statement statement = connection.createStatement();
-    String[] tableNames = {"project_crp_contributions"};
+    String[] tableNames = {"deliverable_partnerships"};
 
     String query = "SELECT DATABASE() as dbName ;";
     String dbName = "";

@@ -1,10 +1,8 @@
 package org.cgiar.ccafs.ap.config;
 
 
-import org.cgiar.ccafs.ap.db.migrations.V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships;
 import org.cgiar.ccafs.utils.PropertiesManager;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,21 +58,6 @@ public class FlywayContextListener implements ServletContextListener {
       flyway.baseline();
     }
 
-
-    LOG.info("-------------CREATE TRIGGERS---------------");
-
-
-    V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships triggers =
-      new V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships();
-    try {
-      triggers.migrate(this.getDataSource().getConnection());
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
 
     // Show the changes to be applied
     LOG.info("-------------------------------------------------------------");
