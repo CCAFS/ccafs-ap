@@ -109,7 +109,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
       ComponentLesson lesson = action.getProjectLessons();
 
-      if (lesson != null) {
+      if (lesson.getLessons() != null) {
         if (!this.isValidString(lesson.getLessons()) && this.wordCount(lesson.getLessons()) <= 100) {
 
           this.addMessage(action.getText("planning.impactPathways.otherContributions.lessons.readText").toLowerCase());
