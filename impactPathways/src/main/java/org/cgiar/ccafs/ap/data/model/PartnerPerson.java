@@ -40,8 +40,8 @@ public class PartnerPerson {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof ProjectPartner) {
-      ProjectPartner o = (ProjectPartner) obj;
+    if (obj instanceof PartnerPerson) {
+      PartnerPerson o = (PartnerPerson) obj;
       return this.getId() == o.getId();
     }
     return false;

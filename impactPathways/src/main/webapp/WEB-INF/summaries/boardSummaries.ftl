@@ -70,8 +70,8 @@
         [#-- Deliverables reports --]
         <div id="deliverables-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="deliverablePlanning" value="deliverablePlanning"/>
-            <label for="deliverablePlanning">Expected deliverables <span>XLSx</span></label>
+            <input type="radio" name="formOptions" id="expectedDeliverables" value="expectedDeliverables"/>
+            <label for="expectedDeliverables">Expected deliverables <span>XLSx</span></label>
             <p class="description">List of deliverables indicating: Project, Flagship, Region, Title, MOG, Year, Type/Sub-Type and responsible partners </p>
           </div>
         </div>

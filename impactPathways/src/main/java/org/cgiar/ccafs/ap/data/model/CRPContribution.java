@@ -23,12 +23,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class CRPContribution {
 
-  private int id;
   private CRP crp;
+  private int id;
   private String natureCollaboration;
 
   public CRPContribution() {
-    id = -1;
+
   }
 
   public CRPContribution(int id) {

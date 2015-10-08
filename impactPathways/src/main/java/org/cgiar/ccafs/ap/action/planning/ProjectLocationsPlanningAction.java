@@ -234,6 +234,10 @@ public class ProjectLocationsPlanningAction extends BaseAction {
   public String save() {
     if (securityContext.canUpdateProjectLocations()) {
 
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
+
       boolean success = true;
 
       // Updating all previous added locations.
@@ -254,7 +258,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       if (!updated) {
         success = false;
       }
-      super.saveProjectLessons(projectID);
 
       // Displaying user messages.
       if (success == false) {

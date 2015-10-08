@@ -509,12 +509,6 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetInformationBudgetByPartners(int year) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
   public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
     return projectDAO.summaryGetInformationPOWB(year);
 

@@ -37,7 +37,7 @@
       <ul>
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes"/]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes"/]
-        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" disabled=true/]
+        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions"/]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
@@ -62,11 +62,11 @@
     </li>
   </ul>
   <br />
+  <div id="validateProject-${projectId}" class="projectValidateButton">[@s.text name="form.buttons.check" /]</div>
+  <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
   [#if securityContext.canSubmitProject()]
-    <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
-    <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
+    <div id="submitProject-${projectId}" class="projectSubmitButton" style="display:none">[@s.text name="form.buttons.submit" /]</div>
   [/#if]
-  
 </nav>
 
 [#-- Menu element --]

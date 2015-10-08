@@ -26,12 +26,6 @@
     <action name="overview" class="org.cgiar.ccafs.ap.action.home.OverviewAction">
       <result name="input">/WEB-INF/home/overviewHome.ftl</result>
     </action>
-
-    <action name="selectInstitution" class="org.cgiar.ccafs.ap.action.home.ChangeInstitutionAction">
-      <result name="success" type="redirectAction">
-       <param name="actionName">dashboard</param>
-      </result>
-    </action> 
     
     <action name="glossary" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/global/pages/glossary.ftl</result>

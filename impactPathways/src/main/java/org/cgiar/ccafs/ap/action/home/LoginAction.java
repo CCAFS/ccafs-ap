@@ -77,9 +77,9 @@ public class LoginAction extends BaseAction {
         userManager.saveLastLogin(loggedUser);
 
         // Get the institutions related to the user
-        loggedUser.setInstitutions(institutionManager.getInstitutionsByUser(loggedUser));
+        // loggedUser.setInstitutions(institutionManager.getInstitutionsByUser(loggedUser));
         // Set the main institution as current institution
-        loggedUser.setCurrentInstitution(institutionManager.getUserMainInstitution(loggedUser));
+        // loggedUser.setCurrentInstitution(institutionManager.getUserMainInstitution(loggedUser));
 
         this.getSession().put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
@@ -118,11 +118,11 @@ public class LoginAction extends BaseAction {
         this.addFieldError("user.email", this.getText("validation.field.required"));
         user.setPassword(null);
       } /*
-       * else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
-       * addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
-       * user.setPassword(null);
-       * }
-       */
+         * else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
+         * addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
+         * user.setPassword(null);
+         * }
+         */
     }
 
   }
