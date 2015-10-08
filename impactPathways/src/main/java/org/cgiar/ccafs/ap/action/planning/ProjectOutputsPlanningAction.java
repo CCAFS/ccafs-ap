@@ -130,7 +130,7 @@ public class ProjectOutputsPlanningAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-    if (securityContext.canUpdateProjectOverviewMOGs()) {
+    if (securityContext.canUpdateProjectOverviewMOGs(projectID)) {
 
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);

@@ -232,7 +232,7 @@ public class ProjectLocationsPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectLocations()) {
+    if (securityContext.canUpdateProjectLocations(projectID)) {
 
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);
