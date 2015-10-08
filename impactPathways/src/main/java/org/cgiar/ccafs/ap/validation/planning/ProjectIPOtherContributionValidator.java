@@ -105,7 +105,6 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
 
   private void validateLessons(BaseAction action, Project project) {
-
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
       ComponentLesson lesson = action.getProjectLessons();
 
