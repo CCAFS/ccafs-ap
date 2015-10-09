@@ -45,6 +45,14 @@ public class MySQLPartnerPersonDAO implements PartnerPersonDAO {
   }
 
   @Override
+  public boolean deletePartnerPerson(int personPartner) {
+    String query = "UPDATE project_partner_persons SET is_active = FALSE WHERE id = ?";
+    int result = databaseManager.delete(query, new Object[] {personPartner});
+    return result != -1;
+  }
+
+
+  @Override
   public boolean deletePartnerPersons(int projectPartnerID) {
     String query = "UPDATE project_partner_persons SET is_active = FALSE WHERE project_partner_id = ?";
     int result = databaseManager.delete(query, new Object[] {projectPartnerID});

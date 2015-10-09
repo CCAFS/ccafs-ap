@@ -98,7 +98,8 @@ public interface ProjectPartnerManager {
    * @param justification is the justification for the change made.
    * @return the id of the project partner inserted, 0 if the record was updated and -1 if some error occurred.
    */
-  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification);
+  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification,
+    ProjectPartner partner_old);
 
   /**
    * This method saves into the database the contributions made by some project partner(s) to the partner received by
@@ -121,9 +122,10 @@ public interface ProjectPartnerManager {
    * @param partners is a list of ProjectPartner objects with the information to be saved.
    * @param user is the user that is making the change.
    * @param justification is the justification statement.
+   * @param previousProject the project before updated
    * @return true if all partners were successfully saved; false otherwise.
    */
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
-    String justification);
+    String justification, Project previousProject);
 
 }
