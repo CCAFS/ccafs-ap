@@ -109,7 +109,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
   }
 
   private void validateFlagships(BaseAction action, List<IPProgram> flagships) {
-    if (!projectValidator.isValidFlagships(flagships)) {
+    if (!projectValidator.hasFlagships(flagships)) {
       this.addMessage(action.getText("preplanning.projectDescription.flagships").toLowerCase());
       this.addMissingField("project.regions");
     }

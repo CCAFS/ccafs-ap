@@ -234,7 +234,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         hasLeader = false;
       }
 
-
+      // Initializing Section Statuses:
+      this.initializeProjectSectionStatuses(project, "Planning");
+      // Getting the history for this section
       super.setHistory(historyManager.getProjectBudgetHistory(projectID));
 
     } else {
@@ -286,7 +288,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
-              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+            .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
 

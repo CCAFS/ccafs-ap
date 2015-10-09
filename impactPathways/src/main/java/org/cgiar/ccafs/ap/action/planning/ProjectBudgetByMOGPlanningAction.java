@@ -211,6 +211,9 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
       }
     }
 
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
+    // Getting the history for this section
     this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
   }
 

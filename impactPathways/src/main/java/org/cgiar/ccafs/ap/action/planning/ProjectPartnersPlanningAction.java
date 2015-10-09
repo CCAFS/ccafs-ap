@@ -466,6 +466,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
+
+    // Set History.
     super.setHistory(historyManager.getProjectPartnersHistory(project.getId()));
 
   }
@@ -492,9 +494,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
         this.getJustification());
-
-      // TODO Figure out how is being used the project_roles table in the system.
-      projectRoleManager.saveProjectRoles(project, this.getCurrentUser(), this.getJustification());
 
       // Check if the project leader has changed and send the corresponding emails
       PartnerPerson previousLeader = previousProject.getLeaderPerson();

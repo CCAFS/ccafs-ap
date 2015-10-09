@@ -17,9 +17,9 @@ package org.cgiar.ccafs.ap.validation.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
-
-import java.util.List;
+import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
 
 import com.google.inject.Inject;
 
@@ -30,32 +30,79 @@ import com.google.inject.Inject;
 
 public class ProjectDeliverableValidator extends BaseValidator {
 
+  // Validators
+  private ProjectValidator projectValidator;
+
 
   @Inject
-  public ProjectDeliverableValidator() {
+  public ProjectDeliverableValidator(ProjectValidator projectValidator) {
     super();
+    this.projectValidator = projectValidator;
   }
 
-  public void validate(BaseAction action, Deliverable deliverable) {
+  /**
+   * This validation will be done at deliverable level. Thus, it will validate if the given deliverable has all the
+   * required fields filled in the system.
+   * 
+   * @param action
+   * @param project a project with its basic information.
+   * @param deliverable a deliverable with all the information.
+   * @param cycle Planning or Reporting
+   */
+  public void validate(BaseAction action, Project project, Deliverable deliverable, String cycle) {
     if (deliverable != null) {
-      boolean problem = this.validateRequiredFields(action, deliverable);
+      this.validateProjectJustification(action, deliverable);
 
-      // Responsible is not required.
-      if (deliverable.getResponsiblePartner().getPartner() == null) {
-        deliverable.setResponsiblePartner(null);
-      }
-      // Adding general error.
-      if (problem) {
-        action.addActionError(action.getText("saving.fields.required"));
+      if (project.isCoreProject() || project.isCoFundedProject()) {
+        // this.validateAsCoreProject(action, project, deliverable);
       } else {
-        this.validateOptionalFields(action, deliverable);
+        // Deliverables are not needed, but if there is one added, it will be validated completely.
+        // this.validateAsBilateralProject(action, project, deliverable);
       }
 
+      if (!action.getFieldErrors().isEmpty()) {
+        action.addActionError(action.getText("saving.fields.required"));
+      } else if (validationMessage.length() > 0) {
+        action
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      }
+
+      // Saving missing fields.
+      this.saveMissingFields(project, deliverable, cycle, "description");
     }
+
+
+    // // Responsible is not required.
+    // if (deliverable.getResponsiblePartner().getPartner() == null) {
+    // deliverable.setResponsiblePartner(null);
+    // }
+    // Adding general error.
   }
 
-  // This method is used to validate all the deliverables.
-  public void validate(BaseAction action, List<Deliverable> deliverables) {
+  /**
+   * This validation will be done at project level. Thus, it will validate if the project has or not deliverables added.
+   * 
+   * @param action
+   * @param project a project object with deliverables on it.
+   * @param cycle Planning or Reporting.
+   */
+  public void validate(BaseAction action, Project project, String cycle) {
+    // Core and Co-funded projects has to have at least one deliverable.
+    if (project.isCoreProject() || project.isCoFundedProject()) {
+      if (projectValidator.hasDeliverables(project.getDeliverables())) {
+        this.addMissingField("projects.deliverables.empty");
+        // No need to add a message since we don't have a save button in the deliverableList section.
+      }
+    } else {
+      // Do not validate if the project has deliverables added.
+    }
+    this.saveMissingFields(project, cycle, "deliverablesList");
+  }
+
+  private void validateAsCoreProject(BaseAction action, Project project, Deliverable deliverable) {
+    if (deliverable == null) {
+      // If deliverable is null, the project doesn't have deliverables.
+    }
 
   }
 

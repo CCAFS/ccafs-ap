@@ -325,7 +325,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public void validate() {
     super.validate();
     if (save) {
-      validator.validate(this, deliverable);
+      validator.validate(this, project, deliverable, "Planning");
     }
   }
 }

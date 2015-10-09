@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -98,6 +99,17 @@ public class Deliverable {
   @Override
   public int hashCode() {
     return this.id;
+  }
+
+  /**
+   * Validate if the deliverable is new.
+   * A deliverable is new when it was created in the planning phase for the current year
+   * 
+   * @param currentPlanningYear
+   * @return true if the deliverable is new, false otherwise
+   */
+  public boolean isNew(Date planningStartDate) {
+    return new Date(this.getCreated()).after(planningStartDate);
   }
 
   public void setCreated(long created) {
