@@ -35,6 +35,7 @@ public class Project {
   public static final int STANDAR_IDENTIFIER = 1;
   public static final int PDF_IDENTIFIER_REPORT = 2;
   public static final int EXCEL_IDENTIFIER_REPORT = 3;
+  public static final int EMAIL_SUBJECT_IDENTIFIER = 4;
   private List<Activity> activities;
   private String bilateralContractProposalName;
   private List<Budget> budgets;
@@ -602,14 +603,14 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-      // Standar identifier
+    // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-      // PDF Identifier
+        // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
         // -- flagships
         for (IPProgram flagship : this.getFlagships()) {
@@ -631,8 +632,13 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-      // Excel Identifier
+        // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
+        result.append("P" + this.getId());
+        break;
+
+      // Email Subject Identifier
+      case Project.EMAIL_SUBJECT_IDENTIFIER:
         result.append("P" + this.getId());
         break;
 

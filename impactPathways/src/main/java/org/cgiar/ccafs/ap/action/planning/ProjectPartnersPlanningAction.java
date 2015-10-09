@@ -390,7 +390,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       ccEmail,
       bbcEmails,
       this.getText("planning.manageUsers.email.project.unAssigned.subject",
-        new String[] {projectRole, project.getStandardIdentifier(1)}), message.toString());
+        new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
+      message.toString());
   }
 
   @Override
