@@ -46,6 +46,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
+      // Required fields are required for all type of projects.
       this.validateRequiredFields(action, project);
 
       // The projects will be validated according to their type.
@@ -59,7 +60,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -94,7 +95,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
         this
-        .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
+          .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
         this.addMissingField("project.workplanName");
       }
     }

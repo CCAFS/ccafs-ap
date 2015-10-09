@@ -234,7 +234,7 @@ public class ActivitiesListAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project);
+      validator.validate(this, project, "Planning");
     }
   }
 
