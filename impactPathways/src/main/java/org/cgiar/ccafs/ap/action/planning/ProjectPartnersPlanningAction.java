@@ -493,7 +493,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       }
 
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
-        this.getJustification());
+        this.getJustification(), previousProject);
 
       // Check if the project leader has changed and send the corresponding emails
       PartnerPerson previousLeader = previousProject.getLeaderPerson();

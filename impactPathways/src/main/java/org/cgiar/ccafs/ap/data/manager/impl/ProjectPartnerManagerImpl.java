@@ -72,7 +72,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if the institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -140,7 +140,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
       projectPartner
-      .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if its institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -156,7 +156,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification) {
+  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification,
+    ProjectPartner partner_old) {
     Map<String, Object> projectPartnerData = new HashMap<>();
 
     // Project partners must have an institution associated.
@@ -189,21 +190,33 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     // Update the id in the object
     projectPartner.setId((result > 0) ? result : projectPartner.getId());
 
-    // Delete the project partner persons and then add them again if any
-    partnerPersonManager.deletePartnerPersons(projectPartner);
+    if (projectPartner.getPartnerPersons() != null && partner_old != null) {
+      for (PartnerPerson person : partner_old.getPartnerPersons()) {
+        if (projectPartner.getPartnerPersons().contains(person)) {
+          partnerPersonManager.deletePartnerPerson(person);
+        }
+      }
+
+    }
+
+
     if (projectPartner.getPartnerPersons() != null) {
       for (PartnerPerson person : projectPartner.getPartnerPersons()) {
-        if (person.getUser().getId() != -1) {
-          partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
-        }
+
+
+        partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
+
       }
     }
 
-    // Delete the project partner contributions and then add them again if any
-    this.deleteProjectPartnerContributions(projectPartner);
-    if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
-      this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
-    }
+
+    /*
+     * // Delete the project partner contributions and then add them again if any
+     * this.deleteProjectPartnerContributions(projectPartner);
+     * if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
+     * this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
+     * }
+     */
 
     return result;
   }
@@ -234,15 +247,20 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   @Override
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
-    String justification) {
+    String justification, Project previousProject) {
     boolean result = true;
     List<ProjectPartner> noPPAPartners = new ArrayList<>();
 
     // Let's save only the PPA partners and later on the other partners to ensure that the partner contributions are
     // saved correctly
     for (ProjectPartner partner : projectPartners) {
+      int index_previous = previousProject.getProjectPartners().indexOf(new ProjectPartner(partner.getId()));
+      if (index_previous == -1) {
+        index_previous = 0;
+      }
+      ProjectPartner previous_project_partner = previousProject.getProjectPartners().get(index_previous);
       if (partner.getInstitution().isPPA()) {
-        if (this.saveProjectPartner(project, partner, user, justification) == -1) {
+        if (this.saveProjectPartner(project, partner, user, justification, previous_project_partner) == -1) {
           result = false;
         }
       } else {
@@ -252,7 +270,14 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
 
     for (ProjectPartner partner : noPPAPartners) {
-      if (this.saveProjectPartner(project, partner, user, justification) == -1) {
+
+      int index_previous = previousProject.getProjectPartners().indexOf(new ProjectPartner(partner.getId()));
+      if (index_previous == -1) {
+        index_previous = 0;
+      }
+      ProjectPartner previous_project_partner = previousProject.getProjectPartners().get(index_previous);
+
+      if (this.saveProjectPartner(project, partner, user, justification, previous_project_partner) == -1) {
         result = false;
       }
     }
