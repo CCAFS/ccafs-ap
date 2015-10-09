@@ -27,8 +27,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego B.
@@ -38,9 +36,6 @@ import org.slf4j.LoggerFactory;
 public class ProjectDeliverablesListAction extends BaseAction {
 
   private static final long serialVersionUID = -6143944536558245482L;
-
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectDeliverablesListAction.class);
 
   // Manager
   private DeliverableManager deliverableManager;
@@ -88,7 +83,9 @@ public class ProjectDeliverablesListAction extends BaseAction {
    * 
    * @param deliverableID is the deliverable identifier.
    * @return true if the deliverable can be deleted, false otherwise.
+   * @deprecated Please use the method {@link Deliverable.isNew()}
    */
+  @Deprecated
   public boolean canDelete(int deliverableID) {
     // Loop all the deliverables that are in the interface.
     for (Deliverable deliverable : project.getDeliverables()) {
