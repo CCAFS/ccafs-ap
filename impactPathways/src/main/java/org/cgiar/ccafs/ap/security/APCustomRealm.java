@@ -170,7 +170,7 @@ public class APCustomRealm extends AuthorizingRealm {
         // Add the project identifier to the permission only if the permission is not at project level.
         // The following permission will be ignored: planning:projects:5:description:update
         // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
-        if (permission.contains("projects:")) {
+        if (permission.contains(":projects:")) {
           permission = permission.replace("projects:", "projects:" + projectID + ":");
         }
         authorizationInfo.addStringPermission(permission);
