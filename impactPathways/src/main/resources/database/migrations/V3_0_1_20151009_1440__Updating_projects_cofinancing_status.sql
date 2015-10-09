@@ -3,17 +3,16 @@
 ----------------------------------------------------------------------------
 
 -- Saving the  last register number on history project table
-SELECT @last_register_history:= MAX(hpro.id) FROM ccafspr_ip_history.projects hpro;
-SELECT @last_register_history;
+SELECT @last_register_history:= MAX(hpro.id) FROM $[database]_history.projects hpro;
 
 -- Set all projects no cofinancing 
-UPDATE ccafspr_ip.projects p
+UPDATE projects p
 SET p.is_cofinancing = 0;
 
 -- Search in project_cofinancing_linkages table the projects cofinancing and to update in project table.
-UPDATE ccafspr_ip.projects p
+UPDATE projects p
 SET p.is_cofinancing = 1
-WHERE p.id IN (SELECT  pcl.bilateral_project_id FROM ccafspr_ip.project_cofinancing_linkages pcl WHERE pcl.bilateral_project_id = p.id);
+WHERE p.id IN (SELECT  pcl.bilateral_project_id FROM project_cofinancing_linkages pcl WHERE pcl.bilateral_project_id = p.id);
 
 -- removing the last register added on history project table
-DELETE FROM ccafspr_ip_history.projects  WHERE id  > @last_register_history;
+DELETE FROM $[database]_history.projects  WHERE id  > @last_register_history;
