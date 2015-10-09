@@ -121,6 +121,10 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
 
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
+
+    // Getting the last history
     super.setHistory(historyManager.getProjectOutcomeHistory(project.getId()));
   }
 

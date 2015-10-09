@@ -108,7 +108,7 @@ public class DeliverablePlanningSummaryXLS {
       int deliverableTypeId = (int) deliverableMap.get("deliverable_type_id");
       stringBuilder = new StringBuilder();
       if (deliverableTypeId == 38) {
-        stringBuilder.append("Other(");
+        stringBuilder.append("Other: (");
         stringBuilder.append(this.messageReturn((String) deliverableMap.get("other_type")));
         stringBuilder.append(")");
       } else {
@@ -142,15 +142,15 @@ public class DeliverablePlanningSummaryXLS {
     try {
       // Writting headers
       String[] headers =
-        new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s)", "Deliverable title", "MOG",
-        "Year of expected completion", "Main Type", "Sub Type", "Partner Responsible", "Other responsibles"};
+        new String[] {"Project id", "Project title", "Flagship(s)", "Region(s)", "Deliverable title", "MOG",
+          "Year of expected completion", "Main type", "Sub type", "Partner responsible", "Other responsibles"};
 
       // defining header types.
       int[] headerTypes =
         new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       XSSFWorkbook workbook = xls.initializeWorkbook(true);
 

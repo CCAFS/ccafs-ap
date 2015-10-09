@@ -32,6 +32,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Project {
 
+  public static final int STANDAR_IDENTIFIER = 1;
+  public static final int PDF_IDENTIFIER_REPORT = 2;
+  public static final int EXCEL_IDENTIFIER_REPORT = 3;
   private List<Activity> activities;
   private String bilateralContractProposalName;
   private List<Budget> budgets;
@@ -61,6 +64,7 @@ public class Project {
   private Date startDate;
   private String summary;
   private String title;
+
   private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
   private String workplanName;
   private boolean workplanRequired;
@@ -594,16 +598,51 @@ public class Project {
    *        form.
    * @return a String with the standard identifier.
    */
-  public String getStandardIdentifier(boolean useComposedCodification) {
+  public String getStandardIdentifier(int typeCodification) {
     StringBuilder result = new StringBuilder();
-    if (useComposedCodification) {
-      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
-      result.append("-P");
-      result.append(this.getId());
-    } else {
-      result.append("P");
-      result.append(this.getId());
+
+    switch (typeCodification) {
+      // Standar identifier
+      case Project.STANDAR_IDENTIFIER:
+        result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
+        result.append("-P");
+        result.append(this.getId());
+        break;
+
+      // PDF Identifier
+      case Project.PDF_IDENTIFIER_REPORT:
+        // -- flagships
+        for (IPProgram flagship : this.getFlagships()) {
+          if (flagship != null) {
+            result.append(flagship.getAcronym().replaceAll(" ", "") + "-");
+          }
+        }
+        int counter = 0;
+        // -- regions
+        for (IPProgram region : this.getRegions()) {
+          if (region != null) {
+            if (counter != 0) {
+              result.append("-");
+            }
+            result.append(region.getAcronym().replaceAll("RP", "").replaceAll(" ", ""));
+          }
+          counter++;
+        }
+        result.append("_P" + this.getId());
+        break;
+
+      // Excel Identifier
+      case Project.EXCEL_IDENTIFIER_REPORT:
+        result.append("P" + this.getId());
+        break;
+
+      default:
+        // Do nothing
+        break;
+
     }
+
+
     return result.toString();
   }
 

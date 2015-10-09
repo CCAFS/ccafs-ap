@@ -1,8 +1,10 @@
 package org.cgiar.ccafs.ap.summaries.planning.pdf;
 
 import java.awt.Color;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
@@ -70,10 +72,24 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     // Date
     phrase = new Phrase();
     phrase.setFont(SUB_HEADER_FONT);
-    String date = (new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-    phrase.add("This report was generated on " + date);
-    date = (new SimpleDateFormat("HH:mm").format(new Date()));
-    phrase.add(" at " + date);
+    SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+    dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+    // String date = (new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+    // Local time zone
+    SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+    Date d = null;
+    // Time in GMT
+    try {
+      d = dateFormatLocal.parse(dateFormatGmt.format(new Date()));
+    } catch (ParseException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    phrase.add("This report was generated on " + d);
+    // date = (new SimpleDateFormat("HH:mm").format(new Date()));
+    // phrase.add(" at " + date);
 
 
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(), rect.getBottom(),

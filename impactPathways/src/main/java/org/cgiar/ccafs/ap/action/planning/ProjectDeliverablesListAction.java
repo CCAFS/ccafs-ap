@@ -173,6 +173,9 @@ public class ProjectDeliverablesListAction extends BaseAction {
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
     project.setDeliverables(deliverables);
 
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
+
   }
 
   public void setDeliverableID(int deliverableID) {
