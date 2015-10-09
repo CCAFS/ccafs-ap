@@ -19,6 +19,8 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 
+import java.util.List;
+
 import com.google.inject.Inject;
 
 
@@ -28,7 +30,6 @@ import com.google.inject.Inject;
 
 public class ProjectDeliverableValidator extends BaseValidator {
 
-  private static final long serialVersionUID = 1332712310463882710L;
 
   @Inject
   public ProjectDeliverableValidator() {
@@ -51,6 +52,11 @@ public class ProjectDeliverableValidator extends BaseValidator {
       }
 
     }
+  }
+
+  // This method is used to validate all the deliverables.
+  public void validate(BaseAction action, List<Deliverable> deliverables) {
+
   }
 
   private void validateOptionalFields(BaseAction action, Deliverable deliverable) {
