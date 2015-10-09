@@ -255,16 +255,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectBudget()) {
+    if (securityContext.canUpdateProjectBudget(projectID)) {
       boolean success = true, saved = false;
 
       for (Budget budget : project.getBudgets()) {
         // Only can save the budgets to which the user is authorized
-        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget()) {
+        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget(projectID)) {
           continue;
         }
 
-        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget()) {
+        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget(projectID)) {
           continue;
         }
 
@@ -286,7 +286,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
-            .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
 

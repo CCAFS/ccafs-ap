@@ -46,6 +46,48 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
   }
 
   @Override
+  public Map<String, String> getDeliverableSectionStatus(int deliverableID, String cycle, String section) {
+    LOG.debug(">> getDeliverableSectionStatus deliverableID = {}, cycle = {} and section = {})",
+      new Object[] {deliverableID, cycle, section});
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * ");
+    query.append("FROM section_statuses ");
+    query.append("WHERE deliverable_id = ");
+    query.append(deliverableID);
+    query.append(" AND cycle = '");
+    query.append(cycle);
+    query.append("' AND section_name = '");
+    query.append(section);
+    query.append("'");
+
+    LOG.debug(">> getDeliverableSectionStatus() > Calling method executeQuery to get the results");
+
+    Map<String, String> statusData = new HashMap<>();
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        statusData.put("id", rs.getString("id"));
+        statusData.put("project_id", rs.getString("project_id"));
+        statusData.put("deliverable_id", rs.getString("deliverable_id"));
+        statusData.put("cycle", rs.getString("cycle"));
+        statusData.put("section_name", rs.getString("section_name"));
+        statusData.put("missing_fields", rs.getString("missing_fields"));
+      }
+      rs.close();
+      rs = null; // For the garbage collector to find it easily.
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< getDeliverableSectionStatus() > Calling method executeQuery to get the results");
+    return statusData;
+  }
+
+  @Override
   public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section) {
     LOG.debug(">> getProjectSectionStatus projectID = {}, cycle = {} and section = {})",
       new Object[] {projectID, cycle, section});
@@ -91,13 +133,14 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     LOG.debug(">> getProjectSectionStatuses projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * ");
-    query.append("FROM section_statuses ");
-    query.append("WHERE project_id = ");
+    query.append("SELECT ss.* ");
+    query.append("FROM section_statuses ss ");
+    query.append("LEFT JOIN deliverables d ON d.id = ss.deliverable_id ");
+    query.append("WHERE ss.project_id = ");
     query.append(projectID);
     query.append(" AND cycle = '");
     query.append(cycle);
-    query.append("'");
+    query.append("' AND (d.is_active IS NULL OR d.is_active = 1)");
 
     LOG.debug(">> getProjectSectionStatuses() > Calling method executeQuery to get the results");
     List<Map<String, String>> statusDataList = new ArrayList<>();
@@ -125,7 +168,48 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
   }
 
   @Override
-  public int saveSectionStatus(Map<String, Object> statusData) {
+  public int saveDeliverableSectionStatus(Map<String, Object> statusData) {
+    LOG.debug(">> saveDeliverableSectionStatus(statusData={})", new Object[] {statusData});
+    StringBuilder query = new StringBuilder();
+    Object[] values;
+    int result = -1;
+    if (statusData.get("id") == null) {
+      query.append("INSERT INTO section_statuses (project_id, deliverable_id, cycle, section_name, missing_fields) ");
+      query.append("VALUES (?, ?, ?, ?, ?) ");
+      values = new Object[5];
+      values[0] = statusData.get("project_id");
+      values[1] = statusData.get("deliverable_id");
+      values[2] = statusData.get("cycle");
+      values[3] = statusData.get("section_name");
+      values[4] = statusData.get("missing_fields");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result <= 0) {
+        LOG.error("A problem happened trying to add a new section_status for the project_id={}",
+          statusData.get("project_id"));
+      }
+    } else {
+      // Updating submission record.
+      query.append(
+        "UPDATE section_statuses SET project_id = ?, deliverable_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
+      query.append("WHERE id = ? ");
+      values = new Object[6];
+      values[0] = statusData.get("project_id");
+      values[1] = statusData.get("delivearable_id");
+      values[2] = statusData.get("cycle");
+      values[3] = statusData.get("section_name");
+      values[4] = statusData.get("missing_fields");
+      values[5] = statusData.get("id");
+      result = databaseManager.saveData(query.toString(), values);
+      if (result == -1) {
+        LOG.error("A problem happened trying to update the section_status identified with the id = {}",
+          statusData.get("id"));
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public int saveProjectSectionStatus(Map<String, Object> statusData) {
     LOG.debug(">> saveSectionStatus(statusData={})", new Object[] {statusData});
     StringBuilder query = new StringBuilder();
     Object[] values;

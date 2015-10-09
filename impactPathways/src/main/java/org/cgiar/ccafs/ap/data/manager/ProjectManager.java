@@ -169,7 +169,7 @@ public interface ProjectManager {
    * @param institutionID
    * @return a list of Projects.
    */
-  public List<Project> getProjectsByInstitution(int institutionID);
+  public List<Project> getProjectsByInstitution(Object institutionID);
 
   /**
    * This method returns the list of all CCAFS projects that belongs to a specific program.

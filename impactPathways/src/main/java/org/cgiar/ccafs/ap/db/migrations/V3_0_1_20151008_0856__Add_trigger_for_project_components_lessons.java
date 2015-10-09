@@ -32,15 +32,15 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships implements JdbcMigration {
+public class V3_0_1_20151008_0856__Add_trigger_for_project_components_lessons implements JdbcMigration {
 
   private static Logger LOG =
-    LoggerFactory.getLogger(V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships.class);
+    LoggerFactory.getLogger(V3_0_1_20151008_0856__Add_trigger_for_project_components_lessons.class);
 
   @Override
   public void migrate(Connection connection) throws Exception {
     Statement statement = connection.createStatement();
-    String[] tableNames = {"deliverable_partnerships"};
+    String[] tableNames = {"project_component_lessons"};
 
     String query = "SELECT DATABASE() as dbName ;";
     String dbName = "";

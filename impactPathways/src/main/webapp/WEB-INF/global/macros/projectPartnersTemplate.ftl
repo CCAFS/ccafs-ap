@@ -109,9 +109,9 @@
     [#-- Partner Person type and email--]
     <div class="fullPartBlock"> 
       [#if (contact.leader)!false ]
-       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != (contact.user.id)!-1)/]
+       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id) && currentUser.id != (contact.user.id)!-1)/]
       [#elseif (contact.coordinator)!false]
-       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader() && currentUser.id != (contact.user.id)!-1)/]
+       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id) && currentUser.id != (contact.user.id)!-1)/]
       [#else]
        [#assign canEditLeader=editable /]
       [/#if]
@@ -120,7 +120,7 @@
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
         [#if !canEditLeader]
           <div class="select">
-            [#if (!securityContext.canUpdatePPAPartners()) && (contact.leader)!false]
+            [#if (!securityContext.canUpdatePPAPartners(project.id)) && (contact.leader)!false]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
             [/#if]
             <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />

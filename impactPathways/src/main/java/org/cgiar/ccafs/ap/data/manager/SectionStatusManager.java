@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.SectionStatusManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 
@@ -23,6 +24,16 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(SectionStatusManagerImpl.class)
 public interface SectionStatusManager {
+
+  /**
+   * This method gets the section status of a given deliverable in a given cycle.
+   * 
+   * @param deliverable is the deliverable related to the status.
+   * @param cycle is the project cycle (Planning or Reporting).
+   * @param section is the name of a section.
+   * @return SectionStatus object with all the information encapsulated on it.
+   */
+  public SectionStatus getSectionStatus(Deliverable deliverable, String cycle, String section);
 
   /**
    * This method gets the section status of a given project in a given cycle.
@@ -52,4 +63,15 @@ public interface SectionStatusManager {
    *         updated, or -1 if some error occurred.
    */
   public int saveSectionStatus(SectionStatus status, Project project);
+
+  /**
+   * This method saves into the database the current section status with regards the missing fields of a deliverable.
+   * 
+   * @param status - corresponds to a given project status
+   * @param project - is the project where the deliverable belongs to.
+   * @param deliverable - is the deliverable where the status will be related t.
+   * @return a number greater than 0 meaning the identifier of the new record that was added, 0 if the information was
+   *         updated, or -1 if some error occurred.
+   */
+  public int saveSectionStatus(SectionStatus status, Project project, Deliverable deliverable);
 }

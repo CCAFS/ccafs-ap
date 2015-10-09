@@ -343,7 +343,7 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getProjectsByInstitution(int institutionID) {
+  public List<Project> getProjectsByInstitution(Object institutionID) {
     List<Map<String, String>> projectDataList = projectDAO.getProjectsByInstitution(institutionID);
     List<Project> projectsList = new ArrayList<>();
     for (Map<String, String> elementData : projectDataList) {

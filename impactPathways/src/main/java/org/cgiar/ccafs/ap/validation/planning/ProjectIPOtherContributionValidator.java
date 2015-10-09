@@ -26,7 +26,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
- * @author Christian David Garcia   - CIAT/CCAFS
+ * @author Christian David Garcia - CIAT/CCAFS
  */
 
 public class ProjectIPOtherContributionValidator extends BaseValidator {
@@ -36,8 +36,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
 
   @Inject
-  public ProjectIPOtherContributionValidator(
-    OtherContributionValidator otherContributionValidator) {
+  public ProjectIPOtherContributionValidator(OtherContributionValidator otherContributionValidator) {
 
     this.otherContributionValidator = otherContributionValidator;
   }
@@ -46,27 +45,31 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
     if (project != null) {
       this.validateProjectJustification(action, project);
 
-      // Validate only if the project is CCAFS Core or Co Funded Project
-      if (project.isCoreProject()||project.isCoFundedProject()) {
+      if (project.getIpOtherContribution() == null) {
+        this.addMissingField("project.ipOtherContribution");
+      } else {
+        // Validate only if the project is CCAFS Core or Co Funded Project
+        if (project.isCoreProject() || project.isCoFundedProject()) {
 
-        this.validateContribution(action, project.getIpOtherContribution().getContribution());
-        this.validateAdditionalContribution(action, project.getIpOtherContribution().getAdditionalContribution());
-        int i=0;
+          this.validateContribution(action, project.getIpOtherContribution().getContribution());
+          this.validateAdditionalContribution(action, project.getIpOtherContribution().getAdditionalContribution());
+          int i = 0;
 
-        for ( CRPContribution crp_contribuntion : project.getIpOtherContribution().getCrpContributions()) {
-          this.validateNatureCollaboration(action,crp_contribuntion.getNatureCollaboration(),i);
-          i++;
+          for (CRPContribution crp_contribuntion : project.getIpOtherContribution().getCrpContributions()) {
+            this.validateNatureCollaboration(action, crp_contribuntion.getNatureCollaboration(), i);
+            i++;
+          }
+          this.validateLessons(action, project);
+          this.validateJustification(action, project);
+
         }
-        this.validateLessons(action, project);
-        this.validateJustification(action, project);
+
+        if (validationMessage.length() > 0) {
+          String msg = " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()});
+          action.addActionMessage(msg);
+        }
 
       }
-
-      if (validationMessage.length() > 0) {
-        String msg = " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()});
-        action.addActionMessage(msg);
-      }
-
       // Saving missing fields.
       this.saveMissingFields(project, "Planning", "otherContributions");
     }
@@ -74,8 +77,8 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
   private void validateAdditionalContribution(BaseAction action, String additionalContribution) {
     if (!otherContributionValidator.isValidAdditionalContribution(additionalContribution)) {
-      this.addMessage(action.getText("planning.impactPathways.otherContributions.additionalcontribution.readText")
-        .toLowerCase());
+      this.addMessage(
+        action.getText("planning.impactPathways.otherContributions.additionalcontribution.readText").toLowerCase());
       this.addMissingField("project.ipOtherContribution.additionalcontribution");
     }
   }
@@ -89,11 +92,10 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
   }
 
 
-
   private void validateJustification(BaseAction action, Project project) {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
 
-      if(!this.isValidString(action.getJustification())&&this.wordCount(action.getJustification())>100) {
+      if (!this.isValidString(action.getJustification()) && this.wordCount(action.getJustification()) > 100) {
         this.addMessage(action.getText("validation.justification").toLowerCase());
         this.addMissingField("project.justification");
       }
@@ -101,28 +103,30 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
   }
 
 
-
   private void validateLessons(BaseAction action, Project project) {
-
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
       ComponentLesson lesson = action.getProjectLessons();
-      if (!this.isValidString(lesson.getLessons())&&this.wordCount(lesson.getLessons())<=100) {
 
+      if (lesson.getLessons() != null) {
+        if (!this.isValidString(lesson.getLessons()) && this.wordCount(lesson.getLessons()) <= 100) {
+
+          this.addMessage(action.getText("planning.impactPathways.otherContributions.lessons.readText").toLowerCase());
+          this.addMissingField("project.lessons");
+        }
+      } else {
         this.addMessage(action.getText("planning.impactPathways.otherContributions.lessons.readText").toLowerCase());
         this.addMissingField("project.lessons");
       }
     }
   }
 
-  private void validateNatureCollaboration(BaseAction action, String natureCollaboration,int i) {
+  private void validateNatureCollaboration(BaseAction action, String natureCollaboration, int i) {
     if (!otherContributionValidator.isValidCrpCollaborationNature(natureCollaboration)) {
-      this.addMessage(action.getText("planning.impactPathways.otherContributions.collaborationNature.readText")
-        .toLowerCase());
-      this.addMissingField("project.ipOtherContribution.crps.["+i+"].collaborationNature");
+      this.addMessage(
+        action.getText("planning.impactPathways.otherContributions.collaborationNature.readText").toLowerCase());
+      this.addMissingField("project.ipOtherContribution.crps.[" + i + "].collaborationNature");
     }
   }
-
-
 
 
 }

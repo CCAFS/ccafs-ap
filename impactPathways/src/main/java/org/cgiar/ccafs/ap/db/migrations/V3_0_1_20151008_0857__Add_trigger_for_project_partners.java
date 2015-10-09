@@ -32,15 +32,14 @@ import org.slf4j.LoggerFactory;
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
 
-public class V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships implements JdbcMigration {
+public class V3_0_1_20151008_0857__Add_trigger_for_project_partners implements JdbcMigration {
 
-  private static Logger LOG =
-    LoggerFactory.getLogger(V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships.class);
+  private static Logger LOG = LoggerFactory.getLogger(V3_0_1_20151008_0857__Add_trigger_for_project_partners.class);
 
   @Override
   public void migrate(Connection connection) throws Exception {
     Statement statement = connection.createStatement();
-    String[] tableNames = {"deliverable_partnerships"};
+    String[] tableNames = {"project_partner_contributions", "project_partner_persons"};
 
     String query = "SELECT DATABASE() as dbName ;";
     String dbName = "";
@@ -77,13 +76,13 @@ public class V3_0_1_20150909_1026__Add_trigger_for_deliverable_partnerships impl
           triggerManager.createTrigger("insert");
           triggerManager.createTrigger("update");
         } catch (Exception e) {
-          LOG.error("There was an error running the migration. on table " + tableName);
-          tableManager.dropLogTable(tableName);
+          throw e;
+
         }
       }
     } catch (SQLException e) {
       LOG.error("There was an error running the migration.");
-      // throw e;
+      throw e;
     }
 
   }

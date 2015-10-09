@@ -217,7 +217,7 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   @Override
   public String save() {
     boolean success = false;
-    if (securityContext.canUpdateProjectBudgetByMOG()) {
+    if (securityContext.canUpdateProjectBudgetByMOG(projectID)) {
 
       success = budgetByMogManager.saveProjectOutputsBudget(project, this.getCurrentUser(), this.getJustification());
 
