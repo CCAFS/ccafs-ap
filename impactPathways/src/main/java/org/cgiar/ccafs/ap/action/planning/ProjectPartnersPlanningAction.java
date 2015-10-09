@@ -325,8 +325,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     StringBuilder message = new StringBuilder();
     // Building the Email message:
     message.append(this.getText("planning.manageUsers.email.dear", new String[] {userAssigned.getFirstName()}));
-    message.append(
-      this.getText("planning.manageUsers.email.project.assigned", new String[] {projectRole, project.getTitle()}));
+    message.append(this.getText("planning.manageUsers.email.project.assigned",
+      new String[] {projectRole, project.getTitle()}));
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("planning.manageUsers.email.bye"));
 
@@ -343,8 +343,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
     // BBC will be our gmail notification email.
     String bbcEmails = this.config.getEmailNotification();
-    sendMail.send(toEmail, ccEmail, bbcEmails, this.getText("planning.manageUsers.email.project.assigned.subject",
-      new String[] {projectRole, project.getStandardIdentifier(false)}), message.toString());
+    sendMail.send(
+      toEmail,
+      ccEmail,
+      bbcEmails,
+      this.getText("planning.manageUsers.email.project.assigned.subject",
+        new String[] {projectRole, project.getStandardIdentifier(Project.STANDAR_IDENTIFIER)}), message.toString());
   }
 
   /**
@@ -363,8 +367,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     StringBuilder message = new StringBuilder();
     // Building the Email message:
     message.append(this.getText("planning.manageUsers.email.dear", new String[] {userUnassigned.getFirstName()}));
-    message.append(
-      this.getText("planning.manageUsers.email.project.unAssigned", new String[] {projectRole, project.getTitle()}));
+    message.append(this.getText("planning.manageUsers.email.project.unAssigned",
+      new String[] {projectRole, project.getTitle()}));
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("planning.manageUsers.email.bye"));
 
@@ -381,8 +385,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
     // BBC will be our gmail notification email.
     String bbcEmails = this.config.getEmailNotification();
-    sendMail.send(toEmail, ccEmail, bbcEmails, this.getText("planning.manageUsers.email.project.unAssigned.subject",
-      new String[] {projectRole, project.getStandardIdentifier(false)}), message.toString());
+    sendMail.send(
+      toEmail,
+      ccEmail,
+      bbcEmails,
+      this.getText("planning.manageUsers.email.project.unAssigned.subject",
+        new String[] {projectRole, project.getStandardIdentifier(1)}), message.toString());
   }
 
   @Override
@@ -461,8 +469,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+      this.getCurrentPlanningYear()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
