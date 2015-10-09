@@ -466,6 +466,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
+
+    // set History.
     super.setHistory(historyManager.getProjectPartnersHistory(project.getId()));
 
   }
