@@ -602,15 +602,15 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-    // Standar identifier
-      case 1:
+      // Standar identifier
+      case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
       // PDF Identifier
-      case 2:
+      case Project.PDF_IDENTIFIER_REPORT:
         // -- flagships
         for (IPProgram flagship : this.getFlagships()) {
           if (flagship != null) {
@@ -632,8 +632,12 @@ public class Project {
         break;
 
       // Excel Identifier
-      case 3:
+      case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
+        break;
+
+      default:
+        // Do nothing
         break;
 
     }
