@@ -138,7 +138,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
         case "outputs":
           this.validateOverviewByMOGS();
           break;
-        case "deliverableList":
+        case "deliverablesList":
           this.validateDeliverables();
           break;
         case "activities":
@@ -190,7 +190,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     sections.add("ccafsOutcomes");
     sections.add("otherContributions");
     sections.add("outputs");
-    sections.add("deliverableList");
+    sections.add("deliverablesList");
     sections.add("activities");
     sections.add("budget");
     sections.add("budgetByMog");
@@ -225,7 +225,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     // Validating
     projectCCAFSOutcomesValidator.validate(this, project, "Planning");
@@ -240,6 +240,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // we need to make two validations here. One at project level, and the other one for each deliverable.
     deliverableValidator.validate(this, project, "Planning");
+
     SectionStatus deliverablesStatus = new SectionStatus();
     deliverablesStatus.setId(-1);
     deliverablesStatus.setSection("deliverablesList");
@@ -267,7 +268,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
 
     // Validate
     projectOutputValidator.validate(this, project, "Planning");
@@ -340,7 +341,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
@@ -353,7 +354,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

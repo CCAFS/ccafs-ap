@@ -15,10 +15,10 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
+import org.cgiar.ccafs.ap.validation.model.DeliverableValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
 
 import com.google.inject.Inject;
@@ -32,12 +32,14 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
   // Validators
   private ProjectValidator projectValidator;
+  private DeliverableValidator deliverableValidator;
 
 
   @Inject
-  public ProjectDeliverableValidator(ProjectValidator projectValidator) {
+  public ProjectDeliverableValidator(ProjectValidator projectValidator, DeliverableValidator deliverableValidator) {
     super();
     this.projectValidator = projectValidator;
+    this.deliverableValidator = deliverableValidator;
   }
 
   /**
@@ -54,7 +56,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
       this.validateProjectJustification(action, deliverable);
 
       if (project.isCoreProject() || project.isCoFundedProject()) {
-        // this.validateAsCoreProject(action, project, deliverable);
+        this.validateAsCoreProject(action, project, deliverable);
       } else {
         // Deliverables are not needed, but if there is one added, it will be validated completely.
         // this.validateAsBilateralProject(action, project, deliverable);
@@ -89,7 +91,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     // Core and Co-funded projects has to have at least one deliverable.
     if (project.isCoreProject() || project.isCoFundedProject()) {
-      if (projectValidator.hasDeliverables(project.getDeliverables())) {
+      if (!projectValidator.hasDeliverables(project.getDeliverables())) {
         this.addMissingField("projects.deliverables.empty");
         // No need to add a message since we don't have a save button in the deliverableList section.
       }
@@ -100,8 +102,8 @@ public class ProjectDeliverableValidator extends BaseValidator {
   }
 
   private void validateAsCoreProject(BaseAction action, Project project, Deliverable deliverable) {
-    if (deliverable == null) {
-      // If deliverable is null, the project doesn't have deliverables.
+    if (deliverable != null) {
+      this.validateRequiredFields(action, project, deliverable);
     }
 
   }
@@ -138,64 +140,56 @@ public class ProjectDeliverableValidator extends BaseValidator {
     }
   }
 
-  private boolean validateRequiredFields(BaseAction action, Deliverable deliverable) {
-    boolean problem = false;
+  private void validateRequiredFields(BaseAction action, Project project, Deliverable deliverable) {
 
     // Validating the title
-    if (!this.isValidString(deliverable.getTitle())) {
+    if (!deliverableValidator.isValidTitle(deliverable.getTitle())) {
       action.addFieldError("deliverable.title", action.getText("validation.field.required"));
-      problem = true;
+      this.addMessage("projects.deliverable(" + deliverable.getId() + ").title");
     }
 
     // Validating that a MOG is selected.
-    if (deliverable.getOutput() == null) {
+    if (!deliverableValidator.isValidMOG(deliverable.getOutput())) {
       action.addFieldError("deliverable.output", action.getText("validation.field.required"));
-      problem = true;
+      this.addMessage("projects.deliverable(" + deliverable.getId() + ").output");
     }
 
     // Validating that a year is selected.
-    if (deliverable.getYear() == -1) {
+    if (!deliverableValidator.isValidYear(deliverable.getYear())) {
       action.addFieldError("deliverable.year", action.getText("validation.field.required"));
-      problem = true;
+      this.addMessage("projects.deliverable(" + deliverable.getId() + ").year");
     }
 
     // Validating that some sub-type is selected.
-    if (deliverable.getType() == null) {
+    if (!deliverableValidator.isValidType(deliverable.getType())) {
       // Indicate problem in the missing field.
       action.addFieldError("deliverable.type", action.getText("validation.field.required"));
-      problem = true;
+      this.addMessage("projects.deliverable(" + deliverable.getId() + ").type");
     }
 
-    if (deliverable.getType() != null && deliverable.getType().getId() == APConstants.DELIVERABLE_SUBTYPE_OTHER_ID
-      && !this.isValidString(deliverable.getTypeOther())) {
+    // Validating type other was filled.
+    if (!deliverableValidator.isValidTypeOther(deliverable.getType(), deliverable.getTypeOther())) {
       // Indicate problem in the missing field.
       action.addFieldError("deliverable.typeOther", action.getText("validation.field.required"));
-      problem = true;
+      this.addMessage("projects.deliverable(" + deliverable.getId() + ").typeOther");
     }
 
-    // Validating that some year is selected.
-    if (deliverable.getYear() == -1) {
-      // Indicate problem in the missing field.
-      action.addFieldError("deliverable.year", action.getText("validation.field.required"));
-      problem = true;
+    // Deliverables has to have at least one next user.
+    if (!deliverableValidator.hasNextUsers(deliverable.getNextUsers())) {
+      this.addMessage(action.getText("planning.projectDeliverable.nextUsers.emptyText"));
+      this.addMessage("projects.deliverable(" + deliverable.getId() + ").nextUsers.empty");
+    } else {
+      // Validate each the next user added.
+      // TODO
     }
 
-    // Validating institutions in the partnerships section as they are required.
-    // if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getInstitution() == null)
-    // {
-    // action.addFieldError("deliverable.responsiblePartner.institution", this.getText("validation.field.required"));
-    // problem = true;
-    // }
-    //
-    // for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
-    // if (deliverable.getOtherPartners().get(c).getInstitution() == null) {
-    // action.addFieldError("deliverable.otherPartners[" + c + "].institution",
-    // this.getText("validation.field.required"));
-    // problem = true;
-    // }
-    // }
+    // Validating that the deliverable has a responsible.
+    if (!deliverableValidator.hasResponsible(deliverable.getResponsiblePartner())) {
+      this.addMessage(action.getText("planning.projectDeliverable.indicateResponsablePartner.readText"));
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").responsible");
+    }
 
-    return problem;
+
   }
 
 }
