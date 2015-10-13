@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -43,6 +44,13 @@ public interface ProjectPartnerManager {
    * @return true if the contributions was deleted successfully. False otherwise.
    */
   public boolean deleteProjectPartnerContributions(ProjectPartner projectPartner);
+
+  /**
+   * This is an auxiliar method used for to get the partner person list of the project partners
+   * 
+   * @return
+   */
+  public Map<String, String> getAllProjectPartnersPersonWithTheirPartners();
 
   /**
    * This method is used to get a specific Project Partner identified by the given ID.
@@ -104,6 +112,7 @@ public interface ProjectPartnerManager {
    */
   public boolean saveProjectPartnerContributions(int projectID, ProjectPartner projectPartner, User user,
     String justification);
+
 
   /**
    * This method saves a list of project partners that belongs to a specific project

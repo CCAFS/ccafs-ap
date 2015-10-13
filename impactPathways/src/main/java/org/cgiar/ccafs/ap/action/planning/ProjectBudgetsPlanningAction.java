@@ -234,7 +234,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         hasLeader = false;
       }
 
-
+      // Initializing Section Statuses:
+      this.initializeProjectSectionStatuses(project, "Planning");
+      // Getting the history for this section
       super.setHistory(historyManager.getProjectBudgetHistory(projectID));
 
     } else {
@@ -255,16 +257,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectBudget()) {
+    if (securityContext.canUpdateProjectBudget(projectID)) {
       boolean success = true, saved = false;
 
       for (Budget budget : project.getBudgets()) {
         // Only can save the budgets to which the user is authorized
-        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget()) {
+        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget(projectID)) {
           continue;
         }
 
-        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget()) {
+        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget(projectID)) {
           continue;
         }
 

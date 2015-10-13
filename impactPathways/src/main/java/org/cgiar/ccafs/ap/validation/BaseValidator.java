@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.validation;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.utils.APConfig;
@@ -93,7 +94,25 @@ public class BaseValidator {
   }
 
   /**
-   * This method saves the missing fields into the database.
+   * This method saves the missing fields into the database for a section at deliverable level.
+   * 
+   * @param project is a project.
+   * @param deliveralbe is a deliverable
+   * @param cycle could be 'Planning' or 'Reporting'
+   * @param sectionName is the name of the section inside deliverables.
+   */
+  protected void saveMissingFields(Project project, Deliverable deliverable, String cycle, String sectionName) {
+    // Reporting missing fields into the database.
+    SectionStatus status = statusManager.getSectionStatus(deliverable, cycle, sectionName);
+    if (status == null) {
+      status = new SectionStatus(cycle, sectionName);
+    }
+    status.setMissingFields(this.missingFields.toString());
+    statusManager.saveSectionStatus(status, project, deliverable);
+  }
+
+  /**
+   * This method saves the missing fields into the database for a section at project level.
    * 
    * @param project is a project.
    * @param cycle could be 'Planning' or 'Reporting'
@@ -115,6 +134,21 @@ public class BaseValidator {
       if (!this.isValidString(lesson.getLessons())) {
         action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
         this.addMissingField("projectLessons.lessons");
+      }
+    }
+  }
+
+  /**
+   * This method verify if the project was created in the current planning phase, if it was created previously the user
+   * should provide a justification of the changes.
+   * 
+   * @param project
+   */
+  protected void validateProjectJustification(BaseAction action, Deliverable deliverable) {
+    if (!deliverable.isNew(config.getCurrentPlanningStartDate())) {
+      if (action.getJustification() == null || action.getJustification().isEmpty()) {
+        action.addActionError(action.getText("validation.justification"));
+        action.addFieldError("justification", action.getText("validation.field.required"));
       }
     }
   }

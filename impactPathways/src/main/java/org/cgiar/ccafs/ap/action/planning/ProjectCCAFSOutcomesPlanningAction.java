@@ -225,8 +225,8 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
         IPElement midOutcome = elements.get(i);
         if (this.isValidMidoutcome(midOutcome)) {
           midOutcome
-          .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-          + " #" + (i + 1) + ": " + midOutcome.getDescription());
+            .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
+              + " #" + (i + 1) + ": " + midOutcome.getDescription());
           midOutcomes.add(midOutcome);
         }
 
@@ -387,7 +387,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
   @Override
   public String save() {
 
-    if (securityContext.canUpdateProjectCCAFSOutcomes()) {
+    if (securityContext.canUpdateProjectCCAFSOutcomes(projectID)) {
       boolean success = true;
 
       if (!this.isNewProject()) {

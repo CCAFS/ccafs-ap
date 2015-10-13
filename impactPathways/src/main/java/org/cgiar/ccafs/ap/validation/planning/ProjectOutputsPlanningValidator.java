@@ -96,7 +96,7 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
   }
 
   public void validateOutputOverviews(BaseAction action, Project project) {
-    if (projectValidator.isValidOutputOverviews(project.getOutputsOverview())) {
+    if (projectValidator.hasOutputOverviews(project.getOutputsOverview())) {
       int c = 0;
       for (OutputOverview overview : project.getOutputsOverview()) {
         // Validate only current planning year which is 2016 at this moment.

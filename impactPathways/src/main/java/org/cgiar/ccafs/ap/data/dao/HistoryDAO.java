@@ -127,8 +127,7 @@ public interface HistoryDAO {
    * project partners (Partner lead) to the project identified by the value received by parameter.
    * 
    * @param projectID - Project identifier
-   * @param partnerType - Array of string with the type of partners (ex. 'PL', 'PPA')
    * @return a list of maps with the information
    */
-  public List<Map<String, String>> getProjectPartnerHistory(int projectID, String[] partnerType);
+  public List<Map<String, String>> getProjectPartnerHistory(int projectID);
 }

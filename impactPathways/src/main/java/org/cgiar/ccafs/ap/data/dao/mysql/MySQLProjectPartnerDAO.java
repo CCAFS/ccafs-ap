@@ -94,6 +94,12 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return result != -1;
   }
 
+  @Override
+  public Map<String, String> getAllProjectPartnersPersonWithTheirPartners() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
   private List<Map<String, String>> getData(String query) {
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> projectPartnerList = new ArrayList<>();
@@ -119,6 +125,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return projectPartnerList;
   }
 
+
   @Override
   public Map<String, String> getProjectPartner(int partnerID) {
     LOG.debug(">> getProjectPartner projectID = {} )", partnerID);
@@ -137,7 +144,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     }
     return new HashMap<String, String>();
   }
-
 
   @Override
   public Map<String, String> getProjectPartnerByPersonID(int projectPartnerPersonID) {
@@ -213,6 +219,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return partnerContributionsDataList;
   }
 
+
   @Override
   public List<Map<String, String>> getProjectPartners(int projectID) {
     LOG.debug(">> getProjectPartners projectID = {} )", projectID);
@@ -227,7 +234,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     LOG.debug("-- getProject() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
   }
-
 
   @Override
   @Deprecated
@@ -272,7 +278,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     } else {
       // update record
       query
-        .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
+      .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
       values[0] = projectPartnerData.get("project_id");

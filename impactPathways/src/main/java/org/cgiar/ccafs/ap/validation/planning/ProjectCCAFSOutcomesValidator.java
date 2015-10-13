@@ -98,7 +98,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   // This method validates the indicators selected in the ccafs outcomes section.
   private void validateIndicators(BaseAction action, Project project) {
-    if (projectValidator.isValidIndicators(project.getIndicators())) {
+    if (projectValidator.hasIndicators(project.getIndicators())) {
       int c = 0; // Not the best solution with this counter. But at least it works.
       // Looping the map.
       for (IPElement outcome : indicatorsMap.keySet()) {
@@ -150,7 +150,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   // For now, we are just validating that at least there is a MOPG selected.
   private void validateMOGs(BaseAction action, Project project) {
-    if (!projectValidator.isValidOutputs(project.getOutputs())) {
+    if (!projectValidator.hasOutputs(project.getOutputs())) {
       this.addMessage(action.getText("planning.projectImpactPathways.outputs.empty"));
       this.addMissingField("project.outputs.empty");
     }

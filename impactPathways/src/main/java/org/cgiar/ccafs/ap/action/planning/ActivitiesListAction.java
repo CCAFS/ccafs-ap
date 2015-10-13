@@ -169,13 +169,17 @@ public class ActivitiesListAction extends BaseAction {
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
 
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
+
+    // Getting the history for this section.
     super.setHistory(historyManager.getActivitiesHistory(project.getId()));
   }
 
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectActivities()) {
+    if (securityContext.canUpdateProjectActivities(projectID)) {
 
       super.saveProjectLessons(projectID);
 
@@ -234,7 +238,7 @@ public class ActivitiesListAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project);
+      validator.validate(this, project, "Planning");
     }
   }
 

@@ -51,7 +51,7 @@ public class ProjectLocationsValidator extends BaseValidator {
         this.validateProjectJustification(action, project);
         this.validateLessonsLearn(action, project, "locations");
         // Projects are validated checking if they are not global and their locations are valid ones.
-        if ((!project.isGlobal()) && (!projectValidator.isValidListLocations(project.getLocations()))) {
+        if ((!project.isGlobal()) && (!projectValidator.hasProjectLocations(project.getLocations()))) {
           this.addMissingField("project.locations.empty");
           action.addActionError(action.getText("planning.projectLocations.type"));
         } else {

@@ -211,13 +211,16 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
       }
     }
 
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
+    // Getting the history for this section
     this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
   }
 
   @Override
   public String save() {
     boolean success = false;
-    if (securityContext.canUpdateProjectBudgetByMOG()) {
+    if (securityContext.canUpdateProjectBudgetByMOG(projectID)) {
 
       success = budgetByMogManager.saveProjectOutputsBudget(project, this.getCurrentUser(), this.getJustification());
 

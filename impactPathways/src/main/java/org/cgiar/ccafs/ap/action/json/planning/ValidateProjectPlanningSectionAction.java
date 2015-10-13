@@ -3,6 +3,7 @@ package org.cgiar.ccafs.ap.action.json.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
@@ -14,11 +15,14 @@ import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
+import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectCCAFSOutcomesValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectDeliverableValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
@@ -58,7 +62,6 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   // Managers
   @Inject
   private SectionStatusManager sectionStatusManager;
-
   @Inject
   private ProjectManager projectManager;
   @Inject
@@ -81,6 +84,9 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ActivityManager activityManager;
   @Inject
   private ProjectOtherContributionManager ipOtherContributionManager;
+  @Inject
+  private DeliverableManager deliverableManager;
+
   // Validators
   @Inject
   private ProjectDescriptionValidator descriptionValidator;
@@ -94,9 +100,12 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectOutputsPlanningValidator projectOutputValidator;
   @Inject
   private ProjectCCAFSOutcomesValidator projectCCAFSOutcomesValidator;
-
+  @Inject
+  private ActivitiesListValidator activityListValidator;
   @Inject
   private ProjectIPOtherContributionValidator projectOtherContributionValidator;
+  @Inject
+  private ProjectDeliverableValidator deliverableValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -129,8 +138,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
         case "outputs":
           this.validateOverviewByMOGS();
           break;
-        case "deliverableList":
-          // TODO
+        case "deliverablesList":
+          this.validateDeliverables();
           break;
         case "activities":
           this.validateActivities();
@@ -181,7 +190,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     sections.add("ccafsOutcomes");
     sections.add("otherContributions");
     sections.add("outputs");
-    sections.add("deliverableList");
+    sections.add("deliverablesList");
     sections.add("activities");
     sections.add("budget");
     sections.add("budgetByMog");
@@ -198,8 +207,9 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Getting the Project lessons for this section.
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, "activities", this.getCurrentPlanningYear()));
-  }
 
+    activityListValidator.validate(this, project, "Planning");
+  }
 
   private void validateCCAFSOutcomes() {
     // Getting basic project information.
@@ -215,10 +225,37 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     // Validating
     projectCCAFSOutcomesValidator.validate(this, project, "Planning");
+  }
+
+
+  private void validateDeliverables() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Getting the list of deliverables.
+    project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
+
+    // we need to make two validations here. One at project level, and the other one for each deliverable.
+    deliverableValidator.validate(this, project, "Planning");
+
+    SectionStatus deliverablesStatus = new SectionStatus();
+    deliverablesStatus.setId(-1);
+    deliverablesStatus.setSection("deliverablesList");
+    StringBuilder missingFieldsAllDeliverables = new StringBuilder();
+    missingFieldsAllDeliverables.append(sectionStatus.getMissingFieldsWithPrefix());
+
+    if (project.getDeliverables() != null && !project.getDeliverables().isEmpty()) {
+      for (Deliverable deliverable : project.getDeliverables()) {
+        deliverableValidator.validate(this, project, deliverable, "Planning");
+        // Appending all the missing fields for the current deliverable.
+        missingFieldsAllDeliverables.append(sectionStatus.getMissingFieldsWithPrefix());
+      }
+    }
+    deliverablesStatus.setMissingFields(missingFieldsAllDeliverables.toString());
+
   }
 
   private void validateOverviewByMOGS() {
@@ -280,12 +317,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Getting the Project lessons for this section.
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, "otherContributions", this.getCurrentPlanningYear()));
-
-
     // Validating.
     projectOtherContributionValidator.validate(this, project);
-
-
   }
 
   private void validateProjectOutcomes() {

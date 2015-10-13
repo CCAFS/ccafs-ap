@@ -67,8 +67,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canAllowProjectWorkplanUpload() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_WORKPLAN_UPDATE);
+  public boolean canAllowProjectWorkplanUpload(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_WORKPLAN_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -85,8 +86,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditActivityDescription() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_INFO_UPDATE);
+  public boolean canEditActivityDescription(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_ACTIVITIES_INFO_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -94,8 +96,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditActivityLeader() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_LEADER_UPDATE);
+  public boolean canEditActivityLeader(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_ACTIVITIES_LEADER_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -103,8 +106,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditEndDate() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_END_DATE_UPDATE);
+  public boolean canEditEndDate(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_END_DATE_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -112,8 +116,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditEndDateActivities() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_END_DATE_UPDATE);
+  public boolean canEditEndDateActivities(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_ACTIVITIES_END_DATE_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -121,8 +126,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditLeadOrganization() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_LEAD_ORGANIZATION_UPDATE);
+  public boolean canEditLeadOrganization(int projectID) {
+    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_LEAD_ORGANIZATION_UPDATE.replace("projects:",
+      "projects:" + projectID + ":"));
   }
 
   /**
@@ -130,12 +136,14 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditManagementLiaison() {
-    return this.hasPermission(Permission.PLANNING_MANAGEMENT_LIAISON_UPDATE);
+  public boolean canEditManagementLiaison(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_MANAGEMENT_LIAISON_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
-  public boolean canEditProjectFlagships() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_FLAGSHIPS_UPDATE);
+  public boolean canEditProjectFlagships(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_FLAGSHIPS_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   public boolean canEditProjectPlanningSection(String sectionName, int projectID) {
@@ -148,8 +156,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditProjectRegions() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_REGIONS_UPDATE);
+  public boolean canEditProjectRegions(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_REGIONS_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -157,8 +166,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditStartDate() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_START_DATE_UPDATE);
+  public boolean canEditStartDate(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_START_DATE_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -166,8 +176,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canEditStartDateActivities() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE);
+  public boolean canEditStartDateActivities(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   public boolean canSubmitProject() {
@@ -179,8 +190,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateAnnualBilateralBudget() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_ANNUAL_BUDGET_W3BILATERAL_UPDATE);
+  public boolean canUpdateAnnualBilateralBudget(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_ANNUAL_BUDGET_W3BILATERAL_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -188,8 +200,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateAnnualW1W2Budget() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_BUDGET_ANNUAL_W1W2_UPDATE);
+  public boolean canUpdateAnnualW1W2Budget(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_BUDGET_ANNUAL_W1W2_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -197,8 +210,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdatePartnerLeader() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_PPA_UPDATE);
+  public boolean canUpdatePartnerLeader(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_PARTNER_PPA_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -206,8 +220,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdatePPAPartners() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_PPA_UPDATE);
+  public boolean canUpdatePPAPartners(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_PARTNER_PPA_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -215,8 +230,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectActivities() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_ACTIVITIES_LIST_UPDATE);
+  public boolean canUpdateProjectActivities(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_ACTIVITIES_LIST_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -224,8 +240,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectBudget() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_BUDGET_UPDATE);
+  public boolean canUpdateProjectBudget(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_BUDGET_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -233,8 +250,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectBudgetByMOG() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE);
+  public boolean canUpdateProjectBudgetByMOG(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -242,8 +260,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectCCAFSOutcomes() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_CCAFS_OUTCOMES_UPDATE);
+  public boolean canUpdateProjectCCAFSOutcomes(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_CCAFS_OUTCOMES_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -251,8 +270,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectDeliverables() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_DELIVERABLE_UPDATE);
+  public boolean canUpdateProjectDeliverables(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_DELIVERABLE_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -260,8 +280,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectDeliverablesList() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_DELIVERABLES__LIST_UPDATE);
+  public boolean canUpdateProjectDeliverablesList(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_DELIVERABLES__LIST_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -269,8 +290,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectDescription() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_INFO_UPDATE);
+  public boolean canUpdateProjectDescription(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_INFO_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -278,8 +300,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectLeader() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE);
+  public boolean canUpdateProjectLeader(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -287,8 +310,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectLocations() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_LOCATIONS_UPDATE);
+  public boolean canUpdateProjectLocations(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_LOCATIONS_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -296,8 +320,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectOtherContributions() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_OTHER_CONTRIBUTIONS_UPDATE);
+  public boolean canUpdateProjectOtherContributions(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_OTHER_CONTRIBUTIONS_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -305,8 +330,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectOutcomes() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_OUTCOMES_UPDATE);
+  public boolean canUpdateProjectOutcomes(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_OUTCOMES_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -314,8 +340,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUpdateProjectOverviewMOGs() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_OUTPUTS_UPDATE);
+  public boolean canUpdateProjectOverviewMOGs(int projectID) {
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_OUTPUTS_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -325,7 +352,8 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean canUpdateProjectPartners(int projectID) {
-    return this.hasPermission(Permission.PLANNING_PROJECT_PARTNER_UPDATE);
+    return this
+      .hasPermission(Permission.PLANNING_PROJECT_PARTNER_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
@@ -333,8 +361,9 @@ public class SecurityContext extends BaseSecurityContext {
    * 
    * @return
    */
-  public boolean canUploadBilateralContract() {
-    return this.hasPermission(Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE);
+  public boolean canUploadBilateralContract(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
