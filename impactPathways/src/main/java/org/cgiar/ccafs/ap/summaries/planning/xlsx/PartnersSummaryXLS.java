@@ -76,18 +76,17 @@ public class PartnersSummaryXLS {
     try {
       String[] headers =
         new String[] {"Institution name", "Institution acronym", "Partner type", "Web site", "Country location",
-          "Projects"};
+      "Projects"};
       int[] headersType =
-        {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeWorkbook(true);
-      workbook.setSheetName(0, "Institutions as Project Partners");
+      workbook.setSheetName(0, "Project Partners");
       Sheet sheet = workbook.getSheetAt(0);
       xls.initializeSheet(sheet, headersType);
-      xls.writeTitleBox(sheet, "CCAFS Institutions as Project Partners");
+      xls.writeTitleBox(sheet, "\t    Project Partners");
       xls.writeHeaders(sheet, headers);
-
       this.addContent(sheet, projectPartnerInstitutions);
       // Adding CCAFS logo
       xls.createLogo(workbook, sheet);

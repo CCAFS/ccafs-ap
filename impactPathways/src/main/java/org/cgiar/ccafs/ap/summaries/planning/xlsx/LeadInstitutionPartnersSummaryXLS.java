@@ -82,7 +82,7 @@ public class LeadInstitutionPartnersSummaryXLS {
       Sheet sheet = workbook.getSheetAt(0);
 
       xls.initializeSheet(sheet, headerTypes);
-      xls.writeTitleBox(sheet, " CCAFS Institutions leading projects");
+      xls.writeTitleBox(sheet, "  CCAFS Institutions leading projects");
       xls.writeHeaders(sheet, headers);
 
       this.addContent(sheet, projectLeadingInstitutions);
