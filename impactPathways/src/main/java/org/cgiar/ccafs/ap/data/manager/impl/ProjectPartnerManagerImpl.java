@@ -220,7 +220,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       }
     }
 
-
+    // TODO
     /*
      * // Delete the project partner contributions and then add them again if any
      * this.deleteProjectPartnerContributions(projectPartner);
