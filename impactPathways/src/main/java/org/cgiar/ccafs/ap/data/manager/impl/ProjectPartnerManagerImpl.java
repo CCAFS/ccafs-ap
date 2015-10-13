@@ -197,9 +197,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     // Update the id in the object
     projectPartner.setId((result > 0) ? result : projectPartner.getId());
 
-    if (projectPartner.getId() == 757) {
-      System.out.println("prueba");
-    }
+
     ProjectPartner partnerOld = this.getProjectPartner(projectPartner.getId());
     if (projectPartner.getPartnerPersons() != null && partnerOld != null) {
       for (PartnerPerson person : partnerOld.getPartnerPersons()) {
