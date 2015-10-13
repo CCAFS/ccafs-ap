@@ -229,7 +229,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     // Validating
     projectCCAFSOutcomesValidator.validate(this, project, "Planning");
@@ -241,7 +241,6 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     Project project = projectManager.getProject(projectID);
     // Getting the list of deliverables.
     project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
-
     // we need to make two validations here. One at project level, and the other one for each deliverable.
     deliverableValidator.validate(this, project, "Planning");
 
@@ -256,6 +255,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     if (project.getDeliverables() != null && !project.getDeliverables().isEmpty()) {
       for (Deliverable deliverable : project.getDeliverables()) {
+
         deliverableValidator.validate(this, project, deliverable, "Planning");
         // Appending all the missing fields for the current deliverable.
         tempStatus = sectionStatusManager.getSectionStatus(deliverable, "Planning", "deliverable");
@@ -275,7 +275,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
 
     // Validate
     projectOutputValidator.validate(this, project, "Planning");
@@ -348,7 +348,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
@@ -361,7 +361,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");
