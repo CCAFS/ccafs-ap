@@ -195,24 +195,6 @@
       [/#if]
     </div>
     
-    [#if !newProject]
-    <div id="lessons" class="borderBox">
-      [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
-      [#else]
-        [#if canEdit && !newProject]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
-        [/#if]
-      [/#if]
-      <div class="fullBlock">
-        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
-        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
-        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectDeliverable.lessons" required=!project.bilateralProject editable=editable /]
-      </div>
-    </div>
-    [/#if]
-    
     [#if editable] 
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <input name="deliverableID"type="hidden" value="${deliverable.id}">
