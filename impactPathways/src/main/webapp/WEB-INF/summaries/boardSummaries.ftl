@@ -41,8 +41,8 @@
         [#-- Projects reports --]
         <div id="projects-contentOptions">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="projectPartnersSummary" value="projectPartnersSummary"/>
-            <label for="projectPartnersSummary">[@s.text name="summaries.board.report.projectPartnersSummary" /]  <span>XLSx</span></label>
+            <input type="radio" name="formOptions" id="leadProjectPartnersSummary" value="leadProjectPartnersSummary"/>
+            <label for="leadProjectPartnersSummary">[@s.text name="summaries.board.report.projectPartnersSummary" /]  <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.projectPartnersSummary.description" /]</p>
           </div>
           <div class="summariesOption">
@@ -62,8 +62,8 @@
             <p class="description">[@s.text name="summaries.board.report.leadProjectInstitutionsSummary.description" /] </p>
           </div>
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="partnersWorkingWithProjects" value="" disabled="disabled"/>
-            <label for="partnersWorkingWithProjects">[@s.text name="summaries.board.report.partnersWorkingWithProjects" /]  <span>XLSx</span></label>
+            <input type="radio" name="formOptions" id="projectPartnersSummary" value="projectPartnersSummary"/>
+            <label for="projectPartnersSummary">[@s.text name="summaries.board.report.partnersWorkingWithProjects" /]  <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.partnersWorkingWithProjects.description" /] </p>
           </div>
         </div>
