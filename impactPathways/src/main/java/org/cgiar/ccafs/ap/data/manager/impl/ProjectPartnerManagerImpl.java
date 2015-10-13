@@ -135,6 +135,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     for (Map<String, String> pData : partnerContributorsDataList) {
       ProjectPartner partnerContributor =
         this.getProjectPartner(Integer.parseInt(pData.get("project_partner_contributor_id")));
+      partnerContributor.setId(Integer.parseInt(pData.get("id")));
       partnerContributors.add(partnerContributor);
     }
     return partnerContributors;
@@ -171,6 +172,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     if (projectPartner.getInstitution() == null || projectPartner.getInstitution().getId() == -1) {
       return -1;
     }
+
 
     // if this is a new project partner, do not assign an id.
     if (projectPartner.getId() > 0) {
@@ -218,14 +220,18 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       }
     }
 
-    // TODO
-    /*
-     * // Delete the project partner contributions and then add them again if any
-     * this.deleteProjectPartnerContributions(projectPartner);
-     * if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
-     * this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
-     * }
-     */
+
+    if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
+      for (ProjectPartner contribuntions : partnerOld.getPartnerContributors()) {
+
+        if (!projectPartner.getPartnerContributors().contains(contribuntions)) {
+
+          this.deleteProjectPartnerContributions(contribuntions);
+        }
+      }
+
+      this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
+    }
 
     return result;
   }
@@ -238,9 +244,13 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     partnerContributionData.put("project_id", projectID);
     partnerContributionData.put("user_id", user.getId());
     partnerContributionData.put("justification", justification);
+    if (!(partnerContribution.getId() > 0)) {
+      partnerContributionData.put("id", partnerContribution.getId());
+      int result = projectPartnerDAO.saveProjectPartnerContribution(partnerContributionData);
+      return result != -1;
+    }
+    return true;
 
-    int result = projectPartnerDAO.saveProjectPartnerContribution(partnerContributionData);
-    return result != -1;
   }
 
   @Override
