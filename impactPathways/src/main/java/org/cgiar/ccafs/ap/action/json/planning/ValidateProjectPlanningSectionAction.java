@@ -154,7 +154,11 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           // Do nothing.
           break;
       }
-      sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
+      // for deliverables, we going to create a fake section status with all the missing fields for all the deliverables
+      // on it. Please refer to the method validateDeliverables().
+      if (!sectionName.equals("deliverablesList")) {
+        sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
+      }
 
     }
     return SUCCESS;
@@ -225,7 +229,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     // Validating
     projectCCAFSOutcomesValidator.validate(this, project, "Planning");
@@ -241,21 +245,24 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // we need to make two validations here. One at project level, and the other one for each deliverable.
     deliverableValidator.validate(this, project, "Planning");
 
-    SectionStatus deliverablesStatus = new SectionStatus();
-    deliverablesStatus.setId(-1);
-    deliverablesStatus.setSection("deliverablesList");
+    sectionStatus = new SectionStatus();
+    sectionStatus.setId(-1);
+    sectionStatus.setSection("deliverablesList");
     StringBuilder missingFieldsAllDeliverables = new StringBuilder();
-    missingFieldsAllDeliverables.append(sectionStatus.getMissingFieldsWithPrefix());
+    // Getting the status made before.
+    SectionStatus tempStatus = sectionStatusManager.getSectionStatus(project, "Planning", "deliverablesList");
+    // Adding the missing fields to the concatenated deliverablesStatus.
+    missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
 
     if (project.getDeliverables() != null && !project.getDeliverables().isEmpty()) {
       for (Deliverable deliverable : project.getDeliverables()) {
         deliverableValidator.validate(this, project, deliverable, "Planning");
         // Appending all the missing fields for the current deliverable.
-        missingFieldsAllDeliverables.append(sectionStatus.getMissingFieldsWithPrefix());
+        tempStatus = sectionStatusManager.getSectionStatus(deliverable, "Planning", "deliverable");
+        missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
       }
     }
-    deliverablesStatus.setMissingFields(missingFieldsAllDeliverables.toString());
-
+    sectionStatus.setMissingFields(missingFieldsAllDeliverables.toString());
   }
 
   private void validateOverviewByMOGS() {
@@ -268,7 +275,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
 
     // Validate
     projectOutputValidator.validate(this, project, "Planning");
@@ -341,7 +348,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
@@ -354,7 +361,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

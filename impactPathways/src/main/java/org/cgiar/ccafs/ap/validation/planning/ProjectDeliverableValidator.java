@@ -70,7 +70,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
       }
 
       // Saving missing fields.
-      this.saveMissingFields(project, deliverable, cycle, "description");
+      this.saveMissingFields(project, deliverable, cycle, "deliverable");
     }
 
 
@@ -177,7 +177,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
     // Deliverables has to have at least one next user.
     if (!deliverableValidator.hasNextUsers(deliverable.getNextUsers())) {
       this.addMessage(action.getText("planning.projectDeliverable.nextUsers.emptyText"));
-      this.addMessage("projects.deliverable(" + deliverable.getId() + ").nextUsers.empty");
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").nextUsers.empty");
     } else {
       // Validate each the next user added.
       // TODO

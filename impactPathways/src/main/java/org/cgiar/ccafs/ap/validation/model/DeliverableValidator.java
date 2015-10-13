@@ -69,9 +69,4 @@ public class DeliverableValidator extends BaseValidator {
   }
 
 
-  // public boolean hasCrpContributions(List<CRP> crpContributions) {
-  // return (crpContributions != null && !crpContributions.isEmpty());
-  // }
-
-
 }

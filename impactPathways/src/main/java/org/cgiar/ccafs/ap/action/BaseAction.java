@@ -227,9 +227,26 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    */
   public SectionStatus getProjectSectionStatus(String section) {
     if (this.sectionStatuses != null) {
-      for (SectionStatus status : this.sectionStatuses) {
-        if (status.getSection().equals(section)) {
-          return status;
+      if (section.equals("deliverablesList")) {
+        boolean statusesExist = false;
+        SectionStatus allDeliverablesStatuses = new SectionStatus();
+        allDeliverablesStatuses.setId(-1);
+        StringBuilder missingFields = new StringBuilder();
+        for (SectionStatus status : this.sectionStatuses) {
+          if (status.getSection().equals("deliverablesList") || status.getSection().equals("deliverable")) {
+            statusesExist = true;
+            missingFields.append(status.getMissingFieldsWithPrefix());
+          }
+        }
+        allDeliverablesStatuses.setMissingFields(missingFields.toString());
+        if (statusesExist) {
+          return allDeliverablesStatuses;
+        }
+      } else {
+        for (SectionStatus status : this.sectionStatuses) {
+          if (status.getSection().equals(section)) {
+            return status;
+          }
         }
       }
     }
