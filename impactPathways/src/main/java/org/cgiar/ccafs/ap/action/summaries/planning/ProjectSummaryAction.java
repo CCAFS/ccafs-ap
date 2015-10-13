@@ -70,7 +70,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   // Managers
   private ActivityManager activityManager;
   private BudgetManager budgetManager;
-  private CRPManager crpManager;
+  // private CRPManager crpManager;
   private DeliverableManager deliverableManager;
   private DeliverablePartnerManager deliverablePartnerManager;
   private IPElementManager ipElementManager;
@@ -120,7 +120,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
     this.ipOtherContributionManager = ipOtherContributionManager;
-    this.crpManager = crpManager;
+    // this.crpManager = crpManager;
     this.partnerPersonManager = partnerPersonManager;
     this.indicatorManager = indicatorManager;
     this.projectLessonsManager = projectLessonsManager;

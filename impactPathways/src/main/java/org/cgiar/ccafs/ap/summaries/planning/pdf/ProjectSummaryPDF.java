@@ -106,15 +106,14 @@ public class ProjectSummaryPDF extends BasePDF {
   // Attributes
   private String summaryTitle;
   private List<IPElement> allMOGs;
-  private Map<String, String> mapPartnerPersons;
-  private ProjectPartnerManager projectPartnerManager;
+  private List<Map<String, String>> listMapPartnerPersons;
 
   // Budget
   @Inject
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
     IPCrossCuttingManager ipCrossCuttingManager, LocationManager locationManager,
     ProjectContributionOverviewManager overviewManager, ProjectOutcomeManager projectOutcomeManager,
-    BudgetByMogManager budgetByMogManager) {
+    ProjectPartnerManager projectPartnerManager, BudgetByMogManager budgetByMogManager) {
     this.config = config;
     this.initialize(config.getBaseUrl());
     this.budgetManager = budgetManager;
@@ -123,7 +122,7 @@ public class ProjectSummaryPDF extends BasePDF {
     this.projectOutcomeManager = projectOutcomeManager;
     this.budgetByMogManager = budgetByMogManager;
     this.allMOGs = elementManager.getIPElementList();
-    // this.mapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonWithTheirPartners();
+    this.listMapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
 
   }
 
@@ -214,9 +213,19 @@ public class ProjectSummaryPDF extends BasePDF {
             activityBlock.setFont(TABLE_BODY_BOLD_FONT);
             activityBlock.add(this.getText("summaries.project.activities.activityLeader") + ": ");
             activityBlock.setFont(TABLE_BODY_FONT);
-            activityBlock.add(activity.getLeader().getComposedName());
+
+            PartnerPerson activityPartnerPerson = activity.getLeader();
+
+            if (activityPartnerPerson != null) {
+              activityBlock.add(activityPartnerPerson.getComposedName());
+              activityBlock.add(", ");
+              activityBlock.add(this.getPartnerPersonInstitution(activityPartnerPerson.getId()));
+            } else {
+              activityBlock.add(this.getText("summaries.project.empty"));
+            }
             activityBlock.add(Chunk.NEWLINE);
             this.addTableColSpanCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1, 2);
+
             // document.add(Chunk.NEWLINE);
             document.add(table);
             activityBlock = new Paragraph();
@@ -814,7 +823,9 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.add(stringBuilder.toString());
         deliverableBlock.setFont(TABLE_BODY_FONT);
         stringBuilder = new StringBuilder();
-        if (deliverable.getType().getId() == 38) {
+        if (deliverable.getType() == null) {
+          stringBuilder.append(this.messageReturn(this.getText("summaries.project.empty")));
+        } else if (deliverable.getType().getId() == 38) {
           stringBuilder.append(this.getText("summaries.project.deliverable.other.expected"));
           stringBuilder.append("(");
           stringBuilder.append(this.messageReturn(deliverable.getTypeOther()));
@@ -920,9 +931,15 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.add(this.getText("summaries.project.deliverable.partnership.organization") + " #" + counter
           + " (Responsible)" + ": ");
         deliverableBlock.setFont(TABLE_BODY_FONT);
-
-        if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getPartner() != null)) {
-          stringBuilder.append(this.messageReturn(deliverable.getResponsiblePartner().getPartner().getComposedName()));
+        DeliverablePartner deliverableResponsiblePartner = deliverable.getResponsiblePartner();
+        PartnerPerson partnerPersonResponsible = null;
+        if (deliverableResponsiblePartner != null) {
+          partnerPersonResponsible = deliverableResponsiblePartner.getPartner();
+        }
+        if (deliverableResponsiblePartner != null && partnerPersonResponsible != null) {
+          stringBuilder.append(this.messageReturn(partnerPersonResponsible.getComposedName()));
+          stringBuilder.append(", ");
+          stringBuilder.append(this.getPartnerPersonInstitution(partnerPersonResponsible.getId()));
         } else {
           stringBuilder.append(this.getText("summaries.project.empty"));
         }
@@ -933,46 +950,50 @@ public class ProjectSummaryPDF extends BasePDF {
         counter = 1;
         // ************** Other Partners
         List<DeliverablePartner> listOtherPartner = deliverable.getOtherPartners();
+
+        PartnerPerson otherResponsiblepartnerPerson = null;
+
         if (!listOtherPartner.isEmpty()) {
           for (DeliverablePartner deliverablePartner : listOtherPartner) {
-            counter++;
+            if (deliverablePartner != null) {
+              counter++;
 
-            // Title partners contributing
-            deliverableBlock = new Paragraph();
-            deliverableBlock.setAlignment(Element.ALIGN_LEFT);
-            deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
-            if (listOtherPartner.size() == 1) {
-              deliverableBlock.add(this.getText("summaries.project.deliverable.partnership"));
-            } else {
-              deliverableBlock.add(this.getText("summaries.project.deliverable.partnership") + " #" + counter);
+              // Title partners contributing
+              deliverableBlock = new Paragraph();
+              deliverableBlock.setAlignment(Element.ALIGN_LEFT);
+              deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+              if (listOtherPartner.size() == 1) {
+                deliverableBlock.add(this.getText("summaries.project.deliverable.partnership"));
+              } else {
+                deliverableBlock.add(this.getText("summaries.project.deliverable.partnership") + " #" + counter);
+              }
+
+              // Organization
+              stringBuilder = new StringBuilder();
+              deliverableBlock = new Paragraph();
+              deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+
+              deliverableBlock.add(this.getText("summaries.project.deliverable.partnership.organization") + " #"
+                + counter + ": ");
+              deliverableBlock.add("");
+
+              deliverableBlock.setFont(TABLE_BODY_FONT);
+
+              otherResponsiblepartnerPerson = deliverablePartner.getPartner();
+              if (otherResponsiblepartnerPerson != null) {
+                stringBuilder.append(this.messageReturn(otherResponsiblepartnerPerson.getComposedName()));
+                stringBuilder.append(", ");
+                stringBuilder.append(this.getPartnerPersonInstitution(otherResponsiblepartnerPerson.getId()));
+              } else {
+                stringBuilder.append(this.getText("summaries.project.empty"));
+              }
+
+              deliverableBlock.add(stringBuilder.toString());
+              deliverableBlock.add(Chunk.NEWLINE);;
+              this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
             }
-
-
-            // Organization
-            stringBuilder = new StringBuilder();
-            deliverableBlock = new Paragraph();
-            deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
-
-            deliverableBlock.add(this.getText("summaries.project.deliverable.partnership.organization") + " #"
-              + counter + ": ");
-            deliverableBlock.add("");
-
-            deliverableBlock.setFont(TABLE_BODY_FONT);
-
-            if (deliverablePartner.getPartner() != null) {
-              stringBuilder.append(this.messageReturn(deliverablePartner.getPartner().getComposedName()));
-              // TODO if(deliverablePartner.getPartner().get)
-
-            } else {
-              stringBuilder.append(this.getText("summaries.project.empty"));
-            }
-
-            deliverableBlock.add(stringBuilder.toString());
-            deliverableBlock.add(Chunk.NEWLINE);;
-            this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
           }
         }
-
 
         document.add(table);
         deliverableBlock = new Paragraph();
@@ -1765,7 +1786,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -2604,6 +2625,22 @@ public class ProjectSummaryPDF extends BasePDF {
   }
 
   /**
+   * This auxiliar method is used for to get the institution of the project partner persons, that is in the
+   * listMapPartnerPersons
+   * 
+   * @param idProjectPartnerPerson project partner person id
+   * @return String that represent the project partner person institution name , if the ppp doesn't exist this method
+   *         return empty.
+   */
+  public String getPartnerPersonInstitution(int idProjectPartnerPerson) {
+
+    if (idProjectPartnerPerson < this.listMapPartnerPersons.size()) {
+      return listMapPartnerPersons.get(idProjectPartnerPerson - 1).get("institution_name");
+    }
+    return this.getText("summaries.project.empty");
+  }
+
+  /**
    * This method is for search the location for the name in a list
    * 
    * @param location location to search
@@ -2619,6 +2656,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
     return false;
   }
+
 
   /**
    * This method is for search the project partner for the index in a list
@@ -2636,7 +2674,6 @@ public class ProjectSummaryPDF extends BasePDF {
     }
     return false;
   }
-
 
   /**
    * This method converts the string in return message of summary
@@ -2708,6 +2745,7 @@ public class ProjectSummaryPDF extends BasePDF {
     return listLocationAnswer;
   }
 
+
   /**
    * this method is used for set the title
    * 
@@ -2716,14 +2754,4 @@ public class ProjectSummaryPDF extends BasePDF {
   public void setSummaryTitle(String title) {
     this.summaryTitle = title;
   }
-
-  // /**
-  // * this method is used for to replace the ',' for '.' in money format
-  // *
-  // * @param moneyString
-  // * @return
-  // */
-  // public String truncate(String moneyString) {
-  // return moneyString.replace(",", ".");
-  // }
 }
