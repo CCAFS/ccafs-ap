@@ -90,7 +90,7 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
   public int savePartnerPerson(ProjectPartner partner, PartnerPerson partnerPerson, User user, String justification) {
     Map<String, Object> partnerPersonData = new HashMap<>();
 
-    System.out.println("update");
+
     // if this is a new partner person, do not assign an id.
     partnerPersonData.put("created_by", user.getId());
     partnerPersonData.put("project_partner_id", partner.getId());
@@ -100,13 +100,13 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
     partnerPersonData.put("modified_by", user.getId());
     partnerPersonData.put("modification_justification", justification);
 
+
     int result = -1;
     if (partnerPerson.getId() > 0) {
-      System.out.println("update");
-    } else {
 
-      result = partnerPersonDAO.savePartnerPerson(partnerPersonData);
+      partnerPersonData.put("id", partnerPerson.getId());
     }
+    result = partnerPersonDAO.savePartnerPerson(partnerPersonData);
 
 
     if (result > 0) {
