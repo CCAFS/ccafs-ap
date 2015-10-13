@@ -192,6 +192,25 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
+  /**
+   * This method gets the specific section status from the sectionStatuses array for a Deliverable.
+   * 
+   * @param deliverableID is the deliverable ID to be identified.
+   * @param section is the name of some section.
+   * @return a SectionStatus object with the information requested.
+   */
+  public SectionStatus getDeliverableStatus(int deliverableID, String section) {
+    if (this.sectionStatuses != null) {
+      for (SectionStatus status : this.sectionStatuses) {
+        if (status.getDeliverableID() == deliverableID && status.getSection().equals(section)) {
+          return status;
+        }
+      }
+    }
+    return null;
+  }
+
+
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
@@ -201,7 +220,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String getJustification() {
     return justification;
   }
-
 
   /**
    * Define default locale while we decide to support other languages in the future.
