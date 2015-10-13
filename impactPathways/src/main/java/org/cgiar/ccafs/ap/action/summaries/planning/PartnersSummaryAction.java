@@ -88,7 +88,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("ProjectPartner-Institutions_");
+    fileName.append("ProjectPartners_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();

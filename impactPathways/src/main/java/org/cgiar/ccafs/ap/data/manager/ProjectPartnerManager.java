@@ -50,7 +50,7 @@ public interface ProjectPartnerManager {
    * 
    * @return
    */
-  public Map<String, String> getAllProjectPartnersPersonWithTheirPartners();
+  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution();
 
   /**
    * This method is used to get a specific Project Partner identified by the given ID.

@@ -63,7 +63,7 @@ public class PartnerPerson {
     str.append(user.getFirstName());
     str.append(" <");
     str.append(user.getEmail());
-    str.append("> ");
+    str.append(">");
     return str.toString();
 
   }

@@ -66,9 +66,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public Map<String, String> getAllProjectPartnersPersonWithTheirPartners() {
+  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution() {
     // TODO Auto-generated method stub
-    return null;
+    return this.projectPartnerDAO.getAllProjectPartnersPersonsWithTheirInstitution();
+
   }
 
   @Override
@@ -77,10 +78,11 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     Map<String, String> projectPartnerData = projectPartnerDAO.getProjectPartner(partnerID);
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
-      projectPartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
-      projectPartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
+        .get("institution_id"))));
+      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
+        .get("institution_id"))));
+
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if the institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -148,8 +150,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     for (Map<String, String> projectPartnerData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
-      projectPartner
-        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
+        .get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if its institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -258,8 +260,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     String justification) {
     boolean success = true;
     for (ProjectPartner partnerContribution : projectPartner.getPartnerContributors()) {
-      success = success
-        && this.saveProjectPartnerContribution(projectID, projectPartner, partnerContribution, user, justification);
+      success =
+        this.saveProjectPartnerContribution(projectID, projectPartner, partnerContribution, user, justification);
     }
     return success;
   }
