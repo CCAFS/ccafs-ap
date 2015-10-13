@@ -307,7 +307,6 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append(" ORDER BY active_since DESC ");
     query.append(" LIMIT 0, 5 ");
 
-    System.out.println(query.toString());
     return this.getData(query.toString());
 
 

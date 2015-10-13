@@ -549,7 +549,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(" ) AND pb.year=  ");
     query.append(year);
     query.append(" AND pb.is_active = TRUE ");
-    System.out.println();
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {

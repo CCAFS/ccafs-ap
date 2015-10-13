@@ -194,7 +194,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
       query.append("WHERE id = ? ");
       values = new Object[6];
       values[0] = statusData.get("project_id");
-      values[1] = statusData.get("delivearable_id");
+      values[1] = statusData.get("deliverable_id");
       values[2] = statusData.get("cycle");
       values[3] = statusData.get("section_name");
       values[4] = statusData.get("missing_fields");
