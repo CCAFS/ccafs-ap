@@ -92,6 +92,8 @@
           [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          
         </div> 
       </div>
+      
+      [#-- Deliverables table dialog --]
       [#if canEdit && !action.canDelete()]
       <div id="dialog" title="Deliverable types" style="display: none">
         <table id="deliverableTypes" style="height:700px; width:900px;">
@@ -116,17 +118,22 @@
           [/#list]  
         </table>
       </div> <!-- End dialog-->
-        <div class="helpMessage3">
-          <p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]</a></p>
-        </div>
-        <br />
-        <div class="note left">
-          [#if editable && deliverable.type.description??]
-            <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
-            <br />
-          [/#if]
-          <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
-        </div>
+      <div class="helpMessage3">
+        <p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]</a></p>
+      </div>
+      <br />
+      [/#if]
+      
+      [#-- Deliverable type description and message--]
+      [#if canEdit && editable && !action.canDelete()]
+
+      <div class="note left">
+        [#if editable && deliverable.type.description??]
+          <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
+          <br />
+        [/#if]
+        <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
+      </div>
       [/#if]
     </div>
     
