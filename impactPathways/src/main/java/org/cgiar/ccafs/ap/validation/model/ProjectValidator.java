@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.validation.model;
 
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.CRP;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
@@ -37,73 +38,55 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class ProjectValidator extends BaseValidator {
 
-  private static final long serialVersionUID = -4351021637951625199L;
 
   @Inject
   public ProjectValidator() {
   }
 
-  public boolean isValidBilateralContractProposalName(String proposalName) {
-    return (this.isValidString(proposalName)) ? true : false;
-  }
-
-  public boolean isValidBudget(List<Budget> budgets) {
-    return (budgets != null && !budgets.isEmpty());
-  }
-
-  public boolean isValidCrpContributions(List<CRP> crpContributions) {
+  public boolean hasCrpContributions(List<CRP> crpContributions) {
     return (crpContributions != null && !crpContributions.isEmpty());
   }
 
-  public boolean isValidEndDate(Date endDate) {
-    return (endDate != null) ? true : false;
-  }
-
-  public boolean isValidFlagships(List<IPProgram> flagships) {
+  public boolean hasFlagships(List<IPProgram> flagships) {
     return (flagships != null && !flagships.isEmpty());
   }
 
-  public boolean isValidIndicators(List<IPIndicator> indicators) {
+  public boolean hasIndicators(List<IPIndicator> indicators) {
     return (indicators != null && !indicators.isEmpty());
   }
 
-  public boolean isValidLeader(ProjectPartner leader, boolean isBilateral) {
-    if (leader == null) {
-      return false;
-    }
-
-    // For bilateral projects the leader must be a PPA institution
-    if (isBilateral && !leader.getInstitution().isPPA()) {
-      return false;
-    }
-    return true;
-  }
-
-  public boolean isValidLeaderResponsabilities(String leaderResponsabilities) {
-    return (this.isValidString(leaderResponsabilities)) ? true : false;
-  }
-
-  public boolean isValidLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
-    return (liaisonInstitution != null) ? true : false;
-  }
-
-  public boolean isValidLinkedCoreProjects(List<Project> linkedCoreProjects) {
+  public boolean hasLinkedCoreProjects(List<Project> linkedCoreProjects) {
     return (linkedCoreProjects != null && !linkedCoreProjects.isEmpty());
+  }
+
+  // This method validates if the output overview given as parameter is not empty and different from null
+  // If so, it returns true
+  public boolean hasOutputOverviews(List<OutputOverview> outputOverviews) {
+    return (outputOverviews != null && !outputOverviews.isEmpty());
+  }
+
+  public boolean hasOutputs(List<IPElement> outputs) {
+    return (outputs != null && !outputs.isEmpty());
+  }
+
+  public boolean hasDeliverables(List<Deliverable> deliverables) {
+    return (deliverables != null && !deliverables.isEmpty());
   }
 
   // This method validates if the list of locations given as parameter is not empty and different from null
   // If so, it returns true
-  public boolean isValidListLocations(List<Location> locations) {
-    return (!locations.isEmpty() && (locations != null));
+  public boolean hasProjectLocations(List<Location> locations) {
+    return (locations != null && !locations.isEmpty());
   }
 
   // This method validates if the Gender dimension outcomes given as parameter are not empty and different from null
   // If so, it returns true
-  public boolean isValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
+  public boolean hasValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
     if (outcomes != null && !outcomes.isEmpty()) {
       ProjectOutcome outcome = outcomes.get(String.valueOf(year));
       if (outcome != null) {
@@ -133,7 +116,7 @@ public class ProjectValidator extends BaseValidator {
 
   // This method validates if the outcome statement given as parameter is not empty and different from null
   // If so, it returns true
-  public boolean isValidOutcomeStatement(Map<String, ProjectOutcome> outcomes, int year) {
+  public boolean hasValidOutcomeStatement(Map<String, ProjectOutcome> outcomes, int year) {
     if (outcomes != null && !outcomes.isEmpty()) {
       ProjectOutcome outcome = outcomes.get(String.valueOf(year));
       if (outcome != null) {
@@ -145,14 +128,36 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
-  // This method validates if the output overview given as parameter is not empty and different from null
-  // If so, it returns true
-  public boolean isValidOutputOverviews(List<OutputOverview> outputOverviews) {
-    return (outputOverviews != null && !outputOverviews.isEmpty());
+  public boolean isValidBilateralContractProposalName(String proposalName) {
+    return (this.isValidString(proposalName)) ? true : false;
   }
 
-  public boolean isValidOutputs(List<IPElement> outputs) {
-    return (outputs != null && !outputs.isEmpty());
+  public boolean isValidBudget(List<Budget> budgets) {
+    return (budgets != null && !budgets.isEmpty());
+  }
+
+  public boolean isValidEndDate(Date endDate) {
+    return (endDate != null) ? true : false;
+  }
+
+  public boolean isValidLeader(ProjectPartner leader, boolean isBilateral) {
+    if (leader == null) {
+      return false;
+    }
+
+    // For bilateral projects the leader must be a PPA institution
+    if (isBilateral && !leader.getInstitution().isPPA()) {
+      return false;
+    }
+    return true;
+  }
+
+  public boolean isValidLeaderResponsabilities(String leaderResponsabilities) {
+    return (this.isValidString(leaderResponsabilities)) ? true : false;
+  }
+
+  public boolean isValidLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
+    return (liaisonInstitution != null) ? true : false;
   }
 
   public boolean isValidOwner(User owner) {

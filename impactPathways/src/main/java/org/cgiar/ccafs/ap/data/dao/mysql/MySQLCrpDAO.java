@@ -96,7 +96,6 @@ public class MySQLCrpDAO implements CrpDAO {
   }
 
 
-
   @Override
   public List<Map<String, String>> getCrpContributionsNature(int projectID) {
     List<Map<String, String>> crpCollaborationsNature = new ArrayList<>();
@@ -184,7 +183,7 @@ public class MySQLCrpDAO implements CrpDAO {
   }
 
   @Override
-  public boolean saveCrpContributions( Map<String, Object> contributionData) {
+  public boolean saveCrpContributions(Map<String, Object> contributionData) {
     StringBuilder query = new StringBuilder();
 
     LOG.debug(">> saveCrpContributionsNature(contributionNatureArray={})", contributionData);
@@ -196,13 +195,12 @@ public class MySQLCrpDAO implements CrpDAO {
       query.append("INSERT INTO project_crp_contributions (project_id, crp_id, collaboration_nature, created_by, ");
       query.append(" modified_by, modification_justification) VALUES (?,?,?,?,?,?) ");
       Object[] values = new Object[6];
-      values[0] =  contributionData.get("projectID");
+      values[0] = contributionData.get("projectID");
       values[1] = contributionData.get("crp_id");
       values[2] = contributionData.get("collaboration_nature");
       values[3] = contributionData.get("user_id");
       values[4] = contributionData.get("user_id");
       values[5] = contributionData.get("justification");
-      System.out.println(query.toString());
       result = daoManager.saveData(query.toString(), values);
       if (result < 0) {
         saved = false;

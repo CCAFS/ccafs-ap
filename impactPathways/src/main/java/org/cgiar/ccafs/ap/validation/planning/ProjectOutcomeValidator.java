@@ -67,7 +67,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
       // Validate only two years ahead and the last year which is 2019.
       if (year < (currentPlanningYear + 2) || year == midOutcomeYear) {
         // Validate the outcome statement
-        if (!projectValidator.isValidOutcomeStatement(project.getOutcomes(), year)) {
+        if (!projectValidator.hasValidOutcomeStatement(project.getOutcomes(), year)) {
           if (year == midOutcomeYear) {
             message = action.getText("planning.projectOutcome.statement.readText");
           } else {
@@ -78,7 +78,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
         }
 
         // Validate the outcome gender dimension
-        if (!projectValidator.isValidOutcomeGenderDimension(project.getOutcomes(), year)) {
+        if (!projectValidator.hasValidOutcomeGenderDimension(project.getOutcomes(), year)) {
           if (year == midOutcomeYear) {
             message = action.getText("planning.projectOutcome.genderAndSocialStatement.readText");
           } else {

@@ -85,10 +85,12 @@
           </td>
           [#-- Project Action Status --]
           <td>
-            <a id="validateProject-${project.id}" class="validateButton" href="#">[@s.text name="form.buttons.check" /]</a>
+            <a id="validateProject-${project.id}" class="validateButton ${(project.type)!''}" href="#">[@s.text name="form.buttons.check" /]</a>
             <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
             [#if securityContext.canSubmitProject()]
               <a id="submitProject-${project.id}" class="submitButton" href="#" style="display:none">[@s.text name="form.buttons.submit" /]</a>
+            [#else]
+              <p></p>
             [/#if]
             </a>
           </td>

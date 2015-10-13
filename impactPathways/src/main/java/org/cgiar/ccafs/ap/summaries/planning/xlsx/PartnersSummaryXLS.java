@@ -14,11 +14,11 @@
 
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -42,34 +42,24 @@ public class PartnersSummaryXLS {
    * This method is used to add an institution being a project partner
    *
    * @param projectPartnerInstitutions is the list of institutions to be added
-   * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(Sheet sheet, List<Institution> projectPartnerInstitutions, String[] projectList) {
-    int projectCount = 0;
-    for (Institution institution : projectPartnerInstitutions) {
-      xls.writeInteger(sheet, institution.getId());
+  private void addContent(Sheet sheet, List<Map<String, Object>> projectPartnerInstitutions) {
+    for (Map<String, Object> institution : projectPartnerInstitutions) {
+      xls.writeString(sheet, (String) institution.get("name"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getName());
+      xls.writeString(sheet, (String) institution.get("acronym"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getAcronym());
-      xls.nextColumn();
-      if (institution.getType() != null) {
-        xls.writeString(sheet, institution.getType().getName());
+      if (institution.get("institution_type_id") != null) {
+        xls.writeString(sheet, (String) institution.get("institution_type_name"));
         xls.nextColumn();
       } else {
         xls.nextColumn();
       }
-      xls.writeString(sheet, institution.getWebsiteLink());
+      xls.writeString(sheet, (String) institution.get("website_link"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getCountry().getName());
+      xls.writeString(sheet, (String) institution.get("country_name"));
       xls.nextColumn();
-      // Getting the project ids
-      if (Integer.getInteger(projectList[projectCount]) instanceof Integer) {
-        xls.writeInteger(sheet, Integer.valueOf(projectList[projectCount]));
-      } else {
-        xls.writeString(sheet, projectList[projectCount]);
-      }
-      projectCount++;
+      xls.writeString(sheet, (String) institution.get("projects"));
       xls.nextRow();
     }
   }
@@ -81,25 +71,23 @@ public class PartnersSummaryXLS {
    * @param projectList is the list with the projects related to each institution
    * @return a byte array with the information provided for the xls file.
    */
-  public byte[] generateCSV(List<Institution> projectPartnerInstitutions, String[] projectList) {
+  public byte[] generateCSV(List<Map<String, Object>> projectPartnerInstitutions) {
 
     try {
       String[] headers =
-        new String[] {"Institution ID", "Institution name", "Institution acronym", "Partner type", "Web site",
-        "Location", "Projects"};
+        new String[] {"Institution name", "Institution acronym", "Partner type", "Web site", "Country location",
+      "Projects"};
       int[] headersType =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeWorkbook(true);
-      workbook.setSheetName(0, "ProjectPartnerInstitutions");
+      workbook.setSheetName(0, "Project Partners");
       Sheet sheet = workbook.getSheetAt(0);
       xls.initializeSheet(sheet, headersType);
-      xls.writeTitleBox(sheet, "CCAFS Project Partner Institutions");
+      xls.writeTitleBox(sheet, "\t    Project Partners");
       xls.writeHeaders(sheet, headers);
-
-      this.addContent(sheet, projectPartnerInstitutions, projectList);
+      this.addContent(sheet, projectPartnerInstitutions);
       // Adding CCAFS logo
       xls.createLogo(workbook, sheet);
       // Set description

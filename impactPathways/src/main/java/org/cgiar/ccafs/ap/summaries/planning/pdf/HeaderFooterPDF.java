@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.summaries.planning.pdf;
 
 import java.awt.Color;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -70,12 +71,9 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     // Date
     phrase = new Phrase();
     phrase.setFont(SUB_HEADER_FONT);
-    String date = (new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-    phrase.add("This report was generated on " + date);
-    date = (new SimpleDateFormat("HH:mm").format(new Date()));
-    phrase.add(" at " + date);
 
-
+    DateFormat date = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+    phrase.add("This report was generated on " + date.format(new Date()));
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(), rect.getBottom(),
       0);
 

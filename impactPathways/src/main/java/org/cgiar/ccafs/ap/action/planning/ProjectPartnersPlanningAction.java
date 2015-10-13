@@ -14,6 +14,7 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -54,6 +55,7 @@ import org.slf4j.LoggerFactory;
  * @author Hernán Carvajal
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Carlos Alberto Martínez M.
+ * @author Christian David Garcia
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
 
@@ -70,6 +72,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private RoleManager roleManager;
   private ActivityManager activityManager;
   private DeliverableManager deliverableManager;
+  private HistoryManager historyManager;
   // private BudgetManager budgetManager;
   // private DeliverablePartnerManager deliverablePartnerManager;
   // private DeliverableManager deliverableManager;
@@ -101,8 +104,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
     DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
-    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager,
-    SendMail sendMail) {
+    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager, SendMail sendMail,
+    HistoryManager historyManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
@@ -115,6 +118,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.projectPartnersValidator = projectPartnersValidator;
     this.roleManager = roleManager;
     this.sendMail = sendMail;
+    this.historyManager = historyManager;
     // this.budgetManager = budgetManager;
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
@@ -339,8 +343,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
     // BBC will be our gmail notification email.
     String bbcEmails = this.config.getEmailNotification();
-    sendMail.send(toEmail, ccEmail, bbcEmails, this.getText("planning.manageUsers.email.project.assigned.subject",
-      new String[] {projectRole, project.getStandardIdentifier(false)}), message.toString());
+    sendMail.send(toEmail, ccEmail, bbcEmails,
+      this.getText("planning.manageUsers.email.project.assigned.subject",
+        new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
+      message.toString());
   }
 
   /**
@@ -377,8 +383,10 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
     // BBC will be our gmail notification email.
     String bbcEmails = this.config.getEmailNotification();
-    sendMail.send(toEmail, ccEmail, bbcEmails, this.getText("planning.manageUsers.email.project.unAssigned.subject",
-      new String[] {projectRole, project.getStandardIdentifier(false)}), message.toString());
+    sendMail.send(toEmail, ccEmail, bbcEmails,
+      this.getText("planning.manageUsers.email.project.unAssigned.subject",
+        new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
+      message.toString());
   }
 
   @Override
@@ -445,17 +453,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     previousProject.setId(project.getId());
     previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
-    // if (actionName.equals("partnerLead")) {
-    // super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
-    // new String[] {APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
-    // } else if (actionName.equals("ppaPartners")) {
-    // super.setHistory(
-    // historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PPA}));
-    // } else if (actionName.equals("partners")) {
-    // super.setHistory(
-    // historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PP}));
-    // }
-
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       // if (ActionContext.getContext().getName().equals("ppaPartners") && project.getPPAPartners() != null) {
@@ -473,6 +470,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
+
+    // Set History.
+    super.setHistory(historyManager.getProjectPartnersHistory(project.getId()));
 
   }
 
@@ -498,9 +498,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
         this.getJustification());
-
-      // TODO Figure out how is being used the project_roles table in the system.
-      projectRoleManager.saveProjectRoles(project, this.getCurrentUser(), this.getJustification());
 
       // Check if the project leader has changed and send the corresponding emails
       PartnerPerson previousLeader = previousProject.getLeaderPerson();

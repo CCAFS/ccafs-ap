@@ -58,6 +58,7 @@ public class FlywayContextListener implements ServletContextListener {
       flyway.baseline();
     }
 
+
     // Show the changes to be applied
     LOG.info("-------------------------------------------------------------");
     for (MigrationInfo i : flyway.info().all()) {

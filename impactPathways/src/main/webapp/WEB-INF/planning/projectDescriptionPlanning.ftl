@@ -52,21 +52,21 @@
         <div class="fullBlock">
           [#-- Project Program Creator --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" required=true editable=( editable && securityContext.canEditManagementLiaison() ) /]
+            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !securityContext.canEditManagementLiaison(project.id) ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" required=true editable=( editable && securityContext.canEditManagementLiaison(project.id) ) /]
           </div>
           [#--  Project Owner Contact Person --]
           <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison() ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" required=true editable=( editable && securityContext.canEditManagementLiaison() ) /]
+            [@customForm.select name="project.owner" label="" disabled=( !editable || !securityContext.canEditManagementLiaison(project.id) ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" required=true editable=( editable && securityContext.canEditManagementLiaison(project.id) ) /]
           </div> 
         </div>  
         <div class="fullBlock">  
           [#-- Start Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.startDate" type="text" disabled=( !editable || !securityContext.canEditStartDate() ) i18nkey="preplanning.projectDescription.startDate" required=true editable=( editable && securityContext.canEditStartDate() ) /]
+            [@customForm.input name="project.startDate" type="text" disabled=( !editable || !securityContext.canEditStartDate(project.id) ) i18nkey="preplanning.projectDescription.startDate" required=true editable=( editable && securityContext.canEditStartDate(project.id) ) /]
           </div> 
           [#-- End Date --]
           <div class="halfPartBlock">
-            [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate() ) i18nkey="preplanning.projectDescription.endDate" required=true editable=( editable && securityContext.canEditEndDate() ) /]
+            [@customForm.input name="project.endDate" type="text" disabled=( !editable || !securityContext.canEditEndDate(project.id) ) i18nkey="preplanning.projectDescription.endDate" required=true editable=( editable && securityContext.canEditEndDate(project.id) ) /]
           </div>
         </div>
         <div class="fullBlock">
@@ -80,7 +80,7 @@
         [#-- Project upload work plan --]
         [#if !project.bilateralProject]
         <div id="uploadWorkPlan" class="tickBox-wrapper fullBlock" style="[#if !project.workplanRequired && !project.workplanName?has_content && !editable]display:none[/#if]">
-          [#if securityContext.canAllowProjectWorkplanUpload() ]
+          [#if securityContext.canAllowProjectWorkplanUpload(project.id) ]
             [@customForm.checkbox name="project.workplanRequired" value="true" checked=project.workplanRequired  i18nkey="preplanning.projectDescription.isRequiredUploadworkplan" disabled=!editable editable=editable /]
           [/#if]
           <div class="tickBox-toggle uploadContainer" [#if (!project.workplanRequired )]style="display:none"[/#if]>
@@ -92,7 +92,7 @@
                 </p>
               [#else]
                 [#if editable]
-                  [#if !securityContext.canAllowProjectWorkplanUpload() ]
+                  [#if !securityContext.canAllowProjectWorkplanUpload(project.id) ]
                     <h6>
                       [@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /][#if project.workplanRequired ]<span class="red"> *</span>[/#if]
                     </h6>
@@ -106,7 +106,7 @@
         [/#if]
 
         [#-- Project upload bilateral contract --]
-        [#if (project.bilateralProject && securityContext.canUploadBilateralContract())]
+        [#if (project.bilateralProject && securityContext.canUploadBilateralContract(project.id))]
         <div class="fullBlock fileUpload bilateralContract">
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /][#if project.bilateralProject ]<span class="red"> *</span>[/#if]:</h6>
           <div class="uploadContainer">
@@ -134,9 +134,9 @@
           <div id="projectFlagshipsBlock" class="grid_5">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
-              [#if editable && securityContext.canEditProjectFlagships()]
+              [#if editable && securityContext.canEditProjectFlagships(project.id)]
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-                [@s.checkboxlist name="project.flagships" disabled=!securityContext.canEditProjectFlagships() list="ipProgramFlagships" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="flagshipIds" /]
+                [@s.checkboxlist name="project.flagships" disabled=!securityContext.canEditProjectFlagships(project.id) list="ipProgramFlagships" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="flagshipIds" /]
               [#else]
                 [#if project.flagships?has_content]
                   [#list project.flagships as element]
@@ -152,9 +152,9 @@
           <div id="projectRegionsBlock" class="grid_4">
             <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
             <div class="checkboxGroup">
-              [#if editable && securityContext.canEditProjectRegions()]
+              [#if editable && securityContext.canEditProjectRegions(project.id)]
                 [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-                [@s.checkboxlist name="project.regions" disabled=!securityContext.canEditProjectRegions()  list="ipProgramRegions" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="regionIds" /]
+                [@s.checkboxlist name="project.regions" disabled=!securityContext.canEditProjectRegions(project.id)  list="ipProgramRegions" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="regionIds" /]
               [#else]
                 [#if project.regions?has_content]
                   [#list project.regions as element]

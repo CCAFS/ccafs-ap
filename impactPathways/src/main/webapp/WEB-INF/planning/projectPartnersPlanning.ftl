@@ -126,7 +126,7 @@
   <input type="hidden" id="allPPAInstitutions" value="[[#list allPPAInstitutions as item]${item.id}[#if item_has_next],[/#if][/#list]]"/>
   
   [#-- Can update PPA Partners --]
-  <input type="hidden" id="canUpdatePPAPartners" value="${(securityContext.canUpdatePPAPartners() || project.bilateralProject)?string}"/>
+  <input type="hidden" id="canUpdatePPAPartners" value="${(securityContext.canUpdatePPAPartners(project.id) || project.bilateralProject)?string}"/>
   
   [#-- Project PPA Partners --]
   <select id="projectPPAPartners" style="display:none">

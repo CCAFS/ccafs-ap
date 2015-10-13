@@ -51,6 +51,14 @@ public interface ProjectPartnerDAO {
   public boolean deleteProjectPartnerContributions(int projectPartnerID);
 
   /**
+   * This method returns the information of the project partners with the information of their institutions name
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution();
+
+  /**
    * This method gets a project partner information identified with the given ID.
    * 
    * @param partnerID - is a partner identifier
@@ -78,6 +86,7 @@ public interface ProjectPartnerDAO {
    */
   public List<Map<String, String>> getProjectPartnerContributors(int projectPartnerID);
 
+
   /**
    * This method gets the project partners information given the project Id
    * 
@@ -86,7 +95,6 @@ public interface ProjectPartnerDAO {
    *         an error occurred.
    */
   public List<Map<String, String>> getProjectPartners(int projectId);
-
 
   /**
    * This method gets the project partners information given the project Id and type of project partner

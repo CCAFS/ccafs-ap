@@ -427,7 +427,7 @@ ul#noty_bottomRight_layout_container {
   /* text-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1); */
   text-decoration: none;
   padding: 8px 18px 6px 31px;*/;
-  color: #F3F3F3;
+  color: #FFFFFF;
 }
 .viewButton:hover{
   background-color: #6C6C6C;
@@ -2000,17 +2000,18 @@ h1.simpleTitle span {
   margin-bottom: 5px;
 }
 
-.helpMessage3 { 
-  position: relative;
+.helpMessage3 {
+  /* position: relative; */
   /* -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3); */
   -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
   -webkit-border-radius:2px;
   -moz-border-radius:2px;
   border-radius:2px;
   padding: 5px;
-  border: 1.0px dashed #c0c0c0;
-  background: #FFFFFF;  
-  margin: 5px 380px 5px 0px;;
+  border: 1px dashed #c0c0c0;
+  background: #FFFFFF;
+  margin: 5px 373px 5px 0px;
+  text-align: center;
 }
 
 .helpMessage3:before,.helpMessage:after {

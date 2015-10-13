@@ -14,11 +14,11 @@
 
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -30,12 +30,10 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public class LeadInstitutionPartnersSummaryXLS {
 
-  private APConfig config;
   private BaseXLS xls;
 
   @Inject
   public LeadInstitutionPartnersSummaryXLS(APConfig config, BaseXLS xls) {
-    this.config = config;
     this.xls = xls;
   }
 
@@ -45,21 +43,17 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(Sheet sheet, List<Institution> projectLeadingInstitutions, String[] projectList) {
-    int projectCount = 0;
-    for (Institution institution : projectLeadingInstitutions) {
-      xls.writeInteger(sheet, institution.getId());
+  private void addContent(Sheet sheet, List<Map<String, Object>> projectLeadingInstitutions) {
+    for (Map<String, Object> institution : projectLeadingInstitutions) {
+      xls.writeString(sheet, (String) institution.get("name"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getName());
+      xls.writeString(sheet, (String) institution.get("acronym"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getAcronym());
+      xls.writeString(sheet, (String) institution.get("website_link"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getWebsiteLink());
+      xls.writeString(sheet, (String) institution.get("country_name"));
       xls.nextColumn();
-      xls.writeString(sheet, institution.getCountry().getName());
-      xls.nextColumn();
-      xls.writeString(sheet, projectList[projectCount]);
-      projectCount++;
+      xls.writeString(sheet, (String) institution.get("projects"));
       xls.nextRow();
     }
   }
@@ -71,27 +65,28 @@ public class LeadInstitutionPartnersSummaryXLS {
    * @param projectList is the list with the projects related to each institution
    * @return a byte array with the information provided for the xls file.
    */
-  public byte[] generateXLS(List<Institution> projectLeadingInstitutions, String[] projectList) {
+  public byte[] generateXLS(List<Map<String, Object>> projectLeadingInstitutions) {
 
     try {
 
 
       String[] headers =
-        new String[] {"Institution ID", "Institution name", "Institution acronym", "Web site", "Location", "Projects"};
+        new String[] {"Institution name", "Institution acronym", "Web site", "Country location", "Projects"};
 
       int[] headerTypes =
-        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeWorkbook(true);
-      workbook.setSheetName(0, "LeadInstitutions");
+      workbook.setSheetName(0, "  Institutions leading projects");
       Sheet sheet = workbook.getSheetAt(0);
 
       xls.initializeSheet(sheet, headerTypes);
-      xls.writeTitleBox(sheet, "CCAFS Lead Institutions");
+      xls.writeTitleBox(sheet, "  CCAFS Institutions leading projects");
       xls.writeHeaders(sheet, headers);
 
-      this.addContent(sheet, projectLeadingInstitutions, projectList);
+      this.addContent(sheet, projectLeadingInstitutions);
+      sheet.autoSizeColumn(3);
       // Adding CCAFS logo
       xls.createLogo(workbook, sheet);
       // Set description

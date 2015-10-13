@@ -131,6 +131,9 @@ public class APCustomRealm extends AuthorizingRealm {
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
     Map<String, UserRole> projectRoles = new HashMap<>();
 
+    // TODO To do a manager to get the roles for a specific project.
+    Map<String, UserRole> projectSpecificRoles = new HashMap<>();
+
 
     // Get the roles general to the platform
     for (UserRole role : roles) {
@@ -164,9 +167,14 @@ public class APCustomRealm extends AuthorizingRealm {
       UserRole role = entry.getValue();
 
       for (String permission : role.getPermissions()) {
-        // Add the project identifier to the permission
-        String projectPermission = permission.replace("projects:", "projects:" + projectID + ":");
-        authorizationInfo.addStringPermission(projectPermission);
+        // Add the project identifier to the permission only if the permission is not at project level.
+        // The following permission will be ignored: planning:projects:5:description:update
+        // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
+        if (permission.contains(":projects:")) {
+          permission = permission.replace("projects:", "projects:" + projectID + ":");
+        }
+        authorizationInfo.addStringPermission(permission);
+        // }
       }
     }
 

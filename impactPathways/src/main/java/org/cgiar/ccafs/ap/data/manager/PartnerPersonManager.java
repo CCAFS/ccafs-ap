@@ -24,6 +24,14 @@ import com.google.inject.ImplementedBy;
 public interface PartnerPersonManager {
 
   /**
+   * TODO
+   * 
+   * @param projectPartner
+   * @return
+   */
+  boolean deletePartnerPerson(PartnerPerson projectPartner);
+
+  /**
    * This method set as inactive all the partner persons linked to the project partner received by parameter.
    * 
    * @param projectPartnerID - Project partner identifier

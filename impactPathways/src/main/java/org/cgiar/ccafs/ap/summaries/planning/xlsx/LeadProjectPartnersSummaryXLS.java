@@ -21,8 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.poi.common.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 
 
 /**
@@ -30,13 +33,13 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public class LeadProjectPartnersSummaryXLS {
 
-  private APConfig config;
   private BaseXLS xls;
+  private APConfig config;
 
   @Inject
   public LeadProjectPartnersSummaryXLS(APConfig config, BaseXLS xls) {
-    this.config = config;
     this.xls = xls;
+    this.config = config;
   }
 
   /**
@@ -46,15 +49,20 @@ public class LeadProjectPartnersSummaryXLS {
    * @param projectList is the list with the projects related to each institution
    */
   private void addContent(Sheet sheet, List<Map<String, Object>> projectList) {
-
+    XSSFHyperlink link;
+    CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();
     Map<String, Object> projectPartnerLeader;
+    String projectId;
     for (int i = 0; i < projectList.size(); i++) {
       projectPartnerLeader = projectList.get(i);
-      xls.writeInteger(sheet, (int) projectPartnerLeader.get("project_id"));
-      xls.nextColumn();
-      xls.writeString(sheet, projectPartnerLeader.get("project_type").toString().replace("_", " "));
+      projectId = projectPartnerLeader.get("project_id").toString();
+      link = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
+      link.setAddress(config.getBaseUrl() + "/planning/projects/description.do?projectID=" + projectId);
+      xls.writeHyperlink(sheet, "P" + projectId, link);
       xls.nextColumn();
       xls.writeString(sheet, (String) projectPartnerLeader.get("project_title"));
+      xls.nextColumn();
+      xls.writeString(sheet, projectPartnerLeader.get("project_type").toString().replace("_", " "));
       xls.nextColumn();
       xls.writeString(sheet, (String) projectPartnerLeader.get("project_summary"));
       xls.nextColumn();
@@ -83,24 +91,25 @@ public class LeadProjectPartnersSummaryXLS {
 
       // Defining headers
       String[] headers =
-        new String[] {"Project Id", "Type", "Title", "Summary", "Flagship(s)", "Region(s)", "Lead institution",
-        "Leader", "Coordinator"};
+        new String[] {"Project Id", "Title", "Type", "Summary", "Flagship(s)", "Region(s)", "Lead institution",
+          "Leader", "Coordinator"};
 
       // Defining header types
       int[] headerTypes =
-        {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
       Workbook workbook = xls.initializeWorkbook(true);
 
-      workbook.setSheetName(0, "LeadProjectPartners");
+      workbook.setSheetName(0, "Project leaders");
       Sheet sheet = workbook.getSheetAt(0);
       xls.initializeSheet(sheet, headerTypes);
-      xls.writeTitleBox(sheet, "CCAFS Lead Project Partners");
+      xls.writeTitleBox(sheet, "      CCAFS Project leaders");
       xls.writeHeaders(sheet, headers);
 
       this.addContent(sheet, projectList);
+      sheet.autoSizeColumn(3);
       // Adding CCAFS logo
       xls.createLogo(workbook, sheet);
       // Set description

@@ -37,11 +37,15 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   private ProjectValidator projectValidator;
   private Map<IPElement, List<IPIndicator>> indicatorsMap; // Outcomes vs indicators
+  private Map<Integer, Boolean> yearsToValidate;;
 
   @Inject
   public ProjectCCAFSOutcomesValidator(ProjectValidator projectValidator) {
     super();
     this.projectValidator = projectValidator;
+
+    this.yearsToValidate = new HashMap<>();
+
   }
 
   // This method populates the maps. The idea is to have the information organized per outcome. In that way it is easier
@@ -94,7 +98,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   // This method validates the indicators selected in the ccafs outcomes section.
   private void validateIndicators(BaseAction action, Project project) {
-    if (projectValidator.isValidIndicators(project.getIndicators())) {
+    if (projectValidator.hasIndicators(project.getIndicators())) {
       int c = 0; // Not the best solution with this counter. But at least it works.
       // Looping the map.
       for (IPElement outcome : indicatorsMap.keySet()) {
@@ -109,16 +113,32 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
           // setting the missing field and writing it in parenthesis because we are referring to the outcome id.
           this.addMissingField("project.outcome(" + outcome.getId() + ").indicators.empty");
         } else {
+          // Populating years to validate.
+          yearsToValidate.put(config.getPlanningCurrentYear(), false); // 2016
+          yearsToValidate.put(config.getPlanningCurrentYear() + 1, false); // 2017
+          yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+
           for (IPIndicator indicator : indicatorsMap.get(outcome)) {
-            // Validate only those indicators for 2016 and 2019.
-            if (indicator.getYear() == config.getPlanningCurrentYear()
-              || indicator.getYear() == (config.getPlanningCurrentYear() + 1)
-              || indicator.getYear() == config.getMidOutcomeYear()) {
+            // Validate only those indicators for 2016, 2017 and 2019.
+            if (yearsToValidate.keySet().contains(indicator.getYear())) {
               this.validateTargetValue(action, indicator.getTarget(), c);
               this.validateTargetNarrative(action, indicator.getDescription(), outcomeAcronym.toString(),
                 indicator.getYear(), c);
+
+              // Marking that the year was validated.
+              if (yearsToValidate.get(indicator.getYear()) != null) {
+                yearsToValidate.put(indicator.getYear(), true);
+              }
             }
             c++;
+          }
+
+          // Checking that all the years were validated as could happen that a project doesn't have all the indicators
+          // for all the years.
+          for (int year : yearsToValidate.keySet()) {
+            if (!yearsToValidate.get(year)) {
+              this.addMissingField("project.outcome(" + outcome.getId() + ").indicator(" + year + ").empty");
+            }
           }
         }
       }
@@ -130,8 +150,8 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   // For now, we are just validating that at least there is a MOPG selected.
   private void validateMOGs(BaseAction action, Project project) {
-    if (!projectValidator.isValidOutputs(project.getOutputs())) {
-      action.addActionError(action.getText("planning.projectImpactPathways.outputs.empty"));
+    if (!projectValidator.hasOutputs(project.getOutputs())) {
+      this.addMessage(action.getText("planning.projectImpactPathways.outputs.empty"));
       this.addMissingField("project.outputs.empty");
     }
 
