@@ -17,12 +17,25 @@
     
 <section class="content">
   
-  [#-- include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /--]
+  [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
- 
-  <article class="halfContent" id="projectDeliverable">  
-    <h2>The project has been successfully submitted</h2>
-    <p>${project.title}</p>
+  <article class="halfContent" id="projectSubmition">  
+  
+    <h1>The project has been successfully submitted</h1>
+    <div class="borderBox">
+      <div class="fullPartBlock">
+        <h6>Project title:</h6>
+        <p>${project.title}</p>
+      </div> 
+      <div class="fullPartBlock">
+        <h6>Submission date</h6>
+        <p>{YYYY-MM-DD}</p>
+      </div>
+      <div class="fullPartBlock">
+        <h6>Download Full Project Report</h6>
+        <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" class="button-pdf-format" target="__BLANK">PDF Format</a> 
+      </div>
+    </div>
   </article>
    
 </section> 
