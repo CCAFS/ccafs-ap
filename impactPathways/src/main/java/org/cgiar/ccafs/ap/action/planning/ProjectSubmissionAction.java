@@ -69,30 +69,34 @@ public class ProjectSubmissionAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    // isComplete method comes from BaseAction.
-    if (this.isComplete()) {
-      // Getting all the submissions made for this project.
-      List<Submission> submissions = submissionManager.getProjectSubmissions(project);
-      for (Submission theSubmission : submissions) {
-        // Get the submission we need.
-        if (theSubmission.getYear() == config.getPlanningCurrentYear() && theSubmission.getCycle().equals("Planning")) {
-          submission = theSubmission;
-          alreadySubmitted = true;
+    if (securityContext.canSubmitProject()) {
+      // isComplete method comes from BaseAction.
+      if (this.isComplete()) {
+        // Getting all the submissions made for this project.
+        List<Submission> submissions = submissionManager.getProjectSubmissions(project);
+        for (Submission theSubmission : submissions) {
+          // Get the submission we need.
+          if (theSubmission.getYear() == config.getPlanningCurrentYear()
+            && theSubmission.getCycle().equals("Planning")) {
+            submission = theSubmission;
+            alreadySubmitted = true;
+          }
         }
-      }
 
-      if (!alreadySubmitted) {
-        // Let's submit the project. <:)
-        this.submitProject();
+        if (!alreadySubmitted) {
+          // Let's submit the project. <:)
+          this.submitProject();
+        } else {
+          LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID="
+            + projectID + " which is already submitted.");
+        }
       } else {
         LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID="
-          + projectID + " which is already submitted.");
+          + projectID + " which is not complete yet.");
       }
-    } else {
-      LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID=" + projectID
-        + " which is not complete yet.");
+      return INPUT;
     }
-    return INPUT;
+    return NOT_AUTHORIZED;
   }
 
 
