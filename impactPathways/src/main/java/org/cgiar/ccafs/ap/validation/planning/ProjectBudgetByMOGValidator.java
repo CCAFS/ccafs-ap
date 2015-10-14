@@ -16,6 +16,7 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.BudgetValidator;
@@ -38,12 +39,40 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
 
 
   public void validate(BaseAction action, Project project) {
-    if (project != null) {
-      if (!project.getBudgets().isEmpty()) {
+    double ccafsBudgetTotalPorcentage = 0;
+    double bilateralBudgeTotalPorcentage = 0;
 
-      } else {
-        // TODO La lista esta vacia
+    double ccafsBudgetGenderPorcentage = 0;
+    double bilateralBudgeGenderPorcentage = 0;
+    if (project != null) {
+      for (OutputBudget budgetbyMog : project.getOutputsBudgets()) {
+        if (budgetbyMog.getType().isCCAFSBudget()) {
+          ccafsBudgetTotalPorcentage = ccafsBudgetTotalPorcentage + budgetbyMog.getTotalContribution();
+          ccafsBudgetGenderPorcentage = ccafsBudgetGenderPorcentage + budgetbyMog.getGenderContribution();
+
+        }
+        if (budgetbyMog.getType().isBilateral()) {
+          bilateralBudgeTotalPorcentage = bilateralBudgeTotalPorcentage + budgetbyMog.getTotalContribution();
+          bilateralBudgeGenderPorcentage = bilateralBudgeGenderPorcentage + budgetbyMog.getGenderContribution();
+
+        }
+      }
+
+
+      if (project.isCoreProject() || project.isCoFundedProject()) {
+        if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
+          this.addMessage(action.getText("Please Check  Porcentages Distribution").toLowerCase());
+          this.addMissingField("project.budgetbyMog.invalidPorcentage");
+        }
+      }
+      if (project.isBilateralProject()) {
+        if (!(bilateralBudgeGenderPorcentage == 100 && bilateralBudgeTotalPorcentage == 100)) {
+          this.addMessage(action.getText("Please Check  Porcentages Distribution").toLowerCase());
+          this.addMissingField("project.budgetbyMog.invalidPorcentage");
+        }
       }
     }
+
+    this.saveMissingFields(project, "Planning", "budgetByMog");
   }
 }
