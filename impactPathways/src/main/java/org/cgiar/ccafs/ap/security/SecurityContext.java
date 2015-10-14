@@ -296,16 +296,6 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
-   * Verify if Can update the project leader of a project
-   * 
-   * @return
-   */
-  public boolean canUpdateProjectLeader(int projectID) {
-    return this.hasPermission(
-      Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE.replace("projects:", "projects:" + projectID + ":"));
-  }
-
-  /**
    * Verify if can update the project locations section
    * 
    * @return

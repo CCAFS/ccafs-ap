@@ -32,7 +32,6 @@ import com.google.inject.Inject;
 
 public class ProjectBudgetPlanningValidator extends BaseValidator {
 
-  private static final long serialVersionUID = 2570701787739150641L;
   private ProjectValidator projectValidator;
   private BudgetValidator budgetValidator;
 
@@ -42,7 +41,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
     this.budgetValidator = budgetValidator;
   }
 
-  public void validate(BaseAction action, Project project) {
+  public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
 

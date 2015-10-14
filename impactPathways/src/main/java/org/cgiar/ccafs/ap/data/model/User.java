@@ -46,6 +46,16 @@ public class User {
   }
 
   /**
+   * This method returns the user's full name.
+   * 
+   * @return a String that represents the user's full name.
+   *         e.g. Héctor Tobón
+   */
+  public String getComposedCompleteName() {
+    return this.firstName + " " + this.lastName;
+  }
+
+  /**
    * This method returns a composed way to show a User.
    * 
    * @return a String that represents a User.

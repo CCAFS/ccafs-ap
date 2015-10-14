@@ -106,12 +106,12 @@
               <tr>
                 <th rowspan="${action.getDeliverableSubTypes(mt.id).size()}"> ${mt.name} </th>
                     <td> ${st.name} </td>
-                    <td> ${st.description!}</td>
+                    <td> ${(st.description)!}</td>
               </tr>
               [#else]
               <tr>
                 <td> ${st.name} </td>
-                <td> ${st.description!} </td>
+                <td> ${(st.description)!} </td>
               </tr>
               [/#if]
             [/#list]
@@ -129,7 +129,7 @@
 
       <div class="note left">
         [#if editable && deliverable.type.description??]
-          <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
+          <p><b>Deliverable type description:</b> [@s.text name="${(deliverable.type.description)!}" /]</p>
           <br />
         [/#if]
         <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>

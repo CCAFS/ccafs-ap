@@ -87,9 +87,9 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
 
   @Override
-  public boolean deleteProjectPartnerContributions(int projectPartnerID) {
-    String query = "UPDATE  project_partner_contributions SET is_active = FALSE WHERE project_partner_id = ?";
-    int result = databaseManager.saveData(query, new Object[] {projectPartnerID});
+  public boolean deleteProjectPartnerContributions(int id) {
+    String query = "UPDATE  project_partner_contributions SET is_active = FALSE WHERE id = ?";
+    int result = databaseManager.saveData(query, new Object[] {id});
 
     return result != -1;
   }
@@ -263,8 +263,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   @Override
   @Deprecated
   public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
-    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})", new Object[] {projectID,
-      projectPartnerType});
+    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})",
+      new Object[] {projectID, projectPartnerType});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT *   ");
@@ -302,8 +302,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       values[5] = projectPartnerData.get("modification_justification");
     } else {
       // update record
-      query
-      .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
+      query.append(
+        "UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
@@ -341,6 +341,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   public int saveProjectPartnerContribution(Map<String, Object> partnerContributionData) {
     LOG.debug(">> saveProjectPartnerContribution({})", partnerContributionData);
     StringBuilder query = new StringBuilder();
+
+
     query.append("INSERT INTO project_partner_contributions (project_partner_id, project_partner_contributor_id, ");
     query.append("created_by, modified_by, modification_justification) VALUES (?, ");
     query.append("( SELECT id FROM project_partners WHERE institution_id=? AND project_id=? AND is_active = TRUE) ");
@@ -359,5 +361,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
     LOG.debug("<< saveProjectPartnerContribution():{}", result);
     return result;
+
+
   }
 }

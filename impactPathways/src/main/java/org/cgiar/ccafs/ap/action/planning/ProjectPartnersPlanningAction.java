@@ -305,7 +305,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       String bbcEmails = this.config.getEmailNotification();
       sendMail.send(toEmail, null, bbcEmails,
         this.getText("planning.manageUsers.email.newUser.subject", new String[] {user.getComposedName()}),
-        message.toString());
+        message.toString(), null, null, null);
     }
   }
 
@@ -346,7 +346,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.assigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-      message.toString());
+        message.toString(), null, null, null);
   }
 
   /**
@@ -386,7 +386,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.unAssigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-      message.toString());
+        message.toString(), null, null, null);
   }
 
   @Override

@@ -16,10 +16,13 @@ package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.DeliverableValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
+
+import java.util.List;
 
 import com.google.inject.Inject;
 
@@ -53,6 +56,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
    */
   public void validate(BaseAction action, Project project, Deliverable deliverable, String cycle) {
     if (deliverable != null) {
+      this.missingFields.setLength(0);
       this.validateProjectJustification(action, deliverable);
 
       if (project.isCoreProject() || project.isCoFundedProject()) {
@@ -66,19 +70,12 @@ public class ProjectDeliverableValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
-      this.saveMissingFields(project, deliverable, cycle, "description");
+      this.saveMissingFields(project, deliverable, cycle, "deliverable");
     }
-
-
-    // // Responsible is not required.
-    // if (deliverable.getResponsiblePartner().getPartner() == null) {
-    // deliverable.setResponsiblePartner(null);
-    // }
-    // Adding general error.
   }
 
   /**
@@ -108,37 +105,36 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
   }
 
-  private void validateOptionalFields(BaseAction action, Deliverable deliverable) {
-    // Deliverable Title.
+  private void validateNextUsers(BaseAction action, Deliverable deliverable, List<NextUser> nextUsers) {
+    int c = 0;
+    for (NextUser nextUser : nextUsers) {
+      // Validating Next User name.
+      if (!deliverableValidator.isValidNextUserName(nextUser.getUser())) {
+        action.addFieldError("deliverable.nextUsers[" + c + "].user", action.getText("validation.field.required"));
+        this.addMessage("projects.deliverable(" + deliverable.getId() + ").nextUser(" + nextUser.getId() + ").user");
+      }
 
+      // Validating Knowledge, attitute, skills and practice changes expected
+      if (!deliverableValidator.isValidNextUserExpectedChanges(nextUser.getExpectedChanges())) {
+        action.addFieldError("deliverable.nextUsers[" + c + "].expectedChanges",
+          action.getText("validation.field.required"));
+        this.addMessage(
+          "projects.deliverable(" + deliverable.getId() + ").nextUser(" + nextUser.getId() + ").expectedChanges");
+      }
 
-    // Deliverable responsible partner - contact name.
-    // if (deliverable.getResponsiblePartner() != null && (deliverable.getResponsiblePartner().getUser() == null
-    // || deliverable.getResponsiblePartner().getUser().getId() == -1)) {
-    // this.addMessage(this.getText("planning.projectDeliverable.responsible.contactEmail"));
-    // }
+      // Validating strategies
+      if (!deliverableValidator.isValidNextUserStrategies(nextUser.getStrategies())) {
+        action.addFieldError("deliverable.nextUsers[" + c + "].strategies",
+          action.getText("validation.field.required"));
+        this.addMessage(
+          "projects.deliverable(" + deliverable.getId() + ").nextUser(" + nextUser.getId() + ").strategies");
+      }
 
-    // Next Users - TODO
-    // for (int c = 0; c < deliverable.getNextUsers().size(); c++) {
-    // if (!this.isValidString(deliverable.getNextUsers().get(c).getUser())) {
-    // this.addMessage("");
-    // }
-    // }
-
-    // Deliverable partnerships - contact name
-    // for (int c = 0; c < deliverable.getOtherPartners().size(); c++) {
-    // if (deliverable.getOtherPartners().get(c).getUser() == null
-    // || deliverable.getOtherPartners().get(c).getUser().getId() == -1) {
-    // this.addMessage(
-    // this.getText("planning.deliverables.otherPartner.contactEmail", new String[] {String.valueOf(c)}));
-    // }
-    // }
-
-    if (this.validationMessage.length() > 0) {
-      action
-        .addActionWarning(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      c++;
     }
+
   }
+
 
   private void validateRequiredFields(BaseAction action, Project project, Deliverable deliverable) {
 
@@ -177,10 +173,10 @@ public class ProjectDeliverableValidator extends BaseValidator {
     // Deliverables has to have at least one next user.
     if (!deliverableValidator.hasNextUsers(deliverable.getNextUsers())) {
       this.addMessage(action.getText("planning.projectDeliverable.nextUsers.emptyText"));
-      this.addMessage("projects.deliverable(" + deliverable.getId() + ").nextUsers.empty");
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").nextUsers.empty");
     } else {
-      // Validate each the next user added.
-      // TODO
+      // Validate each next user added.
+      this.validateNextUsers(action, deliverable, deliverable.getNextUsers());
     }
 
     // Validating that the deliverable has a responsible.

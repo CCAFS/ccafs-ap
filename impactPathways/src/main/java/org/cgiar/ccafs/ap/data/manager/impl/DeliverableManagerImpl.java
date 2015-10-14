@@ -117,8 +117,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       if (deliverableData.get("type_id") != null) {
-        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
-          .get("type_id"))));
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // Next Users
@@ -132,8 +132,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setResponsiblePartner(deliverablePartners.get(0));
       }
       // Other Partner Persons
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
 
       return deliverable;
     }
@@ -174,12 +174,12 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // Type
       if (deliverableData.get("type_id") != null) {
-        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
-          .get("type_id"))));
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // Next users
-      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
       // MOG
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
       // Partner Person Responsible
@@ -189,8 +189,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setResponsiblePartner(deliverablePartners.get(0));
       }
       // Other Partner Persons
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
 
       // adding information of the object to the array
       deliverableList.add(deliverable);
@@ -211,8 +211,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // Type
       if (deliverableData.get("type_id") != null) {
-        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
-          .get("type_id"))));
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // adding information of the object to the array
@@ -280,8 +280,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else if (result == 0) {
       LOG.debug("saveDeliverable > Deliverable with id={} was updated", deliverable.getId());
     } else {
-      LOG
-        .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
+      LOG.error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}",
+        projectID);
     }
     return result;
   }

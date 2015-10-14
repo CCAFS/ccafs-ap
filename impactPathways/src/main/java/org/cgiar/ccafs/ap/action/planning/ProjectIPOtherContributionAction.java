@@ -136,6 +136,9 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     if (this.isHttpPost()) {
       project.getIpOtherContribution().getCrpContributions().clear();
     }
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
   }
 
   @Override
@@ -147,36 +150,31 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       }
 
       // Saving Activity IP Other Contribution
-      boolean saved = ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
+      ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
         this.getCurrentUser(), this.getJustification());
 
       // Delete the CRPs that were un-selected
       for (CRPContribution crp : previousCRPContributions) {
         if (!project.getIpOtherContribution().getCrpContributions().contains(crp)) {
-          saved = saved && crpManager.removeCrpContribution(project.getId(), crp.getCrp(),
-            this.getCurrentUser().getId(), this.getJustification());
+          crpManager.removeCrpContribution(project.getId(), crp.getCrp(), this.getCurrentUser().getId(),
+            this.getJustification());
         }
       }
 
-      saved = saved && crpManager.saveCrpContributions(project.getId(),
-        project.getIpOtherContribution().getCrpContributions(), this.getCurrentUser(), this.getJustification());
+      crpManager.saveCrpContributions(project.getId(), project.getIpOtherContribution().getCrpContributions(),
+        this.getCurrentUser(), this.getJustification());
 
-      if (!saved) {
-        this.addActionError(this.getText("saving.problem"));
-        return BaseAction.INPUT;
+
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
       } else {
-        // Get the validation messages and append them to the save message if any
-        Collection<String> messages = this.getActionMessages();
-        if (!messages.isEmpty()) {
-          String validationMessage = messages.iterator().next();
-          this.setActionMessages(null);
-          this.addActionWarning(this.getText("saving.saved") + validationMessage);
-        } else {
-          this.addActionMessage(this.getText("saving.success",
-            new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
-        }
-        return SUCCESS;
+        this.addActionMessage(this.getText("saving.saved"));
       }
+      return SUCCESS;
     }
     return BaseAction.NOT_AUTHORIZED;
   }

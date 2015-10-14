@@ -307,7 +307,6 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append(" ORDER BY active_since DESC ");
     query.append(" LIMIT 0, 5 ");
 
-    System.out.println(query.toString());
     return this.getData(query.toString());
 
 
@@ -404,6 +403,18 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append("_history.project_partner_persons t inner join ");
 
     query.append(" project_partners on project_partners.id= t.project_partner_id ");
+    query.append(" INNER JOIN users u ON t.modified_by = u.id ");
+
+
+    query.append(" UNION ");
+
+    query.append(
+      "        SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action,   t.active_since, t.modification_justification   ");
+    query.append(" FROM  ");
+    query.append(dbName);
+    query.append("_history.project_partner_contributions t   ");
+
+
     query.append(" INNER JOIN users u ON t.modified_by = u.id ");
 
 

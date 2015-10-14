@@ -42,11 +42,23 @@ public class DeliverableValidator extends BaseValidator {
   }
 
   public boolean hasResponsible(DeliverablePartner responsible) {
-    return (responsible != null);
+    return (responsible != null && responsible.getPartner() != null);
   }
 
   public boolean isValidMOG(IPElement mog) {
     return (mog != null);
+  }
+
+  public boolean isValidNextUserExpectedChanges(String expectedChanges) {
+    return (this.isValidString(expectedChanges) && this.wordCount(expectedChanges) <= 50);
+  }
+
+  public boolean isValidNextUserName(String nextUserName) {
+    return (this.isValidString(nextUserName) && this.wordCount(nextUserName) <= 20);
+  }
+
+  public boolean isValidNextUserStrategies(String strategies) {
+    return (this.isValidString(strategies) && this.wordCount(strategies) <= 50);
   }
 
   public boolean isValidTitle(String title) {
@@ -67,11 +79,6 @@ public class DeliverableValidator extends BaseValidator {
   public boolean isValidYear(int year) {
     return (year != -1);
   }
-
-
-  // public boolean hasCrpContributions(List<CRP> crpContributions) {
-  // return (crpContributions != null && !crpContributions.isEmpty());
-  // }
 
 
 }

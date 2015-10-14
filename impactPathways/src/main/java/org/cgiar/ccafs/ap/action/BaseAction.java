@@ -90,9 +90,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // Config
   protected APConfig config;
+
   @Inject
   protected SecurityContext securityContext;
-
   @Inject
   private BoardMessageManager boardMessageManager;
 
@@ -102,7 +102,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Inject
   private SectionStatusManager sectionStatusManager;
 
-
   @Inject
   public BaseAction(APConfig config) {
     this.config = config;
@@ -110,6 +109,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.fullEditable = true;
     this.justification = "";
   }
+
 
   /* Override this method depending of the save action. */
   public String add() {
@@ -192,6 +192,24 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
+  /**
+   * This method gets the specific section status from the sectionStatuses array for a Deliverable.
+   * 
+   * @param deliverableID is the deliverable ID to be identified.
+   * @param section is the name of some section.
+   * @return a SectionStatus object with the information requested.
+   */
+  public SectionStatus getDeliverableStatus(int deliverableID, String section) {
+    if (this.sectionStatuses != null) {
+      for (SectionStatus status : this.sectionStatuses) {
+        if (status.getDeliverableID() == deliverableID && status.getSection().equals(section)) {
+          return status;
+        }
+      }
+    }
+    return null;
+  }
+
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
@@ -227,9 +245,26 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    */
   public SectionStatus getProjectSectionStatus(String section) {
     if (this.sectionStatuses != null) {
-      for (SectionStatus status : this.sectionStatuses) {
-        if (status.getSection().equals(section)) {
-          return status;
+      if (section.equals("deliverablesList")) {
+        boolean statusesExist = false;
+        SectionStatus allDeliverablesStatuses = new SectionStatus();
+        allDeliverablesStatuses.setId(-1);
+        StringBuilder missingFields = new StringBuilder();
+        for (SectionStatus status : this.sectionStatuses) {
+          if (status.getSection().equals("deliverablesList") || status.getSection().equals("deliverable")) {
+            statusesExist = true;
+            missingFields.append(status.getMissingFieldsWithPrefix());
+          }
+        }
+        allDeliverablesStatuses.setMissingFields(missingFields.toString());
+        if (statusesExist) {
+          return allDeliverablesStatuses;
+        }
+      } else {
+        for (SectionStatus status : this.sectionStatuses) {
+          if (status.getSection().equals(section)) {
+            return status;
+          }
         }
       }
     }
@@ -263,6 +298,21 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public boolean isCanEdit() {
     return canEdit;
+  }
+
+  /**
+   * This method checks that all the section status do not have missing fields.
+   * If so, the process is ready to be submitted.
+   * 
+   * @return true if the process is complete and is ready to be submitted, false otherwise.
+   */
+  public boolean isComplete() {
+    for (SectionStatus status : this.sectionStatuses) {
+      if (!status.getMissingFieldsWithPrefix().isEmpty()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public boolean isDataSaved() {
