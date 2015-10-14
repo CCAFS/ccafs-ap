@@ -86,11 +86,11 @@ public class ProjectSubmissionAction extends BaseAction {
         this.submitProject();
       } else {
         LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID="
-          + projectID + " which is is already submitted.");
+          + projectID + " which is already submitted.");
       }
     } else {
       LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID=" + projectID
-        + " which is is not complete yet.");
+        + " which is not complete yet.");
     }
     return INPUT;
   }
