@@ -17,7 +17,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBMOGSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetSummaryByMOGXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -35,12 +35,12 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class POWBMOGSummaryAction extends BaseAction implements Summary {
+public class BudgetSummaryByMOGAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
 
-  private POWBMOGSummaryXLS pwobMOGSummaryXLS;
+  private BudgetSummaryByMOGXLS budgetSummaryByMOGXLS;
   private ProjectManager projectManager;
 
   // XLS bytes
@@ -51,14 +51,15 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
 
   // Model
   List<Project> projectsList;
-  private List<Map<String, Object>> informationPWOBReportDetail;
-  private List<Map<String, Object>> informationPWOBReport;
+  private List<Map<String, Object>> informationBudgetReportByMOGDetail;
+  private List<Map<String, Object>> informationBudgetReportByMOG;
 
   @Inject
-  public POWBMOGSummaryAction(APConfig config, ProjectManager projectManager, POWBMOGSummaryXLS pwobMOGSummaryXLS) {
+  public BudgetSummaryByMOGAction(APConfig config, ProjectManager projectManager,
+    BudgetSummaryByMOGXLS budgetSummaryByMOGXLS) {
     super(config);
     this.projectManager = projectManager;
-    this.pwobMOGSummaryXLS = pwobMOGSummaryXLS;
+    this.budgetSummaryByMOGXLS = budgetSummaryByMOGXLS;
 
   }
 
@@ -66,7 +67,7 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = pwobMOGSummaryXLS.generateXLS(informationPWOBReportDetail, informationPWOBReport);
+    bytesXLS = budgetSummaryByMOGXLS.generateXLS(informationBudgetReportByMOGDetail, informationBudgetReportByMOG);
 
     return SUCCESS;
   }
@@ -85,7 +86,7 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
   @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
-    fileName.append("POWB-MOGs-");
+    fileName.append("BudgetSummaryByMOGXLS-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -103,7 +104,7 @@ public class POWBMOGSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    informationPWOBReport = projectManager.summaryGetInformationPOWB(config.getPlanningCurrentYear());
-    informationPWOBReportDetail = projectManager.summaryGetInformationPOWBDetail(config.getPlanningCurrentYear());
+    informationBudgetReportByMOG = projectManager.summaryGetInformationPOWB(config.getPlanningCurrentYear());
+    informationBudgetReportByMOGDetail = projectManager.summaryGetInformationPOWBDetail(config.getPlanningCurrentYear());
   }
 }

@@ -64,7 +64,7 @@
      </result>
    </action>
    
-   <action name="powbMOG" class="org.cgiar.ccafs.ap.action.summaries.planning.POWBMOGSummaryAction">
+   <action name="budgetSummaryByMOG" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetSummaryByMOGAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>

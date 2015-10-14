@@ -7,8 +7,9 @@
           <th class="id" >ID</th> 
           <th class="name">Deliverable Name</th>
           <th class="type">Type</th> 
-          <th class="year">Year</th> 
-          <th class="removeDeliverable"></th> 
+          <th class="year">Year</th>
+          <th class="status">Status</th> 
+          <th class="removeDeliverable">Remove</th> 
         </tr>
       </thead>
       <tbody>
@@ -19,6 +20,16 @@
           <td class="name"><a href="${dlurl}">${dl.title!"Untitled"}</a></td>
           <td class="type"><a href="${dlurl}">${(dl.type.name)!"Not defined"}</a></td> 
           <td class="year"><a href="${dlurl}">${dl.year}</a></td> 
+          <td class="status">
+            [#if action.getDeliverableStatus(dl.id,'deliverable')??]
+              [#if !((action.getDeliverableStatus(dl.id,'deliverable')).missingFieldsWithPrefix)?has_content]
+                <span class="icon-20 icon-check" title="Complete"></span> 
+              [#else]
+                <span class="icon-20 icon-uncheck" title=""></span> 
+              [/#if]
+            [/#if]
+          </td> 
+          
           <td class="removeDeliverable-row">
             [#if canEdit && action.canDelete(dl.id)]
               <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="deliverableID${dl.id}" title="" >
