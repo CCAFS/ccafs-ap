@@ -88,9 +88,11 @@
             <a id="validateProject-${project.id}" class="validateButton ${(project.type)!''}" href="#">[@s.text name="form.buttons.check" /]</a>
             <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
             [#if securityContext.canSubmitProject()]
-              <a id="submitProject-${project.id}" class="submitButton" href="#" style="display:none">[@s.text name="form.buttons.submit" /]</a>
+              <a id="submitProject-${project.id}" class="submitButton" href="[@s.url namespace=namespace action='submit'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" style="display:none">
+                [@s.text name="form.buttons.submit" /]
+              </a>
             [#else]
-              <p></p>
+              <p title="The project can be submitted by Management liaisons and Contact points">Submit</p>
             [/#if]
             </a>
           </td>

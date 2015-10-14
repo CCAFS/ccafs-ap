@@ -276,6 +276,13 @@ img.external-link {
   width: 10px;
 }
 
+h2.successfullyTitle {
+  font-size: 2em;
+  color: #7FB06F;
+  margin-bottom: 11px;
+  text-align: center;
+}
+
 h6.checked-true {
   background: url(../../images/global/checked-true.png) no-repeat 0;
   padding: 3px 0  3px 23px;
@@ -814,9 +821,8 @@ select#partnerSave_activityPartner_partner_type_id {
     margin: 10px 0 15px 0;
 }
 
-.panel.primary{
-  
-}
+.panel.primary{}
+
 .panel.secondary .panel-head{
   font-size: 1em;
   background: #CBCBCB;
@@ -1450,9 +1456,10 @@ a.currentReportingSection li, a.currentSection li {
   width:15px; 
 }
 .icon-20{
-  float: left;
+  display: block;
+  margin: 0 auto;
   height: 20px;
-  width:20px; 
+  width:20px;
 }
 
 .icon-s{
@@ -2700,7 +2707,7 @@ button.ipGraph-btn{
   background-color: #3498db;
 }
 
-.projectSubmitButton {
+a.projectSubmitButton {
   background: url(../../images/global/submit-icon.png) no-repeat;
   background-color: #83AECC;
   background-position: 46px 9px;
@@ -2712,6 +2719,7 @@ button.ipGraph-btn{
   font-size: 1.3em;
   text-align: center;
   cursor: pointer;
+  display: block;
 }
 
 .projectValidateButton {
@@ -2730,6 +2738,20 @@ button.ipGraph-btn{
 
 .projectSubmitButton:hover {
   background-color: #3498db;
+}
+
+.button-pdf-format {
+  display: block;
+  color: #929090;
+  text-decoration: none;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  width: 117px;
+  text-align: center;
+  padding: 18px 0 18px 28px;
+  border-radius: 3px;
+  background: url(../../images/global/icon-pdf.png) no-repeat;
+  margin-top: 11px !important;
 }
 
 .projectsList #ids, .activities #ids {
@@ -2996,6 +3018,20 @@ span.partnerTag {
   font-size: 0.95em !important;
   padding: 2px 10px 2px 10px !important;            
   display: none;
+}
+
+/* Project deliverables */
+
+#projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
+  text-align:center;
+  vertical-align: middle;
+}
+
+.icon-uncheck{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -85px;
+}
+.icon-check{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -150px;
 }
 
 /* Project Budget */

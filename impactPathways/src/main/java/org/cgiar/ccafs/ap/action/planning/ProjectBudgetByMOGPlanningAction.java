@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetByMOGValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -55,6 +56,9 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   private BudgetManager budgetManager;
   private HistoryManager historyManager;
 
+
+  // Validator
+  private ProjectBudgetByMOGValidator projectBudgetByMOGValidator;
   // Model
   private Project project;
   private int projectID;
@@ -69,13 +73,15 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
 
   @Inject
   public ProjectBudgetByMOGPlanningAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
-    IPElementManager ipElementManager, BudgetByMogManager budgetByMogManager, HistoryManager historyManager) {
+    IPElementManager ipElementManager, BudgetByMogManager budgetByMogManager, HistoryManager historyManager,
+    ProjectBudgetByMOGValidator projectBudgetByMOGValidator) {
     super(config);
     this.projectManager = projectManager;
     this.ipElementManager = ipElementManager;
     this.budgetByMogManager = budgetByMogManager;
     this.budgetManager = budgetManager;
     this.historyManager = historyManager;
+    this.projectBudgetByMOGValidator = projectBudgetByMOGValidator;
   }
 
   public List<Integer> getAllYears() {
@@ -257,10 +263,11 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
     this.year = year;
   }
 
+
   @Override
   public void validate() {
     if (save) {
-
+      projectBudgetByMOGValidator.validate(this, project);
     }
   }
 }

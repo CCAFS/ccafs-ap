@@ -21,16 +21,15 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.URLFileDownloader;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -93,44 +92,6 @@ public class ProjectSubmissionAction extends BaseAction {
     return INPUT;
   }
 
-  private ByteBuffer getAsByteArray(URL url) throws IOException {
-    URLConnection connection = url.openConnection();
-    // Since you get a URLConnection, use it to get the InputStream
-    InputStream in = connection.getInputStream();
-    // Now that the InputStream is open, get the content length
-    int contentLength = connection.getContentLength();
-    // TODO HT- Puedo adquirir el nombre del archivo y el mime type desde aqui.
-
-    // To avoid having to resize the array over and over and over as
-    // bytes are written to the array, provide an accurate estimate of
-    // the ultimate size of the byte array
-    ByteArrayOutputStream tmpOut;
-    if (contentLength != -1) {
-      tmpOut = new ByteArrayOutputStream(contentLength);
-    } else {
-      tmpOut = new ByteArrayOutputStream(16384); // Pick some appropriate size
-    }
-    byte[] buf = new byte[512];
-    while (true) {
-      int len = in.read(buf);
-      if (len == -1) {
-        break;
-      }
-      tmpOut.write(buf, 0, len);
-    }
-    in.close();
-    tmpOut.close(); // No effect, but good to do anyway to keep the metaphor alive
-
-    byte[] array = tmpOut.toByteArray();
-
-    // Lines below used to test if file is corrupt
-    // FileOutputStream fos = new FileOutputStream("C:\\abc.pdf");
-    // fos.write(array);
-    // fos.close();
-
-    return ByteBuffer.wrap(array);
-  }
-
   public Project getProject() {
     return project;
   }
@@ -163,25 +124,15 @@ public class ProjectSubmissionAction extends BaseAction {
   }
 
   private void sendNotficationEmail() {
+    // Building the email message
     StringBuilder message = new StringBuilder();
-
     message.append(this.getText("planning.submit.email.message",
       new String[] {this.getCurrentUser().getComposedCompleteName(), String.valueOf(config.getPlanningCurrentYear())}));
-
     message.append(this.getText("planning.manageUsers.email.support"));
-
     message.append(this.getText("planning.manageUsers.email.bye"));
-
     String subject = this.getText("planning.submit.email.subject",
       new String[] {String.valueOf(project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER))});
-    // StringBuilder message = new StringBuilder();
-    // // Building the Email message:
-    // message.append(this.getText("planning.manageUsers.email.dear", new String[] {userUnassigned.getFirstName()}));
-    // message.append(
-    // this.getText("planning.manageUsers.email.project.unAssigned", new String[] {projectRole, project.getTitle()}));
-    // message.append(this.getText("planning.manageUsers.email.support"));
-    // message.append(this.getText("planning.manageUsers.email.bye"));
-    //
+
     String toEmail = null;
     String ccEmail = null;
     if (config.isProduction()) {
@@ -196,23 +147,30 @@ public class ProjectSubmissionAction extends BaseAction {
     // BBC will be our gmail notification email.
     String bbcEmails = this.config.getEmailNotification();
 
-    // Get the PDF.
+    // Get the PDF from the Project report url.
     ByteBuffer buffer = null;
+    String fileName = null;
+    String contentType = null;
     try {
+      // Making the URL to get the report.
       URL pdfURL =
         new URL(config.getBaseUrl() + "/summaries/project.do?" + APConstants.PROJECT_REQUEST_ID + "=" + projectID);
-      buffer = this.getAsByteArray(pdfURL);
+      // Getting the file data.
+      Map<String, Object> fileProperties = URLFileDownloader.getAsByteArray(pdfURL);
+      buffer = fileProperties.get("byte_array") != null ? (ByteBuffer) fileProperties.get("byte_array") : null;
+      fileName = fileProperties.get("filename") != null ? (String) fileProperties.get("filename") : null;
+      contentType = fileProperties.get("mime_type") != null ? (String) fileProperties.get("mime_type") : null;
     } catch (MalformedURLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      // Do nothing.
+      LOG.error("There was an error trying to get the URL to download the PDF file: " + e.getMessage());
     } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      // Do nothing
+      LOG.error(
+        "There was a problem trying to download the PDF file for the projectID=" + projectID + " : " + e.getMessage());
     }
 
-    if (buffer != null) {
-      sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), buffer.array(), "application/pdf",
-        "project.pdf");
+    if (buffer != null && fileName != null && contentType != null) {
+      sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), buffer.array(), contentType, fileName);
     } else {
       sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), null, null, null);
     }
