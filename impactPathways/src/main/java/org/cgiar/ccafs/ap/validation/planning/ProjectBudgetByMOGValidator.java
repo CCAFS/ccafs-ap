@@ -59,14 +59,14 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
       if (project.isCoreProject() || project.isCoFundedProject()) {
 
         if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
-          this.addMessage(("Invalid, Porcentage Distribution"));
+          this.addMessage(("Invalid, Percentage Distribution"));
           this.addMissingField("project.budgetbyMog.invalidPorcentage");
 
         }
       }
       if (project.isBilateralProject()) {
         if (!(bilateralBudgeGenderPorcentage == 100 && bilateralBudgeTotalPorcentage == 100)) {
-          this.addMessage(("Invalid, Porcentage Distribution"));
+          this.addMessage(("Invalid, Percentage Distribution"));
           this.addMissingField("project.budgetbyMog.invalidPorcentage");
         }
       }
