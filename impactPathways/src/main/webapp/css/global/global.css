@@ -276,6 +276,13 @@ img.external-link {
   width: 10px;
 }
 
+h2.successfullyTitle {
+  font-size: 2em;
+  color: #7FB06F;
+  margin-bottom: 11px;
+  text-align: center;
+}
+
 h6.checked-true {
   background: url(../../images/global/checked-true.png) no-repeat 0;
   padding: 3px 0  3px 23px;

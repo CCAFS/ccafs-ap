@@ -20,11 +20,11 @@
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   <article class="halfContent" id="projectSubmition">  
-  
-    <h1>The project has been successfully submitted</h1>
+    <h1 class="successfullyTitle">Project Submit</h1>
     <div class="borderBox">
+      <h2 class="successfullyTitle">The project has been successfully submitted</h2>
       <div class="fullPartBlock">
-        <h6>Project title:</h6>
+        <h6>Project title</h6>
         <p>${project.title}</p>
       </div> 
       <div class="fullPartBlock">
