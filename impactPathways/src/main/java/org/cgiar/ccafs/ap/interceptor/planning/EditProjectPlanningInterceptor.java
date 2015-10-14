@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.interceptor.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 
@@ -67,15 +68,19 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       // First, check if the user can edit the project
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
+      Project project = projectManager.getProjectBasicInfo(projectID);
+      boolean isSubmitted = project.isSubmitted(baseAction.getCurrentPlanningYear(), "Planning");
 
       // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
       List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
-      canEditProject = (securityContext.isAdmin()) ? true : projectsEditable.contains(new Integer(projectID));
+      // Projects wont be able to edit the project if the project has been already submitted.
+      canEditProject =
+        (securityContext.isAdmin()) ? true : (projectsEditable.contains(new Integer(projectID)) && !isSubmitted);
 
       boolean editParameter = false;
 
       // Validate if the project is new. If so, the interface will be displayed as editable always.
-      if (projectManager.getProjectBasicInfo(projectID).isNew(baseAction.getConfig().getCurrentPlanningStartDate())) {
+      if (project.isNew(baseAction.getConfig().getCurrentPlanningStartDate())) {
         editParameter = true;
       } else {
         if (parameters.get(APConstants.EDITABLE_REQUEST) != null) {
