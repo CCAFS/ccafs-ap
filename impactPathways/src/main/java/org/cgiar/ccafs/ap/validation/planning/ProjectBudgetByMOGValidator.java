@@ -57,11 +57,11 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
 
 
       if (project.isCoreProject() || project.isCoFundedProject()) {
-        System.out.println("is core");
+
         if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
           this.addMessage(("Invalid, Porcentage Distribution").toLowerCase());
           this.addMissingField("project.budgetbyMog.invalidPorcentage");
-          System.out.println("Pone mensaje");
+
         }
       }
       if (project.isBilateralProject()) {
