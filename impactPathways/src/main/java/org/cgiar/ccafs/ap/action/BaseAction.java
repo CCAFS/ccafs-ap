@@ -307,6 +307,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * @return true if the process is complete and is ready to be submitted, false otherwise.
    */
   public boolean isComplete() {
+    if (this.sectionStatuses == null || this.sectionStatuses.isEmpty()) {
+      return false;
+    }
     for (SectionStatus status : this.sectionStatuses) {
       if (!status.getMissingFieldsWithPrefix().isEmpty()) {
         return false;

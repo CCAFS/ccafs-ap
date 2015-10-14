@@ -28,7 +28,7 @@ public class Submission {
 
   private int id;
   private String cycle;
-  private short year;
+  private int year;
   private User user;
   private Date dateTime;
 
@@ -51,7 +51,7 @@ public class Submission {
     return user;
   }
 
-  public short getYear() {
+  public int getYear() {
     return year;
   }
 

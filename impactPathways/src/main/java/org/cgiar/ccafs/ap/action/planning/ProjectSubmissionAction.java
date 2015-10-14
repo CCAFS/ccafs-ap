@@ -66,35 +66,44 @@ public class ProjectSubmissionAction extends BaseAction {
     this.sendMail = sendMail;
   }
 
+
   @Override
   public String execute() throws Exception {
-
-    if (this.isComplete()) {
-      // Getting all the submissions made for this project.
-      List<Submission> submissions = submissionManager.getProjectSubmissions(project);
-      for (Submission theSubmission : submissions) {
-        // Get the submission we need.
-        if (theSubmission.getYear() == config.getPlanningCurrentYear() && theSubmission.getCycle().equals("Planning")) {
-          submission = theSubmission;
-          alreadySubmitted = true;
+    if (securityContext.canSubmitProject()) {
+      // isComplete method comes from BaseAction.
+      if (this.isComplete()) {
+        // Getting all the submissions made for this project.
+        List<Submission> submissions = submissionManager.getProjectSubmissions(project);
+        for (Submission theSubmission : submissions) {
+          // Get the submission we need.
+          if (theSubmission.getYear() == config.getPlanningCurrentYear()
+            && theSubmission.getCycle().equals("Planning")) {
+            submission = theSubmission;
+            alreadySubmitted = true;
+          }
         }
-      }
 
-      if (alreadySubmitted) {
-        System.out.println("The project already was submitted");
+        if (!alreadySubmitted) {
+          // Let's submit the project. <:)
+          this.submitProject();
+        } else {
+          LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID="
+            + projectID + " which is already submitted.");
+        }
       } else {
-        // Let's submit the project.
-        this.submitProject();
+        LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID="
+          + projectID + " which is not complete yet.");
       }
-    } else {
-      System.out.println("Project is not complete");
+      return INPUT;
     }
-    return INPUT;
+    return NOT_AUTHORIZED;
   }
+
 
   public Project getProject() {
     return project;
   }
+
 
   public int getProjectID() {
     return projectID;
@@ -102,6 +111,10 @@ public class ProjectSubmissionAction extends BaseAction {
 
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
+  }
+
+  public boolean isAlreadySubmitted() {
+    return alreadySubmitted;
   }
 
   @Override
@@ -174,6 +187,10 @@ public class ProjectSubmissionAction extends BaseAction {
     } else {
       sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), null, null, null);
     }
+  }
+
+  public void setAlreadySubmitted(boolean alreadySubmitted) {
+    this.alreadySubmitted = alreadySubmitted;
   }
 
   public void setProjectID(int projectID) {
