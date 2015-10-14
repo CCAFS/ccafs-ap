@@ -216,7 +216,9 @@
             [#if history??][@log.logList list=history /][/#if] 
         [/#if]
     [#else]
-      <p class="simpleBox center">[@s.text name="planning.projectOutputs.empty" /]</p>
+      <p class="simpleBox center">[@s.text name="planning.projectOutputs.empty1" /] 
+      
+      <a href="[@s.url namespace="/" action='planning/projects/ccafsOutcomes?projectID=${project.id?c}'][/@s.url]">Click Here</a>[@s.text name="planning.projectOutputs.empty2" /]</p>
     [/#if]
   </article>
   [/@s.form]
