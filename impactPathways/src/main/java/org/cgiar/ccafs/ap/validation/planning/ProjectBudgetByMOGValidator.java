@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
-import org.cgiar.ccafs.ap.validation.model.BudgetValidator;
 
 import com.google.inject.Inject;
 
@@ -29,12 +28,10 @@ import com.google.inject.Inject;
 public class ProjectBudgetByMOGValidator extends BaseValidator {
 
 
-  private BudgetValidator budgetValidator;
-
   @Inject
-  public ProjectBudgetByMOGValidator(BudgetValidator budgetValidator) {
+  public ProjectBudgetByMOGValidator() {
 
-    this.budgetValidator = budgetValidator;
+
   }
 
 
@@ -60,19 +57,24 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
 
 
       if (project.isCoreProject() || project.isCoFundedProject()) {
+
         if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
-          this.addMessage(action.getText("Please Check  Porcentages Distribution").toLowerCase());
+          this.addMessage(("Invalid, Porcentage Distribution").toLowerCase());
           this.addMissingField("project.budgetbyMog.invalidPorcentage");
+
         }
       }
       if (project.isBilateralProject()) {
         if (!(bilateralBudgeGenderPorcentage == 100 && bilateralBudgeTotalPorcentage == 100)) {
-          this.addMessage(action.getText("Please Check  Porcentages Distribution").toLowerCase());
+          this.addMessage(("Invalid, Porcentage Distribution").toLowerCase());
           this.addMissingField("project.budgetbyMog.invalidPorcentage");
         }
       }
     }
-
+    if (validationMessage.length() > 0) {
+      action
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+    }
     this.saveMissingFields(project, "Planning", "budgetByMog");
   }
 }
