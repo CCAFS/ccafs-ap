@@ -56,7 +56,6 @@ public class ProjectSubmissionAction extends BaseAction {
   // Model for the front-end
   private Submission submission;
   private boolean alreadySubmitted;
-  private boolean isComplete;
 
   @Inject
   public ProjectSubmissionAction(APConfig config, SubmissionManager submissionManager, ProjectManager projectManager,
@@ -188,10 +187,6 @@ public class ProjectSubmissionAction extends BaseAction {
 
   public void setAlreadySubmitted(boolean alreadySubmitted) {
     this.alreadySubmitted = alreadySubmitted;
-  }
-
-  public void setComplete(boolean isComplete) {
-    this.isComplete = isComplete;
   }
 
   public void setProjectID(int projectID) {

@@ -63,14 +63,14 @@ public class ProjectDeliverableValidator extends BaseValidator {
         this.validateAsCoreProject(action, project, deliverable);
       } else {
         // Deliverables are not needed, but if there is one added, it will be validated completely.
-        // this.validateAsBilateralProject(action, project, deliverable);
+        this.validateAsCoreProject(action, project, deliverable);
       }
 
       if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -102,7 +102,6 @@ public class ProjectDeliverableValidator extends BaseValidator {
     if (deliverable != null) {
       this.validateRequiredFields(action, project, deliverable);
     }
-
   }
 
   private void validateNextUsers(BaseAction action, Deliverable deliverable, List<NextUser> nextUsers) {
