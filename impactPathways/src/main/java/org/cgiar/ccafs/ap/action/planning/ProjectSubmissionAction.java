@@ -56,6 +56,7 @@ public class ProjectSubmissionAction extends BaseAction {
   // Model for the front-end
   private Submission submission;
   private boolean alreadySubmitted;
+  private boolean isComplete;
 
   @Inject
   public ProjectSubmissionAction(APConfig config, SubmissionManager submissionManager, ProjectManager projectManager,
@@ -66,9 +67,10 @@ public class ProjectSubmissionAction extends BaseAction {
     this.sendMail = sendMail;
   }
 
+
   @Override
   public String execute() throws Exception {
-
+    // isComplete method comes from BaseAction.
     if (this.isComplete()) {
       // Getting all the submissions made for this project.
       List<Submission> submissions = submissionManager.getProjectSubmissions(project);
@@ -80,21 +82,25 @@ public class ProjectSubmissionAction extends BaseAction {
         }
       }
 
-      if (alreadySubmitted) {
-        System.out.println("The project already was submitted");
-      } else {
-        // Let's submit the project.
+      if (!alreadySubmitted) {
+        // Let's submit the project. <:)
         this.submitProject();
+      } else {
+        LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID="
+          + projectID + " which is is already submitted.");
       }
     } else {
-      System.out.println("Project is not complete");
+      LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID=" + projectID
+        + " which is is not complete yet.");
     }
     return INPUT;
   }
 
+
   public Project getProject() {
     return project;
   }
+
 
   public int getProjectID() {
     return projectID;
@@ -102,6 +108,10 @@ public class ProjectSubmissionAction extends BaseAction {
 
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
+  }
+
+  public boolean isAlreadySubmitted() {
+    return alreadySubmitted;
   }
 
   @Override
@@ -174,6 +184,14 @@ public class ProjectSubmissionAction extends BaseAction {
     } else {
       sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), null, null, null);
     }
+  }
+
+  public void setAlreadySubmitted(boolean alreadySubmitted) {
+    this.alreadySubmitted = alreadySubmitted;
+  }
+
+  public void setComplete(boolean isComplete) {
+    this.isComplete = isComplete;
   }
 
   public void setProjectID(int projectID) {
