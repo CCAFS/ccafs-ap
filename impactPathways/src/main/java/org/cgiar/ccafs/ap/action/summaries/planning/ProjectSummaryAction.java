@@ -192,9 +192,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Get a route for the workplan name
     if (project.isWorkplanRequired()) {
-
-      if (this.getWorkplanURL() != null || project.getWorkplanName() != null) {
-        project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+      String workPlanURL = this.getWorkplanURL();
+      if (workPlanURL != null || project.getWorkplanName() != null) {
+        project.setWorkplanName(workPlanURL + project.getWorkplanName());
       }
     }
 

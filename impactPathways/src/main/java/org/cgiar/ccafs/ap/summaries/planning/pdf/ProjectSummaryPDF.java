@@ -1123,7 +1123,12 @@ public class ProjectSummaryPDF extends BasePDF {
         imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
       } else {
         imdb = new Chunk("Download", hyperLink);
-        imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
+        try {
+          imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
+        } catch (MalformedURLException exp) {
+          imdb = new Chunk(project.getWorkplanName(), TABLE_BODY_FONT);
+          LOG.error("There is an Malformed expection in " + project.getWorkplanName());
+        }
       }
 
       cellContent = new Paragraph();
@@ -1134,8 +1139,6 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(Chunk.NEWLINE);;
     } catch (DocumentException e) {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
     }
   }
 
