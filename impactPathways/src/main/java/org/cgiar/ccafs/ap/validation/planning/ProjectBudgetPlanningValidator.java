@@ -34,6 +34,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
 
   private ProjectValidator projectValidator;
   private BudgetValidator budgetValidator;
+  private double TotalAnnualAmountBilateral = 0;
 
   @Inject
   public ProjectBudgetPlanningValidator(ProjectValidator projectValidator, BudgetValidator budgetValidator) {
@@ -51,12 +52,17 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
           this.validateProjectBudgets(action, project.getBudgets());
         }
       } else {
+
+        // It is a Core o CO-Funded Project
+        this.validateProjectBudgets(action, project.getBudgets());
       }
 
       if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
+
+      this.saveMissingFields(project, "Planning", "budgetByPartner");
     }
   }
 
@@ -64,10 +70,12 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
     for (Budget budget : budgets) {
       if (!budgetValidator.isValidAmount(budget.getAmount())) {
         this.addMessage(action.getText("planning.projectBudget.annualBudget"));
+        this.addMissingField("planning.projectBudget.annualBudget");
       }
 
       if (!budgetValidator.isValidGenderPercentage(budget.getGenderPercentage())) {
         this.addMessage(action.getText("planning.projectBudget.genderPercentage"));
+        this.addMissingField("planning.projectBudget.annualBudget");
       }
     }
 
