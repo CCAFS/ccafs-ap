@@ -32,13 +32,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 /**
  * @author Jorge Leonardo Solis B.
  */
-public class POWBMOGSummaryXLS {
+public class BudgetSummaryByMOGXLS {
 
   private BaseXLS xls;
   private APConfig config;
 
   @Inject
-  public POWBMOGSummaryXLS(BaseXLS xls, APConfig config) {
+  public BudgetSummaryByMOGXLS(BaseXLS xls, APConfig config) {
     this.xls = xls;
     this.config = config;
   }
@@ -191,13 +191,13 @@ public class POWBMOGSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Map<String, Object>> informationDetailPOWB, List<Map<String, Object>> informationPOWB) {
+  public byte[] generateXLS(List<Map<String, Object>> informationBudgetReportByMOGDetail, List<Map<String, Object>> informationBudgetReportByMOG) {
 
     try {
 
       XSSFWorkbook workbook = xls.initializeWorkbook(true);
 
-      /***************** POWB MOG Report ******************/
+      /***************** Budget Summary By MOG Report ******************/
       // Writting headers
       String[] headersPOWB =
         new String[] {"Outcome 2019", "MOG", "Total Budget W1/W2 (USD)", "Gender W1/W2 (USD)",
@@ -219,18 +219,18 @@ public class POWBMOGSummaryXLS {
       xls.initializeSheet(sheets[0], headerTypesPOWB);
 
       xls.writeHeaders(sheets[0], headersPOWB);
-      this.addContent(informationPOWB, sheets[0], 0, workbook);
+      this.addContent(informationBudgetReportByMOG, sheets[0], 0, workbook);
 
       // Set description
-      xls.writeDescription(sheets[0], xls.getText("summaries.powb.mog.sheetone.description"));
+      xls.writeDescription(sheets[0], xls.getText("summaries.budget.summary.sheet.description"));
 
       // write text box
-      xls.writeTitleBox(sheets[0], "POWB Summary ");
+      xls.writeTitleBox(sheets[0], xls.getText("summaries.budget.summary.sheet.one.name"));
 
       // write text box
       xls.createLogo(workbook, sheets[0]);
 
-      /***************** POWB MOG Report Detail ******************/
+      /***************** Budget Summary By MOG Detail ******************/
       // Sheet cleanSheet =
       // Writting headers
 
@@ -251,13 +251,13 @@ public class POWBMOGSummaryXLS {
       xls.initializeSheet(sheets[1], headerTypesPOWBDetail);
 
       xls.writeHeaders(sheets[1], headersPOWBDetail);
-      this.addContent(informationDetailPOWB, sheets[1], 1, workbook);
+      this.addContent(informationBudgetReportByMOGDetail, sheets[1], 1, workbook);
 
       // Set description
-      xls.writeDescription(sheets[1], xls.getText("summaries.powb.mog.sheetone.description"));
+      xls.writeDescription(sheets[1], xls.getText("summaries.budget.summary.sheet.description"));
 
       // write text box
-      xls.writeTitleBox(sheets[1], "POWB Summary Detail");
+      xls.writeTitleBox(sheets[1], xls.getText("summaries.budget.summary.sheet.two.name"));
 
       // write text box
       xls.createLogo(workbook, sheets[1]);
