@@ -106,7 +106,7 @@ public class Project {
   public boolean containsOutput(int outputID, int outcomeID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
-        if (output.getId() == outputID) {
+        if (output != null && output.getId() == outputID) {
           if (output.getContributesTo().contains(new IPElement(outcomeID))) {
             return true;
           }
@@ -603,14 +603,14 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-    // Standar identifier
+        // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-        // PDF Identifier
+      // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
         // -- flagships
         for (IPProgram flagship : this.getFlagships()) {
@@ -632,12 +632,12 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-        // Excel Identifier
+      // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
         break;
 
-      // Email Subject Identifier
+        // Email Subject Identifier
       case Project.EMAIL_SUBJECT_IDENTIFIER:
         result.append("P" + this.getId());
         break;
