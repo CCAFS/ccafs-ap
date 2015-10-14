@@ -104,7 +104,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public void prepare() {
 
     projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
-    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
     activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
+    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
   }
 }

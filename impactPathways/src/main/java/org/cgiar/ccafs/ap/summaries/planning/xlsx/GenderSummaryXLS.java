@@ -201,16 +201,16 @@ public class GenderSummaryXLS {
     // Defining headers
     String[] headersProject =
       new String[] {"Project Id", "Title", "Summary", "Outcome statement", "Start date", "End date", "Flagship(s)",
-        "Region(s)", "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral",
-        "Total gender W1/W2", "Total gender W3/Bilateral"};
+      "Region(s)", "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral",
+      "Total gender W1/W2", "Total gender W3/Bilateral"};
 
     // Defining header types
     int[] headerTypesProject =
-      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+    {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+      BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
+      BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+      BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+      BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
     // creating sheet
     Sheet[] sheets = new Sheet[3];
@@ -218,9 +218,9 @@ public class GenderSummaryXLS {
     sheets[1] = workbook.cloneSheet(0);
     sheets[2] = workbook.cloneSheet(0);
 
-    workbook.setSheetName(0, "Project Level");
-    workbook.setSheetName(1, "Activity Level");
-    workbook.setSheetName(2, "Deliverable Level");
+    workbook.setSheetName(0, "Projects");
+    workbook.setSheetName(1, "Activities ");
+    workbook.setSheetName(2, "Deliverables ");
 
     try {
       xls.initializeSheet(sheets[0], headerTypesProject);
@@ -246,13 +246,13 @@ public class GenderSummaryXLS {
       // Defining headers
       String[] headersActivity =
         new String[] {"Project Id", "Project Title", "Activity Id", "Activity Title", "Description", "Start date",
-          "End date", "Leader Institution", "Leader Person"};
+        "End date", "Leader Institution", "Leader Person"};
 
       // Defining header types
       int[] headerTypesActivity =
-        {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE,
-          BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE,
+        BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
 
       xls.initializeSheet(sheets[1], headerTypesActivity);
@@ -278,15 +278,15 @@ public class GenderSummaryXLS {
       // Defining headers
       String[] headersDeliverable =
         new String[] {"Project Id", "Project Title", "Deliverable Id", "Deliverable Title", "Deliverable Type",
-          "Deliverable Sub-Type", "Next User", "Knowledge, attitude, skills and practice changes ", " Strategies",
-          "Leader Institution", "Responsible Person"};
+        "Deliverable Sub-Type", "Next User", "Knowledge, attitude, skills and practice changes ", " Strategies",
+        "Leader Institution", "Responsible Person"};
 
       // Defining header types
       int[] headerTypesDeliverable =
-        {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
 
       xls.initializeSheet(sheets[2], headerTypesDeliverable);
