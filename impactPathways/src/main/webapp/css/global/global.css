@@ -814,9 +814,8 @@ select#partnerSave_activityPartner_partner_type_id {
     margin: 10px 0 15px 0;
 }
 
-.panel.primary{
-  
-}
+.panel.primary{}
+
 .panel.secondary .panel-head{
   font-size: 1em;
   background: #CBCBCB;
@@ -1450,9 +1449,10 @@ a.currentReportingSection li, a.currentSection li {
   width:15px; 
 }
 .icon-20{
-  float: left;
+  display: block;
+  margin: 0 auto;
   height: 20px;
-  width:20px; 
+  width:20px;
 }
 
 .icon-s{
@@ -2996,6 +2996,20 @@ span.partnerTag {
   font-size: 0.95em !important;
   padding: 2px 10px 2px 10px !important;            
   display: none;
+}
+
+/* Project deliverables */
+
+#projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
+  text-align:center;
+  vertical-align: middle;
+}
+
+.icon-uncheck{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -85px;
+}
+.icon-check{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -150px;
 }
 
 /* Project Budget */
