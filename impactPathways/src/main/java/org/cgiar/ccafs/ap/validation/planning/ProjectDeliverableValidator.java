@@ -56,6 +56,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
    */
   public void validate(BaseAction action, Project project, Deliverable deliverable, String cycle) {
     if (deliverable != null) {
+      this.missingFields.setLength(0);
       this.validateProjectJustification(action, deliverable);
 
       if (project.isCoreProject() || project.isCoFundedProject()) {
@@ -69,7 +70,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.

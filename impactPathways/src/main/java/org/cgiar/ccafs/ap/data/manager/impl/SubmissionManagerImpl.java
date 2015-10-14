@@ -77,7 +77,6 @@ public class SubmissionManagerImpl implements SubmissionManager {
 
   @Override
   public int saveProjectSubmission(Project project, Submission submission) {
-    // TODO Auto-generated method stub
     Map<String, Object> submissionData = new HashMap<>();
     if (submission.getId() > 0) {
       submissionData.put("id", submission.getId());
