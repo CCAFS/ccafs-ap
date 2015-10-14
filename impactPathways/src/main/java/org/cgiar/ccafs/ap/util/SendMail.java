@@ -32,6 +32,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -61,8 +62,12 @@ public class SendMail {
    *        can be null.
    * @param subject is the email title.
    * @param messageContent the content of the email
+   * @param attachement is a byte array with the file to be attached.
+   * @param attachmentMimeType is the MIME Type
+   * @param is the name of the file
    */
-  public void send(String toEmail, String ccEmail, String bbcEmail, String subject, String messageContent) {
+  public void send(String toEmail, String ccEmail, String bbcEmail, String subject, String messageContent,
+    byte[] attachment, String attachmentMimeType, String fileName) {
 
     // Get a Properties object
     Properties properties = System.getProperties();
@@ -105,10 +110,28 @@ public class SendMail {
         subject = "TEST " + subject;
       }
       msg.setSubject(subject);
-      msg.setText(messageContent);
       msg.setSentDate(new Date());
+
+      MimeMultipart mimeMultipart = new MimeMultipart();
+
+      // Body content: TEXT
+      MimeBodyPart mimeBodyPart = new MimeBodyPart();
+      mimeBodyPart.setText(messageContent);
+      mimeMultipart.addBodyPart(mimeBodyPart);
+
+      if (attachment != null && attachmentMimeType != null && fileName != null) {
+        // Body content: ATTACHMENT
+        DataSource dataSource = new ByteArrayDataSource(attachment, attachmentMimeType);
+        MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+        attachmentBodyPart.setDataHandler(new DataHandler(dataSource));
+        attachmentBodyPart.setFileName(fileName);
+        mimeMultipart.addBodyPart(attachmentBodyPart);
+      }
+
+      msg.setContent(mimeMultipart);
+      // msg.setText(messageContent);
       Transport.send(msg);
-      LOG.info("Message sent.");
+      LOG.info("Message sent: " + subject);
 
     } catch (MessagingException e) {
       LOG.error("There was an error sending a message", e);

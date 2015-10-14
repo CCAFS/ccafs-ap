@@ -22,6 +22,13 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +93,43 @@ public class ProjectSubmissionAction extends BaseAction {
     return INPUT;
   }
 
+  private ByteBuffer getAsByteArray(URL url) throws IOException {
+    URLConnection connection = url.openConnection();
+    // Since you get a URLConnection, use it to get the InputStream
+    InputStream in = connection.getInputStream();
+    // Now that the InputStream is open, get the content length
+    int contentLength = connection.getContentLength();
+
+    // To avoid having to resize the array over and over and over as
+    // bytes are written to the array, provide an accurate estimate of
+    // the ultimate size of the byte array
+    ByteArrayOutputStream tmpOut;
+    if (contentLength != -1) {
+      tmpOut = new ByteArrayOutputStream(contentLength);
+    } else {
+      tmpOut = new ByteArrayOutputStream(16384); // Pick some appropriate size
+    }
+    byte[] buf = new byte[512];
+    while (true) {
+      int len = in.read(buf);
+      if (len == -1) {
+        break;
+      }
+      tmpOut.write(buf, 0, len);
+    }
+    in.close();
+    tmpOut.close(); // No effect, but good to do anyway to keep the metaphor alive
+
+    byte[] array = tmpOut.toByteArray();
+
+    // Lines below used to test if file is corrupt
+    // FileOutputStream fos = new FileOutputStream("C:\\abc.pdf");
+    // fos.write(array);
+    // fos.close();
+
+    return ByteBuffer.wrap(array);
+  }
+
   public Project getProject() {
     return project;
   }
@@ -117,6 +161,60 @@ public class ProjectSubmissionAction extends BaseAction {
     this.initializeProjectSectionStatuses(project, "Planning");
   }
 
+  private void sendNotficationEmail() {
+    StringBuilder message = new StringBuilder();
+
+    message.append(this.getText("planning.submit.email.message",
+      new String[] {this.getCurrentUser().getComposedCompleteName(), String.valueOf(config.getPlanningCurrentYear())}));
+
+    message.append(this.getText("planning.manageUsers.email.bye"));
+
+    String subject = this.getText("planning.submit.email.subject",
+      new String[] {String.valueOf(project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER))});
+    // StringBuilder message = new StringBuilder();
+    // // Building the Email message:
+    // message.append(this.getText("planning.manageUsers.email.dear", new String[] {userUnassigned.getFirstName()}));
+    // message.append(
+    // this.getText("planning.manageUsers.email.project.unAssigned", new String[] {projectRole, project.getTitle()}));
+    // message.append(this.getText("planning.manageUsers.email.support"));
+    // message.append(this.getText("planning.manageUsers.email.bye"));
+    //
+    String toEmail = null;
+    String ccEmail = null;
+    if (config.isProduction()) {
+      // Send email to the new user and the P&R notification email.
+      // TO
+      // toEmail = userUnassigned.getEmail();
+      // // CC will be the user who is making the modification.
+      // if (this.getCurrentUser() != null) {
+      ccEmail = this.getCurrentUser().getEmail();
+      // }
+    }
+    // BBC will be our gmail notification email.
+    String bbcEmails = this.config.getEmailNotification();
+
+    // Get the PDF.
+    ByteBuffer buffer = null;
+    try {
+      URL pdfURL =
+        new URL(config.getBaseUrl() + "/summaries/project.do?" + APConstants.PROJECT_REQUEST_ID + "=" + projectID);
+      buffer = this.getAsByteArray(pdfURL);
+    } catch (MalformedURLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    if (buffer != null) {
+      sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), buffer.array(), "application/pdf",
+        "project.pdf");
+    } else {
+      sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), null, null, null);
+    }
+  }
+
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
@@ -133,7 +231,7 @@ public class ProjectSubmissionAction extends BaseAction {
 
     if (result > 0) {
       System.out.println("The project has been successfully submitted!");
-      // TODO Send emails.
+      this.sendNotficationEmail();
     }
   }
 }
