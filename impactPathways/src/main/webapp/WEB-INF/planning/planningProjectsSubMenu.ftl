@@ -4,6 +4,8 @@
 
 [#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
+[#assign projectStage = (currentSubStage)!"" /]
+
 <nav id="secondaryMenu" class="projectMenu ${(project.type)!''}">
 <h1><center> 
   [#if project.coreProject]
@@ -65,13 +67,17 @@
   <div id="validateProject-${projectId}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
   <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
   [#if securityContext.canSubmitProject()]
-    <div id="submitProject-${projectId}" class="projectSubmitButton" style="display:none">[@s.text name="form.buttons.submit" /]</div>
+    <a id="submitProject-${projectId}" class="projectSubmitButton" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" style="display:none">
+      [@s.text name="form.buttons.submit" /]
+    </a>
   [/#if]
 </nav>
 
+
+
 [#-- Menu element --]
 [#macro menu actionName stageName textName disabled=false]
-  <li id="menu-${actionName}" class="[#if currentSubStage == stageName]${currCss}[/#if] [@sectionStatus actionName=actionName/]">
+  <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss}[/#if] [@sectionStatus actionName=actionName/]">
     [#if disabled]
       <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
     [#else]
