@@ -99,6 +99,7 @@ public class ProjectSubmissionAction extends BaseAction {
     InputStream in = connection.getInputStream();
     // Now that the InputStream is open, get the content length
     int contentLength = connection.getContentLength();
+    // TODO HT- Puedo adquirir el nombre del archivo y el mime type desde aqui.
 
     // To avoid having to resize the array over and over and over as
     // bytes are written to the array, provide an accurate estimate of
@@ -166,6 +167,8 @@ public class ProjectSubmissionAction extends BaseAction {
 
     message.append(this.getText("planning.submit.email.message",
       new String[] {this.getCurrentUser().getComposedCompleteName(), String.valueOf(config.getPlanningCurrentYear())}));
+
+    message.append(this.getText("planning.manageUsers.email.support"));
 
     message.append(this.getText("planning.manageUsers.email.bye"));
 
