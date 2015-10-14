@@ -90,9 +90,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // Config
   protected APConfig config;
+
   @Inject
   protected SecurityContext securityContext;
-
   @Inject
   private BoardMessageManager boardMessageManager;
 
@@ -102,7 +102,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Inject
   private SectionStatusManager sectionStatusManager;
 
-
   @Inject
   public BaseAction(APConfig config) {
     this.config = config;
@@ -110,6 +109,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.fullEditable = true;
     this.justification = "";
   }
+
 
   /* Override this method depending of the save action. */
   public String add() {
@@ -210,7 +210,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return null;
   }
 
-
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
@@ -220,6 +219,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String getJustification() {
     return justification;
   }
+
 
   /**
    * Define default locale while we decide to support other languages in the future.
@@ -298,6 +298,21 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public boolean isCanEdit() {
     return canEdit;
+  }
+
+  /**
+   * This method checks that all the section status do not have missing fields.
+   * If so, the process is ready to be submitted.
+   * 
+   * @return true if the process is complete and is ready to be submitted, false otherwise.
+   */
+  public boolean isComplete() {
+    for (SectionStatus status : this.sectionStatuses) {
+      if (!status.getMissingFieldsWithPrefix().isEmpty()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public boolean isDataSaved() {

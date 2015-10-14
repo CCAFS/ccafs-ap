@@ -16,8 +16,8 @@ package org.cgiar.ccafs.ap.action.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -179,7 +179,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       project.setLinkedProjects(linkedProjectManager.getLinkedBilateralProjects(projectID));
     } else {
       project.setLinkedProjects(linkedProjectManager.getLinkedCoreProjects(projectID));
-
       project.setOverhead(overheadManager.getProjectBudgetOverhead(projectID));
     }
 
@@ -291,7 +290,6 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
             .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
-
         if (!saved) {
           success = false;
         }
@@ -371,7 +369,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project);
+      validator.validate(this, project, "Planning");
     }
   }
 }
