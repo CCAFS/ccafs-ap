@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
@@ -58,16 +59,19 @@ public class ProjectManagerImpl implements ProjectManager {
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
+  private SubmissionManager submissionManager;
 
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, IPProgramManager ipProgramManager,
-    BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager) {
+    BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager,
+    SubmissionManager submissionManager) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
     this.ipProgramManager = ipProgramManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
+    this.submissionManager = submissionManager;
   }
 
   @Override
@@ -257,6 +261,8 @@ public class ProjectManagerImpl implements ProjectManager {
         int institutionID = Integer.parseInt(projectData.get("liaison_institution_id"));
         project.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitution(institutionID));
       }
+      // Getting all the project submissions.
+      project.setSubmissions(submissionManager.getProjectSubmissions(project));
 
       return project;
     }
@@ -291,7 +297,6 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     project.setRegions(regions);
 
-
     // Getting Project Focuses - Flagships
     List<IPProgram> flagships = new ArrayList<>();
     if (projectData.get("flagships") != null) {
@@ -304,6 +309,9 @@ public class ProjectManagerImpl implements ProjectManager {
       }
     }
     project.setFlagships(flagships);
+
+    // Getting all the project submissions.
+    project.setSubmissions(submissionManager.getProjectSubmissions(project));
 
     return project;
   }
@@ -387,10 +395,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getBudgetsByProject(project));
 
@@ -404,8 +412,6 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getProjectsList(String[] values) {
     List<Project> projects = new ArrayList<>();
     List<String> ids = new ArrayList<String>(Arrays.asList(values));
-
-
     for (Project project : this.getAllProjectsBasicInfo()) {
       if (ids.contains(String.valueOf(project.getId()))) {
         projects.add(project);
@@ -458,8 +464,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 
