@@ -16,25 +16,33 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
 <section class="content">
-  
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
-  
-  <article class="halfContent" id="projectSubmition">  
+  <article class="halfContent" id="projectSubmition">
+    [#if !canEdit]
+      <p class="readPrivileges">You do not have sufficient privileges to submit this project</p>
+    [/#if]
+    
     <h1 class="successfullyTitle">Project Submit</h1>
     <div class="borderBox">
-      <h2 class="successfullyTitle">The project has been successfully submitted</h2>
+    [#if complete]
+      <h2 class="successTitle">The project has been successfully submitted</h2>
       <div class="fullPartBlock">
         <h6>Project title</h6>
-        <p>${project.title}</p>
+        <p>${(project.title)!"Title not defined"}</p>
       </div> 
       <div class="fullPartBlock">
         <h6>Submission date</h6>
-        <p>{YYYY-MM-DD}</p>
+        [#list project.submissions as submission]
+          <p>${submission.cycle} - ${submission.year} - ${submission.dateTime?date} by ${(submission.user.firstName)!} ${(submission.user.lastName)!}</p>
+        [/#list]
       </div>
       <div class="fullPartBlock">
         <h6>Download Full Project Report</h6>
         <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" class="button-pdf-format" target="__BLANK">PDF Format</a> 
       </div>
+    [#else]
+      <p>The project is still incomplete, please go to the sections without the green check mark and complete the missing fields before submitting your project.</p>
+    [/#if]
     </div>
   </article>
    
