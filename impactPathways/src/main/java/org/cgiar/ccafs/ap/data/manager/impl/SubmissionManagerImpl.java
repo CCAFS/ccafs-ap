@@ -69,7 +69,7 @@ public class SubmissionManagerImpl implements SubmissionManager {
       } catch (ParseException e) {
         LOG.error("There was an error formatting the date time for a Project Submission", e);
       }
-      submission.setUser(userManager.getUser(Integer.parseInt(submissionData.get("id"))));
+      submission.setUser(userManager.getUser(Integer.parseInt(submissionData.get("user_id"))));
       projectSubmissions.add(submission);
     }
     return projectSubmissions;
