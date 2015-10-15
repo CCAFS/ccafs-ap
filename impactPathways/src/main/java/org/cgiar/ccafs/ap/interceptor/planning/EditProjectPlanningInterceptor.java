@@ -29,23 +29,21 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.struts2.ServletActionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * This interceptor verify if the user has the permissions to edit the project
  * 
  * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class EditProjectPlanningInterceptor extends AbstractInterceptor {
 
-  private static Logger LOG = LoggerFactory.getLogger(EditProjectPlanningInterceptor.class);
-  private static final long serialVersionUID = -6564226368433104079L;
+  private static final long serialVersionUID = -2202897612842611068L;
 
-  private static SecurityContext securityContext;
-  private static ProjectManager projectManager;
+  private SecurityContext securityContext;
+  private ProjectManager projectManager;
 
   @Inject
   public EditProjectPlanningInterceptor(SecurityContext securityContext, ProjectManager projectManager) {
@@ -72,13 +70,18 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       Project project = projectManager.getProjectBasicInfo(projectID);
       Submission submission = project.isSubmitted(baseAction.getCurrentPlanningYear(), "Planning");
 
-      // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
-      List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
-      // Projects wont be able to edit the project if the project has been already submitted.
-      if ((projectsEditable.contains(new Integer(projectID))
-        && securityContext.canEditProjectPlanningSection(actionName, projectID))) {
-        if (submission == null) {
-          canEditProject = true;
+      // If user is admin, it should have privileges to edit all projects.
+      if (securityContext.isAdmin()) {
+        canEditProject = true;
+      } else {
+        // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
+        List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
+        // Projects wont be able to edit the project if the project has been already submitted.
+        if ((projectsEditable.contains(new Integer(projectID))
+          && securityContext.canEditProjectPlanningSection(actionName, projectID))) {
+          if (submission == null) {
+            canEditProject = true;
+          }
         }
       }
 
