@@ -16,8 +16,8 @@ function init() {
   // Add events for activities section
   attachEvents();
 
-  applyWordCounter($(".activity .title"), lWordsTitle);
-  applyWordCounter($(".activity .description"), lWordsDesc);
+  applyWordCounter($("form .activity .title"), lWordsTitle);
+  applyWordCounter($("form .activity .description"), lWordsDesc);
   applyWordCounter($("#lessons textarea"), lWordsLessons);
 
   validateEvent([
@@ -46,6 +46,8 @@ function addElement(e) {
   $elementsBlock.append($newElement.fadeIn("slow"));
   setActivitiesIndexes();
   addChosen();
+  applyWordCounter($newElement.find(".activity .title"), lWordsTitle);
+  applyWordCounter($newElement.find(".activity .description"), lWordsDesc);
   datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));
   $newElement.find('textarea').autoGrow();
   $elementsBlock.find('p.emptyText').fadeOut();
