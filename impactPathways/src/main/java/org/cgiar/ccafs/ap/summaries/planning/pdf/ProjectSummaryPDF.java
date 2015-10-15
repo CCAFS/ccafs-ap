@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -34,6 +35,7 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Location;
 import org.cgiar.ccafs.ap.data.model.NextUser;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.OtherLocation;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
@@ -123,7 +125,6 @@ public class ProjectSummaryPDF extends BasePDF {
     this.budgetByMogManager = budgetByMogManager;
     this.allMOGs = elementManager.getIPElementList();
     this.listMapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
-
   }
 
   /**
@@ -391,7 +392,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getTotalContribution() * 0.01
-        * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[0] += value;
@@ -410,7 +411,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getGenderContribution() * 0.01
-        * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[1] += value;
@@ -593,7 +594,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(this.budgetFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
             valueSum = value;
@@ -1789,7 +1790,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -2089,7 +2090,7 @@ public class ProjectSummaryPDF extends BasePDF {
     // Leason regardins
     outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
     outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    outcomesBlock.add(this.getText("summaries.project.outcome.leasonRegarding"));
+    outcomesBlock.add(this.getText("summaries.project.outcome.lessonRegarding"));
     outcomesBlock.setFont(BODY_TEXT_FONT);
     if (project.getComponentLesson("outcomes") != null) {
       outcomesBlock.add(this.messageReturn(project.getComponentLesson("outcomes").getLessons()));
@@ -2108,100 +2109,124 @@ public class ProjectSummaryPDF extends BasePDF {
     this.addProjectCCAFSOutcomes();
 
     // ******************* Other contributions***************/
-    // OtherContribution otherContribution = project.getIpOtherContribution();
-    //
-    // outcomesBlock = new Paragraph();
-    // outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-    //
-    // title =
-    // new Paragraph("4.4 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"),
-    // HEADING3_FONT);
-    // outcomesBlock.add(Chunk.NEWLINE);
-    // outcomesBlock.add(title);
-    // outcomesBlock.add(Chunk.NEWLINE);
-    //
-    // // Contribution to other Impact Pathways:
-    // outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    // outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
-    //
-    // outcomesBlock.setFont(BODY_TEXT_FONT);
-    //
-    // if (otherContribution == null || otherContribution.getContribution() == null
-    // || otherContribution.getContribution().equals("")) {
-    // outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-    // } else {
-    // outcomesBlock.add(Chunk.NEWLINE);
-    // outcomesBlock.add(otherContribution.getContribution());
-    // }
-    //
-    // outcomesBlock.add(Chunk.NEWLINE);
-    // outcomesBlock.add(Chunk.NEWLINE);
-    //
-    // // Contribution to another Center activity:
-    // outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    // outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.center"));
-    // outcomesBlock.setFont(BODY_TEXT_FONT);
-    // if (otherContribution == null || otherContribution.getAdditionalContribution() == null
-    // || otherContribution.getAdditionalContribution().equals("")) {
-    // outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-    // } else {
-    // outcomesBlock.add(Chunk.NEWLINE);
-    // outcomesBlock.add(otherContribution.getAdditionalContribution());
-    // }
-    // outcomesBlock.add(Chunk.NEWLINE);
-    // outcomesBlock.add(Chunk.NEWLINE);
-    //
+    OtherContribution otherContribution = project.getIpOtherContribution();
+
+    outcomesBlock = new Paragraph();
+    outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+
+    title =
+      new Paragraph("4.4 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"),
+        HEADING3_FONT);
+    outcomesBlock.add(Chunk.NEWLINE);
+    outcomesBlock.add(title);
+    outcomesBlock.add(Chunk.NEWLINE);
+
+    // Contribution to other Impact Pathways:
+    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+    outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
+
+    outcomesBlock.setFont(BODY_TEXT_FONT);
+
+    if (otherContribution == null || otherContribution.getContribution() == null
+      || otherContribution.getContribution().equals("")) {
+      outcomesBlock.add(": " + this.getText("summaries.project.empty"));
+    } else {
+      outcomesBlock.add(Chunk.NEWLINE);
+      outcomesBlock.add(otherContribution.getContribution());
+    }
+
+    outcomesBlock.add(Chunk.NEWLINE);
+    outcomesBlock.add(Chunk.NEWLINE);
+
+    // Contribution to another Center activity:
+    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+    outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.center"));
+    outcomesBlock.setFont(BODY_TEXT_FONT);
+    if (otherContribution == null || otherContribution.getAdditionalContribution() == null
+      || otherContribution.getAdditionalContribution().equals("")) {
+      outcomesBlock.add(this.getText("summaries.project.empty"));
+    } else {
+      outcomesBlock.add(otherContribution.getAdditionalContribution());
+    }
+    outcomesBlock.add(Chunk.NEWLINE);
+    outcomesBlock.add(Chunk.NEWLINE);
+
     // // Collaboration with other CRPs
-    // boolean addParagraph = false;
-    // List<CRP> listCRP = project.getCrpContributions();
-    // Paragraph cell = new Paragraph();;
-    // cell.setFont(BODY_TEXT_BOLD_FONT);
-    // cell.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.covered"));
-    // PdfPTable table = new PdfPTable(1);
-    // if (listCRP.isEmpty()) {
-    // cell.setFont(BODY_TEXT_FONT);
-    // cell.add(": " + this.getText("summaries.project.empty"));
-    // addParagraph = true;
-    // } else {
-    // table.setLockedWidth(true);
-    // table.setTotalWidth(500);
-    // this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE, table.getNumberOfColumns(),
-    // 0, false);
-    //
-    // for (CRP crp : listCRP) {
-    // cell = new Paragraph();
-    // cell.setFont(TABLE_BODY_FONT);
-    // cell.add(crp.getName());
-    // this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
-    // }
-    // }
-    // try {
-    // document.add(outcomesBlock);
-    //
-    // // CNature of the collaboration:
-    // outcomesBlock = new Paragraph();
-    // outcomesBlock.add(Chunk.NEWLINE);
-    // outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    // outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.nature"));
-    // outcomesBlock.setFont(BODY_TEXT_FONT);
-    // if (otherContribution == null || otherContribution.getCrpCollaborationNature() == null
-    // || otherContribution.getCrpCollaborationNature().equals("")) {
-    // outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-    // } else {
-    // outcomesBlock.add(Chunk.NEWLINE);
-    // outcomesBlock.add(otherContribution.getCrpCollaborationNature());
-    // }
-    //
-    // // Add paragraphs to document
-    // if (addParagraph) {
-    // document.add(cell);
-    // } else {
-    // document.add(table);
-    // }
-    // document.add(outcomesBlock);
-    // } catch (DocumentException e) {
-    // LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
-    // }
+    boolean addParagraph = false;
+    Paragraph cell = new Paragraph();;
+    cell.setFont(BODY_TEXT_BOLD_FONT);
+    try {
+      PdfPTable table = new PdfPTable(2);
+
+      if (otherContribution != null) {
+        List<CRPContribution> listCRP = otherContribution.getCrpContributions();
+        if (listCRP.isEmpty()) {
+          cell.setFont(BODY_TEXT_FONT);
+          cell.add(": " + this.getText("summaries.project.empty"));
+          addParagraph = true;
+        } else {
+          table.setWidths(new int[] {4, 6});
+          table.setLockedWidth(true);
+          table.setTotalWidth(500);
+          cell.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.covered"));
+          this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
+            table.getNumberOfColumns(), 0, false);
+
+          // adding headers
+          this.addTableHeaderCell(table,
+            new Paragraph(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.crp"),
+              TABLE_HEADER_FONT));
+
+          this.addTableHeaderCell(table,
+            new Paragraph(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.nature"),
+              TABLE_HEADER_FONT));
+
+          for (CRPContribution CRPContribution : listCRP) {
+            if (CRPContribution != null && CRPContribution.getCrp() != null) {
+              cell = new Paragraph();
+              cell.setFont(TABLE_BODY_FONT);
+              cell.add(CRPContribution.getCrp().getName());
+              this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+              cell = new Paragraph();
+              cell.setFont(TABLE_BODY_FONT);
+              cell.add(CRPContribution.getNatureCollaboration());
+              this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+            }
+          }
+        }
+      } else {
+        cell.setFont(BODY_TEXT_FONT);
+        cell.add(": " + this.getText("summaries.project.empty"));
+        addParagraph = true;
+      }
+      document.add(outcomesBlock);
+      // Add paragraphs to document
+      if (addParagraph) {
+        document.add(cell);
+      } else {
+        document.add(table);
+      }
+
+      document.add(Chunk.NEWLINE);
+
+      // Lesson regardins
+      outcomesBlock = new Paragraph();
+      outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+      outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+      outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.lessonRegarding"));
+      outcomesBlock.setFont(BODY_TEXT_FONT);
+      if (project.getComponentLesson("otherContributions") != null) {
+        outcomesBlock.add(this.messageReturn(project.getComponentLesson("otherContributions").getLessons()));
+      } else {
+        outcomesBlock.add(this.messageReturn(null));
+      }
+      document.add(outcomesBlock);
+
+
+    } catch (DocumentException e) {
+      LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
+    }
 
   }
 
@@ -2480,7 +2505,8 @@ public class ProjectSummaryPDF extends BasePDF {
     PdfWriter writer = this.initializePdf(document, outputStream, PORTRAIT);
 
     // Adding the event to include header and footer on each page
-    HeaderFooterPDF event = new HeaderFooterPDF(summaryTitle, PORTRAIT);
+    HeaderFooterPDF event =
+      new HeaderFooterPDF(summaryTitle, PORTRAIT, project.getSubmmisionCurrentPlannigYear(this.currentPlanningYear));
     writer.setPageEvent(event);
 
     // Open document
@@ -2642,6 +2668,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
     return this.getText("summaries.project.empty");
   }
+
 
   /**
    * This method is for search the location for the name in a list
