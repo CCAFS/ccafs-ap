@@ -62,6 +62,7 @@ public class APCustomRealm extends AuthorizingRealm {
   // Variables
   final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
   private SimpleAuthorizationInfo authorizationInfo;
+  private int userID;
 
   // Managers
   private UserManagerImpl userManager;
@@ -87,6 +88,12 @@ public class APCustomRealm extends AuthorizingRealm {
     this.ldapAuthenticator = ldapAuthenticator;
     injector = Guice.createInjector();
     this.setName("APCustomRealm");
+  }
+
+  @Override
+  public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+    super.clearCachedAuthorizationInfo(principals);
+    authorizationInfo = null;
   }
 
   @Override
@@ -133,9 +140,10 @@ public class APCustomRealm extends AuthorizingRealm {
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
     if (authorizationInfo == null) {
+      // if ((Integer) principals.getPrimaryPrincipal() != userID) {
       authorizationInfo = new SimpleAuthorizationInfo();
 
-      int userID = (Integer) principals.getPrimaryPrincipal();
+      userID = (Integer) principals.getPrimaryPrincipal();
       List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
       Map<String, UserRole> projectRoles = new HashMap<>();
 

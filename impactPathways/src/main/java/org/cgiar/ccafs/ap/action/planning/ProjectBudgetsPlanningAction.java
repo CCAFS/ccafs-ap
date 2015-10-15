@@ -272,11 +272,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         if (budget.getCofinancingProject() == null) {
           saved = budgetManager.saveBudget(projectID, budget, this.getCurrentUser(), this.getJustification());
         } else {
-          Project cofinancingProject = budget.getCofinancingProject();
+          Project cofinancingProject = projectManager.getProject(budget.getCofinancingProject().getId());
+
           // Getting the Project Leader.
-          List<ProjectPartner> ppArray = new ArrayList(); // TODO review.
-          // projectPartnerManager.z_old_getProjectPartners(cofinancingProject.getId(), APConstants.PROJECT_PARTNER_PL);
-          if (!ppArray.isEmpty()) {
+          cofinancingProject.setProjectPartners(projectPartnerManager.getProjectPartners(cofinancingProject));
+          if (!cofinancingProject.getProjectPartners().isEmpty()) {
             // cofinancingProject.setLeader(ppArray.get(0));
 
             // The co-financing budget belongs to the project which receive it.
@@ -287,7 +287,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           } else {
             String projectID = "2014-" + cofinancingProject.getId();
             this
-            .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
+              .addActionWarning(this.getText("planning.projectBudget.invalidCoreComponent", new String[] {projectID}));
           }
         }
         if (!saved) {

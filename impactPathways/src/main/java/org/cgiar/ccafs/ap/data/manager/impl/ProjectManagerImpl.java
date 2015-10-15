@@ -146,7 +146,6 @@ public class ProjectManagerImpl implements ProjectManager {
         project.setRegions(regions);
       }
 
-
       // Getting Project Focuses - Flagships
       if (projectData.get("flagships") != null) {
         String[] flagshipsAcronyms = projectData.get("flagships").split(",");
@@ -160,6 +159,8 @@ public class ProjectManagerImpl implements ProjectManager {
         project.setFlagships(flagships);
       }
 
+      // Getting all the project submissions.
+      project.setSubmissions(submissionManager.getProjectSubmissions(project));
 
       // Adding project to the list
       projectsList.add(project);

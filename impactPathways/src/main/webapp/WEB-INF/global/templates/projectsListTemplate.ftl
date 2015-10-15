@@ -85,21 +85,28 @@
           </td>
           [#-- Project Action Status --]
           <td>
-            [#if securityContext.canSubmitProject(project.id)]
-              <a id="validateProject-${project.id}" class="validateButton ${(project.type)!''}" href="#">[@s.text name="form.buttons.check" /]</a>
-              <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
-              <a id="submitProject-${project.id}" class="submitButton" href="[@s.url namespace=namespace action='submit'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" style="display:none">
-                [@s.text name="form.buttons.submit" /]
-              </a>
+            [#assign submission = project.isSubmitted(currentPlanningYear, 'Planning')! /]
+            [#-- Check button --]
+            [#if securityContext.canSubmitProject(project.id) && !submission?has_content]
+              [#if securityContext.canUpdateProjectDescription(project.id)]
+                <a id="validateProject-${project.id}" class="validateButton ${(project.type)!''}" href="#">[@s.text name="form.buttons.check" /]</a>
+                <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
+              [#else]
+                <p>Not Submitted</p>
+              [/#if]
+            [/#if]
+            
+            [#-- Submit button --]
+            [#if submission?has_content]
+              <p title="Submitted on ${(submission.dateTime?date)?string.full} ">Submitted</p>
             [#else]
-              [#assign submission = project.isSubmitted(2016, 'Planning')!false /]
-              [#if submission??]
-                <p>Submitted on </p>
+              [#if securityContext.canSubmitProject(project.id)]
+                <a id="submitProject-${project.id}" class="submitButton" href="[@s.url namespace=namespace action='submit'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" style="display:none">[@s.text name="form.buttons.submit" /]</a>
               [#else]
                 <p title="The project can be submitted by Management liaisons and Contact points">Not Submitted</p>
               [/#if]
             [/#if]
-            </a>
+            
           </td>
           [#-- Track completition of entry --]
           [#if isPlanning]
