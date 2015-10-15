@@ -95,6 +95,7 @@ public class ProjectSubmissionAction extends BaseAction {
         if (!alreadySubmitted) {
           // Let's submit the project. <:)
           this.submitProject();
+          project.setSubmissions(submissionManager.getProjectSubmissions(project));
         } else {
           LOG.info("User " + this.getCurrentUser().getComposedCompleteName() + " tried to submit the ProjectID="
             + projectID + " which is already submitted.");
@@ -245,7 +246,7 @@ public class ProjectSubmissionAction extends BaseAction {
     int result = submissionManager.saveProjectSubmission(project, submission);
 
     if (result > 0) {
-      System.out.println("The project has been successfully submitted!");
+      submission.setId(result);
       this.sendNotficationEmail();
     }
   }
