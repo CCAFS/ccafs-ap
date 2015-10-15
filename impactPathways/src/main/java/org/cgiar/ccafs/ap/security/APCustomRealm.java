@@ -15,10 +15,11 @@
 package org.cgiar.ccafs.ap.security;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.security.authentication.Authenticator;
+import org.cgiar.ccafs.security.data.manager.ProjectSpecificUserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.manager.UserManagerImpl;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
+import org.cgiar.ccafs.security.data.model.ProjectUserRole;
 import org.cgiar.ccafs.security.data.model.User;
 import org.cgiar.ccafs.security.data.model.UserRole;
 
@@ -59,9 +60,10 @@ public class APCustomRealm extends AuthorizingRealm {
 
   // Variables
   final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
+  // Managers
   private UserManagerImpl userManager;
   private UserRoleManagerImpl userRoleManager;
-  private ProjectManager projectManager;
+  private ProjectSpecificUserRoleManagerImpl projectSpecificUserRoleManager;
 
   @Named("DB")
   Authenticator dbAuthenticator;
@@ -72,11 +74,12 @@ public class APCustomRealm extends AuthorizingRealm {
 
 
   @Inject
-  public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager, ProjectManager projectManager,
-    @Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator) {
+  public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager,
+    ProjectSpecificUserRoleManagerImpl projectSpecificUserRoleManager, @Named("DB") Authenticator dbAuthenticator,
+    @Named("LDAP") Authenticator ldapAuthenticator) {
     this.userManager = userManager;
     this.userRoleManager = userRoleManager;
-    this.projectManager = projectManager;
+    this.projectSpecificUserRoleManager = projectSpecificUserRoleManager;
     this.dbAuthenticator = dbAuthenticator;
     this.ldapAuthenticator = ldapAuthenticator;
     injector = Guice.createInjector();
@@ -131,10 +134,6 @@ public class APCustomRealm extends AuthorizingRealm {
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
     Map<String, UserRole> projectRoles = new HashMap<>();
 
-    // TODO To do a manager to get the roles for a specific project.
-    Map<String, UserRole> projectSpecificRoles = new HashMap<>();
-
-
     // Get the roles general to the platform
     for (UserRole role : roles) {
       authorizationInfo.addRole(role.getAcronym());
@@ -161,7 +160,7 @@ public class APCustomRealm extends AuthorizingRealm {
       }
     }
 
-    // Get the roles specific to the projects
+    // Converting those general roles into specific for the projects where they are able to edit.
     for (Map.Entry<String, UserRole> entry : projectRoles.entrySet()) {
       String projectID = entry.getKey();
       UserRole role = entry.getValue();
@@ -175,6 +174,18 @@ public class APCustomRealm extends AuthorizingRealm {
         }
         authorizationInfo.addStringPermission(permission);
         // }
+      }
+    }
+
+    // Getting the specific roles based on the table project_roles.
+    List<ProjectUserRole> projectSpecificUserRoles = projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
+    // Adding the specific project roles to the user.
+    for (ProjectUserRole projectUserRole : projectSpecificUserRoles) {
+      for (String permission : projectUserRole.getUserRole().getPermissions()) {
+        if (permission.contains(":projects:")) {
+          permission = permission.replace("projects:", "projects:" + projectUserRole.getProjectID() + ":");
+        }
+        authorizationInfo.addStringPermission(permission);
       }
     }
 

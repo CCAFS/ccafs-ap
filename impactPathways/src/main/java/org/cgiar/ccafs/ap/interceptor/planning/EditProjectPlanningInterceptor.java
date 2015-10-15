@@ -75,8 +75,15 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
       List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
       // Projects wont be able to edit the project if the project has been already submitted.
-      canEditProject = (securityContext.isAdmin()) ? true
-        : (projectsEditable.contains(new Integer(projectID)) && (submission == null));
+      if ((projectsEditable.contains(new Integer(projectID))
+        && securityContext.canEditProjectPlanningSection(actionName, projectID))) {
+        if (submission == null) {
+          canEditProject = true;
+        }
+      }
+
+      // canEditProject = (securityContext.isAdmin()) ? true
+      // : (projectsEditable.contains(new Integer(projectID)) && (submission == null));
 
       boolean editParameter = false;
 
