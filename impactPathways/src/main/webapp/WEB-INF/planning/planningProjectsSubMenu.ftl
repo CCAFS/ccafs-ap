@@ -78,9 +78,9 @@
   [/#if]
   
   [#-- Submit button --]
-  [#if securityContext.canSubmitProject(project.id) && !submission?has_content && complete]
-    <a id="submitProject-${projectId}" class="projectSubmitButton" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" style="display:none">[@s.text name="form.buttons.submit" /]</a>
-  [/#if]
+  [#assign showSubmit=(securityContext.canSubmitProject(project.id) && !submission?has_content && complete)]
+  <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >[@s.text name="form.buttons.submit" /]</a>
+  
   
 </nav>
 
