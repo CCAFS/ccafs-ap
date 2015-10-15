@@ -466,15 +466,16 @@ function callCytos(url,contentDiv) {
 	}
 	
 	function getName(item) {
-		if (item.type.id == 2 && item.program.id > 4) {
+	  return item.composedId;
+		/*if (item.type.id == 2 && item.program.id > 4) {
 			return item.program.acronym + ' - ' + '2025 Vision'+' #'+count[item.type.id+'-'+item.program.id];
 		} else  {
 			return item.program.acronym + ' - ' + item.type.name+' #'+count[item.type.id+'-'+item.program.id];
-		}
+		}*/
 	}
 
 	function getWeight(text) {
-	  var weight = text.length;
+	  var weight = text.length+3;
 	  weight *= 10	;
 	  return weight;
 	}

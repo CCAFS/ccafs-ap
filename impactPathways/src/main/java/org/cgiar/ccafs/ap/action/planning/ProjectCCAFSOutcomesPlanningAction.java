@@ -194,8 +194,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
       for (IPElement parent : output.getContributesTo()) {
         IPElement midoutcome = ipElementManager.getIPElement(parent.getId());
         if (!midOutcomesSelected.contains(midoutcome)) {
-          String description = midoutcome.getProgram().getAcronym() + " - "
-            + this.getText("planning.activityImpactPathways.outcome2019") + ": " + midoutcome.getDescription();
+          String description = midoutcome.getComposedId() + ": " + midoutcome.getDescription();
           midoutcome.setDescription(description);
 
           midOutcomesSelected.add(midoutcome);
@@ -224,9 +223,7 @@ public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {
       for (int i = 0; i < elements.size(); i++) {
         IPElement midOutcome = elements.get(i);
         if (this.isValidMidoutcome(midOutcome)) {
-          midOutcome
-            .setDescription(program.getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-              + " #" + (i + 1) + ": " + midOutcome.getDescription());
+          midOutcome.setDescription(midOutcome.getComposedId() + ": " + midOutcome.getDescription());
           midOutcomes.add(midOutcome);
         }
 

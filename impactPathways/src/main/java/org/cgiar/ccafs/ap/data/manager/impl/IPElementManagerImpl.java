@@ -120,6 +120,14 @@ public class IPElementManagerImpl implements IPElementManager {
         IPElement parentElement = new IPElement();
         parentElement.setId(Integer.parseInt(parentData.get("id")));
         parentElement.setDescription(parentData.get("description"));
+        IPProgram parentProgram = new IPProgram();
+        parentProgram.setId(Integer.parseInt(parentData.get("program_id")));
+        parentProgram.setAcronym(parentData.get("program_acronym"));
+        parentElement.setProgram(parentProgram);
+        IPElementType parentType = new IPElementType();
+        parentType.setId(Integer.parseInt(parentData.get("element_type_id")));
+        parentType.setName(parentData.get("element_type_name"));
+        parentElement.setType(parentType);
         elementsRelated.add(parentElement);
       }
       element.setContributesTo(elementsRelated);
@@ -131,6 +139,14 @@ public class IPElementManagerImpl implements IPElementManager {
         IPElement parentElement = new IPElement();
         parentElement.setId(Integer.parseInt(parentData.get("id")));
         parentElement.setDescription(parentData.get("description"));
+        IPProgram parentProgram = new IPProgram();
+        parentProgram.setId(Integer.parseInt(parentData.get("program_id")));
+        parentProgram.setAcronym(parentData.get("program_acronym"));
+        parentElement.setProgram(parentProgram);
+        IPElementType parentType = new IPElementType();
+        parentType.setId(Integer.parseInt(parentData.get("element_type_id")));
+        parentType.setName(parentData.get("element_type_name"));
+        parentElement.setType(parentType);
         elementsRelated.add(parentElement);
       }
       element.setTranslatedOf(elementsRelated);
