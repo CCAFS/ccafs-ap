@@ -209,16 +209,16 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Validate if the section exists.
     List<String> sections = new ArrayList<>();
     sections.add("description");
-    // sections.add("partners");
-    // sections.add("locations");
-    // sections.add("outcomes");
-    // sections.add("ccafsOutcomes");
-    // sections.add("otherContributions");
-    // sections.add("outputs");
-    // sections.add("deliverablesList");
-    // sections.add("activities");
-    // sections.add("budget");
-    // sections.add("budgetByMog");
+    sections.add("partners");
+    sections.add("locations");
+    sections.add("outcomes");
+    sections.add("ccafsOutcomes");
+    sections.add("otherContributions");
+    sections.add("outputs");
+    sections.add("deliverablesList");
+    sections.add("activities");
+    sections.add("budget");
+    sections.add("budgetByMog");
     validSection = sections.contains(sectionName);
 
   }
