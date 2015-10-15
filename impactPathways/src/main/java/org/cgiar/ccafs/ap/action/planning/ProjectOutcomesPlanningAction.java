@@ -29,16 +29,13 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal B.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class ProjectOutcomesPlanningAction extends BaseAction {
 
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectOutcomesPlanningAction.class);
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
@@ -160,9 +157,8 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
         this.addActionError(this.getText("saving.problem"));
         return INPUT;
       }
-    } else {
-      return BaseAction.NOT_AUTHORIZED;
     }
+    return BaseAction.NOT_AUTHORIZED;
   }
 
   public void setCurrentPlanningYear(int currentPlanningYear) {
