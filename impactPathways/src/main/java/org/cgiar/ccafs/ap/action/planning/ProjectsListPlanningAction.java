@@ -211,9 +211,7 @@ public class ProjectsListPlanningAction extends BaseAction {
       projectStatuses.put(project.getId(), this.isComplete());
     }
 
-    for (Project project : projects) {
-      System.out.println(this.getCompleteProject(project.getId()));
-    }
+    this.cleanSectionStatuses();
   }
 
   public void setAllProjects(List<Project> allProjects) {

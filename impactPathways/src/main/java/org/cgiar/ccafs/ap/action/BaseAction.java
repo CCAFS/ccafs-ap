@@ -131,6 +131,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return CANCEL;
   }
 
+  /**
+   * This method removes all the section statuses.
+   */
+  public void cleanSectionStatuses() {
+    sectionStatuses.clear();
+  }
+
   /* Override this method depending of the delete action. */
   public String delete() {
     return SUCCESS;
@@ -210,6 +217,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return null;
   }
 
+
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
@@ -219,7 +227,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String getJustification() {
     return justification;
   }
-
 
   /**
    * Define default locale while we decide to support other languages in the future.
