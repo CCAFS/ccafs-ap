@@ -66,7 +66,7 @@
   <br />
   <div id="validateProject-${projectId}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
   <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
-  [#if securityContext.canSubmitProject()]
+  [#if securityContext.canSubmitProject(projectId)]
     <a id="submitProject-${projectId}" class="projectSubmitButton" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" style="display:none">
       [@s.text name="form.buttons.submit" /]
     </a>

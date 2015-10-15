@@ -181,8 +181,14 @@ public class SecurityContext extends BaseSecurityContext {
       Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
-  public boolean canSubmitProject() {
-    return this.hasPermission(Permission.PLANNING_SUBMIT_BUTTON);
+  /**
+   * Verify if can submit the project.
+   * 
+   * @param projectID
+   * @return
+   */
+  public boolean canSubmitProject(int projectID) {
+    return this.hasPermission(Permission.PLANNING_SUBMIT_BUTTON.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**

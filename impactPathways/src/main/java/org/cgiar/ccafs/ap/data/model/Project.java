@@ -793,17 +793,17 @@ public class Project {
    * 
    * @param year where the submission date happened.
    * @param cycle could be 'Planning' or 'Reporting'.
-   * @return true if the project is already submitted, false otherwise.
+   * @return a Submission object with the information. or null if the project is not submitted.
    */
-  public boolean isSubmitted(int year, String cycle) {
+  public Submission isSubmitted(int year, String cycle) {
     if (this.submissions != null) {
       for (Submission submission : this.submissions) {
         if (submission.getYear() == year && submission.getCycle().equals(cycle)) {
-          return true;
+          return submission;
         }
       }
     }
-    return false;
+    return null;
   }
 
   public boolean isWorkplanRequired() {

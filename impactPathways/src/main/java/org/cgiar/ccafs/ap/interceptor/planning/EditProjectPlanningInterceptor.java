@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 
@@ -69,13 +70,13 @@ public class EditProjectPlanningInterceptor extends AbstractInterceptor {
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
       Project project = projectManager.getProjectBasicInfo(projectID);
-      boolean isSubmitted = project.isSubmitted(baseAction.getCurrentPlanningYear(), "Planning");
+      Submission submission = project.isSubmitted(baseAction.getCurrentPlanningYear(), "Planning");
 
       // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
       List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
       // Projects wont be able to edit the project if the project has been already submitted.
-      canEditProject =
-        (securityContext.isAdmin()) ? true : (projectsEditable.contains(new Integer(projectID)) && !isSubmitted);
+      canEditProject = (securityContext.isAdmin()) ? true
+        : (projectsEditable.contains(new Integer(projectID)) && (submission != null));
 
       boolean editParameter = false;
 
