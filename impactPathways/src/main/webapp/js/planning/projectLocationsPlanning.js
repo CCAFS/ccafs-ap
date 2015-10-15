@@ -144,8 +144,8 @@ function changeTypeEvent(e) {
     $parent.find(".locationName").empty().html($newInputType.html());
     $parent.find("input.latitude, input.longitude").removeClass("notApplicable").attr("disabled", false);
     $parent.find("input.locationName").attr("placeholder", "Name");
-    var lat = map.getCenter().K || map.getCenter().L;
-    var lng = map.getCenter().G || map.getCenter().H;
+    var lat = map.getCenter().lat();
+    var lng = map.getCenter().lng();
     $latitudeField.val(lat);
     $longitudeField.val(lng);
 
@@ -307,22 +307,22 @@ function makeMarker(data) {
   var html = "<div class='infoWindow'>" + data.name + "</div>";
   var infoWindow = new google.maps.InfoWindow;
   // Event when marker is clicked
-  google.maps.event.addListener(marker, 'click', function() {
+  google.maps.event.addListener(marker, 'click', function(e) {
     infoWindow.setContent(html);
     infoWindow.open(map, marker);
   });
   // Event when marker is mouseover
-  google.maps.event.addListener(marker, 'mouseover', function() {
+  google.maps.event.addListener(marker, 'mouseover', function(e) {
     $("#location-" + marker.id).addClass("selected");
   });
   // Event when marker is mouseout
-  google.maps.event.addListener(marker, 'mouseout', function() {
+  google.maps.event.addListener(marker, 'mouseout', function(e) {
     $("#location-" + marker.id).removeClass("selected");
   });
   // Event when marker is dragged
-  google.maps.event.addListener(marker, 'dragend', function() {
-    var longitude = marker.position.K || marker.position.L;
-    var latitude = marker.position.G || marker.position.H;
+  google.maps.event.addListener(marker, 'dragend', function(e) {
+    var longitude = e.latLng.lng();
+    var latitude = e.latLng.lat();
     $("#location-" + marker.id).find("input.longitude").val(longitude).trigger("change");
     $("#location-" + marker.id).find("input.latitude").val(latitude).trigger("change");
   });
