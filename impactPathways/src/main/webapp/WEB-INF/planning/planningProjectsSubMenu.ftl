@@ -70,10 +70,7 @@
     <p style="display:none">The project can be submitted now by Management liaison or Contact point.</p>
   [/#if]
   
-  [#-- Check button --]
-  canEdit ${canEdit?string} <br />
-  complete ${complete?string} <br />
-  submission?has_content ${submission?has_content?string} <br />
+  [#-- Check button --] 
   [#if canEdit && !complete && !submission?has_content]
     <p class="projectValidateButton-message center">Check for missing fields. <br /></p>
     <div id="validateProject-${projectId}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
