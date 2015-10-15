@@ -9,9 +9,7 @@
     [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if][/#assign]
     [#if showTitle]
       <h6>
-        <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:
-          [#if required]<span class="red">*</span>[/#if]
-        </label>
+        <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:[#if required]<span class="red">*</span>[/#if]</label>
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </h6>
     [/#if]
@@ -130,8 +128,7 @@
     [#assign placeholderText][@s.text name="form.select.placeholder" /][/#assign]
     [#if showTitle]
       <h6>
-        [#if i18nkey==""]${label} [#else][@s.text name="${i18nkey}" /]:[/#if]
-        [#if required]<span class="red">*</span>[/#if]
+        [#if i18nkey==""]${label} [#else][@s.text name="${i18nkey}" /]:[/#if][#if required]<span class="red">*</span>[/#if]
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </h6>
     [/#if]

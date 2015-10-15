@@ -108,7 +108,7 @@
         [#-- Project upload bilateral contract --]
         [#if (project.bilateralProject && securityContext.canUploadBilateralContract(project.id))]
         <div class="fullBlock fileUpload bilateralContract">
-          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /][#if project.bilateralProject ]<span class="red"> *</span>[/#if]:</h6>
+          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
               <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-file" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
@@ -128,7 +128,7 @@
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
         </div>
         
-        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /][#if !project.bilateralProject ]:<span class="red"> *</span>[/#if] </h6> 
+        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]:[#if !project.bilateralProject ]<span class="red">*</span>[/#if] </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
