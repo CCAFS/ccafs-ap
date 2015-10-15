@@ -45,17 +45,16 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
+      if (projectValidator.isValidBudget(project.getBudgets())) {
 
-      // The projects will be validated according to their type
-      if (!project.isBilateralProject()) {
-        if (projectValidator.isValidBudget(project.getBudgets())) {
-          this.validateProjectBudgets(action, project.getBudgets());
+        if (!project.isBilateralProject()) {
+
+        } else {
+          this.validateProjectBudgetsCore(action, project.getBudgets());
         }
-      } else {
 
-        // It is a Core o CO-Funded Project
-        this.validateProjectBudgets(action, project.getBudgets());
       }
+      // The projects will be validated according to their type
 
       if (validationMessage.length() > 0) {
         action
@@ -66,7 +65,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
     }
   }
 
-  private void validateProjectBudgets(BaseAction action, List<Budget> budgets) {
+  private void validateProjectBudgetsCore(BaseAction action, List<Budget> budgets) {
     for (Budget budget : budgets) {
       if (!budgetValidator.isValidAmount(budget.getAmount())) {
         this.addMessage(action.getText("planning.projectBudget.annualBudget"));
@@ -74,6 +73,11 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
       }
 
       if (!budgetValidator.isValidGenderPercentage(budget.getGenderPercentage())) {
+        this.addMessage(action.getText("planning.projectBudget.genderPercentage"));
+        this.addMissingField("planning.projectBudget.annualBudget");
+      }
+
+      if (budget.getAmount() > 0 && budget.getGenderPercentage() <= 0) {
         this.addMessage(action.getText("planning.projectBudget.genderPercentage"));
         this.addMissingField("planning.projectBudget.annualBudget");
       }
