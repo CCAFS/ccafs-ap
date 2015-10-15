@@ -5,7 +5,7 @@
 [#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
 [#assign projectStage = (currentSubStage)!"" /]
-[#assign projectSubmit = project.isSubmitted(currentPlanningYear, 'Planning')/]
+[#assign projectSubmit = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
 
 <nav id="secondaryMenu" class="projectMenu ${(project.type)!''}">
 <h1><center> 
@@ -66,7 +66,7 @@
   </ul>
   <br />
   
-  [#if !projectSubmit && complete && !securityContext.canSubmitProject()]
+  [#if !projectSubmit?? && complete && !securityContext.canSubmitProject(project.id)]
     <p style="display:none">The project can be submitted now by Management liaison or Contact point.</p>
   [/#if]
   
@@ -77,11 +77,11 @@
   [/#if]
   
   [#-- Submit button --]
-  [#if securityContext.canSubmitProject() && !projectSubmit && complete]
+  [#if securityContext.canSubmitProject(project.id) && !projectSubmit?? && complete]
     <a id="submitProject-${projectId}" class="projectSubmitButton" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" style="display:none">[@s.text name="form.buttons.submit" /]</a>
   [/#if]
   
-  [#if projectSubmit]
+  [#if projectSubmit??]
     <p>The project has been submitted.</p>
   [/#if]
 </nav>
@@ -90,24 +90,29 @@
 
 [#-- Menu element --]
 [#macro menu actionName stageName textName disabled=false]
-  <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss}[/#if] [@sectionStatus actionName=actionName/]">
+  <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss} [/#if]${sectionCompleted(actionName)?string('submitted','toSubmit')}">
     [#if disabled]
       <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
     [#else]
-      <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+      [#if canEdit && !sectionCompleted(actionName)]
+        <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+      [#else]
+        <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+      [/#if]
     [/#if]
   </li> 
 [/#macro]
 
 [#-- Submitted CSS class for section status--]
-[#macro sectionStatus actionName]
-[#compress]
-    [#if action.getProjectSectionStatus(actionName)??]
-      [#if !((action.getProjectSectionStatus(actionName)).missingFieldsWithPrefix)?has_content]
-        submitted
-      [#else]
-        toSubmit 
-      [/#if]
+[#function sectionCompleted actionName]
+  [#assign status= (action.getProjectSectionStatus(actionName))!{} /]
+  [#if status?has_content]
+    [#if !(status.missingFieldsWithPrefix)?has_content]
+      [#return true]
+    [#else]
+      [#return false]
     [/#if]
-[/#compress]
-[/#macro]
+  [#else]
+    [#return false]  
+  [/#if]
+[/#function]
