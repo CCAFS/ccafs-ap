@@ -28,6 +28,9 @@ import com.google.inject.Inject;
 
 
 /**
+ * This class will validate all the deliverables in a project. It has two validate methods. One that validates the list
+ * of deliverables, and another one that validates a specific deliverable.
+ * 
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
@@ -63,14 +66,14 @@ public class ProjectDeliverableValidator extends BaseValidator {
         this.validateAsCoreProject(action, project, deliverable);
       } else {
         // Deliverables are not needed, but if there is one added, it will be validated completely.
-        this.validateAsCoreProject(action, project, deliverable);
+        // this.validateAsCoreProject(action, project, deliverable);
       }
 
       if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.

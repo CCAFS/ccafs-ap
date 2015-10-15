@@ -43,12 +43,12 @@ public interface UserDAO {
   public List<Map<String, String>> getAllOwners();
 
   /**
-   * This method gets all the employees that belongs to a given program identifier
+   * This method gets all the users that belongs to a given liaison institution
    * 
-   * @param programId is an integer that represents the program identifier within the system.
-   * @return a List of Maps with the information from the employees table.
+   * @param liaisonInstitutionID is an integer that represents a liaison institution identifier within the system.
+   * @return a List of Maps with the information from the users table.
    */
-  public List<Map<String, String>> getAllOwners(int programId);
+  public List<Map<String, String>> getAllOwners(int liaisonInstitutionID);
 
   /**
    * Get a list with All Users information

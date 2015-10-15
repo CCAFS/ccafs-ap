@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
@@ -83,8 +84,8 @@ public class BaseXLS {
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
   // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE =
-    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
+  private static String EXCEL_TEMPLATE_FILE = ServletActionContext.getServletContext().getRealPath(
+    "resources/templates/template.xlsx");
 
   // Header Style
   private static final String HEADER_FONT_NAME = "Tahoma";
@@ -97,6 +98,7 @@ public class BaseXLS {
   // Textbox Style
   private static final Color TEXTBOX_BACKGROUND_COLOR_RGB = new Color(255, 204, 41);
   private static final short TEXTBOX_FONT_COLOR_INDEX = HSSFColor.WHITE.index;
+
 
   // Cell Style
   private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
@@ -116,6 +118,9 @@ public class BaseXLS {
   // styleHeader;
   private XSSFCellStyle styleHeader;
   private XSSFCellStyle[] columnStyles;
+
+  // Font to search words
+  private Font richTextFont;
 
   // cell
   private Cell cell;
@@ -195,6 +200,17 @@ public class BaseXLS {
   }
 
   /**
+   * Method used to get the internationalized key that is in the properties file.
+   * 
+   * @param key to search
+   * @param args values to be visualized
+   * @return international key
+   */
+  protected String getText(String key, String[] args) {
+    return textProvider.getText(key, args);
+  }
+
+  /**
    * Method used for to initialize an Excel Workbook object.
    * It creates a Workbook object using a predefined template.
    * 
@@ -239,13 +255,14 @@ public class BaseXLS {
    */
   private void initializeStyles(int[] columnTypes) {
 
-
     // Style header
     styleHeader = (XSSFCellStyle) workbook.createCellStyle();
     styleHeader.setAlignment(CellStyle.ALIGN_CENTER);
     styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
     styleHeader.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
     styleHeader.setFillForegroundColor(new XSSFColor(Color.decode(HEADER_BG_COLOR_HEX)));
+    styleHeader.setWrapText(true);
+
 
     // Font
     XSSFFont font = (XSSFFont) workbook.createFont();
@@ -254,6 +271,12 @@ public class BaseXLS {
     font.setColor(new XSSFColor(Color.decode(HEADER_FONT_COLOR_HEX)));
     font.setFontHeightInPoints(HEADER_FONT_SIZE);
     styleHeader.setFont(font);
+
+
+    richTextFont = workbook.createFont();
+    richTextFont.setFontName("Tahoma");
+    richTextFont.setBold(true);
+    richTextFont.setColor(HSSFColor.RED.index);
 
     // border
     this.setBottomBorderCell(styleHeader, Color.decode(HEADER_BORDER_COLOR_HEX));
@@ -266,48 +289,48 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-          // Style numeric
+      // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style date
+          // Style date
         case COLUMN_TYPE_DATE:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // styleBoleean
+        // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-          // styleBudget
+        // styleBudget
         case COLUMN_TYPE_BUDGET:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("$#,##0.00"));
           // "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"
           break;
 
-        // Style decimal
+          // Style decimal
         case COLUMN_TYPE_DECIMAL:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // Style long string
+          // Style long string
         case COLUMN_TYPE_TEXT_LONG:
           columnStyles[c].setAlignment(HorizontalAlignment.LEFT);
           columnStyles[c].setWrapText(true);
           break;
 
-          // Style short string
+        // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // Style hyperlink
+        // Style hyperlink
         case COLUMN_TYPE_HYPERLINK:
           XSSFFont hlinkfont = (XSSFFont) workbook.createFont();
           hlinkfont.setUnderline(XSSFFont.U_SINGLE);
@@ -552,6 +575,51 @@ public class BaseXLS {
 
   }
 
+
+  /**
+   * This method writes string value into a specific cell.
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   * @param terms
+   */
+  public void writeString(Sheet sheet, String text, String[] terms) {
+    this.prepareCell(sheet);
+    StringTokenizer tokens;
+    String token;
+
+    XSSFRichTextString richText = new XSSFRichTextString();
+    boolean found;
+    if (text == null) {
+      cell.setCellValue("");
+    } else {
+      tokens = new StringTokenizer(text);
+      while (tokens.hasMoreTokens()) {
+        found = false;
+        token = tokens.nextToken();
+        richText.append(token);
+
+        // searching terms in text
+        for (String term : terms) {
+          if (token.equals(term)) {
+            found = true;
+            break;
+          }
+        }
+        if (found) {
+          richText.applyFont(richText.length() - token.length(), richText.length(), richTextFont);
+        }
+        richText.append(" ");
+      }
+
+      if (text.toString().length() > 30) {
+        sheet.setColumnWidth(columnCounter, 12000);
+      }
+      cell.setCellValue(richText);
+    }
+
+  }
+
   /**
    * This method writes the title box into the given sheet.
    * 
@@ -570,7 +638,6 @@ public class BaseXLS {
     textbox.setVerticalAlignment(VerticalAlignment.CENTER);
 
     XSSFRichTextString stringX = new XSSFRichTextString();
-
     Font font = workbook.createFont();
     font.setFontHeightInPoints((short) 20);
     font.setFontName("Tahoma");

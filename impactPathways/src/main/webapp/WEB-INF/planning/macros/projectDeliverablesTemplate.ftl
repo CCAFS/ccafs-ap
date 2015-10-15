@@ -28,10 +28,10 @@
                 <span class="icon-20 icon-uncheck" title=""></span> 
               [/#if]
             [/#if]
-          </td> 
+          </td>
           
           <td class="removeDeliverable-row">
-            [#if canEdit && action.canDelete(dl.id)]
+            [#if canEdit]
               <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="deliverableID${dl.id}" title="" >
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="planning.deliverables.removeDeliverable" /]" /> 
               </a>

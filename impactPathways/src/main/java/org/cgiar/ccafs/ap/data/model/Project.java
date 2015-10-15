@@ -556,7 +556,7 @@ public class Project {
     List<ProjectPartner> ppaPartners = new ArrayList<>();
     if (this.getProjectPartners() != null) {
       for (ProjectPartner pp : this.getProjectPartners()) {
-        if (pp.getInstitution().isPPA()) {
+        if (pp.getInstitution() != null && pp.getInstitution().isPPA()) {
           ppaPartners.add(pp);
         }
       }
@@ -604,14 +604,14 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-        // Standar identifier
+      // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-        // PDF Identifier
+      // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
         // -- flagships
         for (IPProgram flagship : this.getFlagships()) {
@@ -633,12 +633,12 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-        // Excel Identifier
+      // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
         break;
 
-        // Email Subject Identifier
+      // Email Subject Identifier
       case Project.EMAIL_SUBJECT_IDENTIFIER:
         result.append("P" + this.getId());
         break;
@@ -793,17 +793,17 @@ public class Project {
    * 
    * @param year where the submission date happened.
    * @param cycle could be 'Planning' or 'Reporting'.
-   * @return true if the project is already submitted, false otherwise.
+   * @return a Submission object with the information. or null if the project is not submitted.
    */
-  public boolean isSubmitted(int year, String cycle) {
+  public Submission isSubmitted(int year, String cycle) {
     if (this.submissions != null) {
       for (Submission submission : this.submissions) {
         if (submission.getYear() == year && submission.getCycle().equals(cycle)) {
-          return true;
+          return submission;
         }
       }
     }
-    return false;
+    return null;
   }
 
   public boolean isWorkplanRequired() {

@@ -14,7 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.UserManagerImp;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -32,12 +32,12 @@ public interface UserManager {
   public List<User> getAllOwners();
 
   /**
-   * This method gets a list of owners that belongs to a given program.
+   * This method gets a list of owners (MLs) that belongs to a given Liaison institution.
    * 
-   * @param program can be LAM, FP4, EA, CU, etc.
+   * @param liaisonInstitution could be LAM, FP4, EA, CU, CIAT, CIP, etc.
    * @return a List of User objects.
    */
-  public List<User> getAllOwners(IPProgram program);
+  public List<User> getAllOwners(LiaisonInstitution liaisonInstitution);
 
   /**
    * This method gets all the Users from the system.

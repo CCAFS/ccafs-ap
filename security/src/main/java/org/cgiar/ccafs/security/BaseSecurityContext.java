@@ -14,6 +14,8 @@
 
 package org.cgiar.ccafs.security;
 
+import org.cgiar.ccafs.security.data.model.Role;
+
 import java.util.ArrayList;
 import java.util.List;
 

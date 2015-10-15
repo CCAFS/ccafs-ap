@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectRoleManager;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -67,7 +66,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private InstitutionManager institutionManager;
   private LocationManager locationManager;
   private ProjectManager projectManager;
-  private ProjectRoleManager projectRoleManager;
   private UserManager userManager;
   private RoleManager roleManager;
   private ActivityManager activityManager;
@@ -104,14 +102,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
     DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
-    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager, SendMail sendMail,
-    HistoryManager historyManager) {
+    ActivityManager activityManager, RoleManager roleManager, SendMail sendMail, HistoryManager historyManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.locationManager = locationManager;
     this.projectManager = projectManager;
-    this.projectRoleManager = projectRoleManager;
     this.userManager = userManager;
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
@@ -122,24 +118,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // this.budgetManager = budgetManager;
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
-
-  // public static void main(String[] args) {
-  // Injector in = Guice.createInjector(new APModule());
-  // ProjectPartnerManager partnerManager = in.getInstance(ProjectPartnerManager.class);
-  // InstitutionManager instManager = in.getInstance(InstitutionManager.class);
-  // PartnerPersonManager personManager = in.getInstance(PartnerPersonManager.class);
-  //
-  // ProjectPartner partner = partnerManager.getProjectPartner(1);
-  // partner.setInstitution(instManager.getInstitution(5));
-  // PartnerPerson newPerson = new PartnerPerson(810);
-  // newPerson.setResponsibilities("responsibilities OTHER....");
-  // newPerson.setType(APConstants.PROJECT_PARTNER_CP);
-  // newPerson.setUser(new User(5));
-  //
-  // System.out.println(personManager.savePartnerPerson(partner, newPerson, new User(2), "Justification test...."));
-  // // partnerManager.saveProjectPartner(new Project(2), partner, new User(1), "testing update");
-  //
-  // }
 
   public List<Activity> getActivitiesLedByUser(int userID) {
     return activityManager.getProjectActivitiesLedByUser(projectID, userID);
@@ -346,7 +324,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.assigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-        message.toString(), null, null, null);
+      message.toString(), null, null, null);
   }
 
   /**
@@ -386,7 +364,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.unAssigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-        message.toString(), null, null, null);
+      message.toString(), null, null, null);
   }
 
   @Override
@@ -560,7 +538,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
    * 
    * @param previousPartnerPerson is the previous leader/coordinator that has assigned the project before.
    * @param partnerPerson the current leader/coordinator associated to the project.
-   * @param role is the new role assginated (leader/coordinator).
+   * @param role is the new role assignated (leader/coordinator).
    */
   private void updateRoles(PartnerPerson previousPartnerPerson, PartnerPerson partnerPerson, Role role) {
     if (previousPartnerPerson == null && partnerPerson != null) {

@@ -17,7 +17,7 @@ package org.cgiar.ccafs.ap.security;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.BaseSecurityContext;
 import org.cgiar.ccafs.security.Permission;
-import org.cgiar.ccafs.security.Role;
+import org.cgiar.ccafs.security.data.model.Role;
 
 import com.google.inject.Inject;
 
@@ -181,8 +181,14 @@ public class SecurityContext extends BaseSecurityContext {
       Permission.PLANNING_PROJECT_ACTIVITIES_START_DATE_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
-  public boolean canSubmitProject() {
-    return this.hasPermission(Permission.PLANNING_SUBMIT_BUTTON);
+  /**
+   * Verify if can submit the project.
+   * 
+   * @param projectID
+   * @return
+   */
+  public boolean canSubmitProject(int projectID) {
+    return this.hasPermission(Permission.PLANNING_SUBMIT_BUTTON.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**

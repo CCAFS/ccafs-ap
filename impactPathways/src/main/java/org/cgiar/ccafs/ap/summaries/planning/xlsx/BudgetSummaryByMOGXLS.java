@@ -191,7 +191,8 @@ public class BudgetSummaryByMOGXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Map<String, Object>> informationBudgetReportByMOGDetail, List<Map<String, Object>> informationBudgetReportByMOG) {
+  public byte[] generateXLS(List<Map<String, Object>> informationBudgetReportByMOGDetail,
+    List<Map<String, Object>> informationBudgetReportByMOG) {
 
     try {
 
@@ -201,12 +202,12 @@ public class BudgetSummaryByMOGXLS {
       // Writting headers
       String[] headersPOWB =
         new String[] {"Outcome 2019", "MOG", "Total Budget W1/W2 (USD)", "Gender W1/W2 (USD)",
-        "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
+          "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
 
       // defining header types.
       int[] headerTypesPOWB =
         new int[] {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
       // creating sheet
       Sheet[] sheets = new Sheet[2];
@@ -225,7 +226,7 @@ public class BudgetSummaryByMOGXLS {
       xls.writeDescription(sheets[0], xls.getText("summaries.budget.summary.sheet.description"));
 
       // write text box
-      xls.writeTitleBox(sheets[0], xls.getText("summaries.budget.summary.sheet.one.name"));
+      xls.writeTitleBox(sheets[0], " \t\t Budget Summary");
 
       // write text box
       xls.createLogo(workbook, sheets[0]);
@@ -236,14 +237,14 @@ public class BudgetSummaryByMOGXLS {
 
       String[] headersPOWBDetail =
         new String[] {"Project Id", "Project title", "MOG", "Expected annual contribution",
-        "Expected plan of the gender and social inclusion", "Total Budget W1/W2 (USD)", " Gender W1/W2 (USD)",
-          "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
+          "Expected plan of the gender and social inclusion", "Total Budget W1/W2 (USD)", " Gender W1/W2 (USD)",
+        "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
 
       // defining header types.
       int[] headerTypesPOWBDetail =
         new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
 
       workbook.setSheetName(1, "Level - 2");
@@ -257,7 +258,7 @@ public class BudgetSummaryByMOGXLS {
       xls.writeDescription(sheets[1], xls.getText("summaries.budget.summary.sheet.description"));
 
       // write text box
-      xls.writeTitleBox(sheets[1], xls.getText("summaries.budget.summary.sheet.two.name"));
+      xls.writeTitleBox(sheets[1], "      Budget Summary Detail");
 
       // write text box
       xls.createLogo(workbook, sheets[1]);

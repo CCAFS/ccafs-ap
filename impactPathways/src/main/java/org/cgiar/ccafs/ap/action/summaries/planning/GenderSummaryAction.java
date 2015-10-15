@@ -42,8 +42,11 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   private static final long serialVersionUID = 5110987672008315842L;;
   private GenderSummaryXLS genderSummaryXLS;
   private ProjectManager projectManager;
+  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
+    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
 
   private List<Map<String, Object>> projectList, deliverableList, activityList;
+
   // CSV bytes
   private byte[] bytesXLS;
 
@@ -55,7 +58,6 @@ public class GenderSummaryAction extends BaseAction implements Summary {
     ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
     this.genderSummaryXLS = genderSummaryXLS;
-
     this.projectManager = projectManager;
 
   }
@@ -63,7 +65,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = genderSummaryXLS.generateXLS(projectList, activityList, deliverableList);
+    bytesXLS = genderSummaryXLS.generateXLS(projectList, activityList, deliverableList, termsToSearch);
 
     return SUCCESS;
   }
@@ -102,7 +104,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public void prepare() {
 
     projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
-    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
     activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
+    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
   }
 }
