@@ -333,10 +333,10 @@ public class Project {
     return endDate;
   }
 
-
   public List<IPProgram> getFlagships() {
     return flagships;
   }
+
 
   /**
    * This method gets the list of Flagships acronyms separated by comma (, ).
@@ -360,7 +360,6 @@ public class Project {
     return id;
   }
 
-
   /**
    * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
    * 
@@ -383,6 +382,7 @@ public class Project {
     }
     return emptyIndicator;
   }
+
 
   public List<IPIndicator> getIndicators() {
     return indicators;
@@ -455,7 +455,6 @@ public class Project {
     return null;
   }
 
-
   /**
    * This method returns the project partner person who is leading the project.
    * 
@@ -473,6 +472,7 @@ public class Project {
     }
     return null;
   }
+
 
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
@@ -604,7 +604,7 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-      // Standar identifier
+    // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
@@ -613,6 +613,12 @@ public class Project {
 
       // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
+        // Acronym leader institution
+        if (this.getLeader() != null && this.getLeader().getInstitution() != null
+          && this.getLeader().getInstitution().getAcronym() != null) {
+          result.append(this.getLeader().getInstitution().getAcronym() + "-");
+        }
+
         // -- flagships
         for (IPProgram flagship : this.getFlagships()) {
           if (flagship != null) {
@@ -661,10 +667,32 @@ public class Project {
     return submissions;
   }
 
+  /**
+   * This method gets the submissison for the current planning year of current project.
+   * 
+   * @param currentPlanningYear Current Planning Year
+   * @return the submission of the current planning year, null if doesn't exist.
+   */
+  public Submission getSubmmisionCurrentPlannigYear(int currentPlanningYear) {
+
+    for (Submission submission : this.getSubmissions()) {
+      if ((submission.getYear() == currentPlanningYear) && (submission.getCycle().equals("Planning"))) {
+        return submission;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return get the project summary
+   */
   public String getSummary() {
     return summary;
   }
 
+  /**
+   * @return get the project title
+   */
   public String getTitle() {
     return title;
   }
