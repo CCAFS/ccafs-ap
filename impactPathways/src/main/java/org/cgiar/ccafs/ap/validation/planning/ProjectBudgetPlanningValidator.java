@@ -79,9 +79,9 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
   private void validateProjectBudgetsBilateral(BaseAction action, List<Budget> budgets) {
     for (Budget budget : budgets) {
 
-      if (budget.getType().isBilateral()) {
+      if (budget.getType().isBilateral() && budget.getCofinancingProject() == null) {
         if (!budgetValidator.isValidAmountNoZero(budget.getAmount())) {
-          this.addMessage(action.getText("planning.projectBudget.annualBudget"));
+          this.addMessage(action.getText("Invalid Annual Budget"));
           this.addMissingField("planning.projectBudget.annualBudget");
 
         }
@@ -91,7 +91,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
           this.addMissingField("planning.projectBudget.annualBudget");
         }
 
-        if (budget.getAmount() > 0 && budget.getGenderPercentage() <= 0 && budget.getCofinancingProject() == null) {
+        if (budget.getAmount() > 0 && budget.getGenderPercentage() <= 0) {
           this.addMessage("Gender % of annual  budget");
           this.addMissingField("planning.projectBudget.annualBudget");
         }
@@ -105,7 +105,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
   private void validateProjectBudgetsCore(BaseAction action, List<Budget> budgets) {
     for (Budget budget : budgets) {
       if (!budgetValidator.isValidAmount(budget.getAmount())) {
-        this.addMessage(action.getText("planning.projectBudget.annualBudget"));
+        this.addMessage(action.getText("Invalid Annual Budget"));
         this.addMissingField("planning.projectBudget.annualBudget");
       }
 
@@ -141,7 +141,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
       }
     }
     if (!(totalCofinancing <= totalAmount)) {
-      this.addMessage("InValid Distribution for CO-Financing Projects ");
+      this.addMessage("Invalid Distribution for CO-Financing Projects ");
       this.addMissingField("planning.projectBudget.totalCofinancing");
     }
 
