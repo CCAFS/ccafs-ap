@@ -149,8 +149,11 @@ public class ProjectSubmissionAction extends BaseAction {
   private void sendNotficationEmail() {
     // Building the email message
     StringBuilder message = new StringBuilder();
-    message.append(this.getText("planning.submit.email.message",
-      new String[] {this.getCurrentUser().getComposedCompleteName(), String.valueOf(config.getPlanningCurrentYear())}));
+    String[] values = new String[3];
+    values[0] = this.getCurrentUser().getComposedCompleteName();
+    values[1] = project.getTitle();
+    values[2] = String.valueOf(config.getPlanningCurrentYear());
+    message.append(this.getText("planning.submit.email.message", values));
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("planning.manageUsers.email.bye"));
     String subject = this.getText("planning.submit.email.subject",
