@@ -59,12 +59,6 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     this.historyManager = historyManager;
   }
 
-
-  @Override
-  public int getCurrentPlanningYear() {
-    return currentPlanningYear;
-  }
-
   public int getMidOutcomeYear() {
     return midOutcomeYear;
   }
