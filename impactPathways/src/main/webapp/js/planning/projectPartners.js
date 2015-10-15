@@ -32,7 +32,7 @@ function init() {
     // Activate the chosen to the existing partners
     addChosen();
     // Applying word counters to form fields
-    applyWordCounter($("textarea.resp"), lWordsResp);
+    applyWordCounter($("form textarea.resp"), lWordsResp);
     applyWordCounter($("#lessons textarea"), lWordsResp);
     // Validate on save and next action
     validateEvent([
@@ -418,6 +418,7 @@ function addPartnerEvent(e) {
   var $newElement = $("#projectPartner-template").clone(true).removeAttr("id");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
+  applyWordCounter($newElement.find("textarea.resp"), lWordsResp);
   // Activate the chosen plugin for new partners created
   $newElement.find("select").chosen({
       no_results_text: $("#noResultText").val(),
@@ -431,6 +432,7 @@ function addContactEvent(e) {
   var $newElement = $("#contactPerson-template").clone(true).removeAttr("id");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
+  applyWordCounter($newElement.find("textarea.resp"), lWordsResp);
   // Activate the chosen plugin for new partners created
   $newElement.find("select").chosen({
       no_results_text: $("#noResultText").val(),

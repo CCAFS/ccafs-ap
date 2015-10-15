@@ -34,7 +34,7 @@ $(document).ready(function() {
   // hash url animation
   if(window.location.hash) {
     $('html, body').animate({
-      scrollTop: ($(window.location.hash).offset().top || 20) - 20
+      scrollTop: ($(window.location.hash).offset().top || 10) - 10
     }, 2000);
   }
 
@@ -228,19 +228,25 @@ function applyWordCounter($textArea,wordCount) {
   $textArea.parent().append(
       "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>");
   $textArea.parent().find(".charCount").find("span").text(wordCount - word_count($textArea));
-  $textArea.on("keyup", function(event) {
-    var $charCount = $(event.target).parent().find(".charCount");
-    if(word_count($(event.target)) > wordCount) {
-      $(event.target).addClass('fieldError');
-      $charCount.addClass('fieldError');
-    } else {
-      $(event.target).removeClass('fieldError');
-      $charCount.removeClass('fieldError');
-    }
-    // Set count value
-    $charCount.find("span").text(wordCount - word_count($(event.target)));
+  $textArea
+      .on(
+          "keyup",
+          function(event) {
+            var valueLength = $(event.target).val().length;
+            var $charCount = $(event.target).parent().find(".charCount");
+            console.log(valueLength);
+            if((word_count($(event.target)) > wordCount)
+                || ((valueLength == 0) && $(event.target).hasClass("required") && $(event.target).attr('id') != 'justification')) {
+              $(event.target).addClass('fieldError');
+              $charCount.addClass('fieldError');
+            } else {
+              $(event.target).removeClass('fieldError');
+              $charCount.removeClass('fieldError');
+            }
+            // Set count value
+            $charCount.find("span").text(wordCount - word_count($(event.target)));
 
-  });
+          });
   $textArea.trigger("keyup");
 }
 
