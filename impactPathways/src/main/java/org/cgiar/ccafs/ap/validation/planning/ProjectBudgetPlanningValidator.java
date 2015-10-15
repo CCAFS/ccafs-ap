@@ -132,7 +132,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
 
 
         if (!budgetValidator.isValidAmountNoZero(budget.getAmount())) {
-          this.addMessage(action.getText("planning.projectBudget.annualBudget"));
+          this.addMessage("Contribution has a invalid value ");
           this.addMissingField("planning.projectBudget.annualBudget");
         } else {
           totalCofinancing = totalCofinancing + budget.getAmount();
