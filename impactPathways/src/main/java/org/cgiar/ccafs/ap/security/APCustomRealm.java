@@ -51,6 +51,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class APCustomRealm extends AuthorizingRealm {
@@ -60,6 +61,8 @@ public class APCustomRealm extends AuthorizingRealm {
 
   // Variables
   final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
+  private SimpleAuthorizationInfo authorizationInfo;
+
   // Managers
   private UserManagerImpl userManager;
   private UserRoleManagerImpl userRoleManager;
@@ -129,63 +132,67 @@ public class APCustomRealm extends AuthorizingRealm {
 
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-    int userID = (Integer) principals.getPrimaryPrincipal();
-    SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
-    Map<String, UserRole> projectRoles = new HashMap<>();
+    if (authorizationInfo == null) {
+      authorizationInfo = new SimpleAuthorizationInfo();
 
-    // Get the roles general to the platform
-    for (UserRole role : roles) {
-      authorizationInfo.addRole(role.getAcronym());
+      int userID = (Integer) principals.getPrimaryPrincipal();
+      List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
+      Map<String, UserRole> projectRoles = new HashMap<>();
 
-      switch (role.getId()) {
-        case APConstants.ROLE_ADMIN:
-          for (String permission : role.getPermissions()) {
-            authorizationInfo.addStringPermission(permission);
+      // Get the roles general to the platform
+      for (UserRole role : roles) {
+        authorizationInfo.addRole(role.getAcronym());
+
+        switch (role.getId()) {
+          case APConstants.ROLE_ADMIN:
+            for (String permission : role.getPermissions()) {
+              authorizationInfo.addStringPermission(permission);
+            }
+            break;
+
+          case APConstants.ROLE_MANAGEMENT_LIAISON:
+            projectRoles.putAll(userRoleManager.getManagementLiaisonProjects(userID));
+            break;
+
+          case APConstants.ROLE_PROJECT_LEADER:
+          case APConstants.ROLE_PROJECT_COORDINATOR:
+            projectRoles.putAll(userRoleManager.getProjectLeaderProjects(userID));
+            break;
+
+          case APConstants.ROLE_CONTACT_POINT:
+            projectRoles.putAll(userRoleManager.getContactPointProjects(userID));
+            break;
+        }
+      }
+
+      // Converting those general roles into specific for the projects where they are able to edit.
+      for (Map.Entry<String, UserRole> entry : projectRoles.entrySet()) {
+        String projectID = entry.getKey();
+        UserRole role = entry.getValue();
+
+        for (String permission : role.getPermissions()) {
+          // Add the project identifier to the permission only if the permission is not at project level.
+          // The following permission will be ignored: planning:projects:5:description:update
+          // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
+          if (permission.contains(":projects:")) {
+            permission = permission.replace("projects:", "projects:" + projectID + ":");
           }
-          break;
-
-        case APConstants.ROLE_MANAGEMENT_LIAISON:
-          projectRoles.putAll(userRoleManager.getManagementLiaisonProjects(userID));
-          break;
-
-        case APConstants.ROLE_PROJECT_LEADER:
-        case APConstants.ROLE_PROJECT_COORDINATOR:
-          projectRoles.putAll(userRoleManager.getProjectLeaderProjects(userID));
-          break;
-
-        case APConstants.ROLE_CONTACT_POINT:
-          projectRoles.putAll(userRoleManager.getContactPointProjects(userID));
-          break;
-      }
-    }
-
-    // Converting those general roles into specific for the projects where they are able to edit.
-    for (Map.Entry<String, UserRole> entry : projectRoles.entrySet()) {
-      String projectID = entry.getKey();
-      UserRole role = entry.getValue();
-
-      for (String permission : role.getPermissions()) {
-        // Add the project identifier to the permission only if the permission is not at project level.
-        // The following permission will be ignored: planning:projects:5:description:update
-        // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
-        if (permission.contains(":projects:")) {
-          permission = permission.replace("projects:", "projects:" + projectID + ":");
+          authorizationInfo.addStringPermission(permission);
+          // }
         }
-        authorizationInfo.addStringPermission(permission);
-        // }
       }
-    }
 
-    // Getting the specific roles based on the table project_roles.
-    List<ProjectUserRole> projectSpecificUserRoles = projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
-    // Adding the specific project roles to the user.
-    for (ProjectUserRole projectUserRole : projectSpecificUserRoles) {
-      for (String permission : projectUserRole.getUserRole().getPermissions()) {
-        if (permission.contains(":projects:")) {
-          permission = permission.replace("projects:", "projects:" + projectUserRole.getProjectID() + ":");
+      // Getting the specific roles based on the table project_roles.
+      List<ProjectUserRole> projectSpecificUserRoles =
+        projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
+      // Adding the specific project roles to the user.
+      for (ProjectUserRole projectUserRole : projectSpecificUserRoles) {
+        for (String permission : projectUserRole.getUserRole().getPermissions()) {
+          if (permission.contains(":projects:")) {
+            permission = permission.replace("projects:", "projects:" + projectUserRole.getProjectID() + ":");
+          }
+          authorizationInfo.addStringPermission(permission);
         }
-        authorizationInfo.addStringPermission(permission);
       }
     }
 
