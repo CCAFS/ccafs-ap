@@ -63,7 +63,7 @@ public class IPElement {
   public String getComposedId() {
     StringBuilder composedID = new StringBuilder();
     // composedID.append("O");
-    if (this.program.getId() >= 5) {
+    if (this.program != null && this.program.getId() >= 5) {
       composedID.append(this.program != null ? this.program.getAcronym().substring(3) : "p_null");
     } else {
       composedID.append(this.program != null ? "F" + this.program.getAcronym().substring(3) : "p_null");
