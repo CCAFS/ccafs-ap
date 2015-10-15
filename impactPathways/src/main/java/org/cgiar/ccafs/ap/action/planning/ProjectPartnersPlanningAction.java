@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectRoleManager;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -67,7 +66,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private InstitutionManager institutionManager;
   private LocationManager locationManager;
   private ProjectManager projectManager;
-  private ProjectRoleManager projectRoleManager;
   private UserManager userManager;
   private RoleManager roleManager;
   private ActivityManager activityManager;
@@ -104,14 +102,12 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
     DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
-    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager, SendMail sendMail,
-    HistoryManager historyManager) {
+    ActivityManager activityManager, RoleManager roleManager, SendMail sendMail, HistoryManager historyManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.locationManager = locationManager;
     this.projectManager = projectManager;
-    this.projectRoleManager = projectRoleManager;
     this.userManager = userManager;
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
@@ -346,7 +342,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.assigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-        message.toString(), null, null, null);
+      message.toString(), null, null, null);
   }
 
   /**
@@ -386,7 +382,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.unAssigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-        message.toString(), null, null, null);
+      message.toString(), null, null, null);
   }
 
   @Override

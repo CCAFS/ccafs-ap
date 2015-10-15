@@ -17,7 +17,7 @@ package org.cgiar.ccafs.ap.security;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.BaseSecurityContext;
 import org.cgiar.ccafs.security.Permission;
-import org.cgiar.ccafs.security.Role;
+import org.cgiar.ccafs.security.data.model.Role;
 
 import com.google.inject.Inject;
 

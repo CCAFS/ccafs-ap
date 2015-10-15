@@ -12,29 +12,22 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.manager;
-
-import org.cgiar.ccafs.ap.data.manager.impl.ProjectRoleManagerImpl;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.User;
-
-import com.google.inject.ImplementedBy;
+package org.cgiar.ccafs.security.data.model;
 
 
 /**
- * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Hernán David Carvajal
  */
-@ImplementedBy(ProjectRoleManagerImpl.class)
-public interface ProjectRoleManager {
 
-  /**
-   * This method assign the role of leader and coordinator to the corresponding partner contacts.
-   * 
-   * @param project - A project object that contains the list of partners
-   * @param user - User who is making the changes
-   * @param justification
-   * @return true if the information was saved successfully. False otherwise.
-   */
-  public boolean saveProjectRoles(Project project, User user, String justification);
+public enum Role {
+
+  Admin("Admin"), FPL("FPL"), RPL("RPL"), CP("CP"), AL("AL"), CU("CU"), GUEST("G"), PL("PL"), PC("PC"), ML("ML");
+
+  private String acronym;
+
+
+  private Role(String acronym) {
+    this.acronym = acronym;
+  }
 
 }
