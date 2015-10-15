@@ -234,7 +234,6 @@ function applyWordCounter($textArea,wordCount) {
           function(event) {
             var valueLength = $(event.target).val().length;
             var $charCount = $(event.target).parent().find(".charCount");
-            console.log(valueLength);
             if((word_count($(event.target)) > wordCount)
                 || ((valueLength == 0) && $(event.target).hasClass("required") && $(event.target).attr('id') != 'justification')) {
               $(event.target).addClass('fieldError');

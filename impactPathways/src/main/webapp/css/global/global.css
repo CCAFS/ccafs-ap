@@ -2747,6 +2747,12 @@ a.projectSubmitButton {
   cursor: pointer;
 }
 
+p.projectValidateButton-message {
+  color: #5A5A5A;
+  margin-bottom: 5px;
+  font-style: italic;
+}
+
 .projectSubmitButton:hover {
   background-color: #3498db;
 }
