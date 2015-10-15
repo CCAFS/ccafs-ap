@@ -2756,10 +2756,11 @@ a.projectSubmitButton {
 
 .projectsList #ids, .activities #ids {
   width: 27px !important;
+  text-align: center;
 }
 
 .projectsList #projectTitles {
-  width: 440px;
+  width: 383px;
 }
 
 .projectsList #projectRegions {
@@ -2779,7 +2780,7 @@ a.projectSubmitButton {
 }
 
 .projectsList #projectActionStatus {
-padding: 0 4px 0 6px;}
+padding: 0 4px 0 6px;width: 100px;}
 
 .projectsList #projectType {
   width: 114px;

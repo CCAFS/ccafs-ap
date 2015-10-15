@@ -1,7 +1,7 @@
 [#ftl]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#-- This macro is being used in projectsListPreplanning.ftl and projectsListPlanning.ftl The idea is to represent a table with specific information about projects --]
-[#macro projectsList projects owned=true canValidate=false isPlanning=false namespace="/"]
+[#macro projectsList projects owned=true canValidate=false canEdit=false isPlanning=false namespace="/"]
   <table class="projectsList" id="projects">
     <thead>
       <tr class="header">
@@ -85,10 +85,10 @@
           </td>
           [#-- Project Action Status --]
           <td>
-            [#assign submission = project.isSubmitted(currentPlanningYear, 'Planning')! /]
+            [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))! /]
             [#-- Check button --]
             [#if securityContext.canSubmitProject(project.id) && !submission?has_content]
-              [#if securityContext.canUpdateProjectDescription(project.id)]
+              [#if canEdit]
                 <a id="validateProject-${project.id}" class="validateButton ${(project.type)!''}" href="#">[@s.text name="form.buttons.check" /]</a>
                 <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
               [#else]

@@ -29,10 +29,10 @@
   <article class="halfContent" id="mainInformation">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
-    [#if !canEdit ]
-      <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
-      </p>
+    [#if submission?has_content]
+      <p class="readPrivileges">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
+      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]</p>
     [/#if] 
     <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>  
     <div id="projectDescription" class="borderBox">
