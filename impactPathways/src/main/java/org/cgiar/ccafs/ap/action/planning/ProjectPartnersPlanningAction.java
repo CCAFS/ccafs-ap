@@ -119,24 +119,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
 
-  // public static void main(String[] args) {
-  // Injector in = Guice.createInjector(new APModule());
-  // ProjectPartnerManager partnerManager = in.getInstance(ProjectPartnerManager.class);
-  // InstitutionManager instManager = in.getInstance(InstitutionManager.class);
-  // PartnerPersonManager personManager = in.getInstance(PartnerPersonManager.class);
-  //
-  // ProjectPartner partner = partnerManager.getProjectPartner(1);
-  // partner.setInstitution(instManager.getInstitution(5));
-  // PartnerPerson newPerson = new PartnerPerson(810);
-  // newPerson.setResponsibilities("responsibilities OTHER....");
-  // newPerson.setType(APConstants.PROJECT_PARTNER_CP);
-  // newPerson.setUser(new User(5));
-  //
-  // System.out.println(personManager.savePartnerPerson(partner, newPerson, new User(2), "Justification test...."));
-  // // partnerManager.saveProjectPartner(new Project(2), partner, new User(1), "testing update");
-  //
-  // }
-
   public List<Activity> getActivitiesLedByUser(int userID) {
     return activityManager.getProjectActivitiesLedByUser(projectID, userID);
   }
@@ -556,7 +538,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
    * 
    * @param previousPartnerPerson is the previous leader/coordinator that has assigned the project before.
    * @param partnerPerson the current leader/coordinator associated to the project.
-   * @param role is the new role assginated (leader/coordinator).
+   * @param role is the new role assignated (leader/coordinator).
    */
   private void updateRoles(PartnerPerson previousPartnerPerson, PartnerPerson partnerPerson, Role role) {
     if (previousPartnerPerson == null && partnerPerson != null) {
