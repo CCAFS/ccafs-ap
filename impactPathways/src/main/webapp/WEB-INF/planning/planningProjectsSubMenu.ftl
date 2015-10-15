@@ -81,9 +81,6 @@
     <a id="submitProject-${projectId}" class="projectSubmitButton" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" style="display:none">[@s.text name="form.buttons.submit" /]</a>
   [/#if]
   
-  [#if submission?has_content]
-    <p>The project has been submitted on ${(submission.dateTime?date)?string.full} </p>
-  [/#if]
 </nav>
 
 

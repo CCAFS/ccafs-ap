@@ -2062,6 +2062,17 @@ h1.simpleTitle span {
   border-radius: 4px;
 }
 
+p.projectSubmitted {
+  margin: 30px 0 10px 0;
+  color: #7FB06F;
+  text-align: center;
+  background-color: #E8F7E3;
+  border: 1px solid #E3F5DD;
+  padding: 12px 0px;
+  font-size: 1.3em;
+  border-radius: 5px;
+}
+
 .searchUser {
   width: 91px;
   padding: 2px 0px 4px 0;
