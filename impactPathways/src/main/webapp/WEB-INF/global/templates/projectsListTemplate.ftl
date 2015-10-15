@@ -89,7 +89,7 @@
             [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))! /]
             [#if securityContext.canSubmitProject(project.id) && !submission?has_content]
               [#if canEdit]
-                <a id="validateProject-${project.id}" class="validateButton ${(project.type)!''}" href="#">[@s.text name="form.buttons.check" /]</a>
+                <a id="validateProject-${project.id}" title="Check for missing fields" class="validateButton ${(project.type)!''}" href="#" >[@s.text name="form.buttons.check" /]</a>
                 <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
               [#else]
                 <p title="The project can be submitted by Management liaisons and Contact points">Not Submitted</p>

@@ -55,9 +55,6 @@
         [#if securityContext.canAddBilateralProject()]
           <a class="addButton" href="[@s.url namespace="/planning" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
         [/#if]
-        [#if securityContext.canAddCofoundedProject()]
-          <a class="addButton" href="[@s.url namespace="/planning" action='addCoFundedProject'/]">[@s.text name="preplanning.projects.addCofoundedProject" /]</a>
-        [/#if]
       </div>
     [/#if]
 
