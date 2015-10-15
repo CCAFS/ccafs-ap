@@ -34,6 +34,7 @@
   <div class="textArea [#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]> 
     [#assign customName]${(i18nkey?has_content)?string(i18nkey,name)}[/#assign]  
     [#assign customLabel][#if !editable]${customName}.readText[#else]${customName}[/#if][/#assign]
+    [#assign customValue][#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if][/#assign]
   	[#if showTitle]
 	    <h6> 
 	      <label for="${name}" class="${editable?string('editable', 'readOnly')}"> [@s.text name="${customLabel}"/]:[#if required]<span class="red">*</span>[/#if]</label>
@@ -42,7 +43,7 @@
     [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if]/>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+      <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if]  class="[#if className != "-NULL"]ckeditor ${className}[/#if] ${required?string('required','optional')}" />${customValue}</textarea>
     [#else]
       [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
