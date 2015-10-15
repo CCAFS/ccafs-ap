@@ -52,7 +52,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
           if (project.getOverhead().isBilateralCostRecovered() == false) {
             if (!(project.getOverhead().getContractedOverhead() > 0
               && project.getOverhead().getContractedOverhead() <= 100)) {
-              this.addMessage(action.getText("Invalid Overhead Value"));
+              this.addMessage("Invalid Overhead Value");
               this.addMissingField("project.overhead.contractedOverhead");
 
             }
