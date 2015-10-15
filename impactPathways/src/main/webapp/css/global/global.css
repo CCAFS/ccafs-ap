@@ -220,7 +220,7 @@ label.readOnly {
 }
 
 p.fieldError{
-  color: #F52626;
+  color: #F52626 !important;
   font-weight: bold;
   margin-right: 4px;
 }

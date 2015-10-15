@@ -50,7 +50,7 @@ public class SubmissionManagerImpl implements SubmissionManager {
 
   @Inject
   public SubmissionManagerImpl(SubmissionDAO submissionDAO, UserManager userManager) {
-    this.dateFormatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    this.dateFormatter = new SimpleDateFormat(APConstants.DATE_TIME_FORMAT);
     this.submissionDAO = submissionDAO;
     this.userManager = userManager;
   }
