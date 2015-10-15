@@ -72,6 +72,7 @@
   
   [#-- Check button --]
   [#if canEdit && !complete && !submission?has_content]
+    <p class="center">Check for missing fields. <br /></p>
     <div id="validateProject-${projectId}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
     <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
   [/#if]
