@@ -17,7 +17,7 @@ import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.MD5Convert;
 
@@ -80,24 +80,21 @@ public class UserManagerImp implements UserManager {
   }
 
   @Override
-  public List<User> getAllOwners(IPProgram program) {
-    List<User> projectContacts = new ArrayList<>();
-    List<Map<String, String>> projectContactsDataList = userDAO.getAllOwners(program.getId());
-    for (Map<String, String> pData : projectContactsDataList) {
+  public List<User> getAllOwners(LiaisonInstitution liaisonInstitution) {
+    List<User> users = new ArrayList<>();
+    List<Map<String, String>> userDataList = userDAO.getAllOwners(liaisonInstitution.getId());
+    for (Map<String, String> uData : userDataList) {
       // User
-      User projectContact = new User();
-      projectContact.setId(Integer.parseInt(pData.get("id")));
-      projectContact.setFirstName(pData.get("first_name"));
-      projectContact.setLastName(pData.get("last_name"));
-      projectContact.setEmail(pData.get("email"));
-
-      // Institution
-      // projectContact
-      // .setCurrentInstitution(institutionManager.getInstitution(Integer.parseInt(pData.get("institution_id"))));
+      User user = new User();
+      user.setId(Integer.parseInt(uData.get("id")));
+      user.setFirstName(uData.get("first_name"));
+      user.setLastName(uData.get("last_name"));
+      user.setUsername(uData.get("username"));
+      user.setEmail(uData.get("email"));
       // Adding object to the array.
-      projectContacts.add(projectContact);
+      users.add(user);
     }
-    return projectContacts;
+    return users;
   }
 
   @Override

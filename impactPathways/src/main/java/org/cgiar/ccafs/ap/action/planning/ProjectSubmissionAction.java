@@ -16,9 +16,13 @@ package org.cgiar.ccafs.ap.action.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Submission;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.URLFileDownloader;
@@ -47,6 +51,8 @@ public class ProjectSubmissionAction extends BaseAction {
   // Manager
   private SubmissionManager submissionManager;
   private ProjectManager projectManager;
+  private ProjectPartnerManager partnerManager;
+  private UserManager userManager;
   private SendMail sendMail;
 
   // Model for the back-end
@@ -59,10 +65,12 @@ public class ProjectSubmissionAction extends BaseAction {
 
   @Inject
   public ProjectSubmissionAction(APConfig config, SubmissionManager submissionManager, ProjectManager projectManager,
-    SendMail sendMail) {
+    UserManager userManager, ProjectPartnerManager partnerManager, SendMail sendMail) {
     super(config);
     this.submissionManager = submissionManager;
     this.projectManager = projectManager;
+    this.userManager = userManager;
+    this.partnerManager = partnerManager;
     this.sendMail = sendMail;
   }
 
@@ -132,6 +140,7 @@ public class ProjectSubmissionAction extends BaseAction {
 
     // Getting the project information.
     project = projectManager.getProject(projectID);
+    project.setProjectPartners(partnerManager.getProjectPartners(project));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
@@ -150,13 +159,37 @@ public class ProjectSubmissionAction extends BaseAction {
     String toEmail = null;
     String ccEmail = null;
     if (config.isProduction()) {
-      // Send email to the new user and the P&R notification email.
+      // Send email to the user that is submitting the project.
       // TO
-      // toEmail = userUnassigned.getEmail();
-      // // CC will be the user who is making the modification.
-      // if (this.getCurrentUser() != null) {
-      ccEmail = this.getCurrentUser().getEmail();
-      // }
+      toEmail = this.getCurrentUser().getEmail();
+
+      // Getting all the MLs associated to the Project Liaison institution
+      List<User> owners = userManager.getAllOwners(project.getLiaisonInstitution());
+      StringBuilder ccEmails = new StringBuilder();
+      for (User user : owners) {
+        if (user.getId() != this.getCurrentUser().getId()) {
+          ccEmails.append(user.getEmail());
+          ccEmails.append(" ");
+        }
+      }
+      // Also the Project Leader
+      System.out.println();
+      if (project.getLeaderPerson() != null
+        && project.getLeaderPerson().getUser().getId() != this.getCurrentUser().getId()) {
+        ccEmails.append(project.getLeaderPerson().getUser().getEmail());
+        ccEmails.append(" ");
+      }
+      // and the Project Coordinator(s).
+      for (PartnerPerson partnerPerson : project.getCoordinatorPersons()) {
+        if (partnerPerson.getUser().getId() != this.getCurrentUser().getId()) {
+          ccEmails.append(partnerPerson.getUser().getEmail());
+          ccEmails.append(" ");
+        }
+      }
+
+      // CC will be the other MLs.
+      ccEmail = ccEmails.toString().isEmpty() ? null : ccEmails.toString();
+
     }
     // BBC will be our gmail notification email.
     String bbcEmails = this.config.getEmailNotification();

@@ -14,7 +14,6 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
@@ -114,47 +113,35 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public List<Map<String, String>> getAllOwners(int programId) {
+  public List<Map<String, String>> getAllOwners(int liaisonInstitutionID) {
     LOG.debug(">> getAllOwners()");
-    List<Map<String, String>> projectContactPersonList = new ArrayList<>();
+    List<Map<String, String>> userDataList = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, u.first_name, u.last_name, u.email, ");
-      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
-      query.append("FROM users u ");
-      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
-      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE (ro.id= '");
-      query.append(APConstants.ROLE_MANAGEMENT_LIAISON);
-      query.append("' OR ro.id= '");
-      query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append("') AND ins.program_id = ");
-      query.append(programId);
-      query.append(" ORDER BY u.last_name, ins.name ");
+      query.append("SELECT u.* ");
+      query.append("FROM liaison_users lu ");
+      query.append("INNER JOIN liaison_institutions li ON li.id = lu.institution_id ");
+      query.append("INNER JOIN users u ON u.id = lu.user_id ");
+      query.append("WHERE li.id = ");
+      query.append(liaisonInstitutionID);
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
-        Map<String, String> projectContactPersonData = new HashMap<>();
-        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
-        projectContactPersonData.put("id", rs.getString("id"));
-        projectContactPersonData.put("employee_id", rs.getString("employee_id"));
-        projectContactPersonData.put("first_name", rs.getString("first_name"));
-        projectContactPersonData.put("last_name", rs.getString("last_name"));
-        projectContactPersonData.put("email", rs.getString("email"));
-        projectContactPersonData.put("role_id", rs.getString("role_id"));
-        projectContactPersonData.put("role_name", rs.getString("role_name"));
-        projectContactPersonData.put("role_acronym", rs.getString("role_acronym"));
-        projectContactPersonList.add(projectContactPersonData);
+        Map<String, String> userData = new HashMap<>();
+        userData.put("id", rs.getString("id"));
+        userData.put("first_name", rs.getString("first_name"));
+        userData.put("last_name", rs.getString("last_name"));
+        userData.put("email", rs.getString("email"));
+        userData.put("username", rs.getString("username"));
+        userDataList.add(userData);
       }
       rs.close();
     } catch (SQLException e) {
       LOG.error("-- getAllOwners() > There was an error getting the data for All Project Owners {}.", e);
       return null;
     }
-    LOG.debug("<< getAllOwners():{}", projectContactPersonList);
-    return projectContactPersonList;
+    LOG.debug("<< getAllOwners():{}", userDataList);
+    return userDataList;
   }
 
 
