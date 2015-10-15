@@ -20,12 +20,15 @@ import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.security.APCustomRealm;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Date;
 
 import com.google.inject.Inject;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,6 +106,15 @@ public class LoginAction extends BaseAction {
     }
     this.getSession().clear();
     SecurityUtils.getSubject().logout();
+
+    // Hack for cleaning cached authorization.
+    for (Realm realm : ((RealmSecurityManager) SecurityUtils.getSecurityManager()).getRealms()) {
+      if (realm instanceof APCustomRealm) {
+        APCustomRealm customRealm = (APCustomRealm) realm;
+        customRealm.clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+      }
+    }
+
     return SUCCESS;
   }
 
@@ -118,11 +130,11 @@ public class LoginAction extends BaseAction {
         this.addFieldError("user.email", this.getText("validation.field.required"));
         user.setPassword(null);
       } /*
-         * else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
-         * addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
-         * user.setPassword(null);
-         * }
-         */
+       * else if (!EmailValidator.isValidEmail(user.getEmail().trim())) {
+       * addFieldError("user.email", getText("validation.invalid", new String[] {getText("home.login.email")}));
+       * user.setPassword(null);
+       * }
+       */
     }
 
   }
