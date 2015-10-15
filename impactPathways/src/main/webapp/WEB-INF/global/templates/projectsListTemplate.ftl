@@ -2,6 +2,7 @@
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#-- This macro is being used in projectsListPreplanning.ftl and projectsListPlanning.ftl The idea is to represent a table with specific information about projects --]
 [#macro projectsList projects owned=true canValidate=false canEdit=false isPlanning=false namespace="/"]
+  
   <table class="projectsList" id="projects">
     <thead>
       <tr class="header">
@@ -27,6 +28,7 @@
     </thead>
     <tbody>
       [#list projects as project]
+      ${action.getCompleteProject(project.id)?string}
         <tr>
         [#-- ID --]
         <td class="projectId">

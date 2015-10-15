@@ -22,9 +22,8 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -50,7 +49,7 @@ public class ProjectsListPlanningAction extends BaseAction {
   // Model for the front-end
   private int projectID;
   private double totalBudget;
-  private Map<Integer, Boolean> projectStatuses;
+  private LinkedHashMap<Integer, Boolean> projectStatuses;
 
   @Inject
   public ProjectsListPlanningAction(APConfig config, ProjectManager projectManager) {
@@ -155,6 +154,10 @@ public class ProjectsListPlanningAction extends BaseAction {
     return allProjects;
   }
 
+  public boolean getCompleteProject(int projectID) {
+    return projectStatuses.get(projectID);
+  }
+
   public Date getCurrentPlanningStartDate() {
     return config.getCurrentPlanningStartDate();
   }
@@ -173,10 +176,6 @@ public class ProjectsListPlanningAction extends BaseAction {
 
   public List<Project> getProjects() {
     return projects;
-  }
-
-  public Map<Integer, Boolean> getProjectStatuses() {
-    return projectStatuses;
   }
 
   public double getTotalBudget() {
@@ -206,13 +205,15 @@ public class ProjectsListPlanningAction extends BaseAction {
     }
 
     // Validating if projects are complete or not.
-    projectStatuses = new HashMap<>();
+    projectStatuses = new LinkedHashMap<>();
     for (Project project : projects) {
       this.initializeProjectSectionStatuses(project, "Planning");
       projectStatuses.put(project.getId(), this.isComplete());
     }
 
-
+    for (Project project : projects) {
+      System.out.println(this.getCompleteProject(project.getId()));
+    }
   }
 
   public void setAllProjects(List<Project> allProjects) {
