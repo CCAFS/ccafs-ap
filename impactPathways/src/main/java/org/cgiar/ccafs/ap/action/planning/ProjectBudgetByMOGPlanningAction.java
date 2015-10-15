@@ -219,6 +219,7 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
+
     // Getting the history for this section
     this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
   }
@@ -267,7 +268,7 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      projectBudgetByMOGValidator.validate(this, project);
+      projectBudgetByMOGValidator.validate(this, project, "Planning");
     }
   }
 }

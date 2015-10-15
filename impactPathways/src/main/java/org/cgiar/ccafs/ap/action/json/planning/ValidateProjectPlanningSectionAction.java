@@ -244,7 +244,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
     project.getOutputs().clear();
     project.getOutputs().addAll(outputsTemp);
-    // Getting the current Plannig Year
+    // Getting the current Planning Year
     int year = config.getPlanningCurrentYear();
     int bilateralBudgetType = BudgetType.W3_BILATERAL.getValue();
     int ccafsBudgetType = BudgetType.W1_W2.getValue();
@@ -254,7 +254,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     budgets.addAll(budgetByMogManager.getProjectOutputsBudgetByTypeAndYear(projectID, bilateralBudgetType, year));
     project.setOutputsBudgets(budgets);
 
-    budgetbyMOGValidator.validate(this, project);
+    budgetbyMOGValidator.validate(this, project, "Planning");
 
   }
 
@@ -339,7 +339,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
 
     // Validate
     projectOutputValidator.validate(this, project, "Planning");
@@ -412,7 +412,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
 
@@ -425,7 +425,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

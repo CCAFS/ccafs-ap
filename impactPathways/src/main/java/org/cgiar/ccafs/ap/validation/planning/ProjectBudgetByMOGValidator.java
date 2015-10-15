@@ -35,10 +35,9 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
   }
 
 
-  public void validate(BaseAction action, Project project) {
+  public void validate(BaseAction action, Project project, String cycle) {
     double ccafsBudgetTotalPorcentage = 0;
     double bilateralBudgeTotalPorcentage = 0;
-
     double ccafsBudgetGenderPorcentage = 0;
     double bilateralBudgeGenderPorcentage = 0;
     if (project != null) {
@@ -46,22 +45,17 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
         if (budgetbyMog.getType().isCCAFSBudget()) {
           ccafsBudgetTotalPorcentage = ccafsBudgetTotalPorcentage + budgetbyMog.getTotalContribution();
           ccafsBudgetGenderPorcentage = ccafsBudgetGenderPorcentage + budgetbyMog.getGenderContribution();
-
         }
         if (budgetbyMog.getType().isBilateral()) {
           bilateralBudgeTotalPorcentage = bilateralBudgeTotalPorcentage + budgetbyMog.getTotalContribution();
           bilateralBudgeGenderPorcentage = bilateralBudgeGenderPorcentage + budgetbyMog.getGenderContribution();
-
         }
       }
 
-
       if (project.isCoreProject() || project.isCoFundedProject()) {
-
         if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
           this.addMessage(("Invalid, Percentage Distribution"));
           this.addMissingField("project.budgetbyMog.invalidPorcentage");
-
         }
       }
       if (project.isBilateralProject()) {
@@ -75,6 +69,7 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
       action
         .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
     }
-    this.saveMissingFields(project, "Planning", "budgetByMog");
+    // Saving missing fields
+    this.saveMissingFields(project, cycle, "budgetByMog");
   }
 }
