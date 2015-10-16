@@ -59,7 +59,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
 
           }
           double totalBudget = project.getTotalBilateralBudget();
-          this.validateProjectCofinancing(action, project.getBudgets(), totalBudget);
+          this.validateProjectCofinancing(action, project.getLinkedProjects(), totalBudget);
         } else {
           this.validateProjectBudgetsCore(action, project.getBudgets());
         }
@@ -91,10 +91,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
           this.addMissingField("planning.projectBudget.annualBudget");
         }
 
-        if (budget.getAmount() > 0 && budget.getGenderPercentage() <= 0) {
-          this.addMessage("Gender % of annual  budget");
-          this.addMissingField("planning.projectBudget.annualBudget");
-        }
+
       }
 
 
@@ -123,11 +120,11 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
   }
 
 
-  private void validateProjectCofinancing(BaseAction action, List<Budget> budgets, double totalAmount) {
+  private void validateProjectCofinancing(BaseAction action, List<Project> linkedProjects, double totalAmount) {
 
     double totalCofinancing = 0;
-    for (Budget budget : budgets) {
-
+    for (Project linkedProjec : linkedProjects) {
+      Budget budget = linkedProjec.getAnualContribution();
       if (budget.getCofinancingProject() != null) {
 
 
@@ -140,6 +137,8 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
 
       }
     }
+
+
     if (!(totalCofinancing <= totalAmount)) {
       this.addMessage("Invalid Distribution for CO-Financing Projects ");
       this.addMissingField("planning.projectBudget.totalCofinancing");

@@ -33,7 +33,7 @@
       <div class="fullPartBlock">
         <h6>Submission date</h6>
         [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
-        <p>${submission.cycle} - ${submission.year} - ${submission.dateTime?date} by ${(submission.user.firstName)!} ${(submission.user.lastName)!}</p>
+        <p>${(submission.cycle)!} - ${(submission.year)!} - ${(submission.dateTime?date)!} by ${(submission.user.firstName)!} ${(submission.user.lastName)!}</p>
       </div>
       <div class="fullPartBlock">
         <h6>Download Full Project Report</h6>

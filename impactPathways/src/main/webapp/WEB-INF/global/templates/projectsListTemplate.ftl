@@ -87,7 +87,6 @@
           <td>
             [#-- Check button --]
             [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))! /]
-            
             [#if securityContext.canSubmitProject(project.id) && !submission?has_content && !action.getCompleteProject(project.id) ]
               [#if canEdit]
                 <a id="validateProject-${project.id}" title="Check for missing fields" class="validateButton ${(project.type)!''}" href="#" >[@s.text name="form.buttons.check" /]</a>

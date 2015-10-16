@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
+import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -184,10 +185,40 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     return SUCCESS;
   }
 
+  public Budget getBilateralCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+    List<Budget> budgets = budgetManager.getBudgetsByYear(cofinanceProjectID, year);
+
+    for (Budget budget : budgets) {
+      if (budget.getCofinancingProject() != null) {
+        if (budget.getCofinancingProject().getId() == projectID) {
+          return budget;
+        }
+      }
+    }
+
+
+    return null;
+  }
+
+  public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+    Budget budged;
+    Project cofinancingProject = projectManager.getProject(cofinanceProjectID);
+    cofinancingProject
+      .setBudgets(budgetManager.getBudgetsByYear(cofinancingProject.getId(), config.getPlanningCurrentYear()));
+    if (cofinancingProject.isBilateralProject()) {
+
+      budged = this.getBilateralCofinancingBudget(projectID, cofinanceProjectID, year);
+    } else {
+      budged = cofinancingProject.getCofinancingBudget(projectID, year);
+    }
+    // project.getBudgets().add(budged);
+    return budged;
+  }
+
+
   public SectionStatus getSectionStatus() {
     return sectionStatus;
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -209,16 +240,16 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Validate if the section exists.
     List<String> sections = new ArrayList<>();
     sections.add("description");
-    // sections.add("partners");
-    // sections.add("locations");
-    // sections.add("outcomes");
-    // sections.add("ccafsOutcomes");
-    // sections.add("otherContributions");
-    // sections.add("outputs");
-    // sections.add("deliverablesList");
-    // sections.add("activities");
-    // sections.add("budget");
-    // sections.add("budgetByMog");
+    sections.add("partners");
+    sections.add("locations");
+    sections.add("outcomes");
+    sections.add("ccafsOutcomes");
+    sections.add("otherContributions");
+    sections.add("outputs");
+    sections.add("deliverablesList");
+    sections.add("activities");
+    sections.add("budget");
+    sections.add("budgetByMog");
     validSection = sections.contains(sectionName);
 
   }
@@ -230,8 +261,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     project.setActivities(activityManager.getActivitiesByProject(projectID));
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "activities",
-      this.getCurrentPlanningYear()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "activities", this.getCurrentPlanningYear()));
 
     activityListValidator.validate(this, project, "Planning");
   }
@@ -258,6 +289,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
   }
 
+
   private void validateBudgetByPartner() {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
@@ -274,6 +306,11 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     if (project.getLeader() != null) {
       // Getting the list of budgets for the current planning year.
       project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), config.getPlanningCurrentYear()));
+    }
+
+    for (Project contribution : project.getLinkedProjects()) {
+      contribution.setAnualContribution(
+        this.getCofinancingBudget(projectID, contribution.getId(), this.getConfig().getPlanningCurrentYear()));
     }
     // TODO
     budgetValidator.validate(this, project, "Planning");
@@ -293,8 +330,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     }
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "ccafsOutcomes",
-      this.getCurrentPlanningYear()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "ccafsOutcomes", this.getCurrentPlanningYear()));
 
     // Validating
     projectCCAFSOutcomesValidator.validate(this, project, "Planning");
@@ -375,8 +412,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     project.setLocations(locationManager.getProjectLocations(projectID));
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "locations",
-      this.getCurrentPlanningYear()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "locations", this.getCurrentPlanningYear()));
 
     locationValidator.validate(this, project, "Planning");
   }
@@ -386,8 +423,8 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     Project project = projectManager.getProject(projectID);
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "otherContributions",
-      this.getCurrentPlanningYear()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "otherContributions", this.getCurrentPlanningYear()));
     // Validating.
     projectOtherContributionValidator.validate(this, project);
   }

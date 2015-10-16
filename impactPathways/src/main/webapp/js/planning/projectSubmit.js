@@ -73,7 +73,7 @@ function processTasks(tasks,projectId,button) {
                 $(button).next().progressbar("value", index + 1);
                 ++index;
                 if(index == tasksLength) {
-                  completed = tasksLength;
+                  // completed = 1;
                   if(completed == tasksLength) {
                     var notyOptions = jQuery.extend({}, notyDefaultOptions);
                     notyOptions.text = 'The project can be submmited now';

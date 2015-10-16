@@ -70,14 +70,16 @@ public class Project {
   private String bilateralContractProposalName;
   private String workplanName;
   private boolean workplanRequired;
+  private Budget anualContribution;
+
 
   public Project() {
   }
 
+
   public Project(int id) {
     this.id = id;
   }
-
 
   /**
    * This method validates if the current project contributes to a specific output (MOG).
@@ -116,6 +118,7 @@ public class Project {
     }
     return false;
   }
+
 
   /**
    * this method validates if the current project contributes to a given output (MOG).
@@ -179,6 +182,10 @@ public class Project {
     }
 
     return allYears;
+  }
+
+  public Budget getAnualContribution() {
+    return anualContribution;
   }
 
   /**
@@ -337,7 +344,6 @@ public class Project {
     return flagships;
   }
 
-
   /**
    * This method gets the list of Flagships acronyms separated by comma (, ).
    * 
@@ -355,6 +361,7 @@ public class Project {
     }
     return flagshipAcronym.toString();
   }
+
 
   public int getId() {
     return id;
@@ -383,10 +390,10 @@ public class Project {
     return emptyIndicator;
   }
 
-
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
+
 
   /**
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
@@ -473,10 +480,10 @@ public class Project {
     return null;
   }
 
-
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
   }
+
 
   public LiaisonInstitution getLiaisonInstitution() {
     return liaisonInstitution;
@@ -604,7 +611,7 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-    // Standar identifier
+      // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
@@ -840,6 +847,10 @@ public class Project {
 
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
+  }
+
+  public void setAnualContribution(Budget anualContribution) {
+    this.anualContribution = anualContribution;
   }
 
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
