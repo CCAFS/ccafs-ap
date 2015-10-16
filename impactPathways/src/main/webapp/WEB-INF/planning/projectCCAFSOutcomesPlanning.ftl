@@ -153,7 +153,7 @@
                                   [#if editable && (currentPlanningYear lte year)]
                                     <textarea class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender">${(projectIndicator.gender)!}</textarea>
                                   [#else]
-                                    [#if !projectIndicator.description?has_content]
+                                    [#if !projectIndicator.gender?has_content]
                                       [#if isYearRequired(year)]
                                         <span class="fieldError">[@s.text name="form.values.required" /]</span>
                                       [/#if] 
@@ -388,7 +388,7 @@
   <input type="hidden" id="indexTabCurrentYear" value="${(indexTabCurrentYear)!0}" />
 </div>
 
-[#-- Submitted CSS class for section status--]
+[#-- Get if the year is required--]
 [#function isYearRequired year]
   [#return !project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
 [/#function]
