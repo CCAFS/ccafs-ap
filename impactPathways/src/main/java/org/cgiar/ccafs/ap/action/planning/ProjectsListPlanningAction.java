@@ -154,8 +154,16 @@ public class ProjectsListPlanningAction extends BaseAction {
     return allProjects;
   }
 
+  /**
+   * TODO HT
+   * @param projectID
+   * @return
+   */
   public boolean getCompleteProject(int projectID) {
-    return projectStatuses.get(projectID);
+    if(projects.contains(new Project(projectID))) {
+      return projectStatuses.get(projectID);      
+    }
+    return false;
   }
 
   public Date getCurrentPlanningStartDate() {
