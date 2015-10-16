@@ -114,6 +114,16 @@ public interface ProjectDAO {
    */
   public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID);
 
+
+  /**
+   * This method returns the core projects with a valid Project Leader that contributes with the flagship and the
+   * regions received by parameter.
+   * If the parameters are '-1' they are not used to filter the list.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getCoreProjectsLeaders(int flagshipID, int regionID);
+
   /**
    * This method returns a list of project identifiers where the user is assigned as Project Leader or Project
    * Coordinator.

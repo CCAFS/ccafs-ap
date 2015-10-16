@@ -201,7 +201,7 @@
   
   [#-- Hidden values used by js --]
   <input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceed" /]" />
-  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
+  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjectsBudget.do','bilateralProjectsBudget.do')}" />
   
   [#-- Linked Project Template --]
   [#if project.leader?has_content]
