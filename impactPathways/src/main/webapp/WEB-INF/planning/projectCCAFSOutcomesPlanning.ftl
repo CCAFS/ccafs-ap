@@ -91,7 +91,7 @@
                           <div class="indicatorTargets">
                              <ul class="">
                               [#list years as year]
-                                <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
+                                <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
                               [/#list]   
                             </ul>
                             [#list years as year]
@@ -182,7 +182,7 @@
                           <div class="indicatorTargets" style="display:none">
                              <ul class="">
                               [#list years as year]
-                                <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
+                                <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
                               [/#list]   
                             </ul>
                             [#list years as year]
@@ -334,7 +334,7 @@
         <div class="indicatorTargetsTemplate" style="display:none">
           <ul class="">
             [#list years as year]
-              <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
+              <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
             [/#list]
           </ul>
           [#list years as year]
