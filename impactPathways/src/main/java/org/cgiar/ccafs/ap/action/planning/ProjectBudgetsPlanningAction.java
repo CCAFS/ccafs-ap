@@ -332,20 +332,24 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           linkedProjectManager.saveLinkedBilateralProjects(project, this.getCurrentUser(), this.getJustification());
         }
       }
+
       for (Project linkedProject : project.getLinkedProjects()) {
-        Project cofinancingProject =
-          projectManager.getProject(linkedProject.getAnualContribution().getCofinancingProject().getId());
+        if (linkedProject.getAnualContribution() != null) {
+          Project cofinancingProject =
+            projectManager.getProject(linkedProject.getAnualContribution().getCofinancingProject().getId());
 
-        // Getting the Project Leader.
-        cofinancingProject.setProjectPartners(projectPartnerManager.getProjectPartners(cofinancingProject));
-        if (!cofinancingProject.getProjectPartners().isEmpty()) {
-          // cofinancingProject.setLeader(ppArray.get(0));
+          // Getting the Project Leader.
+          cofinancingProject.setProjectPartners(projectPartnerManager.getProjectPartners(cofinancingProject));
+          if (!cofinancingProject.getProjectPartners().isEmpty()) {
+            // cofinancingProject.setLeader(ppArray.get(0));
 
-          // The co-financing budget belongs to the project which receive it.
-          linkedProject.getAnualContribution().setCofinancingProject(project);
-          linkedProject.getAnualContribution().setInstitution(cofinancingProject.getLeader().getInstitution());
-          saved = budgetManager.saveBudget(cofinancingProject.getId(), linkedProject.getAnualContribution(),
-            this.getCurrentUser(), this.getJustification());
+            // The co-financing budget belongs to the project which receive it.
+            linkedProject.getAnualContribution().setCofinancingProject(project);
+            linkedProject.getAnualContribution().setInstitution(cofinancingProject.getLeader().getInstitution());
+            saved = budgetManager.saveBudget(cofinancingProject.getId(), linkedProject.getAnualContribution(),
+              this.getCurrentUser(), this.getJustification());
+          }
+
         }
       }
 
