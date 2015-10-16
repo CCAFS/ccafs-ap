@@ -138,7 +138,8 @@ function attachEvents() {
     $projectBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
-    return;
+
+       return;
   });
 }
 
