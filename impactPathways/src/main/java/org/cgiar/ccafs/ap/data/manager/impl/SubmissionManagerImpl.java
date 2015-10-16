@@ -50,7 +50,7 @@ public class SubmissionManagerImpl implements SubmissionManager {
 
   @Inject
   public SubmissionManagerImpl(SubmissionDAO submissionDAO, UserManager userManager) {
-    this.dateFormatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    this.dateFormatter = new SimpleDateFormat(APConstants.DATE_TIME_FORMAT);
     this.submissionDAO = submissionDAO;
     this.userManager = userManager;
   }
@@ -69,7 +69,7 @@ public class SubmissionManagerImpl implements SubmissionManager {
       } catch (ParseException e) {
         LOG.error("There was an error formatting the date time for a Project Submission", e);
       }
-      submission.setUser(userManager.getUser(Integer.parseInt(submissionData.get("id"))));
+      submission.setUser(userManager.getUser(Integer.parseInt(submissionData.get("user_id"))));
       projectSubmissions.add(submission);
     }
     return projectSubmissions;
@@ -77,7 +77,6 @@ public class SubmissionManagerImpl implements SubmissionManager {
 
   @Override
   public int saveProjectSubmission(Project project, Submission submission) {
-    // TODO Auto-generated method stub
     Map<String, Object> submissionData = new HashMap<>();
     if (submission.getId() > 0) {
       submissionData.put("id", submission.getId());

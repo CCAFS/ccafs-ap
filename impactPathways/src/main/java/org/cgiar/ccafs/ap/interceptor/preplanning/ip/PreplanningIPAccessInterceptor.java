@@ -52,7 +52,7 @@ public class PreplanningIPAccessInterceptor extends AbstractInterceptor {
     User user = (User) session.get(APConstants.SESSION_USER);
     if (user != null) {
       // Only Admins, FPLs and RPLs can access to define the Impact Pathway.
-      if (securityContext.isAdmin() || securityContext.isFPL() || securityContext.isRPL() || securityContext.isCU()) {
+      if (securityContext.isAdmin() || securityContext.isML() || securityContext.isCU()) {
         invocation.invoke();
       } else {
         LOG.info("User identify with id={}, email={} tried to access pre-planning section.", new Object[] {

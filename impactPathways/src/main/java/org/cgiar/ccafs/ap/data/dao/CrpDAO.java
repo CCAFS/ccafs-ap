@@ -29,11 +29,28 @@ import com.google.inject.ImplementedBy;
 public interface CrpDAO {
 
   /**
+   * This method gets the information of an specific CRP by its ID
+   * 
+   * @param crpID
+   * @return a Map with the information of an specific CRP by its ID
+   */
+  public Map<String, String> getCRPById(int crpID);
+
+  /**
    * This method gets the list of CRPs that are linked to the project identified by the value received by parameter.
    * 
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getCrpContributions(int projectID);
+
+
+  /**
+   * This method gets the list of Nature of Collaboration that a CRPs collaborate to Other Contribution linked to the
+   * project identified by the value received by parameter.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getCrpContributionsNature(int projectID);
 
   /**
    * This method gets all the list of CRPs.
@@ -61,5 +78,14 @@ public interface CrpDAO {
    * @return True if the information was saved successfully. False otherwise.
    */
   public boolean saveCrpContributions(int projectID, Map<String, Object> contributionData);
+
+  /**
+   * This method saves into the database the CRP contributions nature made by the project received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @param contributionNatureData - Information to save
+   * @return True if the information was saved successfully. False otherwise.
+   */
+  public boolean saveCrpContributions( Map<String, Object> contributionData);
 
 }

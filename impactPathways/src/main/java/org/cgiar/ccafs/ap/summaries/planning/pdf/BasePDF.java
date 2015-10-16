@@ -368,14 +368,30 @@ public class BasePDF {
     }
   }
 
+  /**
+   * Method used to get the internationalized key that is in the properties file.
+   * 
+   * @param key to search
+   * @return international key
+   */
   protected String getText(String key) {
     return textProvider.getText(key);
   }
 
+  /**
+   * Method used to get the internationalized key that is in the properties file.
+   * 
+   * @param key to search
+   * @param args values to be visualized
+   * @return international key
+   */
   protected String getText(String key, String[] args) {
     return textProvider.getText(key, args);
   }
 
+  /**
+   * @param baseUrl
+   */
   public void initialize(String baseUrl) {
     textProvider = new DefaultTextProvider();
 

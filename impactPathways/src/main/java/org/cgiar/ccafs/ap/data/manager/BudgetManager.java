@@ -118,6 +118,18 @@ public interface BudgetManager {
   public double calculateTotalGenderBudget(int projectID);
 
   /**
+   * This method calculates the CCAFS budget for a given project according to the type received by
+   * type.
+   * 
+   * @param projectID - project identifier.
+   * @param institutionID - institution identifier.
+   * @param budgetTypeID - budget identifier.
+   * @return a number representing the gender value for that specific project by partner and type budget, if some error
+   *         happen a -1.0 will be returned.
+   */
+  double calculateTotalGenderBudgetByInstitutionAndType(int projectID, int institutionID, int budgetTypeID);
+
+  /**
    * This method calculates the total of the Gender Budget which is the percentage of the amount in a given year
    * 
    * @param projectID is the project identifier.
@@ -136,6 +148,7 @@ public interface BudgetManager {
    */
   public double calculateTotalGenderPercentageByType(int projectID, int budgetTypeID);
 
+
   /**
    * This method calculates the percentage of budget going to gender according to the type, year and type received by
    * parameter.
@@ -145,7 +158,6 @@ public interface BudgetManager {
    * @return a double representing this value, or -1 if some error found.
    */
   public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID);
-
 
   /**
    * This method calculates the total budget of some type for a given project.

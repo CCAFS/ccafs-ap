@@ -36,7 +36,9 @@
   [@s.form action="partners" cssClass="pure-form"]
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectPlanningAccessInterceptor--]
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="preplanning.project"/][/@s.param][/@s.text]</p>
     [/#if]
     
@@ -126,11 +128,13 @@
   <input type="hidden" id="allPPAInstitutions" value="[[#list allPPAInstitutions as item]${item.id}[#if item_has_next],[/#if][/#list]]"/>
   
   [#-- Can update PPA Partners --]
-  <input type="hidden" id="canUpdatePPAPartners" value="${(securityContext.canUpdatePPAPartners() || project.bilateralProject)?string}"/>
+  <input type="hidden" id="canUpdatePPAPartners" value="${(securityContext.canUpdatePPAPartners(project.id) || project.bilateralProject)?string}"/>
   
   [#-- Project PPA Partners --]
   <select id="projectPPAPartners" style="display:none">
+  [#if project.PPAPartners??]
     [#list project.PPAPartners as ppaPartner]<option value="${ppaPartner.institution.id}">${ppaPartner.institution.getComposedName()}</option>[/#list]
+  [/#if]  
   </select>
   
   [#-- Remove Partner Dialog --]

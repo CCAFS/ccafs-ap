@@ -47,19 +47,32 @@ public class MySQLRoleDAO implements RoleDAO {
   @Override
   public boolean deleteRole(int userID, int roleID) {
     StringBuilder query = new StringBuilder();
-    if (roleID != APConstants.ROLE_PROJECT_LEADER) {
-      query.append("DELETE FROM user_roles WHERE user_id = ? AND role_id = ?");
-    } else {
-      // To delete the project leader role, we should verify that the user is not leader of any project.
-      query.append("DELETE FROM ur USING user_roles AS ur WHERE user_id = ? AND role_id = ? ");
-      query.append("AND NOT EXISTS ( ");
-      query.append("SELECT user_id FROM project_partner_persons ");
-      query.append("WHERE contact_type = 'PL' AND user_id = ur.id ");
-      query.append(") ");
+    try (Connection conn = databaseManager.getConnection()) {
+      int result;
+      if (roleID != APConstants.ROLE_PROJECT_LEADER) {
+        query.append("DELETE FROM user_roles WHERE user_id = ? AND role_id = ?");
+      } else {
+        query.append("SELECT COUNT(*) FROM project_partner_persons WHERE user_id = ");
+        query.append(userID);
+        query.append(" AND contact_type = '");
+        query.append(APConstants.PROJECT_PARTNER_PL);
+        query.append("'");
+        ResultSet resultData = databaseManager.makeQuery(query.toString(), conn);
+        if (resultData.next()) {
+          result = resultData.getInt(1);
+          if (result == 1) {
+            // To delete the project leader role, we should verify that the user is not leader of any project.
+            query.setLength(0);
+            query.append("DELETE FROM user_roles WHERE user_id = ? AND role_id = ? ");
+            result = databaseManager.delete(query.toString(), new Object[] {userID, roleID});
+            return result != -1;
+          }
+        }
+      }
+    } catch (SQLException e) {
+      LOG.error("-- deleteRole() > There was an error. {}.", e);
     }
-
-    int result = databaseManager.delete(query.toString(), new Object[] {userID, roleID});
-    return result != -1;
+    return false;
   }
 
   @Override
@@ -90,31 +103,6 @@ public class MySQLRoleDAO implements RoleDAO {
     return roleList;
   }
 
-  @Override
-  public Map<String, String> getRole(int userID, int institutionID) {
-    Map<String, String> roleData = new HashMap<String, String>();
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT r.id, r.name, r.acronym ");
-    query.append("FROM roles r ");
-    query.append("INNER JOIN employees e ON r.id = e.role_id ");
-    query.append("WHERE user_id = ");
-    query.append(userID);
-    query.append(" AND institution_id = ");
-    query.append(institutionID);
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
-        roleData.put("id", rs.getString("id"));
-        roleData.put("name", rs.getString("name"));
-        roleData.put("acronym", rs.getString("acronym"));
-      }
-      con.close();
-    } catch (SQLException e) {
-      LOG.error("Exception raised getting the role of the user {}", userID, e);
-    }
-    return roleData;
-  }
 
   @Override
   public boolean saveRole(int userID, int roleID) {

@@ -76,8 +76,9 @@ public class ActivityManagerImpl implements ActivityManager {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     List<Activity> activityList = new ArrayList<>();
     List<Map<String, String>> activityDataList = activityDAO.getActivitiesByProject(projectID);
+    Activity activity;
     for (Map<String, String> activityData : activityDataList) {
-      Activity activity = new Activity();
+      activity = new Activity();
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
@@ -115,8 +116,9 @@ public class ActivityManagerImpl implements ActivityManager {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     List<Activity> activityList = new ArrayList<>();
     List<Map<String, String>> activityDataList = activityDAO.getActivitiesByProjectPartner(projectPartnerID);
+    Activity activity;
     for (Map<String, String> activityData : activityDataList) {
-      Activity activity = new Activity();
+      activity = new Activity();
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
@@ -186,8 +188,9 @@ public class ActivityManagerImpl implements ActivityManager {
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     List<Activity> activityList = new ArrayList<>();
     List<Map<String, String>> activityDataList = activityDAO.getAllActivities();
+    Activity activity;
     for (Map<String, String> activityData : activityDataList) {
-      Activity activity = new Activity();
+      activity = new Activity();
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
@@ -224,9 +227,9 @@ public class ActivityManagerImpl implements ActivityManager {
   public List<Activity> getProjectActivitiesLedByUser(int projectID, int userID) {
     List<Activity> activities = new ArrayList<>();
     List<Map<String, String>> activitiesData = activityDAO.getProjectActivitiesLedByUser(projectID, userID);
-
+    Activity activity;
     for (Map<String, String> activityData : activitiesData) {
-      Activity activity = new Activity();
+      activity = new Activity();
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
 

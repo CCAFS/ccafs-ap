@@ -34,6 +34,6 @@ public class APShiroWebModule extends ShiroWebModule {
 
   @Override
   protected void configureShiroWeb() {
-    bindRealm().to(APCustomRealm.class).asEagerSingleton();
+    this.bindRealm().to(APCustomRealm.class).asEagerSingleton();
   }
 }

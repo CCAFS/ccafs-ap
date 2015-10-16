@@ -52,8 +52,12 @@
         <div id="deadlineDates">
           <table>
             <tr>
-              <td>[@s.text name="home.dashboard.deadline.planning" /]</td>
-              <td>14th September 2015</td>
+              <td>[@s.text name="home.dashboard.deadline.planning" /] - Managment Liaisons & Contact Points</td>
+              <td>20th October 2015</td>
+            </tr>
+            <tr>
+              <td>[@s.text name="home.dashboard.deadline.planning" /] - Project Leaders & Project Coordinators</td>
+              <td>27th October 2015</td>
             </tr>
             <tr>
               <td>[@s.text name="home.dashboard.deadline.reporting" /]</td>

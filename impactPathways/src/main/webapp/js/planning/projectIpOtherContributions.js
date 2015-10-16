@@ -11,8 +11,8 @@ function init() {
   initGraph();
   addChosen();
   initItemListEvents();
-  applyWordCounter($("textarea.contribution, textarea.additionalContribution"), textAreaLimitWords);
-  applyWordCounter($("textarea.crpCollaborationNature"), lWordsCollaboration);
+  applyWordCounter($("form textarea.contribution,form textarea.additionalContribution"), textAreaLimitWords);
+  applyWordCounter($("form textarea.crpCollaborationNature"), lWordsCollaboration);
   applyWordCounter($("#lessons textarea"), lWordsLessons);
 }
 
@@ -62,6 +62,7 @@ function addItemList($option) {
   $li.find('.id').val($option.val());
   $li.find('.name').html($option.text());
   $li.appendTo($contributionsBlock).hide().show('slow');
+  applyWordCounter($li.find("textarea.crpCollaborationNature"), lWordsCollaboration);
   $option.remove();
   $select.trigger("liszt:updated");
   setIndexes();
@@ -70,9 +71,12 @@ function addItemList($option) {
 
 function setIndexes() {
   $contributionsBlock.find('li').each(function(i,item) {
-    var elementName = crpContributionName + '.[' + i + ']';
-    $(item).find('.id').attr('name', elementName + '.id');
-    $(item).find('.crpCollaborationNature').attr('name', elementName + '.crpCollaborationNature');
+    var elementName = crpContributionName + '[' + i + ']';
+    $(item).find('.id').attr('name', elementName + '.crp.id');
+    $(item).find('.crpContributionId').attr('name', elementName + '.id');
+
+    $(item).find('.crpCollaborationNature').attr('name', elementName + '.natureCollaboration');
+
   });
 }
 

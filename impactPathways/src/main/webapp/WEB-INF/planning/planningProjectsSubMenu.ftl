@@ -4,6 +4,9 @@
 
 [#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
+[#assign projectStage = (currentSubStage)!"" /] 
+[#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
+
 <nav id="secondaryMenu" class="projectMenu ${(project.type)!''}">
 <h1><center> 
   [#if project.coreProject]
@@ -37,7 +40,7 @@
       <ul>
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes"/]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes"/]
-        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" disabled=true/]
+        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions"/]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
@@ -62,31 +65,50 @@
     </li>
   </ul>
   <br />
-  <div id="submitProject-${projectId}" class="projectSubmitButton">Submit</div>
-  <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
+  
+  [#if !submission?has_content && complete && !securityContext.canSubmitProject(project.id)]
+    <p style="display:none">The project can be submitted now by Management liaison or Contact point.</p>
+  [/#if]
+  
+  [#-- Check button --] 
+  [#if canEdit && !complete && !submission?has_content]
+    <p class="projectValidateButton-message center">Check for missing fields. <br /></p>
+    <div id="validateProject-${projectId}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
+    <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
+  [/#if]
+  [#-- Submit button --]
+  [#assign showSubmit=(securityContext.canSubmitProject(project.id) && !submission?has_content && complete)]
+  <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >[@s.text name="form.buttons.submit" /]</a>
   
 </nav>
 
+
+
 [#-- Menu element --]
 [#macro menu actionName stageName textName disabled=false]
-  <li id="menu-${actionName}" class="[#if currentSubStage == stageName]${currCss}[/#if] [@sectionStatus actionName=actionName/]">
+  <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss} [/#if]${sectionCompleted(actionName)?string('submitted','toSubmit')}">
     [#if disabled]
       <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
     [#else]
-      <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+      [#if canEdit && !sectionCompleted(actionName)]
+        <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+      [#else]
+        <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+      [/#if]
     [/#if]
   </li> 
 [/#macro]
 
 [#-- Submitted CSS class for section status--]
-[#macro sectionStatus actionName]
-[#compress]
-    [#if action.getProjectSectionStatus(actionName)??]
-      [#if !((action.getProjectSectionStatus(actionName)).missingFieldsWithPrefix)?has_content]
-        submitted
-      [#else]
-        toSubmit 
-      [/#if]
+[#function sectionCompleted actionName]
+  [#assign status= (action.getProjectSectionStatus(actionName))!{} /]
+  [#if status?has_content]
+    [#if !(status.missingFieldsWithPrefix)?has_content]
+      [#return true]
+    [#else]
+      [#return false]
     [/#if]
-[/#compress]
-[/#macro]
+  [#else]
+    [#return false]  
+  [/#if]
+[/#function]

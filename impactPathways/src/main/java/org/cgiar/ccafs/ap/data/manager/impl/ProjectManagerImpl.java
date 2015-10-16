@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
@@ -58,16 +59,19 @@ public class ProjectManagerImpl implements ProjectManager {
   private IPProgramManager ipProgramManager;
   private BudgetManager budgetManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
+  private SubmissionManager submissionManager;
 
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, IPProgramManager ipProgramManager,
-    BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager) {
+    BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager,
+    SubmissionManager submissionManager) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
     this.ipProgramManager = ipProgramManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
+    this.submissionManager = submissionManager;
   }
 
   @Override
@@ -142,7 +146,6 @@ public class ProjectManagerImpl implements ProjectManager {
         project.setRegions(regions);
       }
 
-
       // Getting Project Focuses - Flagships
       if (projectData.get("flagships") != null) {
         String[] flagshipsAcronyms = projectData.get("flagships").split(",");
@@ -156,6 +159,8 @@ public class ProjectManagerImpl implements ProjectManager {
         project.setFlagships(flagships);
       }
 
+      // Getting all the project submissions.
+      project.setSubmissions(submissionManager.getProjectSubmissions(project));
 
       // Adding project to the list
       projectsList.add(project);
@@ -257,6 +262,8 @@ public class ProjectManagerImpl implements ProjectManager {
         int institutionID = Integer.parseInt(projectData.get("liaison_institution_id"));
         project.setLiaisonInstitution(liaisonInstitutionManager.getLiaisonInstitution(institutionID));
       }
+      // Getting all the project submissions.
+      project.setSubmissions(submissionManager.getProjectSubmissions(project));
 
       return project;
     }
@@ -291,7 +298,6 @@ public class ProjectManagerImpl implements ProjectManager {
     }
     project.setRegions(regions);
 
-
     // Getting Project Focuses - Flagships
     List<IPProgram> flagships = new ArrayList<>();
     if (projectData.get("flagships") != null) {
@@ -304,6 +310,9 @@ public class ProjectManagerImpl implements ProjectManager {
       }
     }
     project.setFlagships(flagships);
+
+    // Getting all the project submissions.
+    project.setSubmissions(submissionManager.getProjectSubmissions(project));
 
     return project;
   }
@@ -343,7 +352,7 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getProjectsByInstitution(int institutionID) {
+  public List<Project> getProjectsByInstitution(Object institutionID) {
     List<Map<String, String>> projectDataList = projectDAO.getProjectsByInstitution(institutionID);
     List<Project> projectsList = new ArrayList<>();
     for (Map<String, String> elementData : projectDataList) {
@@ -404,28 +413,12 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getProjectsList(String[] values) {
     List<Project> projects = new ArrayList<>();
     List<String> ids = new ArrayList<String>(Arrays.asList(values));
-
-
     for (Project project : this.getAllProjectsBasicInfo()) {
       if (ids.contains(String.valueOf(project.getId()))) {
         projects.add(project);
       }
     }
     return projects;
-  }
-
-  @Override
-  public String getStandardIdentifier(Project project, boolean useComposedCodification) {
-    StringBuilder result = new StringBuilder();
-    if (useComposedCodification) {
-      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
-      result.append("-P");
-      result.append(project.getId());
-    } else {
-      result.append("P");
-      result.append(project.getId());
-    }
-    return result.toString();
   }
 
   @Override
@@ -441,7 +434,7 @@ public class ProjectManagerImpl implements ProjectManager {
       if (project.isCoreProject()) {
         projectData.put("type", APConstants.PROJECT_CORE);
       } else {
-        projectData.put("type", APConstants.PROJECT_BILATERAL_STANDALONE);
+        projectData.put("type", APConstants.PROJECT_BILATERAL);
       }
     } else {
       // Update project
@@ -494,31 +487,48 @@ public class ProjectManagerImpl implements ProjectManager {
     return saved;
   }
 
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
+    return projectDAO.summaryGetAllActivitiesWithGenderContribution();
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution() {
+    return projectDAO.summaryGetAllDeliverablesWithGenderContribution();
+  }
+
   @Override
   public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
     return projectDAO.summaryGetAllProjectPartnerLeaders();
   }
+
 
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
     return projectDAO.summaryGetAllProjectsWithDeliverables();
   }
 
-
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
     return projectDAO.summaryGetAllProjectsWithGenderContribution();
-  }
-
-  @Override
-  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year) {
-    return projectDAO.summaryGetInformationDetailPOWB(year);
   }
 
 
   @Override
   public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
     return projectDAO.summaryGetInformationPOWB(year);
+
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year) {
+    return projectDAO.summaryGetInformationDetailPOWB(year);
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year) {
+    return projectDAO.summaryGetProjectBudgetByPartners(year);
 
   }
 

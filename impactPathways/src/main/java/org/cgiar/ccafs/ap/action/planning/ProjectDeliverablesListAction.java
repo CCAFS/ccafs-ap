@@ -23,12 +23,11 @@ import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Javier Andrés Gallego B.
@@ -38,9 +37,6 @@ import org.slf4j.LoggerFactory;
 public class ProjectDeliverablesListAction extends BaseAction {
 
   private static final long serialVersionUID = -6143944536558245482L;
-
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectDeliverablesListAction.class);
 
   // Manager
   private DeliverableManager deliverableManager;
@@ -82,48 +78,31 @@ public class ProjectDeliverablesListAction extends BaseAction {
     return INPUT;
   }
 
-  /**
-   * This method validates if a deliverable can be deleted or not.
-   * Keep in mind that a deliverable can be deleted if it was created in the current planning cycle.
-   * 
-   * @param deliverableID is the deliverable identifier.
-   * @return true if the deliverable can be deleted, false otherwise.
-   */
-  public boolean canDelete(int deliverableID) {
-    // Loop all the deliverables that are in the interface.
-    for (Deliverable deliverable : project.getDeliverables()) {
-      if (deliverable.getId() == deliverableID) {
-        if (deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime()) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
-    return false;
-  }
-
   @Override
   public String delete() {
     // Deleting deliverable.
-    if (this.canDelete(deliverableID)) {
-      boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
-        this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
-      if (deleted) {
-        this.addActionMessage(
-          this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
-      } else {
-        this.addActionError(
-          this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+    for (Deliverable deliverable : project.getDeliverables()) {
+      if (deliverable.getId() == deliverableID) {
+        boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
+          this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
+        if (deleted) {
+          this.addActionMessage(
+            this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+        } else {
+          this.addActionError(
+            this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+        }
       }
-    } else {
-      this.addActionError(this.getText("planning.projectDeliverable.cannotDelete"));
     }
     return SUCCESS;
   }
 
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  public Date getCurrentPlanningStartDate() {
+    return config.getCurrentPlanningStartDate();
   }
 
   public int getDeliverableID() {
@@ -175,6 +154,9 @@ public class ProjectDeliverablesListAction extends BaseAction {
 
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
     project.setDeliverables(deliverables);
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
 
   }
 

@@ -44,7 +44,9 @@
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     <br />
     [#-- Informing user that he-she does not have enough privileges to edit. See GrantProjectPlanningAccessInterceptor --]  
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title /][/@s.param][/@s.text]
       </p>
@@ -92,6 +94,8 @@
           [@customForm.input name="${params.deliverable.name}.typeOther" value="${(deliverable.typeOther)!}" className="otherType" display=false showTitle=false i18nkey="planning.deliverables.specify" required=true disabled=true editable=editable /]          
         </div> 
       </div>
+      
+      [#-- Deliverables table dialog --]
       [#if canEdit && !action.canDelete()]
       <div id="dialog" title="Deliverable types" style="display: none">
         <table id="deliverableTypes" style="height:700px; width:900px;">
@@ -104,29 +108,34 @@
               <tr>
                 <th rowspan="${action.getDeliverableSubTypes(mt.id).size()}"> ${mt.name} </th>
                     <td> ${st.name} </td>
-                    <td> ${st.description!}</td>
+                    <td> ${(st.description)!}</td>
               </tr>
               [#else]
               <tr>
                 <td> ${st.name} </td>
-                <td> ${st.description!} </td>
+                <td> ${(st.description)!} </td>
               </tr>
               [/#if]
             [/#list]
           [/#list]  
         </table>
       </div> <!-- End dialog-->
-        <div class="helpMessage3">
-          <p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]</a></p>
-        </div>
-        <br />
-        <div class="note left">
-          [#if editable && deliverable.type.description??]
-            <p><b>Deliverable type description:</b> [@s.text name="${deliverable.type.description!}" /]</p>
-            <br />
-          [/#if]
-          <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
-        </div>
+      <div class="helpMessage3">
+        <p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]</a></p>
+      </div>
+      <br />
+      [/#if]
+      
+      [#-- Deliverable type description and message--]
+      [#if canEdit && editable && !action.canDelete()]
+
+      <div class="note left">
+        [#if editable && deliverable.type.description??]
+          <p><b>Deliverable type description:</b> [@s.text name="${(deliverable.type.description)!}" /]</p>
+          <br />
+        [/#if]
+        <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
+      </div>
       [/#if]
     </div>
     
@@ -194,24 +203,6 @@
       </div>
       [/#if]
     </div>
-    
-    [#if !newProject]
-    <div id="lessons" class="borderBox">
-      [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
-      [#else]
-        [#if canEdit && !newProject]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
-        [/#if]
-      [/#if]
-      <div class="fullBlock">
-        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
-        <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
-        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectDeliverable.lessons" required=!project.bilateralProject editable=editable /]
-      </div>
-    </div>
-    [/#if]
     
     [#if editable] 
       <input name="projectID" type="hidden" value="${project.id?c}" />

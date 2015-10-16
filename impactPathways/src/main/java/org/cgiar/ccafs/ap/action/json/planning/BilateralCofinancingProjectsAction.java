@@ -50,7 +50,7 @@ public class BilateralCofinancingProjectsAction extends BaseAction {
   @Override
   public String execute() {
     projects = projectManager.getBilateralCofinancingProjects(flagshipID, regionID);
-    LOG.info("They were loaded {} core projects", projects.size());
+    // LOG.info("They were loaded {} core projects", projects.size());
     return SUCCESS;
   }
 

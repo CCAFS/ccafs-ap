@@ -24,6 +24,7 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R.
+ * @author Jorge Leonardo Solis B.
  */
 @ImplementedBy(MySQLIPProgramDAO.class)
 public interface IPProgramDAO {
@@ -63,6 +64,7 @@ public interface IPProgramDAO {
    */
   public List<Map<String, String>> getProgramsByType(int typeId);
 
+
   /**
    * This method gets all the information of a Program related with a Project by a given project Id and a type Id, from
    * the table project_focuses.
@@ -72,7 +74,6 @@ public interface IPProgramDAO {
    * @return a List of Map with the information of a Program related with a Project
    */
   public List<Map<String, String>> getProjectFocuses(int projectID, int typeID);
-
 
   /**
    * This method creates or update into the table project_focuses new relations between a project and a program.

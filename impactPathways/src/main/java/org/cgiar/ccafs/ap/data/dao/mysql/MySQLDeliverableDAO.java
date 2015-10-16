@@ -203,19 +203,27 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     LOG.debug(">> getDeliverableOutput deliverableID = {} )", deliverableID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipe.id,ipe.description ");
+
+    query.append("SELECT ipe.id,ipe.description, ipe.ip_program_id, ipt.id as element_type_id, "
+      + "ipt.name as element_type_name ");
     query.append("FROM ip_deliverable_contributions ipd ");
     query.append("INNER JOIN deliverables d ON ipd.deliverable_id=d.id ");
     query.append("INNER JOIN ip_project_contributions ipac ON ipd.project_contribution_id=ipac.id ");
     query.append("INNER JOIN ip_elements ipe ON ipac.mog_id=ipe.id ");
+    query.append("INNER JOIN ip_element_types ipt ON ipe.element_type_id = ipt.id ");
     query.append("WHERE ipd.deliverable_id= ");
     query.append(deliverableID);
+
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
         deliverableContributionData.put("id", rs.getString("id"));
         deliverableContributionData.put("description", rs.getString("description"));
+        deliverableContributionData.put("ip_program_id", rs.getString("ip_program_id"));
+        deliverableContributionData.put("element_type_id", rs.getString("element_type_id"));
+        deliverableContributionData.put("element_type_name", rs.getString("element_type_name"));
       }
+
       rs.close();
     } catch (SQLException e) {
       String exceptionMessage = "-- executeQuery() > Exception raised trying ";

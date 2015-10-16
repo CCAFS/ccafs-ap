@@ -29,6 +29,8 @@ public class SectionStatus {
   private String section;
   private String cycle;
   private String[] missingFields;
+  private int deliverableID;
+  private int projectID;
 
   public SectionStatus() {
   }
@@ -40,6 +42,10 @@ public class SectionStatus {
 
   public String getCycle() {
     return cycle;
+  }
+
+  public int getDeliverableID() {
+    return deliverableID;
   }
 
   public int getId() {
@@ -67,12 +73,20 @@ public class SectionStatus {
     return str.toString();
   }
 
+  public int getProjectID() {
+    return projectID;
+  }
+
   public String getSection() {
     return section;
   }
 
   public void setCycle(String cycle) {
     this.cycle = cycle;
+  }
+
+  public void setDeliverableID(int deliverableID) {
+    this.deliverableID = deliverableID;
   }
 
   public void setId(int id) {
@@ -87,6 +101,10 @@ public class SectionStatus {
 
   public void setMissingFields(String[] missingFields) {
     this.missingFields = missingFields;
+  }
+
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
   }
 
   public void setSection(String section) {

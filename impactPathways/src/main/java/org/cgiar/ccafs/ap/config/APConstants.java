@@ -83,6 +83,7 @@ public final class APConstants {
 
   // Identifier for Format Date
   public static final String DATE_FORMAT = "yyyy-MM-dd";
+  public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
   // Identifier for role
   public static final int ROLE_ADMIN = 1;
@@ -99,7 +100,7 @@ public final class APConstants {
   // Types of project
   public static final String PROJECT_CORE = "CCAFS_CORE";
   public static final String PROJECT_CCAFS_COFUNDED = "CCAFS_COFUNDED";
-  public static final String PROJECT_BILATERAL_STANDALONE = "BILATERAL";
+  public static final String PROJECT_BILATERAL = "BILATERAL";
 
   // Types of Project Partners
   public static final String PROJECT_PARTNER_PL = "PL";

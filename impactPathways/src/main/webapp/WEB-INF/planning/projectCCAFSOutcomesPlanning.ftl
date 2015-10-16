@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Project Outcomes" /]
+[#assign title = "CCAFS Outcomes" /]
 [#assign globalLibs = ["jquery", "noty", "chosen", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/planning/projectImpactPathwayPlanning.js"] /]
 [#assign currentSection = "planning" /]
@@ -34,7 +34,9 @@
     [#assign fieldEmpty] <div class="select"><p>[@s.text name="form.values.fieldEmpty" /]</p></div>[/#assign]
     
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
@@ -101,9 +103,9 @@
                               <div id="target-${year}" class="targetIndicator">
                                 [#-- Indicator ID --]
                                 [#if indicator.parent?has_content]
-                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
+                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.parent.id}"  />
                                 [#else]
-                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                                  <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.id}"  />
                                 [/#if]
                                 
                                 [#-- Hidden values --]
@@ -113,16 +115,17 @@
                                 
                                 [#-- Indicator target value --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
-                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
-                                    [@customForm.req required=!project.bilateralProject /]
-                                  [/#if]
+                                  <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
+                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)][@customForm.req required=!project.bilateralProject /][/#if]
                                   </h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
-                                      [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if] ${fieldEmpty}
+                                      [#if (!project.bilateralProject) && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
+                                      [/#if]
+                                      [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${projectIndicator.target}</p></div>
                                     [/#if]
@@ -132,15 +135,16 @@
                                 [#-- Indicator target description --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]
-                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
-                                    [@customForm.req required=!project.bilateralProject /]
-                                  [/#if] 
+                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)][@customForm.req required=!project.bilateralProject /][/#if] 
                                   </h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
                                     <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
-                                      [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if] ${fieldEmpty}
+                                      [#if (!project.bilateralProject) && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
+                                      [/#if] 
+                                      [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${projectIndicator.description}</p></div>
                                     [/#if] 
@@ -171,9 +175,9 @@
                             <div id="target-${year}" class="targetIndicator"> 
                               [#-- Indicator ID --]
                               [#if indicator.parent?has_content]
-                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.parent.id}"  />
+                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.parent.id}"  />
                               [#else]
-                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id" value="${indicator.id}"  />
+                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.id}"  />
                               [/#if]
                               
                               [#-- Check if the value of this hidden input should be arbitrarily -1 --]
@@ -312,7 +316,7 @@
           </ul>
           [#list years as year]
           <div id="target-${year}" class="targetIndicator" >
-            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent.id"   />
+            <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent"   />
             <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="-1"/>
             <input type="hidden" class="projectIndicatorYear" name="project_indicator_year"  value="${year}" />
             <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome" /> 

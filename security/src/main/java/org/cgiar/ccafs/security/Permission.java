@@ -44,33 +44,28 @@ public class Permission {
   /**
    * Can use all the functions in the planning projects list
    */
-  public static final String PLANNING_PROJECT_LIST_ALL = "planning:projects:projectList:*";
+  public static final String PLANNING_PROJECT_LIST_ALL = "planning:projectList:*";
 
   /**
    * Can use all the functions adding a Co-Funded Project
    */
-  public static final String PLANNING_COFUNDED_PROJECT_BUTTON = "planning:projects:addCoFundedProject:*";
+  public static final String PLANNING_COFUNDED_PROJECT_BUTTON = "planning:projectList:addCoFundedProject:*";
 
   /**
    * Can use the "add core project" button in the planning projects list section
    */
-  public static final String PLANNING_CORE_PROJECT_BUTTON = "planning:projects:projectList:coreProjectButton:*";
+  public static final String PLANNING_CORE_PROJECT_BUTTON = "planning:projectList:coreProjectButton:*";
 
   /**
    * Can use the "add bilateral project" button in the planning projects list section
    */
-  public static final String PLANNING_BILATERAL_PROJECT_BUTTON =
-    "planning:projects:projectList:bilateralProjectButton:*";
-
-  /**
-   * Can use the "Submit" button in the planning section
-   */
-  public static final String PLANNING_SUBMIT_BUTTON = "planning:projects:projectList:submitButton:*";
+  public static final String PLANNING_BILATERAL_PROJECT_BUTTON = "planning:projectList:bilateralProjectButton:*";
 
   /**
    * Can use the "Delete project" button in the planning section
    */
-  public static final String PLANNING_DELETE_PROJECT_BUTTON = "planning:projects:projectList:deleteProjectButton:*";
+  public static final String PLANNING_DELETE_PROJECT_BUTTON = "planning:projectList:deleteProjectButton:*";
+
 
   // --------------------------- End of Project list ---------------------------------
 
@@ -231,8 +226,6 @@ public class Permission {
 
   // --------------------------- End of Project activities list---------------------------------
 
-  // TODO - HC create permission to the new section of activity
-
   // --------------------------- Project Budget ---------------------------------
 
   /**
@@ -258,6 +251,15 @@ public class Permission {
   public static final String PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE = "planning:projects:budgetByMog:update";
 
   // --------------------------- End of project Budget ---------------------------------
+
+  // --------------------------- Project Submit ---------------------------------
+
+  /**
+   * Can use the "Submit" button in the planning section
+   */
+  public static final String PLANNING_SUBMIT_BUTTON = "planning:projects:submitButton:*";
+
+  // --------------------------- End Project Submit ---------------------------------
 
   /*
    * --------------------------------------------------------------

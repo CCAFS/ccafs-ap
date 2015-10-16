@@ -1,7 +1,7 @@
 [#ftl]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#-- This macro is being used in projectsListPreplanning.ftl and projectsListPlanning.ftl The idea is to represent a table with specific information about projects --]
-[#macro projectsList projects owned=true canValidate=false isPlanning=false namespace="/"]
+[#macro projectsList projects owned=true canValidate=false canEdit=false isPlanning=false namespace="/"]
   <table class="projectsList" id="projects">
     <thead>
       <tr class="header">
@@ -85,15 +85,32 @@
           </td>
           [#-- Project Action Status --]
           <td>
-            <a id="submitProject-${project.id}" class="submitButton" href="#">Submit</a>
-            <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
-            </a>
+            [#-- Check button --]
+            [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))! /]
+            [#if securityContext.canSubmitProject(project.id) && !submission?has_content   ]
+              [#if canEdit && !action.getCompleteProject(project.id)]
+                <a id="validateProject-${project.id}" title="Check for missing fields" class="validateButton ${(project.type)!''}" href="#" >[@s.text name="form.buttons.check" /]</a>
+                <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
+              [#else]
+                <p title="The project can be submitted by Management liaisons and Contact points">Not Submitted</p>
+              [/#if]
+            [/#if]
+            
+            [#-- Submit button --]
+            [#if submission?has_content]
+              <p title="Submitted on ${(submission.dateTime?date)?string.full} ">Submitted</p>
+            [#else]
+              [#if securityContext.canSubmitProject(project.id)]
+                <a id="submitProject-${project.id}" class="submitButton" href="[@s.url namespace=namespace action='submit'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" style="display:none">[@s.text name="form.buttons.submit" /]</a>
+              [#else]
+                <p title="The project can be submitted by Management liaisons and Contact points">Not Submitted</p>
+              [/#if]
+            [/#if]
+            
           </td>
           [#-- Track completition of entry --]
           [#if isPlanning]
-          <td> 
-            <a href="#">Complete / Incomplete</a>
-          </td>
+          <td> <a href="#">Complete / Incomplete</a></td>
           [/#if]
           [#-- Summary download --]
           <td> 

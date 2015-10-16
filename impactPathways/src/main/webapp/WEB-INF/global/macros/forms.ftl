@@ -9,9 +9,7 @@
     [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if][/#assign]
     [#if showTitle]
       <h6>
-        <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:
-          [#if required]<span class="red">*</span>[/#if]
-        </label>
+        <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:[#if required]<span class="red">*</span>[/#if]</label>
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </h6>
     [/#if]
@@ -36,6 +34,7 @@
   <div class="textArea [#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]> 
     [#assign customName]${(i18nkey?has_content)?string(i18nkey,name)}[/#assign]  
     [#assign customLabel][#if !editable]${customName}.readText[#else]${customName}[/#if][/#assign]
+    [#assign customValue][#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if][/#assign]
   	[#if showTitle]
 	    <h6> 
 	      <label for="${name}" class="${editable?string('editable', 'readOnly')}"> [@s.text name="${customLabel}"/]:[#if required]<span class="red">*</span>[/#if]</label>
@@ -44,7 +43,7 @@
     [/#if]
     [#if errorfield==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if] [#if className != "-NULL"] class="ckeditor ${className}" [/#if]/>[#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if]</textarea>
+      <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if]  class="[#if className != "-NULL"]ckeditor ${className}[/#if] ${required?string('required','optional')}" />${customValue}</textarea>
     [#else]
       [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
@@ -125,13 +124,12 @@
   </div>
 [/#macro]
 
-[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false editable=true]
+[#macro select name listName label="" keyFieldName="" displayFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" selected=false className="" multiple=false help="" headerKey="" headerValue="" display=true showTitle=true addButton=false stringKey=false editable=true]
   <div class="select[#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]>
     [#assign placeholderText][@s.text name="form.select.placeholder" /][/#assign]
     [#if showTitle]
       <h6>
-        [#if i18nkey==""]${label} [#else][@s.text name="${i18nkey}" /]:[/#if]
-        [#if required]<span class="red">*</span>[/#if]
+        [#if i18nkey==""]${label} [#else][@s.text name="${i18nkey}" /]:[/#if][#if required]<span class="red">*</span>[/#if]
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </h6>
     [/#if]
@@ -163,8 +161,8 @@
         <p>  
           [#if displayFieldName == "" ]
             [#assign key][@s.property value="${name}"/][/#assign]
-            [#assign customValue][@s.property value="${listName}['${key}']"/][/#assign]
-            [#if customValue?has_content] 
+            [#assign customValue][#if !stringKey][@s.property value="${listName}[${key}]"/][#else][@s.property value="${listName}['${key}']"/][/#if][/#assign]
+            [#if customValue?has_content]
                 ${customValue}
               [#else]
                 [#if !(key?has_content)]
@@ -182,7 +180,7 @@
               [#else]
                 ${customValue}
               [/#if]
-            [#else]  
+            [#else]
               [#if customValue?has_content]
                 ${customValue}
               [#elseif value=="-1"]

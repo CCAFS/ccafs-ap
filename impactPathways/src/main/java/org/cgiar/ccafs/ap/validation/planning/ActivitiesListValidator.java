@@ -18,9 +18,9 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
-import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
+import org.cgiar.ccafs.ap.validation.model.ActivityValidator;
 
-import java.util.List;
+import java.util.Date;
 
 import com.google.inject.Inject;
 
@@ -31,74 +31,89 @@ import com.google.inject.Inject;
 
 public class ActivitiesListValidator extends BaseValidator {
 
-  private static final long serialVersionUID = -4871185832403702671L;
-  private ProjectValidator projectValidator;
+  private ActivityValidator activityValidator;
 
   @Inject
-  public ActivitiesListValidator(ProjectValidator projectValidator) {
+  public ActivitiesListValidator(ActivityValidator activityValidator) {
     super();
-    this.projectValidator = projectValidator;
+    this.activityValidator = activityValidator;
   }
 
-  public void validate(BaseAction action, Project project) {
-    if (project != null && project.getActivities() != null) {
-      boolean problem = this.validateRequiredFields(action, project.getActivities());
-      this.validateProjectJustification(action, project);
+  public void validate(BaseAction action, Project project, String cycle) {
+    if (project != null) {
+      // Does the project have any activity?
+      if (project.getActivities() != null && !project.getActivities().isEmpty()) {
+        // Validate project justification.
+        this.validateProjectJustification(action, project);
 
-      // The projects will be validated according to their type
-      // if (project.isCoreProject()) {
-      // this.validateCoreProject(action, project);
-      // } else {
-      // this.validateBilateralProject(action, project);
-      // }
+        if (project.isCoreProject() || project.isCoFundedProject()) {
+          this.validateLessonsLearn(action, project, "activities");
+        }
 
-      if (problem) {
+        // Loop all the activities.
+        for (int c = 0; c < project.getActivities().size(); c++) {
+          // Required fields are required for all type of projects.
+          this.validateRequiredFields(action, project.getActivities().get(c), c);
+          this.validateTitle(action, project.getActivities().get(c).getTitle(), c);
+          this.validateDescription(action, project.getActivities().get(c).getDescription(), c);
+          this.validateStartDate(action, project.getActivities().get(c).getStartDate(), c);
+          this.validateEndDate(action, project.getActivities().get(c).getEndDate(), c);
+
+        }
+      } else {
+        // Show problem only for Core projects and Co-funded projects
+        if (project.isCoreProject() || project.isCoFundedProject()) {
+          this.addMessage(action.getText("saving.fields.atLeastOne",
+            new String[] {action.getText("planning.activity").toLowerCase()}));
+          this.addMissingField("project.activities.empty");
+        }
+      }
+
+      if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
+      } else if (validationMessage.length() > 0) {
+        action
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
-      // else {
-      // this.validateOptionalFields(action, deliverable);
-      // }
+
+      // Saving missing fields.
+      this.saveMissingFields(project, cycle, "activities");
     }
   }
 
-  public boolean validateRequiredFields(BaseAction action, List<Activity> activities) {
-    boolean problem = false;
-    Activity activity;
-    for (int c = 0; c < activities.size(); c++) {
-      activity = activities.get(c);
-
-      // Validating title.
-      if (!this.isValidString(activity.getTitle())) {
-        action.addFieldError("project.activities[" + c + "].title", action.getText("validation.field.required"));
-        problem = true;
-      }
-      // Validating description
-      if (!this.isValidString(activity.getDescription())) {
-        action.addFieldError("project.activities[" + c + "].description", action.getText("validation.field.required"));
-        problem = true;
-      }
-
-      // Validating start date
-      if (activity.getStartDate() == null) {
-        action.addFieldError("project.activities[" + c + "].startDate", action.getText("validation.field.required"));
-        problem = true;
-      }
-      // Validating end date
-      if (activity.getEndDate() == null) {
-        action.addFieldError("project.activities[" + c + "].endDate", action.getText("validation.field.required"));
-        problem = true;
-      }
-
-      // Validating leader
-      if (activity.getLeader() == null) {
-        action.addFieldError("project.activities[" + c + "].leader", action.getText("validation.field.required"));
-        problem = true;
-      }
+  private void validateDescription(BaseAction action, String description, int c) {
+    if (!activityValidator.isValidDescription(description)) {
+      this.addMessage("Activity #" + (c + 1) + ": Description");
+      this.addMissingField("project.activities[" + c + "].description");
     }
-    return problem;
   }
 
-  public void validateTitle(BaseAction action, String title) {
+  private void validateEndDate(BaseAction action, Date endDate, int c) {
+    if (!activityValidator.isValidEndDate(endDate)) {
+      this.addMessage("Activity #" + (c + 1) + ": End date");
+      this.addMissingField("project.activities[" + c + "].endDate");
+    }
+  }
 
+  public void validateRequiredFields(BaseAction action, Activity activity, int c) {
+    // Validating leader
+    if (!activityValidator.isValidLeader(activity.getLeader())) {
+      action.addFieldError("project.activities[" + c + "].leader", action.getText("validation.field.required"));
+      this.addMissingField("project.activities[" + c + "].leader");
+    }
+  }
+
+  private void validateStartDate(BaseAction action, Date startDate, int c) {
+    if (!activityValidator.isValidStartDate(startDate)) {
+      this.addMessage("Activity #" + (c + 1) + ": Start date");
+      this.addMissingField("project.activities[" + c + "].startDate");
+    }
+  }
+
+  public void validateTitle(BaseAction action, String title, int c) {
+    if (!activityValidator.isValidTitle(title)) {
+      this.addMessage("Activity #" + (c + 1) + ": Title");
+      this.addMissingField("project.activities[" + c + "].title");
+    }
   }
 }

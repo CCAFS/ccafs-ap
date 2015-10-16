@@ -23,6 +23,14 @@ import com.google.inject.ImplementedBy;
 public interface PartnerPersonDAO {
 
   /**
+   * TODO
+   * 
+   * @param personPartner
+   * @return
+   */
+  boolean deletePartnerPerson(int personPartner);
+
+  /**
    * This method set as inactive all the partner persons linked to the project partner identified by the value received
    * by parameter.
    * 

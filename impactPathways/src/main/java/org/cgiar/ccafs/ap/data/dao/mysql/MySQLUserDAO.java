@@ -14,7 +14,6 @@
  */
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.UserDAO;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
@@ -114,47 +113,35 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public List<Map<String, String>> getAllOwners(int programId) {
+  public List<Map<String, String>> getAllOwners(int liaisonInstitutionID) {
     LOG.debug(">> getAllOwners()");
-    List<Map<String, String>> projectContactPersonList = new ArrayList<>();
+    List<Map<String, String>> userDataList = new ArrayList<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, u.first_name, u.last_name, u.email, ");
-      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
-      query.append("FROM users u ");
-      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
-      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE (ro.id= '");
-      query.append(APConstants.ROLE_MANAGEMENT_LIAISON);
-      query.append("' OR ro.id= '");
-      query.append(APConstants.ROLE_COORDINATING_UNIT);
-      query.append("') AND ins.program_id = ");
-      query.append(programId);
-      query.append(" ORDER BY u.last_name, ins.name ");
+      query.append("SELECT u.* ");
+      query.append("FROM liaison_users lu ");
+      query.append("INNER JOIN liaison_institutions li ON li.id = lu.institution_id ");
+      query.append("INNER JOIN users u ON u.id = lu.user_id ");
+      query.append("WHERE li.id = ");
+      query.append(liaisonInstitutionID);
 
       ResultSet rs = dbManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
-        Map<String, String> projectContactPersonData = new HashMap<>();
-        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
-        projectContactPersonData.put("id", rs.getString("id"));
-        projectContactPersonData.put("employee_id", rs.getString("employee_id"));
-        projectContactPersonData.put("first_name", rs.getString("first_name"));
-        projectContactPersonData.put("last_name", rs.getString("last_name"));
-        projectContactPersonData.put("email", rs.getString("email"));
-        projectContactPersonData.put("role_id", rs.getString("role_id"));
-        projectContactPersonData.put("role_name", rs.getString("role_name"));
-        projectContactPersonData.put("role_acronym", rs.getString("role_acronym"));
-        projectContactPersonList.add(projectContactPersonData);
+        Map<String, String> userData = new HashMap<>();
+        userData.put("id", rs.getString("id"));
+        userData.put("first_name", rs.getString("first_name"));
+        userData.put("last_name", rs.getString("last_name"));
+        userData.put("email", rs.getString("email"));
+        userData.put("username", rs.getString("username"));
+        userDataList.add(userData);
       }
       rs.close();
     } catch (SQLException e) {
       LOG.error("-- getAllOwners() > There was an error getting the data for All Project Owners {}.", e);
       return null;
     }
-    LOG.debug("<< getAllOwners():{}", projectContactPersonList);
-    return projectContactPersonList;
+    LOG.debug("<< getAllOwners():{}", userDataList);
+    return userDataList;
   }
 
 
@@ -209,115 +196,13 @@ public class MySQLUserDAO implements UserDAO {
   }
 
   @Override
-  public int getEmployeeID(int userId, int institutionId, int roleId) {
-    LOG
-      .debug(">> getEmployeeID (userId={}, institutionId={}, roleId={})", new Object[] {userId, institutionId, roleId});
-    int result = -1;
-    try (Connection connection = dbManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT id FROM employees WHERE user_id = ");
-      query.append(userId);
-      query.append(" AND institution_id = ");
-      query.append(institutionId);
-      query.append(" AND role_id = ");
-      query.append(roleId);
-      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
-        result = rs.getInt("id");
-      } else {
-        result = 0;
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getEmployeeID() > There was an error getting the data for the user with id {}.", userId, e);
-    }
-    LOG.debug("<< getEmployeeID():{}", result);
-    return result;
-  }
-
-  @Override
-  public Map<String, String> getOwner(int ownerId) {
-    LOG.debug(">> getOwner()");
-    Map<String, String> userData = new HashMap<>();
-    try (Connection connection = dbManager.getConnection()) {
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, emp.id as employee_id, ");
-      query.append("u.id, u.first_name, u.last_name, u.email, ");
-      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
-      query.append("FROM users u ");
-      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN roles ro ON emp.role_id=ro.id ");
-      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("WHERE emp.id= ");
-      query.append(ownerId);
-
-      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
-        userData.put("institution_id", rs.getString("institution_id"));
-        userData.put("id", rs.getString("id"));
-        userData.put("employee_id", rs.getString("employee_id"));
-        userData.put("first_name", rs.getString("first_name"));
-        userData.put("last_name", rs.getString("last_name"));
-        userData.put("email", rs.getString("email"));
-        userData.put("role_id", rs.getString("role_id"));
-        userData.put("role_name", rs.getString("role_name"));
-        userData.put("role_acronym", rs.getString("role_acronym"));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getOwner() > There was an error getting the data for Project Owner {}.", e);
-      return null;
-    }
-    LOG.debug("<< getOwner():{}", ownerId);
-    return userData;
-  }
-
-  @Override
-  public Map<String, String> getOwnerByProjectId(int projectID) {
-    LOG.debug(">> getOwnerByProjectId(projectID={})", projectID);
-    Map<String, String> projectContactPersonData = new HashMap<>();
-    try (Connection connection = dbManager.getConnection()) {
-
-      StringBuilder query = new StringBuilder();
-      query.append("SELECT ins.id as institution_id, u.id, emp.id as employee_id, ");
-      query.append("u.first_name, u.last_name, u.email, ");
-      query.append("ro.id as role_id, ro.name as role_name, ro.acronym as role_acronym ");
-      query.append("FROM users u ");
-      query.append("INNER JOIN employees emp ON u.id=emp.user_id ");
-      query.append("INNER JOIN projects pro ON emp.id=pro.liaison_user_id ");
-      query.append("INNER JOIN institutions ins ON emp.institution_id = ins.id ");
-      query.append("INNER JOIN roles ro ON ro.id = emp.role_id ");
-      query.append("WHERE pro.id= ");
-      query.append(projectID);
-
-      ResultSet rs = dbManager.makeQuery(query.toString(), connection);
-      if (rs.next()) {
-        projectContactPersonData.put("institution_id", rs.getString("institution_id"));
-        projectContactPersonData.put("id", rs.getString("id"));
-        projectContactPersonData.put("employee_id", rs.getString("employee_id"));
-        projectContactPersonData.put("first_name", rs.getString("first_name"));
-        projectContactPersonData.put("last_name", rs.getString("last_name"));
-        projectContactPersonData.put("email", rs.getString("email"));
-        projectContactPersonData.put("role_id", rs.getString("role_id"));
-        projectContactPersonData.put("role_name", rs.getString("role_name"));
-        projectContactPersonData.put("role_acronym", rs.getString("role_acronym"));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      LOG.error("-- getUser() > There was an error getting the data for user with id {}.", projectID, e);
-    }
-    LOG.debug("<< getOwnerByProjectId():{}", projectContactPersonData);
-    return projectContactPersonData;
-  }
-
-  @Override
   public Map<String, String> getUser(int userId) {
     LOG.debug(">> getUser(userId={})", userId);
     Map<String, String> userData = new HashMap<>();
     try (Connection connection = dbManager.getConnection()) {
       StringBuilder query = new StringBuilder();
       query.append("SELECT u.id, u.password, u.is_ccafs_user, u.last_login, ");
-      query.append("u.first_name, u.last_name, u.email ");
+      query.append("u.first_name, u.last_name, u.email, u.is_active ");
       query.append("FROM users u ");
       query.append("WHERE u.id = '");
       query.append(userId);
@@ -332,6 +217,7 @@ public class MySQLUserDAO implements UserDAO {
         userData.put("first_name", rs.getString("first_name"));
         userData.put("last_name", rs.getString("last_name"));
         userData.put("email", rs.getString("email"));
+        userData.put("is_active", rs.getString("is_active"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -403,8 +289,8 @@ public class MySQLUserDAO implements UserDAO {
     Object[] values;
     if (userData.get("id") == null) {
       // Insert new record
-      query
-        .append("INSERT INTO users (id, first_name, last_name, username, email, password, is_ccafs_user, created_by, is_active) ");
+      query.append(
+        "INSERT INTO users (id, first_name, last_name, username, email, password, is_ccafs_user, created_by, is_active) ");
       query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       values = new Object[9];
       values[0] = userData.get("id");
@@ -418,8 +304,8 @@ public class MySQLUserDAO implements UserDAO {
       values[8] = userData.get("is_active");
     } else {
       // update record
-      query
-        .append("UPDATE users SET first_name = ?, last_name = ?, username = ?, email = ?, password = ?, is_ccafs_user = ?, is_active = ? ");
+      query.append(
+        "UPDATE users SET first_name = ?, last_name = ?, username = ?, email = ?, password = ?, is_ccafs_user = ?, is_active = ? ");
       query.append("WHERE id = ? ");
       values = new Object[8];
       values[0] = userData.get("first_name");

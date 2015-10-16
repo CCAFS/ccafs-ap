@@ -124,13 +124,16 @@ public class ProjectOutputsPlanningAction extends BaseAction {
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
 
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
+    // Getting the history for this section.
     this.setHistory(historyManager.getProjectOutputsHistory(projectID));
   }
 
   @Override
   public String save() {
     boolean success = true;
-    if (securityContext.canUpdateProjectOverviewMOGs()) {
+    if (securityContext.canUpdateProjectOverviewMOGs(projectID)) {
 
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);

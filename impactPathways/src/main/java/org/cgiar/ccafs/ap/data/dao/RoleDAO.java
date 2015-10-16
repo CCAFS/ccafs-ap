@@ -44,15 +44,6 @@ public interface RoleDAO {
   public List<Map<String, String>> getAllRoles();
 
   /**
-   * This method gets the user role according to the institution given
-   * 
-   * @param userID
-   * @param institutionID
-   * @return a Map with the information of the role
-   */
-  public Map<String, String> getRole(int userID, int institutionID);
-
-  /**
    * This method saves into the database the role assigned to the user.
    * 
    * @param userID - User identifier

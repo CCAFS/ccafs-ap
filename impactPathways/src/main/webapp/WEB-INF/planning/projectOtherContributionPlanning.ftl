@@ -27,7 +27,9 @@
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
           [@s.text name="planning.project" /]: ${project.composedId} - [@s.param][@s.text name="planning.impactPathways.otherContributions.title"/][/@s.param]
@@ -63,17 +65,19 @@
           <div class="panel-head">[@customForm.text name="planning.impactPathways.otherContributions.collaboratingCRPs" readText=!editable /]</div> 
           <div class="panel-body"> 
             <ul id="contributionsBlock" class="list">
-            [#if project.crpContributions?has_content]  
-              [#list project.crpContributions as crp]
+            [#if project.ipOtherContribution.crpContributions?has_content]  
+              [#list project.ipOtherContribution.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
-                  <input class="id" type="hidden" name="project.crpContributions[${crp_index}].id" value="${crp.id}" />
+                
+                  <input class="id" type="hidden" name="project.ipOtherContribution.crpContributions[${crp_index}].crp.id" value="${crp.crp.id}" />
                   [#-- CRP Title --]
                   <div class="fullPartBlock clearfix">
-                    <span class="name">${crp.name}</span>
+                    <span class="name">${crp.crp.name}</span>
                   </div>
                   [#-- CRP Collaboration nature --]
                   <div class="fullPartBlock">
-                    [@customForm.textArea name="project.crpContributions[${crp_index}].crpCollaborationNature" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
+                    [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" showTitle=false /]
+                    [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
                   </div>
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
@@ -113,7 +117,7 @@
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>
     [/#if]
     [#if editable] 
-      <input type="hidden" id="crpsName" value="project.crpContributions"/>
+      <input type="hidden" id="crpsName" value="project.ipOtherContribution.crpContributions"/>
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="[#if !newProject]borderBox[/#if]" >

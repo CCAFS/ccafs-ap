@@ -38,8 +38,8 @@ public interface ProjectOtherContributionManager {
   /**
    * This method gets all the IP Other Contributions information by a given project Id
    * 
-   * @param activityID - is the Id of the project
-   * @return a List of IP Other Contributions with the Information related to the project
+   * @param projectID - is the Id of the project
+   * @return an IPOtherContribution object with the Information related to the project
    */
   public OtherContribution getIPOtherContributionByProjectId(int projectID);
 

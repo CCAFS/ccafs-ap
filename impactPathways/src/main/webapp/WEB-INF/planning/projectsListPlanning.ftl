@@ -35,7 +35,7 @@
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
       <div class="loadingBlock"></div>
       <div style="display:none">
-        [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" /]
+        [@projectList.projectsList projects=projects canValidate=true canEdit=true namespace="/planning/projects" /]
       </div>
     [#else]
       <div class="borderBox center">
@@ -54,9 +54,6 @@
         [/#if]
         [#if securityContext.canAddBilateralProject()]
           <a class="addButton" href="[@s.url namespace="/planning" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
-        [/#if]
-        [#if securityContext.canAddCofoundedProject()]
-          <a class="addButton" href="[@s.url namespace="/planning" action='addCoFundedProject'/]">[@s.text name="preplanning.projects.addCofoundedProject" /]</a>
         [/#if]
       </div>
     [/#if]

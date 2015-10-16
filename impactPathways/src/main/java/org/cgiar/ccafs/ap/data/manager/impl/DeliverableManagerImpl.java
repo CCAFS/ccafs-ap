@@ -60,7 +60,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
     this.deliverablePartnerManager = partnerManager;
   }
 
-
   @Override
   public boolean deleteDeliverable(int deliverableID, User user, String justification) {
     boolean problem = false;
@@ -95,6 +94,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
   public boolean deleteDeliverablesByProject(int projectID) {
     return deliverableDAO.deleteDeliverablesByProject(projectID);
   }
+
 
   @Override
   public boolean existDeliverable(int deliverableID) {
@@ -134,7 +134,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
     }
     return null;
   }
-
 
   @Override
   public IPElement getDeliverableOutput(int deliverableID) {

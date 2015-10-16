@@ -2,19 +2,38 @@ package org.cgiar.ccafs.ap.action.json.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.ActivityManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
+import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
+import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
+import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetByMOGValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetPlanningValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectCCAFSOutcomesValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectDeliverableValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectDescriptionValidator;
+import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectLocationsValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutcomeValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectOutputsPlanningValidator;
@@ -23,8 +42,10 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -52,7 +73,6 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   // Managers
   @Inject
   private SectionStatusManager sectionStatusManager;
-
   @Inject
   private ProjectManager projectManager;
   @Inject
@@ -69,7 +89,20 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private IPElementManager ipElementManager;
   @Inject
   private ProjectContributionOverviewManager overviewManager;
-
+  @Inject
+  private IPIndicatorManager indicatorManager;
+  @Inject
+  private ActivityManager activityManager;
+  @Inject
+  private ProjectOtherContributionManager ipOtherContributionManager;
+  @Inject
+  private DeliverableManager deliverableManager;
+  @Inject
+  private BudgetOverheadManager overheadManager;
+  @Inject
+  private BudgetManager budgetManager;
+  @Inject
+  private BudgetByMogManager budgetByMogManager;
   // Validators
   @Inject
   private ProjectDescriptionValidator descriptionValidator;
@@ -81,6 +114,19 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   private ProjectOutcomeValidator projectOutcomeValidator;
   @Inject
   private ProjectOutputsPlanningValidator projectOutputValidator;
+  @Inject
+  private ProjectCCAFSOutcomesValidator projectCCAFSOutcomesValidator;
+  @Inject
+  private ActivitiesListValidator activityListValidator;
+  @Inject
+  private ProjectIPOtherContributionValidator projectOtherContributionValidator;
+  @Inject
+  private ProjectDeliverableValidator deliverableValidator;
+  @Inject
+  private ProjectBudgetPlanningValidator budgetValidator;
+
+  @Inject
+  private ProjectBudgetByMOGValidator budgetbyMOGValidator;
 
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
@@ -105,35 +151,70 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
           this.validateProjectOutcomes();
           break;
         case "ccafsOutcomes":
-          // TODO
+          this.validateCCAFSOutcomes();
           break;
         case "otherContributions":
-          // TODO
+          this.validateProjectOtherContributions();
           break;
         case "outputs":
           this.validateOverviewByMOGS();
           break;
-        case "deliverableList":
-          // TODO
+        case "deliverablesList":
+          this.validateDeliverables();
           break;
         case "activities":
-          // TODO
+          this.validateActivities();
           break;
         case "budget":
-          // TODO
+          this.validateBudgetByPartner();
           break;
         case "budgetByMog":
-          // TODO
+          this.validateBudgetByMOG();
           break;
         default:
           // Do nothing.
           break;
       }
-      sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
+      // for deliverables, we going to create a fake section status with all the missing fields for all the deliverables
+      // on it. Please refer to the method validateDeliverables().
+      if (!sectionName.equals("deliverablesList")) {
+        sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
+      }
 
     }
     return SUCCESS;
   }
+
+  public Budget getBilateralCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+    List<Budget> budgets = budgetManager.getBudgetsByYear(cofinanceProjectID, year);
+
+    for (Budget budget : budgets) {
+      if (budget.getCofinancingProject() != null) {
+        if (budget.getProjectId() == projectID) {
+          return budget;
+        }
+      }
+    }
+
+
+    return null;
+  }
+
+  public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+    Budget budged;
+    Project cofinancingProject = projectManager.getProject(cofinanceProjectID);
+    cofinancingProject
+      .setBudgets(budgetManager.getBudgetsByYear(cofinancingProject.getId(), config.getPlanningCurrentYear()));
+    if (cofinancingProject.isBilateralProject()) {
+
+      budged = this.getBilateralCofinancingBudget(projectID, cofinanceProjectID, year);
+    } else {
+      budged = cofinancingProject.getCofinancingBudget(projectID, year);
+    }
+    // project.getBudgets().add(budged);
+    return budged;
+  }
+
 
   public SectionStatus getSectionStatus() {
     return sectionStatus;
@@ -165,12 +246,124 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     sections.add("ccafsOutcomes");
     sections.add("otherContributions");
     sections.add("outputs");
-    sections.add("deliverableList");
+    sections.add("deliverablesList");
     sections.add("activities");
     sections.add("budget");
     sections.add("budgetByMog");
     validSection = sections.contains(sectionName);
 
+  }
+
+  private void validateActivities() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Getting the activities from the database.
+    project.setActivities(activityManager.getActivitiesByProject(projectID));
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "activities", this.getCurrentPlanningYear()));
+
+    activityListValidator.validate(this, project, "Planning");
+  }
+
+  private void validateBudgetByMOG() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    // Remove the outputs duplicated
+    Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
+    project.getOutputs().clear();
+    project.getOutputs().addAll(outputsTemp);
+    // Getting the current Planning Year
+    int year = config.getPlanningCurrentYear();
+    int bilateralBudgetType = BudgetType.W3_BILATERAL.getValue();
+    int ccafsBudgetType = BudgetType.W1_W2.getValue();
+
+    List<OutputBudget> budgets = new ArrayList<>();
+    budgets.addAll(budgetByMogManager.getProjectOutputsBudgetByTypeAndYear(projectID, ccafsBudgetType, year));
+    budgets.addAll(budgetByMogManager.getProjectOutputsBudgetByTypeAndYear(projectID, bilateralBudgetType, year));
+    project.setOutputsBudgets(budgets);
+
+    budgetbyMOGValidator.validate(this, project, "Planning");
+
+  }
+
+
+  private void validateBudgetByPartner() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Getting budget information
+    if (!project.isBilateralProject()) {
+      project.setLinkedProjects(linkedProjectManager.getLinkedBilateralProjects(projectID));
+    } else {
+      project.setLinkedProjects(linkedProjectManager.getLinkedCoreProjects(projectID));
+      project.setOverhead(overheadManager.getProjectBudgetOverhead(projectID));
+    }
+    // Getting project partners
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+
+    if (project.getLeader() != null) {
+      // Getting the list of budgets for the current planning year.
+      project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), config.getPlanningCurrentYear()));
+    }
+
+    for (Project contribution : project.getLinkedProjects()) {
+      contribution.setAnualContribution(
+        this.getCofinancingBudget(projectID, contribution.getId(), this.getConfig().getPlanningCurrentYear()));
+    }
+    // TODO
+    budgetValidator.validate(this, project, "Planning");
+
+  }
+
+  private void validateCCAFSOutcomes() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Get the project outputs from database
+    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    // Get the project indicators from database
+    project.setIndicators(indicatorManager.getProjectIndicators(projectID));
+    // Getting the outcomes for each indicator
+    for (IPIndicator indicator : project.getIndicators()) {
+      indicator.setOutcome(ipElementManager.getIPElement(indicator.getOutcome().getId()));
+    }
+
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "ccafsOutcomes", this.getCurrentPlanningYear()));
+
+    // Validating
+    projectCCAFSOutcomesValidator.validate(this, project, "Planning");
+  }
+
+
+  private void validateDeliverables() {
+    // Getting basic project information.
+    Project project = projectManager.getProject(projectID);
+    // Getting the list of deliverables.
+    project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
+    // we need to make two validations here. One at project level, and the other one for each deliverable.
+    deliverableValidator.validate(this, project, "Planning");
+
+    sectionStatus = new SectionStatus();
+    sectionStatus.setId(-1);
+    sectionStatus.setSection("deliverablesList");
+    StringBuilder missingFieldsAllDeliverables = new StringBuilder();
+    // Getting the status made before.
+    SectionStatus tempStatus = sectionStatusManager.getSectionStatus(project, "Planning", "deliverablesList");
+    // Adding the missing fields to the concatenated deliverablesStatus.
+    missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
+
+    if (project.getDeliverables() != null && !project.getDeliverables().isEmpty()) {
+      for (Deliverable deliverable : project.getDeliverables()) {
+        deliverableValidator.validate(this, project, deliverable, "Planning");
+        // Appending all the missing fields for the current deliverable.
+        tempStatus = sectionStatusManager.getSectionStatus(deliverable, "Planning", "deliverable");
+        missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
+      }
+    }
+    sectionStatus.setMissingFields(missingFieldsAllDeliverables.toString());
   }
 
   private void validateOverviewByMOGS() {
@@ -225,6 +418,17 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     locationValidator.validate(this, project, "Planning");
   }
 
+  private void validateProjectOtherContributions() {
+    // Getting the Project information.
+    Project project = projectManager.getProject(projectID);
+    project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "otherContributions", this.getCurrentPlanningYear()));
+    // Validating.
+    projectOtherContributionValidator.validate(this, project);
+  }
+
   private void validateProjectOutcomes() {
     // Getting information.
     Project project = projectManager.getProject(projectID);
@@ -258,7 +462,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this
-    .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
+      .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
     projectPartnersValidator.validate(this, project, "Planning");

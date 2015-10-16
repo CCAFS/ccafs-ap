@@ -13,6 +13,9 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
@@ -24,12 +27,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class OtherContribution {
 
-  private int id;
-  private String contribution;
   private String additionalContribution;
-  private String crpCollaborationNature;
+  private String contribution;
+  private List<CRPContribution> crpContributions;
+  private int id;
 
   public OtherContribution() {
+    crpContributions=new ArrayList<CRPContribution>();
   }
 
   @Override
@@ -49,8 +53,8 @@ public class OtherContribution {
     return contribution;
   }
 
-  public String getCrpCollaborationNature() {
-    return crpCollaborationNature;
+  public List<CRPContribution> getCrpContributions() {
+    return crpContributions;
   }
 
   public int getId() {
@@ -70,8 +74,8 @@ public class OtherContribution {
     this.contribution = contribution;
   }
 
-  public void setCrpCollaborationNature(String crpCollaborationNature) {
-    this.crpCollaborationNature = crpCollaborationNature;
+  public void setCrpCollaborationNature(List<CRPContribution> crpContributions) {
+    this.crpContributions = crpContributions;
   }
 
   public void setId(int id) {
