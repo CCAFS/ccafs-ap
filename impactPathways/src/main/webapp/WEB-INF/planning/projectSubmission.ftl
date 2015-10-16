@@ -18,10 +18,6 @@
 <section class="content">
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   <article class="halfContent" id="projectSubmition">
-    [#if !canEdit]
-      <p class="readPrivileges">You do not have sufficient privileges to submit this project</p>
-    [/#if]
-    
     <h1 class="successfullyTitle">Project Submit</h1>
     <div class="borderBox">
     [#if complete]
