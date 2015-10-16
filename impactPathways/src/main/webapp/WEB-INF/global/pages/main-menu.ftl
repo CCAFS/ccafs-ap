@@ -17,7 +17,7 @@
 	        </li>
 	      </a>
 	      
-	      [#-- P&R Overview
+	      [#-- P&R Overview 
         <a href="${baseUrl}/overview.do">
           <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
             <span class="text">[@s.text name="menu.overview" /]</span>
@@ -82,7 +82,7 @@
 	      [#-- If the user is not logged show the login element in menu --]
 	      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.login" /]</li></a>
 
-	      [#-- P&R Overview
+	      [#-- P&R Overview 
         <a href="${baseUrl}/overview.do">
           <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
             <span class="text">[@s.text name="menu.overview" /]</span>
