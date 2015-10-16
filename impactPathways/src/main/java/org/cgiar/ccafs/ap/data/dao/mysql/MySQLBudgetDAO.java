@@ -554,6 +554,7 @@ public class MySQLBudgetDAO implements BudgetDAO {
       while (rs.next()) {
         Map<String, String> budgetData = new HashMap<String, String>();
         budgetData.put("id", rs.getString("id"));
+        budgetData.put("project_id", rs.getString("project_id"));
         budgetData.put("year", rs.getString("year"));
         budgetData.put("budget_type", rs.getString("budget_type"));
         budgetData.put("institution_id", rs.getString("institution_id"));

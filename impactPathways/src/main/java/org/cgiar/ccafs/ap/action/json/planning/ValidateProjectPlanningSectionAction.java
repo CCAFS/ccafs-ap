@@ -190,7 +190,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
 
     for (Budget budget : budgets) {
       if (budget.getCofinancingProject() != null) {
-        if (budget.getCofinancingProject().getId() == projectID) {
+        if (budget.getProjectId() == projectID) {
           return budget;
         }
       }

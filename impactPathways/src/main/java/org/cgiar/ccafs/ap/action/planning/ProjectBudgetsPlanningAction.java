@@ -96,8 +96,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     List<Budget> budgets = budgetManager.getBudgetsByYear(cofinanceProjectID, year);
 
     for (Budget budget : budgets) {
+
       if (budget.getCofinancingProject() != null) {
-        if (budget.getCofinancingProject().getId() == projectID) {
+      
+        if (budget.getProjectId() == projectID) {
           return budget;
         }
       }
