@@ -56,7 +56,7 @@
      </result>
    </action>
    
-    <action name="powb" class="org.cgiar.ccafs.ap.action.summaries.planning.POWBSummaryAction">
+    <action name="budgetByPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetByPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -64,7 +64,7 @@
      </result>
    </action>
    
-   <action name="budgetSummaryByMOG" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetSummaryByMOGAction">
+   <action name="budgetByMOGsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetByMOGsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>

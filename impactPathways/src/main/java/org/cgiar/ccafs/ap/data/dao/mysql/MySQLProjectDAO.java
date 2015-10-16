@@ -944,7 +944,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
     LOG.debug(">> getAllActivitiesGenderContribution ");
-    // TODO
+
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
@@ -1028,7 +1028,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
     query.append("WHERE (dp.partner_type = 'Resp' OR dp.partner_type is null ) AND p.is_active = 1 ");
     query.append("AND d.is_active = 1 AND nu.is_active = 1 ");
-    // TODO
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -1062,7 +1061,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
     LOG.debug(">> getAllProjectPartnerLeaders ");
-    // TODO
+
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
@@ -1242,7 +1241,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
     LOG.debug(">> getAllProjectsGenderContribution ");
-    // TODO
+
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
@@ -1361,7 +1360,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year) {
     LOG.debug(">> getBudgetByMogAndByYear ");
-    // TODO
+
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
@@ -1440,7 +1439,6 @@ public class MySQLProjectDAO implements ProjectDAO {
   public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
 
     LOG.debug(">> summaryGetInformationPOWB ");
-    // TODO
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
@@ -1454,30 +1452,31 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append(" (SELECT  (SUM(IFNULL(pb.amount,0)) * pmb.total_contribution * 0.01) FROM project_mog_budgets pmb  ");
     query.append(" INNER JOIN  project_budgets pb  ON pmb.project_id = pb.project_id  ");
     query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year);
-    query.append(" AND pb.budget_type = 1  AND  pmb.budget_type = 1 AND pb.is_active = 1) AS 'budget_W1_W2'  ,");
+    query.append(" AND pb.budget_type = 1  AND  pmb.budget_type = 1 AND pb.is_active = 1 AND pmb.is_active = 1) "
+      + "AS 'budget_W1_W2'  ,");
 
     // Sum of contribution gender W1_W2 of the project for the MOG
     query
     .append(" (SELECT (SUM(IFNULL(pb.amount,0) * IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
-
     query.append(" FROM project_mog_budgets pmb INNER JOIN project_budgets pb ON pmb.project_id = pb.project_id  ");
     query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year + " ");
-    query.append(" AND  pb.budget_type = 1  AND  pmb.budget_type = 1 AND pb.is_active = 1)  ");
+    query.append(" AND  pb.budget_type = 1  AND  pmb.budget_type = 1 AND pb.is_active = 1 AND pmb.is_active = 1)  ");
     query.append(" AS  'gender_W1_W2' ,");
 
     // Sum of contribution budget W3_Bilateral of the project for the MOG
     query.append(" (SELECT  (SUM(IFNULL(pb.amount,0)) * pmb.total_contribution * 0.01) FROM project_mog_budgets pmb  ");
     query.append(" INNER JOIN  project_budgets pb  ON pmb.project_id = pb.project_id  ");
     query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year);
-    query.append(" AND pb.budget_type = 2  AND  pmb.budget_type = 2 AND pb.is_active = 1) AS 'budget_W3_Bilateral'  ,");
+    query.append(" AND pb.budget_type = 2  AND  pmb.budget_type = 2 AND pb.is_active = 1"
+      + " AND pmb.is_active = 1) AS 'budget_W3_Bilateral'  ,");
 
     // Sum of contribution gender W3_Bilateral of the project for the MOG
-    query
-    .append(" (SELECT (SUM(IFNULL(pb.amount,0)* IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
+    query.append(" (SELECT (SUM(IFNULL(pb.amount,0)* IFNULL(pb.gender_percentage,0) * 0.01) * "
+      + "pmb.gender_contribution * 0.01) ");
 
     query.append(" FROM project_mog_budgets pmb INNER JOIN project_budgets pb ON pmb.project_id = pb.project_id  ");
     query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year + " ");
-    query.append(" AND  pb.budget_type = 2  AND  pmb.budget_type = 2 AND pb.is_active = 1 )  ");
+    query.append(" AND  pb.budget_type = 2  AND  pmb.budget_type = 2 AND pb.is_active = 1 AND pmb.is_active = 1)  ");
     query.append(" AS  'gender_W3_Bilateral' ");
 
     query.append("FROM ip_elements ipe ");
@@ -1515,6 +1514,59 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< summaryGetInformationPOWB ");
     return csvRecords;
 
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year) {
+    LOG.debug("<< summaryGetProjectBudgetByPartners ");
+    List<Map<String, Object>> csvRecords = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    // Formatted query:
+    query.append("SELECT p.id AS 'project_id', ");
+    query.append("p.title AS 'project_title' , ");
+    query.append("(SELECT IFNULL(CONCAT(i.acronym, ' - ', i.name) , i.name)) AS 'partner' ,");
+    query.append("IFNULL((SELECT SUM(IFNULL(pb.amount,0)) FROM project_budgets pb WHERE i.id = pb.institution_id ");
+    query.append("AND p.id =  pb.project_id AND pb.is_active= 1 AND pb.budget_type = 1),0) AS 'budget_w1_w2', ");
+
+    query.append("IFNULL((SELECT SUM(IFNULL(pb.amount,0) * pb.gender_percentage * 0.01) FROM project_budgets pb ");
+    query.append("WHERE i.id =  pb.institution_id AND p.id = pb.project_id AND pb.is_active= 1 ");
+    query.append(" AND pb.budget_type = 1),0)   AS 'gender_w1_w2',");
+
+    query.append("IFNULL((SELECT SUM(IFNULL(pb.amount, 0)) FROM project_budgets pb WHERE i.id = pb.institution_id ");
+    query.append("AND p.id = pb.project_id AND pb.is_active= 1 AND pb.budget_type = 2),0) AS 'budget_w3_bilateral', ");
+
+    query.append("IFNULL((SELECT SUM(IFNULL(pb.amount,0) * pb.gender_percentage * 0.01 ) FROM project_budgets pb ");
+    query.append("WHERE i.id = pb.institution_id AND p.id = pb.project_id AND pb.is_active= 1  ");
+    query.append("AND pb.budget_type = 2),0)   AS 'gender_w3_bilateral' ");
+
+    query.append("FROM project_partners pp INNER JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("INNER JOIN projects p ON pp.project_id = p.id ");
+    query.append("GROUP BY i.id");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      Map<String, Object> csvData;
+      while (rs.next()) {
+        csvData = new HashMap<>();
+        csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("partner", rs.getString("partner"));
+        csvData.put("budget_W1_W2", rs.getDouble("budget_W1_W2"));
+        csvData.put("gender_W1_W2", rs.getDouble("gender_W1_W2"));
+        csvData.put("budget_W3_Bilateral", rs.getDouble("budget_W3_Bilateral"));
+        csvData.put("gender_W3_Bilateral", rs.getDouble("gender_W3_Bilateral"));
+        csvRecords.add(csvData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- summaryGetProjectBudgetByPartners() > Exception raised trying ";
+      exceptionMessage += "to get the summary report budget By MOG POWB Report: " + query;
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< summaryGetProjectBudgetByPartners ");
+    return csvRecords;
   }
 
   @Override

@@ -17,7 +17,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetSummaryByMOGXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetByMOGSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -35,12 +35,12 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class BudgetSummaryByMOGAction extends BaseAction implements Summary {
+public class BudgetByMOGsSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
 
-  private BudgetSummaryByMOGXLS budgetSummaryByMOGXLS;
+  private BudgetByMOGSummaryXLS budgetSummaryByMOGXLS;
   private ProjectManager projectManager;
 
   // XLS bytes
@@ -55,8 +55,8 @@ public class BudgetSummaryByMOGAction extends BaseAction implements Summary {
   private List<Map<String, Object>> informationBudgetReportByMOG;
 
   @Inject
-  public BudgetSummaryByMOGAction(APConfig config, ProjectManager projectManager,
-    BudgetSummaryByMOGXLS budgetSummaryByMOGXLS) {
+  public BudgetByMOGsSummaryAction(APConfig config, ProjectManager projectManager,
+    BudgetByMOGSummaryXLS budgetSummaryByMOGXLS) {
     super(config);
     this.projectManager = projectManager;
     this.budgetSummaryByMOGXLS = budgetSummaryByMOGXLS;
