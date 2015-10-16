@@ -32,47 +32,54 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Project {
 
+  public static final int STANDAR_IDENTIFIER = 1;
+  public static final int PDF_IDENTIFIER_REPORT = 2;
+  public static final int EXCEL_IDENTIFIER_REPORT = 3;
+  public static final int EMAIL_SUBJECT_IDENTIFIER = 4;
+
   private int id;
   private String title;
-  private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
   private String summary;
   private Date startDate;
   private Date endDate;
+  private long created; // Timestamp number when the project was created
+  private User owner;
   private List<IPProgram> regions; // The list of regions in which this project works with.
   private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private ProjectPartner coordinator; // Project Coordinator.
-  private String leaderResponsabilities;
-  private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
-  private boolean isGlobal;
-  private boolean isCofinancing;
-  private User owner;
-  private List<ProjectPartner> projectPartners; // Project partners.
-  private List<Deliverable> deliverables; // Project research outputs - deliverables.
-  private List<Budget> budgets;
-  private BudgetOverhead overhead;
-  private Map<String, ProjectOutcome> outcomes;
-  private List<Location> locations; // Project locations.
+  private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
   private List<Activity> activities;
-  private List<IPElement> outputs;
-  private List<OutputOverview> outputsOverview;
-  private List<OutputBudget> outputsBudgets;
+  private boolean isCofinancing;
+  private boolean isGlobal;
+  private List<Budget> budgets;
+  private List<ComponentLesson> componentLessons;
+  private ProjectPartner coordinator; // Project Coordinator.
+  private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
-  private List<CRP> crpContributions;
-  private String crpContributionsNature;
-  private boolean workplanRequired;
-  private String workplanName;
-  private String bilateralContractProposalName;
+  private String leaderResponsabilities;
+  private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private List<Project> linkedProjects;
-  private long created; // Timestamp number when the project was created
+  private List<Location> locations; // Project locations.
+  private Map<String, ProjectOutcome> outcomes;
+  private List<IPElement> outputs;
+  private List<OutputBudget> outputsBudgets;
+  private List<OutputOverview> outputsOverview;
+  private BudgetOverhead overhead;
+  private List<ProjectPartner> projectPartners; // Project partners.
+  private List<Submission> submissions; // all the project submissions.
+  private String bilateralContractProposalName;
+  private String workplanName;
+  private boolean workplanRequired;
+  private Budget anualContribution;
+
 
   public Project() {
   }
 
+
   public Project(int id) {
     this.id = id;
   }
-
 
   /**
    * This method validates if the current project contributes to a specific output (MOG).
@@ -102,7 +109,7 @@ public class Project {
   public boolean containsOutput(int outputID, int outcomeID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
-        if (output.getId() == outputID) {
+        if (output != null && output.getId() == outputID) {
           if (output.getContributesTo().contains(new IPElement(outcomeID))) {
             return true;
           }
@@ -111,6 +118,7 @@ public class Project {
     }
     return false;
   }
+
 
   /**
    * this method validates if the current project contributes to a given output (MOG).
@@ -174,6 +182,10 @@ public class Project {
     }
 
     return allYears;
+  }
+
+  public Budget getAnualContribution() {
+    return anualContribution;
   }
 
   /**
@@ -250,6 +262,26 @@ public class Project {
   }
 
   /**
+   * @param componentName is the name of the lesson to search
+   * @return the founded ComponentLesson, null if the lesson doesn't exist
+   */
+  public ComponentLesson getComponentLesson(String componentName) {
+    for (ComponentLesson componentLesson : this.getComponentLessons()) {
+      if (componentLesson.getComponentName().equals(componentName)) {
+        return componentLesson;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return the componentLessons
+   */
+  public List<ComponentLesson> getComponentLessons() {
+    return componentLessons;
+  }
+
+  /**
    * This method returns a composed Identifier that is going to be used in the front-end.
    * The convention is going to be used depending on the creation date of the project.
    * yyyy-project.id => e.g. 2014-46
@@ -300,14 +332,6 @@ public class Project {
     return new Date(created);
   }
 
-  public List<CRP> getCrpContributions() {
-    return crpContributions;
-  }
-
-  public String getCrpContributionsNature() {
-    return crpContributionsNature;
-  }
-
   public List<Deliverable> getDeliverables() {
     return deliverables;
   }
@@ -338,10 +362,10 @@ public class Project {
     return flagshipAcronym.toString();
   }
 
+
   public int getId() {
     return id;
   }
-
 
   /**
    * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
@@ -369,6 +393,7 @@ public class Project {
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
+
 
   /**
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
@@ -437,7 +462,6 @@ public class Project {
     return null;
   }
 
-
   /**
    * This method returns the project partner person who is leading the project.
    * 
@@ -459,6 +483,7 @@ public class Project {
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
   }
+
 
   public LiaisonInstitution getLiaisonInstitution() {
     return liaisonInstitution;
@@ -538,7 +563,7 @@ public class Project {
     List<ProjectPartner> ppaPartners = new ArrayList<>();
     if (this.getProjectPartners() != null) {
       for (ProjectPartner pp : this.getProjectPartners()) {
-        if (pp.getInstitution().isPPA()) {
+        if (pp.getInstitution() != null && pp.getInstitution().isPPA()) {
           ppaPartners.add(pp);
         }
       }
@@ -573,14 +598,108 @@ public class Project {
     return regionAcronym.toString();
   }
 
+  /**
+   * This method returns the project identifier whether using composed codification (that is with the organization IATI
+   * standard id) or a simple id.
+   * 
+   * @param project , the project to get the standard identifier from.
+   * @param useComposedCodification , true if you want to get the full IATI standard codification or false for simple
+   *        form.
+   * @return a String with the standard identifier.
+   */
+  public String getStandardIdentifier(int typeCodification) {
+    StringBuilder result = new StringBuilder();
+
+    switch (typeCodification) {
+      // Standar identifier
+      case Project.STANDAR_IDENTIFIER:
+        result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
+        result.append("-P");
+        result.append(this.getId());
+        break;
+
+      // PDF Identifier
+      case Project.PDF_IDENTIFIER_REPORT:
+        // Acronym leader institution
+        if (this.getLeader() != null && this.getLeader().getInstitution() != null
+          && this.getLeader().getInstitution().getAcronym() != null) {
+          result.append(this.getLeader().getInstitution().getAcronym() + "-");
+        }
+
+        // -- flagships
+        for (IPProgram flagship : this.getFlagships()) {
+          if (flagship != null) {
+            result.append(flagship.getAcronym().replaceAll(" ", "") + "-");
+          }
+        }
+        int counter = 0;
+        // -- regions
+        for (IPProgram region : this.getRegions()) {
+          if (region != null) {
+            if (counter != 0) {
+              result.append("-");
+            }
+            result.append(region.getAcronym().replaceAll("RP", "").replaceAll(" ", ""));
+          }
+          counter++;
+        }
+        result.append("_P" + this.getId());
+        break;
+
+      // Excel Identifier
+      case Project.EXCEL_IDENTIFIER_REPORT:
+        result.append("P" + this.getId());
+        break;
+
+      // Email Subject Identifier
+      case Project.EMAIL_SUBJECT_IDENTIFIER:
+        result.append("P" + this.getId());
+        break;
+
+      default:
+        // Do nothing
+        break;
+
+    }
+
+
+    return result.toString();
+  }
+
   public Date getStartDate() {
     return startDate;
   }
 
+  public List<Submission> getSubmissions() {
+    return submissions;
+  }
+
+  /**
+   * This method gets the submissison for the current planning year of current project.
+   * 
+   * @param currentPlanningYear Current Planning Year
+   * @return the submission of the current planning year, null if doesn't exist.
+   */
+  public Submission getSubmmisionCurrentPlannigYear(int currentPlanningYear) {
+
+    for (Submission submission : this.getSubmissions()) {
+      if ((submission.getYear() == currentPlanningYear) && (submission.getCycle().equals("Planning"))) {
+        return submission;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return get the project summary
+   */
   public String getSummary() {
     return summary;
   }
 
+  /**
+   * @return get the project title
+   */
   public String getTitle() {
     return title;
   }
@@ -644,7 +763,17 @@ public class Project {
   }
 
   public boolean isBilateralProject() {
-    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL_STANDALONE) : false;
+    return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL) : false;
+  }
+
+  /**
+   * A project is bilateral stand alone if it is bilateral and it is NOT contributing to any Core project.
+   * 
+   * @return true if the project is bilateral stand alone, false if is bilateral and is contributing to some core
+   *         project.
+   */
+  public boolean isBilateralStandAlone() {
+    return (type != null) ? (this.isBilateralProject() && !this.isCofinancing) : false;
   }
 
   public boolean isCofinancing() {
@@ -694,12 +823,34 @@ public class Project {
     return this.getCreationDate().after(planningStartDate);
   }
 
+  /**
+   * This method validates if the project is already submitted or not.
+   * 
+   * @param year where the submission date happened.
+   * @param cycle could be 'Planning' or 'Reporting'.
+   * @return a Submission object with the information. or null if the project is not submitted.
+   */
+  public Submission isSubmitted(int year, String cycle) {
+    if (this.submissions != null) {
+      for (Submission submission : this.submissions) {
+        if (submission.getYear() == year && submission.getCycle().equals(cycle)) {
+          return submission;
+        }
+      }
+    }
+    return null;
+  }
+
   public boolean isWorkplanRequired() {
     return workplanRequired;
   }
 
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
+  }
+
+  public void setAnualContribution(Budget anualContribution) {
+    this.anualContribution = anualContribution;
   }
 
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
@@ -714,20 +865,19 @@ public class Project {
     this.isCofinancing = isCofinancing;
   }
 
+  /**
+   * @param componentLessons the componentLessons to set
+   */
+  public void setComponentLessons(List<ComponentLesson> componentLessons) {
+    this.componentLessons = componentLessons;
+  }
+
   public void setCoordinator(ProjectPartner coordinator) {
     this.coordinator = coordinator;
   }
 
   public void setCreated(long created) {
     this.created = created;
-  }
-
-  public void setCrpContributions(List<CRP> crpContributions) {
-    this.crpContributions = crpContributions;
-  }
-
-  public void setCrpContributionsNature(String crpContributionsNature) {
-    this.crpContributionsNature = crpContributionsNature;
   }
 
   public void setDeliverables(List<Deliverable> deliverables) {
@@ -808,6 +958,10 @@ public class Project {
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public void setSubmissions(List<Submission> submissions) {
+    this.submissions = submissions;
   }
 
   public void setSummary(String summary) {

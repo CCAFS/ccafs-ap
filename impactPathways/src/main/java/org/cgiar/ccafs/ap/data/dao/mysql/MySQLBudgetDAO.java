@@ -262,6 +262,37 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
+  public double calculateTotalGenderBudgetByInstitutionAndType(int projectID, int institutionID, int budgetTypeID) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(amount * gender_percentage * 0.01) as total ");
+    query.append("FROM project_budgets ");
+    query.append(" WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND institution_id = ");
+    query.append(institutionID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND is_active = TRUE");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised getting the institutions for the user {}.", projectID, e);
+      total = -1.0;
+    }
+    return total;
+  }
+
+
+  @Override
   public double calculateTotalGenderBudgetByYear(int projectID, int year) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
@@ -315,7 +346,6 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
-
 
   @Override
   public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
@@ -519,12 +549,12 @@ public class MySQLBudgetDAO implements BudgetDAO {
     query.append(" ) AND pb.year=  ");
     query.append(year);
     query.append(" AND pb.is_active = TRUE ");
-    System.out.println();
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, String> budgetData = new HashMap<String, String>();
         budgetData.put("id", rs.getString("id"));
+        budgetData.put("project_id", rs.getString("project_id"));
         budgetData.put("year", rs.getString("year"));
         budgetData.put("budget_type", rs.getString("budget_type"));
         budgetData.put("institution_id", rs.getString("institution_id"));

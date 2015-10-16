@@ -290,5 +290,14 @@
         <param name="projectID">${project.id}</param>
       </result>
     </action>
+    
+    <!-- Project Submission -->
+    <action name="submit" class="org.cgiar.ccafs.ap.action.planning.ProjectSubmissionAction">
+      <result name="input">/WEB-INF/planning/projectSubmission.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">submit</param>
+        <param name="projectID">${projectID}</param>        
+      </result>
+    </action>      
   </package>  
 </struts>

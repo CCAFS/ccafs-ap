@@ -32,19 +32,27 @@ function init() {
     // Activate the chosen to the existing partners
     addChosen();
     // Applying word counters to form fields
-    applyWordCounter($("textarea.resp"), lWordsResp);
+    applyWordCounter($("form textarea.resp"), lWordsResp);
     applyWordCounter($("#lessons textarea"), lWordsResp);
     // Validate on save and next action
     validateEvent([
       "#justification"
     ]);
+
   }
   // Attaching listeners
   attachEvents();
   if(($partnersBlock.find('.projectPartner').length == 0) && editable) {
     $("a.addProjectPartner").trigger('click');
+    var person = new PartnerPersonObject($partnersBlock.find('.contactPerson'));
+    person.setPartnerType(leaderType);
+    person.changeType();
+    var partner = new PartnerObject($partnersBlock.find('.projectPartner'));
+    partner.changeType();
   }
   $('.loadingBlock').hide().next().fadeIn(500);
+
+  $("textarea[id!='justification']").autoGrow();
 }
 
 function attachEvents() {
@@ -410,6 +418,7 @@ function addPartnerEvent(e) {
   var $newElement = $("#projectPartner-template").clone(true).removeAttr("id");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
+  applyWordCounter($newElement.find("textarea.resp"), lWordsResp);
   // Activate the chosen plugin for new partners created
   $newElement.find("select").chosen({
       no_results_text: $("#noResultText").val(),
@@ -423,6 +432,7 @@ function addContactEvent(e) {
   var $newElement = $("#contactPerson-template").clone(true).removeAttr("id");
   $(e.target).parent().before($newElement);
   $newElement.show("slow");
+  applyWordCounter($newElement.find("textarea.resp"), lWordsResp);
   // Activate the chosen plugin for new partners created
   $newElement.find("select").chosen({
       no_results_text: $("#noResultText").val(),
@@ -663,7 +673,11 @@ function PartnerPersonObject(partnerPerson) {
   this.contactInfo = $(partnerPerson).find('.userName').val();
   this.canEditEmail = ($(partnerPerson).find('input.canEditEmail').val() === "true");
   this.setPartnerType = function(type) {
+    this.type = type;
     $(partnerPerson).find('.partnerPersonType').val(type).trigger("liszt:updated");
+  };
+  this.getPartnerType = function() {
+    return $(partnerPerson).find('.partnerPersonType').val();
   };
   this.changeType = function() {
     $(partnerPerson).removeClass(partnerPersonTypes.join(' ')).addClass(this.type);

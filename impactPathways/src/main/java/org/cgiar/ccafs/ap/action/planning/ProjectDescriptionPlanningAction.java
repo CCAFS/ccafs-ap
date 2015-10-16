@@ -287,8 +287,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
     projectTypes = new HashMap<>();
     projectTypes.put(APConstants.PROJECT_CORE, this.getText("planning.projectDescription.projectType.core"));
-    projectTypes.put(APConstants.PROJECT_BILATERAL_STANDALONE,
-      this.getText("planning.projectDescription.projectType.bilateral"));
+    projectTypes.put(APConstants.PROJECT_BILATERAL, this.getText("planning.projectDescription.projectType.bilateral"));
+    projectTypes.put(APConstants.PROJECT_CCAFS_COFUNDED,
+      this.getText("planning.projectDescription.projectType.cofounded"));
+    projectTypes.put(APConstants.PROJECT_BILATERAL, this.getText("planning.projectDescription.projectType.bilateral"));
 
     // If the user is not admin or the project owner, we should keep some information
     // unmutable
@@ -332,11 +334,16 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectDescription()) {
+    if (securityContext.canUpdateProjectDescription(projectID)) {
+
+      // There is no lessons learn on this section.
+      // if (!this.isNewProject()) {
+      // super.saveProjectLessons(projectID);
+      // }
 
       // If the user can edit the dates, delete the budgets that correspond to years that are not linked to the
       // project anymore to prevent errors in the project budget section.
-      if (securityContext.canEditStartDate() || securityContext.canEditEndDate()) {
+      if (securityContext.canEditStartDate(projectID) || securityContext.canEditEndDate(projectID)) {
         List<Integer> currentYears = project.getAllYears();
         List<Integer> previousYears = previousProject.getAllYears();
         for (Integer previousYear : previousYears) {
@@ -353,23 +360,23 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       previousProject.setTitle(project.getTitle());
 
-      if (securityContext.canEditManagementLiaison()) {
+      if (securityContext.canEditManagementLiaison(projectID)) {
         previousProject.setLiaisonInstitution(project.getLiaisonInstitution());
       }
 
-      if (securityContext.canEditManagementLiaison()) {
+      if (securityContext.canEditManagementLiaison(projectID)) {
         previousProject.setOwner(project.getOwner());
       }
 
-      if (securityContext.canEditStartDate()) {
+      if (securityContext.canEditStartDate(projectID)) {
         previousProject.setStartDate(project.getStartDate());
       }
 
-      if (securityContext.canEditEndDate()) {
+      if (securityContext.canEditEndDate(projectID)) {
         previousProject.setEndDate(project.getEndDate());
       }
 
-      if (securityContext.canAllowProjectWorkplanUpload()) {
+      if (securityContext.canAllowProjectWorkplanUpload(projectID)) {
         previousProject.setWorkplanRequired(project.isWorkplanRequired());
       }
 
@@ -393,7 +400,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       // previousProject.setType(project.getType());
 
       if (project.isBilateralProject()) {
-        if (securityContext.canUploadBilateralContract()) {
+        if (securityContext.canUploadBilateralContract(projectID)) {
           if (file != null) {
             FileManager.deleteFile(this.getBilateralProposalAbsolutePath() + previousProject.getWorkplanName());
             FileManager.copyFile(file, this.getBilateralProposalAbsolutePath() + previousProject.getWorkplanName());
@@ -422,7 +429,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
       // Save the regions and flagships
 
-      if (securityContext.canEditProjectFlagships()) {
+      if (securityContext.canEditProjectFlagships(projectID)) {
         List<IPProgram> previousFlagships = previousProject.getFlagships();
         List<IPProgram> flagships = project.getFlagships();
         boolean saved = true;
@@ -445,9 +452,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         }
       }
 
-      if (securityContext.canEditProjectRegions()) {
+      if (securityContext.canEditProjectRegions(projectID)) {
         List<IPProgram> previousRegions = previousProject.getRegions();
-        List<IPProgram> regions = project.getRegions();
         boolean saved = true;
 
         // Save only the new regions

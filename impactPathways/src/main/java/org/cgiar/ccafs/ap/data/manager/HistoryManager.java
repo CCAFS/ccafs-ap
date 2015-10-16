@@ -125,8 +125,7 @@ public interface HistoryManager {
    * identified by the value received by parameter.
    * 
    * @param projectID - Project identifier
-   * @param partnerType - Array of string with the type of partners (ex. 'PL', 'PPA')
    * @return a list of maps with the information
    */
-  public List<LogHistory> getProjectPartnersHistory(int projectID, String[] partnerTypes);
+  public List<LogHistory> getProjectPartnersHistory(int projectID);
 }

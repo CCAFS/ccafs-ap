@@ -40,8 +40,8 @@ public class PartnerPerson {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof ProjectPartner) {
-      ProjectPartner o = (ProjectPartner) obj;
+    if (obj instanceof PartnerPerson) {
+      PartnerPerson o = (PartnerPerson) obj;
       return this.getId() == o.getId();
     }
     return false;
@@ -63,7 +63,7 @@ public class PartnerPerson {
     str.append(user.getFirstName());
     str.append(" <");
     str.append(user.getEmail());
-    str.append("> ");
+    str.append(">");
     return str.toString();
 
   }

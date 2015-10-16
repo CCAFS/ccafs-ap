@@ -14,11 +14,11 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectRoleManager;
 import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
@@ -31,6 +31,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.ap.validation.planning.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -42,6 +43,7 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,7 @@ import org.slf4j.LoggerFactory;
  * @author Hernán Carvajal
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Carlos Alberto Martínez M.
+ * @author Christian David Garcia
  */
 public class ProjectPartnersPlanningAction extends BaseAction {
 
@@ -63,11 +66,11 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private InstitutionManager institutionManager;
   private LocationManager locationManager;
   private ProjectManager projectManager;
-  private ProjectRoleManager projectRoleManager;
   private UserManager userManager;
   private RoleManager roleManager;
   private ActivityManager activityManager;
   private DeliverableManager deliverableManager;
+  private HistoryManager historyManager;
   // private BudgetManager budgetManager;
   // private DeliverablePartnerManager deliverablePartnerManager;
   // private DeliverableManager deliverableManager;
@@ -79,7 +82,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private int projectID;
   private Project previousProject;
   private Project project;
-  private String actionName;
 
   // Model for the view
   private List<InstitutionType> intitutionTypes;
@@ -90,6 +92,9 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private List<ProjectPartner> projectPPAPartners; // Is used to list all the PPA partners that belongs to the project.
   private List<User> allUsers; // will be used to list all the project leaders that have the system.
 
+  // Util
+  private SendMail sendMail;
+
   // private List<Institution> contributionPartners; // this would get the partners contributing to others
 
   @Inject
@@ -97,39 +102,22 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     InstitutionManager institutionManager, LocationManager locationManager, ProjectManager projectManager,
     UserManager userManager, BudgetManager budgetManager, ProjectPartnersValidator projectPartnersValidator,
     DeliverablePartnerManager deliverablePartnerManager, DeliverableManager deliverableManager,
-    ActivityManager activityManager, ProjectRoleManager projectRoleManager, RoleManager roleManager) {
+    ActivityManager activityManager, RoleManager roleManager, SendMail sendMail, HistoryManager historyManager) {
     super(config);
     this.projectPartnerManager = projectPartnerManager;
     this.institutionManager = institutionManager;
     this.locationManager = locationManager;
     this.projectManager = projectManager;
-    this.projectRoleManager = projectRoleManager;
     this.userManager = userManager;
     this.activityManager = activityManager;
     this.deliverableManager = deliverableManager;
     this.projectPartnersValidator = projectPartnersValidator;
     this.roleManager = roleManager;
+    this.sendMail = sendMail;
+    this.historyManager = historyManager;
     // this.budgetManager = budgetManager;
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
-
-  // public static void main(String[] args) {
-  // Injector in = Guice.createInjector(new APModule());
-  // ProjectPartnerManager partnerManager = in.getInstance(ProjectPartnerManager.class);
-  // InstitutionManager instManager = in.getInstance(InstitutionManager.class);
-  // PartnerPersonManager personManager = in.getInstance(PartnerPersonManager.class);
-  //
-  // ProjectPartner partner = partnerManager.getProjectPartner(1);
-  // partner.setInstitution(instManager.getInstitution(5));
-  // PartnerPerson newPerson = new PartnerPerson(810);
-  // newPerson.setResponsibilities("responsibilities OTHER....");
-  // newPerson.setType(APConstants.PROJECT_PARTNER_CP);
-  // newPerson.setUser(new User(5));
-  //
-  // System.out.println(personManager.savePartnerPerson(partner, newPerson, new User(2), "Justification test...."));
-  // // partnerManager.saveProjectPartner(new Project(2), partner, new User(1), "testing update");
-  //
-  // }
 
   public List<Activity> getActivitiesLedByUser(int userID) {
     return activityManager.getProjectActivitiesLedByUser(projectID, userID);
@@ -253,10 +241,135 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
   }
 
+  /**
+   * This method will validate if the user is deactivated. If so, it will send an email indicating the credentials to
+   * access.
+   * 
+   * @param leader is a PartnerPerson object that could be the leader or the coordinator.
+   */
+  private void notifyNewUserCreated(User user) {
+
+    if (!user.isActive()) {
+
+      user.setActive(true);
+      // Building the Email message:
+      StringBuilder message = new StringBuilder();
+      message.append(this.getText("planning.manageUsers.email.dear", new String[] {user.getFirstName()}));
+      message.append(this.getText("planning.manageUsers.email.newUser.part1"));
+      message.append(this.getText("planning.manageUsers.email.newUser.part2"));
+
+      String password = this.getText("planning.manageUsers.email.outlookPassword");
+      if (!user.isCcafsUser()) {
+        // Generating a random password.
+        password = RandomStringUtils.randomNumeric(6);
+        // Applying the password to the user.
+        user.setMD5Password(password);
+      }
+      message.append(this.getText("planning.manageUsers.email.newUser.part3",
+        new String[] {config.getBaseUrl(), user.getEmail(), password}));
+      message.append(this.getText("planning.manageUsers.email.support"));
+      message.append(this.getText("planning.manageUsers.email.bye"));
+
+      // Saving the new user configuration.
+      userManager.saveUser(user, this.getCurrentUser());
+
+      String toEmail = null;
+      if (config.isProduction()) {
+        // Send email to the new user and the P&R notification email.
+        // TO
+        toEmail = user.getEmail();
+      }
+      // BBC
+      String bbcEmails = this.config.getEmailNotification();
+      sendMail.send(toEmail, null, bbcEmails,
+        this.getText("planning.manageUsers.email.newUser.subject", new String[] {user.getComposedName()}),
+        message.toString(), null, null, null);
+    }
+  }
+
+  /**
+   * This method notify the user that is been assigned as Project Leader/Coordinator for a specific project.
+   * 
+   * @param userAssigned is the user that is being assigned.
+   * @param role is the role (Project Leader or Project Coordinator).
+   */
+  private void notifyRoleAssigned(User userAssigned, Role role) {
+    String projectRole = null;
+    if (role.getId() == APConstants.ROLE_PROJECT_LEADER) {
+      projectRole = this.getText("planning.projectPartners.types.PL");
+    } else {
+      projectRole = this.getText("planning.projectPartners.types.PC");
+    }
+    StringBuilder message = new StringBuilder();
+    // Building the Email message:
+    message.append(this.getText("planning.manageUsers.email.dear", new String[] {userAssigned.getFirstName()}));
+    message.append(
+      this.getText("planning.manageUsers.email.project.assigned", new String[] {projectRole, project.getTitle()}));
+    message.append(this.getText("planning.manageUsers.email.support"));
+    message.append(this.getText("planning.manageUsers.email.bye"));
+
+    String toEmail = null;
+    String ccEmail = null;
+    if (config.isProduction()) {
+      // Send email to the new user and the P&R notification email.
+      // TO
+      toEmail = userAssigned.getEmail();
+      // CC will be the user who is making the modification.
+      if (this.getCurrentUser() != null) {
+        ccEmail = this.getCurrentUser().getEmail();
+      }
+    }
+    // BBC will be our gmail notification email.
+    String bbcEmails = this.config.getEmailNotification();
+    sendMail.send(toEmail, ccEmail, bbcEmails,
+      this.getText("planning.manageUsers.email.project.assigned.subject",
+        new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
+      message.toString(), null, null, null);
+  }
+
+  /**
+   * This method notify the the user that he/she stopped contributing to a specific project.
+   * 
+   * @param userUnassigned is the user that stopped contribution.
+   * @param role is the user role that stopped contributing (Project Leader or Project Coordinator).
+   */
+  private void notifyRoleUnassigned(User userUnassigned, Role role) {
+    String projectRole = null;
+    if (role.getId() == APConstants.ROLE_PROJECT_LEADER) {
+      projectRole = this.getText("planning.projectPartners.types.PL");
+    } else {
+      projectRole = this.getText("planning.projectPartners.types.PC");
+    }
+    StringBuilder message = new StringBuilder();
+    // Building the Email message:
+    message.append(this.getText("planning.manageUsers.email.dear", new String[] {userUnassigned.getFirstName()}));
+    message.append(
+      this.getText("planning.manageUsers.email.project.unAssigned", new String[] {projectRole, project.getTitle()}));
+    message.append(this.getText("planning.manageUsers.email.support"));
+    message.append(this.getText("planning.manageUsers.email.bye"));
+
+    String toEmail = null;
+    String ccEmail = null;
+    if (config.isProduction()) {
+      // Send email to the new user and the P&R notification email.
+      // TO
+      toEmail = userUnassigned.getEmail();
+      // CC will be the user who is making the modification.
+      if (this.getCurrentUser() != null) {
+        ccEmail = this.getCurrentUser().getEmail();
+      }
+    }
+    // BBC will be our gmail notification email.
+    String bbcEmails = this.config.getEmailNotification();
+    sendMail.send(toEmail, ccEmail, bbcEmails,
+      this.getText("planning.manageUsers.email.project.unAssigned.subject",
+        new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
+      message.toString(), null, null, null);
+  }
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    actionName = ActionContext.getContext().getName();
     // Getting the project id from the URL parameter
     // It's assumed that the project parameter is ok. (@See ValidateProjectParameterInterceptor)
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
@@ -318,17 +431,6 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     previousProject.setId(project.getId());
     previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
-    // if (actionName.equals("partnerLead")) {
-    // super.setHistory(historyManager.getProjectPartnersHistory(project.getId(),
-    // new String[] {APConstants.PROJECT_PARTNER_PL, APConstants.PROJECT_PARTNER_PC}));
-    // } else if (actionName.equals("ppaPartners")) {
-    // super.setHistory(
-    // historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PPA}));
-    // } else if (actionName.equals("partners")) {
-    // super.setHistory(
-    // historyManager.getProjectPartnersHistory(project.getId(), new String[] {APConstants.PROJECT_PARTNER_PP}));
-    // }
-
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       // if (ActionContext.getContext().getName().equals("ppaPartners") && project.getPPAPartners() != null) {
@@ -347,122 +449,22 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
 
+    // Set History.
+    super.setHistory(historyManager.getProjectPartnersHistory(project.getId()));
+
   }
 
   public List<ProjectPartner> projectPPAPartners() {
     return this.projectPPAPartners;
   }
 
-  // private String savePartnerLead() {
-  // boolean success = true;
-  //
-  // // Saving Project leader
-  // int id = projectPartnerManager.z_old_saveProjectPartner(projectID, project.getLeader(), this.getCurrentUser(),
-  // this.getJustification());
-  // if (id < 0) {
-  // success = false;
-  // }
-  //
-  // // Saving Project Coordinator
-  // // Setting the same institution that was selected for the Project Leader.
-  // project.getCoordinator().setInstitution(project.getLeader().getInstitution());
-  // id = projectPartnerManager.z_old_saveProjectPartner(projectID, project.getCoordinator(), this.getCurrentUser(),
-  // this.getJustification());
-  // if (id < 0) {
-  // success = false;
-  // }
-  //
-  // budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID);
-  // if (success) {
-  // this.addActionMessage(this.getText("saving.saved"));
-  // return SUCCESS;
-  // }
-  // return INPUT;
-  // }
-
-  // private String savePartners(String partnerType) {
-  // boolean success = true;
-  //
-  // // Getting the partners coming from the view.
-  // // List<ProjectPartner> partners;
-  // // if (partnerType.equals(APConstants.PROJECT_PARTNER_PPA)) {
-  // // partners = project.getPPAPartners();
-  // // } else if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
-  // // partners = project.getProjectPartners();
-  // // } else {
-  // // partners = new ArrayList<>();
-  // // }
-  //
-  // // ----------------- PARTNERS ----------------------
-  // // Getting previous partners to identify those that need to be deleted.
-  // // List<ProjectPartner> previousPartners = projectPartnerManager.getProjectPartners(projectID, partnerType);
-  // //
-  // // // Deleting project partners
-  // // for (ProjectPartner previousPartner : previousPartners) {
-  // // if (!partners.contains(previousPartner)) {
-  // // boolean deleted = this.deletePartner(previousPartner, partners);
-  // // if (!deleted) {
-  // // success = false;
-  // // }
-  // // }
-  // // }
-  // //
-  // // // Saving new and old PPA Partners
-  // // boolean saved =
-  // // projectPartnerManager.saveProjectPartners(projectID, partners, this.getCurrentUser(), this.getJustification());
-  // // if (!saved) {
-  // // saved = false;
-  // // }
-  //
-  // // Saving project partner contributions
-  // // if (partnerType.equals(APConstants.PROJECT_PARTNER_PP)) {
-  // // // iterating each project partner
-  // // for (ProjectPartner projectPartner : partners) {
-  // // // Getting previous partner contributions to identify those that need to be deleted.
-  // // List<Institution> previousPartnerContributions =
-  // // institutionManager.getProjectPartnerContributeInstitutions(projectPartner);
-  // // // Deleting project partner contributions
-  // // // for (Institution previousPartnerContribution : previousPartnerContributions) {
-  // // // if (projectPartner.getContributeInstitutions() == null
-  // // // || !projectPartner.getContributeInstitutions().contains(previousPartnerContribution)) {
-  // // // boolean deleted = institutionManager.deleteProjectPartnerContributeInstitution(projectPartner.getId(),
-  // // // previousPartnerContribution.getId());
-  // // // if (!deleted) {
-  // // // success = false;
-  // // // }
-  // // // }
-  // // // }
-  // //
-  // // // if the project partner has contribute institutions.
-  // // // if (projectPartner.getContributeInstitutions() != null) {
-  // // // // Saving new and old Project Partner Contributions
-  // // // saved = institutionManager.saveProjectPartnerContributeInstitutions(projectPartner.getId(),
-  // // // projectPartner.getContributeInstitutions());
-  // // // if (!saved) {
-  // // // saved = false;
-  // // // }
-  // // // }
-  // // } // End loop
-  //
-  // // }
-  //
-  // budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID);
-  // if (success)
-  //
-  // {
-  // this.addActionMessage(this.getText("saving.saved"));
-  // return SUCCESS;
-  // }
-  // return INPUT;
-  //
-  // }
-
   @Override
   public String save() {
     if (securityContext.canUpdateProjectPartners(project.getId())) {
 
+      // Saving Lessons
       if (!this.isNewProject()) {
-        super.saveProjectLessons(projectID);
+        this.saveProjectLessons(project.getId());
       }
 
       // First, delete the partners that are not active anymore
@@ -475,29 +477,33 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
         this.getJustification());
 
-      // TODO - The project role manager can be deleted now because we are not using the table project_roles to
-      // verify if a user can edit a project.
-      projectRoleManager.saveProjectRoles(project, this.getCurrentUser(), this.getJustification());
-
       // Check if the project leader has changed and send the corresponding emails
       PartnerPerson previousLeader = previousProject.getLeaderPerson();
       PartnerPerson leader = project.getLeaderPerson();
-
-      Role plRole = new Role(APConstants.ROLE_PROJECT_LEADER);
-      if (previousLeader == null && leader != null) {
-        roleManager.saveRole(leader.getUser(), plRole);
-        // TODO - Send message notifying to the new project leader
-      } else if (previousLeader != null && leader == null) {
-        roleManager.deleteRole(previousLeader.getUser(), plRole);
-        // TODO - Send message notifying to the user that is not the project leader anymore
-      } else if (previousLeader != null && leader != null) {
-        if (!leader.equals(previousLeader)) {
-          roleManager.saveRole(leader.getUser(), plRole);
-          roleManager.deleteRole(previousLeader.getUser(), plRole);
-          // TODO - Send message to leader notifying that he/she is the new project leader
-          // TODO - Send message to previousLeader notifying that he/she is not the project leader anymore
-        }
+      // Notify user if the project leader was created.
+      if (leader != null) {
+        this.notifyNewUserCreated(leader.getUser());
       }
+      Role plRole = new Role(APConstants.ROLE_PROJECT_LEADER);
+      // Update roles into the database and notify project assignment.
+      this.updateRoles(previousLeader, leader, plRole);
+
+      // Check if the project coordinator has changed and send the corresponding emails
+      PartnerPerson previousCoordinator = null;
+      if (previousProject.getCoordinatorPersons().size() > 0) {
+        previousCoordinator = project.getCoordinatorPersons().get(0);
+      }
+      PartnerPerson coordinator = null;
+      if (project.getCoordinatorPersons().size() > 0) {
+        coordinator = project.getCoordinatorPersons().get(0);
+      }
+      // Notify user if the project coordinator was created.
+      if (coordinator != null) {
+        this.notifyNewUserCreated(coordinator.getUser());
+      }
+      Role pcRole = new Role(APConstants.ROLE_PROJECT_COORDINATOR);
+      // Update roles into the database and notify project assignment.
+      this.updateRoles(previousCoordinator, coordinator, pcRole);
 
       // Get the validation messages and append them to the save message
       Collection<String> messages = this.getActionMessages();
@@ -524,6 +530,36 @@ public class ProjectPartnersPlanningAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  /**
+   * This method updates the role for each user (Leader/Coordinator) into the database, and notifies by email what has
+   * been done.
+   * 
+   * @param previousPartnerPerson is the previous leader/coordinator that has assigned the project before.
+   * @param partnerPerson the current leader/coordinator associated to the project.
+   * @param role is the new role assignated (leader/coordinator).
+   */
+  private void updateRoles(PartnerPerson previousPartnerPerson, PartnerPerson partnerPerson, Role role) {
+    if (previousPartnerPerson == null && partnerPerson != null) {
+      roleManager.saveRole(partnerPerson.getUser(), role);
+      // Notifying user is assigned as Project Leader/Coordinator.
+      this.notifyRoleAssigned(partnerPerson.getUser(), role);
+    } else if (previousPartnerPerson != null && partnerPerson == null) {
+      roleManager.deleteRole(previousPartnerPerson.getUser(), role);
+      // Notifying user that is not the project leader anymore
+      this.notifyRoleUnassigned(previousPartnerPerson.getUser(), role);
+    } else if (previousPartnerPerson != null && partnerPerson != null) {
+      if (!partnerPerson.equals(previousPartnerPerson)) {
+        roleManager.saveRole(partnerPerson.getUser(), role);
+        // Notifying user is assigned as Project Leader/Coordinator.
+        this.notifyRoleAssigned(partnerPerson.getUser(), role);
+        // Deleting role.
+        roleManager.deleteRole(previousPartnerPerson.getUser(), role);
+        // Notifying user that is not the project leader anymore
+        this.notifyRoleUnassigned(previousPartnerPerson.getUser(), role);
+      }
+    }
   }
 
   @Override

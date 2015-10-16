@@ -39,6 +39,11 @@ public class BudgetValidator extends BaseAction {
     return (amount >= 0);
   }
 
+
+  public boolean isValidAmountNoZero(double amount) {
+    return (amount > 0);
+  }
+
   public boolean isValidGenderPercentage(int genderPercentage) {
     return (genderPercentage >= 0 && genderPercentage <= 100);
   }

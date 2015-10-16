@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.SectionStatusDAO;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
+import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 
@@ -41,6 +42,23 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
   }
 
   @Override
+  public SectionStatus getSectionStatus(Deliverable deliverable, String cycle, String section) {
+    Map<String, String> statusData = statusDAO.getDeliverableSectionStatus(deliverable.getId(), cycle, section);
+    if (statusData != null && !statusData.isEmpty()) {
+      SectionStatus status = new SectionStatus();
+      status.setId(Integer.parseInt(statusData.get("id")));
+      status.setCycle(statusData.get("cycle"));
+      status.setSection(statusData.get("section_name"));
+      status.setMissingFields(statusData.get("missing_fields"));
+      status.setProjectID(statusData.get("project_id") != null ? Integer.parseInt(statusData.get("project_id")) : -1);
+      status.setDeliverableID(
+        statusData.get("deliverable_id") != null ? Integer.parseInt(statusData.get("deliverable_id")) : -1);
+      return status;
+    }
+    return null;
+  }
+
+  @Override
   public SectionStatus getSectionStatus(Project project, String cycle, String section) {
     Map<String, String> statusData = statusDAO.getProjectSectionStatus(project.getId(), cycle, section);
     if (statusData != null && !statusData.isEmpty()) {
@@ -49,6 +67,9 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
       status.setCycle(statusData.get("cycle"));
       status.setSection(statusData.get("section_name"));
       status.setMissingFields(statusData.get("missing_fields"));
+      status.setProjectID(statusData.get("project_id") != null ? Integer.parseInt(statusData.get("project_id")) : -1);
+      status.setDeliverableID(
+        statusData.get("deliverable_id") != null ? Integer.parseInt(statusData.get("deliverable_id")) : -1);
       return status;
     }
     return null;
@@ -65,6 +86,9 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
         status.setCycle(statusData.get("cycle"));
         status.setSection(statusData.get("section_name"));
         status.setMissingFields(statusData.get("missing_fields"));
+        status.setProjectID(statusData.get("project_id") != null ? Integer.parseInt(statusData.get("project_id")) : -1);
+        status.setDeliverableID(
+          statusData.get("deliverable_id") != null ? Integer.parseInt(statusData.get("deliverable_id")) : -1);
         statuses.add(status);
       }
       return statuses;
@@ -82,7 +106,21 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
     statusData.put("section_name", status.getSection());
     statusData.put("project_id", project.getId());
     statusData.put("missing_fields", status.getMissingFieldsWithPrefix());
-    return statusDAO.saveSectionStatus(statusData);
+    return statusDAO.saveProjectSectionStatus(statusData);
+  }
+
+  @Override
+  public int saveSectionStatus(SectionStatus status, Project project, Deliverable deliverable) {
+    Map<String, Object> statusData = new HashMap<>();
+    if (status.getId() > 0) {
+      statusData.put("id", status.getId());
+    }
+    statusData.put("cycle", status.getCycle());
+    statusData.put("section_name", status.getSection());
+    statusData.put("project_id", project.getId());
+    statusData.put("deliverable_id", deliverable.getId());
+    statusData.put("missing_fields", status.getMissingFieldsWithPrefix());
+    return statusDAO.saveDeliverableSectionStatus(statusData);
   }
 
 }

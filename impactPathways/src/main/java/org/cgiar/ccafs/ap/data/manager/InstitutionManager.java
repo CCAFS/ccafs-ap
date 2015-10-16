@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -108,17 +109,23 @@ public interface InstitutionManager {
 
   /**
    * This method gets the institutions leading projects
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary report project leading institutions.
    * 
-   * @return a list of institution objects with the information
+   * @return a list of objects with the leading project institutions information
    */
-  public List<Institution> getProjectLeadingInstitutions();
+  public List<Map<String, Object>> getProjectLeadingInstitutions();
 
   /**
-   * This method gets the institutions that are projectPartners
+   * This method will return the list of all the institutions that are project partners.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary report project partner institutions.
    * 
-   * @return a list of institution objects with the information
+   * @return a list of objects with the Project Partner Institutions information.
    */
-  public List<Institution> getProjectPartnerInstitutions();
+  public List<Map<String, Object>> getProjectPartnerInstitutions();
 
   /**
    * This method returns the user's main institution defined in the database.
@@ -145,7 +152,7 @@ public interface InstitutionManager {
    * @return true if the information was successfully saved, false otherwise.
    */
   public boolean
-  saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions);
+    saveProjectPartnerContributeInstitutions(int projectPartnerID, List<Institution> contributeInstitutions);
 
   /**
    * This method validates if the institution of the given projectPartner is the lastone institution of all the other

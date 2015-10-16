@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Project Budget" /]
+[#assign title = "Project Budget by MOGs" /]
 [#assign globalLibs = ["jquery", "noty","autoSave","chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/preplanning/projectBudgetByMog.js"] /]
 [#assign currentSection = "planning" /]
@@ -34,7 +34,9 @@
       [#assign projectType][@s.text name="${project.bilateralProject?string('W3_BILATERAL', 'W1_W2')}" /][/#assign]
       <br />
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
-      [#if !canEdit]
+      [#if submission?has_content]
+        <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+      [#elseif !canEdit ]
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
       [/#if] 
 
@@ -216,7 +218,9 @@
             [#if history??][@log.logList list=history /][/#if] 
         [/#if]
     [#else]
-      <p class="simpleBox center">[@s.text name="planning.projectOutputs.empty" /]</p>
+      <p class="simpleBox center">[@s.text name="planning.projectOutputs.empty1" /] 
+      
+      <a href="[@s.url namespace="/" action='planning/projects/ccafsOutcomes?projectID=${project.id?c}'][/@s.url]">Click Here</a>[@s.text name="planning.projectOutputs.empty2" /]</p>
     [/#if]
   </article>
   [/@s.form]

@@ -15,13 +15,18 @@
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 
+import org.cgiar.ccafs.utils.APConfig;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.poi.common.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 /**
@@ -30,11 +35,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class DeliverablePlanningSummaryXLS {
 
   private BaseXLS xls;
-
+  private APConfig config;
 
   @Inject
-  public DeliverablePlanningSummaryXLS(BaseXLS xls) {
+  public DeliverablePlanningSummaryXLS(BaseXLS xls, APConfig config) {
     this.xls = xls;
+    this.config = config;
   }
 
   /**
@@ -43,20 +49,30 @@ public class DeliverablePlanningSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Map<String, Object>> deliverableList, Workbook workbook) {
 
 
+  private void addContent(List<Map<String, Object>> deliverableList, XSSFWorkbook workbook) {
+
+    XSSFHyperlink link;
     Sheet sheet = workbook.getSheetAt(0);
-
+    CreationHelper createHelper = workbook.getCreationHelper();
     Map<String, Object> deliverableMap;
+    int projectID;
+
+    // Main Type
+    StringBuilder stringBuilder;
+
+
     // Iterating all the projects
     for (int a = 0; a < deliverableList.size(); a++) {
       deliverableMap = deliverableList.get(a);
 
-      // Iterating all the partners
+      projectID = (int) deliverableMap.get("project_id");
+      link = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
+      link.setAddress(config.getBaseUrl() + "/planning/projects/description.do?projectID=" + projectID);
 
       // Project id
-      xls.writeInteger(sheet, (int) deliverableMap.get("project_id"));
+      xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
       xls.nextColumn();
 
       // Title
@@ -71,16 +87,12 @@ public class DeliverablePlanningSummaryXLS {
       xls.writeString(sheet, (String) deliverableMap.get("regions"));
       xls.nextColumn();
 
-      // deliverable id
-      xls.writeInteger(sheet, (int) deliverableMap.get("deliverable_id"));
-      xls.nextColumn();
-
       // Title
-      xls.writeString(sheet, (String) deliverableMap.get("deliverable_title"));
+      xls.writeString(sheet, this.messageReturn((String) deliverableMap.get("deliverable_title")));
       xls.nextColumn();
 
       // MOG
-      xls.writeString(sheet, (String) deliverableMap.get("mog"));
+      xls.writeString(sheet, this.messageReturn((String) deliverableMap.get("mog")));
       xls.nextColumn();
 
       // Year
@@ -88,15 +100,21 @@ public class DeliverablePlanningSummaryXLS {
       xls.nextColumn();
 
       // Main type
-      xls.writeString(sheet, (String) deliverableMap.get("deliverable_type"));
+      xls.writeString(sheet, this.messageReturn((String) deliverableMap.get("deliverable_type")));
       xls.nextColumn();
+
 
       // Sub Type
-      xls.writeString(sheet, (String) deliverableMap.get("deliverable_sub_type"));
-      xls.nextColumn();
-
-      // Other Type
-      xls.writeString(sheet, (String) deliverableMap.get("other_type"));
+      int deliverableTypeId = (int) deliverableMap.get("deliverable_type_id");
+      stringBuilder = new StringBuilder();
+      if (deliverableTypeId == 38) {
+        stringBuilder.append("Other: (");
+        stringBuilder.append(this.messageReturn((String) deliverableMap.get("other_type")));
+        stringBuilder.append(")");
+      } else {
+        stringBuilder.append(this.messageReturn((String) deliverableMap.get("deliverable_sub_type")));
+      }
+      xls.writeString(sheet, stringBuilder.toString());
       xls.nextColumn();
 
       // Partner Responsible
@@ -124,18 +142,17 @@ public class DeliverablePlanningSummaryXLS {
     try {
       // Writting headers
       String[] headers =
-        new String[] {"Project Id", "Project title", "Flagship(s)", "Region(s)", "Deliverable Id", "Deliverable title",
-        "MOG", "Year", "Main Type", "Sub Type", "Other Type", "Partner Responsible", "Others Partners"};
+        new String[] {"Project id", "Project title", "Flagship(s)", "Region(s)", "Deliverable title", "MOG",
+        "Year of expected completion", "Main type", "Sub type", "Partner responsible", "Other responsibles"};
 
       // defining header types.
       int[] headerTypes =
-        new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
-      Workbook workbook = xls.initializeWorkbook(true);
+      XSSFWorkbook workbook = xls.initializeWorkbook(true);
 
       this.xls.initializeSheet(workbook.getSheetAt(0), headerTypes);
 
@@ -143,14 +160,18 @@ public class DeliverablePlanningSummaryXLS {
       workbook.setSheetName(0, "Deliverable Report");
       Sheet sheet = workbook.getSheetAt(0);
 
-
       xls.writeHeaders(sheet, headers);
       this.addContent(deliverableList, workbook);
 
-      // autosize columns
-      // xls.autoSizeColumns(sheet);
+      // Set description
+      xls.writeDescription(sheet, xls.getText("summaries.expected.deliverable.summary.sheetone.description"));
 
-      // this.flush();
+      // write text box
+      xls.writeTitleBox(sheet, xls.getText("summaries.expected.deliverable.summary.name"));
+
+      // write text box
+      xls.createLogo(workbook, sheet);
+
       xls.writeWorkbook();
 
       byte[] byteArray = xls.getBytes();
@@ -164,5 +185,21 @@ public class DeliverablePlanningSummaryXLS {
       e.printStackTrace();
     }
     return null;
+  }
+
+  /**
+   * This method converts the string in return message of summary
+   * 
+   * @param enter String of entering
+   * @returnnull default message when the string is null or empty, otherwise the string
+   */
+  private String messageReturn(String enter) {
+
+    if (enter == null || enter.equals("")) {
+      return xls.getText("summaries.project.empty");
+    } else {
+      return enter;
+    }
+
   }
 }

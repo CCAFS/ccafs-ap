@@ -223,10 +223,10 @@ public interface ProjectDAO {
   /**
    * This method returns a list of projects that belongs to an institution id given as parameter.
    * 
-   * @param institutionID, identifier of the institution
+   * @param institutionID, Object identifier of the institution
    * @return a list of maps which represent the projects.
    */
-  public List<Map<String, String>> getProjectsByInstitution(int institutionID);
+  public List<Map<String, String>> getProjectsByInstitution(Object institutionID);
 
   /**
    * This method return all the Projects which belongs to the program
@@ -276,6 +276,26 @@ public interface ProjectDAO {
   public int saveProjectOutput(Map<String, String> outputData);
 
   /**
+   * This method returns the information of all the activities by project and their gender contribution to be used in
+   * the summary report of the same name
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
+
+  /**
+   * This method returns the information of all the deliverable with their next users to be used in the summary report
+   * of gender summary.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
+
+  /**
    * This method returns the information of all the projects with their partner leaders to be used in the summary report
    * of
    * project partner leaders.
@@ -322,6 +342,16 @@ public interface ProjectDAO {
    *         occurs.
    */
   public List<Map<String, Object>> summaryGetInformationPOWB(int year);
+
+  /**
+   * This method returns the information of all project with your budget by partner of the currentPlanningYear their
+   * information to be used in
+   * the summary report of Budget By Partners summary.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year);
 
   /**
    * This method updates the project type into the database according to the values received by parameter.

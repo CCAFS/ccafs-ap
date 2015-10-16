@@ -93,6 +93,11 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalGenderBudgetByInstitutionAndType(int projectID, int institutionID, int budgetTypeID) {
+    return budgetDAO.calculateTotalGenderBudgetByInstitutionAndType(projectID, institutionID, budgetTypeID);
+  }
+
+  @Override
   public double calculateTotalGenderBudgetByYear(int projectID, int year) {
     return budgetDAO.calculateTotalGenderBudgetByYear(projectID, year);
   }
@@ -159,6 +164,7 @@ public class BudgetManagerImpl implements BudgetManager {
     List<Map<String, String>> budgetDataList = budgetDAO.getBudgetsByYear(projectID, year);
     for (Map<String, String> budgetData : budgetDataList) {
       Budget budget = new Budget();
+      budget.setProjectId(Integer.parseInt(budgetData.get("project_id")));
       budget.setId(Integer.parseInt(budgetData.get("id")));
       budget.setYear(Integer.parseInt(budgetData.get("year")));
       budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));

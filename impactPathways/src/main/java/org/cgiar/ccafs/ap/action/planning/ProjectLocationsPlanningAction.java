@@ -225,11 +225,18 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
 
     super.setHistory(historyManager.getProjectLocationsHistory(project.getId()));
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
   }
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectLocations()) {
+    if (securityContext.canUpdateProjectLocations(projectID)) {
+
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       boolean success = true;
 
@@ -251,7 +258,6 @@ public class ProjectLocationsPlanningAction extends BaseAction {
       if (!updated) {
         success = false;
       }
-      super.saveProjectLessons(projectID);
 
       // Displaying user messages.
       if (success == false) {

@@ -17,7 +17,6 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadInstitutionPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
@@ -28,6 +27,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -42,9 +42,8 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
   private static final long serialVersionUID = 5110987672008315842L;
   private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
   private InstitutionManager institutionManager;
-  private ProjectManager projectManager;
   List<ProjectPartner> partners;
-  List<Institution> projectLeadingInstitutions;
+  List<Map<String, Object>> projectLeadingInstitutions;
   String[] projectList;
   // CSV bytes
   private byte[] bytesXLS;
@@ -59,14 +58,13 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
     super(config);
     this.leadInstitutionPartnersSummaryXLS = leadInstitutionPartnersSummaryXLS;
     this.institutionManager = institutionManager;
-    this.projectManager = projectManager;
 
   }
 
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions, projectList);
+    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions);
 
     return SUCCESS;
   }
@@ -116,25 +114,10 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
     // Remove repeated institutions
     for (int k = 0; k < projectLeadingInstitutions.size(); k++) {
       for (int l = projectLeadingInstitutions.size() - 1; l > k; l--) {
-        if (projectLeadingInstitutions.get(k).getId() == projectLeadingInstitutions.get(l).getId()) {
+        if (projectLeadingInstitutions.get(k).get("id").equals(projectLeadingInstitutions.get(l).get("id"))) {
           projectLeadingInstitutions.remove(l);
         }
       }
-    }
-    // Generate the list with projectIDs for each institution
-    int count = 0;
-    for (int i = 0; i < projectLeadingInstitutions.size(); i++) {
-      int stop = projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).size();
-      for (int j = 0; j < stop; j++) {
-        if (j == stop - 1) {
-          projectList[count] +=
-            projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).get(j).getId();
-        } else {
-          projectList[count] +=
-            (projectManager.getProjectsByInstitution(projectLeadingInstitutions.get(i).getId()).get(j).getId() + ", ");
-        }
-      }
-      count++;
     }
 
   }

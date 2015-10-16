@@ -169,7 +169,7 @@ public interface ProjectManager {
    * @param institutionID
    * @return a list of Projects.
    */
-  public List<Project> getProjectsByInstitution(int institutionID);
+  public List<Project> getProjectsByInstitution(Object institutionID);
 
   /**
    * This method returns the list of all CCAFS projects that belongs to a specific program.
@@ -186,16 +186,6 @@ public interface ProjectManager {
    */
   public List<Project> getProjectsList(String[] values);
 
-  /**
-   * This method returns the project identifier whether using composed codification (that is with the organization IATI
-   * standard id) or a simple id.
-   * 
-   * @param project , the project to get the standard identifier from.
-   * @param useComposedCodification , true if you want to get the full IATI standard codification or false for simple
-   *        form.
-   * @return a String with the standard identifier.
-   */
-  public String getStandardIdentifier(Project project, boolean useComposedCodification);
 
   /**
    * This method create or updates a project into the database.
@@ -221,6 +211,26 @@ public interface ProjectManager {
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
 
   /**
+   * This method will return the list of all the activities with their corresponding projects
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary Gender Report.
+   * 
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
+
+  /**
+   * This method will return the list of all the deliverables with your next users.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary Gender Report.
+   * 
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
+
+  /**
    * This method will return the list of all the projects and their respective leaders.
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
@@ -229,6 +239,7 @@ public interface ProjectManager {
    * @return a list of Project objects with the Project Partner Leader information.
    */
   public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
+
 
   /**
    * This method will return the list of all the projects and all their respective deliverables.
@@ -250,27 +261,41 @@ public interface ProjectManager {
    */
   public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution();
 
-  /**
-   * @param year - Specific year for to search in the report.
-   *        This method will return the list of all the MOG of a specific year with your budgets.
-   *        This method also gets all the information in one single query to the database, improving its performance and
-   *        letting the charge to the RAM memory.
-   *        This method should be used to the summary POWBMOGs Report.
-   * @return a list of columns with the information summary
-   */
-  public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year);
-
 
   /**
-   * @param year - Specific year for to search in the report.
-   *        This method will return the list of all the MOG of a specific year with your budgets.
-   *        This method also gets all the information in one single query to the database, improving its performance and
-   *        letting the charge to the RAM memory.
-   *        This method should be used to the summary POWBMOGs Report.
+   * This method will return the list of all the MOG with the budget information for a specific year.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary POWBMOGs Report.
+   * 
+   * @param year - Specific year to search in the report.
    * @return a list of columns with the information summary
    */
   public List<Map<String, Object>> summaryGetInformationPOWB(int year);
 
+
+  /**
+   * This method will return the list of all the project with the budget contribution information for a specific year.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary POWBMOGs Report.
+   * 
+   * @param year - Specific year to search in the report.
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year);
+
+
+  /**
+   * This method will return the list of all the project with the budget contribution information for a specific year.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary project budgets by partners Report.
+   * 
+   * @param year - Specific year to search in the report.
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year);
 
   /**
    * This method updates the project type into the database according to the values contained in the project received by
@@ -281,6 +306,7 @@ public interface ProjectManager {
    */
   public boolean updateProjectType(Project project);
 
+
   /**
    * This method updates the type of all the core projects following the steps below:
    * 1- Set the projects co-founded as core
@@ -290,4 +316,6 @@ public interface ProjectManager {
    * @return true if the changes was made succesfully. False otherwise.
    */
   public boolean updateProjectTypes();
+
+
 }

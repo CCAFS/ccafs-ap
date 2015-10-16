@@ -67,7 +67,7 @@ public class MySQLSubmissionDAO implements SubmissionDAO {
         submissionData.put("cycle", rs.getString("cycle"));
         submissionData.put("year", rs.getString("year"));
         submissionData.put("user_id", rs.getString("user_id"));
-        submissionData.put("date_time", rs.getDate("date_time").toString());
+        submissionData.put("date_time", rs.getTimestamp("date_time").toString());
         submissionsList.add(submissionData);
       }
       rs.close();

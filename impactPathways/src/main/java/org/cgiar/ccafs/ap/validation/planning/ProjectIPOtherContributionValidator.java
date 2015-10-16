@@ -15,51 +15,73 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.model.CRP;
+import org.cgiar.ccafs.ap.data.model.CRPContribution;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.OtherContributionValidator;
-import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
-
-import java.util.List;
 
 import com.google.inject.Inject;
 
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Christian David Garcia - CIAT/CCAFS
  */
 
 public class ProjectIPOtherContributionValidator extends BaseValidator {
 
   private static final long serialVersionUID = -3912724967470718068L;
-  private ProjectValidator projectValidator;
   private OtherContributionValidator otherContributionValidator;
 
+
   @Inject
-  public ProjectIPOtherContributionValidator(ProjectValidator projectValidator,
-    OtherContributionValidator otherContributionValidator) {
-    this.projectValidator = projectValidator;
+  public ProjectIPOtherContributionValidator(OtherContributionValidator otherContributionValidator) {
+
     this.otherContributionValidator = otherContributionValidator;
+  }
+
+  private boolean isFullSectionEmpty(BaseAction action, OtherContribution ipOtherContribution) {
+    if (ipOtherContribution.getContribution().isEmpty() && ipOtherContribution.getAdditionalContribution().isEmpty()
+      && ipOtherContribution.getCrpContributions().isEmpty()) {
+      return true;
+    }
+    return false;
   }
 
   public void validate(BaseAction action, Project project) {
     if (project != null) {
       this.validateProjectJustification(action, project);
 
-      // Validate only if the project is CCAFS Core
-      if (project.isCoreProject()) {
+      if (project.getIpOtherContribution() == null) {
+        // Do nothing as this section is full optional.
+      } else {
+        // Validate only if the project is CCAFS Core or Co Funded Project
+        if (project.isCoreProject() || project.isCoFundedProject()) {
 
-        this.validateContribution(action, project.getIpOtherContribution().getContribution());
-        this.validateAdditionalContribution(action, project.getIpOtherContribution().getAdditionalContribution());
-        this.validateCrpCollaborationNature(action, project.getIpOtherContribution().getCrpCollaborationNature());
-        this.validateCrpContributions(action, project.getCrpContributions());
-      }
+          if (!this.isFullSectionEmpty(action, project.getIpOtherContribution())) {
+            this.validateContribution(action, project.getIpOtherContribution().getContribution());
+            this.validateAdditionalContribution(action, project.getIpOtherContribution().getAdditionalContribution());
+            int i = 0;
+            for (CRPContribution crp_contribuntion : project.getIpOtherContribution().getCrpContributions()) {
+              this.validateNatureCollaboration(action, crp_contribuntion.getNatureCollaboration(), i);
+              i++;
+            }
+            this.validateLessonsLearn(action, project, "otherContributions");
+          }
 
-      if (validationMessage.length() > 0) {
-        String msg = " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()});
-        action.addActionMessage(msg);
+        }
+
+        if (!action.getFieldErrors().isEmpty()) {
+          action.addActionError(action.getText("saving.fields.required"));
+        } else if (validationMessage.length() > 0) {
+          action.addActionMessage(
+            " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        }
+
       }
+      // Saving missing fields.
+      this.saveMissingFields(project, "Planning", "otherContributions");
     }
   }
 
@@ -67,27 +89,25 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
     if (!otherContributionValidator.isValidAdditionalContribution(additionalContribution)) {
       this.addMessage(
         action.getText("planning.impactPathways.otherContributions.additionalcontribution.readText").toLowerCase());
+      this.addMissingField("project.ipOtherContribution.additionalcontribution");
     }
   }
+
 
   private void validateContribution(BaseAction action, String contribution) {
     if (!otherContributionValidator.isValidContribution(contribution)) {
       this.addMessage(action.getText("planning.impactPathways.otherContributions.contribution.readText").toLowerCase());
+      this.addMissingField("project.ipOtherContribution.contribution");
     }
   }
 
-  private void validateCrpCollaborationNature(BaseAction action, String crpCollaborationNature) {
-    if (!otherContributionValidator.isValidContribution(crpCollaborationNature)) {
+  private void validateNatureCollaboration(BaseAction action, String natureCollaboration, int i) {
+    if (!otherContributionValidator.isValidCrpCollaborationNature(natureCollaboration)) {
       this.addMessage(
         action.getText("planning.impactPathways.otherContributions.collaborationNature.readText").toLowerCase());
+      this.addMissingField("project.ipOtherContribution.crps.[" + i + "].collaborationNature");
     }
   }
 
-  private void validateCrpContributions(BaseAction action, List<CRP> crpContributions) {
-    if (!projectValidator.isValidCrpContributions(crpContributions)) {
-      this.addMessage(
-        action.getText("planning.impactPathways.otherContributions.collaboratingCRPs.readText").toLowerCase());
-    }
 
-  }
 }

@@ -25,12 +25,14 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class APConfig {
 
+
   public static final String MYSQL_HOST = "mysql.host";
   public static final String MYSQL_USER = "mysql.user";
   public static final String MYSQL_PASSWORD = "mysql.password";
   public static final String MYSQL_DATABASE = "mysql.database";
   public static final String MYSQL_PORT = "mysql.port";
 
+  private static final String PRODUCTION = "ccafsap.production";
   private static final String BASE_URL = "ccafsap.baseUrl";
   private static final String REPORTING_CURRENT_YEAR = "ccafsap.reporting.currentYear";
   private static final String CURRENT_REPORTING_START_DATE = "ccafsap.reporting.startDate";
@@ -85,7 +87,7 @@ public class APConfig {
       base = base.substring(0, base.length() - 1);
     }
     if (!base.startsWith("https://")) {
-      base = "https://" + base;
+      base = "http://" + base;
       return base;
     }
     return base;
@@ -436,6 +438,20 @@ public class APConfig {
     }
 
     return prePlanningActive.equals("true");
+  }
+
+  /**
+   * If we are running P&R in production or testing mode.
+   * 
+   * @return true if P&R is running in production mode, false if is run in testing mode.
+   */
+  public boolean isProduction() {
+    String variable = properties.getPropertiesAsString(PRODUCTION);
+    if (variable == null) {
+      LOG.error("There is not a production/testing mode active configured");
+      return false;
+    }
+    return variable.equals("true");
   }
 
   /**

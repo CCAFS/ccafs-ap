@@ -43,12 +43,12 @@ public interface UserDAO {
   public List<Map<String, String>> getAllOwners();
 
   /**
-   * This method gets all the employees that belongs to a given program identifier
+   * This method gets all the users that belongs to a given liaison institution
    * 
-   * @param programId is an integer that represents the program identifier within the system.
-   * @return a List of Maps with the information from the employees table.
+   * @param liaisonInstitutionID is an integer that represents a liaison institution identifier within the system.
+   * @return a List of Maps with the information from the users table.
    */
-  public List<Map<String, String>> getAllOwners(int programId);
+  public List<Map<String, String>> getAllOwners(int liaisonInstitutionID);
 
   /**
    * Get a list with All Users information
@@ -64,34 +64,6 @@ public interface UserDAO {
    * @return a String with the user's email, or null if nothing was found.
    */
   public String getEmailByUsername(String username);
-
-  /**
-   * This method returns the employee Identifier that is using the given user id taking into account his current
-   * institution id and role id.
-   * 
-   * @param userId is the user identifier.
-   * @param institutionId is the user's institution identifier.
-   * @param roleId is the user's role identifier.
-   * @return the id that is used in the database for the table employee, 0 if nothing found or -1 if some error
-   *         occur.
-   */
-  public int getEmployeeID(int userId, int institutionId, int roleId);
-
-  /**
-   * This method return the user information from a employee identifier given.
-   * 
-   * @param ownerId is the employee identifier.
-   * @return a Map with the information requested.
-   */
-  public Map<String, String> getOwner(int ownerId);
-
-  /**
-   * This method get the User information (Project Owner Contact Person) by a given project ID
-   * 
-   * @param projectID - is the ID of the project
-   * @return a Map with the User information associated to a project
-   */
-  public Map<String, String> getOwnerByProjectId(int projectID);
 
   /**
    * This method gets the data of a User identified with a given id.

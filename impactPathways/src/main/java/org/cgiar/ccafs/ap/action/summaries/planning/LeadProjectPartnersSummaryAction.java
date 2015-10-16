@@ -110,15 +110,6 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
   public void prepare() {
 
     projectList = projectManager.summaryGetAllProjectPartnerLeaders();
-    // Getting the project partner leaders
-    // for (Project project : projectList) {
-    // project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
-    //
-    // if (project.getLeader() != null && project.getLeaderPerson() != null) {
-    // System.out.println(project.getLeader().getInstitution().getName() + " - "
-    // + project.getLeaderPerson().getUser().getFirstName());
-    // }
-    // }
 
   }
 }

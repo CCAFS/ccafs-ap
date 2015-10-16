@@ -141,8 +141,8 @@ public class HistoryManagerImpl implements HistoryManager {
   }
 
   @Override
-  public List<LogHistory> getProjectPartnersHistory(int projectID, String[] partnerTypes) {
-    List<Map<String, String>> logHistoryData = historyDAO.getProjectPartnerHistory(projectID, partnerTypes);
+  public List<LogHistory> getProjectPartnersHistory(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectPartnerHistory(projectID);
     return this.getData(logHistoryData);
   }
 }

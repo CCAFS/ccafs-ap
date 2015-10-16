@@ -56,7 +56,7 @@ function addDataTable() {
         {
             bSortable: false,
             aTargets: [
-              -1
+                -1, -2
             ]
         }
       ]

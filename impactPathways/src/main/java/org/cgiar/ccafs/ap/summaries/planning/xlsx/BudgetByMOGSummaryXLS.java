@@ -15,26 +15,31 @@
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 
+import org.cgiar.ccafs.utils.APConfig;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.poi.common.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * @author Jorge Leonardo Solis B.
  */
-public class POWBMOGSummaryXLS {
+public class BudgetByMOGSummaryXLS {
 
   private BaseXLS xls;
-
+  private APConfig config;
 
   @Inject
-  public POWBMOGSummaryXLS(BaseXLS xls) {
+  public BudgetByMOGSummaryXLS(BaseXLS xls, APConfig config) {
     this.xls = xls;
+    this.config = config;
   }
 
   /**
@@ -43,11 +48,15 @@ public class POWBMOGSummaryXLS {
    * @param projectLeadingInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  private void addContent(List<Map<String, Object>> informationListMapPOWB, Sheet sheet, int indexSheet) {
+  private void addContent(List<Map<String, Object>> informationListMapPOWB, Sheet sheet, int indexSheet,
+    XSSFWorkbook workbook) {
 
+    CreationHelper createHelper = workbook.getCreationHelper();
+    XSSFHyperlink link;
     Map<String, Object> mapObject;
     StringBuilder stringBuilder;
     String valueOne, valueTwo;
+    int projectID;
     // Iterating all the projects
 
     if (indexSheet == 0) {
@@ -59,8 +68,8 @@ public class POWBMOGSummaryXLS {
         // Outcome
         stringBuilder = new StringBuilder();
 
-        valueOne = (String) mapObject.get("flagship_outcome");
-        valueTwo = (String) mapObject.get("outcome_2019");
+        valueOne = (String) mapObject.get("outcome_flagship");
+        valueTwo = (String) mapObject.get("outcome_description");
 
         if (valueOne != null && valueTwo != null) {
           stringBuilder.append(valueOne);
@@ -76,7 +85,7 @@ public class POWBMOGSummaryXLS {
         // MOG description
         stringBuilder = new StringBuilder();
 
-        valueOne = (String) mapObject.get("flagship");
+        valueOne = (String) mapObject.get("mog_flagship");
         valueTwo = (String) mapObject.get("mog_description");
 
         if (valueOne != null && valueTwo != null) {
@@ -104,8 +113,6 @@ public class POWBMOGSummaryXLS {
 
         // gender_W3_Bilateral
         xls.writeBudget(sheet, (double) mapObject.get("gender_W3_Bilateral"));
-        xls.nextColumn();
-
         xls.nextRow();
 
       }
@@ -115,8 +122,12 @@ public class POWBMOGSummaryXLS {
 
         // Iterating all the partners
 
+        projectID = (int) mapObject.get("project_id");
+        link = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
+        link.setAddress(config.getBaseUrl() + "/planning/projects/description.do?projectID=" + projectID);
+
         // Project id
-        xls.writeInteger(sheet, (int) mapObject.get("project_id"));
+        xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
         xls.nextColumn();
 
         // Title
@@ -125,8 +136,6 @@ public class POWBMOGSummaryXLS {
 
         // MOG description
         stringBuilder = new StringBuilder();
-
-
         valueOne = (String) mapObject.get("flagship");
         valueTwo = (String) mapObject.get("mog_description");
 
@@ -137,7 +146,6 @@ public class POWBMOGSummaryXLS {
         } else {
           stringBuilder.append("");
         }
-
 
         xls.writeString(sheet, stringBuilder.toString());
         xls.nextColumn();
@@ -167,10 +175,8 @@ public class POWBMOGSummaryXLS {
         xls.nextColumn();
 
         xls.nextRow();
-
       }
     }
-
   }
 
   /**
@@ -179,76 +185,77 @@ public class POWBMOGSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Map<String, Object>> informationDetailPOWB, List<Map<String, Object>> informationPOWB) {
+  public byte[] generateXLS(List<Map<String, Object>> informationBudgetReportByMOGDetail,
+    List<Map<String, Object>> informationBudgetReportByMOG) {
 
     try {
 
-      Workbook workbook = xls.initializeWorkbook(true);
+      XSSFWorkbook workbook = xls.initializeWorkbook(true);
 
-      /***************** POWB MOG Report ******************/
+      /***************** Budget Summary By MOG Report ******************/
       // Writting headers
-      String[] _headersPOWB =
-        new String[] {"Outcome 2019", "MOG", " Budget Total W1/W2 (USD)", " Budget Total W1/W2 (USD)",
-          "Budget Total W3/Bilateral (USD) ", "Budget Total W3/Bilateral (USD)"};
+      String[] headersPOWB =
+        new String[] {"Outcome 2019", "MOG", "Total Budget W1/W2 (USD)", "Gender W1/W2 (USD)",
+        "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
 
       // defining header types.
       int[] headerTypesPOWB =
         new int[] {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
         BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
-      // renaming sheet
-      workbook.setSheetName(0, "P&R - POWB Summary");
-      Sheet cleanSheet = workbook.cloneSheet(0);
+      // creating sheet
+      Sheet[] sheets = new Sheet[2];
+      sheets[0] = workbook.getSheetAt(0);
+      sheets[1] = workbook.cloneSheet(0);
 
-      Sheet sheet = workbook.getSheetAt(0);
 
-      // write text box
-      xls.writeTitleBox(sheet, "POWB Summary ");
+      workbook.setSheetName(0, "Level - 1 ");
 
-      // write text box
-      xls.createLogo(workbook, sheet);
+      xls.initializeSheet(sheets[0], headerTypesPOWB);
 
-      xls.initializeSheet(sheet, headerTypesPOWB);
-
-      xls.writeHeaders(sheet, _headersPOWB);
-      this.addContent(informationPOWB, sheet, 0);
+      xls.writeHeaders(sheets[0], headersPOWB);
+      this.addContent(informationBudgetReportByMOG, sheets[0], 0, workbook);
 
       // Set description
-      xls.writeDescription(sheet, xls.getText("summaries.powb.mog.sheetone.description"));
+      xls.writeDescription(sheets[0], xls.getText("summaries.budget.summary.sheet.description"));
 
+      // write text box
+      xls.writeTitleBox(sheets[0], " \t\t Budget Summary");
 
-      /***************** POWB MOG Report Detail ******************/
+      // write text box
+      xls.createLogo(workbook, sheets[0]);
+
+      /***************** Budget Summary By MOG Detail ******************/
+      // Sheet cleanSheet =
       // Writting headers
-      String[] _headersPOWBDetail =
+
+      String[] headersPOWBDetail =
         new String[] {"Project Id", "Project title", "MOG", "Expected annual contribution",
-        "Expected plan of the gender and social inclusion", " Budget Total W1/W2 (USD)",
-          " Budget Gender W1/W2 (USD)", "Budget Total W3/Bilateral (USD)", "Budget Gender W3/Bilateral (USD)"};
+        "Expected plan of the gender and social inclusion", "Total Budget W1/W2 (USD)", " Gender W1/W2 (USD)",
+          "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
 
       // defining header types.
       int[] headerTypesPOWBDetail =
-        new int[] {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
         BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
         BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
 
-      // renaming sheet
-      workbook.createSheet("P&R - POWB Detail");
-      sheet = workbook.getSheetAt(1);
+      workbook.setSheetName(1, "Level - 2");
 
+      xls.initializeSheet(sheets[1], headerTypesPOWBDetail);
 
-      // write text box
-      xls.writeTitleBox(sheet, "POWB Summary Detail");
-
-      // write text box
-      xls.createLogo(workbook, sheet);
-
-      xls.initializeSheet(sheet, headerTypesPOWBDetail);
-
-      xls.writeHeaders(sheet, _headersPOWBDetail);
-      this.addContent(informationDetailPOWB, sheet, 1);
+      xls.writeHeaders(sheets[1], headersPOWBDetail);
+      this.addContent(informationBudgetReportByMOGDetail, sheets[1], 1, workbook);
 
       // Set description
-      xls.writeDescription(sheet, xls.getText("summaries.powb.mog.sheetone.description"));
+      xls.writeDescription(sheets[1], xls.getText("summaries.budget.summary.sheet.description"));
+
+      // write text box
+      xls.writeTitleBox(sheets[1], "      Budget Summary Detail");
+
+      // write text box
+      xls.createLogo(workbook, sheets[1]);
 
       // this.flush();
       xls.writeWorkbook();

@@ -25,6 +25,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Carlos Alberto Martínez. - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class ProjectLocationsValidator extends BaseValidator {
@@ -45,26 +46,25 @@ public class ProjectLocationsValidator extends BaseValidator {
 
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
-      this.validateProjectJustification(action, project);
-
       // If project is CORE or CO-FUNDED
       if (project.isCoreProject() || project.isCoFundedProject()) {
+        this.validateProjectJustification(action, project);
         this.validateLessonsLearn(action, project, "locations");
         // Projects are validated checking if they are not global and their locations are valid ones.
-        if ((!project.isGlobal()) && (!projectValidator.isValidListLocations(project.getLocations()))) {
+        if ((!project.isGlobal()) && (!projectValidator.hasProjectLocations(project.getLocations()))) {
           this.addMissingField("project.locations.empty");
           action.addActionError(action.getText("planning.projectLocations.type"));
         } else {
           this.validateLocations(action, project);
         }
       } else {
-        // Do Nothing
+        // If project is bilateral, do nothing.
       }
       if (fields) {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -77,7 +77,7 @@ public class ProjectLocationsValidator extends BaseValidator {
       if (!this.isValidLocation(project.getLocations().get(i))) {
         this.addMessage("location #" + (i + 1));
         action.addFieldError("location-" + i, action.getText("validation.field.required"));
-        // No need to add missing fields as the information is not saved yet.
+        this.addMissingField("project.location[" + i + "].name");
         fields = true;
       }
     }

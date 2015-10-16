@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
+import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.planning.ProjectIPOtherContributionValidator;
@@ -31,33 +32,33 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal B.
+ * @author Christian David García - CIAT/CCAFS
  */
 public class ProjectIPOtherContributionAction extends BaseAction {
 
   // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectIPOtherContributionAction.class);
   private static final long serialVersionUID = 5866456304533553208L;
+
+  private List<CRPContribution> crpContributions;
+  private CRPManager crpManager;
+  private List<CRP> crps;
+  private HistoryManager historyManager;
 
   // Manager
   private ProjectOtherContributionManager ipOtherContributionManager;
-  private CRPManager crpManager;
-  private ProjectManager projectManager;
+
+  // Validator
   private ProjectIPOtherContributionValidator otherContributionValidator;
-  private HistoryManager historyManager;
 
   // Model for the back-end
-  private OtherContribution ipOtherContribution;
-  private List<CRP> previousCRPs;
-
+  private List<CRPContribution> previousCRPContributions;
+  private Project project;
   // Model for the front-end
   private int projectID;
-  private Project project;
-  private List<CRP> crps;
+  private ProjectManager projectManager;
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
@@ -71,12 +72,16 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.historyManager = historyManager;
   }
 
+  public List<CRPContribution> getCrpContributions() {
+    return crpContributions;
+  }
+
   public List<CRP> getCrps() {
     return crps;
   }
 
-  public OtherContribution getIpOtherContribution() {
-    return ipOtherContribution;
+  public List<CRPContribution> getPreviousCRPContributions() {
+    return previousCRPContributions;
   }
 
   public Project getProject() {
@@ -107,21 +112,20 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
 
-    // Getting the activity information
+    // Getting the project information
     project = projectManager.getProject(projectID);
     crps = crpManager.getCRPsList();
 
     // Getting the information for the IP Other Contribution
-    ipOtherContribution = ipOtherContributionManager.getIPOtherContributionByProjectId(projectID);
+    project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+    if (project.getIpOtherContribution() == null) {
 
-    project.setCrpContributions(crpManager.getCrpContributions(projectID));
-    project.setIpOtherContribution(ipOtherContribution);
-
-    previousCRPs = new ArrayList<>();
-    for (CRP crp : project.getCrpContributions()) {
-      previousCRPs.add(new CRP(crp.getId()));
+      project.setIpOtherContribution(new OtherContribution());
     }
 
+    // Getting the previous contributions.
+    previousCRPContributions = new ArrayList<>();
+    previousCRPContributions.addAll(project.getIpOtherContribution().getCrpContributions());
 
     // Getting the Project lessons for this section.
     this.setProjectLessons(
@@ -130,53 +134,57 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
     if (this.isHttpPost()) {
-      project.getCrpContributions().clear();
+      project.getIpOtherContribution().getCrpContributions().clear();
     }
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
   }
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectOtherContributions()) {
+    if (securityContext.canUpdateProjectOtherContributions(projectID)) {
 
-      super.saveProjectLessons(projectID);
+      if (!this.isNewProject()) {
+        super.saveProjectLessons(projectID);
+      }
 
       // Saving Activity IP Other Contribution
-      boolean saved = ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
+      ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
         this.getCurrentUser(), this.getJustification());
 
-
       // Delete the CRPs that were un-selected
-      for (CRP crp : previousCRPs) {
-        if (!project.getCrpContributions().contains(crp)) {
-          saved = saved && crpManager.removeCrpContribution(project.getId(), crp.getId(), this.getCurrentUser().getId(),
+      for (CRPContribution crp : previousCRPContributions) {
+        if (!project.getIpOtherContribution().getCrpContributions().contains(crp)) {
+          crpManager.removeCrpContribution(project.getId(), crp.getCrp(), this.getCurrentUser().getId(),
             this.getJustification());
         }
       }
 
-      saved = saved && crpManager.saveCrpContributions(project, this.getCurrentUser(), this.getJustification());
+      crpManager.saveCrpContributions(project.getId(), project.getIpOtherContribution().getCrpContributions(),
+        this.getCurrentUser(), this.getJustification());
 
-      if (!saved) {
-        this.addActionError(this.getText("saving.problem"));
-        return BaseAction.INPUT;
+
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
       } else {
-        // Get the validation messages and append them to the save message if any
-        Collection<String> messages = this.getActionMessages();
-        if (!messages.isEmpty()) {
-          String validationMessage = messages.iterator().next();
-          this.setActionMessages(null);
-          this.addActionWarning(this.getText("saving.saved") + validationMessage);
-        } else {
-          this.addActionMessage(this.getText("saving.success",
-            new String[] {this.getText("planning.impactPathways.otherContributions.title")}));
-        }
-        return SUCCESS;
+        this.addActionMessage(this.getText("saving.saved"));
       }
+      return SUCCESS;
     }
     return BaseAction.NOT_AUTHORIZED;
   }
 
-  public void setIpOtherContribution(OtherContribution ipOtherContribution) {
-    this.ipOtherContribution = ipOtherContribution;
+  public void setCrpContributions(List<CRPContribution> crpContributions) {
+    this.crpContributions = crpContributions;
+  }
+
+  public void setPreviousCRPContributions(ArrayList<CRPContribution> previousCRPContributions) {
+    this.previousCRPContributions = previousCRPContributions;
   }
 
   public void setProject(Project project) {

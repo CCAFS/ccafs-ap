@@ -20,7 +20,9 @@ import org.cgiar.ccafs.utils.db.DAOManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -40,6 +42,44 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
   @Inject
   public MySQLProjectLessonsDAO(DAOManager daoManager) {
     this.daoManager = daoManager;
+  }
+
+  @Override
+  public List<Map<String, String>> getComponentLessonByProject(int projectID) {
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * FROM project_component_lessons ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND is_active = 1");
+
+    LOG.debug(">> executeQuery(query='{}')", query);
+    List<Map<String, String>> componentList = new ArrayList<>();
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      Map<String, String> componentData;
+      while (rs.next()) {
+        componentData = new HashMap<String, String>();
+        componentData.put("id", rs.getString("id"));
+        componentData.put("project_id", rs.getString("project_id"));
+        componentData.put("lessons", rs.getString("lessons"));
+        componentData.put("year", rs.getString("year"));
+        componentData.put("component_name", rs.getString("component_name"));
+        componentList.add(componentData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< executeQuery():componentList.size={}", componentList.size());
+    return componentList;
+
+
   }
 
   @Override

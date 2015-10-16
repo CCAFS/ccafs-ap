@@ -22,6 +22,7 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -48,6 +49,7 @@ public class ProjectsListPlanningAction extends BaseAction {
   // Model for the front-end
   private int projectID;
   private double totalBudget;
+  private LinkedHashMap<Integer, Boolean> projectStatuses;
 
   @Inject
   public ProjectsListPlanningAction(APConfig config, ProjectManager projectManager) {
@@ -112,7 +114,7 @@ public class ProjectsListPlanningAction extends BaseAction {
     if (isCoreProject) {
       newProject.setType(APConstants.PROJECT_CORE);
     } else {
-      newProject.setType(APConstants.PROJECT_BILATERAL_STANDALONE);
+      newProject.setType(APConstants.PROJECT_BILATERAL);
     }
 
     newProject.setOwner(this.getCurrentUser());
@@ -120,8 +122,8 @@ public class ProjectsListPlanningAction extends BaseAction {
     if (liaisonInstitution != null) {
       newProject.setLiaisonInstitution(liaisonInstitution);
     } else {
-      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!", this
-        .getCurrentUser().getId());
+      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!",
+        this.getCurrentUser().getId());
       return -1;
     }
 
@@ -133,15 +135,14 @@ public class ProjectsListPlanningAction extends BaseAction {
   public String delete() {
     // Deleting project.
     if (this.canDelete(projectID)) {
-      boolean deleted =
-        projectManager.deleteProject(projectID, this.getCurrentUser(), this.getJustification() == null
-          ? "Project deleted" : this.getJustification());
+      boolean deleted = projectManager.deleteProject(projectID, this.getCurrentUser(),
+        this.getJustification() == null ? "Project deleted" : this.getJustification());
       if (deleted) {
-        this.addActionMessage(this.getText("deleting.success", new String[] {this.getText("planning.project")
-          .toLowerCase()}));
+        this.addActionMessage(
+          this.getText("deleting.success", new String[] {this.getText("planning.project").toLowerCase()}));
       } else {
-        this.addActionError(this.getText("deleting.problem", new String[] {this.getText("planning.project")
-          .toLowerCase()}));
+        this.addActionError(
+          this.getText("deleting.problem", new String[] {this.getText("planning.project").toLowerCase()}));
       }
     } else {
       this.addActionError(this.getText("planning.projects.cannotDelete"));
@@ -177,6 +178,21 @@ public class ProjectsListPlanningAction extends BaseAction {
     return totalBudget;
   }
 
+  /**
+   * This method validates that a project is completed or not.
+   * To use this method, you had to use before the method in the base action named
+   * initializeProjectSectionStatuses(Project, String) for the projectStatuses to be populated.
+   * 
+   * @param projectID is a project identifier.
+   * @return true if the project is complete, false otherwise.
+   */
+  public boolean isProjectComplete(int projectID) {
+    if (projects.contains(new Project(projectID))) {
+      return projectStatuses.get(projectID);
+    }
+    return false;
+  }
+
   @Override
   public void prepare() throws Exception {
     projects = new ArrayList<>();
@@ -199,7 +215,14 @@ public class ProjectsListPlanningAction extends BaseAction {
       }
     }
 
+    // Validating if projects are complete or not.
+    projectStatuses = new LinkedHashMap<>();
+    for (Project project : projects) {
+      this.initializeProjectSectionStatuses(project, "Planning");
+      projectStatuses.put(project.getId(), this.isComplete());
+    }
 
+    this.cleanSectionStatuses();
   }
 
   public void setAllProjects(List<Project> allProjects) {

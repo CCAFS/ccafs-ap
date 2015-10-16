@@ -220,7 +220,7 @@ label.readOnly {
 }
 
 p.fieldError{
-  color: #F52626;
+  color: #F52626 !important;
   font-weight: bold;
   margin-right: 4px;
 }
@@ -276,6 +276,13 @@ img.external-link {
   width: 10px;
 }
 
+h2.successTitle {
+  font-size: 2em;
+  color: #7FB06F;
+  margin-bottom: 11px;
+  text-align: center;
+}
+
 h6.checked-true {
   background: url(../../images/global/checked-true.png) no-repeat 0;
   padding: 3px 0  3px 23px;
@@ -329,7 +336,7 @@ textarea#justification {
 .textArea p, .input p, .select p {
   text-align: justify;
   width: 98%;
-  font-size: 1.07em;
+  font-size: 1.1em;
   margin-top: 1px;
   word-wrap: break-word;
   color: #6D6D6D;
@@ -375,13 +382,19 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   color: #fff; 
 }
 
+/* Noty messages */
+
+ul#noty_bottomRight_layout_container {
+  z-index: 2147483648 !important;
+}
+
 /* Edit Button */
 
 .editButton {
   position: absolute;
   right: 0;
   top: 0;
-  background: url(../../images/global/icon-edit.png) #8B8B8B no-repeat 11px 2px;
+  background: url(../../images/global/icon-edit.png) #1abc9c no-repeat 11px 2px;
   background-size: 20%;
   padding: 2px 0px 3px 0px;
   cursor:pointer;
@@ -396,7 +409,7 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   padding: 8px 18px 6px 31px; */;
 }
 .editButton:hover{
-  background-color: #6C6C6C;
+  background-color: #16a085;
 }
 
 /* View Button */
@@ -408,9 +421,9 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   position: absolute;
   right: 4px;
   top: 0;
-  background: url(../../images/global/icon-view.png) #1abc9c no-repeat 9px 2px;
+  background: url(../../images/global/icon-view.png) #8B8B8B no-repeat 9px 2px;
   /* background-size: 18%; */
-  padding: 0px 0px 4px 0px;
+  padding: 0px 0px 3px 0px;
   cursor:pointer;
   font-size: 1.1em;
   border-radius: 0 0px 4px 4px;
@@ -418,12 +431,13 @@ a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
 .viewButton a{
   color: #fff;
   font-weight: bold;
-  text-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1);
+  /* text-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1); */
   text-decoration: none;
-  padding: 8px 18px 6px 31px; */;
+  padding: 8px 18px 6px 31px;*/;
+  color: #FFFFFF;
 }
 .viewButton:hover{
-  background-color: #16a085;
+  background-color: #6C6C6C;
 }
 
 
@@ -807,9 +821,8 @@ select#partnerSave_activityPartner_partner_type_id {
     margin: 10px 0 15px 0;
 }
 
-.panel.primary{
-  
-}
+.panel.primary{}
+
 .panel.secondary .panel-head{
   font-size: 1em;
   background: #CBCBCB;
@@ -1078,7 +1091,7 @@ a#userLogOut {
 }
 
 
-#userInfo .email {
+#userInfo .name {
   font-size: 1em;
   margin-right: 50px;
 }
@@ -1131,6 +1144,12 @@ a#userLogOut {
   font-size: 2.5em;
   color: #444;
   font-weight: 200;
+}
+
+#mainLogo p#testingMessage {
+  color: #FF7474;
+  font-weight: bold;
+  font-size: 0.7em;
 }
 
 #mainLogo img {
@@ -1437,9 +1456,10 @@ a.currentReportingSection li, a.currentSection li {
   width:15px; 
 }
 .icon-20{
-  float: left;
+  display: block;
+  margin: 0 auto;
   height: 20px;
-  width:20px; 
+  width:20px;
 }
 
 .icon-s{
@@ -1987,17 +2007,18 @@ h1.simpleTitle span {
   margin-bottom: 5px;
 }
 
-.helpMessage3 { 
-  position: relative;
+.helpMessage3 {
+  /* position: relative; */
   /* -webkit-box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3); */
   -moz-box-shadow: 1px 2px 8px rgba(0,0,0,.3);
   -webkit-border-radius:2px;
   -moz-border-radius:2px;
   border-radius:2px;
   padding: 5px;
-  border: 1.0px dashed #c0c0c0;
-  background: #FFFFFF;  
-  margin: 5px 380px 5px 0px;;
+  border: 1px dashed #c0c0c0;
+  background: #FFFFFF;
+  margin: 5px 373px 5px 0px;
+  text-align: center;
 }
 
 .helpMessage3:before,.helpMessage:after {
@@ -2039,6 +2060,17 @@ h1.simpleTitle span {
   color: red;
   margin: 23px 0;
   border-radius: 4px;
+}
+
+p.projectSubmitted {
+  margin: 30px 0 10px 0;
+  color: #7FB06F;
+  text-align: center;
+  background-color: #E8F7E3;
+  border: 1px solid #E3F5DD;
+  padding: 12px 0px;
+  font-size: 1.3em;
+  border-radius: 5px;
 }
 
 .searchUser {
@@ -2674,11 +2706,19 @@ button.ipGraph-btn{
   text-decoration: none;
 }
 
+.projectsList a.validateButton {
+  background-color: #7FB06F;
+  padding: 3px 12px;
+  border-radius: 2px;
+  color: #fff;
+  text-decoration: none;
+}
+
 .projectsList a.submitButton:hover {
   background-color: #3498db;
 }
 
-.projectSubmitButton {
+a.projectSubmitButton {
   background: url(../../images/global/submit-icon.png) no-repeat;
   background-color: #83AECC;
   background-position: 46px 9px;
@@ -2690,18 +2730,54 @@ button.ipGraph-btn{
   font-size: 1.3em;
   text-align: center;
   cursor: pointer;
+  display: block;
+}
+
+.projectValidateButton {
+  background: url(../../images/global/validate-icon.png) no-repeat;
+  background-color: #7FB06F;
+  background-position: 44px 11px;
+  padding: 11px 0 11px 18px;
+  margin: 0px 10px;
+  border-radius: 2px;
+  color: #fff;
+  font-weight: lighter;
+  font-size: 1.3em;
+  text-align: center;
+  cursor: pointer;
+}
+
+p.projectValidateButton-message {
+  color: #5A5A5A;
+  margin-bottom: 5px;
+  font-style: italic;
 }
 
 .projectSubmitButton:hover {
   background-color: #3498db;
 }
 
+.button-pdf-format {
+  display: block;
+  color: #929090;
+  text-decoration: none;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  width: 117px;
+  text-align: center;
+  padding: 18px 0 18px 28px;
+  border-radius: 3px;
+  background: url(../../images/global/icon-pdf.png) no-repeat;
+  margin-top: 11px !important;
+}
+
 .projectsList #ids, .activities #ids {
   width: 27px !important;
+  text-align: center;
 }
 
 .projectsList #projectTitles {
-  width: 440px;
+  width: 383px;
 }
 
 .projectsList #projectRegions {
@@ -2721,7 +2797,7 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectActionStatus {
-padding: 0 4px 0 6px;}
+padding: 0 4px 0 6px;width: 100px;}
 
 .projectsList #projectType {
   width: 114px;
@@ -2960,6 +3036,20 @@ span.partnerTag {
   font-size: 0.95em !important;
   padding: 2px 10px 2px 10px !important;            
   display: none;
+}
+
+/* Project deliverables */
+
+#projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
+  text-align:center;
+  vertical-align: middle;
+}
+
+.icon-uncheck{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -85px;
+}
+.icon-check{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -150px;
 }
 
 /* Project Budget */

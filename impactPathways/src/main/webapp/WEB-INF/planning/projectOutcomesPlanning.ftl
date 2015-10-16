@@ -36,11 +36,14 @@
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
     [/#if]
+    [#if project.startDate??]
     <div id="projectOutcomes" class="borderBox">
       [#if !editable && canEdit]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
@@ -106,7 +109,9 @@
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
       </div>
     </div>
-    
+    [#else]
+      <p class="simpleBox center">[@s.text name="planning.projectOutcome.message.dateUndefined" /]</p>
+    [/#if]
     [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]

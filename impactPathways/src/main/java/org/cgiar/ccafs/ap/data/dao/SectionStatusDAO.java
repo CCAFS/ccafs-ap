@@ -28,13 +28,14 @@ import com.google.inject.ImplementedBy;
 public interface SectionStatusDAO {
 
   /**
-   * This method gets a list of Section Status data from a specific project in a specific cycle.
+   * This method gets the section status information of a given deliverable in a given cycle.
    * 
-   * @param projectID is some project identifier.
-   * @param cycle is the name of the cycle ('Planning' or 'Reporting').
-   * @return a list of Map with the information requested.
+   * @param deliverableID is the deliverable identifier related to the status.
+   * @param cycle is the project cycle (Planning or Reporting).
+   * @param section is the name of the section
+   * @return a Map with the information requested. An empty Map if no data was found, or null if some error occurred.
    */
-  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle);
+  public Map<String, String> getDeliverableSectionStatus(int deliverableID, String cycle, String section);
 
   /**
    * This method gets the section status information of a given project in a given cycle.
@@ -47,11 +48,29 @@ public interface SectionStatusDAO {
   public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section);
 
   /**
+   * This method gets a list of Section Status data from a specific project in a specific cycle.
+   * 
+   * @param projectID is some project identifier.
+   * @param cycle is the name of the cycle ('Planning' or 'Reporting').
+   * @return a list of Map with the information requested.
+   */
+  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle);
+
+  /**
+   * This method saves into the database the current section status with regards the missing fields.
+   * 
+   * @param statusData - corresponds to a given deliverable status information to be saved into the database.
+   * @return a number greater than 0 meaning the identifier of the new record that was added, 0 if the information was
+   *         updated, or -1 if some error occurred.
+   */
+  public int saveDeliverableSectionStatus(Map<String, Object> statusData);
+
+  /**
    * This method saves into the database the current section status with regards the missing fields.
    * 
    * @param statusData - corresponds to a given project status information to be saved into the database.
    * @return a number greater than 0 meaning the identifier of the new record that was added, 0 if the information was
    *         updated, or -1 if some error occurred.
    */
-  public int saveSectionStatus(Map<String, Object> statusData);
+  public int saveProjectSectionStatus(Map<String, Object> statusData);
 }

@@ -35,6 +35,7 @@ import org.cgiar.ccafs.ap.validation.planning.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -228,88 +229,80 @@ public class ProjectDeliverableAction extends BaseAction {
         deliverable.setTypeOther(null);
       }
     }
+
+    // Initializing Section Statuses:
+    this.initializeProjectSectionStatuses(project, "Planning");
   }
 
 
   @Override
   public String save() {
-    boolean success = true;
+
 
     // Getting the project
     project = projectManager.getProjectFromDeliverableId(deliverableID);
+    if (securityContext.canUpdateProjectDeliverables(project.getId())) {
 
-    // -------- Saving main information
-    int result =
+      // -------- Saving main information
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
-    if (result != 0) {
-      success = false;
-    }
 
-    // -------- Saving next users.
 
-    // Getting previous next users in order to identify those that need to be deleted.
-    List<NextUser> previousNextUsers = nextUserManager.getNextUsersByDeliverableId(deliverableID);
+      // -------- Saving next users.
 
-    // Deleting the next users coming from the front-end that are not part of the list.
-    for (NextUser previousNextUser : previousNextUsers) {
-      if (!deliverable.getNextUsers().contains(previousNextUser)) {
-        boolean deleted =
+      // Getting previous next users in order to identify those that need to be deleted.
+      List<NextUser> previousNextUsers = nextUserManager.getNextUsersByDeliverableId(deliverableID);
+
+      // Deleting the next users coming from the front-end that are not part of the list.
+      for (NextUser previousNextUser : previousNextUsers) {
+        if (!deliverable.getNextUsers().contains(previousNextUser)) {
           nextUserManager.deleteNextUserById(previousNextUser.getId(), this.getCurrentUser(), this.getJustification());
-        if (!deleted) {
-          success = false;
         }
       }
-    }
 
-    // Saving new and old Next Users
-    boolean saved = nextUserManager.saveNextUsers(deliverableID, deliverable.getNextUsers(), this.getCurrentUser(),
-      this.getJustification());
+      // Saving new and old Next Users
+      nextUserManager.saveNextUsers(deliverableID, deliverable.getNextUsers(), this.getCurrentUser(),
+        this.getJustification());
 
-    if (!saved) {
-      success = false;
-    }
 
-    // ---------- Saving deliverable partners contribution
+      // ---------- Saving deliverable partners contribution
 
-    // Saving responsible deliverable partner
-    if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getPartner() != null) {
-      result = deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
-        this.getCurrentUser(), this.getJustification());
-      if (result < 0) {
-        success = false;
-      }
-    }
-
-    // Saving other contributions
-
-    // Getting previous other contributions in order to know those that need to be deleted.
-    List<DeliverablePartner> previousOtherPartners =
-      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER);
-
-    // Deleting other contributions
-    for (DeliverablePartner previousOtherPartner : previousOtherPartners) {
-      if (!deliverable.getOtherPartners().contains(previousOtherPartner)) {
-        boolean deleted = deliverablePartnerManager.deleteDeliverablePartner(previousOtherPartner.getId(),
+      // Saving responsible deliverable partner
+      if (deliverable.getResponsiblePartner() != null && deliverable.getResponsiblePartner().getPartner() != null) {
+        deliverablePartnerManager.saveDeliverablePartner(deliverableID, deliverable.getResponsiblePartner(),
           this.getCurrentUser(), this.getJustification());
-        if (!deleted) {
-          success = false;
+      }
+
+      // Saving other contributions
+
+      // Getting previous other contributions in order to know those that need to be deleted.
+      List<DeliverablePartner> previousOtherPartners =
+        deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER);
+
+      // Deleting other contributions
+      for (DeliverablePartner previousOtherPartner : previousOtherPartners) {
+        if (!deliverable.getOtherPartners().contains(previousOtherPartner)) {
+          deliverablePartnerManager.deleteDeliverablePartner(previousOtherPartner.getId(), this.getCurrentUser(),
+            this.getJustification());
         }
       }
-    }
 
-    // Saving new and old Other Deliverable Partners
-    saved = deliverablePartnerManager.saveDeliverablePartners(deliverableID, deliverable.getOtherPartners(),
-      this.getCurrentUser(), this.getJustification());
-    if (!saved) {
-      success = false;
-    }
+      // Saving new and old Other Deliverable Partners
+      deliverablePartnerManager.saveDeliverablePartners(deliverableID, deliverable.getOtherPartners(),
+        this.getCurrentUser(), this.getJustification());
 
-    // Validating whole procedure.
-    if (success) {
-      this.addActionMessage(this.getText("saving.saved"));
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
       return SUCCESS;
     }
-    return INPUT;
+
+    return NOT_AUTHORIZED;
   }
 
 
@@ -325,7 +318,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public void validate() {
     super.validate();
     if (save) {
-      validator.validate(this, deliverable);
+      validator.validate(this, project, deliverable, "Planning");
     }
   }
 }

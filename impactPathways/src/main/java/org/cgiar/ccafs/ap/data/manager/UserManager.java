@@ -14,7 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.UserManagerImp;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -25,14 +25,6 @@ import com.google.inject.ImplementedBy;
 public interface UserManager {
 
   /**
-   * This method gets all the Employees from the system.
-   * 
-   * @return a List of Users related on Employees. If there are not employees in the system, the method
-   *         will return an empty list.
-   */
-  public List<User> getAllEmployees();
-
-  /**
    * This method gets all the User information according to their roles. FPL's, RPL's, CU's
    * 
    * @return a list of users. If there are no user, will return an empty list.
@@ -40,12 +32,12 @@ public interface UserManager {
   public List<User> getAllOwners();
 
   /**
-   * This method gets a list of owners that belongs to a given program.
+   * This method gets a list of owners (MLs) that belongs to a given Liaison institution.
    * 
-   * @param program can be LAM, FP4, EA, CU, etc.
+   * @param liaisonInstitution could be LAM, FP4, EA, CU, CIAT, CIP, etc.
    * @return a List of User objects.
    */
-  public List<User> getAllOwners(IPProgram program);
+  public List<User> getAllOwners(LiaisonInstitution liaisonInstitution);
 
   /**
    * This method gets all the Users from the system.
@@ -54,38 +46,6 @@ public interface UserManager {
    *         will return an empty list.
    */
   public List<User> getAllUsers();
-
-  /**
-   * This method returns the employee Identifier that is using the given user taking into account his current
-   * institution.
-   * 
-   * @param user is the user instance to be calculated.
-   * @return the id that is used in the database for the table employee, 0 if nothing found or -1 if some error
-   *         occur.
-   * @deprecated This method is deprecated as we don't use employees any more.
-   */
-  @Deprecated
-  public int getEmployeeID(User user);
-
-  /**
-   * This method returns an owner represented as User object.
-   * 
-   * @param ownerId is the identifier from the Employee table.
-   * @return an User object or null if nothing found.
-   * @deprecated this method is deprecated as we don't use the employees table any more. Please use the method
-   *             getUser(userId).
-   */
-  @Deprecated
-  public User getOwner(int ownerId);
-
-  /**
-   * This method gets the information of an User by a given project ID
-   * 
-   * @param projectID - is the ID of the project
-   * @return an Object User with the information requested, or Null if the relationship between project ID and user
-   *         doesn't exist
-   */
-  public User getOwnerByProjectId(int projectID);
 
   /**
    * This method find an user identify with a given id.

@@ -40,19 +40,22 @@ public class ProjectOutcomeValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear, String cycle) {
 
     if (project != null) {
-      this.validateProjectJustification(action, project);
-
       // The projects will be validated according to their type
       if (project.isCoreProject() || project.isCoFundedProject()) {
+        this.validateProjectJustification(action, project);
         this.validateLessonsLearn(action, project, "outcomes");
         this.validateCoreProject(action, project, midOutcomeYear, currentPlanningYear, cycle);
       } else {
         // We don't validate the project outcomes for the bilateral projects.
       }
 
-      if (validationMessage.length() > 0) {
-        action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      if (action.getActionErrors().isEmpty()) {
+        if (!action.getFieldErrors().isEmpty()) {
+          action.addActionError(action.getText("saving.fields.required"));
+        } else if (validationMessage.length() > 0) {
+          action.addActionMessage(
+            " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+        }
       }
 
       // Saving missing fields.
@@ -68,7 +71,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
       // Validate only two years ahead and the last year which is 2019.
       if (year < (currentPlanningYear + 2) || year == midOutcomeYear) {
         // Validate the outcome statement
-        if (!projectValidator.isValidOutcomeStatement(project.getOutcomes(), year)) {
+        if (!projectValidator.hasValidOutcomeStatement(project.getOutcomes(), year)) {
           if (year == midOutcomeYear) {
             message = action.getText("planning.projectOutcome.statement.readText");
           } else {
@@ -79,7 +82,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
         }
 
         // Validate the outcome gender dimension
-        if (!projectValidator.isValidOutcomeGenderDimension(project.getOutcomes(), year)) {
+        if (!projectValidator.hasValidOutcomeGenderDimension(project.getOutcomes(), year)) {
           if (year == midOutcomeYear) {
             message = action.getText("planning.projectOutcome.genderAndSocialStatement.readText");
           } else {

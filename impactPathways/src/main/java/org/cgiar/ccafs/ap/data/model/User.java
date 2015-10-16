@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.data.model;
 import org.cgiar.ccafs.utils.MD5Convert;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -27,19 +26,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class User {
 
   private int id;
+  private String firstName;
+  private String lastName;
   private String username;
   private String password;
   private String email;
-  private String firstName;
-  private String lastName;
-  private String phone;
   private boolean isCcafsUser;
   private boolean isActive;
   private LiaisonInstitution liaisonInstitution;
-  @Deprecated
-  private List<Institution> institutions;
-  @Deprecated
-  private Institution currentInstitution;
   private Date lastLogin;
 
   public User() {
@@ -49,6 +43,16 @@ public class User {
   public User(int id) {
     super();
     this.id = id;
+  }
+
+  /**
+   * This method returns the user's full name.
+   * 
+   * @return a String that represents the user's full name.
+   *         e.g. Héctor Tobón
+   */
+  public String getComposedCompleteName() {
+    return this.firstName + " " + this.lastName;
   }
 
   /**
@@ -76,10 +80,6 @@ public class User {
     return this.lastName + ", " + this.firstName;
   }
 
-  @Deprecated
-  public Institution getCurrentInstitution() {
-    return currentInstitution;
-  }
 
   public String getEmail() {
     return email;
@@ -91,11 +91,6 @@ public class User {
 
   public int getId() {
     return id;
-  }
-
-  @Deprecated
-  public List<Institution> getInstitutions() {
-    return institutions;
   }
 
   public Date getLastLogin() {
@@ -112,10 +107,6 @@ public class User {
 
   public String getPassword() {
     return password;
-  }
-
-  public String getPhone() {
-    return phone;
   }
 
   public String getUsername() {
@@ -138,11 +129,6 @@ public class User {
     this.isCcafsUser = isCcafsUser;
   }
 
-  @Deprecated
-  public void setCurrentInstitution(Institution currentInstitution) {
-    this.currentInstitution = currentInstitution;
-  }
-
   public void setEmail(String email) {
     this.email = email;
   }
@@ -153,11 +139,6 @@ public class User {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  @Deprecated
-  public void setInstitutions(List<Institution> institutions) {
-    this.institutions = institutions;
   }
 
   public void setLastLogin(Date last_login) {
@@ -182,10 +163,6 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
   }
 
   public void setUsername(String username) {

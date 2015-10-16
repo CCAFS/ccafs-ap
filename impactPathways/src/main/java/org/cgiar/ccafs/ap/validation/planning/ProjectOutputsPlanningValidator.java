@@ -52,11 +52,13 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
     if (project != null) {
       this.validateProjectJustification(action, project);
 
-      if (project.isCoreProject() || project.isCoFundedProject()) {
+      // This section is required for Core, co-funded and bilateral projects that are not contributing to any core
+      // project.
+      if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
         this.validateLessonsLearn(action, project, "outputs");
         this.validateOutputOverviews(action, project);
       } else {
-        // If project is bilateral, do nothing.
+        // If project is bilateral but is co-financing some core project, thus this section is not needed to be filled.
       }
       if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
@@ -94,7 +96,7 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
   }
 
   public void validateOutputOverviews(BaseAction action, Project project) {
-    if (projectValidator.isValidOutputOverviews(project.getOutputsOverview())) {
+    if (projectValidator.hasOutputOverviews(project.getOutputsOverview())) {
       int c = 0;
       for (OutputOverview overview : project.getOutputsOverview()) {
         // Validate only current planning year which is 2016 at this moment.
