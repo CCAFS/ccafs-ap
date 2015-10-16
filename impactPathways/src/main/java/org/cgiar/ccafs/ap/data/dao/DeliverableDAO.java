@@ -96,6 +96,20 @@ public interface DeliverableDAO {
   public List<Map<String, String>> getDeliverablesByProjectPartnerID(int projectPartnerID);
 
   /**
+   * This method gets the list of Deliverable by type
+   * 
+   * @return a List of Map of the account of Deliverable Types
+   */
+  public List<Map<String, String>> getDeliverablesCountByType();
+
+  /**
+   * This method gets the list of Expected Deliverables by Year
+   * 
+   * @return a List of Map of the account of the Expected Deliverables per Year
+   */
+  public List<Map<String, String>> getExpectedDeliverablesCountByYear();
+
+  /**
    * This method return all the deliverables that belongs to a given project and which are led by a given user.
    * The deliverables will contain only the basic information: id, title
    * 

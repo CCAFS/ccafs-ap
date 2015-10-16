@@ -259,6 +259,63 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
+  public List<Map<String, String>> getDeliverablesCountByType() {
+    List<Map<String, String>> deliverablesType = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT DISTINCT(d.type_id), count(*) as count, dt.name ");
+    query.append(" FROM deliverable_types dt ");
+    query.append(" INNER JOIN deliverables d ON d.type_id = dt.id ");
+    query.append(" WHERE dt.parent_id IS NOT NULL ");
+    query.append(" AND d.is_active = TRUE ");
+    query.append(" GROUP BY dt.name ");
+    query.append(" ORDER BY dt.name ASC ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> deliverabletype = new HashMap<>();
+        deliverabletype.put("type_id", rs.getString("type_id"));
+        deliverabletype.put("count", rs.getString("count"));
+        deliverabletype.put("name", rs.getString("name"));
+        deliverablesType.add(deliverabletype);
+      }
+    } catch (SQLException e) {
+      LOG.error(
+        "getDeliverablesByType() > Exception raised trying to get the list of the account of Deliverable Types.", e);
+    }
+
+    return deliverablesType;
+  }
+
+  @Override
+  public List<Map<String, String>> getExpectedDeliverablesCountByYear() {
+    List<Map<String, String>> expectedDeliverables = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT COUNT(d.year) as count, d.year ");
+    query.append(" FROM ccafspr_ip_test.deliverables d ");
+    query.append(" WHERE d.is_active = TRUE ");
+    query.append(" GROUP BY d.year ");
+    query.append(" ORDER BY d.year ASC ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> expectedDeliverable = new HashMap<>();
+        expectedDeliverable.put("count", rs.getString("count"));
+        expectedDeliverable.put("year", rs.getString("year"));
+        expectedDeliverables.add(expectedDeliverable);
+      }
+    } catch (SQLException e) {
+      LOG
+        .error(
+          "getExpectedDeliverablesByYear()>Exception raised trying to get the list of the account of Expected Deliverable by Year.",
+          e);
+    }
+
+    return expectedDeliverables;
+  }
+
+  @Override
   public List<Map<String, String>> getProjectDeliverablesLedByUser(int projectID, int userID) {
     List<Map<String, String>> deliverables = new ArrayList<>();
     StringBuilder query = new StringBuilder();
