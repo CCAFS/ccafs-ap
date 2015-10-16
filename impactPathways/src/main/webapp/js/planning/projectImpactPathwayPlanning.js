@@ -35,7 +35,7 @@ function attachEvents() {
 
 function setWordCounters() {
   var check = "limitWords-";
-  $("textarea[id!='justification']").each(function(i,textarea) {
+  $("form textarea[id!='justification']").each(function(i,textarea) {
     var className = $(textarea).attr('class') || '';
     var cls = $.map(className.split(' '), function(val,i) {
       if(val.indexOf(check) > -1) {
@@ -249,7 +249,7 @@ function setIndicatorIndexes() {
         $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
-
+        $(target).find(".projectIndicatorGender").attr("name", indicatorsName + "[" + index + "].gender");
         index++;
       } else {
 
