@@ -204,6 +204,14 @@
       <artifactId>flyway-core</artifactId>
       <version>${flyway.version}</version>
     </dependency>
+    
+    <!-- JSON Support -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20150729</version>
+    </dependency>
+
   </dependencies>
   
   <build>
