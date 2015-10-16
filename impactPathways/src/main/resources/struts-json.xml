@@ -102,6 +102,22 @@
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
+    
+    
+    
+        <action name="coreProjectsBudget" class="org.cgiar.ccafs.ap.action.json.planning.CoreProjectsBudgetAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+
+    <action name="bilateralProjectsBudget" class="org.cgiar.ccafs.ap.action.json.planning.BilateralProjectsBudgetAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
 
     <action name="bilateralCoFinancingProjects" class="org.cgiar.ccafs.ap.action.json.planning.BilateralCofinancingProjectsAction">
       <result type="json">        

@@ -98,12 +98,30 @@ public interface ProjectManager {
   public List<Project> getBilateralProjects();
 
   /**
+   * This method returns the list of all the bilateral projects with valid Project Leader.
+   * 
+   * @return a list of projects that only contains the id and title.
+   */
+  public List<Project> getBilateralProjectsLeaders();
+
+
+  /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
    * 
    * @return a list of projects that only contains the id and title.
    */
   public List<Project> getCoreProjects(int flagshipID, int regionID);
+
+
+  /**
+   * This method returns the core projects with a valid Project Leader that contributes with the flagship and the
+   * regions received by parameter.
+   * If the parameters are '-1' they are not used to filter the list.
+   * 
+   * @return a list of projects that only contains the id and title.
+   */
+  public List<Project> getCoreProjectsLeaders(int flagshipID, int regionID);
 
   /**
    * This method returns the list of project identifiers where the given user is assigned as Project Leader.
