@@ -13,18 +13,48 @@ $(document).ready(
         max: tasksLength
       });
       // Event for validate button inside each project
-      $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
+      $('.projectValidateButton, .validateButton').on('click', validateButtonEvent);
 
       // Refresh event when table is reloaded in project list section
       $('table.projectsList').on('draw.dt', function() {
-        $('.projectValidateButton, .validateButton').on('click', submitButtonEvent);
+        $('.projectValidateButton, .validateButton').on('click', validateButtonEvent);
         $(".progressbar").progressbar({
           max: tasksLength
         });
       });
+
+      // Click on submit button
+      $('.submitButton, .projectSubmitButton').on('click', submitButtonEvent);
     });
 
 function submitButtonEvent(e) {
+  e.preventDefault();
+  noty({
+      text: 'Are you sure you want to submit the project now?  Once submitted, you will no longer have editing rights.',
+      type: 'confirm',
+      dismissQueue: true,
+      layout: 'center',
+      theme: 'relax',
+      buttons: [
+          {
+              addClass: 'btn btn-primary',
+              text: 'Ok',
+              onClick: function($noty) {
+                $noty.close();
+                window.location.href = $(e.target).attr('href');
+              }
+          }, {
+              addClass: 'btn btn-danger',
+              text: 'Cancel',
+              onClick: function($noty) {
+                $noty.close();
+              }
+          }
+      ]
+  });
+}
+
+function validateButtonEvent(e) {
   e.stopImmediatePropagation();
   e.preventDefault();
   var pID = $(e.target).attr('id').split('-')[1];
@@ -73,7 +103,6 @@ function processTasks(tasks,projectId,button) {
                 $(button).next().progressbar("value", index + 1);
                 ++index;
                 if(index == tasksLength) {
-                  // completed = 1;
                   if(completed == tasksLength) {
                     var notyOptions = jQuery.extend({}, notyDefaultOptions);
                     notyOptions.text = 'The project can be submmited now';
@@ -91,7 +120,7 @@ function processTasks(tasks,projectId,button) {
                     notyOptions.layout = 'center';
                     noty(notyOptions);
                     $(button).next().fadeOut(function() {
-                      $(button).fadeIn("slow").on('click', submitButtonEvent);
+                      $(button).fadeIn("slow").on('click', validateButtonEvent);
                     });
                   }
                 }

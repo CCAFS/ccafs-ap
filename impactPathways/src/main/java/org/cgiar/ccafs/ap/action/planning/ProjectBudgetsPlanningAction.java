@@ -98,7 +98,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     for (Budget budget : budgets) {
 
       if (budget.getCofinancingProject() != null) {
-      
+
         if (budget.getProjectId() == projectID) {
           return budget;
         }
@@ -310,9 +310,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
       // Save the linked projects
       List<Integer> linkedProjectsToDelete = new ArrayList<>();
+      List<Project> linkedProjectsToDeleteProject = new ArrayList<>();
       for (Project p : previousProject.getLinkedProjects()) {
         if (!project.getLinkedProjects().contains(p)) {
           linkedProjectsToDelete.add(p.getId());
+          linkedProjectsToDeleteProject.add(p);
         }
       }
 
@@ -320,12 +322,27 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         if (project.isBilateralProject()) {
           linkedProjectManager.deletedLinkedCoreProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
             this.getJustification());
+
+
         } else {
           linkedProjectManager.deletedLinkedBilateralProjects(project, linkedProjectsToDelete, this.getCurrentUser(),
             this.getJustification());
         }
       }
 
+
+      // delete budget that where removed it
+
+      for (Project p : linkedProjectsToDeleteProject) {
+        p.setAnualContribution(this.getCofinancingBudget(projectID, p.getId(), year));
+        if (p.getAnualContribution() != null) {
+          if (p.getAnualContribution().getId() > 0) {
+            budgetManager.deleteBudget(p.getAnualContribution().getId(), this.getCurrentUser(),
+              this.getJustification());
+          }
+
+        }
+      }
       // Then save the new core projects linked
       if (!project.getLinkedProjects().isEmpty()) {
         if (project.isBilateralProject()) {

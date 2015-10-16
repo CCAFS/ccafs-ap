@@ -201,7 +201,7 @@
   
   [#-- Hidden values used by js --]
   <input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceed" /]" />
-  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
+  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjectsBudget.do','bilateralProjectsBudget.do')}" />
   
   [#-- Linked Project Template --]
   [#if project.leader?has_content]
@@ -268,11 +268,7 @@
 [#macro projectBudget institution linkedProject editable=true]
   <div id="projectBudget-${(linkedProject.id)!'template'}" class="projectBudget budget" style="display:${linkedProject?has_content?string('block','none')}">
     [#assign budgetName = "project.linkedProjects[${counter-1}].anualContribution" /]
-    [#if linkedProject?has_content]
-    
-    
-     
-    [/#if]
+
     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
     <p class="title checked" >
       <a target="_blank" href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a>
