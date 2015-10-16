@@ -87,8 +87,8 @@
           <td>
             [#-- Check button --]
             [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))! /]
-            [#if securityContext.canSubmitProject(project.id) && !submission?has_content && !action.getCompleteProject(project.id) ]
-              [#if canEdit]
+            [#if securityContext.canSubmitProject(project.id) && !submission?has_content   ]
+              [#if canEdit && !action.getCompleteProject(project.id)]
                 <a id="validateProject-${project.id}" title="Check for missing fields" class="validateButton ${(project.type)!''}" href="#" >[@s.text name="form.buttons.check" /]</a>
                 <div id="progressbar-${project.id}" class="progressbar" style="display:none"></div>
               [#else]
@@ -106,6 +106,7 @@
                 <p title="The project can be submitted by Management liaisons and Contact points">Not Submitted</p>
               [/#if]
             [/#if]
+            
           </td>
           [#-- Track completition of entry --]
           [#if isPlanning]

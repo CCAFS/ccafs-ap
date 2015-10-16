@@ -192,8 +192,9 @@ function removeLinkedProject(e){
 function setProjectsIndexes(){
   $linkedProjects.find('.budget').each(function(i,projectBudget){
     var item = new LinkedProjectObject($(projectBudget));
-    item.setIndex(i+1);
+    item.setIndex(i);
   });
+  $projectBudgetInputs = $("input.projectBudget");
 }
 
 function calculateProjectsBudgetRemaining(e){
@@ -218,8 +219,7 @@ function LinkedProjectObject(project){
     $(project).find('.budgetAmount').val(setCurrencyFormat(0));
   };
   this.setIndex = function (index){
-
-    var elementName= "project.linkedProjects["+(index-1)+"].anualContribution.";
+    var elementName= "project.linkedProjects["+index+"].anualContribution.";
     $(project).find('.budgetId').attr('name', elementName+"id");
     $(project).find('.budgetYear').attr('name', elementName+"year");
     $(project).find('.budgetInstitutionId').attr('name', elementName+"institution.id");
