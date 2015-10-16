@@ -287,6 +287,17 @@ public interface ProjectManager {
 
 
   /**
+   * This method will return the list of all the project with the budget contribution information for a specific year.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary project budgets by partners Report.
+   * 
+   * @param year - Specific year to search in the report.
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year);
+
+  /**
    * This method updates the project type into the database according to the values contained in the project received by
    * parameter.
    * 
@@ -294,6 +305,7 @@ public interface ProjectManager {
    * @return true if the type was updated successfully. False otherwise.
    */
   public boolean updateProjectType(Project project);
+
 
   /**
    * This method updates the type of all the core projects following the steps below:
@@ -304,4 +316,6 @@ public interface ProjectManager {
    * @return true if the changes was made succesfully. False otherwise.
    */
   public boolean updateProjectTypes();
+
+
 }
