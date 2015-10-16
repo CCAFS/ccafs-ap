@@ -113,13 +113,13 @@ public class BudgetByPartnersSummaryXLS {
       // Writting headers
       String[] headers =
         new String[] {"Project Id", "Project title", "Partner", "Total Budget W1/W2 (USD)", "Gender W1/W2 (USD)",
-        "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
+          "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
 
       // Writting style content
       int[] headersType =
         new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET,
-          BaseXLS.COLUMN_TYPE_BUDGET};
+          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET};
 
       Workbook workbook = xls.initializeWorkbook(true);
 
@@ -134,6 +134,9 @@ public class BudgetByPartnersSummaryXLS {
 
       // Writing the sheet in the yellow box
       xls.writeDescription(sheet, xls.getText("summaries.budget.partners.summary.description"));
+
+      // write text box
+      xls.createLogo(workbook, sheet);
 
       xls.writeHeaders(sheet, headers);
 
