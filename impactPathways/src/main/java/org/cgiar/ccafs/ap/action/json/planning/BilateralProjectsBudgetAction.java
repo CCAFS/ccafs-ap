@@ -46,7 +46,7 @@ public class BilateralProjectsBudgetAction extends BaseAction {
 
   @Override
   public String execute() {
-    projects = projectManager.getBilateralProjects();
+    projects = projectManager.getBilateralProjectsLeaders();
     LOG.info("There were loaded {} bilateral projects", projects.size());
     return SUCCESS;
   }

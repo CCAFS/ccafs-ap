@@ -260,7 +260,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
   @Override
   public List<Map<String, String>> getBilateralProjects() {
-    LOG.debug(">> getCoreProjects ()");
+    LOG.debug(">> getBilateralProjects ()");
     List<Map<String, String>> bilateralProjects = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
@@ -281,7 +281,42 @@ public class MySQLProjectDAO implements ProjectDAO {
       }
 
     } catch (SQLException e) {
-      LOG.error("getCoreProjects() > Exception raised trying to get the core projects.", e);
+      LOG.error("getBilateralProjects() > Exception raised trying to get the core projects.", e);
+    }
+
+    return bilateralProjects;
+  }
+
+
+  @Override
+  public List<Map<String, String>> getBilateralProjectsLeaders() {
+    LOG.debug(">> getBilateralProjectsLeaders ()");
+    List<Map<String, String>> bilateralProjects = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT p.id, p.title ");
+    query.append("FROM projects as p ");
+    query.append("WHERE p.type = '");
+    query.append(APConstants.PROJECT_BILATERAL);
+    query.append("' ");
+
+    query.append(" AND (");
+    query.append("select count('x') from project_partners partner ");
+    query.append(
+      "inner join project_partner_persons person on person.project_partner_id=partner.id and person.contact_type='PL'  ");
+    query.append("where partner.project_id=p.id)>0");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> projectData = new HashMap<>();
+        projectData.put("id", rs.getString("id"));
+        projectData.put("title", rs.getString("title"));
+
+        bilateralProjects.add(projectData);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getBilateralProjectsLeaders() > Exception raised trying to get the core projects.", e);
     }
 
     return bilateralProjects;

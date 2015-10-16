@@ -201,6 +201,22 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getBilateralProjectsLeaders() {
+    List<Project> projects = new ArrayList<>();
+    List<Map<String, String>> projectsData = projectDAO.getBilateralProjectsLeaders();
+
+    for (Map<String, String> projectData : projectsData) {
+      Project project = new Project();
+      project.setId(Integer.parseInt(projectData.get("id")));
+      project.setTitle(projectData.get("title"));
+
+      projects.add(project);
+    }
+
+    return projects;
+  }
+
+  @Override
   public List<Project> getCoreProjects(int flagshipID, int regionID) {
     List<Project> projects = new ArrayList<>();
     List<Map<String, String>> projectsData = projectDAO.getCoreProjects(flagshipID, regionID);

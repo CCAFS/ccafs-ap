@@ -106,6 +106,15 @@ public interface ProjectDAO {
    */
   public List<Map<String, String>> getBilateralProjects();
 
+
+  /**
+   * This method returns a list with all the bilateral projects with a valid project Leader.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getBilateralProjectsLeaders();
+
+
   /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
