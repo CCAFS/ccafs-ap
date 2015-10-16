@@ -155,13 +155,16 @@ public class ProjectsListPlanningAction extends BaseAction {
   }
 
   /**
-   * TODO HT
-   * @param projectID
-   * @return
+   * This method validates that a project is completed or not.
+   * To use this method, you had to use before the method in the base action named
+   * initializeProjectSectionStatuses(Project, String) for the projectStatuses to be populated.
+   * 
+   * @param projectID is a project identifier.
+   * @return true if the project is complete, false otherwise.
    */
   public boolean getCompleteProject(int projectID) {
-    if(projects.contains(new Project(projectID))) {
-      return projectStatuses.get(projectID);      
+    if (projects.contains(new Project(projectID))) {
+      return projectStatuses.get(projectID);
     }
     return false;
   }
