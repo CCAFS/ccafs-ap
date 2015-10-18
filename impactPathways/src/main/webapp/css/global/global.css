@@ -2700,7 +2700,7 @@ button.ipGraph-btn{
 
 .projectsList a.submitButton {
   background-color: #83AECC;
-  padding: 3px 12px;
+  padding: 4px 24px;
   border-radius: 2px;
   color: #fff;
   text-decoration: none;
@@ -2708,7 +2708,7 @@ button.ipGraph-btn{
 
 .projectsList a.validateButton {
   background-color: #7FB06F;
-  padding: 3px 12px;
+  padding: 3px 26px;
   border-radius: 2px;
   color: #fff;
   text-decoration: none;

@@ -125,17 +125,17 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
     double totalCofinancing = 0;
     for (Project linkedProjec : linkedProjects) {
       Budget budget = linkedProjec.getAnualContribution();
-      if (budget.getCofinancingProject() != null) {
+      // if (budget.getCofinancingProject() != null) {
 
 
-        if (!budgetValidator.isValidAmountNoZero(budget.getAmount())) {
-          this.addMessage("Contribution has a invalid value ");
-          this.addMissingField("planning.projectBudget.annualBudget");
-        } else {
-          totalCofinancing = totalCofinancing + budget.getAmount();
-        }
-
+      if (!budgetValidator.isValidAmountNoZero(budget.getAmount())) {
+        this.addMessage("Contribution has a invalid value ");
+        this.addMissingField("planning.projectBudget.annualBudget");
+      } else {
+        totalCofinancing = totalCofinancing + budget.getAmount();
       }
+
+      // }
     }
 
 
