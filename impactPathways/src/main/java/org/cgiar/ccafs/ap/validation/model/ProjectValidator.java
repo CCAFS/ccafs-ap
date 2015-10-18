@@ -52,6 +52,10 @@ public class ProjectValidator extends BaseValidator {
     return (crpContributions != null && !crpContributions.isEmpty());
   }
 
+  public boolean hasDeliverables(List<Deliverable> deliverables) {
+    return (deliverables != null && !deliverables.isEmpty());
+  }
+
   public boolean hasFlagships(List<IPProgram> flagships) {
     return (flagships != null && !flagships.isEmpty());
   }
@@ -72,10 +76,6 @@ public class ProjectValidator extends BaseValidator {
 
   public boolean hasOutputs(List<IPElement> outputs) {
     return (outputs != null && !outputs.isEmpty());
-  }
-
-  public boolean hasDeliverables(List<Deliverable> deliverables) {
-    return (deliverables != null && !deliverables.isEmpty());
   }
 
   // This method validates if the list of locations given as parameter is not empty and different from null
@@ -140,6 +140,10 @@ public class ProjectValidator extends BaseValidator {
     return (endDate != null) ? true : false;
   }
 
+  public boolean isValidGenderNarrative(String genderNarrative) {
+    return (this.isValidString(genderNarrative) && this.wordCount(genderNarrative) <= 100);
+  }
+
   public boolean isValidLeader(ProjectPartner leader, boolean isBilateral) {
     if (leader == null) {
       return false;
@@ -198,8 +202,12 @@ public class ProjectValidator extends BaseValidator {
     return (this.isValidString(targetNarrative) && this.wordCount(targetNarrative) <= 100);
   }
 
-  public boolean isValidTargetValue(String targetValue) {
-    return (this.isValidString(targetValue) && this.isValidNumber(targetValue));
+  public boolean isValidTargetValueNull(String targetValue) {
+    return (this.isValidString(targetValue));
+  }
+
+  public boolean isValidTargetValueNumber(String targetValue) {
+    return (this.isValidNumber(targetValue));
   }
 
   public boolean isValidTitle(String title) {
