@@ -373,6 +373,15 @@ public interface ProjectDAO {
   public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year);
 
   /**
+   * This method updates the project cofinancing into the database according to the values received by parameter.
+   * 
+   * @param projectID - project identifier
+   * @param cofinancing -true if is cofinancing
+   * @return true if the change was made successfully. False otherwise.
+   */
+  public boolean updateProjectCofinancing(int projectID, boolean cofinancing);
+
+  /**
    * This method updates the project type into the database according to the values received by parameter.
    * 
    * @param projectID - project identifier

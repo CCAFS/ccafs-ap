@@ -113,8 +113,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
     Budget budged;
     Project cofinancingProject = projectManager.getProject(cofinanceProjectID);
-    cofinancingProject
-      .setBudgets(budgetManager.getBudgetsByYear(cofinancingProject.getId(), config.getPlanningCurrentYear()));
+    cofinancingProject.setBudgets(budgetManager.getBudgetsByYear(cofinancingProject.getId(), year));
     if (cofinancingProject.isBilateralProject()) {
 
       budged = this.getBilateralCofinancingBudget(projectID, cofinanceProjectID, year);
@@ -364,7 +363,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
             // The co-financing budget belongs to the project which receive it.
             linkedProject.getAnualContribution().setCofinancingProject(project);
-            linkedProject.getAnualContribution().setInstitution(cofinancingProject.getLeader().getInstitution());
+            try {
+              linkedProject.getAnualContribution().setInstitution(cofinancingProject.getLeader().getInstitution());
+            } catch (Exception e) {
+
+            }
             saved = budgetManager.saveBudget(cofinancingProject.getId(), linkedProject.getAnualContribution(),
               this.getCurrentUser(), this.getJustification());
           }
@@ -372,10 +375,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         }
       }
 
+
       // Adjust the type of all projects according to their links with other projects.
       projectManager.updateProjectTypes();
       budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID, this.getCurrentPlanningYear());
-
+      if (project.getLinkedProjects().isEmpty()) {
+        project.setCofinancing(false);
+      } else {
+        project.setCofinancing(true);
+      }
+      projectManager.updateProjectCofinancing(project);
       if (!success) {
         this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;

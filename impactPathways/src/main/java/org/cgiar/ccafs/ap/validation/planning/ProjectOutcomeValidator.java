@@ -24,11 +24,11 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class ProjectOutcomeValidator extends BaseValidator {
 
-  private static final long serialVersionUID = 4115156010245164477L;
   private ProjectValidator projectValidator;
 
   @Inject
@@ -79,18 +79,6 @@ public class ProjectOutcomeValidator extends BaseValidator {
           }
           this.addMessage(message.toLowerCase());
           this.addMissingField("project.outcomes[" + year + "].statement");
-        }
-
-        // Validate the outcome gender dimension
-        if (!projectValidator.hasValidOutcomeGenderDimension(project.getOutcomes(), year)) {
-          if (year == midOutcomeYear) {
-            message = action.getText("planning.projectOutcome.genderAndSocialStatement.readText");
-          } else {
-            message = action.getText("planning.projectOutcome.genderAndSocialAnnualProgress.readText",
-              new String[] {year + ""});
-          }
-          this.addMessage(message.toLowerCase());
-          this.addMissingField("project.outcomes[" + year + "].genderDimension");
         }
       }
     }

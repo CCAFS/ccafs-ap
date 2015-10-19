@@ -1652,6 +1652,14 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
+  public boolean updateProjectCofinancing(int projectID, boolean cofinancing) {
+    int result = databaseManager.saveData("UPDATE projects SET is_cofinancing = ? WHERE id = ?",
+      new Object[] {projectID, cofinancing});
+    return !(result == -1);
+  }
+
+
+  @Override
   public boolean updateProjectType(int projectID, String type) {
     int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE id = ?", new Object[] {projectID, type});
     return !(result == -1);

@@ -27,8 +27,8 @@ public class ProjectOutcome {
   private int id;
   private int year;
   private String statement;
-  private String stories;
-  private String genderDimension;
+  // private String stories;
+  // private String genderDimension;
 
   public ProjectOutcome() {
   }
@@ -37,9 +37,9 @@ public class ProjectOutcome {
     this.id = id;
   }
 
-  public String getGenderDimension() {
-    return genderDimension;
-  }
+  // public String getGenderDimension() {
+  // return genderDimension;
+  // }
 
   public int getId() {
     return id;
@@ -49,17 +49,17 @@ public class ProjectOutcome {
     return statement;
   }
 
-  public String getStories() {
-    return stories;
-  }
+  // public String getStories() {
+  // return stories;
+  // }
 
   public int getYear() {
     return year;
   }
 
-  public void setGenderDimension(String genderDimension) {
-    this.genderDimension = genderDimension;
-  }
+  // public void setGenderDimension(String genderDimension) {
+  // this.genderDimension = genderDimension;
+  // }
 
   public void setId(int id) {
     this.id = id;
@@ -69,9 +69,9 @@ public class ProjectOutcome {
     this.statement = statement;
   }
 
-  public void setStories(String stories) {
-    this.stories = stories;
-  }
+  // public void setStories(String stories) {
+  // this.stories = stories;
+  // }
 
   public void setYear(int year) {
     this.year = year;
