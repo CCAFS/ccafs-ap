@@ -12,29 +12,31 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.manager;
+package org.cgiar.ccafs.security.data.dao;
 
-import org.cgiar.ccafs.ap.data.manager.impl.ProjectRoleManagerImpl;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.security.data.dao.mysql.MySQLProjectSpecificUserRoleDAO;
+
+import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
 
 /**
- * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * This class will get data from the table project_roles which saves specific roles for specific projects.
+ * 
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
-@ImplementedBy(ProjectRoleManagerImpl.class)
-public interface ProjectRoleManager {
+
+@ImplementedBy(MySQLProjectSpecificUserRoleDAO.class)
+public interface ProjectSpecificUserRoleDAO {
+
 
   /**
-   * This method assign the role of leader and coordinator to the corresponding partner contacts.
+   * This method gets the specific project roles from a given user identifier.
    * 
-   * @param project - A project object that contains the list of partners
-   * @param user - User who is making the changes
-   * @param justification
-   * @return true if the information was saved successfully. False otherwise.
+   * @param userID - user identifier
+   * @return a list of maps with the project roles and permissions.
    */
-  public boolean saveProjectRoles(Project project, User user, String justification);
-
+  public List<Map<String, String>> getProjectSpecificUserRoles(int userID);
 }

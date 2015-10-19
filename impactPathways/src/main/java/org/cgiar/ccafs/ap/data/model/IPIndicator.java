@@ -20,8 +20,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class IPIndicator {
 
   private int id;
-  private String description;
   private String target;
+  private String description;
+  private String gender;
   private IPIndicator parent;
   private IPElement outcome;
   private int year;
@@ -55,6 +56,10 @@ public class IPIndicator {
     return description;
   }
 
+  public String getGender() {
+    return gender;
+  }
+
   public int getId() {
     return id;
   }
@@ -82,6 +87,10 @@ public class IPIndicator {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
   }
 
   public void setId(int id) {

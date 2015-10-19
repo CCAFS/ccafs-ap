@@ -16,6 +16,8 @@ package org.cgiar.ccafs.ap.data.model;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * This class represents a submission made by some user in a specific P&R cycle.
  * 
@@ -26,7 +28,7 @@ public class Submission {
 
   private int id;
   private String cycle;
-  private short year;
+  private int year;
   private User user;
   private Date dateTime;
 
@@ -49,7 +51,7 @@ public class Submission {
     return user;
   }
 
-  public short getYear() {
+  public int getYear() {
     return year;
   }
 
@@ -73,5 +75,9 @@ public class Submission {
     this.year = year;
   }
 
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
+  }
 
 }

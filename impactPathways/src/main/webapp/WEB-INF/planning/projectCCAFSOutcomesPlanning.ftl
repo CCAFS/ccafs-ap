@@ -34,7 +34,9 @@
     [#assign fieldEmpty] <div class="select"><p>[@s.text name="form.values.fieldEmpty" /]</p></div>[/#assign]
     
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
@@ -89,7 +91,7 @@
                           <div class="indicatorTargets">
                              <ul class="">
                               [#list years as year]
-                                <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
+                                <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
                               [/#list]   
                             </ul>
                             [#list years as year]
@@ -113,14 +115,12 @@
                                 
                                 [#-- Indicator target value --]
                                 <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
-                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)][@customForm.req required=!project.bilateralProject /][/#if]
-                                  </h6></label>
+                                  <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
                                     <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
-                                      [#if (!project.bilateralProject) && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+                                      [#if isYearRequired(year) ]
                                         <span class="fieldError">[@s.text name="form.values.required" /]</span>
                                       [/#if]
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
@@ -130,24 +130,40 @@
                                   [/#if]
                                 </div> 
                                 
-                                [#-- Indicator target description --]
-                                <div class="checkboxGroup vertical indicatorNarrative" >
-                                  <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]
-                                  [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)][@customForm.req required=!project.bilateralProject /][/#if] 
-                                  </h6></label>
+                                [#-- Indicator target narrative description --]
+                                <div class="textArea checkboxGroup vertical indicatorNarrative" >
+                                  <label><h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
-                                    <textarea class="projectIndicatorDescription" name="project.indicators.description">${projectIndicator.description!}</textarea>
+                                    <textarea class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
-                                      [#if (!project.bilateralProject) && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+                                      [#if isYearRequired(year)]
                                         <span class="fieldError">[@s.text name="form.values.required" /]</span>
                                       [/#if] 
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
-                                      <div class="select"><p>${projectIndicator.description}</p></div>
+                                      <div class="select"><p>${(projectIndicator.description)!}</p></div>
                                     [/#if] 
                                   [/#if] 
                                 </div>
+                                
+                                [#-- Indicator target narrative gender --]
+                                <div class="textArea checkboxGroup vertical indicatorNarrative" >
+                                  <label><h6>[@s.text name="planning.projectImpactPathways.targetGender" /]: [@customForm.req required=isYearRequired(year) /]</h6></label>
+                                  [#if editable && (currentPlanningYear lte year)]
+                                    <textarea class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender">${(projectIndicator.gender)!}</textarea>
+                                  [#else]
+                                    [#if !projectIndicator.gender?has_content]
+                                      [#if isYearRequired(year)]
+                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
+                                      [/#if] 
+                                      [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
+                                    [#else]
+                                      <div class="select"><p>${(projectIndicator.gender)!}</p></div>
+                                    [/#if] 
+                                  [/#if] 
+                                </div>
+                                
                               </div>  
                             [/#list] 
                           </div>   
@@ -166,7 +182,7 @@
                           <div class="indicatorTargets" style="display:none">
                              <ul class="">
                               [#list years as year]
-                                <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
+                                <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
                               [/#list]   
                             </ul>
                             [#list years as year]
@@ -198,6 +214,15 @@
                                   <textarea class="projectIndicatorDescription" name="project.indicators.description" ></textarea>
                                 [/#if]
                               </div>
+                              
+                              [#-- Target Gender --]
+                              <div class="checkboxGroup vertical indicatorNarrative">
+                                <label><h6>[@s.text name="planning.projectImpactPathways.targetGender" /]:</h6></label>
+                                [#if editable]
+                                  <textarea class="projectIndicatorGender" name="project.indicators.gender" ></textarea>
+                                [/#if]
+                              </div>
+                              
                             </div>   
                             [/#list]
                           </div> 
@@ -309,7 +334,7 @@
         <div class="indicatorTargetsTemplate" style="display:none">
           <ul class="">
             [#list years as year]
-              <li class="target-${year}"><a href="#target-${year}">${year}</a></li> 
+              <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
             [/#list]
           </ul>
           [#list years as year]
@@ -320,19 +345,23 @@
             <input type="hidden" class="projectIndicatorOutcome" name="project.indicators.outcome" /> 
             <div class="checkboxGroup vertical indicatorNarrative">
               [#-- Target value --]
-              <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /]
-              [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
-                [@customForm.req required=!project.bilateralProject /]
-              [/#if]
-              </h6></label>
-              <input type="text"  class="projectIndicatorTarget" name="project_indicator_target" />
+              <div class="fullPartBlock">
+                <label> <h6>[@s.text name="planning.projectImpactPathways.targetValue" /] [@customForm.req required=isYearRequired(year) /]
+                </h6></label>
+                <input type="text"  class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project_indicator_target" />
+              </div>
               [#-- Target description --]
-              <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]
-              [#if (year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1)]
-                [@customForm.req required=!project.bilateralProject /]
-              [/#if]
-              </h6></label>
-              <textarea rows="4" class="projectIndicatorDescription" name="project_indicator_description" ></textarea>
+              <div class="textArea fullPartBlock">
+                <label> <h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /][@customForm.req required=isYearRequired(year) /]
+                </h6></label>
+                <textarea rows="4" class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project_indicator_description" ></textarea>
+              </div>
+              [#-- Target gender --]
+              <div class="textArea fullPartBlock">
+                <label><h6>[@s.text name="planning.projectImpactPathways.targetGender" /]: [@customForm.req required=isYearRequired(year) /]
+                </h6></label>
+                <textarea rows="4" class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project_indicator_gender" ></textarea>
+              </div>
             </div>
           </div>
           [/#list]
@@ -358,5 +387,10 @@
   [#assign indexTabCurrentYear][#list years as year][#if year == currentPlanningYear]${year_index}[/#if][/#list][/#assign]
   <input type="hidden" id="indexTabCurrentYear" value="${(indexTabCurrentYear)!0}" />
 </div>
+
+[#-- Get if the year is required--]
+[#function isYearRequired year]
+  [#return !project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+[/#function]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

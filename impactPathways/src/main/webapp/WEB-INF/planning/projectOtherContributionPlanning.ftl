@@ -27,7 +27,9 @@
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#include "/WEB-INF/planning/projectIP-planning-sub-menu.ftl" /]
     [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantActivityPlanningAccessInterceptor--]
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">
         [@s.text name="saving.read.privileges"]
           [@s.text name="planning.project" /]: ${project.composedId} - [@s.param][@s.text name="planning.impactPathways.otherContributions.title"/][/@s.param]

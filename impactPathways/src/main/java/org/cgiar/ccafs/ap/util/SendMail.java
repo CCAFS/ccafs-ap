@@ -20,11 +20,9 @@ import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -32,6 +30,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -61,8 +60,12 @@ public class SendMail {
    *        can be null.
    * @param subject is the email title.
    * @param messageContent the content of the email
+   * @param attachement is a byte array with the file to be attached.
+   * @param attachmentMimeType is the MIME Type
+   * @param is the name of the file
    */
-  public void send(String toEmail, String ccEmail, String bbcEmail, String subject, String messageContent) {
+  public void send(String toEmail, String ccEmail, String bbcEmail, String subject, String messageContent,
+    byte[] attachment, String attachmentMimeType, String fileName) {
 
     // Get a Properties object
     Properties properties = System.getProperties();
@@ -105,72 +108,32 @@ public class SendMail {
         subject = "TEST " + subject;
       }
       msg.setSubject(subject);
-      msg.setText(messageContent);
       msg.setSentDate(new Date());
-      Transport.send(msg);
-      LOG.info("Message sent.");
 
-    } catch (MessagingException e) {
-      LOG.error("There was an error sending a message", e);
-    }
-  }
+      MimeMultipart mimeMultipart = new MimeMultipart("alternative");
 
-  public void sendMailWithAttachment(String toEmail, String subject, String messageContent, String filePath,
-    String fileName) {
+      // Body content: TEXT
+      MimeBodyPart mimeBodyPart = new MimeBodyPart();
+      mimeBodyPart.setText(messageContent);
+      mimeMultipart.addBodyPart(mimeBodyPart);
 
-    // Get a Properties object
-    Properties properties = System.getProperties();
-
-    properties.put("mail.smtp.auth", "true");
-    properties.put("mail.smtp.starttls.enable", "true");
-    properties.put("mail.smtp.host", config.getEmailHost());
-    properties.put("mail.smtp.port", config.getEmailPort());
-
-    // Un-comment this line to watch javaMail debug
-    // properties.put("mail.debug", "true");
-
-
-    Session session = Session.getInstance(properties, new Authenticator() {
-
-      @Override
-      protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(config.getEmailUsername(), config.getEmailPassword());
+      if (attachment != null && attachmentMimeType != null && fileName != null) {
+        // Body content: ATTACHMENT
+        DataSource dataSource = new ByteArrayDataSource(attachment, attachmentMimeType);
+        MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+        attachmentBodyPart.setDataHandler(new DataHandler(dataSource));
+        attachmentBodyPart.setFileName(fileName);
+        mimeMultipart.addBodyPart(attachmentBodyPart);
       }
-    });
 
-    // Create a new message
-    Message msg = new MimeMessage(session);
-
-    // Set the FROM and TO fields
-    try {
-      // Headers
-      msg.setFrom(new InternetAddress(config.getEmailUsername()));
-      msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-      msg.setSubject(subject);
-      msg.setSentDate(new Date());
-
-      // Message body
-      MimeBodyPart messageBodyPart = new MimeBodyPart();
-      messageBodyPart.setContent(messageContent, "text/html");
-
-      // Attaching file
-      MimeBodyPart attachPart = new MimeBodyPart();
-      DataSource source = new FileDataSource(filePath);
-
-      attachPart.setDataHandler(new DataHandler(source));
-      attachPart.setFileName(fileName);
-
-      Multipart multipart = new MimeMultipart();
-      multipart.addBodyPart(attachPart);
-      multipart.addBodyPart(messageBodyPart);
-
-      msg.setContent(multipart);
-
+      msg.setContent(mimeMultipart);
+      // msg.setText(messageContent);
       Transport.send(msg);
-      LOG.info("Message sent.");
+      LOG.info("Message sent: " + subject);
 
     } catch (MessagingException e) {
       LOG.error("There was an error sending a message", e);
     }
   }
+
 }

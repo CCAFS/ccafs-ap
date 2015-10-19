@@ -38,7 +38,7 @@ public interface LiaisonInstitutionManager {
   public LiaisonInstitution getLiaisonInstitution(int liaisionInstitutionID);
 
   /**
-   * This method gets the liaison institution to which the user identified by the value recieved by parameter is linked
+   * This method gets the liaison institution to which the user identified by the value received by parameter is linked
    * if any
    * 
    * @param userID - user identifier

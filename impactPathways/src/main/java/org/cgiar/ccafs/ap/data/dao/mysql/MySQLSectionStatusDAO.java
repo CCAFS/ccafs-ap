@@ -112,6 +112,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
       if (rs.next()) {
         statusData.put("id", rs.getString("id"));
         statusData.put("project_id", rs.getString("project_id"));
+        statusData.put("deliverable_id", rs.getString("deliverable_id"));
         statusData.put("cycle", rs.getString("cycle"));
         statusData.put("section_name", rs.getString("section_name"));
         statusData.put("missing_fields", rs.getString("missing_fields"));
@@ -150,6 +151,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
         Map<String, String> statusData = new HashMap<>();
         statusData.put("id", rs.getString("id"));
         statusData.put("project_id", rs.getString("project_id"));
+        statusData.put("deliverable_id", rs.getString("deliverable_id"));
         statusData.put("cycle", rs.getString("cycle"));
         statusData.put("section_name", rs.getString("section_name"));
         statusData.put("missing_fields", rs.getString("missing_fields"));

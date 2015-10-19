@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Budget {
 
   private int id;
+  private int projectId;
   private int year;
   private Institution institution;
   private double amount;
@@ -31,8 +32,10 @@ public class Budget {
   private int genderPercentage;
   private Project cofinancingProject;
 
+
   public Budget() {
   }
+
 
   @Override
   public boolean equals(Object obj) {
@@ -61,6 +64,10 @@ public class Budget {
 
   public Institution getInstitution() {
     return institution;
+  }
+
+  public int getProjectId() {
+    return projectId;
   }
 
   public BudgetType getType() {
@@ -94,6 +101,10 @@ public class Budget {
 
   public void setInstitution(Institution institution) {
     this.institution = institution;
+  }
+
+  public void setProjectId(int projectId) {
+    this.projectId = projectId;
   }
 
   public void setType(BudgetType type) {

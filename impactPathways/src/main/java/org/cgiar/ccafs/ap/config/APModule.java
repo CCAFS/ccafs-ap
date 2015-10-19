@@ -16,15 +16,24 @@ package org.cgiar.ccafs.ap.config;
 import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.security.authentication.DBAuthenticator;
 import org.cgiar.ccafs.security.authentication.LDAPAuthenticator;
+import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.PropertiesManager;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class APModule implements Module {
+
+  // Logger
+  private static final Logger LOG = LoggerFactory.getLogger(APModule.class);
+
+  private PropertiesManager properties;
+  private APConfig config;
 
   @Override
   public void configure(Binder binder) {
@@ -32,9 +41,17 @@ public class APModule implements Module {
     binder.bind(Authenticator.class).annotatedWith(Names.named("LDAP")).to(LDAPAuthenticator.class);
     binder.bind(Authenticator.class).annotatedWith(Names.named("DB")).to(DBAuthenticator.class);
 
-
     // In addition, we are using this place to configure other stuffs.
     ToStringBuilder.setDefaultStyle(ToStringStyle.MULTI_LINE_STYLE);
+
+    properties = new PropertiesManager();
+    config = new APConfig(properties);
+    LOG.info("----- DATABASE CONNECTION -----");
+    LOG.info(properties.getPropertiesAsString(config.MYSQL_USER));
+    LOG.info(properties.getPropertiesAsString(config.MYSQL_HOST));
+    LOG.info(properties.getPropertiesAsString(config.MYSQL_DATABASE));
+
+
   }
 
 }

@@ -1,5 +1,7 @@
 package org.cgiar.ccafs.ap.summaries.planning.pdf;
 
+import org.cgiar.ccafs.ap.data.model.Submission;
+
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,8 +27,10 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
 
   private String headerText;
   private int pagenumber;
+  private Submission submissionCurrentPlanningYear;
 
-  public HeaderFooterPDF(String headerText, int pageOrientation) {
+  public HeaderFooterPDF(String headerText, int pageOrientation, Submission submissionCurrentPlanningYear) {
+    this.submissionCurrentPlanningYear = submissionCurrentPlanningYear;
     this.headerText = headerText;
   }
 
@@ -60,11 +64,16 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     // Submit Pending
     phrase = new Phrase();
     phrase.setFont(HEADER_FONT);
-    phrase.add("Submission: ");
-
-
     phrase.setFont(new Font(FontFactory.getFont("Arial", 12, Font.ITALIC, Color.WHITE)));
-    phrase.add("<pending>");
+    DateFormat date = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm z");
+    if (this.submissionCurrentPlanningYear != null) {
+      phrase.add("Submitted on ");
+      phrase.add(date.format(submissionCurrentPlanningYear.getDateTime()));
+    } else {
+      phrase.add("Submission: ");
+      phrase.add("<pending>");
+    }
+
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(),
       rect.getTop() - 20, 0);
 
@@ -72,11 +81,9 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     phrase = new Phrase();
     phrase.setFont(SUB_HEADER_FONT);
 
-    DateFormat date = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     phrase.add("This report was generated on " + date.format(new Date()));
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(), rect.getBottom(),
       0);
-
 
     // Footer Number
     phrase = new Phrase();

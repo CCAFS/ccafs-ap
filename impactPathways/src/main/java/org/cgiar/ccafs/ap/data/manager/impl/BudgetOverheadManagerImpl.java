@@ -15,7 +15,7 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.BudgetOverheadDAO;
-import org.cgiar.ccafs.ap.data.dao.BudgetOverheadManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.model.BudgetOverhead;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;

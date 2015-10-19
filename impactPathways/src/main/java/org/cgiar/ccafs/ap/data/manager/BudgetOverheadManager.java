@@ -12,41 +12,35 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.data.manager.impl;
+package org.cgiar.ccafs.ap.data.manager;
 
-import org.cgiar.ccafs.ap.data.dao.ProjectRoleDAO;
-import org.cgiar.ccafs.ap.data.manager.ProjectRoleManager;
+import org.cgiar.ccafs.ap.data.manager.impl.BudgetOverheadManagerImpl;
+import org.cgiar.ccafs.ap.data.model.BudgetOverhead;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
-import com.google.inject.Inject;
+import com.google.inject.ImplementedBy;
 
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  */
+@ImplementedBy(BudgetOverheadManagerImpl.class)
+public interface BudgetOverheadManager {
 
-public class ProjectRoleManagerImpl implements ProjectRoleManager {
+  /**
+   * This method get the project budget overhead data for the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a Map with the information.
+   */
+  public BudgetOverhead getProjectBudgetOverhead(int projectID);
 
-  private ProjectRoleDAO projectRoleDAO;
-
-  @Inject
-  public ProjectRoleManagerImpl(ProjectRoleDAO projectRoleDAO) {
-    this.projectRoleDAO = projectRoleDAO;
-  }
-
-  private boolean deleteProjectRoles(Project project) {
-    return projectRoleDAO.removeProjectRoles(project.getId());
-  }
-
-  @Override
-  public boolean saveProjectRoles(Project project, User user, String justification) {
-    boolean success = true;
-    // First remove the project roles saved previously if any
-    success = success && this.deleteProjectRoles(project);
-
-    // Save the leaders and coordinators
-    success = success && projectRoleDAO.addProjectRoles(project.getId());
-    return success;
-  }
+  /**
+   * This method saves the project budget overhead information into the database.
+   * 
+   * @param project - A project with the information to save.
+   * @return - True if the information was saved successfully. False otherwise.
+   */
+  public boolean saveProjectBudgetOverhead(Project project, User user, String justification);
 }

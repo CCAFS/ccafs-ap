@@ -29,10 +29,10 @@
   <article class="halfContent" id="mainInformation">
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
-    [#if !canEdit ]
-      <p class="readPrivileges">
-        [@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]
-      </p>
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
+      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]</p>
     [/#if] 
     <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>  
     <div id="projectDescription" class="borderBox">
@@ -94,7 +94,7 @@
                 [#if editable]
                   [#if !securityContext.canAllowProjectWorkplanUpload(project.id) ]
                     <h6>
-                      [@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /][#if project.workplanRequired ]<span class="red"> *</span>[/#if]
+                      [@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]:[#if project.workplanRequired ]<span class="red">*</span>[/#if]
                     </h6>
                   [/#if]
                   [@customForm.inputFile name="file"  /]
@@ -108,7 +108,7 @@
         [#-- Project upload bilateral contract --]
         [#if (project.bilateralProject && securityContext.canUploadBilateralContract(project.id))]
         <div class="fullBlock fileUpload bilateralContract">
-          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /][#if project.bilateralProject ]<span class="red"> *</span>[/#if]:</h6>
+          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
               <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-file" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
@@ -128,7 +128,7 @@
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=true className="project-description" editable=editable /]
         </div>
         
-        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /][#if !project.bilateralProject ]:<span class="red"> *</span>[/#if] </h6> 
+        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]:[#if !project.bilateralProject ]<span class="red">*</span>[/#if] </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">

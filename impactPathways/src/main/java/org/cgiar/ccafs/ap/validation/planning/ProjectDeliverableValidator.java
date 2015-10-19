@@ -28,6 +28,9 @@ import com.google.inject.Inject;
 
 
 /**
+ * This class will validate all the deliverables in a project. It has two validate methods. One that validates the list
+ * of deliverables, and another one that validates a specific deliverable.
+ * 
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
@@ -56,20 +59,21 @@ public class ProjectDeliverableValidator extends BaseValidator {
    */
   public void validate(BaseAction action, Project project, Deliverable deliverable, String cycle) {
     if (deliverable != null) {
+      this.missingFields.setLength(0);
       this.validateProjectJustification(action, deliverable);
 
       if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateAsCoreProject(action, project, deliverable);
       } else {
         // Deliverables are not needed, but if there is one added, it will be validated completely.
-        // this.validateAsBilateralProject(action, project, deliverable);
+        // this.validateAsCoreProject(action, project, deliverable);
       }
 
       if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -101,7 +105,6 @@ public class ProjectDeliverableValidator extends BaseValidator {
     if (deliverable != null) {
       this.validateRequiredFields(action, project, deliverable);
     }
-
   }
 
   private void validateNextUsers(BaseAction action, Deliverable deliverable, List<NextUser> nextUsers) {

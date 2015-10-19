@@ -15,14 +15,8 @@
 package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.BudgetManager;
-import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.Location;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.POWBSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetByPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -31,6 +25,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -45,11 +40,10 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
   private static final long serialVersionUID = 5110987672008315842L;
 
   // Managers
-  private LocationManager locationManager;
-  private POWBSummaryXLS pwobSummaryXLS;
   private ProjectManager projectManager;
-  private BudgetManager budgetManager;
-  private ProjectPartnerManager projectPartnerManager;
+
+  // XLS
+  private BudgetByPartnersSummaryXLS budgetByPartnersSummaryXLS;
 
   // XLS bytes
   private byte[] bytesXLS;
@@ -58,24 +52,21 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
   InputStream inputStream;
 
   // Model
-  List<Project> projectsList;
+  List<Map<String, Object>> informationBudgetByPartners;
 
   @Inject
-  public BudgetByPartnersSummaryAction(APConfig config, ProjectManager projectManager, BudgetManager budgetManager,
-    ProjectPartnerManager projectPartnerManager, LocationManager locationManager, POWBSummaryXLS pwobSummaryXLS) {
+  public BudgetByPartnersSummaryAction(APConfig config, ProjectManager projectManager,
+    BudgetByPartnersSummaryXLS budgetByPartnersSummaryXLS) {
     super(config);
-    this.locationManager = locationManager;
     this.projectManager = projectManager;
-    this.budgetManager = budgetManager;
-    this.projectPartnerManager = projectPartnerManager;
-    this.pwobSummaryXLS = pwobSummaryXLS;
+    this.budgetByPartnersSummaryXLS = budgetByPartnersSummaryXLS;
   }
 
   @Override
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = pwobSummaryXLS.generateXLS(projectsList);
+    bytesXLS = budgetByPartnersSummaryXLS.generateXLS(informationBudgetByPartners);
 
     return SUCCESS;
   }
@@ -94,7 +85,7 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
   @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
-    fileName.append("POWB-");
+    fileName.append("BudgetByPartnersSummary-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -112,23 +103,8 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
 
   @Override
   public void prepare() {
-    // projectsList = this.projectManager.getAllProjectsBasicInfo();
-    List<ProjectPartner> partnersList;
-    List<Location> locationsList;
+    informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetByPartners(this.getCurrentPlanningYear());
 
-    for (Project project : projectsList) {
-
-      // ***************** Partners ******************************
-      partnersList = projectPartnerManager.getProjectPartners(project);
-      project.setProjectPartners(partnersList);
-
-      // ***************** Locations ******************************
-      locationsList = this.locationManager.getProjectLocations(project.getId());
-      project.setLocations(locationsList);
-
-      // *************************Budgets ******************************
-      project.setBudgets(this.budgetManager.getBudgetsByProject(project));
-    }
 
   }
 }

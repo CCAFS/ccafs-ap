@@ -36,20 +36,26 @@ public class Project {
   public static final int PDF_IDENTIFIER_REPORT = 2;
   public static final int EXCEL_IDENTIFIER_REPORT = 3;
   public static final int EMAIL_SUBJECT_IDENTIFIER = 4;
+
+  private int id;
+  private String title;
+  private String summary;
+  private Date startDate;
+  private Date endDate;
+  private long created; // Timestamp number when the project was created
+  private User owner;
+  private List<IPProgram> regions; // The list of regions in which this project works with.
+  private List<IPProgram> flagships; // The list of flagships in which this project works with.
+  private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
   private List<Activity> activities;
-  private String bilateralContractProposalName;
+  private boolean isCofinancing;
+  private boolean isGlobal;
   private List<Budget> budgets;
   private List<ComponentLesson> componentLessons;
   private ProjectPartner coordinator; // Project Coordinator.
-  private long created; // Timestamp number when the project was created
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
-  private Date endDate;
-  private List<IPProgram> flagships; // The list of flagships in which this project works with.
-  private int id;
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
-  private boolean isCofinancing;
-  private boolean isGlobal;
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private List<Project> linkedProjects;
@@ -59,24 +65,21 @@ public class Project {
   private List<OutputBudget> outputsBudgets;
   private List<OutputOverview> outputsOverview;
   private BudgetOverhead overhead;
-  private User owner;
   private List<ProjectPartner> projectPartners; // Project partners.
-  private List<IPProgram> regions; // The list of regions in which this project works with.
-  private Date startDate;
-  private String summary;
-  private String title;
-
-  private String type; // Type of project see APConstants. e.g. CCAFS Core, CCAFS Co-founded or Bilateral
+  private List<Submission> submissions; // all the project submissions.
+  private String bilateralContractProposalName;
   private String workplanName;
   private boolean workplanRequired;
+  private Budget anualContribution;
+
 
   public Project() {
   }
 
+
   public Project(int id) {
     this.id = id;
   }
-
 
   /**
    * This method validates if the current project contributes to a specific output (MOG).
@@ -106,7 +109,7 @@ public class Project {
   public boolean containsOutput(int outputID, int outcomeID) {
     if (this.outputs != null) {
       for (IPElement output : this.outputs) {
-        if (output.getId() == outputID) {
+        if (output != null && output.getId() == outputID) {
           if (output.getContributesTo().contains(new IPElement(outcomeID))) {
             return true;
           }
@@ -115,6 +118,7 @@ public class Project {
     }
     return false;
   }
+
 
   /**
    * this method validates if the current project contributes to a given output (MOG).
@@ -178,6 +182,10 @@ public class Project {
     }
 
     return allYears;
+  }
+
+  public Budget getAnualContribution() {
+    return anualContribution;
   }
 
   /**
@@ -328,7 +336,6 @@ public class Project {
     return deliverables;
   }
 
-
   public Date getEndDate() {
     return endDate;
   }
@@ -387,6 +394,7 @@ public class Project {
     return indicators;
   }
 
+
   /**
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
    * parameter.
@@ -435,7 +443,6 @@ public class Project {
     return ipOtherContribution;
   }
 
-
   /**
    * This method returns the project partner institution that is leading the project.
    * 
@@ -476,6 +483,7 @@ public class Project {
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
   }
+
 
   public LiaisonInstitution getLiaisonInstitution() {
     return liaisonInstitution;
@@ -555,7 +563,7 @@ public class Project {
     List<ProjectPartner> ppaPartners = new ArrayList<>();
     if (this.getProjectPartners() != null) {
       for (ProjectPartner pp : this.getProjectPartners()) {
-        if (pp.getInstitution().isPPA()) {
+        if (pp.getInstitution() != null && pp.getInstitution().isPPA()) {
           ppaPartners.add(pp);
         }
       }
@@ -603,15 +611,21 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-    // Standar identifier
+      // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-        // PDF Identifier
+      // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
+        // Acronym leader institution
+        if (this.getLeader() != null && this.getLeader().getInstitution() != null
+          && this.getLeader().getInstitution().getAcronym() != null) {
+          result.append(this.getLeader().getInstitution().getAcronym() + "-");
+        }
+
         // -- flagships
         for (IPProgram flagship : this.getFlagships()) {
           if (flagship != null) {
@@ -632,7 +646,7 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-        // Excel Identifier
+      // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
         break;
@@ -656,10 +670,36 @@ public class Project {
     return startDate;
   }
 
+  public List<Submission> getSubmissions() {
+    return submissions;
+  }
+
+  /**
+   * This method gets the submissison for the current planning year of current project.
+   * 
+   * @param currentPlanningYear Current Planning Year
+   * @return the submission of the current planning year, null if doesn't exist.
+   */
+  public Submission getSubmmisionCurrentPlannigYear(int currentPlanningYear) {
+
+    for (Submission submission : this.getSubmissions()) {
+      if ((submission.getYear() == currentPlanningYear) && (submission.getCycle().equals("Planning"))) {
+        return submission;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return get the project summary
+   */
   public String getSummary() {
     return summary;
   }
 
+  /**
+   * @return get the project title
+   */
   public String getTitle() {
     return title;
   }
@@ -783,12 +823,34 @@ public class Project {
     return this.getCreationDate().after(planningStartDate);
   }
 
+  /**
+   * This method validates if the project is already submitted or not.
+   * 
+   * @param year where the submission date happened.
+   * @param cycle could be 'Planning' or 'Reporting'.
+   * @return a Submission object with the information. or null if the project is not submitted.
+   */
+  public Submission isSubmitted(int year, String cycle) {
+    if (this.submissions != null) {
+      for (Submission submission : this.submissions) {
+        if (submission.getYear() == year && submission.getCycle().equals(cycle)) {
+          return submission;
+        }
+      }
+    }
+    return null;
+  }
+
   public boolean isWorkplanRequired() {
     return workplanRequired;
   }
 
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
+  }
+
+  public void setAnualContribution(Budget anualContribution) {
+    this.anualContribution = anualContribution;
   }
 
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
@@ -896,6 +958,10 @@ public class Project {
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public void setSubmissions(List<Submission> submissions) {
+    this.submissions = submissions;
   }
 
   public void setSummary(String summary) {

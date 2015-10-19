@@ -45,6 +45,7 @@ public class ProjectsConverter extends StrutsTypeConverter {
   @SuppressWarnings("rawtypes")
   @Override
   public String convertToString(Map context, Object o) {
+    @SuppressWarnings("unchecked")
     List<Project> elementsArray = (List<Project>) o;
     ArrayList<String> temp = new ArrayList<>();
     for (Project c : elementsArray) {

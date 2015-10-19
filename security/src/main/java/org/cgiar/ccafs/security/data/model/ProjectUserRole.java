@@ -12,22 +12,42 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.security;
-
+package org.cgiar.ccafs.security.data.model;
 
 /**
- * @author Hernán David Carvajal
+ * This class will save all the specific project roles for a particular user.
+ * 
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
-public enum Role {
+public class ProjectUserRole {
 
-  Admin("Admin"), FPL("FPL"), RPL("RPL"), CP("CP"), AL("AL"), CU("CU"), GUEST("G"), PL("PL"), PC("PC"), ML("ML");
+  private int id;
+  private UserRole userRole; // Here are the permissions.
+  private int projectID;
 
-  private String acronym;
+  public int getId() {
+    return id;
+  }
 
+  public int getProjectID() {
+    return projectID;
+  }
 
-  private Role(String acronym) {
-    this.acronym = acronym;
+  public UserRole getUserRole() {
+    return userRole;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
+  }
+
+  public void setUserRole(UserRole userRole) {
+    this.userRole = userRole;
   }
 
 }

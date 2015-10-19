@@ -106,6 +106,15 @@ public interface ProjectDAO {
    */
   public List<Map<String, String>> getBilateralProjects();
 
+
+  /**
+   * This method returns a list with all the bilateral projects with a valid project Leader.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getBilateralProjectsLeaders();
+
+
   /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
@@ -113,6 +122,16 @@ public interface ProjectDAO {
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getCoreProjects(int flagshipID, int regionID);
+
+
+  /**
+   * This method returns the core projects with a valid Project Leader that contributes with the flagship and the
+   * regions received by parameter.
+   * If the parameters are '-1' they are not used to filter the list.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getCoreProjectsLeaders(int flagshipID, int regionID);
 
   /**
    * This method returns a list of project identifiers where the user is assigned as Project Leader or Project
@@ -342,6 +361,25 @@ public interface ProjectDAO {
    *         occurs.
    */
   public List<Map<String, Object>> summaryGetInformationPOWB(int year);
+
+  /**
+   * This method returns the information of all project with your budget by partner of the currentPlanningYear their
+   * information to be used in
+   * the summary report of Budget By Partners summary.
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year);
+
+  /**
+   * This method updates the project cofinancing into the database according to the values received by parameter.
+   * 
+   * @param projectID - project identifier
+   * @param cofinancing -true if is cofinancing
+   * @return true if the change was made successfully. False otherwise.
+   */
+  public boolean updateProjectCofinancing(int projectID, boolean cofinancing);
 
   /**
    * This method updates the project type into the database according to the values received by parameter.

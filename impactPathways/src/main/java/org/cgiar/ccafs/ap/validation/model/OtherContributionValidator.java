@@ -33,12 +33,20 @@ public class OtherContributionValidator extends BaseValidator {
   }
 
   public boolean isValidAdditionalContribution(String additionalContribution) {
-    return (this.wordCount(additionalContribution) <= 100) ? true : false;
+    if (additionalContribution != null) {
+      return (this.wordCount(additionalContribution) <= 100) ? true : false;
+    }
+    // Since it is not required.
+    return true;
   }
 
 
   public boolean isValidContribution(String contribution) {
-    return (this.wordCount(contribution) <= 100) ? true : false;
+    if (contribution != null) {
+      return (this.wordCount(contribution) <= 100) ? true : false;
+    }
+    // Since it is not required.
+    return true;
   }
 
   public boolean isValidCrpCollaborationNature(String crpCollaborationNature) {

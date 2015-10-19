@@ -132,7 +132,9 @@ public class BaseValidator {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
       ComponentLesson lesson = action.getProjectLessons();
       if (!this.isValidString(lesson.getLessons())) {
-        action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
+        // Let them save.
+        this.addMessage(action.getText("validation.required", new String[] {action.getText("planning.lessonsLearnt")}));
+        // action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
         this.addMissingField("projectLessons.lessons");
       }
     }

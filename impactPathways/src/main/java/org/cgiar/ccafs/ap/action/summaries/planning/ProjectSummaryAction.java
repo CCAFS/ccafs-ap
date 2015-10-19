@@ -35,6 +35,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -86,7 +87,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private ProjectOutcomeManager projectOutcomeManager;
   private IPIndicatorManager indicatorManager;
   private ProjectLessonsManager projectLessonsManager;
-
+  private SubmissionManager submisssionManager;
 
   // Model
   private Project project;
@@ -103,7 +104,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     InstitutionManager institutionManager, DeliverableManager deliverableManager, NextUserManager nextUserManager,
     DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
     CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager,
-    ProjectLessonsManager projectLessonsManager) {
+    ProjectLessonsManager projectLessonsManager, SubmissionManager submisssionManager) {
     super(config);
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
@@ -124,6 +125,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.partnerPersonManager = partnerPersonManager;
     this.indicatorManager = indicatorManager;
     this.projectLessonsManager = projectLessonsManager;
+    this.submisssionManager = submisssionManager;
   }
 
 
@@ -192,9 +194,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Get a route for the workplan name
     if (project.isWorkplanRequired()) {
-
-      if (this.getWorkplanURL() != null || project.getWorkplanName() != null) {
-        project.setWorkplanName(this.getWorkplanURL() + project.getWorkplanName());
+      String workPlanURL = this.getWorkplanURL();
+      if (workPlanURL != null || project.getWorkplanName() != null) {
+        project.setWorkplanName(workPlanURL + project.getWorkplanName());
       }
     }
 
@@ -203,6 +205,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Getting the information of the Flagships program
     project.setFlagships(ipProgramManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE));
+
+    // Set submissions
+    project.setSubmissions(submisssionManager.getProjectSubmissions(project));
 
 
     List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project);

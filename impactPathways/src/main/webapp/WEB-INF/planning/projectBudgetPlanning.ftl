@@ -5,7 +5,6 @@
 [#assign currentSection = "planning" /]
 [#assign currentStage = "budget" /]
 [#assign currentSubStage = "budgetByPartner" /]
-
 [#assign breadCrumb = [
   {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
   {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
@@ -39,7 +38,9 @@
     [#include "/WEB-INF/planning/planningDataSheet.ftl" /]
     [#assign projectType=(!project.bilateralProject)?string("W1_W2", "W3_BILATERAL") /]
     [#-- Informing user that he/she doesn't have enough privileges to edit. See GranProjectAccessInterceptor--]
-    [#if !canEdit]
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
     [/#if] 
     [#if allYears?has_content]
@@ -200,7 +201,7 @@
   
   [#-- Hidden values used by js --]
   <input type="hidden" id="budgetCanNotExcced" value="[@s.text name="planning.projectBudget.canNotExceed" /]" />
-  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
+  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjectsBudget.do','bilateralProjectsBudget.do')}" />
   
   [#-- Linked Project Template --]
   [#if project.leader?has_content]
@@ -266,33 +267,35 @@
 
 [#macro projectBudget institution linkedProject editable=true]
   <div id="projectBudget-${(linkedProject.id)!'template'}" class="projectBudget budget" style="display:${linkedProject?has_content?string('block','none')}">
-    [#assign budgetName = "project.budgets[${counter}]" /]
-    [#if linkedProject?has_content]
-      [#if project.bilateralProject]
-        [#assign cofinancingBudget = action.getBilateralCofinancingBudget(linkedProject.id, project.id, year)! /]
-      [#else]
-        [#assign cofinancingBudget = project.getCofinancingBudget(linkedProject.id, year)! /]
-      [/#if]
-    [/#if]
+
+        [#if linkedProject ?has_content]
+        
+            [#assign budgetName = "project.linkedProjects[${counter-1}].anualContribution" /]
+    
+        [#else]
+           [#assign budgetName = "template" /]
+      
+         [/#if]
+  
     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
     <p class="title checked" >
       <a target="_blank" href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a>
     </p>
     <input type="hidden" class="linkedId"  name="project.linkedProjects" value="${(linkedProject.id)!'-1'}" />
     [#if project.bilateralProject]
-    <input type="hidden" class="budgetId" name="${budgetName}.id" value="${(cofinancingBudget.id)!"-1"}" />
+    <input type="hidden" class="budgetId" name="${budgetName}.id" value="${(linkedProject.anualContribution.id)!'-1'}" />
     <input type="hidden" class="budgetYear" name="${budgetName}.year" value="${year}" />
-    <input type="hidden" class="budgetInstitutionId" name="${budgetName}.institution.id" value="${(cofinancingBudget.institution.id)!institution.id}" />
+    <input type="hidden" class="budgetInstitutionId" name="${budgetName}.institution.id" value="${(linkedProject.anualContribution.institution.id)!institution.id}" />
     <input type="hidden" class="budgetCofinancingProjectId" name="${budgetName}.cofinancingProject.id" value="${(linkedProject.id)!'-1'}" />
     <input type="hidden" class="budgetType" name="${budgetName}.type" value="W3_BILATERAL" />
     [/#if]
     <div class="halfPartBlock">
       <div class="content">
       <p class="inputTitle">[@s.text name="planning.projectBudget.annualBudgetForProject"][@s.param]${w3BilateralBudgetLabel}[/@s.param][/@s.text]: [@customForm.req required=project.bilateralProject /]
-        [#if !editable || !project.bilateralProject]<strong>US$ ${((cofinancingBudget.amount)!0)?number?string(",##0.00")}</strong> [/#if]
+        [#if !editable || !project.bilateralProject]<strong>US$ ${((linkedProject.anualContribution.amount)!0)?number?string(",##0.00")}</strong> [/#if]
       </p>
       [#if editable && project.bilateralProject]
-        [@customForm.input name="${budgetName}.amount" value="${(cofinancingBudget.amount)!0}" className="budgetAmount projectBudget W3_BILATERAL" showTitle=false /]
+        [@customForm.input name="${budgetName}.amount" className="budgetAmount projectBudget W3_BILATERAL" showTitle=false /]
       [/#if]
       </div>
     </div>

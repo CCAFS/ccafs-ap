@@ -62,11 +62,6 @@ public class Permission {
   public static final String PLANNING_BILATERAL_PROJECT_BUTTON = "planning:projectList:bilateralProjectButton:*";
 
   /**
-   * Can use the "Submit" button in the planning section
-   */
-  public static final String PLANNING_SUBMIT_BUTTON = "planning:projectList:submitButton:*";
-
-  /**
    * Can use the "Delete project" button in the planning section
    */
   public static final String PLANNING_DELETE_PROJECT_BUTTON = "planning:projectList:deleteProjectButton:*";
@@ -231,8 +226,6 @@ public class Permission {
 
   // --------------------------- End of Project activities list---------------------------------
 
-  // TODO - HC create permission to the new section of activity
-
   // --------------------------- Project Budget ---------------------------------
 
   /**
@@ -258,6 +251,15 @@ public class Permission {
   public static final String PLANNING_PROJECT_BUDGET_BY_MOG_UPDATE = "planning:projects:budgetByMog:update";
 
   // --------------------------- End of project Budget ---------------------------------
+
+  // --------------------------- Project Submit ---------------------------------
+
+  /**
+   * Can use the "Submit" button in the planning section
+   */
+  public static final String PLANNING_SUBMIT_BUTTON = "planning:projects:submitButton:*";
+
+  // --------------------------- End Project Submit ---------------------------------
 
   /*
    * --------------------------------------------------------------

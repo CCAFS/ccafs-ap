@@ -52,6 +52,10 @@ public class ProjectValidator extends BaseValidator {
     return (crpContributions != null && !crpContributions.isEmpty());
   }
 
+  public boolean hasDeliverables(List<Deliverable> deliverables) {
+    return (deliverables != null && !deliverables.isEmpty());
+  }
+
   public boolean hasFlagships(List<IPProgram> flagships) {
     return (flagships != null && !flagships.isEmpty());
   }
@@ -74,44 +78,10 @@ public class ProjectValidator extends BaseValidator {
     return (outputs != null && !outputs.isEmpty());
   }
 
-  public boolean hasDeliverables(List<Deliverable> deliverables) {
-    return (deliverables != null && !deliverables.isEmpty());
-  }
-
   // This method validates if the list of locations given as parameter is not empty and different from null
   // If so, it returns true
   public boolean hasProjectLocations(List<Location> locations) {
     return (locations != null && !locations.isEmpty());
-  }
-
-  // This method validates if the Gender dimension outcomes given as parameter are not empty and different from null
-  // If so, it returns true
-  public boolean hasValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
-    if (outcomes != null && !outcomes.isEmpty()) {
-      ProjectOutcome outcome = outcomes.get(String.valueOf(year));
-      if (outcome != null) {
-        if (this.isValidString(outcome.getGenderDimension())) {
-          if (year == this.config.getMidOutcomeYear()) {
-            // Number of words for outcome 2019
-            return this.wordCount(outcome.getGenderDimension()) <= 150;
-          } else {
-            // Number of words for outcomes between 2014-2018.
-            return this.wordCount(outcome.getGenderDimension()) <= 80;
-          }
-        }
-        if (this.isValidString(outcome.getGenderDimension())) {
-          if (year == this.config.getMidOutcomeYear()) {
-            // Number of words for gender dimension 2019.
-            return this.wordCount(outcome.getGenderDimension()) <= 150;
-          } else {
-            // Number of words for gender dimension between 2014-2018
-            return this.wordCount(outcome.getGenderDimension()) <= 100;
-          }
-        }
-      }
-
-    }
-    return false;
   }
 
   // This method validates if the outcome statement given as parameter is not empty and different from null
@@ -138,6 +108,10 @@ public class ProjectValidator extends BaseValidator {
 
   public boolean isValidEndDate(Date endDate) {
     return (endDate != null) ? true : false;
+  }
+
+  public boolean isValidGenderNarrative(String genderNarrative) {
+    return (this.isValidString(genderNarrative) && this.wordCount(genderNarrative) <= 100);
   }
 
   public boolean isValidLeader(ProjectPartner leader, boolean isBilateral) {
@@ -198,8 +172,12 @@ public class ProjectValidator extends BaseValidator {
     return (this.isValidString(targetNarrative) && this.wordCount(targetNarrative) <= 100);
   }
 
-  public boolean isValidTargetValue(String targetValue) {
-    return (this.isValidString(targetValue) && this.isValidNumber(targetValue));
+  public boolean isValidTargetValueNull(String targetValue) {
+    return (this.isValidString(targetValue));
+  }
+
+  public boolean isValidTargetValueNumber(String targetValue) {
+    return (this.isValidNumber(targetValue));
   }
 
   public boolean isValidTitle(String title) {

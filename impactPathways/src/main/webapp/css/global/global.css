@@ -139,6 +139,7 @@ div.disabled {
 .red {
   color: red;
   font-weight: bold;
+  font-size: 1.2em;
 }
 
 .fieldset {
@@ -220,7 +221,7 @@ label.readOnly {
 }
 
 p.fieldError{
-  color: #F52626;
+  color: #F52626 !important;
   font-weight: bold;
   margin-right: 4px;
 }
@@ -274,6 +275,13 @@ img.external-link {
   vertical-align: middle;
   padding-left: 3px;
   width: 10px;
+}
+
+h2.successTitle {
+  font-size: 2em;
+  color: #7FB06F;
+  margin-bottom: 11px;
+  text-align: center;
 }
 
 h6.checked-true {
@@ -814,9 +822,8 @@ select#partnerSave_activityPartner_partner_type_id {
     margin: 10px 0 15px 0;
 }
 
-.panel.primary{
-  
-}
+.panel.primary{}
+
 .panel.secondary .panel-head{
   font-size: 1em;
   background: #CBCBCB;
@@ -1450,9 +1457,10 @@ a.currentReportingSection li, a.currentSection li {
   width:15px; 
 }
 .icon-20{
-  float: left;
+  display: block;
+  margin: 0 auto;
   height: 20px;
-  width:20px; 
+  width:20px;
 }
 
 .icon-s{
@@ -2053,6 +2061,17 @@ h1.simpleTitle span {
   color: red;
   margin: 23px 0;
   border-radius: 4px;
+}
+
+p.projectSubmitted {
+  margin: 30px 0 10px 0;
+  color: #7FB06F;
+  text-align: center;
+  background-color: #E8F7E3;
+  border: 1px solid #E3F5DD;
+  padding: 12px 0px;
+  font-size: 1.3em;
+  border-radius: 5px;
 }
 
 .searchUser {
@@ -2682,7 +2701,7 @@ button.ipGraph-btn{
 
 .projectsList a.submitButton {
   background-color: #83AECC;
-  padding: 3px 12px;
+  padding: 4px 24px;
   border-radius: 2px;
   color: #fff;
   text-decoration: none;
@@ -2690,7 +2709,7 @@ button.ipGraph-btn{
 
 .projectsList a.validateButton {
   background-color: #7FB06F;
-  padding: 3px 12px;
+  padding: 3px 26px;
   border-radius: 2px;
   color: #fff;
   text-decoration: none;
@@ -2700,7 +2719,7 @@ button.ipGraph-btn{
   background-color: #3498db;
 }
 
-.projectSubmitButton {
+a.projectSubmitButton {
   background: url(../../images/global/submit-icon.png) no-repeat;
   background-color: #83AECC;
   background-position: 46px 9px;
@@ -2712,6 +2731,7 @@ button.ipGraph-btn{
   font-size: 1.3em;
   text-align: center;
   cursor: pointer;
+  display: block;
 }
 
 .projectValidateButton {
@@ -2728,16 +2748,37 @@ button.ipGraph-btn{
   cursor: pointer;
 }
 
+p.projectValidateButton-message {
+  color: #5A5A5A;
+  margin-bottom: 5px;
+  font-style: italic;
+}
+
 .projectSubmitButton:hover {
   background-color: #3498db;
 }
 
+.button-pdf-format {
+  display: block;
+  color: #929090;
+  text-decoration: none;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  width: 117px;
+  text-align: center;
+  padding: 18px 0 18px 28px;
+  border-radius: 3px;
+  background: url(../../images/global/icon-pdf.png) no-repeat;
+  margin-top: 11px !important;
+}
+
 .projectsList #ids, .activities #ids {
   width: 27px !important;
+  text-align: center;
 }
 
 .projectsList #projectTitles {
-  width: 440px;
+  width: 383px;
 }
 
 .projectsList #projectRegions {
@@ -2757,7 +2798,7 @@ button.ipGraph-btn{
 }
 
 .projectsList #projectActionStatus {
-padding: 0 4px 0 6px;}
+padding: 0 4px 0 6px;width: 100px;}
 
 .projectsList #projectType {
   width: 114px;
@@ -2996,6 +3037,20 @@ span.partnerTag {
   font-size: 0.95em !important;
   padding: 2px 10px 2px 10px !important;            
   display: none;
+}
+
+/* Project deliverables */
+
+#projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
+  text-align:center;
+  vertical-align: middle;
+}
+
+.icon-uncheck{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -85px;
+}
+.icon-check{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -150px;
 }
 
 /* Project Budget */

@@ -98,12 +98,30 @@ public interface ProjectManager {
   public List<Project> getBilateralProjects();
 
   /**
+   * This method returns the list of all the bilateral projects with valid Project Leader.
+   * 
+   * @return a list of projects that only contains the id and title.
+   */
+  public List<Project> getBilateralProjectsLeaders();
+
+
+  /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
    * 
    * @return a list of projects that only contains the id and title.
    */
   public List<Project> getCoreProjects(int flagshipID, int regionID);
+
+
+  /**
+   * This method returns the core projects with a valid Project Leader that contributes with the flagship and the
+   * regions received by parameter.
+   * If the parameters are '-1' they are not used to filter the list.
+   * 
+   * @return a list of projects that only contains the id and title.
+   */
+  public List<Project> getCoreProjectsLeaders(int flagshipID, int regionID);
 
   /**
    * This method returns the list of project identifiers where the given user is assigned as Project Leader.
@@ -287,7 +305,28 @@ public interface ProjectManager {
 
 
   /**
+   * This method will return the list of all the project with the budget contribution information for a specific year.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary project budgets by partners Report.
+   * 
+   * @param year - Specific year to search in the report.
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year);
+
+  /**
    * This method updates the project type into the database according to the values contained in the project received by
+   * parameter.
+   * 
+   * @param project - Project object to update the type
+   * @return true if the type was updated successfully. False otherwise.
+   */
+  public boolean updateProjectCofinancing(Project project);
+
+  /**
+   * This method updates the project confinancing into the database according to the values contained in the project
+   * received by
    * parameter.
    * 
    * @param project - Project object to update the type
@@ -304,4 +343,6 @@ public interface ProjectManager {
    * @return true if the changes was made succesfully. False otherwise.
    */
   public boolean updateProjectTypes();
+
+
 }

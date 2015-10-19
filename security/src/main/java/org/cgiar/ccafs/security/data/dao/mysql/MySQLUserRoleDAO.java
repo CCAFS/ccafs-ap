@@ -53,7 +53,7 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
     query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
     query.append("INNER JOIN liaison_institutions uli ON i.id = uli.institution_id ");
     query.append("INNER JOIN liaison_users lu ON uli.id = lu.institution_id ");
-    query.append("WHERE p.type = 'BILATERAL' AND r.id = 4 AND lu.user_id = ");
+    query.append("WHERE p.is_active = 1 AND r.id = 4 AND lu.user_id = ");
     query.append(userID);
 
     return this.setData(query.toString());
@@ -68,7 +68,7 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
     query.append("INNER JOIN institutions i ON li.institution_id = i.id ");
     query.append("INNER JOIN liaison_institutions uli ON i.id = uli.institution_id ");
     query.append("INNER JOIN liaison_users lu ON uli.id = lu.institution_id ");
-    query.append("WHERE r.id = 2 AND lu.user_id =  ");
+    query.append("WHERE p.is_active = 1 AND r.id = 2 AND lu.user_id =  ");
     query.append(userID);
 
     return this.setData(query.toString());
@@ -81,7 +81,7 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
     query.append("FROM  roles r, project_partners pp ");
     query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
     query.append("WHERE ( ppp.contact_type = 'PL' OR ppp.contact_type = 'PC' ) ");
-    query.append("AND r.id = 7 AND ppp.user_id = ");
+    query.append("AND pp.is_active = 1 AND ppp.is_active = 1 AND r.id = 7 AND ppp.user_id = ");
     query.append(userID);
 
     return this.setData(query.toString());
