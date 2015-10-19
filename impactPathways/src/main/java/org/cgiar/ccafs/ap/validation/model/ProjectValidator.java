@@ -84,36 +84,6 @@ public class ProjectValidator extends BaseValidator {
     return (locations != null && !locations.isEmpty());
   }
 
-  // This method validates if the Gender dimension outcomes given as parameter are not empty and different from null
-  // If so, it returns true
-  public boolean hasValidOutcomeGenderDimension(Map<String, ProjectOutcome> outcomes, int year) {
-    if (outcomes != null && !outcomes.isEmpty()) {
-      ProjectOutcome outcome = outcomes.get(String.valueOf(year));
-      if (outcome != null) {
-        if (this.isValidString(outcome.getGenderDimension())) {
-          if (year == this.config.getMidOutcomeYear()) {
-            // Number of words for outcome 2019
-            return this.wordCount(outcome.getGenderDimension()) <= 150;
-          } else {
-            // Number of words for outcomes between 2014-2018.
-            return this.wordCount(outcome.getGenderDimension()) <= 80;
-          }
-        }
-        if (this.isValidString(outcome.getGenderDimension())) {
-          if (year == this.config.getMidOutcomeYear()) {
-            // Number of words for gender dimension 2019.
-            return this.wordCount(outcome.getGenderDimension()) <= 150;
-          } else {
-            // Number of words for gender dimension between 2014-2018
-            return this.wordCount(outcome.getGenderDimension()) <= 100;
-          }
-        }
-      }
-
-    }
-    return false;
-  }
-
   // This method validates if the outcome statement given as parameter is not empty and different from null
   // If so, it returns true
   public boolean hasValidOutcomeStatement(Map<String, ProjectOutcome> outcomes, int year) {
