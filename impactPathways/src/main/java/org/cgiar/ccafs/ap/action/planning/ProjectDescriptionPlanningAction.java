@@ -420,7 +420,12 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       // Save the information
       int result =
         projectManager.saveProjectDescription(previousProject, this.getCurrentUser(), this.getJustification());
-
+      if (project.getLinkedProjects().isEmpty()) {
+        project.setCofinancing(false);
+      } else {
+        project.setCofinancing(true);
+      }
+      projectManager.updateProjectCofinancing(project);
       if (result < 0) {
         this.addActionError(this.getText("saving.problem"));
         LOG.warn("There was a problem saving the project description.");

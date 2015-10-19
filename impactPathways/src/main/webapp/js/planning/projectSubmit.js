@@ -10,10 +10,7 @@ $(document).ready(
           ];
       tasksLength = sections.length;
       $(".progressbar").progressbar({
-          max: tasksLength,
-          complete: function(event,ui) {
-            $(this).hide();
-          }
+        max: tasksLength
       });
       // Event for validate button inside each project
       $('.projectValidateButton, .validateButton').on('click', validateButtonEvent);
@@ -37,21 +34,21 @@ function submitButtonEvent(e) {
       type: 'confirm',
       dismissQueue: true,
       layout: 'center',
-      theme: 'defaultTheme',
+      theme: 'relax',
+      modal: true,
       buttons: [
           {
               addClass: 'btn btn-primary',
               text: 'Ok',
               onClick: function($noty) {
                 $noty.close();
-                console.log('Ok');
+                window.location.href = $(e.target).attr('href');
               }
           }, {
               addClass: 'btn btn-danger',
               text: 'Cancel',
               onClick: function($noty) {
                 $noty.close();
-                console.log('Cancel');
               }
           }
       ]
@@ -107,8 +104,7 @@ function processTasks(tasks,projectId,button) {
                 $(button).next().progressbar("value", index + 1);
                 ++index;
                 if(index == tasksLength) {
-                  // completed = 1;
-                  if(completed == 1) {
+                  if(completed == tasksLength) {
                     var notyOptions = jQuery.extend({}, notyDefaultOptions);
                     notyOptions.text = 'The project can be submmited now';
                     notyOptions.type = 'success';
@@ -121,8 +117,18 @@ function processTasks(tasks,projectId,button) {
                     var notyOptions = jQuery.extend({}, notyDefaultOptions);
                     notyOptions.text =
                         "The project is still incomplete, please go to the sections without the green check mark and complete the missing fields before submitting your project.";
-                    notyOptions.type = 'alert';
+                    notyOptions.type = 'confirm';
                     notyOptions.layout = 'center';
+                    notyOptions.modal = true;
+                    notyOptions.buttons = [
+                      {
+                          addClass: 'btn btn-primary',
+                          text: 'Ok',
+                          onClick: function($noty) {
+                            $noty.close();
+                          }
+                      }
+                    ];
                     noty(notyOptions);
                     $(button).next().fadeOut(function() {
                       $(button).fadeIn("slow").on('click', validateButtonEvent);

@@ -267,12 +267,16 @@
 
 [#macro projectBudget institution linkedProject editable=true]
   <div id="projectBudget-${(linkedProject.id)!'template'}" class="projectBudget budget" style="display:${linkedProject?has_content?string('block','none')}">
-    [#assign budgetName = "project.linkedProjects[${counter-1}].anualContribution" /]
-    [#if linkedProject?has_content]
+
+        [#if linkedProject ?has_content]
+        
+            [#assign budgetName = "project.linkedProjects[${counter-1}].anualContribution" /]
     
-    
-     
-    [/#if]
+        [#else]
+           [#assign budgetName = "template" /]
+      
+         [/#if]
+  
     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
     <p class="title checked" >
       <a target="_blank" href="[@s.url action='description'][@s.param name='projectID']${(linkedProject.id)!'-1'}[/@s.param][/@s.url]">P${(linkedProject.id)!''} -  ${(linkedProject.title)!'Untitle'}</a>
@@ -291,7 +295,7 @@
         [#if !editable || !project.bilateralProject]<strong>US$ ${((linkedProject.anualContribution.amount)!0)?number?string(",##0.00")}</strong> [/#if]
       </p>
       [#if editable && project.bilateralProject]
-        [@customForm.input name="${budgetName}.amount" value="${(linkedProject.anualContribution.amount)!0}" className="budgetAmount projectBudget W3_BILATERAL" showTitle=false /]
+        [@customForm.input name="${budgetName}.amount" className="budgetAmount projectBudget W3_BILATERAL" showTitle=false /]
       [/#if]
       </div>
     </div>

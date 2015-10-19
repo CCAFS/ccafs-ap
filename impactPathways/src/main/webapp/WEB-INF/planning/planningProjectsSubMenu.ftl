@@ -6,8 +6,9 @@
 [#assign projectId=(project.id)!""]
 [#assign projectStage = (currentSubStage)!"" /] 
 [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
+[#assign projectSectionStatus= (action.getProjectSectionStatus(actionName))!{} /]
 
-<nav id="secondaryMenu" class="projectMenu ${(project.type)!''}">
+<nav id="secondaryMenu" class="projectMenu ${(project.type)!''} ${(projectSectionStatus.missingFieldsWithPrefix?has_content)?string("hasMissingFields","")}">
 <h1><center> 
   [#if project.coreProject]
     <div id="projectType-quote" class="aux-quote-core" title="[@s.text name="planning.projects.type.ccafs_core" /] project">
@@ -70,18 +71,18 @@
     <p style="display:none">The project can be submitted now by Management liaison or Contact point.</p>
   [/#if]
   
-  [#-- Check button --] 
+  [#-- Check button --]
   [#if canEdit && !complete && !submission?has_content]
-    <p class="projectValidateButton-message center">Check for missing fields. ${complete?string}<br /></p>
+    <p class="projectValidateButton-message center">Check for missing fields.<br /></p>
     <div id="validateProject-${projectId}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
     <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
   [/#if]
   [#-- Submit button --]
+  [#if canEdit]
   [#assign showSubmit=(securityContext.canSubmitProject(project.id) && !submission?has_content && complete)]
-  <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >[@s.text name="form.buttons.submit" /]</a>
-  
+    <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >[@s.text name="form.buttons.submit" /]</a>
+  [/#if]
 </nav>
-
 
 
 [#-- Menu element --]
@@ -112,3 +113,6 @@
     [#return false]  
   [/#if]
 [/#function]
+
+
+

@@ -322,8 +322,17 @@ public interface ProjectManager {
    * @param project - Project object to update the type
    * @return true if the type was updated successfully. False otherwise.
    */
-  public boolean updateProjectType(Project project);
+  public boolean updateProjectCofinancing(Project project);
 
+  /**
+   * This method updates the project confinancing into the database according to the values contained in the project
+   * received by
+   * parameter.
+   * 
+   * @param project - Project object to update the type
+   * @return true if the type was updated successfully. False otherwise.
+   */
+  public boolean updateProjectType(Project project);
 
   /**
    * This method updates the type of all the core projects following the steps below:

@@ -34,17 +34,20 @@ function attachEvents() {
 }
 
 function setWordCounters() {
-  var check = "limitWords-";
-  $("textarea[id!='justification']").each(function(i,textarea) {
-    var className = $(textarea).attr('class') || '';
-    var cls = $.map(className.split(' '), function(val,i) {
-      if(val.indexOf(check) > -1) {
-        return val.slice(check.length, val.length);
-      }
-    });
-    applyWordCounter($(textarea), (cls.join(' ')) || 100);
-
+  $("form textarea[id!='justification']").each(function(i,textarea) {
+    setWordCounterToInput(textarea);
   });
+}
+
+function setWordCounterToInput(textarea) {
+  var check = "limitWords-";
+  var className = $(textarea).attr('class') || '';
+  var cls = $.map(className.split(' '), function(val,i) {
+    if(val.indexOf(check) > -1) {
+      return val.slice(check.length, val.length);
+    }
+  });
+  applyWordCounter($(textarea), (cls.join(' ')) || 100);
 }
 
 function checkOutcomes() {
@@ -213,6 +216,10 @@ function addIndicators(midOutcomeID,programID,$indicatorsBlock) {
         $newIndicator.find("input[type='checkbox']").attr("checked", true).attr("disabled", true);
         $newIndicator.find(".indicatorNarrative, .indicatorTargets, .indicatorTargetsTemplate").show("slow");
       }
+      // Adding word counters
+      $newIndicator.find("textarea").each(function(i,textarea) {
+        setWordCounterToInput(textarea);
+      });
     });
 
     // Once we have added all the indicators, remove the template
@@ -249,7 +256,7 @@ function setIndicatorIndexes() {
         $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
-
+        $(target).find(".projectIndicatorGender").attr("name", indicatorsName + "[" + index + "].gender");
         index++;
       } else {
 

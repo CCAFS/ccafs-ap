@@ -43,6 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class ProjectCCAFSOutcomesPlanningAction extends BaseAction {

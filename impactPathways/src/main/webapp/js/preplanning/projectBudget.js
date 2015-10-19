@@ -138,7 +138,8 @@ function attachEvents() {
     $projectBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
-    return;
+
+       return;
   });
 }
 
@@ -223,9 +224,9 @@ function LinkedProjectObject(project){
     $(project).find('.budgetId').attr('name', elementName+"id");
     $(project).find('.budgetYear').attr('name', elementName+"year");
     $(project).find('.budgetInstitutionId').attr('name', elementName+"institution.id");
-    $(project).find('.budgetCofinancingProjectId').attr('name', elementName+"cofinancingProject");
+    $(project).find('.budgetCofinancingProjectId').attr('name', elementName+"cofinancingProject.id");
     $(project).find('.budgetType').attr('name', elementName+"type");
-    $(project).find('.budgetAmount').attr('name', elementName+"amount");
+    $(project).find('.budgetAmount').attr('name', elementName+"amount").attr('id', elementName+"amount");
   };
   this.remove = function (){
     $(project).slideUp("slow", function(){

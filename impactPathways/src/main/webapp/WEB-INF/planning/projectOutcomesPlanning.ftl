@@ -78,36 +78,6 @@
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
       </div>
-    </div>  
-    <div id="gender-contribution" class="borderBox">
-      [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-      [#else]
-        [#if canEdit && !newProject]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#gender-contribution">[@s.text name="form.buttons.unedit" /]</a></div>
-        [/#if]
-      [/#if]  
-      [#-- Gender contribution block --]
-      <div class="fullPartBlock">
-        <h1 class="contentTitle">[@s.text name="planning.projectOutcome.genderAndSocialNarrative" /] </h1> 
-        [#-- Gender and Social Narrative --]
-        <div class="fullPartBlock" id="projectOutcome-genderAndSocialNarrative">
-          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].genderDimension" required=!project.bilateralProject className="limitWords-150" i18nkey="planning.projectOutcome.genderAndSocialStatement" editable=editable /]
-        </div>
-        [#-- Annual for the expected Gender and Social contribution --]
-        [#list project.startDate?string.yyyy?number..midOutcomeYear?number-1 as year]
-          <div class="fullPartBlock">
-            [#if (year == currentPlanningYear) || (year == currentPlanningYear+1)]
-              <h6>[@customForm.text name="planning.projectOutcome.genderAndSocialAnnualProgress" readText=!editable param="${year}" /] [@customForm.req required=!project.bilateralProject /]</h6>
-              [@customForm.textArea name="project.outcomes[${year?string}].genderDimension" className="limitWords-100" required=!project.bilateralProject showTitle=false editable=editable /]
-            [#else]  
-              <h6>[@customForm.text name="planning.projectOutcome.genderAndSocialAnnualProgress" readText=!editable param="${year}" /]</h6>
-              [@customForm.textArea name="project.outcomes[${year?string}].genderDimension" className="limitWords-100" showTitle=false editable=editable /]
-            [/#if]
-          </div>
-        [/#list]
-        <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
-      </div>
     </div>
     [#else]
       <p class="simpleBox center">[@s.text name="planning.projectOutcome.message.dateUndefined" /]</p>

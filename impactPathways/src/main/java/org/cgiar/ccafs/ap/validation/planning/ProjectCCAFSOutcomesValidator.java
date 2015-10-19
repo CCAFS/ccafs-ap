@@ -96,20 +96,23 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
     this.validateMOGs(action, project);
   }
 
+  private void validateGenderNarrative(BaseAction action, String genderNarrative, String outcomeAcronym, int year,
+    int c) {
+    if (!projectValidator.isValidGenderNarrative(genderNarrative)) {
+      this.addMessage("Gender narrative for '" + outcomeAcronym + "' in '" + year + "' year");
+      this.addMissingField("project.indicators[" + c + "].gender");
+    }
+  }
+
   // This method validates the indicators selected in the ccafs outcomes section.
   private void validateIndicators(BaseAction action, Project project) {
     if (projectValidator.hasIndicators(project.getIndicators())) {
       int c = 0; // Not the best solution with this counter. But at least it works.
       // Looping the map.
       for (IPElement outcome : indicatorsMap.keySet()) {
-        // getting the outcome acronym
-        StringBuilder outcomeAcronym = new StringBuilder();
-        outcomeAcronym.append(outcome.getProgram().getAcronym());
-        outcomeAcronym.append(" - ");
-        outcomeAcronym.append(outcome.getType().getName());
         if (indicatorsMap.get(outcome).isEmpty()) {
           action.addActionError(action.getText("planning.projectImpactPathways.outcome.indicators.empty",
-            new String[] {outcomeAcronym.toString()}));
+            new String[] {outcome.getComposedId()}));
           // setting the missing field and writing it in parenthesis because we are referring to the outcome id.
           this.addMissingField("project.outcome(" + outcome.getId() + ").indicators.empty");
         } else {
@@ -121,9 +124,11 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
           for (IPIndicator indicator : indicatorsMap.get(outcome)) {
             // Validate only those indicators for 2016, 2017 and 2019.
             if (yearsToValidate.keySet().contains(indicator.getYear())) {
-              this.validateTargetValue(action, indicator.getTarget(), c);
-              this.validateTargetNarrative(action, indicator.getDescription(), outcomeAcronym.toString(),
+              this.validateTargetValue(action, indicator.getTarget(), outcome.getComposedId(), indicator.getYear(), c);
+              this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
                 indicator.getYear(), c);
+              this.validateGenderNarrative(action, indicator.getGender(), outcome.getComposedId(), indicator.getYear(),
+                c);
 
               // Marking that the year was validated.
               if (yearsToValidate.get(indicator.getYear()) != null) {
@@ -165,8 +170,15 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
     }
   }
 
-  private void validateTargetValue(BaseAction action, String targetValue, int c) {
-    if (!projectValidator.isValidTargetValue(targetValue)) {
+
+  private void validateTargetValue(BaseAction action, String targetValue, String outcomeAconmyn, int year, int c) {
+    // First validate that target value is filled.
+    if (!projectValidator.isValidTargetValueNull(targetValue)) {
+      // If null, we let the user to save.
+      this.addMessage("Target value for '" + outcomeAconmyn + "' in '" + year + "' is required.");
+      this.addMissingField("project.indicators[" + c + "].target");
+    } else if (!projectValidator.isValidTargetValueNumber(targetValue)) {
+      // If target is not null but is not a valid number, we don't let user to save.
       action.addFieldError("project.indicators[" + c + "].target", action.getText("validation.number.format"));
       this.addMissingField("project.indicators[" + c + "].target");
     }

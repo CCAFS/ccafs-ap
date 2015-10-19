@@ -191,6 +191,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       IPIndicator indicator = new IPIndicator();
       indicator.setId(Integer.parseInt(iData.get("id")));
       indicator.setDescription(iData.get("description"));
+      indicator.setGender(iData.get("gender"));
       indicator.setTarget(iData.get("target"));
       indicator.setYear(Integer.parseInt(iData.get("year")));
 
@@ -229,6 +230,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
 
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
+      indicatorData.put("gender", indicator.getGender());
       indicatorData.put("year", String.valueOf(indicator.getYear()));
       indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("project_id", String.valueOf(projectID));
