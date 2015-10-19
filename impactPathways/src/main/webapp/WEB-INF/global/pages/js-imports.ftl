@@ -112,11 +112,7 @@
     (function() {
       var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
       s1.async = true;
-      if(production) {
-        s1.src = 'https://embed.tawk.to/56128da200d3af75029e5645/default';
-      } else {
-        s1.src = 'https://embed.tawk.to/5613e7282ee46dc72a5c89c5/default';
-      }
+      s1.src = 'https://embed.tawk.to/${config.production?string('56128da200d3af75029e5645','5613e7282ee46dc72a5c89c5')}/default';
       s1.charset = 'UTF-8';
       s1.setAttribute('crossorigin', '*');
       s0.parentNode.insertBefore(s1, s0);
