@@ -564,6 +564,11 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public boolean updateProjectCofinancing(Project project) {
+    return projectDAO.updateProjectCofinancing(project.getId(), project.isCofinancing());
+  }
+
+  @Override
   public boolean updateProjectType(Project project) {
     return projectDAO.updateProjectType(project.getId(), project.getType());
   }

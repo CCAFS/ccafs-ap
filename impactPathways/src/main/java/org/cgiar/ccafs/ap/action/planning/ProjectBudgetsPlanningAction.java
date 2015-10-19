@@ -380,8 +380,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       projectManager.updateProjectTypes();
       budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID, this.getCurrentPlanningYear());
       if (project.getLinkedProjects().isEmpty()) {
-
+        project.setCofinancing(false);
+      } else {
+        project.setCofinancing(true);
       }
+      projectManager.updateProjectCofinancing(project);
       if (!success) {
         this.addActionError(this.getText("saving.problem"));
         return BaseAction.INPUT;
