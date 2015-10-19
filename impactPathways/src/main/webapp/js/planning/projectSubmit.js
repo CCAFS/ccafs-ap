@@ -35,6 +35,7 @@ function submitButtonEvent(e) {
       dismissQueue: true,
       layout: 'center',
       theme: 'relax',
+      modal: true,
       buttons: [
           {
               addClass: 'btn btn-primary',
@@ -116,8 +117,18 @@ function processTasks(tasks,projectId,button) {
                     var notyOptions = jQuery.extend({}, notyDefaultOptions);
                     notyOptions.text =
                         "The project is still incomplete, please go to the sections without the green check mark and complete the missing fields before submitting your project.";
-                    notyOptions.type = 'alert';
+                    notyOptions.type = 'confirm';
                     notyOptions.layout = 'center';
+                    notyOptions.modal = true;
+                    notyOptions.buttons = [
+                      {
+                          addClass: 'btn btn-primary',
+                          text: 'Ok',
+                          onClick: function($noty) {
+                            $noty.close();
+                          }
+                      }
+                    ];
                     noty(notyOptions);
                     $(button).next().fadeOut(function() {
                       $(button).fadeIn("slow").on('click', validateButtonEvent);
