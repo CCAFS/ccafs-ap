@@ -159,8 +159,10 @@ public class APCustomRealm extends AuthorizingRealm {
           break;
 
         case APConstants.ROLE_MANAGEMENT_LIAISON:
+        case APConstants.ROLE_COORDINATING_UNIT:
           projectRoles.putAll(userRoleManager.getManagementLiaisonProjects(userID));
           break;
+
 
         case APConstants.ROLE_PROJECT_LEADER:
         case APConstants.ROLE_PROJECT_COORDINATOR:
