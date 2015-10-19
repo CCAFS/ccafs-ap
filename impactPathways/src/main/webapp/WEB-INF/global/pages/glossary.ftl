@@ -18,6 +18,33 @@
     [@s.text name="home.glossary.contact"/] [@s.text name="home.glossary.mailto"/]
     <hr/>
     
+    <div id="note" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.note"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.note.definition"/]
+      </div>
+    </div>
+    <hr/>
+    <div id="accountability" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.accountability"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.accountability.definition"/]
+      </div>
+    </div>
+    
+    <div id="mutualAccountability" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.mutualaccountability"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.mutualaccountability.definition"/]
+      </div>
+    </div>
+    
     <div id="activity" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.activities"/]
@@ -27,7 +54,7 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="adoption" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.adoption"/]
       </div>
@@ -35,8 +62,55 @@
         [@s.text name="home.glossary.adoption.definition"/]
       </div>
     </div>
+
+    <div id="appraisal" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.appraisal"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.appraisal.definition"/]
+      </div>
+    </div>
+    
+    <div id="attribution" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.attribution"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.attribution.definition"/]
+      </div>
+    </div>
+      
+    <div id="audit" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.audit"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.audit.definition"/]
+      </div>
+    </div>
+    
     <hr/>
-    <div class="word">
+    
+    <div id="baseline" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.baseline"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.baseline.definition"/]
+      </div>
+    </div>
+    
+    <div id="behavioralindependence" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.behavioralindependence"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.behavioralindependence.definition"/]
+      </div>
+    </div>
+    
+    <div id="beneficiaries" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.beneficiaries"/]
       </div>
@@ -45,15 +119,8 @@
       </div>
     </div>
     
-    <div class="word">
-      <div class="wordTitle">
-        [@s.text name="home.glossary.baseline"/]
-      </div>
-      <div class="wordDefinition">
-        [@s.text name="home.glossary.baseline.definition"/]
-      </div>
-    </div>
     <hr/>
+    
     <div id="budget" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.budget"/]
@@ -70,8 +137,54 @@
         </ul>
       </div>
     </div>
+    
+    <div id="clustersofactivities" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.clustersofactivities"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.clustersofactivities.definition"/]
+      </div>
+    </div>
+    
+    <div id="clients" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.clients"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.clients.definition"/]
+      </div>
+    </div>
+    
+    <div id="comparativeadvantage" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.comparativeadvantage"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.comparativeadvantage.definition"/]
+      </div>
+    </div>
+    
+    <div id="costeffectiveness" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.costeffectiveness"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.costeffectiveness.definition"/]
+      </div>
+    </div>
+    
+    <div id="counterfactual" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.counterfactual"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.counterfactual.definition"/]
+      </div>
+    </div>
+    
     <hr/>
-    <div class="word">
+    <div id="deliverables" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.deliverables"/]
       </div>
@@ -80,12 +193,75 @@
       </div>
     </div>
     <hr/>
-    <div class="word">
+    <div id="endUsers" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.endUsers"/]
       </div>
       <div class="wordDefinition">
         [@s.text name="home.glossary.endUsers.definition"/]
+      </div>
+    </div>
+    
+    <div id="effectiveness" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.effectiveness"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.effectiveness.definition"/]
+      </div>
+    </div>
+    
+    <div id="efficiency" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.efficiency"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.efficiency.definition"/]
+      </div>
+    </div>
+    
+    <div id="evaluation" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.evaluation"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.evaluation.definition"/]
+      </div>
+    </div>
+    
+    <div id="formativeevaluation" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.formativeevaluation"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.formativeevaluation.definition"/]
+      </div>
+    </div>
+    
+    <div id="summativeevaluation" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.summativeevaluation"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.summativeevaluation.definition"/]
+      </div>
+    </div>
+    
+    <div id="evaluationcriteria" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.evaluationcriteria"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.evaluationcriteria.definition"/]
+      </div>
+    </div>
+      
+    <div id="evaluationreference" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.evaluationreference"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.evaluationreference.definition"/]
       </div>
     </div>
     
@@ -98,7 +274,19 @@
       </div>
     </div>
     <hr/>
-    <div class="word">
+    
+    <div id="globalpublicgoods" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.globalpublicgoods"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.globalpublicgoods.definition"/]
+      </div>
+    </div>
+    
+    <hr/>
+    
+    <div id="impact" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.impact"/]
       </div>
@@ -107,7 +295,25 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="impactassessment" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.impactassessment"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.impactassessment.definition"/]
+      </div>
+    </div>
+      
+    <div id="impactevaluation" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.impactevaluation"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.impactevaluation.definition"/]
+      </div>
+    </div>
+    
+    <div id="impactPathway" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.impactPathway"/]
       </div>
@@ -116,7 +322,43 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="impartiality" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.impartiality"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.impartiality.definition"/]
+      </div>
+    </div>
+    
+    <div id="independence" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.independence"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.independence.definition"/]
+      </div>
+    </div>
+    
+    <div id="organizationalindependence" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.organizationalindependence"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.organizationalindependence.definition"/]
+      </div>
+    </div>
+    
+    <div id="behavioralindependence" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.behavioralindependence"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.behavioralindependence.definition"/]
+      </div>
+    </div>
+    
+    <div id="indicator" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.indicator"/]
       </div>
@@ -125,7 +367,16 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="inputs" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.inputs"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.inputs.definition"/]
+      </div>
+    </div>
+    
+    <div id="ido" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.ido"/]
       </div>
@@ -133,8 +384,30 @@
         [@s.text name="home.glossary.ido.definition"/]
       </div>
     </div>
+    
+    <div id="ipg" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.ipg"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.ipg.definition"/]
+      </div>
+    </div>
+    
     <hr/>
-    <div class="word">
+    
+    <div id="legitimacy" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.legitimacy"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.legitimacy.definition"/]
+      </div>
+    </div>
+    
+    <hr/>
+    
+    <div id="mog" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.mog"/]
       </div>
@@ -151,6 +424,16 @@
         [@s.text name="home.glossary.managementLiason.definition"/]
       </div>
     </div>
+    
+    <div id="monitoring" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.monitoring"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.monitoring.definition"/]
+      </div>
+    </div>
+    
     <hr/>
     <div id="next-users" class="word">
       <div class="wordTitle">
@@ -161,6 +444,16 @@
       </div>
     </div>
     <hr/>
+    
+    <div id="organizationalindependence" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.organizationalindependence"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.organizationalindependence.definition"/]
+      </div>
+    </div>
+    
     <div id="project-outcome" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.outcome"/]
@@ -201,7 +494,34 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="peerreview" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.peerreview"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.peerreview.definition"/]
+      </div>
+    </div>
+    
+    <div id="performancemanagement" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.performancemanagement"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.performancemanagement.definition"/]
+      </div>
+    </div>
+    
+    <div id="performancemeasurement" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.performancemeasurement"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.performancemeasurement.definition"/]
+      </div>
+    </div>
+    
+    <div id="project" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.project"/]
       </div>
@@ -210,7 +530,7 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="projectLeader" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.projectLeader"/]
       </div>
@@ -219,7 +539,7 @@
       </div>
     </div>
     
-    <div class="word">
+    <div id="projectOutcome" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.projectOutcome"/]
       </div>
@@ -246,6 +566,34 @@
       </div>
     </div>
     <hr/>
+    
+    <div id="relevance" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.relevance"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.relevance.definition"/]
+      </div>
+    </div>
+    
+    <div id="researchoutcomes" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.researchoutcomes"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.researchoutcomes.definition"/]
+      </div>
+    </div>
+    
+    <div id="results" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.results"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.results.definition"/]
+      </div>
+    </div>
+    
     <div class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.resultsBaseManagement"/]
@@ -254,22 +602,80 @@
         [@s.text name="home.glossary.resultsBaseManagement.definition"/]
       </div>
     </div>
-    <hr/>
-    <div class="word">
+    
+    <div id="review" class="word">
       <div class="wordTitle">
-        [@s.text name="home.glossary.targetvalue"/]
+        [@s.text name="home.glossary.review"/]
       </div>
       <div class="wordDefinition">
-        [@s.text name="home.glossary.targetvalue.definition"/]
+        [@s.text name="home.glossary.review.definition"/]
       </div>
     </div>
     
-    <div class="word">
+    <hr/>
+    
+    <div id="scalingupandout" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.scalingupandout"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.scalingupandout.definition"/]
+      </div>
+    </div>
+    
+    <div id="stakeholders" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.stakeholders"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.stakeholders.definition"/]
+      </div>
+    </div>
+    
+    <div id="sustainability" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.sustainability"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.sustainability.definition"/]
+      </div>
+    </div>
+    
+    <div id="slo" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.slo"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.slo.definition"/]
+      </div>
+    </div>
+    
+    <hr/>
+    
+    <div id="targetgroup" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.targetgroup"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.targetgroup.definition"/]
+      </div>
+    </div>
+    
+    <div id="targetnarrative" class="word">
       <div class="wordTitle">
         [@s.text name="home.glossary.targetnarrative"/]
       </div>
       <div class="wordDefinition">
         [@s.text name="home.glossary.targetnarrative.definition"/]
+      </div>
+    </div>
+    
+    <div id="targetvalue" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.targetvalue"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.targetvalue.definition"/]
       </div>
     </div>
     
@@ -281,6 +687,25 @@
         [@s.text name="home.glossary.toc.definition"/]
       </div>
     </div>
+    
+    <div id="transactioncost" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.transactioncost"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.transactioncost.definition"/]
+      </div>
+    </div>
+    
+    <div id="triangulation" class="word">
+      <div class="wordTitle">
+        [@s.text name="home.glossary.triangulation"/]
+      </div>
+      <div class="wordDefinition">
+        [@s.text name="home.glossary.triangulation.definition"/]
+      </div>
+    </div>
+    
     <hr/>
     <div class="word">
       <div class="wordTitle">
@@ -299,6 +724,11 @@
         [@s.text name="home.glossary.use.definition"/]
       </div>
     </div>
+    <hr/>
+    <div id="adapted">
+      <p>[@s.text name="home.glossary.adapted"/]</p>
+    </div>
+    <hr/>
     <div class="lastUpdate">
       <p>[@s.text name="home.glossary.lastUpdate"/]</p>
     </div>
