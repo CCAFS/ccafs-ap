@@ -6,8 +6,9 @@
 [#assign projectId=(project.id)!""]
 [#assign projectStage = (currentSubStage)!"" /] 
 [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
+[#assign projectSectionStatus= (action.getProjectSectionStatus(actionName))!{} /]
 
-<nav id="secondaryMenu" class="projectMenu ${(project.type)!''}">
+<nav id="secondaryMenu" class="projectMenu ${(project.type)!''} ${(projectSectionStatus.missingFieldsWithPrefix?has_content)?string("hasMissingFields","")}">
 <h1><center> 
   [#if project.coreProject]
     <div id="projectType-quote" class="aux-quote-core" title="[@s.text name="planning.projects.type.ccafs_core" /] project">
@@ -112,3 +113,6 @@
     [#return false]  
   [/#if]
 [/#function]
+
+
+
