@@ -56,7 +56,7 @@
      </result>
    </action>
    
-    <action name="budgetByPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetByPartnersSummaryAction">
+    <action name="budgetPerPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetPerPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>

@@ -162,18 +162,17 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   }
 
   public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
-    Budget budged;
-    Project cofinancingProject = projectManager.getProject(cofinanceProjectID);
-    cofinancingProject.setBudgets(budgetManager.getBudgetsByYear(cofinancingProject.getId(),
-      config.getPlanningCurrentYear()));
-    if (cofinancingProject.isBilateralProject()) {
 
-      budged = this.getBilateralCofinancingBudget(projectID, cofinanceProjectID, year);
-    } else {
-      budged = cofinancingProject.getCofinancingBudget(projectID, year);
+    List<Budget> budgets = this.project.getBudgets();
+    for (Budget budget : budgets) {
+      if (budget != null) {
+        if (budget.getProjectId() == projectID && budget.getCofinancingProject() != null
+          && budget.getCofinancingProject().getId() == cofinanceProjectID && budget.getYear() == year) {
+          return budget;
+        }
+      }
     }
-    // project.getBudgets().add(budged);
-    return budged;
+    return null;
   }
 
   @Override
@@ -332,9 +331,17 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
 
     // Annual contribution
-    for (Project contribution : project.getLinkedProjects()) {
-      contribution.setAnualContribution(this.getCofinancingBudget(projectID, contribution.getId(),
-        config.getPlanningCurrentYear()));
+
+    for (Project projectContributor : project.getLinkedProjects()) {
+      if (project.isBilateralProject()) {
+        projectContributor.setAnualContribution(this.getCofinancingBudget(projectContributor.getId(), projectID,
+          config.getPlanningCurrentYear()));
+      } else if (project.isCoFundedProject()) {
+        projectContributor.setAnualContribution(this.getCofinancingBudget(projectID, projectContributor.getId(),
+          config.getPlanningCurrentYear()));
+      }
+
+
     }
 
 
