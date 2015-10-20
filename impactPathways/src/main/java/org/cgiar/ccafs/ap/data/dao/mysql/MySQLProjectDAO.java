@@ -184,7 +184,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
     query.append(BudgetType.W1_W2.getValue());
     query
-      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+    .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
     query.append(BudgetType.W3_BILATERAL.getValue());
     query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
@@ -676,14 +676,20 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("' AND pp.project_id = p.id AND ppp.user_id = ");
       query.append(userID);
       query.append(" AND ppp.is_active = 1) ");
-      // If the project is bilateral and the user is a focal point of the lead institution
+      // If the project is bilateral and the user is a Contact Point of the lead institution
       query.append("OR ( p.type = '");
       query.append(APConstants.PROJECT_BILATERAL);
       query.append("' AND ( SELECT institution_id FROM liaison_institutions WHERE id = p.liaison_institution_id) = ");
       query.append(" ( SELECT li.institution_id FROM liaison_institutions li ");
       query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
       query.append(userID);
-      query.append(" ) ) ");
+      query.append(" ) AND ");
+      query.append("(SELECT ");
+      query.append(APConstants.ROLE_CONTACT_POINT);
+      query.append(" IN (SELECT r.id FROM roles r INNER JOIN user_roles ur ON ur.role_id = r.id WHERE ur.user_id = ");
+      query.append(userID);
+      query.append(") )");
+      query.append(" ) ");
       // If the project user has the role of 'Admin'
       query.append("OR ( ");
       query.append(" 'Admin' IN ( SELECT acronym FROM user_roles ur INNER JOIN roles r ON ur.role_id = r.id ");
@@ -1675,7 +1681,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       StringBuilder query = new StringBuilder();
       query.append("UPDATE projects p ");
       query
-        .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
+      .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
       query.append("SET p.type = ?");
       result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
     }
