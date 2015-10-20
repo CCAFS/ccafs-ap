@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetPerPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +105,9 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
 
   @Override
   public void prepare() {
-    informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetPerPartners(this.getCurrentPlanningYear());
+
+    int year = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST)));
+    informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetPerPartners(year);
 
 
   }
