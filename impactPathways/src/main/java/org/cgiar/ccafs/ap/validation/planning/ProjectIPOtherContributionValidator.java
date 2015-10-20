@@ -42,7 +42,9 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
   }
 
   private boolean isFullSectionEmpty(BaseAction action, OtherContribution ipOtherContribution) {
-    if (ipOtherContribution.getContribution().isEmpty() && ipOtherContribution.getAdditionalContribution().isEmpty()
+    if ((ipOtherContribution.getContribution() == null || ipOtherContribution.getContribution().isEmpty())
+      && (ipOtherContribution.getAdditionalContribution() == null
+        || ipOtherContribution.getAdditionalContribution().isEmpty())
       && ipOtherContribution.getCrpContributions().isEmpty()) {
       return true;
     }

@@ -678,14 +678,20 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("' AND pp.project_id = p.id AND ppp.user_id = ");
       query.append(userID);
       query.append(" AND ppp.is_active = 1) ");
-      // If the project is bilateral and the user is a focal point of the lead institution
+      // If the project is bilateral and the user is a Contact Point of the lead institution
       query.append("OR ( p.type = '");
       query.append(APConstants.PROJECT_BILATERAL);
       query.append("' AND ( SELECT institution_id FROM liaison_institutions WHERE id = p.liaison_institution_id) = ");
       query.append(" ( SELECT li.institution_id FROM liaison_institutions li ");
       query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
       query.append(userID);
-      query.append(" ) ) ");
+      query.append(" ) AND ");
+      query.append("(SELECT ");
+      query.append(APConstants.ROLE_CONTACT_POINT);
+      query.append(" IN (SELECT r.id FROM roles r INNER JOIN user_roles ur ON ur.role_id = r.id WHERE ur.user_id = ");
+      query.append(userID);
+      query.append(") )");
+      query.append(" ) ");
       // If the project user has the role of 'Admin'
       query.append("OR ( ");
       query.append(" 'Admin' IN ( SELECT acronym FROM user_roles ur INNER JOIN roles r ON ur.role_id = r.id ");

@@ -116,7 +116,7 @@ public class MySQLPartnerPersonDAO implements PartnerPersonDAO {
     query.append("FROM project_partner_persons ");
     query.append("WHERE project_partner_id =  ");
     query.append(projectPartnerID);
-    query.append(" AND is_active = 1");
+    query.append(" AND is_active = 1 order by case when contact_type='PL' then -1 else contact_type end asc");
 
 
     LOG.debug("-- getPartnerPersonsByPartnerID() > Calling method executeQuery to get the results");

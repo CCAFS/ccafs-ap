@@ -145,7 +145,6 @@ public class APCustomRealm extends AuthorizingRealm {
     if (session.getAttribute("auth_info") == null) {
       // if ((Integer) principals.getPrimaryPrincipal() != userID) {
       SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-      session.setAttribute("auth_info", authorizationInfo);
 
       userID = (Integer) principals.getPrimaryPrincipal();
       List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
@@ -207,6 +206,7 @@ public class APCustomRealm extends AuthorizingRealm {
           authorizationInfo.addStringPermission(permission);
         }
       }
+      session.setAttribute("auth_info", authorizationInfo);
       return authorizationInfo;
     }
     return (AuthorizationInfo) session.getAttribute("auth_info");
