@@ -68,5 +68,5 @@
     </div>
   </article>
 </section>
-[@customForm.confirmJustification action="deleteProject" namespace="/planning/projects" nameId="projectID" title="Remove Project" /]
+[@customForm.confirmJustification action="deleteProject" namespace="/planning" title="Remove Project" /]
 [#include "/WEB-INF/global/pages/footer.ftl"]
