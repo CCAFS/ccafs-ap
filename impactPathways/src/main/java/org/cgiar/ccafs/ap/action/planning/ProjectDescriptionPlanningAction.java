@@ -98,7 +98,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
 
   public String getBilateralContractURL() {
-    return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
+    return config.getDownloadURL() + "/" + this.getBilateralProposalRelativePath().replace('\\', '/');
   }
 
   /**
