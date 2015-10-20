@@ -128,44 +128,39 @@ function validateEvent(fields) {
     $parent.find('.loading').fadeIn();
     var isNext = (e.target.name == 'next');
     $justification.removeClass(errorClass);
-    var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length;
-    if(fieldErrors != 0) {
+    /*
+     * var fieldErrors = $(document).find('input.fieldError, textarea.fieldError').length; if(fieldErrors != 0) {
+     * e.preventDefault(); $parent.find('.loading').fadeOut(500); var notyOptions = jQuery.extend({},
+     * notyDefaultOptions); $('html, body').animate({ scrollTop: $('.fieldError').offset().top - 80 }, 700);
+     * notyOptions.text = 'Something is wrong in this section, please fix it then save'; noty(notyOptions); } else {
+     */
+    if(!isChanged() && !forceChange && !isNext) {
+      // If there isn't any changes
       e.preventDefault();
       $parent.find('.loading').fadeOut(500);
       var notyOptions = jQuery.extend({}, notyDefaultOptions);
-      $('html, body').animate({
-        scrollTop: $('.fieldError').offset().top - 80
-      }, 700);
-      notyOptions.text = 'Something is wrong in this section, please fix it then save';
+      notyOptions.text = 'Nothing has changed';
+      notyOptions.type = 'alert';
       noty(notyOptions);
     } else {
-      if(!isChanged() && !forceChange && !isNext) {
-        // If there isn't any changes
+      if(errorMessages.length != 0) {
+        // If there is an error message
         e.preventDefault();
         $parent.find('.loading').fadeOut(500);
         var notyOptions = jQuery.extend({}, notyDefaultOptions);
-        notyOptions.text = 'Nothing has changed';
-        notyOptions.type = 'alert';
+        notyOptions.text = errorMessages.join();
         noty(notyOptions);
-      } else {
-        if(errorMessages.length != 0) {
-          // If there is an error message
-          e.preventDefault();
-          $parent.find('.loading').fadeOut(500);
-          var notyOptions = jQuery.extend({}, notyDefaultOptions);
-          notyOptions.text = errorMessages.join();
-          noty(notyOptions);
-        } else if(!validateField($('#justification')) && (isChanged() || forceChange)) {
-          // If field is not valid
-          e.preventDefault();
-          $parent.find('.loading').fadeOut(500);
-          $justification.addClass(errorClass);
-          var notyOptions = jQuery.extend({}, notyDefaultOptions);
-          notyOptions.text = 'The justification field needs to be filled';
-          noty(notyOptions);
-        }
+      } else if(!validateField($('#justification')) && (isChanged() || forceChange)) {
+        // If field is not valid
+        e.preventDefault();
+        $parent.find('.loading').fadeOut(500);
+        $justification.addClass(errorClass);
+        var notyOptions = jQuery.extend({}, notyDefaultOptions);
+        notyOptions.text = 'The justification field needs to be filled';
+        noty(notyOptions);
       }
     }
+    // }
 
   });
 
