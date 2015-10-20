@@ -2227,6 +2227,22 @@ input.userName {
 #helpHome {
   min-height: 545px;
 }
+
+.helpContent{
+  display: none;
+}
+
+#templatesSection, #userManualSection {
+  text-align: center;
+}
+#template-downloads1{
+    float: left;
+    padding-left: 25%;
+
+}
+#helpTitleSection a:link{
+  text-decoration: none;
+}
 /*************** HOME DASHBOARD****************/
 
 /*  Home page*/

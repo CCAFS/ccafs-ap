@@ -8,3 +8,8 @@ function init() {
 function attachEvents() {
   // Attach events here
 }
+
+function displaySection(section){
+  $(".helpContent").hide();
+  $("#"+section).show(1000);
+}
