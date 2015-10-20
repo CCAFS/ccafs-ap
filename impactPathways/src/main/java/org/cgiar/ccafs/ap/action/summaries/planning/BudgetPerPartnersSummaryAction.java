@@ -16,7 +16,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetByPartnersSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetPerPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class BudgetByPartnersSummaryAction extends BaseAction implements Summary {
+public class BudgetPerPartnersSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
@@ -43,7 +43,7 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
   private ProjectManager projectManager;
 
   // XLS
-  private BudgetByPartnersSummaryXLS budgetByPartnersSummaryXLS;
+  private BudgetPerPartnersSummaryXLS budgetPerPartnersSummaryXLS;
 
   // XLS bytes
   private byte[] bytesXLS;
@@ -55,18 +55,18 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
   List<Map<String, Object>> informationBudgetByPartners;
 
   @Inject
-  public BudgetByPartnersSummaryAction(APConfig config, ProjectManager projectManager,
-    BudgetByPartnersSummaryXLS budgetByPartnersSummaryXLS) {
+  public BudgetPerPartnersSummaryAction(APConfig config, ProjectManager projectManager,
+    BudgetPerPartnersSummaryXLS budgetByPartnersSummaryXLS) {
     super(config);
     this.projectManager = projectManager;
-    this.budgetByPartnersSummaryXLS = budgetByPartnersSummaryXLS;
+    this.budgetPerPartnersSummaryXLS = budgetByPartnersSummaryXLS;
   }
 
   @Override
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = budgetByPartnersSummaryXLS.generateXLS(informationBudgetByPartners);
+    bytesXLS = budgetPerPartnersSummaryXLS.generateXLS(informationBudgetByPartners);
 
     return SUCCESS;
   }
@@ -85,7 +85,7 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
   @Override
   public String getFileName() {
     StringBuffer fileName = new StringBuffer();
-    fileName.append("BudgetByPartnersSummary-");
+    fileName.append("BudgetPerPartnersSummary-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -103,7 +103,7 @@ public class BudgetByPartnersSummaryAction extends BaseAction implements Summary
 
   @Override
   public void prepare() {
-    informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetByPartners(this.getCurrentPlanningYear());
+    informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetPerPartners(this.getCurrentPlanningYear());
 
 
   }
