@@ -17,9 +17,12 @@ package org.cgiar.ccafs.security;
 import org.cgiar.ccafs.security.data.model.Role;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +41,6 @@ public class BaseSecurityContext {
     Subject subject = this.getSubject();
 
     if (subject != null) {
-
       for (Role role : Role.values()) {
         if (subject.hasRole(role.toString())) {
           roles.add(role);
@@ -47,6 +49,17 @@ public class BaseSecurityContext {
     }
 
     return roles;
+  }
+
+  public Set<String> getRolesAsString() {
+    if (this.getSubject() != null) {
+      if (this.getSubject().getSession().getAttribute("auth_info") != null) {
+        SimpleAuthorizationInfo authorizationInfo =
+          (SimpleAuthorizationInfo) this.getSubject().getSession().getAttribute("auth_info");
+        return authorizationInfo.getRoles();
+      }
+    }
+    return new HashSet<>();
   }
 
   public Subject getSubject() {
