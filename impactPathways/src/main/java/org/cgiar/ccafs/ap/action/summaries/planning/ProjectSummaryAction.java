@@ -62,6 +62,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * @author Jorge Leonardo Solis B.
  * @author Hernán David Carvajal
  */
 
@@ -73,7 +74,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   // Managers
   private ActivityManager activityManager;
   private BudgetManager budgetManager;
-  // private CRPManager crpManager;
   private DeliverableManager deliverableManager;
   private DeliverablePartnerManager deliverablePartnerManager;
   private IPElementManager ipElementManager;
@@ -125,7 +125,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
     this.ipOtherContributionManager = ipOtherContributionManager;
-    // this.crpManager = crpManager;
     this.partnerPersonManager = partnerPersonManager;
     this.indicatorManager = indicatorManager;
     this.projectLessonsManager = projectLessonsManager;
@@ -145,20 +144,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     streams.add(projectPDF.getInputStream());
 
     return SUCCESS;
-  }
-
-  public Budget getBilateralCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
-    List<Budget> budgets = budgetManager.getBudgetsByYear(cofinanceProjectID, year);
-
-    for (Budget budget : budgets) {
-      if (budget.getCofinancingProject() != null) {
-        if (budget.getCofinancingProject().getId() == projectID) {
-          return budget;
-        }
-      }
-    }
-    return null;
-
   }
 
   public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
@@ -207,16 +192,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
   }
 
-  /**
-   * Return the absolute path where the work plan is or should be located.
-   * 
-   * @param workplan name
-   * @return complete path where the image is stored
-   */
-  // private String getWorplansAbsolutePath() {
-  // return config.getUploadsBaseFolder() + File.separator + this.getWorkplanRelativePath() + File.separator;
-  // }
-  //
 
   @Override
   public void prepare() throws Exception {
@@ -241,7 +216,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Set submissions
     project.setSubmissions(submisssionManager.getProjectSubmissions(project));
-
 
     List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project);
 
@@ -292,8 +266,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       } else {
         DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
         responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-        // responsiblePartner.setInstitution(new Institution(-1));
-        // responsiblePartner.setUser(new User(-1));
 
         deliverable.setResponsiblePartner(responsiblePartner);
       }
@@ -303,26 +275,22 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
         APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
-    // Add Deliverables
+    // Set Deliverables
     project.setDeliverables(deliverables);
 
-    // *************************Outcomes*****************************
+    // *************************Outcomes*****************************/
     project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
-    // Getting the informations
-
-    // project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
 
     project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));
 
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
 
-
-    // *************************Budgets ******************************
+    // *************************Budgets******************************/
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));
 
-    // Get Leasson regarding
+    // Set Leasson regarding
     project.setComponentLessons(this.projectLessonsManager.getComponentLessonsByProject(projectID));
 
     // Set project overhead
@@ -330,8 +298,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       project.setOverhead(this.budgetOverheadManager.getProjectBudgetOverhead(project.getId()));
     }
 
-    // Annual contribution
-
+    // *************************Annual contribution*******************/
     for (Project projectContributor : project.getLinkedProjects()) {
       if (project.isBilateralProject()) {
         projectContributor.setAnualContribution(this.getCofinancingBudget(projectContributor.getId(), projectID,
@@ -340,10 +307,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
         projectContributor.setAnualContribution(this.getCofinancingBudget(projectID, projectContributor.getId(),
           config.getPlanningCurrentYear()));
       }
-
-
     }
-
-
   }
 }
