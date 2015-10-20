@@ -78,13 +78,13 @@
         [#-- Budget reports --]
         <div id="budget-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="powb" value="powb" disabled="disabled"/>
-            <label for="powb">[@s.text name="summaries.board.report.powb" /] <span>XLSx</span></label>
+            <input type="radio" name="formOptions" id="budgetPerPartnersSummary" value="budgetPerPartnersSummary"/>
+            <label for="budgetPerPartnersSummary">[@s.text name="summaries.board.report.powb" /] <span>XLSx</span></label>
             <p class="description"> [@s.text name="summaries.board.report.powb.description" /]</p>
           </div>
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="powbMOG" value="powbMOG" disabled="disabled"/>
-            <label for="powbMOG">[@s.text name="summaries.board.report.powbMOG" /] <span>XLSx</span></label>
+            <input type="radio" name="formOptions" id="budgetByMOGsSummary" value="budgetByMOGsSummary"/>
+            <label for="budgetByMOGsSummary">[@s.text name="summaries.board.report.powbMOG" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.powbMOG.description" /] </p>
           </div>
         </div>

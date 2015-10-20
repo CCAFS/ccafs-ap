@@ -31,13 +31,13 @@ import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 /**
  * @author Jorge Leonardo Solis B.
  */
-public class BudgetByPartnersSummaryXLS {
+public class BudgetPerPartnersSummaryXLS {
 
   private BaseXLS xls;
   private APConfig config;
 
   @Inject
-  public BudgetByPartnersSummaryXLS(BaseXLS xls, APConfig config) {
+  public BudgetPerPartnersSummaryXLS(BaseXLS xls, APConfig config) {
     this.xls = xls;
     this.config = config;
 
@@ -124,7 +124,7 @@ public class BudgetByPartnersSummaryXLS {
       Workbook workbook = xls.initializeWorkbook(true);
 
       // renaming sheet
-      workbook.setSheetName(0, "Budget Summary By Partners");
+      workbook.setSheetName(0, "Budget Summary Per Partners");
       Sheet sheet = workbook.getSheetAt(0);
 
       xls.initializeSheet(sheet, headersType);

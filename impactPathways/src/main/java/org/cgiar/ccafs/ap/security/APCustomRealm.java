@@ -31,6 +31,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -44,6 +45,7 @@ import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +63,7 @@ public class APCustomRealm extends AuthorizingRealm {
 
   // Variables
   final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
-  private SimpleAuthorizationInfo authorizationInfo;
+  // private SimpleAuthorizationInfo authorizationInfo;
   private int userID;
 
   // Managers
@@ -93,7 +95,7 @@ public class APCustomRealm extends AuthorizingRealm {
   @Override
   public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
     super.clearCachedAuthorizationInfo(principals);
-    authorizationInfo = null;
+    // authorizationInfo = null;
   }
 
   @Override
@@ -139,9 +141,10 @@ public class APCustomRealm extends AuthorizingRealm {
 
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-    if (authorizationInfo == null) {
+    Session session = SecurityUtils.getSubject().getSession();
+    if (session.getAttribute("auth_info") == null) {
       // if ((Integer) principals.getPrimaryPrincipal() != userID) {
-      authorizationInfo = new SimpleAuthorizationInfo();
+      SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
       userID = (Integer) principals.getPrimaryPrincipal();
       List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
@@ -159,6 +162,7 @@ public class APCustomRealm extends AuthorizingRealm {
             break;
 
           case APConstants.ROLE_MANAGEMENT_LIAISON:
+          case APConstants.ROLE_COORDINATING_UNIT:
             projectRoles.putAll(userRoleManager.getManagementLiaisonProjects(userID));
             break;
 
@@ -202,9 +206,11 @@ public class APCustomRealm extends AuthorizingRealm {
           authorizationInfo.addStringPermission(permission);
         }
       }
+      session.setAttribute("auth_info", authorizationInfo);
+      return authorizationInfo;
     }
+    return (AuthorizationInfo) session.getAttribute("auth_info");
 
-    return authorizationInfo;
   }
 
   @Override

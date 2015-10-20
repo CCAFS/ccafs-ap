@@ -110,7 +110,7 @@
           <p class="userId" style="display:none">${currentUser.id}</p> 
           <p class="name">${currentUser.firstName} ${currentUser.lastName}</p>  
           <p class="institution">${currentUser.email}</p>
-          <p class="roles">${securityContext.roles}</p>
+          <p class="roles">${securityContext.rolesAsString}</p>
         </div>
   	[/#if]
   </div>

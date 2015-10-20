@@ -544,12 +544,12 @@ input.target {
 }
 
 .fileUpload .remove{
-    float: left;
-    margin-right: 7px;
-    background-image: url(../../images/global/icon-remove.png);
-    background-color: initial;
-    width: 16px;
-    height: 15px;
+  float: left;
+  margin-right: 7px;
+  background-color: initial;
+  background-image: url(../../images/global/icon-remove.png);
+  width: 16px;
+  height: 15px;
 }
 
 .fileUpload .file{

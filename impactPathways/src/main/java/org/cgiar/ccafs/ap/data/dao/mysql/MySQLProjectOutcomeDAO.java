@@ -55,8 +55,8 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
         projectOutcomeData.put("id", rs.getString("id"));
         projectOutcomeData.put("year", rs.getString("year"));
         projectOutcomeData.put("statement", rs.getString("statement"));
-        projectOutcomeData.put("stories", rs.getString("stories"));
-        projectOutcomeData.put("gender_dimension", rs.getString("gender_dimension"));
+        // projectOutcomeData.put("stories", rs.getString("stories"));
+        // projectOutcomeData.put("gender_dimension", rs.getString("gender_dimension"));
         projectOutcomeData.put("project_id", rs.getString("project_id"));
 
         projectOutcomeList.add(projectOutcomeData);

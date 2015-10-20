@@ -313,7 +313,7 @@ public interface ProjectManager {
    * @param year - Specific year to search in the report.
    * @return a list of columns with the information detail summary
    */
-  public List<Map<String, Object>> summaryGetProjectBudgetByPartners(int year);
+  public List<Map<String, Object>> summaryGetProjectBudgetPerPartners(int year);
 
   /**
    * This method updates the project type into the database according to the values contained in the project received by

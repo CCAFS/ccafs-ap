@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
@@ -36,6 +37,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
+import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -60,6 +62,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * @author Jorge Leonardo Solis B.
  * @author Hernán David Carvajal
  */
 
@@ -71,7 +74,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   // Managers
   private ActivityManager activityManager;
   private BudgetManager budgetManager;
-  // private CRPManager crpManager;
   private DeliverableManager deliverableManager;
   private DeliverablePartnerManager deliverablePartnerManager;
   private IPElementManager ipElementManager;
@@ -88,6 +90,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private IPIndicatorManager indicatorManager;
   private ProjectLessonsManager projectLessonsManager;
   private SubmissionManager submisssionManager;
+  private BudgetOverheadManager budgetOverheadManager;
 
   // Model
   private Project project;
@@ -104,7 +107,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     InstitutionManager institutionManager, DeliverableManager deliverableManager, NextUserManager nextUserManager,
     DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
     CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager,
-    ProjectLessonsManager projectLessonsManager, SubmissionManager submisssionManager) {
+    ProjectLessonsManager projectLessonsManager, SubmissionManager submisssionManager,
+    BudgetOverheadManager budgetOverheadManager) {
     super(config);
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
@@ -121,11 +125,11 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = deliverablePartnerManager;
     this.ipOtherContributionManager = ipOtherContributionManager;
-    // this.crpManager = crpManager;
     this.partnerPersonManager = partnerPersonManager;
     this.indicatorManager = indicatorManager;
     this.projectLessonsManager = projectLessonsManager;
     this.submisssionManager = submisssionManager;
+    this.budgetOverheadManager = budgetOverheadManager;
   }
 
 
@@ -142,10 +146,25 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     return SUCCESS;
   }
 
+  public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
+
+    List<Budget> budgets = this.project.getBudgets();
+    for (Budget budget : budgets) {
+      if (budget != null) {
+        if (budget.getProjectId() == projectID && budget.getCofinancingProject() != null
+          && budget.getCofinancingProject().getId() == cofinanceProjectID && budget.getYear() == year) {
+          return budget;
+        }
+      }
+    }
+    return null;
+  }
+
   @Override
   public int getContentLength() {
     return projectPDF.getContentLength();
   }
+
 
   @Override
   public String getContentType() {
@@ -163,27 +182,16 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     return projectPDF.getInputStream();
   }
 
+
   private String getWorkplanRelativePath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
       + config.getProjectWorkplanFolder() + File.separator;
   }
 
-
   public String getWorkplanURL() {
     return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
   }
 
-
-  /**
-   * Return the absolute path where the work plan is or should be located.
-   * 
-   * @param workplan name
-   * @return complete path where the image is stored
-   */
-  // private String getWorplansAbsolutePath() {
-  // return config.getUploadsBaseFolder() + File.separator + this.getWorkplanRelativePath() + File.separator;
-  // }
-  //
 
   @Override
   public void prepare() throws Exception {
@@ -208,7 +216,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Set submissions
     project.setSubmissions(submisssionManager.getProjectSubmissions(project));
-
 
     List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project);
 
@@ -243,7 +250,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
     project.setOutputsOverview(listaOver);
 
-
     // *************************Deliverables*****************************/
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
     for (Deliverable deliverable : deliverables) {
@@ -260,39 +266,47 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       } else {
         DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
         responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-        // responsiblePartner.setInstitution(new Institution(-1));
-        // responsiblePartner.setUser(new User(-1));
 
         deliverable.setResponsiblePartner(responsiblePartner);
       }
-
 
       // Getting the other partners that are contributing to this deliverable.
       deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
         APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
-    // Add Deliverables
+    // Set Deliverables
     project.setDeliverables(deliverables);
 
-    // *************************Outcomes*****************************
+    // *************************Outcomes*****************************/
     project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
-    // Getting the informations
-
-    // project.setCrpContributions(crpManager.getCrpContributions(projectID));
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
 
     project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));
 
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
 
-    // *************************Budgets ******************************
-
+    // *************************Budgets******************************/
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));
 
-    // Get Leasson regarding
+    // Set Leasson regarding
     project.setComponentLessons(this.projectLessonsManager.getComponentLessonsByProject(projectID));
 
+    // Set project overhead
+    if (project.isBilateralProject()) {
+      project.setOverhead(this.budgetOverheadManager.getProjectBudgetOverhead(project.getId()));
+    }
+
+    // *************************Annual contribution*******************/
+    for (Project projectContributor : project.getLinkedProjects()) {
+      if (project.isBilateralProject()) {
+        projectContributor.setAnualContribution(this.getCofinancingBudget(projectContributor.getId(), projectID,
+          config.getPlanningCurrentYear()));
+      } else if (project.isCoFundedProject()) {
+        projectContributor.setAnualContribution(this.getCofinancingBudget(projectID, projectContributor.getId(),
+          config.getPlanningCurrentYear()));
+      }
+    }
   }
 }
