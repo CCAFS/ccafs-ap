@@ -20,7 +20,6 @@ import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
@@ -96,7 +95,6 @@ public class ProjectSummaryPDF extends BasePDF {
   private Document document;
   private APConfig config;
   private ProjectContributionOverviewManager overviewManager;
-  private ProjectOutcomeManager projectOutcomeManager;
   private IPElementManager elementManager;
   private InputStream inputStream;
   private BudgetManager budgetManager;
@@ -113,14 +111,13 @@ public class ProjectSummaryPDF extends BasePDF {
   @Inject
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
     IPCrossCuttingManager ipCrossCuttingManager, LocationManager locationManager,
-    ProjectContributionOverviewManager overviewManager, ProjectOutcomeManager projectOutcomeManager,
-    ProjectPartnerManager projectPartnerManager, BudgetByMogManager budgetByMogManager) {
+    ProjectContributionOverviewManager overviewManager, ProjectPartnerManager projectPartnerManager,
+    BudgetByMogManager budgetByMogManager) {
     this.config = config;
     this.initialize(config.getBaseUrl());
     this.budgetManager = budgetManager;
     this.elementManager = elementManager;
     this.overviewManager = overviewManager;
-    this.projectOutcomeManager = projectOutcomeManager;
     this.budgetByMogManager = budgetByMogManager;
     this.allMOGs = elementManager.getIPElementList();
     this.listMapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
@@ -391,7 +388,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getTotalContribution() * 0.01
-        * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[0] += value;
@@ -410,7 +407,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getGenderContribution() * 0.01
-        * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[1] += value;
@@ -592,7 +589,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(this.budgetFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
             valueSum = value;
@@ -1429,19 +1426,16 @@ public class ProjectSummaryPDF extends BasePDF {
       if (project.isBilateralProject() && project.getOverhead() != null) {
         paragraph = new Paragraph();
         paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        paragraph.add(this.getText("summaries.project.budget.cost.covered"));
-        paragraph.setFont(BODY_TEXT_FONT);
+
 
         // Overhead
         if (!project.getOverhead().isBilateralCostRecovered()) {
-          paragraph.add(this.getText("summaries.options.no"));
-          paragraph.add(Chunk.NEWLINE);
-          paragraph.add(Chunk.NEWLINE);
-          paragraph.setFont(BODY_TEXT_BOLD_FONT);
           paragraph.add(this.getText("summaries.project.budget.overhead"));
           paragraph.setFont(BODY_TEXT_FONT);
-          paragraph.add("USD $" + budgetFormatter.format(project.getOverhead().getContractedOverhead()));
+          paragraph.add(this.genderFormatter.format(project.getOverhead().getContractedOverhead()));
         } else {
+          paragraph.add(this.getText("summaries.project.budget.cost.covered"));
+          paragraph.setFont(BODY_TEXT_FONT);
           paragraph.add(this.getText("summaries.options.yes"));
         }
         paragraph.add(Chunk.NEWLINE);
@@ -1535,12 +1529,15 @@ public class ProjectSummaryPDF extends BasePDF {
         this.addTableHeaderCell(table, new Paragraph(this.getText("summaries.project.budget.overall.year"),
           TABLE_HEADER_FONT));
 
-        String type = (this.getBudgetType() == null) ? BudgetType.W3_BILATERAL.name() : BudgetType.W1_W2.name();
+        StringBuilder type = new StringBuilder();
+        type.append((this.getBudgetType() == null) ? BudgetType.W3_BILATERAL.name().replace("_", "/")
+          : BudgetType.W1_W2.name().replace("_", "/"));
 
-        this
-          .addTableHeaderCell(table,
-            new Paragraph(this.getText("summaries.project.budget.overall.amount", new String[] {type}),
-              TABLE_HEADER_FONT));
+        type.append("\n USD");
+
+        this.addTableHeaderCell(table,
+          new Paragraph(this.getText("summaries.project.budget.overall.amount", new String[] {type.toString()}),
+            TABLE_HEADER_FONT));
         Budget annualContribution;
         double totalAnnualContribution = 0.0;
         for (Project linkageProject : projectLinkagesList) {
@@ -1885,7 +1882,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
