@@ -324,7 +324,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.assigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-      message.toString(), null, null, null);
+        message.toString(), null, null, null);
   }
 
   /**
@@ -364,7 +364,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.unAssigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-      message.toString(), null, null, null);
+        message.toString(), null, null, null);
   }
 
   @Override
@@ -491,7 +491,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       // Check if the project coordinator has changed and send the corresponding emails
       PartnerPerson previousCoordinator = null;
       if (previousProject.getCoordinatorPersons().size() > 0) {
-        previousCoordinator = project.getCoordinatorPersons().get(0);
+        previousCoordinator = previousProject.getCoordinatorPersons().get(0);
       }
       PartnerPerson coordinator = null;
       if (project.getCoordinatorPersons().size() > 0) {
