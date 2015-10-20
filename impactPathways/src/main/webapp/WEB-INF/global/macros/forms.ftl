@@ -214,7 +214,9 @@
     <div class="dialog-content"> 
       [@s.form action="${action}" namespace="${namespace}" cssClass="pure-form"]
         [@textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
-        <input name="${nameId}" type="hidden" value="-1" />
+        [#if nameId != ""]
+          <input name="${nameId}" type="hidden" value="-1" />
+        [/#if]
         <input name="projectID" type="hidden" value="${projectID}" />
         <!-- Allow form submission with keyboard without duplicating the dialog button -->
         <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
