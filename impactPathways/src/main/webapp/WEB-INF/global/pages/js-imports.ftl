@@ -101,11 +101,14 @@
     Tawk_API.visitor = {
       name: '${(currentUser.firstName)!} ${(currentUser.lastName)!}',
     };
+    
     Tawk_API.onLoad = function() {
       Tawk_API.setAttributes({
           'userName': $('#userInfo p.name').text() || 'Unknow User',
           'userId': $('#userInfo p.userId').text() || 'Unknow Id',
-          'roles': $('#userInfo p.roles').text()
+          'roles': $('#userInfo p.roles').text(),
+          'liaisonInstitution': '${(currentUser.liaisonInstitution.acronym)!"null"}'
+          
       }, function(error) {
       });
     };

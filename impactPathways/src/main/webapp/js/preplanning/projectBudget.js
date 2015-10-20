@@ -1,5 +1,5 @@
 // Global VARS
-var $allBudgetInputs, $overheadInputs, $CCAFSBudgetInputs, $linkedProjects, $selectAddProject, $plBudget;
+var $allBudgetInputs, $overheadInputs, $overHeadContractInput, $CCAFSBudgetInputs, $linkedProjects, $selectAddProject, $plBudget;
 var projectBudget,projectBudgetByYear,bilateralBudget,bilateralBudgetByYear;
 var projectType;
 var editable = true;
@@ -12,6 +12,7 @@ function init() {
   $projectBudgetInputs = $("input.projectBudget");
   $genderBudgetInputs = $('input.projectGenderBudget');
   $overheadInputs = $("input[name$='bilateralCostRecovered']");
+  $overHeadContractInput = $('.overHeadContractInput');
   $linkedProjects = $('#linkedProjects');
   $selectAddProject = $("select.addProject");
   $plBudget = $('.partnerLeader input.plBudget');
@@ -40,6 +41,7 @@ function init() {
   $partnerBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
   $genderBudgetInputs.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
 
+  $overHeadContractInput.attr("autocomplete", "off").trigger("focusout");// .trigger("keyup");
   // Validate justification and information
   validateEvent([
     "#justification"
@@ -78,6 +80,13 @@ function attachEvents() {
       }).on("keyup", function(e) {
         isPercentage(e);
         calculateGenderBudget($(e.target).parents('.partnerBudget'));
+  });
+  
+  $overHeadContractInput.on("keydown", isNumber).on("focusout", setPercentage).on("focus", removePercentage).on("click",
+      function() {
+        $(this).select();
+      }).on("keyup", function(e) {
+        isPercentage(e);
   });
 
   // Overhead (for bilateral projects) radio buttons event

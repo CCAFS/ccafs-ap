@@ -135,7 +135,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * This method removes all the section statuses.
    */
   public void cleanSectionStatuses() {
-    sectionStatuses.clear();
+    if (sectionStatuses != null) {
+      sectionStatuses.clear();
+    }
   }
 
   /* Override this method depending of the delete action. */
@@ -192,7 +194,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public User getCurrentUser() {
     User u = null;
     try {
-      u = (User) session.get(APConstants.SESSION_USER);
+      u = session.get(APConstants.SESSION_USER) != null ? (User) session.get(APConstants.SESSION_USER) : null;
     } catch (Exception e) {
       LOG.warn("There was a problem trying to find the user in the session.");
     }

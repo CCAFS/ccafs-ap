@@ -98,7 +98,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
 
   public String getBilateralContractURL() {
-    return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
+    return config.getDownloadURL() + "/" + this.getBilateralProposalRelativePath().replace('\\', '/');
   }
 
   /**
@@ -247,6 +247,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
+
     super.prepare();
 
     try {
@@ -307,7 +308,9 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setType(project.getType());
     previousProject.setWorkplanRequired(project.isWorkplanRequired());
     previousProject.setWorkplanName(project.getWorkplanName());
-    previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
+    previousProject.setBilateralContractProposalName(project.getWorkplanName());
+
+    project.setBilateralContractProposalName(project.getWorkplanName());
 
     if (project.getLinkedProjects() != null) {
       List<Project> linkedProjects = new ArrayList<>();
