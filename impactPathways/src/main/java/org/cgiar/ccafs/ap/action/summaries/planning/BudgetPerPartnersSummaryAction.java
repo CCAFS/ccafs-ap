@@ -105,8 +105,13 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
 
   @Override
   public void prepare() {
+    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
+    int year = config.getPlanningCurrentYear();
 
-    int year = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST)));
+    if (strYear != null) {
+      year = Integer.parseInt(strYear);
+    }
+
     informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetPerPartners(year);
 
 

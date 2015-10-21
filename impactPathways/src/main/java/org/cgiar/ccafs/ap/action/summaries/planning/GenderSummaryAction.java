@@ -44,7 +44,8 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   private static final long serialVersionUID = 5110987672008315842L;;
   private GenderSummaryXLS genderSummaryXLS;
   private ProjectManager projectManager;
-  private String[] termsToSearch;
+  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
+    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
 
   private List<Map<String, Object>> projectList, deliverableList, activityList;
 
@@ -62,9 +63,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
     super(config);
     this.genderSummaryXLS = genderSummaryXLS;
     this.projectManager = projectManager;
-    // termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    // "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children",
-    // "child"};
+
   }
 
   @Override
@@ -108,7 +107,9 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
     String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.TERMS_TO_SEARCH)));
-    termsToSearch = StringUtils.split(string, ',');
+    if (string != null) {
+      termsToSearch = StringUtils.split(string, ',');
+    }
     projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
     activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
     deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
