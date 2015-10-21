@@ -18,14 +18,15 @@ package org.cgiar.ccafs.ap.data.model;
 
 public enum SectionStatusEnum {
 
+
   DESCRIPTION("description"), PARTNERS("partners"), LOCATIONS("locations"), OUTCOMES("outcomes"),
   CCAFSOUTCOMES("ccafsOutcomes"), OTHERCONTRIBUTIONS("otherContributions"), OUTPUTS("outputs"),
   DELIVERABLESLIST("deliverablesList"), ACTIVITIES("activities"), BUDGET("budget"), BUDGETBYMOG("budgetByMog");
 
   private String status;
 
-  private SectionStatusEnum(String s) {
-    status = s;
+  private SectionStatusEnum(String status) {
+    this.status = status;
   }
 
 
