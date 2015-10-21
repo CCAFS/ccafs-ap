@@ -1,5 +1,8 @@
 ----------------------------------------------------------------------------
---    Elimina los actuales permisos para ML,Y CU y se le agrega los correspondietes
+
+
+--    Delete actually permissions for ML y CU and add newest 
+
 -------------------------
 
 delete 

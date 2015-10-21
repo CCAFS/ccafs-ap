@@ -1533,7 +1533,7 @@ public class ProjectSummaryPDF extends BasePDF {
         type.append((this.getBudgetType() == null) ? BudgetType.W3_BILATERAL.name().replace("_", "/")
           : BudgetType.W1_W2.name().replace("_", "/"));
 
-        type.append("\n USD");
+        type.append("\n (USD)");
 
         this.addTableHeaderCell(table,
           new Paragraph(this.getText("summaries.project.budget.overall.amount", new String[] {type.toString()}),
@@ -2125,73 +2125,32 @@ public class ProjectSummaryPDF extends BasePDF {
       outcomesBlock.add(outcomeProgress);
       outcomesBlock.add(Chunk.NEWLINE);;
       outcomesBlock.add(Chunk.NEWLINE);;
-      try {
 
+
+      try {
         document.add(outcomesBlock);
       } catch (DocumentException e) {
         LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
       }
     }
 
-    // ******************* Gender contribution ***************/
-    /*
-     * outcomesBlock = new Paragraph();
-     * outcomesBlock.add(Chunk.NEWLINE);
-     * outcomesBlock.setFont(HEADING3_FONT);
-     * outcomesBlock.add("4.2 " + this.getText("summaries.project.outcome.gender"));
-     * outcomesBlock.add(Chunk.NEWLINE);;
-     * outcomesBlock.add(Chunk.NEWLINE);;
-     * outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-     * outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-     * outcomesBlock.add(this.getText("summaries.project.outcome.gender.contributiton.title"));
-     * ProjectOutcome narrative =
-     * this.projectOutcomeManager.getProjectOutcomeByYear(this.project.getId(), this.midOutcomeYear);
-     * if (narrative != null) {
-     * if (narrative.getGenderDimension() != null) {
-     * outcomeProgress = narrative.getGenderDimension();
-     * } else {
-     * outcomeProgress = this.getText("summaries.project.empty");
-     * }
-     * } else {
-     * outcomeProgress = this.getText("summaries.project.empty");
-     * }
-     * outcomesBlock.setFont(BODY_TEXT_FONT);
-     * outcomesBlock.add(outcomeProgress);
-     * outcomesBlock.add(Chunk.NEWLINE);;
-     * outcomesBlock.add(Chunk.NEWLINE);;
-     * for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
-     * outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-     * outcomesBlock.add(this.getText("summaries.project.outcome.gender.contributiton",
-     * new String[] {String.valueOf(year)}));
-     * if ((project.getOutcomes().get(String.valueOf(year)) == null)
-     * || (project.getOutcomes().get(String.valueOf(year)).getGenderDimension() == null)) {
-     * outcomeProgress = this.getText("summaries.project.empty");
-     * } else {
-     * outcomeProgress = project.getOutcomes().get(String.valueOf(year)).getGenderDimension();
-     * }
-     * outcomesBlock.setFont(BODY_TEXT_FONT);
-     * outcomesBlock.add(outcomeProgress);
-     * outcomesBlock.add(Chunk.NEWLINE);
-     * outcomesBlock.add(Chunk.NEWLINE);
-     * }
-     * // Leason regardins
-     * outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-     * outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-     * outcomesBlock.add(this.getText("summaries.project.outcome.lessonRegarding"));
-     * outcomesBlock.setFont(BODY_TEXT_FONT);
-     * if (project.getComponentLesson("outcomes") != null) {
-     * outcomesBlock.add(this.messageReturn(project.getComponentLesson("outcomes").getLessons()));
-     * } else {
-     * outcomesBlock.add(this.messageReturn(null));
-     * }
-     * // Add paragraphs to document
-     * try {
-     * document.add(outcomesBlock);
-     * } catch (DocumentException e) {
-     * LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
-     * }
-     */
 
+    // Lesson regardins
+    outcomesBlock = new Paragraph();
+    outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+    outcomesBlock.add(this.getText("summaries.project.outcome.lessonRegarding"));
+    outcomesBlock.setFont(BODY_TEXT_FONT);
+    if (project.getComponentLesson("outcomes") != null) {
+      outcomesBlock.add(this.messageReturn(project.getComponentLesson("outcomes").getLessons()));
+    } else {
+      outcomesBlock.add(this.messageReturn(null));
+    }
+    try {
+      document.add(outcomesBlock);
+    } catch (DocumentException e) {
+      LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
+    }
     // ******************* CCAFS Outcomes***************/
     this.addProjectCCAFSOutcomes();
 
@@ -2301,7 +2260,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       document.add(Chunk.NEWLINE);
 
-      // Lesson regardins
+      // Lesson regardins Other contributions
       outcomesBlock = new Paragraph();
       outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
       outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
@@ -2386,7 +2345,7 @@ public class ProjectSummaryPDF extends BasePDF {
         paragraph.add(Chunk.NEWLINE);
         paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
         paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        paragraph.add(this.getText("summaries.project.output.lessonRegarding"));
+        paragraph.add(this.getText("summaries.project.output.lessonRegarding") + ": ");
         paragraph.setFont(BODY_TEXT_FONT);
         if (project.getComponentLesson("outputs") != null) {
           paragraph.add(this.messageReturn(project.getComponentLesson("outputs").getLessons()));

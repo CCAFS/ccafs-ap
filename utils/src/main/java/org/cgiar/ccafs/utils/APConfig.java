@@ -61,6 +61,7 @@ public class APConfig {
   private static final String PROJECT_WORKPLAN_FOLDER = "file.uploads.project.WorkplanFolder";
   private static final String PROJECT_BILATERAL_PROPOSAL_FOLDER = "file.uploads.project.bilateralProposalFolder";
   private static final String FILE_DOWNLOADS = "file.downloads";
+  private static final String RESOURCE_PATH = "resource.path";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -372,12 +373,8 @@ public class APConfig {
    * 
    * @return
    */
-  public File getResourcesPath() {
-    File f = new File("");
-    String realPath = f.getAbsolutePath();
-    File resources = new File(realPath, "src/main/resources");
-    return resources;
-
+  public File getResourcePath() {
+    return new File(properties.getPropertiesAsString(RESOURCE_PATH));
   }
 
   /**
