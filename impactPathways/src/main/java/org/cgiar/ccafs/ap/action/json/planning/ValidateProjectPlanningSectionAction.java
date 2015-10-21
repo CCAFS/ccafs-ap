@@ -27,6 +27,7 @@ import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
+import org.cgiar.ccafs.ap.data.model.SectionStatusEnum;
 import org.cgiar.ccafs.ap.validation.planning.ActivitiesListValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetByMOGValidator;
 import org.cgiar.ccafs.ap.validation.planning.ProjectBudgetPlanningValidator;
@@ -128,6 +129,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   @Inject
   private ProjectBudgetByMOGValidator budgetbyMOGValidator;
 
+
   @Inject
   public ValidateProjectPlanningSectionAction(APConfig config) {
     super(config);
@@ -137,38 +139,38 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   public String execute() throws Exception {
     if (existProject && validSection) {
       // getting the current section status.
-      switch (sectionName) {
-        case "description":
+      switch (SectionStatusEnum.valueOf(sectionName)) {
+        case DESCRIPTION:
           this.validateProjectDescription();
           break;
-        case "partners":
+        case PARTNERS:
           this.validateProjectPartners();
           break;
-        case "locations":
+        case LOCATIONS:
           this.validateProjectLocations();
           break;
-        case "outcomes":
+        case OUTCOMES:
           this.validateProjectOutcomes();
           break;
-        case "ccafsOutcomes":
+        case CCAFSOUTCOMES:
           this.validateCCAFSOutcomes();
           break;
-        case "otherContributions":
+        case OTHERCONTRIBUTIONS:
           this.validateProjectOtherContributions();
           break;
-        case "outputs":
+        case OUTPUTS:
           this.validateOverviewByMOGS();
           break;
-        case "deliverablesList":
+        case DELIVERABLESLIST:
           this.validateDeliverables();
           break;
-        case "activities":
+        case ACTIVITIES:
           this.validateActivities();
           break;
-        case "budget":
+        case BUDGET:
           this.validateBudgetByPartner();
           break;
-        case "budgetByMog":
+        case BUDGETBYMOG:
           this.validateBudgetByMOG();
           break;
         default:
