@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.LogHistory;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
+import org.cgiar.ccafs.ap.data.model.SectionStatusEnum;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 import org.cgiar.ccafs.utils.APConfig;
@@ -319,10 +320,17 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     if (this.sectionStatuses == null || this.sectionStatuses.isEmpty()) {
       return false;
     }
+
+    SectionStatusEnum seciones[] = SectionStatusEnum.values();
+    if (seciones.length != this.sectionStatuses.size()) {
+      return false;
+    }
     for (SectionStatus status : this.sectionStatuses) {
       if (!status.getMissingFieldsWithPrefix().isEmpty()) {
         return false;
       }
+
+
     }
     return true;
   }
