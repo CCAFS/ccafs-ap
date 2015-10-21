@@ -16,8 +16,11 @@
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 
+import org.cgiar.ccafs.utils.APConfig;
+
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import com.google.inject.Inject;
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -83,25 +87,22 @@ public class BaseXLS {
 
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
-  // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE = ServletActionContext.getServletContext().getRealPath(
-    "resources/templates/template.xlsx");
-
   // Header Style
   private static final String HEADER_FONT_NAME = "Tahoma";
+
   private static final short HEADER_FONT_SIZE = 10;
   private static final String HEADER_FONT_COLOR_HEX = "#404040";
   private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
   private static final int HEADER_ROW_HEIGHT = 31;
   private static final String HEADER_BORDER_COLOR_HEX = "#fbbf77";
-
   // Textbox Style
   private static final Color TEXTBOX_BACKGROUND_COLOR_RGB = new Color(255, 204, 41);
+
   private static final short TEXTBOX_FONT_COLOR_INDEX = HSSFColor.WHITE.index;
-
-
   // Cell Style
   private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
+
+
   private static final String CELL_TRUE_BOOLEAN = "Yes";
   private static final String CELL_FALSE_BOOLEAN = "No";
   private static final String CELL_BORDER_COLOR_HEX = "#c2a5a5";
@@ -109,6 +110,9 @@ public class BaseXLS {
   private static final short CELL_BORDER_TYPE_LEFT = XSSFCellStyle.BORDER_THIN;
   private static final short CELL_BORDER_TYPE_RIGHT = XSSFCellStyle.BORDER_THIN;
 
+
+  private APConfig config;
+  private File excelTemplateFile; // Excel template file.
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
   private Workbook workbook; // Excel high level model.
@@ -125,6 +129,11 @@ public class BaseXLS {
   // cell
   private Cell cell;
 
+  @Inject
+  public BaseXLS(APConfig config) {
+    this.config = config;
+    this.excelTemplateFile = new File(config.getResourcePath(), "templates/template.xlsx");
+  }
 
   /**
    * This method set-ups a header to the sheet page.
@@ -289,7 +298,7 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-      // Style numeric
+        // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
@@ -369,9 +378,7 @@ public class BaseXLS {
     try {
       // validating the type of format.
       if (useTemplate) {
-
-        // opening excel template.
-        InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
+        InputStream templateStream = new FileInputStream(this.excelTemplateFile);
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
 
@@ -384,7 +391,7 @@ public class BaseXLS {
       return (XSSFWorkbook) workbook;
 
     } catch (IOException e) {
-      LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
+      LOG.error("There was a problem trying to create the Excel Workbook: " + excelTemplateFile, e.getMessage());
     }
     return null;
   }

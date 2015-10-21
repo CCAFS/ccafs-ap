@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetByMOGSummaryXLS;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +106,8 @@ public class BudgetByMOGsSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    informationBudgetReportByMOG = projectManager.summaryGetInformationPOWB(config.getPlanningCurrentYear());
-    informationBudgetReportByMOGDetail = projectManager.summaryGetInformationPOWBDetail(config.getPlanningCurrentYear());
+    int year = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST)));
+    informationBudgetReportByMOG = projectManager.summaryGetInformationPOWB(year);
+    informationBudgetReportByMOGDetail = projectManager.summaryGetInformationPOWBDetail(year);
   }
 }

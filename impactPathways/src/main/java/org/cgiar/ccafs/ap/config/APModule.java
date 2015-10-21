@@ -50,6 +50,8 @@ public class APModule implements Module {
     LOG.info(properties.getPropertiesAsString(config.MYSQL_USER));
     LOG.info(properties.getPropertiesAsString(config.MYSQL_HOST));
     LOG.info(properties.getPropertiesAsString(config.MYSQL_DATABASE));
+    LOG.info("----- RESOURCE PATH --------");
+    LOG.info(config.getResourcePath().getAbsolutePath());
 
 
   }

@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,8 +44,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   private static final long serialVersionUID = 5110987672008315842L;;
   private GenderSummaryXLS genderSummaryXLS;
   private ProjectManager projectManager;
-  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
+  private String[] termsToSearch;
 
   private List<Map<String, Object>> projectList, deliverableList, activityList;
 
@@ -56,10 +57,14 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Inject
   public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, InstitutionManager institutionManager,
     ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
+
+
     super(config);
     this.genderSummaryXLS = genderSummaryXLS;
     this.projectManager = projectManager;
-
+    // termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
+    // "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children",
+    // "child"};
   }
 
   @Override
@@ -102,7 +107,8 @@ public class GenderSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-
+    String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.TERMS_TO_SEARCH)));
+    termsToSearch = StringUtils.split(string, ',');
     projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
     activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
     deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();

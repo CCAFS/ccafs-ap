@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.utils;
 
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -60,6 +61,7 @@ public class APConfig {
   private static final String PROJECT_WORKPLAN_FOLDER = "file.uploads.project.WorkplanFolder";
   private static final String PROJECT_BILATERAL_PROPOSAL_FOLDER = "file.uploads.project.bilateralProposalFolder";
   private static final String FILE_DOWNLOADS = "file.downloads";
+  private static final String RESOURCE_PATH = "resource.path";
 
   // Logging.
   private static final Logger LOG = LoggerFactory.getLogger(APConfig.class);
@@ -93,7 +95,6 @@ public class APConfig {
     return base;
   }
 
-
   /**
    * Get the folder where the bilateral project contract proposal should be loaded
    * 
@@ -107,6 +108,7 @@ public class APConfig {
     }
     return null;
   }
+
 
   /**
    * Get the folder where the case studies images uploaded should be saved
@@ -364,6 +366,15 @@ public class APConfig {
       LOG.error("There is not a current year configured for the reporting section.");
     }
     return -1;
+  }
+
+  /**
+   * TODO HT
+   * 
+   * @return
+   */
+  public File getResourcePath() {
+    return new File(properties.getPropertiesAsString(RESOURCE_PATH));
   }
 
   /**

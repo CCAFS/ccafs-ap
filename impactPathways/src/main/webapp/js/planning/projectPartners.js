@@ -381,8 +381,7 @@ function removePartnerEvent(e) {
   }
   // Validate if the user has privileges to remove CCAFS Partners
   if(partner.isPPA() && !canUpdatePPAPartners) {
-    messages +=
-        '<li>You don\'t have enough privileges to delete CCAFS Partners, please contact the Management Liaison to delete this partner.</li>';
+    messages += '<li>You don\'t have enough privileges to delete CCAFS Partners.</li>';
     removeDialogOptions.buttons = {
       Close: function() {
         $(this).dialog("close");

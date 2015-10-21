@@ -6,14 +6,8 @@
 	      [#-- Home element --]
 	      <a href="${baseUrl}/">
 	        <li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>
-	          <span class="icon">
-	            [#if currentSection?? && currentSection == "home"]
-	               <img class="icon-15" src="${baseUrl}/images/global/icon-home-menu-selected.png" />
-	            [#else]
-	               <img class="icon-15" src="${baseUrl}/images/global/icon-home-menu-selected.png" />
-	            [/#if]
-	          </span>
-	          <span class="text">[@s.text name="menu.home" /]</span>
+	         <span class="icon"><img class="icon-15" src="${baseUrl}/images/global/icon-home-menu-selected.png" /></span>
+	         <span class="text">[@s.text name="menu.home" /]</span>
 	        </li>
 	      </a>
 	      
@@ -105,13 +99,13 @@
 	  </ul>
 	  
 	  [#if logged]
-        <div id="userInfo">
-          <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
-          <p class="userId" style="display:none">${currentUser.id}</p> 
-          <p class="name">${currentUser.firstName} ${currentUser.lastName}</p>  
-          <p class="institution">${currentUser.email}</p>
-          <p class="roles">${securityContext.rolesAsString}</p>
-        </div>
+      <div id="userInfo">
+        <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
+        <p class="userId" style="display:none">${currentUser.id}</p> 
+        <p class="name">${currentUser.firstName} ${currentUser.lastName}</p>  
+        <p class="institution">${currentUser.email}</p>
+        <p class="roles">${(securityContext.rolesAsString)!}</p>
+      </div>
   	[/#if]
   </div>
 </nav> 
