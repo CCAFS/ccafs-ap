@@ -44,6 +44,9 @@ ccafsap.summaries.active=false
 #             Files upload configuration
 # ------------------------------------------------
 
+# Resource path
+resource.path=D:/DESARROLLO/PHP/xampp/htdocs/ccafspr_ip/XLS_Template
+
 # Maximum size allowed
 file.maxSizeAllowed.bytes=3145728
 

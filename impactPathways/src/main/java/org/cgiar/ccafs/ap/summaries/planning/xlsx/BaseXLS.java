@@ -132,7 +132,7 @@ public class BaseXLS {
   @Inject
   public BaseXLS(APConfig config) {
     this.config = config;
-    this.excelTemplateFile = new File(config.getResourcesPath(), "templates/template.xlsx");
+    this.excelTemplateFile = new File(config.getResourcePath(), "templates/template.xlsx");
   }
 
   /**
@@ -298,48 +298,48 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-          // Style numeric
+        // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style date
+          // Style date
         case COLUMN_TYPE_DATE:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // styleBoleean
+        // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-          // styleBudget
+        // styleBudget
         case COLUMN_TYPE_BUDGET:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("$#,##0.00"));
           // "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"
           break;
 
-        // Style decimal
+          // Style decimal
         case COLUMN_TYPE_DECIMAL:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // Style long string
+          // Style long string
         case COLUMN_TYPE_TEXT_LONG:
           columnStyles[c].setAlignment(HorizontalAlignment.LEFT);
           columnStyles[c].setWrapText(true);
           break;
 
-          // Style short string
+        // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // Style hyperlink
+        // Style hyperlink
         case COLUMN_TYPE_HYPERLINK:
           XSSFFont hlinkfont = (XSSFFont) workbook.createFont();
           hlinkfont.setUnderline(XSSFFont.U_SINGLE);
