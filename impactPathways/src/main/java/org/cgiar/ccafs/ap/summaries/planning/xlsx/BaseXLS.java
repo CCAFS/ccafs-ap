@@ -84,8 +84,8 @@ public class BaseXLS {
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
   // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE = ServletActionContext.getServletContext().getRealPath(
-    "resources/templates/template.xlsx");
+  private static String EXCEL_TEMPLATE_FILE =
+    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
 
   // Header Style
   private static final String HEADER_FONT_NAME = "Tahoma";
@@ -289,7 +289,7 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-      // Style numeric
+        // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
@@ -371,6 +371,7 @@ public class BaseXLS {
       if (useTemplate) {
 
         // opening excel template.
+        System.out.println("--EXCEL TEMPLATE: " + EXCEL_TEMPLATE_FILE);
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
@@ -384,7 +385,7 @@ public class BaseXLS {
       return (XSSFWorkbook) workbook;
 
     } catch (IOException e) {
-      LOG.error("There was a problem trying to create the Excel Workbook: ", e.getMessage());
+      LOG.error("There was a problem trying to create the Excel Workbook: " + EXCEL_TEMPLATE_FILE, e.getMessage());
     }
     return null;
   }
