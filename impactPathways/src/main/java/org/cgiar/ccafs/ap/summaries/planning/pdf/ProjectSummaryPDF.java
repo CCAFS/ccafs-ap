@@ -388,7 +388,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getTotalContribution() * 0.01
-          * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+        * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[0] += value;
@@ -407,7 +407,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getGenderContribution() * 0.01
-          * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+        * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[1] += value;
@@ -589,7 +589,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(this.budgetFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
             valueSum = value;
@@ -1861,8 +1861,8 @@ public class ProjectSummaryPDF extends BasePDF {
         // Adding Header
         this.addTableHeaderCell(table, cell);
 
-        projectFocuses = new StringBuffer();
         for (Project projectContribution : project.getLinkedProjects()) {
+          projectFocuses = new StringBuffer();
           projectFocuses.append(projectContribution.getId());
           projectFocuses.append(" - ");
           projectFocuses.append(projectContribution.getTitle());
@@ -1882,7 +1882,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
