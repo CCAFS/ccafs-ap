@@ -248,6 +248,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       if (project.getLeader() != null) {
         // Getting the list of budgets.
         project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
+        List<Budget> budgetsPrevious = new ArrayList<Budget>();
+        budgetsPrevious.addAll(project.getBudgets());
+        previousProject.setBudgets(budgetsPrevious);
       } else {
         hasLeader = false;
       }
@@ -285,12 +288,14 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
       for (Budget budget : project.getBudgets()) {
         // Only can save the budgets to which the user is authorized
-        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget(projectID)) {
-          continue;
-        }
 
-        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget(projectID)) {
-          continue;
+
+        if ((budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget(projectID))
+          || (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget(projectID))) {
+          Budget previous =
+            previousProject.getBudget(budget.getInstitution().getId(), budget.getType().getValue(), year);
+          budget.setAmount(previous.getAmount());
+
         }
 
         if (budget.getCofinancingProject() == null) {
