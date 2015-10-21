@@ -111,10 +111,7 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
         this.addMissingField("planning.projectBudget.annualBudget for " + project.getTitle());
       }
 
-      if (budget.getAmount() > 0 && budget.getGenderPercentage() <= 0) {
-        this.addMessage("Gender % of annual  budget");
-        this.addMissingField("planning.projectBudget.annualBudget for " + project.getTitle());
-      }
+
     }
 
   }

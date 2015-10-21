@@ -81,7 +81,7 @@ function attachEvents() {
         isPercentage(e);
         calculateGenderBudget($(e.target).parents('.partnerBudget'));
   });
-  
+
   $overHeadContractInput.on("keydown", isNumber).on("focusout", setPercentage).on("focus", removePercentage).on("click",
       function() {
         $(this).select();
@@ -147,6 +147,13 @@ function attachEvents() {
     $projectBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
+
+
+    $overHeadContractInput.each(function() {
+    console.log($(this).val());
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
+    });
+
 
        return;
   });
