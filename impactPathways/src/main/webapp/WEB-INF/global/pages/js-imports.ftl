@@ -35,6 +35,7 @@
       
       [#if libraryName="highcharts"]
         <script src="${baseUrl}/js/libs/highcharts-4.1.8/highcharts.js"></script>
+        <script src="${baseUrl}/js/libs/highcharts-4.1.8/modules/exporting.js"></script>
       [/#if]
       
       [#if libraryName="highmaps"]
