@@ -82,6 +82,7 @@
   [#assign showSubmit=(securityContext.canSubmitProject(project.id) && !submission?has_content && complete)]
     <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >[@s.text name="form.buttons.submit" /]</a>
   [/#if]
+  
 </nav>
 
 
@@ -113,6 +114,3 @@
     [#return false]  
   [/#if]
 [/#function]
-
-
-
