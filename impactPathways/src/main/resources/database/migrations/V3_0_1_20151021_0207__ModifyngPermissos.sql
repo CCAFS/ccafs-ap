@@ -1,7 +1,6 @@
 ----------------------------------------------------------------------------
---    Removing 'gender' and 'stories' columns from project_outcomes table
---    keeping the history log.
-----------------------------------------------------------------------------
+--    Elimina los actuales permisos para ML,Y CU y se le agrega los correspondietes
+-------------------------
 
 delete 
 from role_permissions where id IN (2,4);
