@@ -371,6 +371,7 @@ public class BaseXLS {
       if (useTemplate) {
 
         // opening excel template.
+        System.out.println("--REAL PATH: " + ServletActionContext.getServletContext().getRealPath("/"));
         System.out.println("--EXCEL TEMPLATE: " + EXCEL_TEMPLATE_FILE);
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
