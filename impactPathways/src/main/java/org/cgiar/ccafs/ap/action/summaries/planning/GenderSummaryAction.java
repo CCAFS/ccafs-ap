@@ -44,8 +44,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   private static final long serialVersionUID = 5110987672008315842L;;
   private GenderSummaryXLS genderSummaryXLS;
   private ProjectManager projectManager;
-  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
+  private String[] termsToSearch;
 
   private List<Map<String, Object>> projectList, deliverableList, activityList;
 
@@ -58,10 +57,14 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Inject
   public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, InstitutionManager institutionManager,
     ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
+
+
     super(config);
     this.genderSummaryXLS = genderSummaryXLS;
     this.projectManager = projectManager;
-
+    // termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
+    // "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children",
+    // "child"};
   }
 
   @Override

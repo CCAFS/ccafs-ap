@@ -18,6 +18,7 @@ package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -371,7 +372,10 @@ public class BaseXLS {
       if (useTemplate) {
 
         // opening excel template.
-        System.out.println("--REAL PATH: " + ServletActionContext.getServletContext().getRealPath("/"));
+        System.out.println("--REAL PATH1: " + ServletActionContext.getServletContext().getRealPath(""));
+        System.out.println("--REAL PATH2: " + ServletActionContext.getServletContext().getRealPath("/"));
+        System.out
+          .println("--SSYTEM CONTEXT PATH: " + ServletActionContext.getServletContext().getRealPath(File.separator));
         System.out.println("--EXCEL TEMPLATE: " + EXCEL_TEMPLATE_FILE);
         InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
         // creating workbook based on the template.
