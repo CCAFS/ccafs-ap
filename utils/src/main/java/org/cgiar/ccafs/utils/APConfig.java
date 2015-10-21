@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.utils;
 
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -93,7 +94,6 @@ public class APConfig {
     return base;
   }
 
-
   /**
    * Get the folder where the bilateral project contract proposal should be loaded
    * 
@@ -107,6 +107,7 @@ public class APConfig {
     }
     return null;
   }
+
 
   /**
    * Get the folder where the case studies images uploaded should be saved
@@ -364,6 +365,19 @@ public class APConfig {
       LOG.error("There is not a current year configured for the reporting section.");
     }
     return -1;
+  }
+
+  /**
+   * TODO HT
+   * 
+   * @return
+   */
+  public File getResourcesPath() {
+    File f = new File("");
+    String realPath = f.getAbsolutePath();
+    File resources = new File(realPath, "src/main/resources");
+    return resources;
+
   }
 
   /**
