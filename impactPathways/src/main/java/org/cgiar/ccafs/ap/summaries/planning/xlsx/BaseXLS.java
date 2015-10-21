@@ -16,6 +16,8 @@
 package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 
 
+import org.cgiar.ccafs.utils.APConfig;
+
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import com.google.inject.Inject;
 import com.opensymphony.xwork2.DefaultTextProvider;
 import com.opensymphony.xwork2.TextProvider;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -84,25 +87,22 @@ public class BaseXLS {
 
   private static Logger LOG = LoggerFactory.getLogger(BaseXLS.class);
 
-  // Excel template location.
-  private static String EXCEL_TEMPLATE_FILE =
-    ServletActionContext.getServletContext().getRealPath("resources/templates/template.xlsx");
-
   // Header Style
   private static final String HEADER_FONT_NAME = "Tahoma";
+
   private static final short HEADER_FONT_SIZE = 10;
   private static final String HEADER_FONT_COLOR_HEX = "#404040";
   private static final String HEADER_BG_COLOR_HEX = "#f5e8d8";
   private static final int HEADER_ROW_HEIGHT = 31;
   private static final String HEADER_BORDER_COLOR_HEX = "#fbbf77";
-
   // Textbox Style
   private static final Color TEXTBOX_BACKGROUND_COLOR_RGB = new Color(255, 204, 41);
+
   private static final short TEXTBOX_FONT_COLOR_INDEX = HSSFColor.WHITE.index;
-
-
   // Cell Style
   private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
+
+
   private static final String CELL_TRUE_BOOLEAN = "Yes";
   private static final String CELL_FALSE_BOOLEAN = "No";
   private static final String CELL_BORDER_COLOR_HEX = "#c2a5a5";
@@ -110,6 +110,9 @@ public class BaseXLS {
   private static final short CELL_BORDER_TYPE_LEFT = XSSFCellStyle.BORDER_THIN;
   private static final short CELL_BORDER_TYPE_RIGHT = XSSFCellStyle.BORDER_THIN;
 
+
+  private APConfig config;
+  private File excelTemplateFile; // Excel template file.
   private TextProvider textProvider; // Internationalization file.
   private ByteArrayOutputStream outputStream; // byte stream.
   private Workbook workbook; // Excel high level model.
@@ -126,6 +129,11 @@ public class BaseXLS {
   // cell
   private Cell cell;
 
+  @Inject
+  public BaseXLS(APConfig config) {
+    this.config = config;
+    this.excelTemplateFile = new File(config.getResourcesPath(), "templates/template.xlsx");
+  }
 
   /**
    * This method set-ups a header to the sheet page.
@@ -290,48 +298,48 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-        // Style numeric
+          // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // Style date
+        // Style date
         case COLUMN_TYPE_DATE:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // styleBoleean
+          // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // styleBudget
+          // styleBudget
         case COLUMN_TYPE_BUDGET:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("$#,##0.00"));
           // "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"
           break;
 
-          // Style decimal
+        // Style decimal
         case COLUMN_TYPE_DECIMAL:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-          // Style long string
+        // Style long string
         case COLUMN_TYPE_TEXT_LONG:
           columnStyles[c].setAlignment(HorizontalAlignment.LEFT);
           columnStyles[c].setWrapText(true);
           break;
 
-        // Style short string
+          // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style hyperlink
+          // Style hyperlink
         case COLUMN_TYPE_HYPERLINK:
           XSSFFont hlinkfont = (XSSFFont) workbook.createFont();
           hlinkfont.setUnderline(XSSFFont.U_SINGLE);
@@ -370,14 +378,7 @@ public class BaseXLS {
     try {
       // validating the type of format.
       if (useTemplate) {
-
-        // opening excel template.
-        System.out.println("--REAL PATH1: " + ServletActionContext.getServletContext().getRealPath(""));
-        System.out.println("--REAL PATH2: " + ServletActionContext.getServletContext().getRealPath("/"));
-        System.out
-          .println("--SSYTEM CONTEXT PATH: " + ServletActionContext.getServletContext().getRealPath(File.separator));
-        System.out.println("--EXCEL TEMPLATE: " + EXCEL_TEMPLATE_FILE);
-        InputStream templateStream = new FileInputStream(EXCEL_TEMPLATE_FILE);
+        InputStream templateStream = new FileInputStream(this.excelTemplateFile);
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
 
@@ -390,7 +391,7 @@ public class BaseXLS {
       return (XSSFWorkbook) workbook;
 
     } catch (IOException e) {
-      LOG.error("There was a problem trying to create the Excel Workbook: " + EXCEL_TEMPLATE_FILE, e.getMessage());
+      LOG.error("There was a problem trying to create the Excel Workbook: " + excelTemplateFile, e.getMessage());
     }
     return null;
   }
