@@ -3879,6 +3879,12 @@ aside[id*="-control"] .slidr-control:after {
 }
 
 /*** Glossary ***/
+
+#glossary-content {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .wordTitle{
   font-size: 14px;
   font-weight: bold;
