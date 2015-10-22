@@ -49,7 +49,11 @@
           </td>
           [#-- Project Type --]
           <td>
-            <p title="[@s.text name="planning.projects.type.explanation.${project.type?lower_case}" /]" id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p>
+            [#if project.bilateralProject && project.cofinancing]
+              <p title="[@s.text name="planning.projects.type.explanation.bilateralCoFinancing" /]" id="">[@s.text name="planning.projects.type.bilateralCoFinancing" /]</p>
+            [#else]
+              <p title="[@s.text name="planning.projects.type.explanation.${project.type?lower_case}" /]" id="">[@s.text name="planning.projects.type.${project.type?lower_case}" /]</p>
+            [/#if]
           </td>
           [#-- Region --]
           <td> 

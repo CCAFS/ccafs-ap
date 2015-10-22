@@ -85,9 +85,6 @@
             <div class="fullPartBlock">
               [@customForm.input name="project.overhead.contractedOverhead" className="overHeadContractInput" i18nkey="planning.projectBudget.whatIsTheContracted" readOnly=!editable/]
             </div>
-            [#if canEdit]
-            <div class="note fullPartBlock"><p>[@s.text name="planning.projectBudget.yourInstitutionalOverhead" /] <span>13%</span></p></div>
-            [/#if]
           </div>
         </div>
         [/#if]
