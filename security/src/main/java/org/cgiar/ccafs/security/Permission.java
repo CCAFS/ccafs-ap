@@ -134,8 +134,7 @@ public class Permission {
   /**
    * Can update the project leader in the planning project partners section
    */
-  public static final String PLANNING_PROJECT_PARTNER_CORDINATOR_UPDATE =
-    "planning:projects:partners:cordinator:update";
+  public static final String PLANNING_PROJECT_PARTNER_CORDINATOR_UPDATE = "planning:projects:partner:cordinator:update";
 
   /**
    * Can update the planning project partners section
