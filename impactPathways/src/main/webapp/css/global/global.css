@@ -2675,6 +2675,12 @@ button.ipGraph-btn{
 
 /********** Projects *********/
 
+/* Project menu */
+
+#projectType-quote {
+  font-size: 0.8em;
+}
+
 /* Project List */
 .content .projectSubTitle {
   text-align: center;
