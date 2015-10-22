@@ -111,7 +111,12 @@ public class ProjectManagerImpl implements ProjectManager {
     for (Map<String, String> projectData : projectDataList) {
 
       project = new Project(Integer.parseInt(projectData.get("id")));
+      if (project.getId() == 105) {
+        System.out.println(4);
+      }
       project.setTitle(projectData.get("title"));
+      project.setCofinancing(Boolean.parseBoolean(projectData.get("is_cofinancing")));
+
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
       List<Budget> budgets = new ArrayList<>(2);
@@ -307,7 +312,9 @@ public class ProjectManagerImpl implements ProjectManager {
     Map<String, String> projectData = projectDAO.getProjectBasicInfo(projectID);
     Project project = new Project(Integer.parseInt(projectData.get("id")));
     project.setTitle(projectData.get("title"));
+    project.setCofinancing(Boolean.valueOf(projectData.get("is_cofinancing")));
     project.setType(projectData.get("type"));
+
     Budget totalBudget = new Budget();
     List<Budget> budgets = new ArrayList<>(1);
     if (projectData.get("total_budget_amount") != null) {
