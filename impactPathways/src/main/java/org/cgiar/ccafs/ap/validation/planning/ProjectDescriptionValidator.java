@@ -79,7 +79,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateTitle(action, project.getTitle());
     this.validateStartDate(action, project.getStartDate());
     this.validateEndDate(action, project.getEndDate());
-    this.validateBilateralContractProposalName(action, project.getWorkplanName());
+    this.validateBilateralContractProposalName(action, project.getBilateralContractProposalName());
   }
 
   private void validateCoreProject(BaseAction action, Project project) {
