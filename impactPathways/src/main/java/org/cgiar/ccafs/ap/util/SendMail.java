@@ -15,6 +15,7 @@ package org.cgiar.ccafs.ap.util;
 
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -93,7 +94,7 @@ public class SendMail {
 
     // Set the FROM and TO fields
     try {
-      msg.setFrom(new InternetAddress(config.getEmailUsername()));
+      msg.setFrom(new InternetAddress(config.getEmailHost(), "CCAFS P&R Platform"));
       if (toEmail != null) {
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
       }
@@ -130,9 +131,14 @@ public class SendMail {
       // msg.setText(messageContent);
       Transport.send(msg);
       LOG.info("Message sent: " + subject);
+      LOG.info("   - TO: " + toEmail);
+      LOG.info("   - CC: " + ccEmail);
+      LOG.info("   - BBC: " + bbcEmail);
 
     } catch (MessagingException e) {
-      LOG.error("There was an error sending a message", e);
+      LOG.error("There was an error sending a message", e.getMessage());
+    } catch (UnsupportedEncodingException e) {
+      LOG.error("There was an error setting up the FROM Email when trying to send a message", e.getMessage());
     }
   }
 
