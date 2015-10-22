@@ -41,27 +41,30 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
     double ccafsBudgetGenderPorcentage = 0;
     double bilateralBudgeGenderPorcentage = 0;
     if (project != null) {
-      for (OutputBudget budgetbyMog : project.getOutputsBudgets()) {
-        if (budgetbyMog.getType().isCCAFSBudget()) {
-          ccafsBudgetTotalPorcentage = ccafsBudgetTotalPorcentage + budgetbyMog.getTotalContribution();
-          ccafsBudgetGenderPorcentage = ccafsBudgetGenderPorcentage + budgetbyMog.getGenderContribution();
-        }
-        if (budgetbyMog.getType().isBilateral()) {
-          bilateralBudgeTotalPorcentage = bilateralBudgeTotalPorcentage + budgetbyMog.getTotalContribution();
-          bilateralBudgeGenderPorcentage = bilateralBudgeGenderPorcentage + budgetbyMog.getGenderContribution();
-        }
-      }
+      if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
 
-      if (project.isCoreProject() || project.isCoFundedProject()) {
-        if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
-          this.addMessage(("Invalid, Percentage Distribution"));
-          this.addMissingField("project.budgetbyMog.invalidPorcentage");
+        for (OutputBudget budgetbyMog : project.getOutputsBudgets()) {
+          if (budgetbyMog.getType().isCCAFSBudget()) {
+            ccafsBudgetTotalPorcentage = ccafsBudgetTotalPorcentage + budgetbyMog.getTotalContribution();
+            ccafsBudgetGenderPorcentage = ccafsBudgetGenderPorcentage + budgetbyMog.getGenderContribution();
+          }
+          if (budgetbyMog.getType().isBilateral()) {
+            bilateralBudgeTotalPorcentage = bilateralBudgeTotalPorcentage + budgetbyMog.getTotalContribution();
+            bilateralBudgeGenderPorcentage = bilateralBudgeGenderPorcentage + budgetbyMog.getGenderContribution();
+          }
         }
-      }
-      if (project.isBilateralProject()) {
-        if (!(bilateralBudgeGenderPorcentage == 100 && bilateralBudgeTotalPorcentage == 100)) {
-          this.addMessage(("Invalid, Percentage Distribution"));
-          this.addMissingField("project.budgetbyMog.invalidPorcentage");
+
+        if (project.isCoreProject() || project.isCoFundedProject()) {
+          if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
+            this.addMessage(("Invalid, Percentage Distribution"));
+            this.addMissingField("project.budgetbyMog.invalidPorcentage");
+          }
+        }
+        if (project.isBilateralProject()) {
+          if (!(bilateralBudgeGenderPorcentage == 100 && bilateralBudgeTotalPorcentage == 100)) {
+            this.addMessage(("Invalid, Percentage Distribution"));
+            this.addMissingField("project.budgetbyMog.invalidPorcentage");
+          }
         }
       }
     }
