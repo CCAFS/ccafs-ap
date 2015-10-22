@@ -17,6 +17,8 @@
 <section class="content">
   <article id="" class="fullBlock" > 
     <br /> 
+    <div class="note"><p style="font-size:2em;">Coming soon</p></div>
+    <br />
     <div class="summariesButtons clearfix">
       <div id="projects" class="summariesSection current"><span></span><a href="">[@s.text name="summaries.board.options.projects" /]</a></div>
       <div id="partners" class="summariesSection"><span></span><a href="">[@s.text name="summaries.board.options.partners" /]</a></div>
@@ -41,12 +43,12 @@
         [#-- Projects reports --]
         <div id="projects-contentOptions">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="leadProjectPartnersSummary" value="leadProjectPartnersSummary"/>
+            <input type="radio" name="formOptions" id="leadProjectPartnersSummary" value="leadProjectPartnersSummary" disabled="disabled"/>
             <label for="leadProjectPartnersSummary">[@s.text name="summaries.board.report.projectPartnersSummary" /]  <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.projectPartnersSummary.description" /]</p>
           </div>
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="projectPortfolio" value="project"/>
+            <input type="radio" name="formOptions" id="projectPortfolio" value="project" disabled="disabled"/>
             <label for="projectPortfolio">[@s.text name="summaries.board.report.projectPortfolio" /] <span>PDF</span></label>
             <p class="description">[@s.text name="summaries.board.report.projectPortfolio.description" /] </p>
             <div class="extraOptions" style="display:none"> 
@@ -57,12 +59,12 @@
         [#-- Partners reports --]
         <div id="partners-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="leadProjectInstitutionsSummary" value="leadProjectInstitutionsSummary"/>
+            <input type="radio" name="formOptions" id="leadProjectInstitutionsSummary" value="leadProjectInstitutionsSummary" disabled="disabled"/>
             <label for="leadProjectInstitutionsSummary">[@s.text name="summaries.board.report.leadProjectInstitutionsSummary" /]  <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.leadProjectInstitutionsSummary.description" /] </p>
           </div>
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="projectPartnersSummary" value="projectPartnersSummary"/>
+            <input type="radio" name="formOptions" id="projectPartnersSummary" value="projectPartnersSummary" disabled="disabled"/>
             <label for="projectPartnersSummary">[@s.text name="summaries.board.report.partnersWorkingWithProjects" /]  <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.partnersWorkingWithProjects.description" /] </p>
           </div>
@@ -70,7 +72,7 @@
         [#-- Deliverables reports --]
         <div id="deliverables-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="expectedDeliverables" value="expectedDeliverables"/>
+            <input type="radio" name="formOptions" id="expectedDeliverables" value="expectedDeliverables" disabled="disabled"/>
             <label for="expectedDeliverables">[@s.text name="summaries.board.report.expectedDeliverables" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.expectedDeliverables.description" /] </p>
           </div>
@@ -78,12 +80,12 @@
         [#-- Budget reports --]
         <div id="budget-contentOptions" style="display:none">
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="budgetPerPartnersSummary" value="budgetPerPartnersSummary"/>
+            <input type="radio" name="formOptions" id="budgetPerPartnersSummary" value="budgetPerPartnersSummary" disabled="disabled"/>
             <label for="budgetPerPartnersSummary">[@s.text name="summaries.board.report.powb" /] <span>XLSx</span></label>
             <p class="description"> [@s.text name="summaries.board.report.powb.description" /]</p>
           </div>
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="budgetByMOGsSummary" value="budgetByMOGsSummary"/>
+            <input type="radio" name="formOptions" id="budgetByMOGsSummary" value="budgetByMOGsSummary" disabled="disabled"/>
             <label for="budgetByMOGsSummary">[@s.text name="summaries.board.report.powbMOG" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.powbMOG.description" /] </p>
           </div>
