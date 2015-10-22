@@ -4378,6 +4378,8 @@ background: #E0E0E0;
 
 #glossary{
   float:right;
-  /* margin-top: 15px; */
-  font-weight: lighter;
+  margin-top: 15px;
+  /* font-weight: lighter; */
+  /* width: 95%; */
+  /* margin: 0 auto; */
 }
