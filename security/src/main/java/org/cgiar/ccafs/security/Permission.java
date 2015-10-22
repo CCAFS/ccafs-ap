@@ -130,12 +130,17 @@ public class Permission {
   /**
    * Can update the project leader in the planning project partners section
    */
-  public static final String PLANNING_PROJECT_PARTNER_LEADER_UPDATE = "planning:projects:partners:leader:update";
+  public static final String PLANNING_PROJECT_PARTNER_LEADER_UPDATE = "planning:projects:partner:leader:update";
+  /**
+   * Can update the project leader in the planning project partners section
+   */
+  public static final String PLANNING_PROJECT_PARTNER_CORDINATOR_UPDATE =
+    "planning:projects:partners:cordinator:update";
 
   /**
    * Can update the planning project partners section
    */
-  public static final String PLANNING_PROJECT_PARTNER_PPA_UPDATE = "planning:projects:partners:ppa:update";
+  public static final String PLANNING_PROJECT_PARTNER_PPA_UPDATE = "planning:projects:partner:ppa:update";
 
 
   // --------------------------- End of Project Partners ---------------------------------
@@ -216,6 +221,10 @@ public class Permission {
    * the planning project activities leader can be updated
    */
   public static final String PLANNING_PROJECT_ACTIVITIES_LEADER_UPDATE = "planning:projects:activities:leader:update";
+
+  /**
+   * the planning project activities leader can be updated
+   */
 
   /**
    * the planning project activities start date can be updated

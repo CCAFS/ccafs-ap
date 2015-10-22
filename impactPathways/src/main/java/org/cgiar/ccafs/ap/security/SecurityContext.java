@@ -212,13 +212,26 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if Can update the project cordinatir of a project
+   * 
+   * @return
+   */
+  public boolean canUpdatePartnerCordinator(int projectID) {
+    return this.hasPermission(
+      Permission.PLANNING_PROJECT_PARTNER_CORDINATOR_UPDATE.replace("projects:", "projects:" + projectID + ":"));
+  }
+
+  /**
    * Verify if Can update the project leader of a project
    * 
    * @return
    */
   public boolean canUpdatePartnerLeader(int projectID) {
+
+    System.out.println(this.hasPermission(
+      Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE.replace("projects:", "projects:" + projectID + ":")));
     return this.hasPermission(
-      Permission.PLANNING_PROJECT_PARTNER_PPA_UPDATE.replace("projects:", "projects:" + projectID + ":"));
+      Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
   /**
