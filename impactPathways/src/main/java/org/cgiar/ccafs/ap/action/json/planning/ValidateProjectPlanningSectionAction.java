@@ -139,7 +139,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
   public String execute() throws Exception {
     if (existProject && validSection) {
       // getting the current section status.
-      switch (SectionStatusEnum.valueOf(sectionName)) {
+      switch (SectionStatusEnum.valueOf(sectionName.toUpperCase())) {
         case DESCRIPTION:
           this.validateProjectDescription();
           break;
