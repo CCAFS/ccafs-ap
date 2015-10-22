@@ -297,6 +297,23 @@ function toogleIndicatorInfo(event) {
   var $indicatorBlock = $(event.target).parent();
 
   if(event.target.checked) {
+    // Show popup
+    var notyOptions = jQuery.extend({}, notyDefaultOptions);
+    notyOptions.text = "Please be aware that if you check this indicator, once saved, you won't be able to uncheck it.";
+    notyOptions.type = 'confirm';
+    notyOptions.layout = 'center';
+    notyOptions.modal = true;
+    notyOptions.buttons = [
+      {
+          addClass: 'btn btn-primary',
+          text: 'Ok',
+          onClick: function($noty) {
+            $noty.close();
+          }
+      }
+    ];
+    noty(notyOptions);
+
     $indicatorBlock.find("input[type='hidden']").attr("disabled", false);
 
     // Show the block
