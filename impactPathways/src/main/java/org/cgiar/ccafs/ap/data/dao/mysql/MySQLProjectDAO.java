@@ -727,7 +727,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("               FROM liaison_users lu ");
       query.append("               WHERE lu.user_id= ");
       query.append(userID);
-      query.append(" )))) ");
+      query.append(" ) ");
       query.append("            OR p.liaison_institution_id IN ");
       query.append("              (SELECT lu.institution_id ");
       query.append("               FROM liaison_users lu ");
