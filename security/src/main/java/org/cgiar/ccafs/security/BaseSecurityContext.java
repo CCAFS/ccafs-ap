@@ -17,12 +17,12 @@ package org.cgiar.ccafs.security;
 import org.cgiar.ccafs.security.data.model.Role;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +36,23 @@ public class BaseSecurityContext {
 
   private static Logger LOG = LoggerFactory.getLogger(BaseSecurityContext.class);
 
+  /**
+   * this method returns the APCustomRealm instance used by the app.
+   * 
+   * @return an APCustomRealm object.
+   */
+  public Realm getRealm() {
+    Collection<Realm> realms = ((RealmSecurityManager) SecurityUtils.getSecurityManager()).getRealms();
+    if (realms.size() > 0) {
+      return realms.iterator().next();
+    }
+    return null;
+  }
+
+  // TODO - To get the roles in different way
   public List<Role> getRoles() {
     List<Role> roles = new ArrayList<>();
     Subject subject = this.getSubject();
-
     if (subject != null) {
       for (Role role : Role.values()) {
         if (subject.hasRole(role.toString())) {
@@ -49,17 +62,6 @@ public class BaseSecurityContext {
     }
 
     return roles;
-  }
-
-  public Set<String> getRolesAsString() {
-    if (this.getSubject() != null) {
-      if (this.getSubject().getSession().getAttribute("auth_info") != null) {
-        SimpleAuthorizationInfo authorizationInfo =
-          (SimpleAuthorizationInfo) this.getSubject().getSession().getAttribute("auth_info");
-        return authorizationInfo.getRoles();
-      }
-    }
-    return new HashSet<>();
   }
 
   public Subject getSubject() {

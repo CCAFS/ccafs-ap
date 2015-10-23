@@ -228,8 +228,6 @@ public class SecurityContext extends BaseSecurityContext {
    */
   public boolean canUpdatePartnerLeader(int projectID) {
 
-    System.out.println(this.hasPermission(
-      Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE.replace("projects:", "projects:" + projectID + ":")));
     return this.hasPermission(
       Permission.PLANNING_PROJECT_PARTNER_LEADER_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
@@ -426,7 +424,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isGuest() {
-    return this.hasRole(Role.GUEST);
+    return this.hasRole(Role.G);
   }
 
   /**

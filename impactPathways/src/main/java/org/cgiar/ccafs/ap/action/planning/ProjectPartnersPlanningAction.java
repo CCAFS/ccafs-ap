@@ -324,7 +324,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.assigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-      message.toString(), null, null, null);
+        message.toString(), null, null, null);
   }
 
   /**
@@ -364,7 +364,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.unAssigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-      message.toString(), null, null, null);
+        message.toString(), null, null, null);
   }
 
   @Override
@@ -426,7 +426,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
 
     // If the user is not admin or the project owner, we should keep some information
-    // immutable
+
     previousProject = new Project();
     previousProject.setId(project.getId());
     previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project));
@@ -560,6 +560,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         this.notifyRoleUnassigned(previousPartnerPerson.getUser(), role);
       }
     }
+    this.clearPermissionsCache();
   }
 
   @Override

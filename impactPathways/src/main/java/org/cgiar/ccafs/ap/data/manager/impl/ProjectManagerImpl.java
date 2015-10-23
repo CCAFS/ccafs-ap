@@ -111,9 +111,7 @@ public class ProjectManagerImpl implements ProjectManager {
     for (Map<String, String> projectData : projectDataList) {
 
       project = new Project(Integer.parseInt(projectData.get("id")));
-      if (project.getId() == 105) {
-        System.out.println(4);
-      }
+
       project.setTitle(projectData.get("title"));
       project.setCofinancing(Boolean.parseBoolean(projectData.get("is_cofinancing")));
 

@@ -14,7 +14,7 @@ insert into role_permissions (role_id,permission_id)
 select distinct  rol.id,pe.id
 from roles rol , permissions pe 
 where rol.id in (2,10,4)
-and permission in ('planning:projects:activities:cordinator:update','planning:projects:partner:leader:update')
+and permission in ('planning:projects:partner:cordinator:update','planning:projects:partner:leader:update')
 UNION
 select distinct  rol.id,pe.id
 from roles rol , permissions pe 
