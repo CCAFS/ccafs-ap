@@ -108,13 +108,9 @@
     
     [#-- Partner Person type and email--]
     <div class="fullPartBlock"> 
-      [#if (contact.leader)!false ]
+    
        [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id))/]
-      [#elseif (contact.coordinator)!false]
-       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id) ) /]
-      [#else]
-       [#assign canEditLeader=editable /]
-      [/#if]
+      
       <div class="partnerPerson-type halfPartBlock clearfix">
       [#-- Contact type --]
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
