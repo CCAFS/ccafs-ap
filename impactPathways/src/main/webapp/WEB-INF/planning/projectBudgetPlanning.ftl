@@ -109,7 +109,7 @@
             [#-- Project budget content by year --]
             <div id="partnerTables-${year?c}" class="partnerTable ui-tabs-panel ui-widget-content ui-corner-bottom clearfix">
               [#if (year == currentPlanningYear) && notAbleToFill ]
-                <p class="note" style="font-size:1.1em;">This project is not enabled to fill ${currentPlanningYear} year.</p>
+                <p class="note" style="font-size:1.1em;">This project finishes in ${lastYear}. No budget for ${currentPlanningYear} is required to be filled.</p>
               [#else]
                 [#if (!editable && canEdit)]
                   <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name ="year"]${year}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
