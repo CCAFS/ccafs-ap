@@ -426,7 +426,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     }
 
     // If the user is not admin or the project owner, we should keep some information
-    // immutable
+
     previousProject = new Project();
     previousProject.setId(project.getId());
     previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project));
