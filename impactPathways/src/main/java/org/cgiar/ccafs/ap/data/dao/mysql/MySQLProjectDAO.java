@@ -669,39 +669,82 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Integer> projectIds = new ArrayList<>();
     try (Connection connection = databaseManager.getConnection()) {
       StringBuilder query = new StringBuilder();
-      query.append("SELECT p.id FROM projects p WHERE ");
-      query.append("p.liaison_user_id = (SELECT id FROM liaison_users WHERE user_id =  ");
+      /*
+       * query.append("SELECT p.id FROM projects p WHERE ");
+       * query.append("p.liaison_user_id = (SELECT id FROM liaison_users WHERE user_id =  ");
+       * query.append(userID);
+       * query.append(") OR p.liaison_institution_id = (SELECT institution_id FROM liaison_users WHERE user_id = ");
+       * query.append(userID);
+       * query.append(") OR EXISTS (SELECT project_id FROM project_partners pp ");
+       * query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+       * query.append("WHERE  ppp.contact_type = '");
+       * query.append(APConstants.PROJECT_PARTNER_PL);
+       * query.append("' AND pp.project_id = p.id AND ppp.user_id = ");
+       * query.append(userID);
+       * query.append(" AND ppp.is_active = 1) ");
+       * // If the project is bilateral and the user is a Contact Point of the lead institution
+       * query.append("OR ( p.type = '");
+       * query.append(APConstants.PROJECT_BILATERAL);
+       * query.append("' AND ( SELECT institution_id FROM liaison_institutions WHERE id = p.liaison_institution_id) = "
+       * );
+       * query.append(" ( SELECT li.institution_id FROM liaison_institutions li ");
+       * query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
+       * query.append(userID);
+       * query.append(" ) AND ");
+       * query.append("(SELECT ");
+       * query.append(APConstants.ROLE_CONTACT_POINT);
+       * query.append(" IN (SELECT r.id FROM roles r INNER JOIN user_roles ur ON ur.role_id = r.id WHERE ur.user_id = "
+       * );
+       * query.append(userID);
+       * query.append(") )");
+       * query.append(" ) ");
+       * // If the project user has the role of 'Admin'
+       * query.append("OR ( ");
+       * query.append(" 'Admin' IN ( SELECT acronym FROM user_roles ur INNER JOIN roles r ON ur.role_id = r.id ");
+       * query.append("WHERE ur.user_id = ");
+       * query.append(userID);
+       * query.append(" ) ) ");
+       * query.append("AND p.is_active = TRUE ");
+       */
+      query.append("SELECT DISTINCT * ");
+      query.append("FROM projects p ");
+      query.append("WHERE EXISTS ");
+      query.append("    (SELECT role_id ");
+      query.append("     FROM user_roles ");
+      query.append("     WHERE user_id= ");
       query.append(userID);
-      query.append(") OR p.liaison_institution_id = (SELECT institution_id FROM liaison_users WHERE user_id = ");
+      query.append("  and role_id=" + APConstants.ROLE_ADMIN + ") ");
+      query.append("  OR (( ");
+      query.append("         (SELECT count('x') ");
+      query.append("          FROM user_roles ");
+      query.append("          WHERE user_id= ");
       query.append(userID);
-      query.append(") OR EXISTS (SELECT project_id FROM project_partners pp ");
-      query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
-      query.append("WHERE  ppp.contact_type = '");
-      query.append(APConstants.PROJECT_PARTNER_PL);
-      query.append("' AND pp.project_id = p.id AND ppp.user_id = ");
+      query.append("  ");
+      query.append("            AND (role_id IN (" + APConstants.ROLE_MANAGEMENT_LIAISON + ", ");
+      query.append("                             " + APConstants.ROLE_CONTACT_POINT + ")))>0 ");
+      query.append("       AND (p.liaison_user_id= ");
       query.append(userID);
-      query.append(" AND ppp.is_active = 1) ");
-      // If the project is bilateral and the user is a Contact Point of the lead institution
-      query.append("OR ( p.type = '");
-      query.append(APConstants.PROJECT_BILATERAL);
-      query.append("' AND ( SELECT institution_id FROM liaison_institutions WHERE id = p.liaison_institution_id) = ");
-      query.append(" ( SELECT li.institution_id FROM liaison_institutions li ");
-      query.append(" INNER JOIN liaison_users lu ON lu.institution_id = li.id AND lu.user_id = ");
+      query.append("  ");
+      query.append("            OR p.liaison_institution_id IN ");
+      query.append("              (SELECT lu.institution_id ");
+      query.append("               FROM liaison_users lu ");
+      query.append("               WHERE lu.user_id= ");
       query.append(userID);
-      query.append(" ) AND ");
-      query.append("(SELECT ");
-      query.append(APConstants.ROLE_CONTACT_POINT);
-      query.append(" IN (SELECT r.id FROM roles r INNER JOIN user_roles ur ON ur.role_id = r.id WHERE ur.user_id = ");
+      query.append(" )))) ");
+      query.append("  OR EXISTS ");
+      query.append("    (SELECT project_id ");
+      query.append("     FROM project_partners pp ");
+      query.append("     INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+      query.append("     WHERE ppp.contact_type in ('" + APConstants.PROJECT_PARTNER_PL + "','"
+        + APConstants.PROJECT_PARTNER_PC + "') ");
+      query.append("       AND pp.project_id = p.id ");
+      query.append("       AND ppp.user_id =  ");
       query.append(userID);
-      query.append(") )");
-      query.append(" ) ");
-      // If the project user has the role of 'Admin'
-      query.append("OR ( ");
-      query.append(" 'Admin' IN ( SELECT acronym FROM user_roles ur INNER JOIN roles r ON ur.role_id = r.id ");
-      query.append("WHERE ur.user_id = ");
-      query.append(userID);
-      query.append(" ) ) ");
-      query.append("AND p.is_active = TRUE ");
+      query.append("  ");
+      query.append("       AND ppp.is_active = 1) ");
+      query.append("  AND p.is_active = TRUE;");
+
+
       ResultSet rs = databaseManager.makeQuery(query.toString(), connection);
       while (rs.next()) {
         projectIds.add(rs.getInt(1));
