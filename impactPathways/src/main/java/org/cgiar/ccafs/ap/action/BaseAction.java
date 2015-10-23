@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.SectionStatusEnum;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.security.APCustomRealm;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -111,11 +112,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.justification = "";
   }
 
-
   /* Override this method depending of the save action. */
   public String add() {
     return SUCCESS;
   }
+
 
   /**
    * This function add a flag (--warn--) to the message in order to give
@@ -139,6 +140,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     if (sectionStatuses != null) {
       sectionStatuses.clear();
     }
+  }
+
+  /**
+   * This method clears the cache and re-load the user permissions in the next iteration.
+   */
+  public void clearPermissionsCache() {
+    ((APCustomRealm) securityContext.getRealm())
+      .clearCachedAuthorizationInfo(securityContext.getSubject().getPrincipals());
   }
 
   /* Override this method depending of the delete action. */

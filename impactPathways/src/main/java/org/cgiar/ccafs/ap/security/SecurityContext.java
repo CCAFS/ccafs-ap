@@ -424,7 +424,7 @@ public class SecurityContext extends BaseSecurityContext {
    * @return
    */
   public boolean isGuest() {
-    return this.hasRole(Role.GUEST);
+    return this.hasRole(Role.G);
   }
 
   /**
