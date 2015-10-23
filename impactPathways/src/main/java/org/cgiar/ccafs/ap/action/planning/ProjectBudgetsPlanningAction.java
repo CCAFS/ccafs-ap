@@ -294,7 +294,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
           || (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget(projectID))) {
           Budget previous =
             previousProject.getBudget(budget.getInstitution().getId(), budget.getType().getValue(), year);
-          budget.setAmount(previous.getAmount());
+          if (previous == null) {
+            budget.setAmount(0);
+          } else {
+            budget.setAmount(previous.getAmount());
+          }
 
         }
 
