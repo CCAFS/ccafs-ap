@@ -16,10 +16,8 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.GenderSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.ImpactPathwayContributionsSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -38,30 +36,26 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class GenderSummaryAction extends BaseAction implements Summary {
+public class ImpactPathwayContributionsSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(GenderSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;;
-  private GenderSummaryXLS genderSummaryXLS;
+  private ImpactPathwayContributionsSummaryXLS impactPathwayContributionsSummaryXLS;
   private ProjectManager projectManager;
-  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
+  private List<Map<String, Object>> projectListMap;
 
-  private List<Map<String, Object>> projectList, deliverableList, activityList;
-
-  // CSV bytes
+  // XLS bytes
   private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
 
   @Inject
-  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, InstitutionManager institutionManager,
-    ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
-
+  public ImpactPathwayContributionsSummaryAction(APConfig config,
+    ImpactPathwayContributionsSummaryXLS impactPathwayContributionsSummaryXLS, ProjectManager projectManager) {
 
     super(config);
-    this.genderSummaryXLS = genderSummaryXLS;
+    this.impactPathwayContributionsSummaryXLS = impactPathwayContributionsSummaryXLS;
     this.projectManager = projectManager;
 
   }
@@ -69,7 +63,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = genderSummaryXLS.generateXLS(projectList, activityList, deliverableList, termsToSearch);
+    bytesXLS = impactPathwayContributionsSummaryXLS.generateXLS(projectListMap);
 
     return SUCCESS;
   }
@@ -89,7 +83,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("GenderContribution_");
+    fileName.append("ImpactPathWayContributions_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -106,12 +100,13 @@ public class GenderSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.QUERY_PARAMETER)));
-    if (string != null) {
-      termsToSearch = StringUtils.split(string, ',');
+
+    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
+    int year = config.getPlanningCurrentYear();
+
+    if (strYear != null) {
+      year = Integer.parseInt(strYear);
     }
-    projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
-    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
-    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
+    projectListMap = projectManager.summaryGetAllCCAFSOutcomes(year);
   }
 }
