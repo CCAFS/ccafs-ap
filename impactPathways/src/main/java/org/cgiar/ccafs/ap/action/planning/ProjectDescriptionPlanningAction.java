@@ -308,9 +308,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
     previousProject.setType(project.getType());
     previousProject.setWorkplanRequired(project.isWorkplanRequired());
     previousProject.setWorkplanName(project.getWorkplanName());
-    previousProject.setBilateralContractProposalName(project.getWorkplanName());
 
-    project.setBilateralContractProposalName(project.getWorkplanName());
+    previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
 
     if (project.getLinkedProjects() != null) {
       List<Project> linkedProjects = new ArrayList<>();
@@ -392,6 +391,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           previousProject.setWorkplanName(fileFileName);
           FileManager.copyFile(file, this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
         } else {
+
+          previousProject.setWorkplanName(project.getWorkplanName());
           if (project.getWorkplanName().isEmpty()) {
             FileManager.deleteFile(this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
             previousProject.setWorkplanName("");
@@ -405,13 +406,17 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       if (project.isBilateralProject()) {
         if (securityContext.canUploadBilateralContract(projectID)) {
           if (file != null) {
-            FileManager.deleteFile(this.getBilateralProposalAbsolutePath() + previousProject.getWorkplanName());
-            FileManager.copyFile(file, this.getBilateralProposalAbsolutePath() + previousProject.getWorkplanName());
-            previousProject.setWorkplanName(fileFileName);
+            FileManager
+              .deleteFile(this.getBilateralProposalAbsolutePath() + previousProject.getBilateralContractProposalName());
+            FileManager.copyFile(file,
+              this.getBilateralProposalAbsolutePath() + previousProject.getBilateralContractProposalName());
+            previousProject.setBilateralContractProposalName(fileFileName);
           } else {
+            previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
             if (project.getBilateralContractProposalName().isEmpty()
               && !previousProject.getBilateralContractProposalName().isEmpty()) {
-              FileManager.deleteFile(this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
+              FileManager
+                .deleteFile(this.getWorplansAbsolutePath() + previousProject.getBilateralContractProposalName());
             }
           }
         }
@@ -555,7 +560,28 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
+
+
+      if (!project.isBilateralProject() && project.isWorkplanRequired()) {
+        if (file != null) {
+
+          project.setWorkplanName(fileFileName);
+
+        } else {
+          project.setWorkplanName(previousProject.getWorkplanName());
+        }
+      }
+
+      if (project.isBilateralProject()) {
+
+        if (file != null) {
+          project.setBilateralContractProposalName(fileFileName);
+        } else {
+          project.setBilateralContractProposalName(previousProject.getBilateralContractProposalName());
+        }
+      }
       validator.validate(this, project, "Planning");
     }
+
   }
 }
