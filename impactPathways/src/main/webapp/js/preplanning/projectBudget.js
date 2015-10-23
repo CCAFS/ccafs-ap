@@ -147,15 +147,12 @@ function attachEvents() {
     $projectBudgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
-
-
     $overHeadContractInput.each(function() {
     console.log($(this).val());
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
-
-
-       return;
+    
+    return;
   });
 }
 
