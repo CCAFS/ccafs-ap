@@ -722,9 +722,12 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("  ");
       query.append("            AND (role_id IN (" + APConstants.ROLE_MANAGEMENT_LIAISON + ", ");
       query.append("                             " + APConstants.ROLE_CONTACT_POINT + ")))>0 ");
-      query.append("       AND (p.liaison_user_id= ");
+      query.append("       AND (p.liaison_user_id in  ");
+      query.append("              (SELECT lu.id ");
+      query.append("               FROM liaison_users lu ");
+      query.append("               WHERE lu.user_id= ");
       query.append(userID);
-      query.append("  ");
+      query.append(" )))) ");
       query.append("            OR p.liaison_institution_id IN ");
       query.append("              (SELECT lu.institution_id ");
       query.append("               FROM liaison_users lu ");
