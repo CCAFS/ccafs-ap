@@ -49,10 +49,10 @@ public class BaseSecurityContext {
     return null;
   }
 
+  // TODO - To get the roles in different way
   public List<Role> getRoles() {
     List<Role> roles = new ArrayList<>();
     Subject subject = this.getSubject();
-
     if (subject != null) {
       for (Role role : Role.values()) {
         if (subject.hasRole(role.toString())) {
