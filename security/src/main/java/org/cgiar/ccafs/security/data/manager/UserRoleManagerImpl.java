@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class UserRoleManagerImpl {
@@ -77,6 +78,32 @@ public class UserRoleManagerImpl {
     return this.getData(userRoleData);
   }
 
+  /**
+   * This method get a specific role from the database.
+   * 
+   * @param roleID is some role identifier.
+   * @return a UserRole object with the information populated.
+   */
+  public UserRole getUserRole(int roleID) {
+    UserRole role = new UserRole();
+    Map<String, String> roleData = userRoleDAO.getUserRole(roleID);
+    if (roleData.size() > 0) {
+      role.setId(Integer.parseInt(roleData.get("id")));
+      role.setName(roleData.get("name"));
+      role.setAcronym(roleData.get("acronym"));
+      role.setPermissions(userRoleDAO.getRolePermissions(roleData.get("id")));
+      return role;
+    }
+    return null;
+  }
+
+  /**
+   * This method gets all the roles from a given user.
+   * 
+   * @param userID is a user identifier.
+   * @return a List of UserRole objects with the information requested, an empty list if no role was found for the user
+   *         or null if some error occurred.
+   */
   public List<UserRole> getUserRolesByUserID(String userID) {
     List<UserRole> roles = new ArrayList<>();
     List<Map<String, String>> userRoleData = userRoleDAO.getUserRolesByUserID(userID);

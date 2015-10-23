@@ -146,6 +146,10 @@ public class APCustomRealm extends AuthorizingRealm {
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
     Map<String, UserRole> projectRoles = new HashMap<>();
 
+    if (roles.size() == 0) {
+      System.out.println();
+      roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
+    }
     // Get the roles general to the platform
     for (UserRole role : roles) {
       authorizationInfo.addRole(role.getAcronym());

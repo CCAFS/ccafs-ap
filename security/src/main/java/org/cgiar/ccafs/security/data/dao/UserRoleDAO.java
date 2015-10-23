@@ -63,6 +63,14 @@ public interface UserRoleDAO {
   public List<String> getRolePermissions(String roleID);
 
   /**
+   * This method gets the information of a specific role into the system.
+   * 
+   * @param roleID is a role identifier.
+   * @return a Map with the information requested.
+   */
+  public Map<String, String> getUserRole(int roleID);
+
+  /**
    * This method gets all the roles that belong to the user
    * identified by the email received as parameter
    * 
