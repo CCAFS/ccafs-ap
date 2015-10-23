@@ -204,7 +204,6 @@ public interface ProjectManager {
    */
   public List<Project> getProjectsList(String[] values);
 
-
   /**
    * This method create or updates a project into the database.
    * 
@@ -239,6 +238,17 @@ public interface ProjectManager {
   public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
 
   /**
+   * This method will return the list of all the impact pathways
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary Impact Pathway Report.
+   * 
+   * @param year - Specific year to search in the report.
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGetAllCCAFSOutcomes(int year);
+
+  /**
    * This method will return the list of all the deliverables with your next users.
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
@@ -247,6 +257,7 @@ public interface ProjectManager {
    * @return a list of columns with the information summary
    */
   public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
+
 
   /**
    * This method will return the list of all the projects and their respective leaders.
@@ -258,7 +269,6 @@ public interface ProjectManager {
    */
   public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
 
-
   /**
    * This method will return the list of all the projects and all their respective deliverables.
    * This method also gets all the information in one single query to the database, improving its performance and
@@ -268,6 +278,7 @@ public interface ProjectManager {
    * @return a list of Project objects with the Deliverable information.
    */
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
+
 
   /**
    * This method will return the list of all the projects and their respective gender contribution.
@@ -303,7 +314,6 @@ public interface ProjectManager {
    */
   public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year);
 
-
   /**
    * This method will return the list of all the project with the budget contribution information for a specific year.
    * This method also gets all the information in one single query to the database, improving its performance and
@@ -334,6 +344,7 @@ public interface ProjectManager {
    */
   public boolean updateProjectType(Project project);
 
+
   /**
    * This method updates the type of all the core projects following the steps below:
    * 1- Set the projects co-founded as core
@@ -343,6 +354,5 @@ public interface ProjectManager {
    * @return true if the changes was made succesfully. False otherwise.
    */
   public boolean updateProjectTypes();
-
 
 }

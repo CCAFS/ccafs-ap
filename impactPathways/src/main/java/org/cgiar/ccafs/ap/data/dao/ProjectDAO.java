@@ -305,6 +305,16 @@ public interface ProjectDAO {
   public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
 
   /**
+   * This method returns the information of all project CCAFS Outcomes with their information to be used in
+   * the summary report of Impact Pathway summary.
+   * 
+   * @param year year of to search the indicators
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetAllCCAFSOutcomes(int year);
+
+  /**
    * This method returns the information of all the deliverable with their next users to be used in the summary report
    * of gender summary.
    * 
@@ -348,6 +358,7 @@ public interface ProjectDAO {
    * This method returns the information of all project MOG with your budget by Year and their information to be used in
    * the summary report of POWBMOGs summary.
    * 
+   * @param year
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
@@ -357,6 +368,7 @@ public interface ProjectDAO {
    * This method returns the information of all project MOG with your budget by Year and their information to be used in
    * the summary report of POWBMOGs summary.
    * 
+   * @param year year to search
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
