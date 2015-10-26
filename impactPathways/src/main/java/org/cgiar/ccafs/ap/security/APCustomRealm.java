@@ -23,7 +23,7 @@ import org.cgiar.ccafs.security.data.model.ProjectUserRole;
 import org.cgiar.ccafs.security.data.model.User;
 import org.cgiar.ccafs.security.data.model.UserRole;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -144,7 +144,7 @@ public class APCustomRealm extends AuthorizingRealm {
 
     userID = (Integer) principals.getPrimaryPrincipal();
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
-    Map<String, UserRole> projectRoles = new HashMap<>();
+    List<Map<String, UserRole>> projectRoles = new ArrayList<>();
 
     if (roles.size() == 0) {
       System.out.println();
@@ -163,34 +163,36 @@ public class APCustomRealm extends AuthorizingRealm {
 
         case APConstants.ROLE_MANAGEMENT_LIAISON:
         case APConstants.ROLE_COORDINATING_UNIT:
-          projectRoles.putAll(userRoleManager.getManagementLiaisonProjects(userID));
+          projectRoles.add(userRoleManager.getManagementLiaisonProjects(userID));
           break;
 
         case APConstants.ROLE_PROJECT_LEADER:
         case APConstants.ROLE_PROJECT_COORDINATOR:
-          projectRoles.putAll(userRoleManager.getProjectLeaderProjects(userID));
+          projectRoles.add(userRoleManager.getProjectLeaderProjects(userID));
           break;
 
         case APConstants.ROLE_CONTACT_POINT:
-          projectRoles.putAll(userRoleManager.getContactPointProjects(userID));
+          projectRoles.add(userRoleManager.getContactPointProjects(userID));
           break;
       }
     }
 
     // Converting those general roles into specific for the projects where they are able to edit.
-    for (Map.Entry<String, UserRole> entry : projectRoles.entrySet()) {
-      String projectID = entry.getKey();
-      UserRole role = entry.getValue();
+    for (Map<String, UserRole> mapRoles : projectRoles) {
+      for (Map.Entry<String, UserRole> entry : mapRoles.entrySet()) {
+        String projectID = entry.getKey();
+        UserRole role = entry.getValue();
 
-      for (String permission : role.getPermissions()) {
-        // Add the project identifier to the permission only if the permission is not at project level.
-        // The following permission will be ignored: planning:projects:5:description:update
-        // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
-        if (permission.contains(":projects:")) {
-          permission = permission.replace("projects:", "projects:" + projectID + ":");
+        for (String permission : role.getPermissions()) {
+          // Add the project identifier to the permission only if the permission is not at project level.
+          // The following permission will be ignored: planning:projects:5:description:update
+          // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
+          if (permission.contains(":projects:")) {
+            permission = permission.replace("projects:", "projects:" + projectID + ":");
+          }
+          authorizationInfo.addStringPermission(permission);
+          // }
         }
-        authorizationInfo.addStringPermission(permission);
-        // }
       }
     }
 
