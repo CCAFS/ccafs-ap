@@ -214,7 +214,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // If the project is bilateral only ask budget for the lead institution
     if (project.isBilateralProject()) {
-      projectPPAPartners.add(project.getLeader().getInstitution());
+      if (project.getLeader() != null) {
+        projectPPAPartners.add(project.getLeader().getInstitution());
+
+      }
     } else {
       for (ProjectPartner partner : project.getProjectPartners()) {
         if (partner.getInstitution().isPPA()) {
