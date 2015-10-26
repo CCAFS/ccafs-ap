@@ -266,10 +266,10 @@ public class ActivityManagerImpl implements ActivityManager {
     activityData.put("description", activity.getDescription());
     SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
     if (activity.getEndDate() != null) {
-      activityData.put("startDate", format.format(activity.getEndDate()));
+      activityData.put("endDate", format.format(activity.getEndDate()));
     }
     if (activity.getStartDate() != null) {
-      activityData.put("endDate", format.format(activity.getStartDate()));
+      activityData.put("startDate", format.format(activity.getStartDate()));
     }
     activityData.put("leader_id", activity.getLeader().getId());
     activityData.put("modified_by", String.valueOf(user.getId()));
