@@ -4,81 +4,87 @@
 
   <package extends="ccafsap-default" name="summaries" namespace="/summaries">
 
-  <action name="board" class="org.cgiar.ccafs.ap.action.summaries.SummaryBoardAction">
-     <result name="input">/WEB-INF/summaries/boardSummaries.ftl</result>
-   </action>
-  
-  <action name="project" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectSummaryAction">
+    <action name="board" class="org.cgiar.ccafs.ap.action.summaries.SummaryBoardAction">
+       <result name="input">/WEB-INF/summaries/boardSummaries.ftl</result>
+     </action>
+    
+    <action name="project" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectSummaryAction">
       <result name="success" type="stream">
-        <param name="inputName">inputStream</param>
-        <param name="contentType">application/pdf</param>
-        <param name="contentDisposition">filename="${fileName}"</param>
+          <param name="inputName">inputStream</param>
+          <param name="contentType">application/pdf</param>
+          <param name="contentDisposition">filename="${fileName}"</param>
      </result>
-   </action>
-   
-  <action  name="expectedDeliverables" class="org.cgiar.ccafs.ap.action.summaries.planning.DeliverablePlanningSummaryAction">
-      <result name="success" type="stream">
-        <param name="inputName">inputStream</param>
-        <param name="contentType">text/csv</param>
-        <param name="contentDisposition">attachment;filename="${fileName}"</param>
-     </result>
-   </action>
-   
-   <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.PartnersSummaryAction">
+    </action>
+
+    <action  name="expectedDeliverables" class="org.cgiar.ccafs.ap.action.summaries.planning.DeliverablePlanningSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
-     </result>
-   </action>
+      </result>
+    </action>
+
+    <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.PartnersSummaryAction">
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">text/csv</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+      </result>
+    </action>
    
-      <action name="genderContributionSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.GenderSummaryAction">
+    <action name="genderContributionSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.GenderSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
      </result>
-   </action>
-   
-        <action name="leadProjectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadProjectPartnersSummaryAction">
+    </action>
+
+    <action name="leadProjectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadProjectPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
-     </result>
-   </action>
-   
-   <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadInstitutionPartnersSummaryAction">
+      </result>
+    </action>
+
+    <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadInstitutionPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
-     </result>
-   </action>
-   
+      </result>
+    </action>
+
     <action name="budgetPerPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetPerPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
-     </result>
-   </action>
-   
-   <action name="budgetByMOGsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetByMOGsSummaryAction">
+      </result>
+    </action>
+
+    <action name="budgetByMOGsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetByMOGsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
-     </result>
-   </action>
-   
-      <action name="impactPathwayContributionsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.ImpactPathwayContributionsSummaryAction">
+      </result>
+    </action>
+
+    <action name="impactPathwayContributionsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.ImpactPathwayContributionsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
         <param name="contentDisposition">attachment;filename="${fileName}"</param>
-     </result>
-   </action>
+      </result>
+    </action>
+   
+    <!-- Exporting our active partners categorized by Flagship in XML format for the CCAFS Website -->
+    <action name="temp-partnersXml" class="org.cgiar.ccafs.ap.action.summaries.planning.PartnersXMLAction">
+      <result name="input" type="freemarker">/WEB-INF/home/partnersXML.ftl</result>
+      <param name="contentType">text/xml</param>
+    </action> 
 
   </package>
 </struts>

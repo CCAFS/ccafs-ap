@@ -95,8 +95,8 @@ function datePickerConfig($startDate,$endDate) {
   var finalMaxDate = (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue;
   $startDate.datepicker({
       dateFormat: "yy-mm-dd",
-      minDate: defaultMinDateValue,
-      maxDate: finalMaxDate,
+      minDate: '2015-01-01',
+      maxDate: '2019-12-12',
       changeMonth: true,
       changeYear: true,
       defaultDate: null,
@@ -117,14 +117,14 @@ function datePickerConfig($startDate,$endDate) {
   var finalMinDate = (minDateValue != 0) ? minDateValue : defaultMinDateValue;
   $endDate.datepicker({
       dateFormat: "yy-mm-dd",
-      minDate: finalMinDate,
-      maxDate: defaultMaxDateValue,
+      minDate: '2015-01-01',
+      maxDate: '2019-12-12',
       changeMonth: true,
       changeYear: true,
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-          $startDate.datepicker("option", "maxDate", selectedDate);
+          //$startDate.datepicker("option", "maxDate", selectedDate);
         }
       }
   });
