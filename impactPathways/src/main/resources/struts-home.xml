@@ -31,7 +31,6 @@
       <result name="input">/WEB-INF/global/pages/glossary.ftl</result>
     </action>
     
-    
     <!-- P&R v1 -->
     
     <!--  action name="activity" class="org.cgiar.ccafs.ap.action.home.ActivityAction">
@@ -44,10 +43,6 @@
       <param name="contentType">text/xml</param>
     </action -->
 
-    <!-- action name="partnersXml" class="org.cgiar.ccafs.ap.action.home.PartnersXMLAction">
-      <result name="input" type="freemarker">/WEB-INF/home/partnersXML.ftl</result>
-      <param name="contentType">text/xml</param>
-    </action --> 
 
 
   </package>
