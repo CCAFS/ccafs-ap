@@ -1119,17 +1119,27 @@ public class ProjectSummaryPDF extends BasePDF {
       Font hyperLink = new Font(FontFactory.getFont("openSans", 10, Color.BLUE));
       hyperLink.setStyle(Font.UNDERLINE);
 
-      Chunk imdb;
+      Chunk imdb = null;
 
-      if (project.getWorkplanName() == null) {
+      if (project.getWorkplanName() == null && project.getBilateralContractProposalName() == null) {
         imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
-      } else {
+      } else if (project.getWorkplanName() != null) {
         imdb = new Chunk("Download", hyperLink);
+        System.out.println(project.getWorkplanName());
         try {
           imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
         } catch (MalformedURLException exp) {
           imdb = new Chunk(project.getWorkplanName(), TABLE_BODY_FONT);
-          LOG.error("There is an Malformed expection in " + project.getWorkplanName());
+          LOG.error("There is an Malformed exception in " + project.getWorkplanName());
+        }
+      } else if (project.getBilateralContractProposalName() != null) {
+        imdb = new Chunk("Download", hyperLink);
+        System.out.println(project.getBilateralContractProposalName());
+        try {
+          imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getBilateralContractProposalName()))));
+        } catch (MalformedURLException exp) {
+          imdb = new Chunk(project.getBilateralContractProposalName(), TABLE_BODY_FONT);
+          LOG.error("There is an Malformed exception in " + project.getBilateralContractProposalName());
         }
       }
 
@@ -1138,7 +1148,7 @@ public class ProjectSummaryPDF extends BasePDF {
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
       document.add(table);
-      document.add(Chunk.NEWLINE);;
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }

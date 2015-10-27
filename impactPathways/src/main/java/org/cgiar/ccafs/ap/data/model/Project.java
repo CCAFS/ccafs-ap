@@ -69,6 +69,7 @@ public class Project {
   private List<Submission> submissions; // all the project submissions.
   private String bilateralContractProposalName;
   private String workplanName;
+  private boolean bilateralContractRequired;
   private boolean workplanRequired;
   private Budget anualContribution;
 
@@ -194,9 +195,6 @@ public class Project {
    * @return an String with the name of the bilateral contract file.
    */
   public String getBilateralContractProposalName() {
-    if (bilateralContractProposalName == null) {
-      return "";
-    }
     return bilateralContractProposalName;
   }
 
@@ -611,18 +609,18 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-      // Standar identifier
+    // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-      // PDF Identifier
+        // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
         // Acronym leader institution
         if (this.getLeader() != null && this.getLeader().getInstitution() != null
-          && this.getLeader().getInstitution().getAcronym() != null) {
+        && this.getLeader().getInstitution().getAcronym() != null) {
           result.append(this.getLeader().getInstitution().getAcronym() + "-");
         }
 
@@ -646,12 +644,12 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-      // Excel Identifier
+        // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
         break;
 
-      // Email Subject Identifier
+        // Email Subject Identifier
       case Project.EMAIL_SUBJECT_IDENTIFIER:
         result.append("P" + this.getId());
         break;
@@ -762,6 +760,10 @@ public class Project {
     return this.getId();
   }
 
+  public boolean isBilateralContractRequired() {
+    return bilateralContractRequired;
+  }
+
   public boolean isBilateralProject() {
     return (type != null) ? type.equals(APConstants.PROJECT_BILATERAL) : false;
   }
@@ -855,6 +857,10 @@ public class Project {
 
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
+  }
+
+  public void setBilateralContractRequired(boolean bilateralContractRequired) {
+    this.bilateralContractRequired = bilateralContractRequired;
   }
 
   public void setBudgets(List<Budget> budgets) {
