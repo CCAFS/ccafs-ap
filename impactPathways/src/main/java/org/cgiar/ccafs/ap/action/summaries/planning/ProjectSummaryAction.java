@@ -215,12 +215,12 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       }
     }
     // Get a route for the bilateral contract
-    // if (project.isBilateralContractRequired()) {
-    String bilateralContractURL = this.getBilateralContractURL();
-    if (bilateralContractURL != null || project.getBilateralContractProposalName() != null) {
-      project.setBilateralContractProposalName(bilateralContractURL + project.getBilateralContractProposalName());
+    if (project.isBilateralProject()) {
+      String bilateralContractURL = this.getBilateralContractURL();
+      if (bilateralContractURL != null || project.getBilateralContractProposalName() != null) {
+        project.setBilateralContractProposalName(bilateralContractURL + project.getBilateralContractProposalName());
+      }
     }
-    // }
 
     // Getting the information of the Regions program
     project.setRegions(ipProgramManager.getProjectFocuses(project.getId(), APConstants.REGION_PROGRAM_TYPE));
