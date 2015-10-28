@@ -394,7 +394,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         } else {
 
           previousProject.setWorkplanName(project.getWorkplanName());
-          if (project.getWorkplanName().isEmpty()) {
+          if (project.getWorkplanName() != null && project.getWorkplanName().isEmpty()) {
             FileManager.deleteFile(this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
             previousProject.setWorkplanName("");
           }
@@ -402,8 +402,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       } else if (previousProject.isBilateralProject()) {
         if (file != null) {
           if (previousProject.getBilateralContractProposalName() != null) {
-            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
-              + previousProject.getBilateralContractProposalName());
+            FileManager
+              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
           }
 
           previousProject.setBilateralContractProposalName(fileFileName);
@@ -412,9 +412,10 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         } else {
 
           previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
-          if (project.getBilateralContractProposalName().isEmpty()) {
-            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
-              + previousProject.getBilateralContractProposalName());
+          if (project.getBilateralContractProposalName() != null
+            && project.getBilateralContractProposalName().isEmpty()) {
+            FileManager
+              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             previousProject.setBilateralContractProposalName("");
           }
         }
@@ -426,8 +427,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       if (project.isBilateralProject()) {
         if (securityContext.canUploadBilateralContract(projectID)) {
           if (file != null) {
-            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
-              + previousProject.getBilateralContractProposalName());
+            FileManager
+              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             FileManager.copyFile(file,
               this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             previousProject.setBilateralContractProposalName(fileFileName);
@@ -435,8 +436,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
             previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
             if (project.getBilateralContractProposalName().isEmpty()
               && !previousProject.getBilateralContractProposalName().isEmpty()) {
-              FileManager.deleteFile(this.getWorplansAbsolutePath()
-                + previousProject.getBilateralContractProposalName());
+              FileManager
+                .deleteFile(this.getWorplansAbsolutePath() + previousProject.getBilateralContractProposalName());
             }
           }
         }
@@ -473,9 +474,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved =
-              ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-                this.getJustification());
+            saved = ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 
@@ -493,10 +493,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved =
-              saved
-              && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-                this.getJustification());
+            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 

@@ -92,6 +92,7 @@ public final class APConstants {
   public static final int ROLE_PROJECT_LEADER = 7;
   public static final int ROLE_PROJECT_COORDINATOR = 9;
   public static final int ROLE_COORDINATING_UNIT = 6;
+  public static final int ROLE_FINANCING_PROJECT = 10;
 
   // Location types identifiers
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;

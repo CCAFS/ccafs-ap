@@ -157,10 +157,21 @@ public class APCustomRealm extends AuthorizingRealm {
       switch (role.getId()) {
         case APConstants.ROLE_ADMIN:
           for (String permission : role.getPermissions()) {
+
             authorizationInfo.addStringPermission(permission);
           }
           break;
 
+
+        case APConstants.ROLE_FINANCING_PROJECT:
+          for (String permission : role.getPermissions()) {
+
+            permission = permission.replace("projects:", "projects:*:");
+            System.out.println(permission);
+            authorizationInfo.addStringPermission(permission);
+
+          }
+          break;
         case APConstants.ROLE_MANAGEMENT_LIAISON:
         case APConstants.ROLE_COORDINATING_UNIT:
           projectRoles.add(userRoleManager.getManagementLiaisonProjects(userID));
