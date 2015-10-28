@@ -434,7 +434,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
             previousProject.setBilateralContractProposalName(fileFileName);
           } else {
             previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
-            if (project.getBilateralContractProposalName().isEmpty()
+            if (project.getBilateralContractProposalName() != null
+              && project.getBilateralContractProposalName().isEmpty()
               && !previousProject.getBilateralContractProposalName().isEmpty()) {
               FileManager
                 .deleteFile(this.getWorplansAbsolutePath() + previousProject.getBilateralContractProposalName());
