@@ -147,8 +147,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   }
 
   private String getBilateralContractRelativePath() {
-    return config.getProjectsBaseFolder() + project.getId() + File.separator
-      + config.getBilateralProjectContractProposalFolder();
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getBilateralProjectContractProposalFolder() + File.separator;
   }
 
   public String getBilateralContractURL() {
@@ -193,7 +193,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   }
 
   private String getWorkplanRelativePath() {
-    return config.getProjectsBaseFolder() + project.getId() + File.separator + config.getProjectWorkplanFolder();
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getProjectWorkplanFolder() + File.separator;
   }
 
   public String getWorkplanURL() {

@@ -111,8 +111,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   }
 
   private String getBilateralProposalRelativePath() {
-    return config.getProjectsBaseFolder() + project.getId() + File.separator
-      + config.getBilateralProjectContractProposalFolder();
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getBilateralProjectContractProposalFolder() + File.separator;
   }
 
   /**
@@ -212,7 +212,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   }
 
   private String getWorkplanRelativePath() {
-    return config.getProjectsBaseFolder() + project.getId() + File.separator + config.getProjectWorkplanFolder();
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getProjectWorkplanFolder() + File.separator;
   }
 
   public String getWorkplanURL() {
@@ -494,8 +495,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           if (!previousRegions.contains(region)) {
             saved =
               saved
-                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-                  this.getJustification());
+              && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                this.getJustification());
           }
         }
 
