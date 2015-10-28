@@ -120,7 +120,7 @@ public class ProjectValidator extends BaseValidator {
     }
 
     // For bilateral projects the leader must be a PPA institution
-    if (isBilateral && !leader.getInstitution().isPPA()) {
+    if (isBilateral && leader.getInstitution() != null && !leader.getInstitution().isPPA()) {
       return false;
     }
     return true;
