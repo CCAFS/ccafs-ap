@@ -713,7 +713,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("     FROM user_roles ");
       query.append("     WHERE user_id= ");
       query.append(userID);
-      query.append("  and role_id=" + APConstants.ROLE_ADMIN + ") ");
+      query.append("  and role_id in (" + APConstants.ROLE_ADMIN + "," + APConstants.ROLE_FINANCING_PROJECT + ")) ");
       query.append("  OR (( ");
       query.append("         (SELECT count('x') ");
       query.append("          FROM user_roles ");

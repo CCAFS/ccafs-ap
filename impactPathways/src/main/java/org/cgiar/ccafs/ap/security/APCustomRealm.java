@@ -161,6 +161,13 @@ public class APCustomRealm extends AuthorizingRealm {
           }
           break;
 
+
+        case APConstants.ROLE_FINANCING_PROJECT:
+          for (String permission : role.getPermissions()) {
+            authorizationInfo.addStringPermission(permission);
+
+          }
+          break;
         case APConstants.ROLE_MANAGEMENT_LIAISON:
         case APConstants.ROLE_COORDINATING_UNIT:
           projectRoles.add(userRoleManager.getManagementLiaisonProjects(userID));
