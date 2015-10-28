@@ -388,7 +388,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getTotalContribution() * 0.01
-          * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+        * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[0] += value;
@@ -407,7 +407,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getGenderContribution() * 0.01
-          * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+        * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[1] += value;
@@ -589,7 +589,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(this.budgetFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
             valueSum = value;
@@ -1119,17 +1119,27 @@ public class ProjectSummaryPDF extends BasePDF {
       Font hyperLink = new Font(FontFactory.getFont("openSans", 10, Color.BLUE));
       hyperLink.setStyle(Font.UNDERLINE);
 
-      Chunk imdb;
+      Chunk imdb = null;
 
-      if (project.getWorkplanName() == null) {
+      if (project.getWorkplanName() == null && project.getBilateralContractProposalName() == null) {
         imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
-      } else {
+      } else if (project.getWorkplanName() != null) {
         imdb = new Chunk("Download", hyperLink);
+        // System.out.println(project.getWorkplanName());
         try {
           imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
         } catch (MalformedURLException exp) {
           imdb = new Chunk(project.getWorkplanName(), TABLE_BODY_FONT);
-          LOG.error("There is an Malformed expection in " + project.getWorkplanName());
+          LOG.error("There is an Malformed exception in " + project.getWorkplanName());
+        }
+      } else if (project.getBilateralContractProposalName() != null) {
+        imdb = new Chunk("Download", hyperLink);
+        // System.out.println(project.getBilateralContractProposalName());
+        try {
+          imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getBilateralContractProposalName()))));
+        } catch (MalformedURLException exp) {
+          imdb = new Chunk(project.getBilateralContractProposalName(), TABLE_BODY_FONT);
+          LOG.error("There is an Malformed exception in " + project.getBilateralContractProposalName());
         }
       }
 
@@ -1138,7 +1148,7 @@ public class ProjectSummaryPDF extends BasePDF {
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
       document.add(table);
-      document.add(Chunk.NEWLINE);;
+      document.add(Chunk.NEWLINE);
     } catch (DocumentException e) {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
@@ -1888,7 +1898,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);

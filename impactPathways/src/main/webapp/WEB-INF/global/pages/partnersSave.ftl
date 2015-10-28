@@ -39,14 +39,14 @@
      
       
       [#-- Contact point name --]
-      <div id="partnerContactName" class="halfPartBlock ">
+      <!-- div id="partnerContactName" class="halfPartBlock ">
         [@customForm.input name="activityPartner.contactName" type="text" i18nkey="partnersSave.contactName" /]
-      </div>
+      </div -->
       
       [#-- Contact point email --]
-      <div id="partnerContactEmail" class="halfPartBlock ">
+      <!-- div id="partnerContactEmail" class="halfPartBlock ">
         [@customForm.input name="activityPartner.contactEmail" type="text" i18nkey="partnersSave.contactEmail" /]
-      </div>
+      </div -->
       
       [#-- Web page link --]
       <div id="partnerPage" class="fullPartBlock ">

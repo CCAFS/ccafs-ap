@@ -103,7 +103,6 @@ public class PartnersSaveAction extends BaseAction {
   @Override
   public String save() {
     String institutionName, institutionAcronym, institutionTypeName, countryId, countryName, city;
-    String contactName, contactEmail;
     String subject;
     StringBuilder message = new StringBuilder();
 
@@ -115,8 +114,6 @@ public class PartnersSaveAction extends BaseAction {
     partnerTypeId = activityPartner.getPartner().getType().getId();
     countryId = String.valueOf(activityPartner.getPartner().getCountry().getId());
     city = activityPartner.getPartner().getCity();
-    contactName = activityPartner.getContactName();
-    contactEmail = activityPartner.getContactEmail();
 
     // Get the country name
     countryName = locationManager.getCountry(Integer.parseInt(countryId)).getName();
@@ -129,7 +126,7 @@ public class PartnersSaveAction extends BaseAction {
       }
     }
     // message subject
-    subject = "Partner verification - " + institutionName;
+    subject = "[CCAFS P&R] Partner verification - " + institutionName;
     // Message content
     message.append(this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " ");
     message.append("(" + this.getCurrentUser().getEmail() + ") ");
@@ -140,21 +137,23 @@ public class PartnersSaveAction extends BaseAction {
     message.append("\n");
     message.append("Acronym: ");
     message.append(institutionAcronym);
-    message.append("\n");
+    message.append(" \n");
     message.append("Partner type: ");
     message.append(institutionTypeName);
-    message.append("\n");
-    message.append("Location (City, Country): ");
+    message.append(" \n");
+    message.append("City: ");
     message.append(city);
-    message.append(", ");
+    message.append(" \n");
+    message.append("Country: ");
     message.append(countryName);
-    message.append("\n");
+    message.append(" \n");
     // Is there a web page?
-    if (this.partnerWebPage != null) {
+    if (this.partnerWebPage != null && this.partnerWebPage.isEmpty()) {
       message.append("Web Page: ");
       message.append(partnerWebPage);
-      message.append("\n");
+      message.append(" \n");
     }
+    message.append(" \n");
 
     if (activityID > 0) {
       message.append("Activity: (");
@@ -174,8 +173,8 @@ public class PartnersSaveAction extends BaseAction {
     sendMail.send(config.getEmailNotification(), null, null, subject, message.toString(), null, null, null);
     messageSent = true;
 
-    LOG.info("The user {} send a message requesting add partners to the activity {}", this.getCurrentUser().getEmail(),
-      activityID);
+    LOG.info("The user {} send a message requesting add partners to the project {}", this.getCurrentUser().getEmail(),
+      projectID);
     return INPUT;
   }
 
