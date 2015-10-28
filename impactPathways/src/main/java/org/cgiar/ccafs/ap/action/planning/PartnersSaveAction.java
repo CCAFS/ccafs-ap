@@ -126,7 +126,7 @@ public class PartnersSaveAction extends BaseAction {
       }
     }
     // message subject
-    subject = "Partner verification - " + institutionName;
+    subject = "[CCAFS P&R] Partner verification - " + institutionName;
     // Message content
     message.append(this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " ");
     message.append("(" + this.getCurrentUser().getEmail() + ") ");
