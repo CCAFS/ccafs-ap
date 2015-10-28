@@ -53,7 +53,7 @@ public class ProjectPartnersValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -65,6 +65,7 @@ public class ProjectPartnersValidator extends BaseValidator {
     // So far, if this is a bilateral project the only validation needed is the project leader.
     this.validateInstitutionsEmpty(action, project);
     this.validateProjectLeader(action, project);
+    this.validateContactPersons(action, project);
   }
 
   private void validateCCAFSProject(BaseAction action, Project project) {
