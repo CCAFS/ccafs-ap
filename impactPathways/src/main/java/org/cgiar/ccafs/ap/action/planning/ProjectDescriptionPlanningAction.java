@@ -111,8 +111,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   }
 
   private String getBilateralProposalRelativePath() {
-    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
-      + config.getBilateralProjectContractProposalFolder() + File.separator;
+    return config.getProjectsBaseFolder() + project.getId() + File.separator
+      + config.getBilateralProjectContractProposalFolder();
   }
 
   /**
@@ -212,8 +212,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
   }
 
   private String getWorkplanRelativePath() {
-    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
-      + config.getProjectWorkplanFolder() + File.separator;
+    return config.getProjectsBaseFolder() + project.getId() + File.separator + config.getProjectWorkplanFolder();
   }
 
   public String getWorkplanURL() {
