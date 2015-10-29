@@ -249,8 +249,8 @@ function removePPAPartnersFromList(list) {
 
 function updateProjectPPAPartnersLists(e) {
 
-
-  //$projectPPAPartners.empty();
+ 
+  $projectPPAPartners.empty();
   var projectInstitutions = [];
   // Loop for all projects partners
   $partnersBlock.find('.projectPartner').each(function(i,projectPartner) {
