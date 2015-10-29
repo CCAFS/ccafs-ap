@@ -11,7 +11,7 @@
     <action name="project" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectSummaryAction">
       <result name="success" type="stream">
           <param name="inputName">inputStream</param>
-          <param name="contentType">application/pdf</param>
+          <param name="contentType">${contentType}</param>
           <param name="contentDisposition">filename="${fileName}"</param>
      </result>
     </action>
