@@ -215,8 +215,10 @@ public class ProjectSummaryPDF extends BasePDF {
 
             if (activityPartnerPerson != null) {
               activityBlock.add(activityPartnerPerson.getComposedName());
-              activityBlock.add(", ");
-              activityBlock.add(this.getPartnerPersonInstitution(activityPartnerPerson.getId()));
+              String partnerInstitution = this.getPartnerPersonInstitution(activityPartnerPerson.getId());
+              if (partnerInstitution != null) {
+                activityBlock.add(", " + partnerInstitution);
+              }
             } else {
               activityBlock.add(this.getText("summaries.project.empty"));
             }
@@ -231,21 +233,20 @@ public class ProjectSummaryPDF extends BasePDF {
             counter++;
           }
         }
-      }
+        // Leason regardins
+        activityBlock = new Paragraph();
+        activityBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        activityBlock.setFont(BODY_TEXT_BOLD_FONT);
+        activityBlock.add(this.getText("summaries.project.activities.lessonsRegarding"));
+        activityBlock.setFont(BODY_TEXT_FONT);
 
-      // Leason regardins
-      activityBlock = new Paragraph();
-      activityBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-      activityBlock.setFont(BODY_TEXT_BOLD_FONT);
-      activityBlock.add(this.getText("summaries.project.activities.lessonsRegarding"));
-      activityBlock.setFont(BODY_TEXT_FONT);
-
-      if (project.getComponentLesson("activities") != null) {
-        activityBlock.add(this.messageReturn(project.getComponentLesson("activities").getLessons()));
-      } else {
-        activityBlock.add(this.messageReturn(null));
+        if (project.getComponentLesson("activities") != null) {
+          activityBlock.add(this.messageReturn(project.getComponentLesson("activities").getLessons()));
+        } else {
+          activityBlock.add(this.messageReturn(null));
+        }
+        document.add(activityBlock);
       }
-      document.add(activityBlock);
 
 
     } catch (DocumentException e) {
@@ -2733,7 +2734,7 @@ public class ProjectSummaryPDF extends BasePDF {
     if (idProjectPartnerPerson < this.listMapPartnerPersons.size()) {
       return listMapPartnerPersons.get(idProjectPartnerPerson - 1).get("institution_name");
     }
-    return this.getText("summaries.project.empty");
+    return null;
   }
 
 
