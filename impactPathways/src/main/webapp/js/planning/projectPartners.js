@@ -248,7 +248,9 @@ function removePPAPartnersFromList(list) {
 }
 
 function updateProjectPPAPartnersLists(e) {
-  $projectPPAPartners.empty();
+
+
+  //$projectPPAPartners.empty();
   var projectInstitutions = [];
   // Loop for all projects partners
   $partnersBlock.find('.projectPartner').each(function(i,projectPartner) {
@@ -258,6 +260,7 @@ function updateProjectPPAPartnersLists(e) {
     // Validating if the partners is CCAFS Partner
     if(partner.isPPA()) {
       partner.hidePPAs();
+      console.log('entra al updateProjectPPAPartnersLists ');
       // Collecting list CCAFS partners from all project partners
       $projectPPAPartners.append(setOption(partner.institutionId, partner.institutionName));
     } else {
@@ -286,9 +289,12 @@ function updateProjectPPAPartnersLists(e) {
   }
   // Filling CCAFS partners lists for each project partner
   $partnersBlock.find('.projectPartner').each(function(i,partner) {
+
     var $select = $(partner).find('select.ppaPartnersSelect');
     $select.empty().append(setOption(-1, "Select an option"));
     $select.append($projectPPAPartners.html());
+
+    console.log('$projectPPAPartners.html())' +$projectPPAPartners.html());
     // Removing of the list CCAFS partners previously selected by project partner
     $(partner).find('li input.id').each(function(i_id,id) {
       $select.find('option[value=' + $(id).val() + ']').remove();
@@ -550,7 +556,7 @@ function addChosen() {
 
 /**
  * PartnerObject
- * 
+ *
  * @param {DOM} Project partner
  */
 
@@ -663,7 +669,7 @@ function PartnerObject(partner) {
 
 /**
  * PartnerPersonObject
- * 
+ *
  * @param {DOM} Partner person
  */
 function PartnerPersonObject(partnerPerson) {
