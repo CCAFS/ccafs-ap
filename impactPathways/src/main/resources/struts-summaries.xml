@@ -81,9 +81,14 @@
     </action>
    
     <!-- Exporting our active partners categorized by Flagship in XML format for the CCAFS Website -->
-    <action name="temp-partnersXml" class="org.cgiar.ccafs.ap.action.summaries.planning.PartnersXMLAction">
-      <result name="input" type="freemarker">/WEB-INF/home/partnersXML.ftl</result>
-      <param name="contentType">text/xml</param>
+    <action name="temp-partnersXml" class="org.cgiar.ccafs.ap.action.summaries.PartnersXMLAction">
+      <!--  result name="input" type="freemarker">/WEB-INF/summaries/partnersXML.ftl</result>
+      <param name="contentType">text/xml</param -->
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">${contentType}</param>
+        <param name="contentDisposition">filename="${fileName}"</param>
+      </result>
     </action> 
 
   </package>
