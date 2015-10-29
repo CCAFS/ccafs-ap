@@ -25,6 +25,8 @@ $(document).ready(function() {
    */
 
   $('.fileUpload .remove').on('click', function(e) {
+
+    console.log('entra remove 2');
     var context = $(this).attr('id').split('-')[1];
     var $parent = $(this).parent().parent();
     var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
@@ -50,6 +52,7 @@ $(document).ready(function() {
 
   // Event to remove an element 'li' from core project list
   $('ul li .remove').on('click', function(e) {
+    console.log('entra remove 1');
     removeItemList($(this).parents('li'));
   });
 
