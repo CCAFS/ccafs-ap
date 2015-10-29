@@ -90,26 +90,27 @@ public class ProjectSummaryPDF extends BasePDF {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(ProjectSummaryPDF.class);
-  private int contentLength;
-  int currentPlanningYear;
-  private Document document;
-  private APConfig config;
+
+  // Managers
   private ProjectContributionOverviewManager overviewManager;
   private IPElementManager elementManager;
   private InputStream inputStream;
   private BudgetManager budgetManager;
   private BudgetByMogManager budgetByMogManager;
-  ProjectPartnerManager projectPartnerManager;
+  private ProjectPartnerManager projectPartnerManager;
 
-  int midOutcomeYear;
+  // Model
+  private APConfig config;
+  private Document document;
+  private int contentLength;
+  private int currentPlanningYear;
+  private int midOutcomeYear;
   private Project project;
   private DecimalFormat budgetFormatter, genderFormatter;
-  // Attributes
   private String summaryTitle;
   private List<IPElement> allMOGs;
   private List<Map<String, String>> listMapPartnerPersons;
 
-  // Budget
   @Inject
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
     IPCrossCuttingManager ipCrossCuttingManager, LocationManager locationManager,
@@ -120,6 +121,7 @@ public class ProjectSummaryPDF extends BasePDF {
     this.elementManager = elementManager;
     this.overviewManager = overviewManager;
     this.budgetByMogManager = budgetByMogManager;
+    this.projectPartnerManager = projectPartnerManager;
     this.initialize(config.getBaseUrl());
   }
 
@@ -948,7 +950,7 @@ public class ProjectSummaryPDF extends BasePDF {
               deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
 
               deliverableBlock
-              .add(this.getText("summaries.project.deliverable.partnership.organization") + " #" + counter + ": ");
+                .add(this.getText("summaries.project.deliverable.partnership.organization") + " #" + counter + ": ");
               deliverableBlock.add("");
 
               deliverableBlock.setFont(TABLE_BODY_FONT);
@@ -1046,7 +1048,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(
         this.messageReturn(
           project.getLiaisonInstitution().getAcronym() + " - " + project.getLiaisonInstitution().getName()),
-          TABLE_BODY_FONT);
+        TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
       cellContent = new Paragraph(this.getText("summaries.project.contactPerson"), TABLE_BODY_BOLD_FONT);
@@ -1880,7 +1882,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -2605,7 +2607,7 @@ public class ProjectSummaryPDF extends BasePDF {
     return contentLength;
   }
 
-  public List<IPElement> getElementMOGsByType(IPElement ipeElement, IPElementType elementType) {
+  private List<IPElement> getElementMOGsByType(IPElement ipeElement, IPElementType elementType) {
 
     List<IPElement> listIPElement = new ArrayList<>();
     for (IPElement IPElementIterator : this.allMOGs) {
@@ -2631,15 +2633,6 @@ public class ProjectSummaryPDF extends BasePDF {
     fileName += ".pdf";
 
     return fileName;
-  }
-
-  /**
-   * Method used for to get the title of document
-   * 
-   * @return title of document
-   */
-  public String getFileTitle() {
-    return summaryTitle;
   }
 
   /**
@@ -2673,7 +2666,7 @@ public class ProjectSummaryPDF extends BasePDF {
    * @param mog MOG to number
    * @return number mog
    */
-  public int getMOGIndex(IPElement mog) {
+  private int getMOGIndex(IPElement mog) {
     int index = 0;
 
     List<IPElement> IPElements = this.getElementMOGsByType(mog, mog.getType());
@@ -2693,7 +2686,7 @@ public class ProjectSummaryPDF extends BasePDF {
    * @param mog MOG to search in the list
    * @return outputBudget founded, null when the output doesn't exists
    */
-  public OutputBudget getOutputBudgetByMog(List<OutputBudget> listOutputBudget, IPElement mog) {
+  private OutputBudget getOutputBudgetByMog(List<OutputBudget> listOutputBudget, IPElement mog) {
 
     for (OutputBudget outputBudget : listOutputBudget) {
       if (outputBudget.getOutput().getId() == mog.getId()) {
@@ -2711,30 +2704,12 @@ public class ProjectSummaryPDF extends BasePDF {
    * @return String that represent the project partner person institution name , if the ppp doesn't exist this method
    *         return empty.
    */
-  public String getPartnerPersonInstitution(int idProjectPartnerPerson) {
+  private String getPartnerPersonInstitution(int idProjectPartnerPerson) {
 
     if (idProjectPartnerPerson < this.listMapPartnerPersons.size()) {
       return listMapPartnerPersons.get(idProjectPartnerPerson - 1).get("institution_name");
     }
     return null;
-  }
-
-
-  /**
-   * This method is for search the location for the name in a list
-   * 
-   * @param location location to search
-   * @param listLocation list where searching
-   * @param index
-   * @return
-   */
-  private boolean isRepeatedLocation(Location location, List<Location> listLocation, int index) {
-    for (int a = index; a < listLocation.size(); a++) {
-      if (listLocation.get(a).getName().trim().equals(location.getName().trim())) {
-        return true;
-      }
-    }
-    return false;
   }
 
 
@@ -2806,25 +2781,6 @@ public class ProjectSummaryPDF extends BasePDF {
 
     return ppaPartners_aux;
   }
-
-  /**
-   * This method is used for removed location repeat in a list
-   * 
-   * @param listLocation list to depure
-   * @return list of project locations refined
-   */
-  public List<Location> removeRepeatedLocations(List<Location> listLocation) {
-    List<Location> listLocationAnswer = new ArrayList<Location>();
-    //
-    for (int a = 0; a < listLocation.size() - 1; a++) {
-      if (!this.isRepeatedLocation(listLocation.get(a), listLocation, a + 1)) {
-        listLocationAnswer.add(listLocation.get(a));
-      }
-    }
-    listLocationAnswer.add(listLocation.get(listLocation.size() - 1));
-    return listLocationAnswer;
-  }
-
 
   /**
    * this method is used for set the title
