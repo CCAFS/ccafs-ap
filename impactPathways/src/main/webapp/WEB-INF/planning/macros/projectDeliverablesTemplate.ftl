@@ -27,6 +27,8 @@
               [#else]
                 <span class="icon-20 icon-uncheck" title=""></span> 
               [/#if]
+            [#else]
+                <span class="icon-20 icon-uncheck" title=""></span>
             [/#if]
           </td>
           

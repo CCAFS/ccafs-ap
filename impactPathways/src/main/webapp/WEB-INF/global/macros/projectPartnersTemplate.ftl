@@ -49,7 +49,7 @@
     </div>
     
     [#-- Indicate which PPA Partners for second level partners --]
-    [#if editable || ((!editable && projectPartner.partnerContributors?has_content)!false)]
+    [#if (editable || ((!editable && projectPartner.partnerContributors?has_content)!false)) && (!project.bilateralProject)]
       [#assign showPPABlock][#if (projectPartner.institution.PPA)!true]none[#else]block[/#if][/#assign]
       <div class="ppaPartnersList panel tertiary" style="display:${showPPABlock}">
         <div class="panel-head">[@customForm.text name="planning.projectPartners.indicatePpaPartners" readText=!editable /]</div> 

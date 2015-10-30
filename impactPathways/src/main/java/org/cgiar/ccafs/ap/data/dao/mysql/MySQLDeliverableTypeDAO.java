@@ -134,7 +134,7 @@ public class MySQLDeliverableTypeDAO implements DeliverableTypeDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT dt.*   ");
     query.append("FROM deliverable_types as dt ");
-    query.append("WHERE dt.parent_id IS NULL AND dt.timeline IS NULL ");
+    query.append("WHERE dt.parent_id IS NULL");
 
     LOG.debug("-- getDeliverableTypes() > Calling method executeQuery to get the results");
     return this.getData(query.toString());

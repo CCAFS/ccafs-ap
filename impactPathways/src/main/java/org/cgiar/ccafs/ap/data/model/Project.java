@@ -135,10 +135,13 @@ public class Project {
           continue;
         }
         if (projectOutput.getId() == output.getId()) {
-          int projectOutcome = projectOutput.getContributesToIDs()[0];
-          int outcome = output.getContributesToIDs()[0];
-          if (outcome == projectOutcome) {
-            return true;
+          if (projectOutput.getContributesToIDs() != null && projectOutput.getContributesToIDs().length > 0
+            && output.getContributesToIDs() != null && output.getContributesToIDs().length > 0) {
+            int projectOutcome = projectOutput.getContributesToIDs()[0];
+            int outcome = output.getContributesToIDs()[0];
+            if (outcome == projectOutcome) {
+              return true;
+            }
           }
         }
       }
