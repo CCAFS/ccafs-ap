@@ -137,14 +137,15 @@ function datePickerConfig(element) {
   var finalMaxDate = (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue;
   $(element.startDate).datepicker({
       dateFormat: "yy-mm-dd",
-      minDate: defaultMinDateValue,
-      maxDate: finalMaxDate,
+
+      minDate: '2015-01-01',
+      maxDate: '2019-12-31',
       changeMonth: true,
       changeYear: true,
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-          $(element.endDate).datepicker("option", "minDate", selectedDate);
+         // $(element.endDate).datepicker("option", "minDate", selectedDate);
         }
       }
   });
@@ -157,14 +158,14 @@ function datePickerConfig(element) {
   var finalMinDate = (minDateValue != 0) ? minDateValue : defaultMinDateValue;
   $(element.endDate).datepicker({
       dateFormat: "yy-mm-dd",
-      minDate: finalMinDate,
-      maxDate: defaultMaxDateValue,
+      minDate: '2015-01-01',
+      maxDate: '2019-12-31',
       changeMonth: true,
       changeYear: true,
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-          $(element.startDate).datepicker("option", "maxDate", selectedDate);
+          //$(element.startDate).datepicker("option", "maxDate", selectedDate);
         }
       }
   });
