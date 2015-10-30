@@ -90,37 +90,39 @@ public class ProjectSummaryPDF extends BasePDF {
 
   // Logger
   private static final Logger LOG = LoggerFactory.getLogger(ProjectSummaryPDF.class);
-  private int contentLength;
-  int currentPlanningYear;
-  private Document document;
-  private APConfig config;
+
+  // Managers
   private ProjectContributionOverviewManager overviewManager;
   private IPElementManager elementManager;
   private InputStream inputStream;
   private BudgetManager budgetManager;
   private BudgetByMogManager budgetByMogManager;
-  int midOutcomeYear;
+  private ProjectPartnerManager projectPartnerManager;
+
+  // Model
+  private APConfig config;
+  private Document document;
+  private int contentLength;
+  private int currentPlanningYear;
+  private int midOutcomeYear;
   private Project project;
   private DecimalFormat budgetFormatter, genderFormatter;
-  // Attributes
   private String summaryTitle;
   private List<IPElement> allMOGs;
   private List<Map<String, String>> listMapPartnerPersons;
 
-  // Budget
   @Inject
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
     IPCrossCuttingManager ipCrossCuttingManager, LocationManager locationManager,
     ProjectContributionOverviewManager overviewManager, ProjectPartnerManager projectPartnerManager,
     BudgetByMogManager budgetByMogManager) {
     this.config = config;
-    this.initialize(config.getBaseUrl());
     this.budgetManager = budgetManager;
     this.elementManager = elementManager;
     this.overviewManager = overviewManager;
     this.budgetByMogManager = budgetByMogManager;
-    this.allMOGs = elementManager.getIPElementList();
-    this.listMapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
+    this.projectPartnerManager = projectPartnerManager;
+    this.initialize(config.getBaseUrl());
   }
 
   /**
@@ -389,7 +391,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getTotalContribution() * 0.01
-        * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[0] += value;
@@ -408,7 +410,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getGenderContribution() * 0.01
-        * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[1] += value;
@@ -590,7 +592,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(this.budgetFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
             valueSum = value;
@@ -1137,6 +1139,7 @@ public class ProjectSummaryPDF extends BasePDF {
           (new Paragraph(this.getText("summaries.project.ipContributions.proposal.space"), TABLE_BODY_BOLD_FONT));
         this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
 
+
         if (project.getBilateralContractProposalName() != null
           && !project.getBilateralContractProposalName().equals("")) {
           imdb = new Chunk(project.getBilateralContractProposalName(), hyperLink);
@@ -1144,7 +1147,8 @@ public class ProjectSummaryPDF extends BasePDF {
             imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanURL()))));
           } catch (MalformedURLException exp) {
             imdb = new Chunk(project.getBilateralContractProposalName(), TABLE_BODY_FONT);
-            LOG.error("There is an Malformed exception in " + project.getBilateralContractProposalName());
+            LOG.error("There is an Malformed exception in bilateral contract: "
+              + project.getBilateralContractProposalName());
           }
         } else {
           imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
@@ -2570,6 +2574,10 @@ public class ProjectSummaryPDF extends BasePDF {
    * @param midOutcomeYear year 2019
    */
   public void generatePdf(Project project, int currentPlanningYear, int midOutcomeYear) {
+
+    this.allMOGs = elementManager.getIPElementList();
+    this.listMapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
+
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     this.document = new Document(PageSize.A4, 57, 57, 60, 57);
     this.project = project;
@@ -2630,7 +2638,7 @@ public class ProjectSummaryPDF extends BasePDF {
     return contentLength;
   }
 
-  public List<IPElement> getElementMOGsByType(IPElement ipeElement, IPElementType elementType) {
+  private List<IPElement> getElementMOGsByType(IPElement ipeElement, IPElementType elementType) {
 
     List<IPElement> listIPElement = new ArrayList<>();
     for (IPElement IPElementIterator : this.allMOGs) {
@@ -2656,15 +2664,6 @@ public class ProjectSummaryPDF extends BasePDF {
     fileName += ".pdf";
 
     return fileName;
-  }
-
-  /**
-   * Method used for to get the title of document
-   * 
-   * @return title of document
-   */
-  public String getFileTitle() {
-    return summaryTitle;
   }
 
   /**
@@ -2698,7 +2697,7 @@ public class ProjectSummaryPDF extends BasePDF {
    * @param mog MOG to number
    * @return number mog
    */
-  public int getMOGIndex(IPElement mog) {
+  private int getMOGIndex(IPElement mog) {
     int index = 0;
 
     List<IPElement> IPElements = this.getElementMOGsByType(mog, mog.getType());
@@ -2718,7 +2717,7 @@ public class ProjectSummaryPDF extends BasePDF {
    * @param mog MOG to search in the list
    * @return outputBudget founded, null when the output doesn't exists
    */
-  public OutputBudget getOutputBudgetByMog(List<OutputBudget> listOutputBudget, IPElement mog) {
+  private OutputBudget getOutputBudgetByMog(List<OutputBudget> listOutputBudget, IPElement mog) {
 
     for (OutputBudget outputBudget : listOutputBudget) {
       if (outputBudget.getOutput().getId() == mog.getId()) {
@@ -2736,30 +2735,12 @@ public class ProjectSummaryPDF extends BasePDF {
    * @return String that represent the project partner person institution name , if the ppp doesn't exist this method
    *         return empty.
    */
-  public String getPartnerPersonInstitution(int idProjectPartnerPerson) {
+  private String getPartnerPersonInstitution(int idProjectPartnerPerson) {
 
     if (idProjectPartnerPerson < this.listMapPartnerPersons.size()) {
       return listMapPartnerPersons.get(idProjectPartnerPerson - 1).get("institution_name");
     }
     return null;
-  }
-
-
-  /**
-   * This method is for search the location for the name in a list
-   * 
-   * @param location location to search
-   * @param listLocation list where searching
-   * @param index
-   * @return
-   */
-  private boolean isRepeatedLocation(Location location, List<Location> listLocation, int index) {
-    for (int a = index; a < listLocation.size(); a++) {
-      if (listLocation.get(a).getName().trim().equals(location.getName().trim())) {
-        return true;
-      }
-    }
-    return false;
   }
 
 
@@ -2831,25 +2812,6 @@ public class ProjectSummaryPDF extends BasePDF {
 
     return ppaPartners_aux;
   }
-
-  /**
-   * This method is used for removed location repeat in a list
-   * 
-   * @param listLocation list to depure
-   * @return list of project locations refined
-   */
-  public List<Location> removeRepeatedLocations(List<Location> listLocation) {
-    List<Location> listLocationAnswer = new ArrayList<Location>();
-    //
-    for (int a = 0; a < listLocation.size() - 1; a++) {
-      if (!this.isRepeatedLocation(listLocation.get(a), listLocation, a + 1)) {
-        listLocationAnswer.add(listLocation.get(a));
-      }
-    }
-    listLocationAnswer.add(listLocation.get(listLocation.size() - 1));
-    return listLocationAnswer;
-  }
-
 
   /**
    * this method is used for set the title
