@@ -411,7 +411,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
             this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
         } else {
 
-          previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
           if (project.getBilateralContractProposalName() != null
             && !project.getBilateralContractProposalName().isEmpty()) {
             FileManager

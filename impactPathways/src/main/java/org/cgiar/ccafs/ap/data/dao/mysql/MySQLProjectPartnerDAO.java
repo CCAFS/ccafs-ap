@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Javier Andrés Gallego
  */
 public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
@@ -261,27 +261,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  @Deprecated
-  public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
-    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})",
-      new Object[] {projectID, projectPartnerType});
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT *   ");
-    query.append("FROM project_partners ");
-    query.append("WHERE project_id = ");
-    query.append(projectID);
-    query.append(" AND partner_type = '");
-    query.append(projectPartnerType);
-    query.append("'");
-    query.append(" AND is_active = 1 ");
-    query.append("ORDER BY partner_id");
-
-    LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
-    return this.getData(query.toString());
-  }
-
-  @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
     LOG.debug(">> saveProjectPartner(projectPartnerData)", projectPartnerData);
     StringBuilder query = new StringBuilder();
@@ -363,5 +342,50 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return result;
 
 
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetActivePartners() {
+    List<Map<String, Object>> projectPartnersData = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT i.id as 'institution_id', ");
+    query.append("group_concat(pp.project_id SEPARATOR ',') as 'project_ids', ");
+    query.append("group_concat(DISTINCT ip.id SEPARATOR ',') as 'ip_programs', ");
+    query.append("i.name as 'institution_name', ");
+    query.append("i.acronym as 'institution_acronym', ");
+    query.append("i.website_link as 'institution_website', ");
+    query.append("i.institution_type_id as 'institution_type_id', ");
+    query.append("it.name as 'institution_type_name', ");
+    query.append("it.acronym as 'institution_type_acronym' ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN institutions i ON i.id = pp.institution_id ");
+    query.append("INNER JOIN institution_types it ON it.id = i.institution_type_id ");
+    query.append("INNER JOIN projects p ON p.id = pp.project_id  ");
+    query.append("INNER JOIN project_focuses pf ON pf.project_id = p.id ");
+    query.append("INNER JOIN ip_programs ip ON ip.id = pf.program_id ");
+    query.append("WHERE pp.is_active = 1 ");
+    query.append("AND p.is_active = 1 ");
+    query.append("AND pf.is_active = 1 ");
+    query.append("GROUP BY i.id ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> projectPartnerData = new HashMap<>();
+        projectPartnerData.put("id", rs.getInt("institution_id"));
+        projectPartnerData.put("project_ids", rs.getString("project_ids"));
+        projectPartnerData.put("ip_programs", rs.getString("ip_programs"));
+        projectPartnerData.put("institution_name", rs.getString("institution_name"));
+        projectPartnerData.put("institution_acronym", rs.getString("institution_acronym"));
+        projectPartnerData.put("institution_website", rs.getString("institution_website"));
+        projectPartnerData.put("institution_type_id", rs.getString("institution_type_id"));
+        projectPartnerData.put("institution_type_name", rs.getString("institution_type_name"));
+        projectPartnerData.put("institution_type_acronym", rs.getString("institution_type_acronym"));
+        projectPartnersData.add(projectPartnerData);
+      }
+    } catch (SQLException e) {
+      LOG.error("summaryGetActivePartners > Exception raised trying to get the project partners for the XML", e);
+    }
+
+    return projectPartnersData;
   }
 }

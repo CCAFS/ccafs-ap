@@ -69,6 +69,7 @@ public class Project {
   private List<Submission> submissions; // all the project submissions.
   private String bilateralContractProposalName;
   private String workplanName;
+  private String workplanURL;
   private boolean bilateralContractRequired;
   private boolean workplanRequired;
   private Budget anualContribution;
@@ -134,10 +135,13 @@ public class Project {
           continue;
         }
         if (projectOutput.getId() == output.getId()) {
-          int projectOutcome = projectOutput.getContributesToIDs()[0];
-          int outcome = output.getContributesToIDs()[0];
-          if (outcome == projectOutcome) {
-            return true;
+          if (projectOutput.getContributesToIDs() != null && projectOutput.getContributesToIDs().length > 0
+            && output.getContributesToIDs() != null && output.getContributesToIDs().length > 0) {
+            int projectOutcome = projectOutput.getContributesToIDs()[0];
+            int outcome = output.getContributesToIDs()[0];
+            if (outcome == projectOutcome) {
+              return true;
+            }
           }
         }
       }
@@ -609,18 +613,18 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-    // Standar identifier
+      // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-        // PDF Identifier
+      // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
         // Acronym leader institution
         if (this.getLeader() != null && this.getLeader().getInstitution() != null
-        && this.getLeader().getInstitution().getAcronym() != null) {
+          && this.getLeader().getInstitution().getAcronym() != null) {
           result.append(this.getLeader().getInstitution().getAcronym() + "-");
         }
 
@@ -644,12 +648,12 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-        // Excel Identifier
+      // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
         break;
 
-        // Email Subject Identifier
+      // Email Subject Identifier
       case Project.EMAIL_SUBJECT_IDENTIFIER:
         result.append("P" + this.getId());
         break;
@@ -753,6 +757,13 @@ public class Project {
 
   public String getWorkplanName() {
     return workplanName;
+  }
+
+  /**
+   * @return the workplanURL
+   */
+  public String getWorkplanURL() {
+    return workplanURL;
   }
 
   @Override
@@ -989,6 +1000,15 @@ public class Project {
   public void setWorkplanRequired(boolean workplanRequired) {
     this.workplanRequired = workplanRequired;
   }
+
+
+  /**
+   * @param workplanURL the workplanURL to set
+   */
+  public void setWorkplanURL(String workplanURL) {
+    this.workplanURL = workplanURL;
+  }
+
 
   @Override
   public String toString() {

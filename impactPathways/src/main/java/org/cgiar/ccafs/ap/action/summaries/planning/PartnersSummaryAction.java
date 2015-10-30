@@ -49,7 +49,7 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   private byte[] bytesXLS;
 
   // Streams
-  InputStream inputStream;
+  private InputStream inputStream;
 
   @Inject
   public PartnersSummaryAction(APConfig config, PartnersSummaryXLS partnersXLS, InstitutionManager institutionManager,

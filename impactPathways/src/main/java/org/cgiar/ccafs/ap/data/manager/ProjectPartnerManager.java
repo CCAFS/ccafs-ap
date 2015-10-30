@@ -126,4 +126,12 @@ public interface ProjectPartnerManager {
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
     String justification);
 
+  /**
+   * This method is used to export all the current and active partners that are working with CCAFS in an XML format for
+   * the CCAFS Web-site.
+   * 
+   * @return a List of Maps with the information populated on it.
+   */
+  public List<Map<String, Object>> summaryGetActivePartners();
+
 }
