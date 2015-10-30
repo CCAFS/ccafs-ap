@@ -1108,39 +1108,46 @@ public class ProjectSummaryPDF extends BasePDF {
       cellContent = new Paragraph(this.messageReturn(project.getType().replaceAll("_", " ")), TABLE_BODY_FONT);
       this.addTableBodyCell(table, cellContent, Element.ALIGN_LEFT, 1);
 
-      if (!project.isBilateralProject()) {
-        cellContent = (new Paragraph(this.getText("summaries.project.detailed"), TABLE_BODY_BOLD_FONT));
-        this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
-      } else {
-        cellContent =
-          (new Paragraph(this.getText("summaries.project.ipContributions.proposal.space"), TABLE_BODY_BOLD_FONT));
-        this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
-      }
-
+      // Fiveth row
+      Chunk imdb = null;
       Font hyperLink = new Font(FontFactory.getFont("openSans", 10, Color.BLUE));
       hyperLink.setStyle(Font.UNDERLINE);
 
-      Chunk imdb = null;
+      // -- Not Bilateral
+      if (!project.isBilateralProject()) {
+        cellContent = (new Paragraph(this.getText("summaries.project.detailed"), TABLE_BODY_BOLD_FONT));
+        this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
 
-      if (project.getWorkplanName() == null && project.getBilateralContractProposalName() == null) {
-        imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
-      } else if (project.getWorkplanName() != null) {
-        imdb = new Chunk("Download", hyperLink);
-        // System.out.println(project.getWorkplanName());
-        try {
-          imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanName()))));
-        } catch (MalformedURLException exp) {
-          imdb = new Chunk(project.getWorkplanName(), TABLE_BODY_FONT);
-          LOG.error("There is an Malformed exception in " + project.getWorkplanName());
+        if (project.getWorkplanName() != null && !project.getWorkplanName().equals("")) {
+          imdb = new Chunk(project.getWorkplanName(), hyperLink);
+          try {
+            imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanURL()))));
+          } catch (MalformedURLException exp) {
+            imdb = new Chunk(project.getWorkplanName(), TABLE_BODY_FONT);
+            LOG.error("There is an Malformed exception in " + project.getWorkplanName());
+          }
+        } else {
+          imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
         }
-      } else if (project.getBilateralContractProposalName() != null) {
-        imdb = new Chunk("Download", hyperLink);
-        // System.out.println(project.getBilateralContractProposalName());
-        try {
-          imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getBilateralContractProposalName()))));
-        } catch (MalformedURLException exp) {
-          imdb = new Chunk(project.getBilateralContractProposalName(), TABLE_BODY_FONT);
-          LOG.error("There is an Malformed exception in " + project.getBilateralContractProposalName());
+      }
+
+      // -- Bilateral
+      else {
+        cellContent =
+          (new Paragraph(this.getText("summaries.project.ipContributions.proposal.space"), TABLE_BODY_BOLD_FONT));
+        this.addTableBodyCell(table, cellContent, Element.ALIGN_RIGHT, 1);
+
+        if (project.getBilateralContractProposalName() != null
+          && !project.getBilateralContractProposalName().equals("")) {
+          imdb = new Chunk(project.getBilateralContractProposalName(), hyperLink);
+          try {
+            imdb.setAction(new PdfAction(new URL(this.messageReturn(project.getWorkplanURL()))));
+          } catch (MalformedURLException exp) {
+            imdb = new Chunk(project.getBilateralContractProposalName(), TABLE_BODY_FONT);
+            LOG.error("There is an Malformed exception in " + project.getBilateralContractProposalName());
+          }
+        } else {
+          imdb = new Chunk(this.getText("summaries.project.empty"), TABLE_BODY_FONT);
         }
       }
 

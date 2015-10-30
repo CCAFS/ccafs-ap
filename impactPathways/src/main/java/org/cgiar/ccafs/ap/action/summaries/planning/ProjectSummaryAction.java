@@ -212,14 +212,14 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     if (project.isWorkplanRequired()) {
       String workPlanURL = this.getWorkplanURL();
       if (workPlanURL != null || project.getWorkplanName() != null) {
-        project.setWorkplanName(workPlanURL + project.getWorkplanName());
+        project.setWorkplanURL(workPlanURL + project.getWorkplanName());
       }
     }
     // Get a route for the bilateral contract
     if (project.isBilateralProject()) {
       String bilateralContractURL = this.getBilateralContractURL();
       if (bilateralContractURL != null || project.getBilateralContractProposalName() != null) {
-        project.setBilateralContractProposalName(bilateralContractURL + project.getBilateralContractProposalName());
+        project.setWorkplanURL(bilateralContractURL + project.getBilateralContractProposalName());
       }
     }
 
