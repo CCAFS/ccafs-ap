@@ -298,7 +298,7 @@
         [#if !editable || !project.bilateralProject]<strong>US$ ${((linkedProject.anualContribution.amount)!0)?number?string(",##0.00")}</strong> [/#if]
       </p>
       [#if editable && project.bilateralProject]
-        [@customForm.input name="${budgetName}.amount" className="budgetAmount projectBudget W3_BILATERAL" showTitle=false /]
+        [@customForm.input name="${budgetName}.amount" className="budgetAmount projectBudget" showTitle=false /]
       [/#if]
       </div>
     </div>
