@@ -168,6 +168,17 @@ public interface BudgetManager {
    */
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
 
+
+  /**
+   * This method calculates the total budget of some type for a given project.
+   * 
+   * @param projectID is the project identifier.
+   * @param budgetTypeID budget type identifier.
+   * @param year the year
+   * @return a double representing this value, or -1 if some error found.
+   */
+  public double calculateTotalProjectBudgetByTypeYear(int projectID, int budgetTypeID, int year);
+
   /**
    * This method removes a specific budget value from the database.
    * 

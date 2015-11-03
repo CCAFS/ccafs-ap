@@ -41,8 +41,8 @@ public class PartnersXMLAction extends BaseAction implements Summary {
 
   // Models
   private List<Map<String, Object>> partnersData;
-  private List<IPProgram> flagships;
-  private List<IPProgram> regions;
+  private Map<String, Object> flagships;
+  private Map<String, Object> regions;
 
   // Model for the front-end
   private byte[] bytesXML;
@@ -64,10 +64,12 @@ public class PartnersXMLAction extends BaseAction implements Summary {
 
   private void buildXML(Document doc) {
     // root element
-    Element partner, location, country, region, type;
+    Element partner, location, country, region, type, flagshipsEtiquete, regionsEtiquete, flagship, regionEt;
     Element rootElement = doc.createElement("partners");
+    IPProgram ipProgram;
     doc.appendChild(rootElement);
 
+    String[] flagshipIds;
     for (Map<String, Object> partnerData : partnersData) {
       partner = doc.createElement("partner");
       // id
@@ -105,6 +107,36 @@ public class PartnersXMLAction extends BaseAction implements Summary {
       type.appendChild(this.buildElement(doc, "acronym",
         this.convertToString(partnerData.get("institution_type_acronym"))));
       partner.appendChild(type);
+
+      // ----- flagships
+      flagshipIds = this.convertToString(partnerData.get("ip_programs")).split(",");
+
+      flagshipsEtiquete = doc.createElement("flagships");
+      regionsEtiquete = doc.createElement("regions");
+
+      for (String flagshipId : flagshipIds) {
+        ipProgram = (IPProgram) flagships.get(flagshipId);
+        if (ipProgram != null) {
+          flagship = doc.createElement("flagship");
+          flagship.appendChild(this.buildElement(doc, "id", this.convertToString(ipProgram.getId())));
+          flagship.appendChild(this.buildElement(doc, "acronym", this.convertToString(ipProgram.getAcronym())));
+          flagship.appendChild(this.buildElement(doc, "name", this.convertToString(ipProgram.getName())));
+          flagshipsEtiquete.appendChild(flagship);
+        } else {
+          ipProgram = (IPProgram) regions.get(flagshipId);
+          if (ipProgram != null) {
+            // ----- regions
+            regionEt = doc.createElement("region");
+            regionEt.appendChild(this.buildElement(doc, "id", this.convertToString(ipProgram.getId())));
+            regionEt.appendChild(this.buildElement(doc, "acronym", this.convertToString(ipProgram.getAcronym())));
+            regionEt.appendChild(this.buildElement(doc, "name", this.convertToString(ipProgram.getName())));
+            regionsEtiquete.appendChild(regionEt);
+          }
+
+        }
+      }
+      partner.appendChild(flagshipsEtiquete);
+      partner.appendChild(regionsEtiquete);
 
       rootElement.appendChild(partner);
     }
@@ -173,10 +205,10 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     partnersData = partnerManager.summaryGetActivePartners();
 
     // Getting all the flagships.
-    flagships = programManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    flagships = programManager.getProgramsByTypeMap(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
     // Getting all the regions.
-    regions = programManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+    regions = programManager.getProgramsByTypeMap(APConstants.REGION_PROGRAM_TYPE);
 
     LOG.info("XML format for the CCAFS Website exported.");
   }

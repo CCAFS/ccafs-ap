@@ -71,6 +71,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private boolean invalidYear;
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
+  private double totalCCAFSBudgetbyYear;
+  private double totalBilateralBudgetbyYear;
+
   private Project previousProject;
 
   @Inject
@@ -144,8 +147,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return totalBilateralBudget;
   }
 
+  public double getTotalBilateralBudgetbyYear() {
+    return totalBilateralBudgetbyYear;
+  }
+
   public double getTotalCCAFSBudget() {
     return totalCCAFSBudget;
+  }
+
+  public double getTotalCCAFSBudgetbyYear() {
+    return totalCCAFSBudgetbyYear;
   }
 
   public String getW1W2BudgetLabel() {
@@ -164,9 +175,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return BudgetType.W3_BILATERAL.toString();
   }
 
+
   public int getYear() {
     return year;
   }
+
 
   public boolean isHasLeader() {
     return hasLeader;
@@ -243,6 +256,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         // Set the current year as default
         year = config.getPlanningCurrentYear();
       }
+
+      totalCCAFSBudgetbyYear =
+        budgetManager.calculateTotalProjectBudgetByTypeYear(projectID, BudgetType.W1_W2.getValue(), year);
+      totalBilateralBudgetbyYear =
+        budgetManager.calculateTotalProjectBudgetByTypeYear(projectID, BudgetType.W3_BILATERAL.getValue(), year);
 
       if (!allYears.contains(new Integer(year))) {
         year = config.getPlanningCurrentYear();
@@ -416,6 +434,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return NOT_AUTHORIZED;
   }
 
+
   public void setProject(Project project) {
     this.project = project;
   }
@@ -428,8 +447,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     this.totalBilateralBudget = totalBilateralBudget;
   }
 
+  public void setTotalBilateralBudgetbyYear(double totalBilateralBudgetbyYear) {
+    this.totalBilateralBudgetbyYear = totalBilateralBudgetbyYear;
+  }
+
   public void setTotalCCAFSBudget(double totalCCAFSBudget) {
     this.totalCCAFSBudget = totalCCAFSBudget;
+  }
+
+  public void setTotalCCAFSBudgetbyYear(double totalCCAFSBudgetbyYear) {
+    this.totalCCAFSBudgetbyYear = totalCCAFSBudgetbyYear;
   }
 
   @Override
