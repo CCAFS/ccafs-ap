@@ -7,7 +7,7 @@
 [#assign currentPrePlanningSection = "projects" /]
 
 [#assign breadCrumb = [
-  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"}
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"intro"}
 ]/]
 
 
