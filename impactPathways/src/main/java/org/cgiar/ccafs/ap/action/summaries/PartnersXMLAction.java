@@ -45,7 +45,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
 
   // Models
   private List<Map<String, Object>> partnersData;
-  private Map<String, IPProgram> flagships;
+  private Map<String, IPProgram> ipPrograms;
   private Map<String, Project> projects;
 
 
@@ -78,7 +78,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     IPProgram ipProgram;
     doc.appendChild(rootElement);
     Project project;
-    String[] flagshipIds, projectIds;
+    String[] ipProgramIds, projectIds;
     for (Map<String, Object> partnerData : partnersData) {
       partner = doc.createElement("partner");
       // id
@@ -118,14 +118,14 @@ public class PartnersXMLAction extends BaseAction implements Summary {
       partner.appendChild(type);
 
       // flagships
-      flagshipIds = this.convertToString(partnerData.get("ip_programs")).split(",");
+      ipProgramIds = this.convertToString(partnerData.get("ip_programs")).split(",");
 
       flagshipsLabel = doc.createElement("flagship-programs");
       regionsLabel = doc.createElement("region-programs");
 
-      for (String flagshipId : flagshipIds) {
-        ipProgram = flagships.get(flagshipId);
-        switch (ipProgram.getId()) {
+      for (String ipProgramId : ipProgramIds) {
+        ipProgram = ipPrograms.get(ipProgramId);
+        switch (ipProgram.getType().getId()) {
           case APConstants.FLAGSHIP_PROGRAM_TYPE:
             // --- flagship
             flagship = doc.createElement("flagship");
@@ -231,18 +231,18 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     // System.out.println();
     partnersData = partnerManager.summaryGetActivePartners();
 
-    flagships = new HashMap<String, IPProgram>();
+    ipPrograms = new HashMap<String, IPProgram>();
 
     // Getting all the flagships.
     List<IPProgram> flagshipList = programManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
     for (IPProgram iPProgram : flagshipList) {
-      flagships.put(String.valueOf(iPProgram.getId()), iPProgram);
+      ipPrograms.put(String.valueOf(iPProgram.getId()), iPProgram);
     }
 
     // Getting all the regions.
     List<IPProgram> regionList = programManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
     for (IPProgram iPProgram : regionList) {
-      flagships.put(String.valueOf(iPProgram.getId()), iPProgram);
+      ipPrograms.put(String.valueOf(iPProgram.getId()), iPProgram);
     }
 
     projects = new HashMap<String, Project>();
