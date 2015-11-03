@@ -64,35 +64,52 @@ public class PartnersXMLAction extends BaseAction implements Summary {
 
   private void buildXML(Document doc) {
     // root element
+    Element partner, location, country, region, type;
     Element rootElement = doc.createElement("partners");
     doc.appendChild(rootElement);
 
     for (Map<String, Object> partnerData : partnersData) {
-      Element partner = doc.createElement("partner");
+      partner = doc.createElement("partner");
       // id
       partner.appendChild(this.buildElement(doc, "id", this.convertToString(partnerData.get("id"))));
       // name
       partner.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("institution_name"))));
       // acronym
-      partner
-      .appendChild(this.buildElement(doc, "acronym", this.convertToString(partnerData.get("institution_acronym"))));
+      partner.appendChild(this.buildElement(doc, "acronym",
+        this.convertToString(partnerData.get("institution_acronym"))));
       // website
-      partner
-      .appendChild(this.buildElement(doc, "website", this.convertToString(partnerData.get("institution_website"))));
+      partner.appendChild(this.buildElement(doc, "website",
+        this.convertToString(partnerData.get("institution_website"))));
 
       // --- location ---
-      Element location = doc.createElement("location");
+      location = doc.createElement("location");
 
-      // location.appendChild(this.buildElement(doc, elementName, elementValue))
+      country = doc.createElement("country");
+      country.appendChild(this.buildElement(doc, "iso2", this.convertToString(partnerData.get("country_code"))));
+      country.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("country_name"))));
+
+      region = doc.createElement("region");
+      region.appendChild(this.buildElement(doc, "id", this.convertToString(partnerData.get("region_id"))));
+      region.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("region_name"))));
+
+      location.appendChild(country);
+      location.appendChild(region);
+      location.appendChild(this.buildElement(doc, "city", this.convertToString(partnerData.get("city"))));
 
       partner.appendChild(location);
+
+      // --- type
+      type = doc.createElement("type");
+      type.appendChild(this.buildElement(doc, "id", this.convertToString(partnerData.get("institution_type_id"))));
+      type.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("institution_type_name"))));
+      type.appendChild(this.buildElement(doc, "acronym",
+        this.convertToString(partnerData.get("institution_type_acronym"))));
+      partner.appendChild(type);
 
       rootElement.appendChild(partner);
     }
 
-
-    rootElement.appendChild(this.buildElement(doc, "id", "123"));
-
+    // rootElement.appendChild(this.buildElement(doc, "id", "123"));
   }
 
   private String convertToString(Object obj) {
@@ -108,6 +125,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.newDocument();
 
+    doc.setXmlVersion("1.0");
     // Lets build the XMLS into the document.
     this.buildXML(doc);
 
@@ -151,7 +169,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     super.prepare();
     LOG.info("Initiating the export for all the active partners in XML format for the CCAFS Website.");
     // Getting the partner info from the SQL query.
-    System.out.println();
+    // System.out.println();
     partnersData = partnerManager.summaryGetActivePartners();
 
     // Getting all the flagships.

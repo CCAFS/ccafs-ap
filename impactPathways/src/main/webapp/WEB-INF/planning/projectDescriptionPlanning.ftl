@@ -113,12 +113,8 @@
             [#if project.bilateralContractProposalName?has_content]
                  [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
               <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a> 
-              
-              
-               
             [#else]
-              [#if editable] 
-              
+              [#if editable]
                 [@customForm.inputFile name="file"  /]
               [#else]  
                 <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]

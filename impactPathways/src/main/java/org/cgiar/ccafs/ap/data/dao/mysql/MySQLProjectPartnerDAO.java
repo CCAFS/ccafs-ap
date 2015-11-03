@@ -281,8 +281,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       values[5] = projectPartnerData.get("modification_justification");
     } else {
       // update record
-      query.append(
-        "UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
+      query
+      .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
@@ -349,20 +349,27 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     List<Map<String, Object>> projectPartnersData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT i.id as 'institution_id', ");
-    query.append("group_concat(pp.project_id SEPARATOR ',') as 'project_ids', ");
+    query.append("group_concat(DISTINCT pp.project_id SEPARATOR ',') as 'project_ids', ");
     query.append("group_concat(DISTINCT ip.id SEPARATOR ',') as 'ip_programs', ");
     query.append("i.name as 'institution_name', ");
     query.append("i.acronym as 'institution_acronym', ");
     query.append("i.website_link as 'institution_website', ");
     query.append("i.institution_type_id as 'institution_type_id', ");
     query.append("it.name as 'institution_type_name', ");
-    query.append("it.acronym as 'institution_type_acronym' ");
+    query.append("it.acronym as 'institution_type_acronym' , ");
+    query.append(" le.code   as 'country_code' ,  ");
+    query.append(" le.name   as 'country_name' , ");
+    query.append(" re.id   as 'region_id' ,  ");
+    query.append(" re.name   as 'region_name', ");
+    query.append(" i.city   as 'city' ");
     query.append("FROM project_partners pp ");
     query.append("INNER JOIN institutions i ON i.id = pp.institution_id ");
     query.append("INNER JOIN institution_types it ON it.id = i.institution_type_id ");
     query.append("INNER JOIN projects p ON p.id = pp.project_id  ");
     query.append("INNER JOIN project_focuses pf ON pf.project_id = p.id ");
     query.append("INNER JOIN ip_programs ip ON ip.id = pf.program_id ");
+    query.append("INNER JOIN loc_elements le ON i.country_id = le.id ");
+    query.append("INNER JOIN loc_elements re ON le.parent_id = re.id ");
     query.append("WHERE pp.is_active = 1 ");
     query.append("AND p.is_active = 1 ");
     query.append("AND pf.is_active = 1 ");
@@ -380,6 +387,11 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         projectPartnerData.put("institution_type_id", rs.getString("institution_type_id"));
         projectPartnerData.put("institution_type_name", rs.getString("institution_type_name"));
         projectPartnerData.put("institution_type_acronym", rs.getString("institution_type_acronym"));
+        projectPartnerData.put("country_code", rs.getString("country_code"));
+        projectPartnerData.put("country_name", rs.getString("country_name"));
+        projectPartnerData.put("region_id", rs.getString("region_id"));
+        projectPartnerData.put("region_name", rs.getString("region_name"));
+        projectPartnerData.put("city", rs.getString("city"));
         projectPartnersData.add(projectPartnerData);
       }
     } catch (SQLException e) {
