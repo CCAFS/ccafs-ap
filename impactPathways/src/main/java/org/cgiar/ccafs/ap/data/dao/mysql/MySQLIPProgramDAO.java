@@ -15,7 +15,6 @@
 package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.data.dao.IPProgramDAO;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -166,42 +165,6 @@ public class MySQLIPProgramDAO implements IPProgramDAO {
 
     LOG.debug("-- getProgramsByType() > Calling method executeQuery to get the results");
     return this.getData(query.toString());
-  }
-
-
-  @Override
-  public Map<String, Object> getProgramsByTypeMap(int ipProgramTypeID) {
-    LOG.debug(">> getProgramsByTypeMap( ipProgramTypeID = {} )", ipProgramTypeID);
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT ipr.*, type.name as 'type_name' ");
-    query.append("FROM ip_programs as ipr ");
-    query.append("INNER JOIN ip_program_types type ON type.id = ipr.type_id ");
-    query.append("WHERE ipr.type_id= ");
-    query.append(ipProgramTypeID);
-    query.append(" ORDER BY ipr.acronym ");
-
-    Map<String, Object> programData;
-    programData = new HashMap<String, Object>();
-
-    try (Connection con = databaseManager.getConnection()) {
-      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      IPProgram ipProgram;
-      while (rs.next()) {
-        ipProgram = new IPProgram();
-        ipProgram.setId(Integer.parseInt(rs.getString("id")));
-        ipProgram.setAcronym(rs.getString("acronym"));
-        ipProgram.setName(rs.getString("name"));
-        programData.put(rs.getString("id"), ipProgram);
-      }
-      rs.close();
-    } catch (SQLException e) {
-      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
-      exceptionMessage += "to execute the following query " + query;
-
-      LOG.error(exceptionMessage, e);
-    }
-    return programData;
   }
 
   @Override
