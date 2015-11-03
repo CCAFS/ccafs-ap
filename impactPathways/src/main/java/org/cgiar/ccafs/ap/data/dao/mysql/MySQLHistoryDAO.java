@@ -414,6 +414,7 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append(" INNER JOIN users u ON t.modified_by = u.id ");
 
 
+    query.append(" WHERE  project_id = " + projectID);
     query.append(" UNION ");
 
     query.append(
@@ -421,10 +422,10 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append(" FROM  ");
     query.append(dbName);
     query.append("_history.project_partner_contributions t   ");
-
+    query.append(" INNER JOIN project_partners  ON project_partners.id = t.project_partner_id ");
 
     query.append(" INNER JOIN users u ON t.modified_by = u.id ");
-
+    query.append(" WHERE  project_id = " + projectID);
 
     query.append(") temp ");
     query.append("  GROUP BY email, action, modification_justification, ");
