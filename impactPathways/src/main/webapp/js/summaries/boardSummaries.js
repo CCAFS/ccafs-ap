@@ -8,7 +8,7 @@ function init() {
 function attachEvents() {
   $('.summariesSection a, .summariesSection span').on('click', selectSummariesSection);
   $('input[name=formOptions]').on('change', selectTypeReport);
-  $('select[name=projectID]').on('change', updateUrl);
+  $('select[name=projectID], input[name=q]').on('change', updateUrl);
   $('#generateReport').on('click', generateReport);
 }
 
@@ -30,9 +30,9 @@ function selectSummariesSection(e) {
 
 function selectTypeReport(e) {
   var $option = $(e.target).parent();
-  $option.parent().parent().find('.extraOptions select').attr('disabled', true);
+  $option.parent().parent().find('.extraOptions').find('select, input').attr('disabled', true);
   $option.parent().parent().find('.extraOptions').hide();
-  $option.find('.extraOptions select').attr('disabled', false).trigger("liszt:updated");
+  $option.find('.extraOptions').find('select, input').attr('disabled', false).trigger("liszt:updated");
   $option.find('.extraOptions').fadeIn();
 
   updateUrl();
