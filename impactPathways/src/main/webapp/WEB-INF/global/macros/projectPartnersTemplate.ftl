@@ -1,6 +1,8 @@
 [#ftl]
 [#macro projectPartner projectPartner={} projectPartnerName="" projectPartnerIndex="-1" template=false ]
-  <div id="projectPartner-${template?string('template',(projectPartner.id)!)}" class="projectPartner borderBox ${(projectPartner.leader?string('leader',''))!} ${(projectPartner.coordinator?string('coordinator',''))!}" style="display:${template?string('none','block')}">
+  [#assign isLeader = (projectPartner.leader)!false/]
+  [#assign isCoordinator = (projectPartner.coordinator)!false/]
+  <div id="projectPartner-${template?string('template',(projectPartner.id)!)}" class="projectPartner borderBox ${(isLeader?string('leader',''))!} ${(isCoordinator?string('coordinator',''))!}" style="display:${template?string('none','block')}">
     <div class="loading" style="display:none"></div>
     [#-- Edit Button  --]
     [#if (!editable && canEdit)]
@@ -18,7 +20,7 @@
     
     <div class="leftHead">
       <span class="index">${projectPartnerIndex?number+1}</span>
-      <span class="elementId">Partner  <strong class="type"> ${(projectPartner.leader?string('(Leader)',''))!} ${(projectPartner.coordinator?string('(Coordinator)',''))!}</strong></span>
+      <span class="elementId">Partner  <strong class="type"> ${(isLeader?string('(Leader)',''))!} ${(isCoordinator?string('(Coordinator)',''))!}</strong></span>
     </div>
     <input id="id" class="partnerId" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].id" value="${(projectPartner.id)!-1}" />
 

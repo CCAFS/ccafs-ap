@@ -18,7 +18,6 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
-import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -59,16 +58,6 @@ public interface IPProgramManager {
    * @return a list of IPProgram objects with the information.
    */
   public List<IPProgram> getProgramsByType(int ipProgramTypeID);
-
-
-  /**
-   * This method gets from the database a list of ipElements
-   * which have the same type as passed as parameter in a list<Map>
-   * 
-   * @param ipProgramTypeID - IP Program type identifier
-   * @return a list map of IPProgram objects with the information.
-   */
-  public Map<String, Object> getProgramsByTypeMap(int ipProgramTypeID);
 
 
   /**

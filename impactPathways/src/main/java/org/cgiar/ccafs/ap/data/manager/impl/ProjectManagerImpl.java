@@ -502,8 +502,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public
+  boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 
@@ -526,8 +526,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
-    return projectDAO.summaryGetAllActivitiesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch) {
+    return projectDAO.summaryGetAllActivitiesWithGenderContribution(termsToSearch);
   }
 
   @Override
@@ -536,8 +536,8 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution() {
-    return projectDAO.summaryGetAllDeliverablesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch) {
+    return projectDAO.summaryGetAllDeliverablesWithGenderContribution(termsToSearch);
   }
 
 
@@ -553,8 +553,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
-    return projectDAO.summaryGetAllProjectsWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch) {
+    return projectDAO.summaryGetAllProjectsWithGenderContribution(termsToSearch);
   }
 
   @Override
