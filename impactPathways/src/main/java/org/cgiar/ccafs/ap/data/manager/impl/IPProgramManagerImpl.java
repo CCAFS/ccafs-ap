@@ -132,6 +132,12 @@ public class IPProgramManagerImpl implements IPProgramManager {
 
 
   @Override
+  public Map<String, Object> getProgramsByTypeMap(int ipProgramTypeID) {
+    return ipProgramDAO.getProgramsByTypeMap(ipProgramTypeID);
+  }
+
+
+  @Override
   public List<IPProgram> getProjectFocuses(int projectID, int typeID) {
     List<Map<String, String>> projectFocusesDataList = ipProgramDAO.getProjectFocuses(projectID, typeID);
     List<IPProgram> projectFocusesList = new ArrayList<>();
@@ -157,7 +163,6 @@ public class IPProgramManagerImpl implements IPProgramManager {
     }
     return projectFocusesList;
   }
-
 
   @Override
   public boolean saveProjectFocus(int projectID, int programID, User user, String justification) {

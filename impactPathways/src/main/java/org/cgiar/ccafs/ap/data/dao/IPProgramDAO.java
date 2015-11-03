@@ -64,6 +64,14 @@ public interface IPProgramDAO {
    */
   public List<Map<String, String>> getProgramsByType(int typeId);
 
+  /**
+   * This method return the Programs Type identified as Flagship and regions
+   * indicated by parameter.
+   * 
+   * @param none
+   * @return a list of maps with the information of all IP elements returned.
+   */
+  public Map<String, Object> getProgramsByTypeMap(int ipProgramTypeID);
 
   /**
    * This method gets all the information of a Program related with a Project by a given project Id and a type Id, from
@@ -74,6 +82,7 @@ public interface IPProgramDAO {
    * @return a List of Map with the information of a Program related with a Project
    */
   public List<Map<String, String>> getProjectFocuses(int projectID, int typeID);
+
 
   /**
    * This method creates or update into the table project_focuses new relations between a project and a program.
