@@ -298,11 +298,12 @@ public interface ProjectDAO {
    * This method returns the information of all the activities by project and their gender contribution to be used in
    * the summary report of the same name
    * 
+   * @param termsToSearch
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
 
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch);
 
   /**
    * This method returns the information of all project CCAFS Outcomes with their information to be used in
@@ -322,7 +323,7 @@ public interface ProjectDAO {
    *         occurs.
    */
 
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch);
 
   /**
    * This method returns the information of all the projects with their partner leaders to be used in the summary report
@@ -352,7 +353,7 @@ public interface ProjectDAO {
    *         occurs.
    */
 
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch);
 
   /**
    * This method returns the information of all project MOG with your budget by Year and their information to be used in

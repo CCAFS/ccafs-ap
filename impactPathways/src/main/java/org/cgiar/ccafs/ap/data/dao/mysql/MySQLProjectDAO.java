@@ -179,7 +179,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
 
     query
-      .append("SELECT p.id, p.title, p.type, p.summary, p.active_since, p.is_cofinancing,SUM(pb.amount) as 'total_ccafs_amount', ");
+    .append("SELECT p.id, p.title, p.type, p.summary, p.active_since, p.is_cofinancing,SUM(pb.amount) as 'total_ccafs_amount', ");
     query.append("SUM(pb2.amount) as 'total_bilateral_amount', ");
     query.append("( " + regionsSubquery + " )  as 'regions', ");
     query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
@@ -187,7 +187,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
     query.append(BudgetType.W1_W2.getValue());
     query
-    .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
+      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
     query.append(BudgetType.W3_BILATERAL.getValue());
     query.append(" WHERE p.is_active = TRUE ");
     query.append("GROUP BY p.id");
@@ -308,7 +308,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append(" AND (");
     query.append("select count('x') from project_partners partner ");
     query
-      .append("inner join project_partner_persons person on person.project_partner_id=partner.id and person.contact_type='PL'  ");
+    .append("inner join project_partner_persons person on person.project_partner_id=partner.id and person.contact_type='PL'  ");
     query.append("where partner.project_id=p.id)>0");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -396,7 +396,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append(" AND (");
     query.append("select count('x') from project_partners partner ");
     query
-      .append("inner join project_partner_persons person on person.project_partner_id=partner.id and person.contact_type='PL'  ");
+    .append("inner join project_partner_persons person on person.project_partner_id=partner.id and person.contact_type='PL'  ");
     query.append("where partner.project_id=p.id)>0");
 
 
@@ -532,7 +532,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     StringBuilder query = new StringBuilder();
 
     query
-      .append("SELECT p.id, p.title, p.type, p.is_cofinancing,p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
+    .append("SELECT p.id, p.title, p.type, p.is_cofinancing,p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
     query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
     query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
     query.append("FROM projects as p ");
@@ -767,7 +767,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       rs.close();
     } catch (SQLException e) {
       LOG
-        .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
+      .error("-- getProjectIdsEditables() > Exception raised getting the projects editables for user {}.", userID, e);
 
     }
     LOG.debug("<< getProjectIdsEditables():{}", projectIds);
@@ -944,7 +944,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     if (expectedProjectLeaderData.get("id") == null) {
       // Add the record into the database and assign it to the projects table (column expected_project_leader_id).
       query
-        .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
+      .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
 
 
       query.append("VALUES (?, ?, ?, ?) ");
@@ -1083,7 +1083,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch) {
     LOG.debug(">> getAllActivitiesGenderContribution ");
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
@@ -1113,8 +1113,20 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("ppp.project_partner_id = pp.id ");
     query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
     query.append("INNER JOIN users u ON ppp.user_id = u.id ");
-    query.append("WHERE a.is_active = 1 AND p.is_active = 1 ");
+    query.append("WHERE a.is_active = 1 AND p.is_active = 1 AND ( ");
+    boolean oneMore = false;
 
+    for (String term : termsToSearch) {
+      if (oneMore) {
+        query.append("OR ");
+      }
+      query.append(" p.title LIKE '%" + term + "%' OR");
+      query.append(" a.title LIKE '%" + term + "%' OR");
+      query.append(" a.description LIKE '%" + term + "%' ");
+      oneMore = true;
+    }
+    query.append(") ");
+    query.append("ORDER BY p.id ");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
@@ -1194,7 +1206,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution() {
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch) {
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
@@ -1220,7 +1232,22 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN users u ON ppp.user_id  = u.id ");
     query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
     query.append("WHERE (dp.partner_type = 'Resp' OR dp.partner_type is null ) AND p.is_active = 1 ");
-    query.append("AND d.is_active = 1 AND nu.is_active = 1 ");
+    query.append("AND d.is_active = 1 AND nu.is_active = 1 AND ( ");
+    boolean oneMore = false;
+    for (String term : termsToSearch) {
+      if (oneMore) {
+        query.append("OR ");
+      }
+      oneMore = true;
+      query.append(" p.title LIKE '%" + term + "%' OR");
+      query.append(" d.title LIKE '%" + term + "%' OR");
+      query.append(" nu.user LIKE '%" + term + "%' OR ");
+      query.append(" nu.expected_changes  LIKE '%" + term + "%' OR ");
+      query.append(" nu.strategies LIKE '%" + term + "%'  ");
+
+    }
+    query.append(") ");
+    query.append("ORDER BY p.id ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -1364,7 +1391,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("d.type_other as 'other_type', ");
     query.append("( ");
     query
-      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1374,7 +1401,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append(") as 'partner_responsible', ");
     query.append("( ");
     query
-      .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
+    .append("SELECT group_concat(concat(u.first_name, ' ', u.last_name, ' <', u.email, '> - ', ifnull(i.acronym, i.name)) SEPARATOR '; ') ");
     query.append("FROM deliverable_partnerships dp_resp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.id = dp_resp.partner_person_id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
@@ -1433,7 +1460,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch) {
     LOG.debug(">> getAllProjectsGenderContribution ");
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
@@ -1443,11 +1470,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("SELECT p.id as 'project_id', ");
     query.append("p.title as 'project_title', ");
     query.append("p.summary as 'project_summary', ");
-    query.append("( ");
-    query.append("SELECT po.statement ");
-    query.append("FROM project_outcomes po ");
-    query.append("WHERE p.id = po.project_id AND po.year = 2016 AND  po.is_active = 1 ");
-    query.append(") as 'outcome_statement', ");
+    query.append("po.statement  as 'outcome_statement', ");
     query.append("p.start_date as 'start_date', ");
     query.append("p.end_date as 'end_date', ");
     query.append("( ");
@@ -1515,7 +1538,21 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id ");
     query.append("LEFT JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
-    query.append("WHERE ppp.contact_type = 'PL' AND p.is_active = 1 ");
+    query.append("LEFT JOIN  project_outcomes po  ON p.id = po.project_id ");
+    query
+      .append("WHERE ppp.contact_type = 'PL' AND p.is_active = 1 AND p.id = po.project_id AND po.year = 2016 AND  po.is_active = 1 AND ( ");
+
+    boolean oneMore = false;
+    for (String term : termsToSearch) {
+      if (oneMore) {
+        query.append("OR ");
+      }
+      query.append(" p.title LIKE '%" + term + "%' ");
+      query.append(" OR p.summary LIKE '%" + term + "%' ");
+      query.append(" OR po.statement LIKE '%" + term + "%' ");
+      oneMore = true;
+    }
+    query.append(") ");
     query.append("ORDER BY p.id ");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -1650,7 +1687,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     // Sum of contribution gender W1_W2 of the project for the MOG
     query
-      .append(" (SELECT (SUM(IFNULL(pb.amount,0) * IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
+    .append(" (SELECT (SUM(IFNULL(pb.amount,0) * IFNULL(pb.gender_percentage,0) * 0.01) * pmb.gender_contribution * 0.01) ");
     query.append(" FROM project_mog_budgets pmb INNER JOIN project_budgets pb ON pmb.project_id = pb.project_id  ");
     query.append(" WHERE pmb.mog_id = ipem.id AND pb.year = " + year + " AND pmb.year = " + year + " ");
     query.append(" AND  pb.budget_type = 1  AND  pmb.budget_type = 1 AND pb.is_active = 1 AND pmb.is_active = 1)  ");
@@ -1798,7 +1835,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       StringBuilder query = new StringBuilder();
       query.append("UPDATE projects p ");
       query
-      .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
+        .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
       query.append("SET p.type = ?");
       result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
     }

@@ -158,7 +158,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
         projectLabel = doc.createElement("project");
         projectLabel.appendChild(this.buildElement(doc, "id", this.convertToString(project.getId())));
         projectLabel.appendChild(this.buildElement(doc, "title", project.getTitle()));
-        projectLabel.appendChild(this.buildElement(doc, "type", project.getType().replace("_", " ")));
+        projectLabel.appendChild(this.buildElement(doc, "type", project.getType()));
         projectsLabel.appendChild(projectLabel);
       }
       partner.appendChild(projectsLabel);
