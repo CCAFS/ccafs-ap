@@ -61,8 +61,9 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
     query.append("SELECT ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
     query.append("ie.id as 'output_id', ie.description as output_description ");
     query.append("FROM ip_project_contributions ipc ");
-    query.append("INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipc.mog_id ");
-    query.append("INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
+    query.append(
+      "INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipc.mog_id  and ipc.project_id=ipco.project_id");
+    query.append(" INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
     query.append("WHERE ipc.project_id = ");
     query.append(projectID);
 
@@ -89,8 +90,8 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
 
 
   @Override
-  public List<Map<String, String>>
-  getProjectContributionOverviewsByYearAndOutput(int projectID, int year, int outputID) {
+  public List<Map<String, String>> getProjectContributionOverviewsByYearAndOutput(int projectID, int year,
+    int outputID) {
     List<Map<String, String>> overviewsData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
