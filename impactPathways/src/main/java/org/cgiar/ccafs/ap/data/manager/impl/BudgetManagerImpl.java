@@ -118,6 +118,11 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
+  public double calculateTotalProjectBudgetByTypeYear(int projectID, int budgetTypeID, int year) {
+    return budgetDAO.calculateTotalProjectBudgetByTypeYear(projectID, budgetTypeID, year);
+  }
+
+  @Override
   public boolean deleteBudget(int budgetId, User user, String justification) {
     return budgetDAO.deleteBudget(budgetId, user.getId(), justification);
   }

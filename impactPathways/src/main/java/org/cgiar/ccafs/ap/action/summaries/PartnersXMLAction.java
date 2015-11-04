@@ -3,14 +3,17 @@ package org.cgiar.ccafs.ap.action.summaries;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,11 +41,13 @@ public class PartnersXMLAction extends BaseAction implements Summary {
   // Managers
   private ProjectPartnerManager partnerManager;
   private IPProgramManager programManager;
+  private ProjectManager projectManager;
 
   // Models
   private List<Map<String, Object>> partnersData;
-  private List<IPProgram> flagships;
-  private List<IPProgram> regions;
+  private Map<String, IPProgram> ipPrograms;
+  private Map<String, Project> projects;
+
 
   // Model for the front-end
   private byte[] bytesXML;
@@ -50,10 +55,12 @@ public class PartnersXMLAction extends BaseAction implements Summary {
 
 
   @Inject
-  public PartnersXMLAction(APConfig config, IPProgramManager programManager, ProjectPartnerManager partnerManager) {
+  public PartnersXMLAction(APConfig config, IPProgramManager programManager, ProjectPartnerManager partnerManager,
+    ProjectManager projectManager) {
     super(config);
     this.partnerManager = partnerManager;
     this.programManager = programManager;
+    this.projectManager = projectManager;
   }
 
   private Element buildElement(Document doc, String elementName, String elementValue) {
@@ -62,12 +69,16 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     return partnerID;
   }
 
+  // rootElement.appendChild(this.buildElement(doc, "id", "123"));
   private void buildXML(Document doc) {
     // root element
-    Element partner, location, country, region, type;
+    Element partner, location, country, region, type, flagshipsLabel, regionsLabel, flagship, regionEt, projectsLabel,
+      projectLabel;
     Element rootElement = doc.createElement("partners");
+    IPProgram ipProgram;
     doc.appendChild(rootElement);
-
+    Project project;
+    String[] ipProgramIds, projectIds;
     for (Map<String, Object> partnerData : partnersData) {
       partner = doc.createElement("partner");
       // id
@@ -75,19 +86,19 @@ public class PartnersXMLAction extends BaseAction implements Summary {
       // name
       partner.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("institution_name"))));
       // acronym
-      partner.appendChild(this.buildElement(doc, "acronym",
-        this.convertToString(partnerData.get("institution_acronym"))));
+      partner
+        .appendChild(this.buildElement(doc, "acronym", this.convertToString(partnerData.get("institution_acronym"))));
       // website
-      partner.appendChild(this.buildElement(doc, "website",
-        this.convertToString(partnerData.get("institution_website"))));
+      partner
+        .appendChild(this.buildElement(doc, "website", this.convertToString(partnerData.get("institution_website"))));
 
-      // --- location ---
+      // location ---
       location = doc.createElement("location");
-
+      // --- country
       country = doc.createElement("country");
       country.appendChild(this.buildElement(doc, "iso2", this.convertToString(partnerData.get("country_code"))));
       country.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("country_name"))));
-
+      // --- region
       region = doc.createElement("region");
       region.appendChild(this.buildElement(doc, "id", this.convertToString(partnerData.get("region_id"))));
       region.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("region_name"))));
@@ -98,18 +109,66 @@ public class PartnersXMLAction extends BaseAction implements Summary {
 
       partner.appendChild(location);
 
-      // --- type
+      // type
       type = doc.createElement("type");
       type.appendChild(this.buildElement(doc, "id", this.convertToString(partnerData.get("institution_type_id"))));
       type.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("institution_type_name"))));
-      type.appendChild(this.buildElement(doc, "acronym",
-        this.convertToString(partnerData.get("institution_type_acronym"))));
+      type.appendChild(
+        this.buildElement(doc, "acronym", this.convertToString(partnerData.get("institution_type_acronym"))));
       partner.appendChild(type);
 
+      // flagships
+      ipProgramIds = this.convertToString(partnerData.get("ip_programs")).split(",");
+
+      flagshipsLabel = doc.createElement("flagship-programs");
+      regionsLabel = doc.createElement("region-programs");
+
+      for (String ipProgramId : ipProgramIds) {
+        ipProgram = ipPrograms.get(ipProgramId);
+        switch (ipProgram.getType().getId()) {
+          case APConstants.FLAGSHIP_PROGRAM_TYPE:
+            // --- flagship
+            flagship = doc.createElement("flagship");
+            flagship.appendChild(this.buildElement(doc, "id", this.convertToString(ipProgram.getId())));
+            flagship.appendChild(this.buildElement(doc, "acronym", ipProgram.getAcronym()));
+            flagship.appendChild(this.buildElement(doc, "name", ipProgram.getName()));
+            flagshipsLabel.appendChild(flagship);
+            break;
+
+          case APConstants.REGION_PROGRAM_TYPE:
+            // --- regions
+            regionEt = doc.createElement("region");
+            regionEt.appendChild(this.buildElement(doc, "id", this.convertToString(ipProgram.getId())));
+            regionEt.appendChild(this.buildElement(doc, "acronym", ipProgram.getAcronym()));
+            regionEt.appendChild(this.buildElement(doc, "name", ipProgram.getName()));
+            regionsLabel.appendChild(regionEt);
+            break;
+
+          default:
+            break;
+        }
+      }
+
+      partner.appendChild(flagshipsLabel);
+      partner.appendChild(regionsLabel);
+
+      // projects
+      projectsLabel = doc.createElement("projects");
+      projectIds = this.convertToString(partnerData.get("project_ids")).split(",");
+      for (String projectId : projectIds) {
+        // --- project
+        project = projects.get(projectId);
+        projectLabel = doc.createElement("project");
+        projectLabel.appendChild(this.buildElement(doc, "id", this.convertToString(project.getId())));
+        projectLabel.appendChild(this.buildElement(doc, "title", project.getTitle()));
+        projectLabel.appendChild(this.buildElement(doc, "type", project.getType()));
+        projectsLabel.appendChild(projectLabel);
+      }
+      partner.appendChild(projectsLabel);
+
+      // Add partner
       rootElement.appendChild(partner);
     }
-
-    // rootElement.appendChild(this.buildElement(doc, "id", "123"));
   }
 
   private String convertToString(Object obj) {
@@ -172,11 +231,26 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     // System.out.println();
     partnersData = partnerManager.summaryGetActivePartners();
 
+    ipPrograms = new HashMap<String, IPProgram>();
+
     // Getting all the flagships.
-    flagships = programManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    List<IPProgram> flagshipList = programManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    for (IPProgram iPProgram : flagshipList) {
+      ipPrograms.put(String.valueOf(iPProgram.getId()), iPProgram);
+    }
 
     // Getting all the regions.
-    regions = programManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+    List<IPProgram> regionList = programManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+    for (IPProgram iPProgram : regionList) {
+      ipPrograms.put(String.valueOf(iPProgram.getId()), iPProgram);
+    }
+
+    projects = new HashMap<String, Project>();
+    List<Project> projectList = projectManager.getAllProjectsBasicInfo();
+    for (Project project : projectList) {
+      projects.put(String.valueOf(project.getId()), project);
+    }
+
 
     LOG.info("XML format for the CCAFS Website exported.");
   }

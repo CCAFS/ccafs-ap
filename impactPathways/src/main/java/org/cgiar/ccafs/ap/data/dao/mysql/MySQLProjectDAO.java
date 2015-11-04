@@ -946,7 +946,6 @@ public class MySQLProjectDAO implements ProjectDAO {
       query
         .append("INSERT INTO expected_project_leaders (contact_first_name, contact_last_name, contact_email, institution_id) ");
 
-
       query.append("VALUES (?, ?, ?, ?) ");
       Object[] values = new Object[4];
       values[0] = expectedProjectLeaderData.get("contact_first_name");
@@ -1083,7 +1082,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch) {
     LOG.debug(">> getAllActivitiesGenderContribution ");
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
@@ -1113,8 +1112,20 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("ppp.project_partner_id = pp.id ");
     query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
     query.append("INNER JOIN users u ON ppp.user_id = u.id ");
-    query.append("WHERE a.is_active = 1 AND p.is_active = 1 ");
+    query.append("WHERE a.is_active = 1 AND p.is_active = 1 AND ( ");
+    boolean oneMore = false;
 
+    for (String term : termsToSearch) {
+      if (oneMore) {
+        query.append("OR ");
+      }
+      query.append(" p.title LIKE '%" + term + "%' OR");
+      query.append(" a.title LIKE '%" + term + "%' OR");
+      query.append(" a.description LIKE '%" + term + "%' ");
+      oneMore = true;
+    }
+    query.append(") ");
+    query.append("ORDER BY p.id ");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
@@ -1194,7 +1205,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution() {
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch) {
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
@@ -1220,7 +1231,22 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN users u ON ppp.user_id  = u.id ");
     query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
     query.append("WHERE (dp.partner_type = 'Resp' OR dp.partner_type is null ) AND p.is_active = 1 ");
-    query.append("AND d.is_active = 1 AND nu.is_active = 1 ");
+    query.append("AND d.is_active = 1 AND nu.is_active = 1 AND ( ");
+    boolean oneMore = false;
+    for (String term : termsToSearch) {
+      if (oneMore) {
+        query.append("OR ");
+      }
+      oneMore = true;
+      query.append(" p.title LIKE '%" + term + "%' OR");
+      query.append(" d.title LIKE '%" + term + "%' OR");
+      query.append(" nu.user LIKE '%" + term + "%' OR ");
+      query.append(" nu.expected_changes  LIKE '%" + term + "%' OR ");
+      query.append(" nu.strategies LIKE '%" + term + "%'  ");
+
+    }
+    query.append(") ");
+    query.append("ORDER BY p.id ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -1290,7 +1316,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("INNER JOIN users u ON ppp.user_id = u.id ");
     query
-      .append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PL' AND  u.is_active = 1 AND pp.is_active = 1 AND ppp.is_active = 1 ");
+    .append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PL' AND  u.is_active = 1 AND pp.is_active = 1 AND ppp.is_active = 1 ");
     query.append(") as 'project_leader', ");
     query.append("( ");
     query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
@@ -1298,7 +1324,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("INNER JOIN users u ON ppp.user_id = u.id ");
     query
-      .append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PC' AND  u.is_active = 1 AND pp.is_active = 1 AND ppp.is_active = 1 ");
+    .append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PC' AND  u.is_active = 1 AND pp.is_active = 1 AND ppp.is_active = 1 ");
     query.append(") as 'project_coordinator' ");
     query.append("FROM projects p ");
     query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id ");
@@ -1435,7 +1461,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch) {
     LOG.debug(">> getAllProjectsGenderContribution ");
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
@@ -1445,11 +1471,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("SELECT p.id as 'project_id', ");
     query.append("p.title as 'project_title', ");
     query.append("p.summary as 'project_summary', ");
-    query.append("( ");
-    query.append("SELECT po.statement ");
-    query.append("FROM project_outcomes po ");
-    query.append("WHERE p.id = po.project_id AND po.year = 2016 AND  po.is_active = 1 ");
-    query.append(") as 'outcome_statement', ");
+    query.append("po.statement  as 'outcome_statement', ");
     query.append("p.start_date as 'start_date', ");
     query.append("p.end_date as 'end_date', ");
     query.append("( ");
@@ -1517,7 +1539,21 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id ");
     query.append("LEFT JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
-    query.append("WHERE ppp.contact_type = 'PL' AND p.is_active = 1 ");
+    query.append("LEFT JOIN  project_outcomes po  ON p.id = po.project_id ");
+    query
+      .append("WHERE ppp.contact_type = 'PL' AND p.is_active = 1 AND p.id = po.project_id AND po.year = 2016 AND  po.is_active = 1 AND ( ");
+
+    boolean oneMore = false;
+    for (String term : termsToSearch) {
+      if (oneMore) {
+        query.append("OR ");
+      }
+      query.append(" p.title LIKE '%" + term + "%' ");
+      query.append(" OR p.summary LIKE '%" + term + "%' ");
+      query.append(" OR po.statement LIKE '%" + term + "%' ");
+      oneMore = true;
+    }
+    query.append(") ");
     query.append("ORDER BY p.id ");
 
     try (Connection con = databaseManager.getConnection()) {

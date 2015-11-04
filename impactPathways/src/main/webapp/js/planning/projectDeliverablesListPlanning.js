@@ -3,6 +3,10 @@ $(document).ready(init);
 function init() {
   addDataTable();
   addJustificationPopUp();
+
+  var deliverablesStatus = $('#deliverables-status').text();
+  $('#projectDeliverables th.status').append(deliverablesStatus);
+
 }
 
 // Justification popup global vars

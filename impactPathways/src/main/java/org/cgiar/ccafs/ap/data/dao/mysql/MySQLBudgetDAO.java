@@ -403,6 +403,37 @@ public class MySQLBudgetDAO implements BudgetDAO {
     return total;
   }
 
+
+  @Override
+  public double calculateTotalProjectBudgetByTypeYear(int projectID, int budgetTypeID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND is_active = 1");
+    query.append(" AND year = ");
+    query.append(year);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
+      total = -1.0;
+    }
+    return total;
+  }
+
+
   @Override
   public boolean deleteBudget(int budgetId, int userId, String justification) {
     LOG.debug(">> deleteBudget(id={})", budgetId);

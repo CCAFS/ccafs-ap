@@ -110,8 +110,8 @@ public class GenderSummaryAction extends BaseAction implements Summary {
     if (string != null) {
       termsToSearch = StringUtils.split(string, ',');
     }
-    projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
-    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
-    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
+    projectList = projectManager.summaryGetAllProjectsWithGenderContribution(termsToSearch);
+    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution(termsToSearch);
+    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution(termsToSearch);
   }
 }

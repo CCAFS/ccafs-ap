@@ -124,7 +124,7 @@
           </td>
           [#-- Delete Project--]
           <td>
-            [#if securityContext.canDeleteProject() && project.isNew(currentPlanningStartDate) ]
+            [#if securityContext.isAdmin() || (securityContext.canDeleteProject() && project.isNew(currentPlanningStartDate)) ]
               <a id="removeProject-${project.id}" class="removeProject" href="#" title="">
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
               </a>

@@ -158,7 +158,6 @@ public class IPProgramManagerImpl implements IPProgramManager {
     return projectFocusesList;
   }
 
-
   @Override
   public boolean saveProjectFocus(int projectID, int programID, User user, String justification) {
     Map<String, Object> elementData = new HashMap<>();

@@ -123,7 +123,7 @@
                   <div class="BudgetByYear"> 
                     <h6 class="subTitle"> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</h6> 
                     <p id="totalProjectBudgetByYear">
-                      [#assign totalProjectBudgetByYear]${(!project.bilateralProject)?string((project.totalCcafsBudget)!0, project.totalBilateralBudget)!0}[/#assign]
+                      [#assign totalProjectBudgetByYear]${(!project.bilateralProject)?string((totalCCAFSBudgetbyYear)!0, totalBilateralBudgetbyYear)!0}[/#assign]
                       US$ <span>${totalProjectBudgetByYear?number?string(",##0.00")}</span>
                       <input type="hidden" value="${totalProjectBudgetByYear?number}" />
                     </p>
@@ -133,8 +133,8 @@
                   <div class="BudgetByYear"> 
                     <h6 class="subTitle"> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${w3BilateralBudgetLabel}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</h6> 
                     <p id="totalBilateralBudgetByYear">
-                      US$ <span>${project.totalBilateralBudget?string(",##0.00")}</span>
-                      <input type="hidden" value="${project.totalBilateralBudget?number}" />
+                      US$ <span>${totalCCAFSBudgetbyYear?string(",##0.00")}</span>
+                      <input type="hidden" value="${totalCCAFSBudgetbyYear?number}" />
                     </p>
                   </div>
                   [/#if]
@@ -298,7 +298,7 @@
         [#if !editable || !project.bilateralProject]<strong>US$ ${((linkedProject.anualContribution.amount)!0)?number?string(",##0.00")}</strong> [/#if]
       </p>
       [#if editable && project.bilateralProject]
-        [@customForm.input name="${budgetName}.amount" className="budgetAmount projectBudget W3_BILATERAL" showTitle=false /]
+        [@customForm.input name="${budgetName}.amount" className="budgetAmount projectBudget" showTitle=false /]
       [/#if]
       </div>
     </div>

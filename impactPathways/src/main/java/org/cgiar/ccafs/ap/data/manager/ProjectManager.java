@@ -233,9 +233,10 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary Gender Report.
    * 
+   * @param termsToSearch a array string that contains the terms for to search in the query.
    * @return a list of columns with the information summary
    */
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch);
 
   /**
    * This method will return the list of all the impact pathways
@@ -254,9 +255,10 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary Gender Report.
    * 
+   * @param termsToSearch a array string that contains the terms for to search in the query.
    * @return a list of columns with the information summary
    */
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch);
 
 
   /**
@@ -286,9 +288,10 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary report project gender contribution.
    * 
+   * @param termsToSearch a array string that contains the terms for to search in the query.
    * @return a list of Project objects with the gender contribution information.
    */
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch);
 
 
   /**

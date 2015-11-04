@@ -3050,6 +3050,7 @@ span.partnerTag {
 #projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
   text-align:center;
   vertical-align: middle;
+  width: 41px;
 }
 
 .icon-uncheck{

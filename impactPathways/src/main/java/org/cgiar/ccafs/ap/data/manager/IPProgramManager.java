@@ -59,6 +59,7 @@ public interface IPProgramManager {
    */
   public List<IPProgram> getProgramsByType(int ipProgramTypeID);
 
+
   /**
    * This method gets all the IPPrograms where the projec is focusing (project_focuses).
    * 
