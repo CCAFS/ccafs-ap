@@ -287,7 +287,7 @@ function updateProjectPPAPartnersLists(e) {
     }
   }
 
-  // Filling CCAFS partners lists for each project partner
+  // Filling CCAFS partners lists for each project partner cooment
   $partnersBlock.find('.projectPartner').each(function(i,partner) {
 
     var $select = $(partner).find('select.ppaPartnersSelect');
