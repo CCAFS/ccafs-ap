@@ -15,9 +15,8 @@
 package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.GenderSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.SubmissionProjectSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -29,23 +28,20 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Carlos Alberto Martínez M.
+ * @author Jorge Leonardo Solis B.
  */
-public class GenderSummaryAction extends BaseAction implements Summary {
+public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(GenderSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(ProjectsNotModifiedSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;;
-  private GenderSummaryXLS genderSummaryXLS;
+  private SubmissionProjectSummaryXLS submissionProjectSummaryXLS;
   private ProjectManager projectManager;
-  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
 
-  private List<Map<String, Object>> projectList, deliverableList, activityList;
+  private List<Map<String, Object>> projectList;
 
   // CSV bytes
   private byte[] bytesXLS;
@@ -54,11 +50,12 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   InputStream inputStream;
 
   @Inject
-  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, ProjectManager projectManager) {
+  public ProjectsNotModifiedSummaryAction(APConfig config, SubmissionProjectSummaryXLS submissionProjectSummaryXLS,
+    ProjectManager projectManager) {
 
 
     super(config);
-    this.genderSummaryXLS = genderSummaryXLS;
+    this.submissionProjectSummaryXLS = submissionProjectSummaryXLS;
     this.projectManager = projectManager;
 
   }
@@ -66,7 +63,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = genderSummaryXLS.generateXLS(projectList, activityList, deliverableList, termsToSearch);
+    bytesXLS = submissionProjectSummaryXLS.generateXLS(projectList);
 
     return SUCCESS;
   }
@@ -86,7 +83,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("GenderContribution_");
+    fileName.append("SubmssionProjectSummary_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -103,12 +100,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.QUERY_PARAMETER)));
-    if (string != null) {
-      termsToSearch = StringUtils.split(string, ',');
-    }
-    projectList = projectManager.summaryGetAllProjectsWithGenderContribution(termsToSearch);
-    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution(termsToSearch);
-    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution(termsToSearch);
+    projectList = projectManager.summaryGetProjectSubmmited();
   }
+
 }
