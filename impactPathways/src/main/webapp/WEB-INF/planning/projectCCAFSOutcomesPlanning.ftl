@@ -242,10 +242,10 @@
                           <div class="mog">
                             [#if editable]
                               <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
-                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)]class="disabled" checked onclick="return false"[/#if] />
+                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if (project.containsOutput(output.id, midOutcome.id))!false]class="disabled" checked onclick="return false"[/#if] />
                               <label class=""> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
                             [#else]
-                               [#if project.containsOutput(output.id, midOutcome.id)] 
+                               [#if (project.containsOutput(output.id, midOutcome.id))!false] 
                                <label class="checked"> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
                                [/#if] 
                             [/#if]

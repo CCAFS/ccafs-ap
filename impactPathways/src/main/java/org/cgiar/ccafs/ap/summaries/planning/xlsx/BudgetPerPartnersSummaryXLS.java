@@ -106,7 +106,7 @@ public class BudgetPerPartnersSummaryXLS {
    * @param projectPartnerInstitutions is the list of institutions to be added
    * @param projectList is the list with the projects related to each institution
    */
-  public byte[] generateXLS(List<Map<String, Object>> informationBudgetByPartnersReport) {
+  public byte[] generateXLS(List<Map<String, Object>> informationBudgetByPartnersReport, int year) {
 
     try {
 
@@ -130,7 +130,7 @@ public class BudgetPerPartnersSummaryXLS {
       xls.initializeSheet(sheet, headersType);
 
       // Writing the sheet in the yellow box
-      xls.writeTitleBox(sheet, xls.getText("summaries.budget.partners.summary.name"));
+      xls.writeTitleBox(sheet, xls.getText("summaries.budget.partners.summary.name").concat(" " + year));
 
       // Writing the sheet in the yellow box
       xls.writeDescription(sheet, xls.getText("summaries.budget.partners.summary.description"));

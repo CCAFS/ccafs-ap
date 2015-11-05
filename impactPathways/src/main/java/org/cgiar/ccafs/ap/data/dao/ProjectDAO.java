@@ -25,6 +25,7 @@ import com.google.inject.ImplementedBy;
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal.
+ * @author Jorge Leonardo Solis B.
  */
 @ImplementedBy(MySQLProjectDAO.class)
 public interface ProjectDAO {
@@ -375,6 +376,7 @@ public interface ProjectDAO {
    */
   public List<Map<String, Object>> summaryGetInformationPOWB(int year);
 
+
   /**
    * This method returns the information of all project with your budget by partner of the currentPlanningYear their
    * information to be used in
@@ -384,6 +386,26 @@ public interface ProjectDAO {
    *         occurs.
    */
   public List<Map<String, Object>> summaryGetProjectBudgetPerPartners(int year);
+
+  /**
+   * This method returns the information of all project submmmited with the information for the summary report of
+   * Submmited summary.
+   * 
+   * @param year year to search
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetProjectsNotModified();
+
+  /**
+   * This method returns the information of all project submmmited with the information for the summary report of
+   * Submmited summary.
+   * 
+   * @param year year to search
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetProjectSubmmited();
 
   /**
    * This method updates the project cofinancing into the database according to the values received by parameter.

@@ -16,9 +16,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.GenderSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
@@ -56,8 +54,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   InputStream inputStream;
 
   @Inject
-  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, InstitutionManager institutionManager,
-    ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
+  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, ProjectManager projectManager) {
 
 
     super(config);
