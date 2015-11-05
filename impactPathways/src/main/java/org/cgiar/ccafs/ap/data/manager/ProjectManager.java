@@ -329,6 +329,27 @@ public interface ProjectManager {
   public List<Map<String, Object>> summaryGetProjectBudgetPerPartners(int year);
 
   /**
+   * This method will return the list of all the projects don't modified from planning open (October 20th 2015)
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary projects not modified Report.
+   * 
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetProjectsNotModified();
+
+  /**
+   * This method will return the list of all the project that have submission
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary project submission Report.
+   * 
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetProjectSubmmited();
+
+
+  /**
    * This method updates the project type into the database according to the values contained in the project received by
    * parameter.
    * 
@@ -346,7 +367,6 @@ public interface ProjectManager {
    * @return true if the type was updated successfully. False otherwise.
    */
   public boolean updateProjectType(Project project);
-
 
   /**
    * This method updates the type of all the core projects following the steps below:
