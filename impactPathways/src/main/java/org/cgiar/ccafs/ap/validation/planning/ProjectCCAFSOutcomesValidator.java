@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,8 +119,18 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         } else {
           // Populating years to validate.
           yearsToValidate.put(config.getPlanningCurrentYear(), false); // 2016
-          yearsToValidate.put(config.getPlanningCurrentYear() + 1, false); // 2017
-          yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+
+          if (project.getEndDate().compareTo(new Date("2017-01-01")) >= 0) {
+
+            yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
+          }
+
+
+          if (project.getEndDate().compareTo(new Date("2019-01-01")) >= 0) {
+
+            yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+          }
+
 
           for (IPIndicator indicator : indicatorsMap.get(outcome)) {
             // Validate only those indicators for 2016, 2017 and 2019.
@@ -148,7 +159,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         }
       }
     } else {
-      action.addActionError(action.getText("planning.projectImpactPathways.indicators.empty"));
+      this.addMessage(action.getText("planning.projectImpactPathways.indicators.empty"));
       this.addMissingField("project.indicators.empty");
     }
   }
@@ -179,7 +190,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
       this.addMissingField("project.indicators[" + c + "].target");
     } else if (!projectValidator.isValidTargetValueNumber(targetValue)) {
       // If target is not null but is not a valid number, we don't let user to save.
-      action.addFieldError("project.indicators[" + c + "].target", action.getText("validation.number.format"));
+      this.addMessage(action.getText("validation.number.format" + "project.indicators[" + c + "].target"));
       this.addMissingField("project.indicators[" + c + "].target");
     }
 
