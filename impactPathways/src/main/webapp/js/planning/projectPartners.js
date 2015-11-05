@@ -285,7 +285,7 @@ function updateProjectPPAPartnersLists(e) {
     }
   }
 
-  // Filling CCAFS partners lists for each project partner
+  // Filling CCAFS partners lists for each project partner cooment
   $partnersBlock.find('.projectPartner').each(function(i,partner) {
     var $select = $(partner).find('select.ppaPartnersSelect');
     $select.empty().append(setOption(-1, "Select an option"));
@@ -551,7 +551,7 @@ function addChosen() {
 
 /**
  * PartnerObject
- * 
+ *
  * @param {DOM} Project partner
  */
 
@@ -664,7 +664,7 @@ function PartnerObject(partner) {
 
 /**
  * PartnerPersonObject
- * 
+ *
  * @param {DOM} Partner person
  */
 function PartnerPersonObject(partnerPerson) {
