@@ -589,8 +589,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
           project.setWorkplanName(fileFileName);
 
-        } else {
-          project.setWorkplanName(previousProject.getWorkplanName());
         }
       }
 
@@ -598,8 +596,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
         if (file != null) {
           project.setBilateralContractProposalName(fileFileName);
-        } else {
-          project.setBilateralContractProposalName(previousProject.getBilateralContractProposalName());
         }
       }
       validator.validate(this, project, "Planning");
