@@ -195,7 +195,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
       this.addMissingField("project.indicators[" + c + "].target");
     } else if (!projectValidator.isValidTargetValueNumber(targetValue)) {
       // If target is not null but is not a valid number, we don't let user to save.
-      this.addMessage(action.getText("validation.number.format" + "project.indicators[" + c + "].target"));
+      this.addMessage("Target value for '" + outcomeAconmyn + "' in '" + year + "' is invalid.");
       this.addMissingField("project.indicators[" + c + "].target");
     }
 
