@@ -49,7 +49,7 @@
           [#-- Years Menu --]
           <ul>
             [#list years as year]
-              <li class=""><a href="#mogs-${year}">${year}</a></li> 
+              <li class=""><a href="#mogs-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
             [/#list]
           </ul>
           [#list years as year]
@@ -63,26 +63,19 @@
                   <input type="hidden" name="project.outputsOverview[${index}].id" value="${outputOverview.id!"-1"}" />
                   <input type="hidden" name="project.outputsOverview[${index}].year" value="${year}" />
                   <input type="hidden" name="project.outputsOverview[${index}].output.id" value="${output.id}" />
+                  [#-- MOG Title --]
                   <div class="fullPartBlock">
                     <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
                   </div>
-                  [#if (currentPlanningYear == year)]
-                    <div class="fullBlock">
-                      <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:[@customForm.req required=!project.bilateralProject /]</h6>  
-                      [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=!project.bilateralProject showTitle=false editable=editable /]
-                    </div>
-                    <div class="fullBlock">
-                      [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=!project.bilateralProject editable=editable /]
-                    </div>
-                  [#else]
-                    <div class="fullBlock">
-                      <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:</h6>  
-                      [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" showTitle=false editable=editable /]
-                    </div>
-                    <div class="fullBlock">
-                      [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan"  editable=editable /]
-                    </div>
-                  [/#if]
+                  [#-- Brief bullet points of your expected annual year contribution towards the selected MOG --]
+                  <div class="fullBlock">
+                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
+                    [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=isYearRequired(year) showTitle=false editable=editable /]
+                  </div>
+                  [#-- Brief plan of the gender and social inclusion dimension of the expected annual output --]
+                  <div class="fullBlock">
+                    [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=isYearRequired(year) editable=editable /]
+                  </div>
                 </div>
               [/#list] [#-- End Outcomes 2019 list --]
             </div>
@@ -135,4 +128,10 @@
   <input type="hidden" id="indexTabCurrentYear" value="${(indexTabCurrentYear)!0}" />
   
 </section>
+
+[#-- Get if the year is required--]
+[#function isYearRequired year]
+  [#return (!project.bilateralProject && (currentPlanningYear == year))]
+[/#function]
+
 [#include "/WEB-INF/global/pages/footer.ftl"]

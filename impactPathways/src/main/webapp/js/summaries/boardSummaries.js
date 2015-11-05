@@ -1,7 +1,7 @@
 $(document).ready(init);
 
 function init() {
-  addChosen();
+  addSelect2();
   attachEvents();
 }
 
@@ -74,8 +74,13 @@ function setUrl(url) {
 }
 
 // Activate the chosen plugin.
-function addChosen() {
-  $("form select").chosen({
+function addSelect2() {
+  $("form select#projectID").select2({
     search_contains: true
+  });
+  $("#genderKeywords").select2({
+    tags: [
+        "red", "green", "blue"
+    ]
   });
 }

@@ -390,7 +390,8 @@
 
 [#-- Get if the year is required--]
 [#function isYearRequired year]
-  [#return !project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+  [#assign endDate = (project.endDate?string.yyyy)?number]
+  [#return (!project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))) && (endDate gte year)]
 [/#function]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

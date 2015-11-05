@@ -56,6 +56,9 @@
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/cytoscapePanzoom/cytoscape.js-panzoom.css" />
           <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/cytoscapePanzoom/font-awesome-4.0.3/css/font-awesome.css" />
         [/#if]
+        [#if libraryName="select2"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/select2-3.5.4/select2.custom.css" />
+        [/#if]
   	 [/#list]
   	[/#if]
     [#-- Second, import global javascripts and templates. --]
