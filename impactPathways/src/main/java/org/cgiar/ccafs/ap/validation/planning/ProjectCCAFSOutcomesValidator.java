@@ -21,8 +21,9 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,16 +120,20 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         } else {
           // Populating years to validate.
           yearsToValidate.put(config.getPlanningCurrentYear(), false); // 2016
+          SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-          if (project.getEndDate().compareTo(new Date("2017-01-01")) >= 0) {
+          try {
+            if (project.getEndDate().compareTo(sdf.parse("01/01/2017")) >= 0) {
 
-            yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
-          }
+              yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
+            }
 
+            if (project.getEndDate().compareTo(sdf.parse("01/01/2019")) >= 0) {
 
-          if (project.getEndDate().compareTo(new Date("2019-01-01")) >= 0) {
+              yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+            }
+          } catch (ParseException e) {
 
-            yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
           }
 
 
