@@ -1914,6 +1914,7 @@ h1.simpleTitle span {
 .buttons button[name=next] {
     background: #BDC3C7;
     border-bottom: 3px solid #B0B0B0;
+    display: none;
 }
 
 .buttons button[name=next]:hover{

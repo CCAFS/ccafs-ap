@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Summaries Section" /]
-[#assign globalLibs = ["jquery", "noty", "chosen"] /]
+[#assign globalLibs = ["jquery", "noty", "select2"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/summaries/boardSummaries.js"] /]
 [#assign customCSS = [] /]
 [#assign currentSection = "summaries" /]
@@ -61,7 +61,7 @@
             <label for="genderContributionSummary">[@s.text name="summaries.board.report.genderContributionSummary" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.genderContributionSummary.description" /] </p>
             <div class="extraOptions" style="display:none"> 
-              [@customForm.input name="q" i18nkey="summaries.board.report.keywords" className="" disabled=true/]
+              [@customForm.input name="genderKeywords" className="" i18nkey="summaries.board.report.genderContributionSummary.keywords" /]
             </div>
           </div>
           --]

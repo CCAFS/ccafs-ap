@@ -75,6 +75,9 @@
       [#if libraryName="slidr"] 
         <script src="${baseUrl}/js/libs/slidr/slidr.min.js"></script>
       [/#if]
+      [#if libraryName="select2"] 
+        <script src="${baseUrl}/js/libs/select2-3.5.4/select2.min.js"></script>
+      [/#if]
    [/#list]
   [/#if]
 

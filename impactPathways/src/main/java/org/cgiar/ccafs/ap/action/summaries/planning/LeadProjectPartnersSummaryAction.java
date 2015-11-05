@@ -83,8 +83,11 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
 
   @Override
   public String getContentType() {
-    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
+    if (this.getFileName().endsWith("xlsx")) {
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    } else {
+      return "application/vnd.ms-excel";
+    }
   }
 
   @Override
