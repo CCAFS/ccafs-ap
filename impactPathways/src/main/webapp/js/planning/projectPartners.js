@@ -248,7 +248,7 @@ function removePPAPartnersFromList(list) {
 }
 
 function updateProjectPPAPartnersLists(e) {
- // $projectPPAPartners.empty();
+  // $projectPPAPartners.empty();
   var projectInstitutions = [];
   // Loop for all projects partners
   $partnersBlock.find('.projectPartner').each(function(i,projectPartner) {
@@ -284,6 +284,7 @@ function updateProjectPPAPartnersLists(e) {
       $fieldError.text('This institution is already selected').addClass('animated flipInX');
     }
   }
+
   // Filling CCAFS partners lists for each project partner
   $partnersBlock.find('.projectPartner').each(function(i,partner) {
     var $select = $(partner).find('select.ppaPartnersSelect');
@@ -550,7 +551,7 @@ function addChosen() {
 
 /**
  * PartnerObject
- *
+ * 
  * @param {DOM} Project partner
  */
 
@@ -663,7 +664,7 @@ function PartnerObject(partner) {
 
 /**
  * PartnerPersonObject
- *
+ * 
  * @param {DOM} Partner person
  */
 function PartnerPersonObject(partnerPerson) {
