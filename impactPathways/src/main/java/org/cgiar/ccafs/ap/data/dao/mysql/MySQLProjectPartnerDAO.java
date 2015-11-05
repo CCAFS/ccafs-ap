@@ -400,4 +400,34 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
     return projectPartnersData;
   }
+
+  @Override
+  public List<Map<String, Object>> summaryGetNotLoggedInPartners() {
+    List<Map<String, Object>> projectPartnersData = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query
+    .append("SELECT CONCAT( u.last_name, ', ', u.first_name) as 'name', u.email as 'email', ppp.contact_type as 'contact_type', ");
+    query.append("pp.project_id as 'project_id' ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("INNER JOIN projects p ON pp.project_id = p.id ");
+    query.append("WHERE pp.is_active = 1 AND u.last_login IS NULL AND p.is_active = 1 ");
+    query.append("ORDER BY u.id ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> projectPartnerData = new HashMap<>();
+        projectPartnerData.put("name", rs.getString("name"));
+        projectPartnerData.put("email", rs.getString("email"));
+        projectPartnerData.put("contact_type", rs.getString("contact_type"));
+        projectPartnerData.put("project_id", rs.getInt("project_id"));
+        projectPartnersData.add(projectPartnerData);
+      }
+    } catch (SQLException e) {
+      LOG.error("summaryGetNotLoggedInPartners > Exception raised trying to get the project partners for the XML", e);
+    }
+
+    return projectPartnersData;
+  }
 }
