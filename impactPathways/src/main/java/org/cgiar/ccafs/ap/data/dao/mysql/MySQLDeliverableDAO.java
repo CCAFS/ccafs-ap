@@ -321,8 +321,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       values[8] = deliverableData.get("modification_justification");
     } else {
       // Updating existing deliverable record
-      query
-        .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+      query.append(
+        "UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = deliverableData.get("title");
@@ -340,8 +340,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
   }
 
   @Override
-  public boolean saveDeliverableOutput(int deliverableID, int projectID, int userID, String justification) {
-    LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, projectID});
+  public boolean saveDeliverableOutput(int deliverableID, int outputID, int userID, String justification) {
+    LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, outputID});
     StringBuilder query = new StringBuilder();
     int result = -1;
     boolean saved = false;
@@ -364,7 +364,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     values[1] = userID;
     values[2] = userID;
     values[3] = justification;
-    values[4] = projectID;
+    values[4] = outputID;
     result = databaseManager.saveData(query.toString(), values);
 
     LOG.debug("<< saveDeliverableOutput():{}", result);
