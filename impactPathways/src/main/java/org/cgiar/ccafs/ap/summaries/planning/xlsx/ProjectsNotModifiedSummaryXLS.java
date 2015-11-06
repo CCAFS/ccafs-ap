@@ -97,8 +97,8 @@ public class ProjectsNotModifiedSummaryXLS {
 
     // Defining header types
     int[] headerTypesProject =
-    {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-      BaseXLS.COLUMN_TYPE_TEXT_SHORT};
+      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT};
 
     // creating sheet
 
@@ -108,17 +108,19 @@ public class ProjectsNotModifiedSummaryXLS {
     try {
       xls.initializeSheet(sheet, headerTypesProject);
 
+      // write text box
+      xls.writeTitleBox(sheet, "Projects Not Modified Summary");
+
+      // write text box
+      xls.createLogo(workbook, sheet);
+
+
       xls.writeHeaders(sheet, headersProject);
       this.addContent(projectList, sheet);
 
       // Set description
       xls.writeDescription(sheet, xls.getText("summaries.project.not.modified.description"));
 
-      // write text box
-      xls.writeTitleBox(sheet, "Projects Not Modified Summary");
-
-      // write text box
-      xls.createLogo(workbook, sheet);
 
       xls.writeWorkbook();
 
