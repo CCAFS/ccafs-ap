@@ -64,6 +64,14 @@
       </result>
     </action>
 
+    <action name="noLoggedInPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.NoLoggedInPartnersSummaryAction">
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">text/csv</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+      </result>
+    </action>
+
     <action name="budgetByMOGsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetByMOGsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>

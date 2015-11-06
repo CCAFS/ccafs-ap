@@ -29,37 +29,36 @@ import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 
 
 /**
- * @author Jorge Leonardo Solis B.
+ * @author Carlos Alberto Martínez M. CCAFS-CIAT
  */
-public class BudgetPerPartnersSummaryXLS {
+public class NoLoggedInPartnersSummaryXLS {
 
   private BaseXLS xls;
   private APConfig config;
 
   @Inject
-  public BudgetPerPartnersSummaryXLS(BaseXLS xls, APConfig config) {
+  public NoLoggedInPartnersSummaryXLS(BaseXLS xls, APConfig config) {
     this.xls = xls;
     this.config = config;
 
   }
 
   /**
-   * This method is used to add an institution being a project leader
+   * This method is used to add each partner not having logged in P&R
    * 
-   * @param projectLeadingInstitutions is the list of institutions to be added
-   * @param projectList is the list with the projects related to each institution
+   * @param noLoggedInPartnersList is the list of partners to be added
+   * @param sheet is the workbook sheet in which the information is going to be added
    */
-  private void addContent(List<Map<String, Object>> informationBudgetByPartnerList, Sheet sheet) {
+  private void addContent(List<Map<String, Object>> noLoggedInPartnersList, Sheet sheet) {
 
     CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();
     XSSFHyperlink link;
     Map<String, Object> mapObject;
     int projectID;
-    // Iterating all the projects
 
 
-    for (int a = 0; a < informationBudgetByPartnerList.size(); a++) {
-      mapObject = informationBudgetByPartnerList.get(a);
+    for (int a = 0; a < noLoggedInPartnersList.size(); a++) {
+      mapObject = noLoggedInPartnersList.get(a);
 
       // Iterating all the partners
 
@@ -67,33 +66,22 @@ public class BudgetPerPartnersSummaryXLS {
       link = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
       link.setAddress(config.getBaseUrl() + "/planning/projects/description.do?projectID=" + projectID);
 
+      // Name
+      xls.writeString(sheet, (String) mapObject.get("name"));
+      xls.nextColumn();
+
+      // Email
+      xls.writeString(sheet, (String) mapObject.get("email"));
+      xls.nextColumn();
+
+      // Contact type
+      xls.writeString(sheet, (String) mapObject.get("contact_type"));
+      xls.nextColumn();
+
       // Project id
       xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
       xls.nextColumn();
 
-      // Title
-      xls.writeString(sheet, (String) mapObject.get("project_title"));
-      xls.nextColumn();
-
-      // Partner
-      xls.writeString(sheet, (String) mapObject.get("partner"));
-      xls.nextColumn();
-
-      // budget_W1_W2
-      xls.writeBudget(sheet, (double) mapObject.get("budget_W1_W2"));
-      xls.nextColumn();
-
-      // gender_W1_W2
-      xls.writeBudget(sheet, (double) mapObject.get("gender_W1_W2"));
-      xls.nextColumn();
-
-      // budget_W3_Bilateral
-      xls.writeBudget(sheet, (double) mapObject.get("budget_W3_Bilateral"));
-      xls.nextColumn();
-
-      // gender_W3_Bilateral
-      xls.writeBudget(sheet, (double) mapObject.get("gender_W3_Bilateral"));
-      xls.nextColumn();
 
       xls.nextRow();
 
@@ -101,46 +89,42 @@ public class BudgetPerPartnersSummaryXLS {
   }
 
   /**
-   * This method is used to generate the csv file for the ProjectLeading institutions.
+   * This method is used to generate the xls file for the partners not having logged in P&R.
    * 
-   * @param projectPartnerInstitutions is the list of institutions to be added
-   * @param projectList is the list with the projects related to each institution
+   * @param PartnersInformation is the list of partners to be added
    */
-  public byte[] generateXLS(List<Map<String, Object>> informationBudgetByPartnersReport, int year) {
+  public byte[] generateXLS(List<Map<String, Object>> PartnersInformation) {
 
     try {
 
       // Writting headers
-      String[] headers =
-        new String[] {"Project Id", "Project title", "Partner", "Total Budget W1/W2 (USD)", "Gender W1/W2 (USD)",
-          "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
+      String[] headers = new String[] {"Name", "Email", "Contact Type", "Related Project Id"};
 
       // Writting style content
       int[] headersType =
-        new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET};
+        new int[] {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_HYPERLINK};
 
       Workbook workbook = xls.initializeWorkbook(true);
 
       // renaming sheet
-      workbook.setSheetName(0, "Budget Summary Per Partners");
+      workbook.setSheetName(0, "Partners not having logged in P&R");
       Sheet sheet = workbook.getSheetAt(0);
 
       xls.initializeSheet(sheet, headersType);
 
       // Writing the sheet in the yellow box
-      xls.writeTitleBox(sheet, xls.getText("summaries.budget.partners.summary.name").concat(" " + year));
+      xls.writeTitleBox(sheet, xls.getText("summaries.partners.notlogged.summary.name"));
 
       // Writing the sheet in the yellow box
-      xls.writeDescription(sheet, xls.getText("summaries.budget.partners.summary.description"));
+      xls.writeDescription(sheet, xls.getText("summaries.partners.notlogged.summary.description"));
 
       // write text box
       xls.createLogo(workbook, sheet);
 
       xls.writeHeaders(sheet, headers);
 
-      this.addContent(informationBudgetByPartnersReport, sheet);
+      this.addContent(PartnersInformation, sheet);
 
       // this.flush();
       xls.writeWorkbook();

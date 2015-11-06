@@ -113,7 +113,6 @@ public interface ProjectPartnerManager {
   public boolean saveProjectPartnerContributions(int projectID, ProjectPartner projectPartner, User user,
     String justification);
 
-
   /**
    * This method saves a list of project partners that belongs to a specific project
    * 
@@ -133,5 +132,16 @@ public interface ProjectPartnerManager {
    * @return a List of Maps with the information populated on it.
    */
   public List<Map<String, Object>> summaryGetActivePartners();
+
+  /**
+   * This method will return the list of all the partners who have never logged in P&R.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the NoLoggedInPartners summary Report.
+   * 
+   * @return a list of columns with some specified information about all partners
+   */
+
+  public List<Map<String, Object>> summaryGetNotLoggedInPartners();
 
 }

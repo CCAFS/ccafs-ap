@@ -32,6 +32,9 @@ $(document).ready(function() {
     var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
     $parent.empty().append($inputFile);
     $inputFile.hide().fadeIn('slow');
+    project.workplanName=null;
+    project.bilateralContractProposalName=null;
+
   });
 
   /**

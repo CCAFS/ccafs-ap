@@ -119,4 +119,12 @@ public interface ProjectPartnerDAO {
    * @return a List of Maps with the information populated on it.
    */
   public List<Map<String, Object>> summaryGetActivePartners();
+
+  /**
+   * This method is used to export all the partners not logged in P&R in an XML format for
+   * the CCAFS Web-site.
+   * 
+   * @return a List of Maps with the information populated on it.
+   */
+  public List<Map<String, Object>> summaryGetNotLoggedInPartners();
 }

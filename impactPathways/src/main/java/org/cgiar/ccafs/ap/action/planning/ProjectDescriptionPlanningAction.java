@@ -394,7 +394,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
         } else {
 
           previousProject.setWorkplanName(project.getWorkplanName());
-          if (project.getWorkplanName() != null && !project.getWorkplanName().isEmpty()) {
+          if (project.getWorkplanName() != null && project.getWorkplanName().isEmpty()) {
             FileManager.deleteFile(this.getWorplansAbsolutePath() + previousProject.getWorkplanName());
             previousProject.setWorkplanName("");
           }
@@ -411,8 +411,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
             this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
         } else {
 
-          if (project.getBilateralContractProposalName() != null
-            && !project.getBilateralContractProposalName().isEmpty()) {
+          if (previousProject.getBilateralContractProposalName() != null
+            && previousProject.getBilateralContractProposalName().isEmpty()) {
             FileManager
               .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             previousProject.setBilateralContractProposalName("");
@@ -434,8 +434,8 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           } else {
             previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
             if (project.getBilateralContractProposalName() != null
-              && !project.getBilateralContractProposalName().isEmpty()
-              && !previousProject.getBilateralContractProposalName().isEmpty()) {
+              && project.getBilateralContractProposalName().isEmpty()
+              && previousProject.getBilateralContractProposalName().isEmpty()) {
               previousProject.setBilateralContractProposalName("");
               FileManager
                 .deleteFile(this.getWorplansAbsolutePath() + previousProject.getBilateralContractProposalName());
@@ -589,8 +589,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
           project.setWorkplanName(fileFileName);
 
-        } else {
-          project.setWorkplanName(previousProject.getWorkplanName());
         }
       }
 
@@ -598,8 +596,6 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
 
         if (file != null) {
           project.setBilateralContractProposalName(fileFileName);
-        } else {
-          project.setBilateralContractProposalName(previousProject.getBilateralContractProposalName());
         }
       }
       validator.validate(this, project, "Planning");
