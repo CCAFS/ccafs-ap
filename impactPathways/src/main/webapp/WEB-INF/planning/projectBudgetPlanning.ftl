@@ -133,8 +133,8 @@
                   <div class="BudgetByYear"> 
                     <h6 class="subTitle"> [@s.text name="preplanning.projectBudget.totalYearBudget"][@s.param name="0"]${w3BilateralBudgetLabel}[/@s.param][@s.param name="1"]${year}[/@s.param][/@s.text]</h6> 
                     <p id="totalBilateralBudgetByYear">
-                      US$ <span>${totalCCAFSBudgetbyYear?string(",##0.00")}</span>
-                      <input type="hidden" value="${totalCCAFSBudgetbyYear?number}" />
+                      US$ <span>${((totalBilateralBudgetbyYear)!0)?string(",##0.00")}</span>
+                      <input type="hidden" value="${((totalBilateralBudgetbyYear)!0)?number}" />
                     </p>
                   </div>
                   [/#if]

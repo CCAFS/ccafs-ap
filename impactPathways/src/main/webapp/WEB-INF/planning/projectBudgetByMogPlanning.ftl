@@ -96,7 +96,6 @@
 
                 [#-- Total gender budget amount (W3/Bilateral) for Co-funded projects --]
                 <div class="BudgetByYear">
-                  [#assign totalCoFundedGenderBudgetByYear="50000" /]
                   <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] Gender budget : US$ <span>${bilateralGenderPercentage?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedGenderBudgetByYear">
                     [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${bilateralGenderPercentage?number?string(",##0.00")}</span>
