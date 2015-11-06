@@ -66,7 +66,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution() {
+  public Map<String, String> getAllProjectPartnersPersonsWithTheirInstitution() {
     return this.projectPartnerDAO.getAllProjectPartnersPersonsWithTheirInstitution();
   }
 
