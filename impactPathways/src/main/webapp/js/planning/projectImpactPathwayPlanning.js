@@ -25,9 +25,24 @@ function attachEvents() {
   $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
-  $targetValue.on("keydown", function(event) {
-    isNumber(event);
+  // Disabled values thas is not number
+  $targetValue.on("keydown", function(e) {
+    isNumber(e);
   });
+  // Check for numeric value already inserted
+  $targetValue.on("keyup", function(e) {
+    var isEmpty = (e.target.value == "");
+    var isRequired = $(e.target).hasClass("required");
+    var isNumeric = $.isNumeric(e.target.value);
+    var hasMissFields = $('.hasMissingFields').exists();
+    var valueError = (!isNumeric && isRequired && hasMissFields);
+    if(valueError) {
+      $(e.target).addClass("fieldError").attr("title", "This field require a numeric value");
+    } else {
+      $(e.target).removeClass("fieldError").attr("title", "");
+    }
+  });
+  $targetValue.trigger("keyup");
   validateEvent([
     "#justification"
   ]);

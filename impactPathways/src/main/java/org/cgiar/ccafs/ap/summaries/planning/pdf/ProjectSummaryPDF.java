@@ -1274,7 +1274,8 @@ public class ProjectSummaryPDF extends BasePDF {
 
         // Partner #
         paragraph.setFont(HEADING3_FONT);
-        if (partner.getId() == project.getLeader().getId()) {
+
+        if (project.getLeader() != null && partner.getId() == project.getLeader().getId()) {
           paragraph.add(this.getText("summaries.project.partner") + numberPP + " "
             + this.getText("summaries.project.partner.leader"));
         } else {
@@ -2754,8 +2755,10 @@ public class ProjectSummaryPDF extends BasePDF {
    * @return true if project partner exist in the list otherwise false
    */
   private boolean isRepeatProjectPartner(List<ProjectPartner> ppaPartners, ProjectPartner pp, int index) {
+    ProjectPartner ppaPartner;
     for (int a = index; a < ppaPartners.size(); a++) {
-      if (ppaPartners.get(a).getInstitution().getId() == pp.getInstitution().getId()) {
+      ppaPartner = ppaPartners.get(a);
+      if (ppaPartner != null && ppaPartner.getInstitution().getId() == pp.getInstitution().getId()) {
         return true;
       }
     }

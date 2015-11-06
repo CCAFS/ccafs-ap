@@ -117,7 +117,7 @@
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
-                                    <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
+                                    <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
                                       [#if isYearRequired(year) ]
@@ -203,7 +203,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                 [#if editable]
-                                  <input type="text" class="projectIndicatorTarget" name="project.indicators.target" />
+                                  <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" />
                                 [/#if]
                               </div>
                               
@@ -211,7 +211,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label><h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
                                 [#if editable]
-                                  <textarea class="projectIndicatorDescription" name="project.indicators.description" ></textarea>
+                                  <textarea class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description" ></textarea>
                                 [/#if]
                               </div>
                               
@@ -219,7 +219,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label><h6>[@s.text name="planning.projectImpactPathways.targetGender" /]:</h6></label>
                                 [#if editable]
-                                  <textarea class="projectIndicatorGender" name="project.indicators.gender" ></textarea>
+                                  <textarea class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender" ></textarea>
                                 [/#if]
                               </div>
                               
