@@ -344,28 +344,67 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     LOG.debug(">> saveDeliverableOutput(deliverableData={})", new Object[] {deliverableID, outputID});
     StringBuilder query = new StringBuilder();
     int result = -1;
+    int deliverableContributionID = -1;
     boolean saved = false;
     Object[] values;
+
+    query.append("SELECT id FROM ccafs_pr.ip_deliverable_contributions where deliverable_id = ");
+    query.append(deliverableID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        deliverableContributionID = rs.getInt(1);
+      }
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+      LOG.error(exceptionMessage, e);
+    }
+
 
     /**
      * This query relates the deliverable with each project impact pathways which contains
      * the MOG selected
      */
-    query.append("INSERT INTO ip_deliverable_contributions (deliverable_id, project_contribution_id, created_by,");
-    query.append(" modified_by, modification_justification ) ");
-    query.append("SELECT ?, id, ?, ?, ? ");
-    query.append("FROM ip_project_contributions ");
-    query.append("WHERE project_id= ? ");
-    query.append("ON DUPLICATE KEY UPDATE project_contribution_id = VALUES(project_contribution_id), ");
-    query.append("deliverable_id = VALUES(deliverable_id), modified_by = VALUES(modified_by), ");
-    query.append("modification_justification = VALUES(modification_justification) ");
-    values = new Object[5];
-    values[0] = deliverableID;
-    values[1] = userID;
-    values[2] = userID;
-    values[3] = justification;
-    values[4] = outputID;
-    result = databaseManager.saveData(query.toString(), values);
+    query.setLength(0);
+    if (deliverableContributionID == -1) {
+      query.append("INSERT INTO ip_deliverable_contributions (deliverable_id, project_contribution_id, created_by,");
+      query.append(" modified_by, modification_justification ) ");
+      query.append("SELECT ?, id, ?, ?, ? ");
+      query.append("FROM ip_project_contributions ");
+      query.append("WHERE project_id = (select d.project_id from deliverables d where d.id = " + deliverableID + ") ");
+      query.append("AND mog_id = ? ");
+      query.append("ON DUPLICATE KEY UPDATE project_contribution_id = VALUES(project_contribution_id), ");
+      query.append("deliverable_id = VALUES(deliverable_id), modified_by = VALUES(modified_by), ");
+      query.append("modification_justification = VALUES(modification_justification) ");
+      values = new Object[5];
+      values[0] = deliverableID;
+      values[1] = userID;
+      values[2] = userID;
+      values[3] = justification;
+      values[4] = outputID;
+      result = databaseManager.saveData(query.toString(), values);
+    } else {
+      query
+        .append("INSERT INTO ip_deliverable_contributions (id, deliverable_id, project_contribution_id, created_by,");
+      query.append(" modified_by, modification_justification ) ");
+      query.append("SELECT ?, ?, id, ?, ?, ? ");
+      query.append("FROM ip_project_contributions ");
+      query.append("WHERE project_id = (select d.project_id from deliverables d where d.id = " + deliverableID + ") ");
+      query.append("AND mog_id = ? ");
+      query.append("ON DUPLICATE KEY UPDATE project_contribution_id = VALUES(project_contribution_id), ");
+      query.append("deliverable_id = VALUES(deliverable_id), modified_by = VALUES(modified_by), ");
+      query.append("modification_justification = VALUES(modification_justification) ");
+      values = new Object[6];
+      values[0] = deliverableContributionID;
+      values[1] = deliverableID;
+      values[2] = userID;
+      values[3] = userID;
+      values[4] = justification;
+      values[5] = outputID;
+      result = databaseManager.saveData(query.toString(), values);
+    }
 
     LOG.debug("<< saveDeliverableOutput():{}", result);
     if (result != -1) {
