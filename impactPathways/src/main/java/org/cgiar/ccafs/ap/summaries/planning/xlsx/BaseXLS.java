@@ -588,6 +588,8 @@ public class BaseXLS {
     } else {
       if (value.toString().length() > 30) {
         sheet.setColumnWidth(columnCounter, 12000);
+      } else {
+        sheet.setColumnWidth(columnCounter, 8000);
       }
       cell.setCellValue(value);
     }
