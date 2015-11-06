@@ -48,9 +48,9 @@ public interface ProjectPartnerManager {
   /**
    * This is an auxiliar method used for to get the partner person list of the project partners
    * 
-   * @return
+   * @return a Map with the information
    */
-  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution();
+  public Map<String, String> getAllProjectPartnersPersonsWithTheirInstitution();
 
   /**
    * This method is used to get a specific Project Partner identified by the given ID.

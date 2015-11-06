@@ -53,10 +53,10 @@ public interface ProjectPartnerDAO {
   /**
    * This method returns the information of the project partners with the information of their institutions name
    * 
-   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   * @return a Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
-  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution();
+  public Map<String, String> getAllProjectPartnersPersonsWithTheirInstitution();
 
   /**
    * This method gets a project partner information identified with the given ID.
