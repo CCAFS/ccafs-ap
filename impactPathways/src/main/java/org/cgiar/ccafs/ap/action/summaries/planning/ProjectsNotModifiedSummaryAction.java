@@ -16,7 +16,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.SubmissionProjectSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.ProjectsNotModifiedSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -38,7 +38,7 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
 
   public static Logger LOG = LoggerFactory.getLogger(ProjectsNotModifiedSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;;
-  private SubmissionProjectSummaryXLS submissionProjectSummaryXLS;
+  private ProjectsNotModifiedSummaryXLS projectsNotModifiedSummaryXLS;
   private ProjectManager projectManager;
 
   private List<Map<String, Object>> projectList;
@@ -50,12 +50,12 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
   InputStream inputStream;
 
   @Inject
-  public ProjectsNotModifiedSummaryAction(APConfig config, SubmissionProjectSummaryXLS submissionProjectSummaryXLS,
+  public ProjectsNotModifiedSummaryAction(APConfig config, ProjectsNotModifiedSummaryXLS projectsNotModifiedSummaryXLS,
     ProjectManager projectManager) {
 
 
     super(config);
-    this.submissionProjectSummaryXLS = submissionProjectSummaryXLS;
+    this.projectsNotModifiedSummaryXLS = projectsNotModifiedSummaryXLS;
     this.projectManager = projectManager;
 
   }
@@ -63,7 +63,7 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = submissionProjectSummaryXLS.generateXLS(projectList);
+    bytesXLS = projectsNotModifiedSummaryXLS.generateXLS(projectList);
 
     return SUCCESS;
   }
@@ -83,7 +83,7 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("SubmssionProjectSummary_");
+    fileName.append("ProjectsNotModifiedSummary_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -100,7 +100,7 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
 
   @Override
   public void prepare() {
-    projectList = projectManager.summaryGetProjectSubmmited();
+    projectList = projectManager.summaryGetProjectsNotModified();
   }
 
 }

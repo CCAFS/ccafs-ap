@@ -406,7 +406,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     List<Map<String, Object>> projectPartnersData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query
-    .append("SELECT CONCAT( u.last_name, ', ', u.first_name) as 'name', u.email as 'email', ppp.contact_type as 'contact_type', ");
+    .append("SELECT u.id as 'user_id' , CONCAT( u.last_name, ', ', u.first_name) as 'name', u.email as 'email', ppp.contact_type as 'contact_type', ");
     query.append("pp.project_id as 'project_id' ");
     query.append("FROM project_partners pp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
@@ -418,6 +418,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, Object> projectPartnerData = new HashMap<>();
+        projectPartnerData.put("user_id", rs.getInt("user_id"));
         projectPartnerData.put("name", rs.getString("name"));
         projectPartnerData.put("email", rs.getString("email"));
         projectPartnerData.put("contact_type", rs.getString("contact_type"));

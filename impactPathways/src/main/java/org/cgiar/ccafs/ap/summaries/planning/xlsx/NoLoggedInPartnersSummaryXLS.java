@@ -66,6 +66,10 @@ public class NoLoggedInPartnersSummaryXLS {
       link = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
       link.setAddress(config.getBaseUrl() + "/planning/projects/description.do?projectID=" + projectID);
 
+      // User Id
+      xls.writeInteger(sheet, (int) (mapObject.get("user_id")));
+      xls.nextColumn();
+
       // Name
       xls.writeString(sheet, (String) mapObject.get("name"));
       xls.nextColumn();
@@ -80,8 +84,6 @@ public class NoLoggedInPartnersSummaryXLS {
 
       // Project id
       xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
-      xls.nextColumn();
-
 
       xls.nextRow();
 
@@ -98,12 +100,12 @@ public class NoLoggedInPartnersSummaryXLS {
     try {
 
       // Writting headers
-      String[] headers = new String[] {"Name", "Email", "Contact Type", "Related Project Id"};
+      String[] headers = new String[] {"User id", "Name", "Email", "Contact Type", "Related Project Id"};
 
       // Writting style content
       int[] headersType =
-        new int[] {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_HYPERLINK};
+        new int[] {BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_HYPERLINK};
 
       Workbook workbook = xls.initializeWorkbook(true);
 

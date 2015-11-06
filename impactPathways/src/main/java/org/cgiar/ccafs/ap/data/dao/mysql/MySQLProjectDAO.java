@@ -452,6 +452,20 @@ public class MySQLProjectDAO implements ProjectDAO {
     return projectList;
   }
 
+  private String getDatabaseName() {
+    String query = "SELECT DATABASE() as dbName;";
+
+    try (Connection con = this.databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query, con);
+      if (rs.next()) {
+        return rs.getString("dbName");
+      }
+    } catch (SQLException e) {
+      LOG.error("getDatabaseName() > Error getting the database name.", e);
+    }
+    return null;
+  }
+
   @Override
   public List<Integer> getPLProjectIds(int userID) {
     LOG.debug(">> getPLProjectIds(employeeId={})", new Object[] {userID});
@@ -1045,6 +1059,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return result;
   }
 
+
   @Override
   public int saveProjectOutput(Map<String, String> outputData) {
     LOG.debug(">> saveProjectOutput(outputData={})", outputData);
@@ -1079,7 +1094,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< saveProjectOutput(): {}", newId);
     return newId;
   }
-
 
   @Override
   public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch) {
@@ -1359,6 +1373,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     return csvRecords;
   }
 
+
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
     LOG.debug(">> getAllProjectsWithDeliverables ");
@@ -1458,7 +1473,6 @@ public class MySQLProjectDAO implements ProjectDAO {
     LOG.debug("<< getAllProjectsWithDeliverables ");
     return csvRecords;
   }
-
 
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch) {
@@ -1814,12 +1828,13 @@ public class MySQLProjectDAO implements ProjectDAO {
   @Override
   public List<Map<String, Object>> summaryGetProjectsNotModified() {
     LOG.debug("<< summaryGetProjectsNotModified ");
+    String dbName = this.getDatabaseName();
     String[] usersPermitModified = {"1", "2", "3", "13", "14", "843", "844"};
     String[] tables =
-    {"projects", "activities", "ip_project_contributions", "ip_project_contribution_overviews",
-      "ip_project_contributions", "ip_project_indicators", "project_budgets", "project_budget_overheads",
-      "project_component_lessons", "project_crp_contributions", "project_focuses", "project_locations",
-      "project_mog_budgets", "project_other_contributions", "project_outcomes"};
+      {"activities", "ip_project_contributions", "ip_project_contribution_overviews", "ip_project_contributions",
+        "ip_project_indicators", "project_budgets", "project_budget_overheads", "project_component_lessons",
+        "project_crp_contributions", "project_focuses", "project_locations", "project_mog_budgets",
+        "project_other_contributions", "project_outcomes"};
 
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
@@ -1832,75 +1847,87 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("FROM projects p ");
     query.append("WHERE p.id NOT IN ");
 
-    // **********************tables project_partners, project_partner_persons and project_partner_contributions
-    query.append("(SELECT h.project_id  FROM  _history.project_partners hpp ");
-    query.append(" LEFT JOIN _history.project_partner_contributions hppc  ON hpp.id = hppc.project_partner_id ");
-    query.append(" LEFT JOIN _history.project_partner_persons hdp ON hpp.id = hppp.project_partner_id ");
-
-    query.append(" WHERE hpp.active_since > 2015-10-20 00:00:00 ");
-    query.append(" AND hpp.is_active = 1 ");
-
-    query.append(" AND hppc.active_since > 2015-10-20 00:00:00 ");
-    query.append(" AND hppp.active_since > 2015-10-20 00:00:00 ");
-
-    // project_partners
+    // ***********************table projects
+    query.append("(SELECT h.record_id FROM " + dbName + "_history.projects h  ");
+    query.append("WHERE  h.active_since > '2015-10-20 00:00:00' ");
+    query.append("AND h.is_active = 1 ");
+    // deliverable
     for (String user : usersPermitModified) {
-      query.append(" AND hpp.modified_by != " + user);
+      query.append(" AND h.modified_by != " + user);
     }
-
-    // project_partner_persons
-    query.append(" ) OR( hppp.is_active = 1 ");
-    for (String user : usersPermitModified) {
-      query.append(" AND hppp.modified_by != " + user);
-    }
-
-    // project_partner_contributions
-    query.append(" ) OR( hppc.is_active = 1 ");
-    for (String user : usersPermitModified) {
-      query.append(" AND hppc.modified_by != " + user);
-    }
-    query.append(" ))");
+    query.append(" GROUP BY h.record_id) ");
 
 
     // *********************************** tables deliverable, deliverable_partnership and next_users
     query.append(" AND  p.id NOT IN ");
-    query.append("(SELECT h.project_id  FROM  _history.deliverables h ");
-    query.append(" LEFT JOIN _history.next_users hnu  ON h.id = hnu.deliverable_id ");
-    query.append(" LEFT JOIN _history.deliverable_partnerships hdp ON h.id = hdp.deliverable_id ");
+    query.append("(SELECT h.project_id  FROM " + dbName + "_history.deliverables h ");
+    query.append(" LEFT JOIN " + dbName + "_history.next_users hnu  ON h.record_id = hnu.deliverable_id ");
+    query.append(" LEFT JOIN " + dbName + "_history.deliverable_partnerships hdp ON h.record_id = hdp.deliverable_id ");
 
-    query.append(" WHERE h.active_since > 2015-10-20 00:00:00 ");
-    query.append(" AND h.is_active = 1 ");
-
-    query.append(" AND hdp.active_since > 2015-10-20 00:00:00 ");
-    query.append(" AND hnu.active_since > 2015-10-20 00:00:00 ");
-
+    query.append(" WHERE  ");
     // deliverable
+    query.append(" ( h.is_active = 1 ");
+    query.append(" AND h.active_since > '2015-10-20 00:00:00' ");
     for (String user : usersPermitModified) {
       query.append(" AND h.modified_by != " + user);
     }
 
     // deliverable partnerships
     query.append(" ) OR( hdp.is_active = 1 ");
+    query.append(" AND hdp.active_since > '2015-10-20 00:00:00' ");
     for (String user : usersPermitModified) {
       query.append(" AND hdp.modified_by != " + user);
     }
+
     // next users
     query.append(" ) OR( hnu.is_active = 1 ");
+    query.append(" AND hnu.active_since > '2015-10-20 00:00:00' ");
     for (String user : usersPermitModified) {
       query.append(" AND hnu.modified_by != " + user);
     }
-    query.append(" ))");
+    query.append(" ) GROUP BY h.project_id )");
+
+    // *************************** tables project_partners, project_partner_persons and project_partner_contributions
+    query.append(" AND  p.id NOT IN ");
+    query.append("(SELECT hpp.project_id  FROM  " + dbName + "_history.project_partners hpp ");
+    query.append(" LEFT JOIN " + dbName + "_history.project_partner_persons hppp  ");
+    query.append("ON hpp.record_id = hppp.project_partner_id ");
+    query.append(" LEFT JOIN " + dbName + "_history.project_partner_contributions hppc ");
+    query.append(" ON hpp.record_id = hppc.project_partner_id ");
+    query.append(" WHERE  ");
+
+    // project_partners
+    query.append(" ( hpp.is_active = 1 ");
+    query.append(" AND hpp.active_since > '2015-10-20 00:00:00' ");
+    for (String user : usersPermitModified) {
+      query.append(" AND hpp.modified_by != " + user);
+    }
+
+    // project_partner_persons
+    query.append(" ) OR( hppp.is_active = 1 ");
+    query.append(" AND hppp.active_since > '2015-10-20 00:00:00' ");
+    for (String user : usersPermitModified) {
+      query.append(" AND hppp.modified_by != " + user);
+    }
+
+    // project_partner_contributions
+    query.append(" ) OR( hppc.is_active = 1 ");
+    query.append(" AND hppc.active_since > '2015-10-20 00:00:00' ");
+    for (String user : usersPermitModified) {
+      query.append(" AND hppc.modified_by != " + user);
+    }
+    query.append(" ) GROUP BY hpp.project_id )");
 
     // *********************************** others tables ***************************/
     for (String table : tables) {
       query.append(" AND  p.id NOT IN ");
-      query.append("(SELECT h.record_id FROM _history." + table + " h ");
-      query.append(" WHERE h.active_since > 2015-10-20 00:00:00 ");
+      query.append("(SELECT h.project_id FROM " + dbName + "_history." + table + " h ");
+      query.append(" WHERE h.active_since > '2015-10-20 00:00:00' ");
       query.append(" AND h.is_active = 1 ");
       for (String user : usersPermitModified) {
         query.append(" AND h.modified_by != " + user);
       }
-      query.append(" GROUP BY h.record_id)");
+      query.append(" GROUP BY h.project_id)");
     }
 
 
