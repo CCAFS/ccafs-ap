@@ -147,7 +147,6 @@ public class APCustomRealm extends AuthorizingRealm {
     List<Map<String, UserRole>> projectRoles = new ArrayList<>();
 
     if (roles.size() == 0) {
-      System.out.println();
       roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
     }
     // Get the roles general to the platform
@@ -165,11 +164,8 @@ public class APCustomRealm extends AuthorizingRealm {
 
         case APConstants.ROLE_FINANCING_PROJECT:
           for (String permission : role.getPermissions()) {
-
             permission = permission.replace("projects:", "projects:*:");
-            System.out.println(permission);
             authorizationInfo.addStringPermission(permission);
-
           }
           break;
         case APConstants.ROLE_MANAGEMENT_LIAISON:
@@ -188,6 +184,10 @@ public class APCustomRealm extends AuthorizingRealm {
       }
     }
 
+    // Adding the permissions for each role exactly as they come from the database:
+    for (UserRole role : roles) {
+      authorizationInfo.addStringPermissions(role.getPermissions());
+    }
     // Converting those general roles into specific for the projects where they are able to edit.
     for (Map<String, UserRole> mapRoles : projectRoles) {
       for (Map.Entry<String, UserRole> entry : mapRoles.entrySet()) {
@@ -206,6 +206,7 @@ public class APCustomRealm extends AuthorizingRealm {
         }
       }
     }
+
 
     // Getting the specific roles based on the table project_roles.
     List<ProjectUserRole> projectSpecificUserRoles = projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
