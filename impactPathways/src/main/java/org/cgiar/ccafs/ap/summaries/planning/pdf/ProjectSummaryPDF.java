@@ -109,7 +109,7 @@ public class ProjectSummaryPDF extends BasePDF {
   private DecimalFormat budgetFormatter, genderFormatter;
   private String summaryTitle;
   private List<IPElement> allMOGs;
-  private List<Map<String, String>> listMapPartnerPersons;
+  private Map<String, String> mapPartnerPersons;
 
   @Inject
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
@@ -217,7 +217,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
             if (activityPartnerPerson != null) {
               activityBlock.add(activityPartnerPerson.getComposedName());
-              String partnerInstitution = this.getPartnerPersonInstitution(activityPartnerPerson.getId());
+              String partnerInstitution = this.mapPartnerPersons.get(String.valueOf(activityPartnerPerson.getId()));
               if (partnerInstitution != null) {
                 activityBlock.add(", " + partnerInstitution);
               }
@@ -391,7 +391,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getTotalContribution() * 0.01
-        * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[0] += value;
@@ -410,7 +410,7 @@ public class ProjectSummaryPDF extends BasePDF {
       cell.setFont(TABLE_BODY_FONT);
       value =
         budget_temp.getGenderContribution() * 0.01
-        * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
+          * budgetManager.calculateGenderBudgetByTypeAndYear(project.getId(), budgetType.getValue(), year);
       cell.add(budgetFormatter.format(value));
       this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
       totalsByYear[1] += value;
@@ -592,7 +592,7 @@ public class ProjectSummaryPDF extends BasePDF {
             // amount w1/w2
             value =
               this.budgetManager
-              .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
+                .calculateProjectBudgetByTypeAndYear(project.getId(), BudgetType.W1_W2.getValue(), year);
             cell = new Paragraph(this.budgetFormatter.format(value), TABLE_BODY_FONT);;
             this.addTableBodyCell(table, cell, Element.ALIGN_RIGHT, 1);
             valueSum = value;
@@ -939,7 +939,7 @@ public class ProjectSummaryPDF extends BasePDF {
         if (deliverableResponsiblePartner != null && partnerPersonResponsible != null) {
           stringBuilder.append(this.messageReturn(partnerPersonResponsible.getComposedName()));
           stringBuilder.append(", ");
-          stringBuilder.append(this.getPartnerPersonInstitution(partnerPersonResponsible.getId()));
+          stringBuilder.append(this.mapPartnerPersons.get(String.valueOf(partnerPersonResponsible.getId())));
         } else {
           stringBuilder.append(this.getText("summaries.project.empty"));
         }
@@ -983,7 +983,7 @@ public class ProjectSummaryPDF extends BasePDF {
               if (otherResponsiblepartnerPerson != null) {
                 stringBuilder.append(this.messageReturn(otherResponsiblepartnerPerson.getComposedName()));
                 stringBuilder.append(", ");
-                stringBuilder.append(this.getPartnerPersonInstitution(otherResponsiblepartnerPerson.getId()));
+                stringBuilder.append(this.mapPartnerPersons.get(String.valueOf(otherResponsiblepartnerPerson.getId())));
               } else {
                 stringBuilder.append(this.getText("summaries.project.empty"));
               }
@@ -1912,7 +1912,7 @@ public class ProjectSummaryPDF extends BasePDF {
           projectFocuses.append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Core"}));
         } else {
           projectFocuses
-          .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
+            .append(this.getText("summaries.project.ipContributions.noproject", new String[] {"Bilateral"}));
         }
         cell.add(projectFocuses.toString());
         document.add(cell);
@@ -2511,7 +2511,6 @@ public class ProjectSummaryPDF extends BasePDF {
   private void addRowBudgetByPartners(Paragraph paragraph, Institution institution, int year, PdfPTable table,
     BudgetType budgetType) {
 
-    // TODO
     Budget budget;
 
     budget = project.getBudget(institution.getId(), budgetType.getValue(), year);
@@ -2578,7 +2577,7 @@ public class ProjectSummaryPDF extends BasePDF {
   public void generatePdf(Project project, int currentPlanningYear, int midOutcomeYear) {
 
     this.allMOGs = elementManager.getIPElementList();
-    this.listMapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
+    this.mapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     this.document = new Document(PageSize.A4, 57, 57, 60, 57);
@@ -2725,22 +2724,6 @@ public class ProjectSummaryPDF extends BasePDF {
       if (outputBudget.getOutput().getId() == mog.getId()) {
         return outputBudget;
       }
-    }
-    return null;
-  }
-
-  /**
-   * This auxiliar method is used for to get the institution of the project partner persons, that is in the
-   * listMapPartnerPersons
-   * 
-   * @param idProjectPartnerPerson project partner person id
-   * @return String that represent the project partner person institution name , if the ppp doesn't exist this method
-   *         return empty.
-   */
-  private String getPartnerPersonInstitution(int idProjectPartnerPerson) {
-
-    if (idProjectPartnerPerson < this.listMapPartnerPersons.size()) {
-      return listMapPartnerPersons.get(idProjectPartnerPerson - 1).get("institution_name");
     }
     return null;
   }

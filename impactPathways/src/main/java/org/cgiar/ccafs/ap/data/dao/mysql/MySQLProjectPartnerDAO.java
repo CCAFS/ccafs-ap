@@ -95,7 +95,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution() {
+  public Map<String, String> getAllProjectPartnersPersonsWithTheirInstitution() {
     StringBuilder query = new StringBuilder();
     LOG.debug("getAllProjectPartnersPersonWithTheirPartners");
     query.append("SELECT ppp.id  as partner_person_id ,IFNULL(CONCAT(i.acronym, ' - ',  i.name), i.name) ");
@@ -105,15 +105,12 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("WHERE pp.is_active = 1 AND ppp.is_active = 1 ");
     query.append("ORDER BY ppp.id");
 
-    List<Map<String, String>> projectPartnerList = new ArrayList<>();
+    Map<String, String> projectPartnerData = new HashMap<String, String>();
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      Map<String, String> projectPartnerData;
+
       while (rs.next()) {
-        projectPartnerData = new HashMap<String, String>();
-        projectPartnerData.put("project_partner_person_id", rs.getString("partner_person_id"));
-        projectPartnerData.put("institution_name", rs.getString("institution_name"));
-        projectPartnerList.add(projectPartnerData);
+        projectPartnerData.put(rs.getString("partner_person_id"), rs.getString("institution_name"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -122,7 +119,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       LOG.error(exceptionMessage, e);
       return null;
     }
-    return projectPartnerList;
+    return projectPartnerData;
   }
 
   private List<Map<String, String>> getData(String query) {
