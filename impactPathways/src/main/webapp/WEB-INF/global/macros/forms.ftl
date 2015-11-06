@@ -15,7 +15,7 @@
     [/#if]
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     [#if editable]
-      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  [#if className?has_content]class="${className}"[/#if][#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle && placeholder]placeholder="${labelTitle}"[/#if]/>
+      <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  class="${className} ${required?string('required','optional')}" [#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle && placeholder]placeholder="${labelTitle}"[/#if]/>
     [#else]
       [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
