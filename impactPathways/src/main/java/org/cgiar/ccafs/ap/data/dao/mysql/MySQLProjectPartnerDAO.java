@@ -279,7 +279,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     } else {
       // update record
       query
-      .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
+        .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
@@ -402,15 +402,33 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   public List<Map<String, Object>> summaryGetNotLoggedInPartners() {
     List<Map<String, Object>> projectPartnersData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query
-    .append("SELECT u.id as 'user_id' , CONCAT( u.last_name, ', ', u.first_name) as 'name', u.email as 'email', ppp.contact_type as 'contact_type', ");
-    query.append("pp.project_id as 'project_id' ");
+    query.append("SELECT u.id as 'user_id' , CONCAT( u.last_name, ', ', u.first_name) as 'name', u.email as 'email', ");
+    query.append("(SELECT ");
+    query.append("(SELECT GROUP_CONCAT(ppp.contact_type SEPARATOR ', ') ");
     query.append("FROM project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE ppp.user_id = u.id AND ppp.is_active = 1 AND pp.is_active = 1 ");
+    query.append(") ");
+    query.append("FROM institutions ins ");
+    query.append("WHERE ins.id = i.id ");
+    query.append(") as 'contact_type', ");
+    query.append("(SELECT ");
+    query.append("(SELECT GROUP_CONCAT('P', p.id ORDER BY p.id asc SEPARATOR ', ') ");
+    query.append("FROM projects p ");
+    query.append("INNER JOIN project_partners pp ON p.id = pp.project_id ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE ppp.user_id = u.id AND ppp.is_active = 1 AND pp.is_active = 1 AND p.is_active = 1 ");
+    query.append(") ");
+    query.append("FROM institutions ins ");
+    query.append("WHERE ins.id = i.id ");
+    query.append(") as 'project_id' ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN institutions i ON pp.institution_id = i.id ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
     query.append("INNER JOIN projects p ON pp.project_id = p.id ");
-    query.append("WHERE pp.is_active = 1 AND u.last_login IS NULL AND p.is_active = 1 ");
-    query.append("ORDER BY u.id ");
+    query.append("WHERE pp.is_active = 1 AND u.last_login IS NULL AND p.is_active = 1 AND ppp.is_active = 1 ");
+    query.append("GROUP BY u.id ");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
@@ -419,7 +437,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         projectPartnerData.put("name", rs.getString("name"));
         projectPartnerData.put("email", rs.getString("email"));
         projectPartnerData.put("contact_type", rs.getString("contact_type"));
-        projectPartnerData.put("project_id", rs.getInt("project_id"));
+        projectPartnerData.put("project_id", rs.getString("project_id"));
         projectPartnersData.add(projectPartnerData);
       }
     } catch (SQLException e) {

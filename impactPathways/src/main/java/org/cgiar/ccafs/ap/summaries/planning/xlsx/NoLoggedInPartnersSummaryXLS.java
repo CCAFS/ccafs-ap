@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.apache.poi.common.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -60,12 +59,6 @@ public class NoLoggedInPartnersSummaryXLS {
     for (int a = 0; a < noLoggedInPartnersList.size(); a++) {
       mapObject = noLoggedInPartnersList.get(a);
 
-      // Iterating all the partners
-
-      projectID = (int) mapObject.get("project_id");
-      link = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
-      link.setAddress(config.getBaseUrl() + "/planning/projects/description.do?projectID=" + projectID);
-
       // User Id
       xls.writeInteger(sheet, (int) (mapObject.get("user_id")));
       xls.nextColumn();
@@ -83,7 +76,7 @@ public class NoLoggedInPartnersSummaryXLS {
       xls.nextColumn();
 
       // Project id
-      xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
+      xls.writeString(sheet, (String) mapObject.get("project_id"));
 
       xls.nextRow();
 
@@ -100,17 +93,17 @@ public class NoLoggedInPartnersSummaryXLS {
     try {
 
       // Writting headers
-      String[] headers = new String[] {"User id", "Name", "Email", "Contact Type", "Related Project Id"};
+      String[] headers = new String[] {"User id", "Name", "Email", "Contact Type", "Related Project Ids"};
 
       // Writting style content
       int[] headersType =
         new int[] {BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_HYPERLINK};
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT};
 
       Workbook workbook = xls.initializeWorkbook(true);
 
       // renaming sheet
-      workbook.setSheetName(0, "Partners not having logged in P&R");
+      workbook.setSheetName(0, "Partners not logged in");
       Sheet sheet = workbook.getSheetAt(0);
 
       xls.initializeSheet(sheet, headersType);
