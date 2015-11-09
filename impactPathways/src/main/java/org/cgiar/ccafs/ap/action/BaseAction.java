@@ -146,8 +146,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * This method clears the cache and re-load the user permissions in the next iteration.
    */
   public void clearPermissionsCache() {
-    ((APCustomRealm) securityContext.getRealm())
-      .clearCachedAuthorizationInfo(securityContext.getSubject().getPrincipals());
+    ((APCustomRealm) securityContext.getRealm()).clearCachedAuthorizationInfo(securityContext.getSubject()
+      .getPrincipals());
   }
 
   /* Override this method depending of the delete action. */
@@ -331,7 +331,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     }
 
     SectionStatusEnum seciones[] = SectionStatusEnum.values();
-    if (seciones.length != this.sectionStatuses.size()) {
+    if (seciones.length != this.realSize(this.sectionStatuses)) {
       return false;
     }
     for (SectionStatus status : this.sectionStatuses) {
@@ -402,6 +402,19 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Override
   public void prepare() throws Exception {
     // So far, do nothing here!
+  }
+
+  public int realSize(List<SectionStatus> sectionStatusList) {
+
+    int size = 0;
+
+    for (SectionStatus sectionStatus : sectionStatusList) {
+      if (sectionStatus.getDeliverableID() == -1) {
+        size++;
+      }
+    }
+    return size;
+
   }
 
   /* Override this method depending of the save action. */

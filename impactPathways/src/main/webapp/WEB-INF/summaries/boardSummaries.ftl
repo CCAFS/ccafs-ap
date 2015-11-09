@@ -40,13 +40,7 @@
       <div class="summariesOptions">
         [#-- Projects reports --]
         <div id="projects-contentOptions">
-          [#-- List of all projects and their leading institution --]
-          <div class="summariesOption">
-            <input type="radio" name="formOptions" id="leadProjectPartnersSummary" value="leadProjectPartnersSummary"/>
-            <label for="leadProjectPartnersSummary">[@s.text name="summaries.board.report.projectPartnersSummary" /]  <span>XLSx</span></label>
-            <p class="description">[@s.text name="summaries.board.report.projectPartnersSummary.description" /]</p>
-          </div>
-          [#-- Full Project Report --]
+          [#-- Full Project Report (PDF) --]
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="projectPortfolio" value="project"/>
             <label for="projectPortfolio">[@s.text name="summaries.board.report.projectPortfolio" /] <span>PDF</span></label>
@@ -55,16 +49,23 @@
               [@customForm.select name="projectID" label="" i18nkey="" listName="allProjects" keyFieldName="id" displayFieldName="composedName" className="" disabled=true/]
             </div>
           </div>
-          [#-- Gender Contribution Project Level Summary 
+          [#-- List of all projects and their leading institution --]
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="leadProjectPartnersSummary" value="leadProjectPartnersSummary"/>
+            <label for="leadProjectPartnersSummary">[@s.text name="summaries.board.report.projectPartnersSummary" /]  <span>XLSx</span></label>
+            <p class="description">[@s.text name="summaries.board.report.projectPartnersSummary.description" /]</p>
+          </div>
+          [#-- Gender Contribution Project Level Summary --]
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="genderContributionSummary" value="genderContributionSummary"/>
             <label for="genderContributionSummary">[@s.text name="summaries.board.report.genderContributionSummary" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.genderContributionSummary.description" /] </p>
-            <div class="extraOptions" style="display:none"> 
+            [#--<div class="extraOptions" style="display:none"> 
               [@customForm.input name="genderKeywords" className="" i18nkey="summaries.board.report.genderContributionSummary.keywords" /]
             </div>
+            --]
           </div>
-          --]
+          
         </div>
         [#-- Partners reports --]
         <div id="partners-contentOptions" style="display:none">
