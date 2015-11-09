@@ -14,6 +14,7 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -31,6 +32,7 @@ public class SectionStatus {
   private String[] missingFields;
   private int deliverableID;
   private int projectID;
+
 
   public SectionStatus() {
   }
@@ -80,6 +82,7 @@ public class SectionStatus {
   public String getSection() {
     return section;
   }
+
 
   public void setCycle(String cycle) {
     this.cycle = cycle;
