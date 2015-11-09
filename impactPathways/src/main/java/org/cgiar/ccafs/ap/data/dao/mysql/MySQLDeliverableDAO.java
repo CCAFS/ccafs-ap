@@ -348,7 +348,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     boolean saved = false;
     Object[] values;
 
-    query.append("SELECT id FROM ccafs_pr.ip_deliverable_contributions where deliverable_id = ");
+    query.append("SELECT id FROM ip_deliverable_contributions where deliverable_id = ");
     query.append(deliverableID);
 
     try (Connection con = databaseManager.getConnection()) {
