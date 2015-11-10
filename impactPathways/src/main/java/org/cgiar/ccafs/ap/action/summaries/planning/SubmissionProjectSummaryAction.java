@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.SubmissionProjectSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +106,13 @@ public class SubmissionProjectSummaryAction extends BaseAction implements Summar
 
   @Override
   public void prepare() {
-    projectList = projectManager.summaryGetProjectSubmmited();
+    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
+    int year = config.getPlanningCurrentYear();
+
+    if (strYear != null) {
+      year = Integer.parseInt(strYear);
+    }
+    projectList = projectManager.summaryGetProjectSubmmited(year);
   }
 
 }
