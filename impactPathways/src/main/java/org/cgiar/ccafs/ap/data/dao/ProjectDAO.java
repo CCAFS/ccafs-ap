@@ -331,10 +331,11 @@ public interface ProjectDAO {
    * of
    * project partner leaders.
    * 
+   * @param year he current planning year to generate the report budget figures
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
-  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders(int year);
 
   /**
    * This method returns the information of all the deliverables and their projects to be used in the summary report of

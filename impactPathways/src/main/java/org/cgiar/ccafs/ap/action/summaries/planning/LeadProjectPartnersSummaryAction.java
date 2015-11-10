@@ -51,6 +51,7 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
   List<ProjectPartner> leadPartners;
   List<Institution> projectLeadingInstitutions;
   List<Map<String, Object>> projectList;
+  int year;
   // CSV bytes
   private byte[] bytesXLS;
 
@@ -111,8 +112,9 @@ public class LeadProjectPartnersSummaryAction extends BaseAction implements Summ
 
   @Override
   public void prepare() {
+    year = config.getPlanningCurrentYear();
 
-    projectList = projectManager.summaryGetAllProjectPartnerLeaders();
+    projectList = projectManager.summaryGetAllProjectPartnerLeaders(year);
 
   }
 }

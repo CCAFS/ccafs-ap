@@ -1292,7 +1292,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders(int year) {
     LOG.debug(">> getAllProjectPartnerLeaders ");
 
     List<Map<String, Object>> csvRecords = new ArrayList<>();
@@ -1300,6 +1300,8 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     // Formatted query:
     query.append("SELECT p.id as 'project_id', ");
+    query.append("p.start_date as 'start_date', ");
+    query.append("p.end_date as 'end_date', ");
     query.append("p.type as 'project_type', ");
     query.append("p.title as 'project_title', ");
     query.append("p.summary as 'project_summary', ");
@@ -1339,7 +1341,21 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN users u ON ppp.user_id = u.id ");
     query
       .append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PC' AND  u.is_active = 1 AND pp.is_active = 1 AND ppp.is_active = 1 ");
-    query.append(") as 'project_coordinator' ");
+    query.append(") as 'project_coordinator', ");
+    query.append("( SELECT SUM(pb.amount) ");
+    query.append("FROM project_budgets pb ");
+    query.append("WHERE p.id = pb.project_id AND pb.year = ");
+    query.append(year);
+    query.append(" AND pb.budget_type = 1 AND pb.is_active = 1 ");
+    query.append("GROUP BY p.id ");
+    query.append(") as 'budget_w1w2', ");
+    query.append("( SELECT SUM(pb.amount) ");
+    query.append("FROM project_budgets pb ");
+    query.append("WHERE p.id = pb.project_id AND pb.year = ");
+    query.append(year);
+    query.append(" AND pb.budget_type = 2 AND pb.is_active = 1 ");
+    query.append("GROUP BY p.id ");
+    query.append(") as 'budget_w3bilateral' ");
     query.append("FROM projects p ");
     query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id ");
     query.append("LEFT JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
@@ -1352,6 +1368,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       while (rs.next()) {
         Map<String, Object> csvData = new HashMap<>();
         csvData.put("project_id", rs.getInt("project_id"));
+        csvData.put("start_date", rs.getString("start_date"));
+        csvData.put("end_date", rs.getString("end_date"));
         csvData.put("project_type", rs.getString("project_type"));
         csvData.put("project_title", rs.getString("project_title"));
         csvData.put("project_summary", rs.getString("project_summary"));
@@ -1360,6 +1378,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         csvData.put("project_coordinator", rs.getString("project_coordinator"));
         csvData.put("flagships", rs.getString("flagships"));
         csvData.put("regions", rs.getString("regions"));
+        csvData.put("budget_w1w2", rs.getDouble("budget_w1w2"));
+        csvData.put("budget_w3bilateral", rs.getDouble("budget_w3bilateral"));
         csvRecords.add(csvData);
       }
       rs.close();
