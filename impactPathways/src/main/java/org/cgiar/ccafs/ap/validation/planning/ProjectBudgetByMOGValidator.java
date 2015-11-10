@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
+import org.cgiar.ccafs.ap.validation.model.BudgetValidator;
 
 import com.google.inject.Inject;
 
@@ -28,12 +29,13 @@ import com.google.inject.Inject;
 public class ProjectBudgetByMOGValidator extends BaseValidator {
 
 
+  private BudgetValidator budgetValidator;
+
   @Inject
-  public ProjectBudgetByMOGValidator() {
+  public ProjectBudgetByMOGValidator(BudgetValidator budgetValidator) {
 
-
+    this.budgetValidator = budgetValidator;
   }
-
 
   public void validate(BaseAction action, Project project, String cycle) {
     double ccafsBudgetTotalPorcentage = 0;
@@ -44,6 +46,15 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
       if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
 
         for (OutputBudget budgetbyMog : project.getOutputsBudgets()) {
+
+
+          if (!budgetValidator.isValidAmountNoZero(budgetbyMog.getTotalContribution())) {
+            this.addMessage("Invalid value for Total Contribution ");
+            this.addMissingField("project.budgetbyMog.invalidPorcentag " + project.getTitle());
+
+          }
+
+
           if (budgetbyMog.getType().isCCAFSBudget()) {
             ccafsBudgetTotalPorcentage = ccafsBudgetTotalPorcentage + budgetbyMog.getTotalContribution();
             ccafsBudgetGenderPorcentage = ccafsBudgetGenderPorcentage + budgetbyMog.getGenderContribution();

@@ -60,6 +60,10 @@ public class LeadProjectPartnersSummaryXLS {
       link.setAddress(config.getBaseUrl() + "/planning/projects/description.do?projectID=" + projectId);
       xls.writeHyperlink(sheet, "P" + projectId, link);
       xls.nextColumn();
+      xls.writeString(sheet, (String) projectPartnerLeader.get("start_date"));
+      xls.nextColumn();
+      xls.writeString(sheet, (String) projectPartnerLeader.get("end_date"));
+      xls.nextColumn();
       xls.writeString(sheet, (String) projectPartnerLeader.get("project_title"));
       xls.nextColumn();
       xls.writeString(sheet, projectPartnerLeader.get("project_type").toString().replace("_", " "));
@@ -75,6 +79,10 @@ public class LeadProjectPartnersSummaryXLS {
       xls.writeString(sheet, (String) projectPartnerLeader.get("project_leader"));
       xls.nextColumn();
       xls.writeString(sheet, (String) projectPartnerLeader.get("project_coordinator"));
+      xls.nextColumn();
+      xls.writeBudget(sheet, (double) projectPartnerLeader.get("budget_w1w2"));
+      xls.nextColumn();
+      xls.writeBudget(sheet, (double) projectPartnerLeader.get("budget_w3bilateral"));
       xls.nextRow();
     }
   }
@@ -91,25 +99,27 @@ public class LeadProjectPartnersSummaryXLS {
 
       // Defining headers
       String[] headers =
-        new String[] {"Project Id", "Title", "Type", "Summary", "Flagship(s)", "Region(s)", "Lead institution",
-          "Leader", "Coordinator"};
+        new String[] {"Project Id", "Start date", "End date", "Title", "Type", "Summary", "Flagship(s)", "Region(s)",
+        "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral"};
 
       // Defining header types
       int[] headerTypes =
-      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+      {BaseXLS.COLUMN_TYPE_NUMERIC, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET};
 
       Workbook workbook = xls.initializeWorkbook(true);
 
       workbook.setSheetName(0, "Project leaders");
       Sheet sheet = workbook.getSheetAt(0);
       xls.initializeSheet(sheet, headerTypes);
-      xls.writeTitleBox(sheet, "      CCAFS Project leaders");
+      xls.writeTitleBox(sheet, " CCAFS Project leaders");
       xls.writeHeaders(sheet, headers);
 
       this.addContent(sheet, projectList);
-      sheet.autoSizeColumn(3);
+      sheet.autoSizeColumn(5);
       // Adding CCAFS logo
       xls.createLogo(workbook, sheet);
       // Set description
