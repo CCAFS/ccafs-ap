@@ -27,6 +27,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.DefaultTextProvider;
@@ -608,7 +610,8 @@ public class BaseXLS {
     this.prepareCell(sheet);
     StringTokenizer tokens;
     String token;
-
+    Pattern pat;
+    Matcher mat;
     XSSFRichTextString richText = new XSSFRichTextString();
     boolean found;
     if (text == null) {
@@ -622,7 +625,10 @@ public class BaseXLS {
 
         // searching terms in text
         for (String term : terms) {
-          if (token.equals(term)) {
+
+          pat = Pattern.compile("^\\p{Punct}?+" + term.toLowerCase() + "\\p{Punct}?");
+          mat = pat.matcher(token.toLowerCase());
+          if (mat.matches()) {
             found = true;
             break;
           }
