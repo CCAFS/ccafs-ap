@@ -71,14 +71,14 @@ public class NoLoggedInPartnersSummaryXLS {
       xls.writeString(sheet, (String) mapObject.get("email"));
       xls.nextColumn();
 
-      // Contact type
-      xls.writeString(sheet, (String) mapObject.get("contact_type"));
-      xls.nextColumn();
-
       // Project id
       xls.writeString(sheet, (String) mapObject.get("project_id"));
+      xls.nextColumn();
 
+      // Contact type
+      xls.writeString(sheet, (String) mapObject.get("contact_type"));
       xls.nextRow();
+
 
     }
   }
@@ -93,12 +93,12 @@ public class NoLoggedInPartnersSummaryXLS {
     try {
 
       // Writting headers
-      String[] headers = new String[] {"User id", "Name", "Email", "Contact Type", "Related Project Ids"};
+      String[] headers = new String[] {"ID", "Name", "Email", "Related Project Ids", "Contact Type Respective"};
 
       // Writting style content
       int[] headersType =
         new int[] {BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT};
+          BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT};
 
       Workbook workbook = xls.initializeWorkbook(true);
 

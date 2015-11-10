@@ -580,8 +580,8 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetProjectSubmmited() {
-    return projectDAO.summaryGetProjectSubmmited();
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year) {
+    return projectDAO.summaryGetProjectSubmmited(year);
   }
 
   @Override

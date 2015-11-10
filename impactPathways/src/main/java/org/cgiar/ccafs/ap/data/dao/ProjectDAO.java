@@ -406,7 +406,7 @@ public interface ProjectDAO {
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
-  public List<Map<String, Object>> summaryGetProjectSubmmited();
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year);
 
   /**
    * This method updates the project cofinancing into the database according to the values received by parameter.

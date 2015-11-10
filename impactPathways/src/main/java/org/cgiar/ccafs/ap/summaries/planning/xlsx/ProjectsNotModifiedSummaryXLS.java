@@ -74,7 +74,7 @@ public class ProjectsNotModifiedSummaryXLS {
       xls.writeString(sheet, (String) projectMap.get("project_summary"));
       xls.nextColumn();
 
-      xls.writeString(sheet, (String) projectMap.get("project_type"));
+      xls.writeString(sheet, ((String) projectMap.get("project_type")).replace("_", " "));
 
       xls.nextRow();
     }
@@ -93,17 +93,17 @@ public class ProjectsNotModifiedSummaryXLS {
 
     /***************** Submmited project level ******************/
     // Defining headers
-    String[] headersProject = new String[] {"Project Id", "Title", "Summary", "Project type"};
+    String[] headersProject = new String[] {"ID", "Title", "Summary", "Project type"};
 
     // Defining header types
     int[] headerTypesProject =
-      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT};
+    {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+      BaseXLS.COLUMN_TYPE_TEXT_SHORT};
 
     // creating sheet
 
     Sheet sheet = workbook.getSheetAt(0);
-    workbook.setSheetName(0, "Submmited Projects");
+    workbook.setSheetName(0, "Projects Not Modified");
 
     try {
       xls.initializeSheet(sheet, headerTypesProject);

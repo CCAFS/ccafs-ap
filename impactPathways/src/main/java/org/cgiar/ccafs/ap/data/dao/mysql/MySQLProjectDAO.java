@@ -1976,7 +1976,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetProjectSubmmited() {
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year) {
     LOG.debug("<< summaryGetProjectSubmmited ");
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
@@ -1986,12 +1986,13 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("p.title AS 'project_title' , ");
     query.append("p.summary AS 'project_summary', ");
     query.append("p.type AS 'project_type', ");
-    query.append("CONCAT(u.first_name, ' ' , u.last_name) as submmited_by , ");
-    query.append("ps.date_time AS submmited_on ");
+    query.append("CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') as submmited_by , ");
+    query.append("ps.date_time AS submmited_on, ");
+    query.append("ps.cycle AS cycle ");
     query.append("FROM projects p ");
     query.append("INNER JOIN project_submissions ps ON p.id = ps.project_id ");
     query.append("INNER JOIN users u ON ps.user_id = u.id ");
-    query.append("WHERE p.is_active = 1 ");
+    query.append("WHERE p.is_active = 1 AND ps.year = " + year);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -2003,7 +2004,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         csvData.put("project_summary", rs.getString("project_summary"));
         csvData.put("project_type", rs.getString("project_type"));
         csvData.put("submmited_by", rs.getString("submmited_by"));
-        csvData.put("submmited_on", rs.getTimestamp("submmited_on").toString());
+        csvData.put("submmited_on", rs.getTimestamp("submmited_on"));
+        csvData.put("cycle", rs.getString("cycle"));
         csvRecords.add(csvData);
       }
       rs.close();

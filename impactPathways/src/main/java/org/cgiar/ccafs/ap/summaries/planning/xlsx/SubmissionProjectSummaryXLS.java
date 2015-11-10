@@ -19,7 +19,6 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -61,8 +60,7 @@ public class SubmissionProjectSummaryXLS {
     CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();
     Map<String, Object> projectMap;
     XSSFHyperlink link;
-    Date date = new Date();
-    DateFormat formatter = new SimpleDateFormat(APConstants.DATE_TIME_FORMAT);
+    DateFormat formatter = new SimpleDateFormat(APConstants.DATE_TIME_FORMAT_TIMEZONE);
     // ************************* Project Level Submission Project ***********************
     for (int i = 0; i < informationList.size(); i++) {
       projectMap = informationList.get(i);
@@ -87,13 +85,11 @@ public class SubmissionProjectSummaryXLS {
       xls.writeString(sheet, (String) projectMap.get("submmited_by"));
       xls.nextColumn();
 
-      try {
-        date = formatter.parse((String) projectMap.get("submmited_on"));
-      } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      xls.writeDate(sheet, date);
+      xls.writeString(sheet, formatter.format((Date) projectMap.get("submmited_on")));
+      xls.nextColumn();
+
+      xls.writeString(sheet, (String) projectMap.get("cycle"));
+
       xls.nextRow();
     }
   }
@@ -111,13 +107,13 @@ public class SubmissionProjectSummaryXLS {
 
     /***************** Submmited project level ******************/
     // Defining headers
-    String[] headersProject =
-      new String[] {"Project Id", "Title", "Summary", "Project type", "Submmited by", "Submmited on"};
+    String[] headersProject = new String[] {"ID", "Title", "Summary", "Type", "Submmited by", "Submmited on", " Cycle"};
 
     // Defining header types
     int[] headerTypesProject =
-    {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-      BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE_TIME};
+      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE_TIME,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT};
 
     // creating sheet
 

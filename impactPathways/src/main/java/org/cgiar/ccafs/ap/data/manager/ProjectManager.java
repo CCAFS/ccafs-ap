@@ -345,9 +345,10 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary project submission Report.
    * 
+   * @param year - Specific year to search in the report.
    * @return a list of columns with the information detail summary
    */
-  public List<Map<String, Object>> summaryGetProjectSubmmited();
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year);
 
 
   /**
