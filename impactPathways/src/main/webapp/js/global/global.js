@@ -246,10 +246,18 @@ function word_count(field) {
   var value = $(field).val();
   if(typeof value === "undefined") {
     return 0;
-  } else {
-    var matches = value.match(/\b/g);
-    return number = (matches) ? matches.length / 2 : 0;
-  }
+  } else {    
+    var count = 0;
+    for (var i = 1; i <= value.length; i++) {
+      if (value.charAt(i) == " ") {
+        count ++;
+      }
+    }
+    return count + 1;
+  } 
+//    var matches = value.match(/\b/g);
+//    return number = (matches) ? matches.length / 2 : 0;
+//  }
 }
 
 /**

@@ -1133,9 +1133,9 @@ public class MySQLProjectDAO implements ProjectDAO {
       if (oneMore) {
         query.append("OR ");
       }
-      query.append(" p.title LIKE '%" + term + "%' OR");
-      query.append(" a.title LIKE '%" + term + "%' OR");
-      query.append(" a.description LIKE '%" + term + "%' ");
+      query.append(" p.title REGEXP '[[:<:]]" + term + "[[:>:]]'");
+      query.append(" OR a.title REGEXP '[[:<:]]" + term + "[[:>:]]'");
+      query.append(" OR a.description REGEXP '[[:<:]]" + term + "[[:>:]]'");
       oneMore = true;
     }
     query.append(") ");
@@ -1252,11 +1252,12 @@ public class MySQLProjectDAO implements ProjectDAO {
         query.append("OR ");
       }
       oneMore = true;
-      query.append(" p.title LIKE '%" + term + "%' OR");
-      query.append(" d.title LIKE '%" + term + "%' OR");
-      query.append(" nu.user LIKE '%" + term + "%' OR ");
-      query.append(" nu.expected_changes  LIKE '%" + term + "%' OR ");
-      query.append(" nu.strategies LIKE '%" + term + "%'  ");
+      // query.append(" p.title REGEXP '^ ?" + term + " ?,?.?' OR ");
+      query.append(" p.title REGEXP '[[:<:]]" + term + "[[:>:]]' OR ");
+      query.append(" d.title REGEXP '[[:<:]]" + term + "[[:>:]]' OR ");
+      query.append(" nu.user REGEXP '[[:<:]]" + term + "[[:>:]]' OR ");
+      query.append(" nu.expected_changes REGEXP '[[:<:]]" + term + "[[:>:]]' OR");
+      query.append(" nu.strategies REGEXP '[[:<:]]" + term + "[[:>:]]'");
 
     }
     query.append(") ");
@@ -1582,9 +1583,9 @@ public class MySQLProjectDAO implements ProjectDAO {
       if (oneMore) {
         query.append("OR ");
       }
-      query.append(" p.title LIKE '%" + term + "%' ");
-      query.append(" OR p.summary LIKE '%" + term + "%' ");
-      query.append(" OR po.statement LIKE '%" + term + "%' ");
+      query.append(" p.title REGEXP '[[:<:]]" + term + "[[:>:]]'");
+      query.append(" OR p.summary REGEXP '[[:<:]]" + term + "[[:>:]]'");
+      query.append(" OR po.statement REGEXP '[[:<:]]" + term + "[[:>:]]'");
       oneMore = true;
     }
     query.append(") ");
