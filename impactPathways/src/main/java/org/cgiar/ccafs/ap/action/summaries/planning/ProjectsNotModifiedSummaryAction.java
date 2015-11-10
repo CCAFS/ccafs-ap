@@ -100,6 +100,7 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
 
   @Override
   public void prepare() {
+
     projectList = projectManager.summaryGetProjectsNotModified();
   }
 
