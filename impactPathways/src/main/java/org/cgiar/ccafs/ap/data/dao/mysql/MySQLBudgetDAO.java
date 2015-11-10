@@ -718,8 +718,9 @@ public class MySQLBudgetDAO implements BudgetDAO {
         // Insert new budget record
         query.setLength(0);
         query.append("INSERT INTO project_budgets (project_id, year, budget_type, institution_id, amount, ");
-        query.append("gender_percentage, cofinance_project_id, created_by, modified_by, modification_justification) ");
-        query.append("VALUES (?,?,?,?,?,?,?,?,?,?)  ");
+        query.append(
+          "gender_percentage, cofinance_project_id, created_by, modified_by, modification_justification,is_active) ");
+        query.append("VALUES (?,?,?,?,?,?,?,?,?,?,1)  ");
         values = new Object[10];
         values[0] = projectID;
         values[1] = budgetData.get("year");
