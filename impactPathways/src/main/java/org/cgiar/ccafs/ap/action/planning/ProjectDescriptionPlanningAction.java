@@ -325,8 +325,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
       if (project.getLinkedProjects() != null) {
         project.getLinkedProjects().clear();
       }
-      project.setWorkplanName("");
-      project.setBilateralContractProposalName("");
+
     }
 
     // Initializing Section Statuses:
@@ -434,8 +433,7 @@ public class ProjectDescriptionPlanningAction extends BaseAction {
           } else {
             previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
             if (project.getBilateralContractProposalName() != null
-              && project.getBilateralContractProposalName().isEmpty()
-              && previousProject.getBilateralContractProposalName().isEmpty()) {
+              && project.getBilateralContractProposalName().isEmpty()) {
               previousProject.setBilateralContractProposalName("");
               FileManager
                 .deleteFile(this.getWorplansAbsolutePath() + previousProject.getBilateralContractProposalName());
