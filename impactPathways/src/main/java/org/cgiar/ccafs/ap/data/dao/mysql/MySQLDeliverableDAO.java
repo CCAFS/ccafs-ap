@@ -375,6 +375,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       query.append("FROM ip_project_contributions ");
       query.append("WHERE project_id = (select d.project_id from deliverables d where d.id = " + deliverableID + ") ");
       query.append("AND mog_id = ? ");
+      query.append("GROUP BY mog_id ");
       query.append("ON DUPLICATE KEY UPDATE project_contribution_id = VALUES(project_contribution_id), ");
       query.append("deliverable_id = VALUES(deliverable_id), modified_by = VALUES(modified_by), ");
       query.append("modification_justification = VALUES(modification_justification) ");
@@ -387,7 +388,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       result = databaseManager.saveData(query.toString(), values);
     } else {
       query
-        .append("INSERT INTO ip_deliverable_contributions (id, deliverable_id, project_contribution_id, created_by,");
+      .append("INSERT INTO ip_deliverable_contributions (id, deliverable_id, project_contribution_id, created_by,");
       query.append(" modified_by, modification_justification ) ");
       query.append("SELECT ?, ?, id, ?, ?, ? ");
       query.append("FROM ip_project_contributions ");
