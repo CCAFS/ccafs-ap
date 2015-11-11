@@ -2938,6 +2938,8 @@ textarea[id$='summary'] {
     /* padding: 10px 0px; */
 }
 
+
+
 .projectPartner .filters-link {
   cursor: pointer;
   color: #848484;
@@ -2958,6 +2960,10 @@ textarea[id$='summary'] {
   padding: 8px;
   border: 1px dotted #D2D2D2;
   display: none;
+}
+
+.contactsPerson {
+  margin-bottom: 0;
 }
 
 .projectPartner {
