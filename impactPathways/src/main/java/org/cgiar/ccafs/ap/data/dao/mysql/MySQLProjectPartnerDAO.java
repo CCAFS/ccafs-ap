@@ -279,7 +279,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     } else {
       // update record
       query
-        .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
+      .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
@@ -404,7 +404,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT u.id as 'user_id' , CONCAT( u.last_name, ', ', u.first_name) as 'name', u.email as 'email', ");
     query.append("(SELECT ");
-    query.append("(SELECT GROUP_CONCAT(ppp.contact_type SEPARATOR ', ') ");
+    query.append("(SELECT GROUP_CONCAT( DISTINCT ppp.contact_type SEPARATOR ', ') ");
     query.append("FROM project_partners pp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("WHERE ppp.user_id = u.id AND ppp.is_active = 1 AND pp.is_active = 1 ");

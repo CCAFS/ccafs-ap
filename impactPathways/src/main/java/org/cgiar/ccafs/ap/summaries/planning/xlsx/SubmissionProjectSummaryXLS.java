@@ -107,7 +107,7 @@ public class SubmissionProjectSummaryXLS {
 
     /***************** Submmited project level ******************/
     // Defining headers
-    String[] headersProject = new String[] {"ID", "Title", "Summary", "Type", "Submmited by", "Submmited on", " Cycle"};
+    String[] headersProject = new String[] {"ID", "Title", "Summary", "Type", "Submitted by", "Submitted on", " Cycle"};
 
     // Defining header types
     int[] headerTypesProject =
@@ -127,7 +127,7 @@ public class SubmissionProjectSummaryXLS {
       this.addContent(projectList, sheet);
 
       // Set description
-      xls.writeDescription(sheet, xls.getText("summaries.project.submmited.description"));
+      xls.writeDescription(sheet, xls.getText("summaries.project.submitted.description"));
 
       // write text box
       xls.writeTitleBox(sheet, "Submitted Projects Summary");
