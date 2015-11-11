@@ -19,13 +19,16 @@ package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,6 +153,68 @@ public class BaseXLS {
     header.setRight("Report generated on " + date);
   }
 
+
+  private List<Point> auxiliarRichText(String token, String[] terms) {
+
+    List<Point> listPointPaint = new ArrayList<Point>();
+
+    int beginSubToken = 0;
+    int endSubToken = 0;
+    String subToken;
+    StringTokenizer subTokens = new StringTokenizer(token.toLowerCase(), "=;/)-!@#$%^&*(~\\");
+
+    /*
+     * while (sTexto.indexOf(sTextoBuscado) > -1) {
+     * sTexto = sTexto.substring(sTexto.indexOf(sTextoBuscado) + sTextoBuscado.length(), sTexto.length());
+     * contador++;
+     * }
+     */
+    Pattern pat;
+    Matcher mat;
+    String analizator = new String();
+    for (String term : terms) {
+      while (token.indexOf(term) > -1) {
+        beginSubToken = token.indexOf(term);
+        endSubToken = beginSubToken + term.length() - 1;
+
+        analizator = token.substring(beginSubToken, endSubToken + 1);
+
+        if (beginSubToken != 0) {
+          analizator = token.charAt(beginSubToken - 1) + analizator;
+        }
+
+        if (endSubToken != token.length() - 1) {
+          analizator = analizator + token.charAt(endSubToken + 1);
+        }
+
+        pat = Pattern.compile("^\\p{Punct}?+" + term.toLowerCase() + "\\p{Punct}?");
+        mat = pat.matcher(analizator);
+
+        if (mat.matches()) {
+          listPointPaint.add(new Point(beginSubToken, endSubToken));
+        }
+
+        token = token.substring(beginSubToken + term.length(), token.length());
+      }
+    }
+
+    /*
+     * while (subTokens.hasMoreTokens()) {
+     * subToken = subTokens.nextToken();
+     * endSubToken = beginSubToken + subToken.length() - 1;
+     * // Searching terms in text
+     * for (String term : terms) {
+     * if (subToken.equals(term)) {
+     * listPointPaint.add(new Point(beginSubToken, endSubToken));
+     * break;
+     * }
+     * }
+     * beginSubToken = endSubToken + 2;
+     * }
+     */
+    return listPointPaint;
+
+  }
 
   /**
    * This method closes all the streams opened in the process.
@@ -417,6 +482,7 @@ public class BaseXLS {
     columnCounter++;
   }
 
+
   /**
    * This method move the cursor to the beginning of the next row.
    */
@@ -444,7 +510,6 @@ public class BaseXLS {
     cell.setCellStyle(columnStyles[columnCounter - 1]);
   }
 
-
   private void setBottomBorderCell(XSSFCellStyle cellStyle, Color color) {
     // Create the border
     cellStyle.setBorderBottom(CELL_BORDER_TYPE_BOTTOM);
@@ -454,6 +519,7 @@ public class BaseXLS {
 
     cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
   }
+
 
   /**
    * This method writes boolean value into a specific cell.
@@ -469,7 +535,6 @@ public class BaseXLS {
       cell.setCellValue(CELL_FALSE_BOOLEAN);
     }
   }
-
 
   /**
    * This method writes double value with format budget into a specific cell.
@@ -493,6 +558,7 @@ public class BaseXLS {
     cell.setCellValue(value);
   }
 
+
   /**
    * This method writes double value with format budget into a specific cell.
    * 
@@ -509,7 +575,6 @@ public class BaseXLS {
 
   }
 
-
   /**
    * This method writes integer value into a specific cell.
    * 
@@ -520,6 +585,7 @@ public class BaseXLS {
     this.prepareCell(sheet);
     cell.setCellValue(value);
   }
+
 
   /**
    * This method writes the headers into the given sheet.
@@ -547,7 +613,6 @@ public class BaseXLS {
     }
   }
 
-
   /**
    * This method writes string value with hyperlink url into a specific cell.
    * 
@@ -562,6 +627,7 @@ public class BaseXLS {
     cell.setCellValue(value);
     cell.setHyperlink(link);
   }
+
 
   /**
    * This method writes integer value into a specific cell.
@@ -598,7 +664,6 @@ public class BaseXLS {
 
   }
 
-
   /**
    * This method writes string value into a specific cell.
    * 
@@ -610,32 +675,25 @@ public class BaseXLS {
     this.prepareCell(sheet);
     StringTokenizer tokens;
     String token;
-    Pattern pat;
-    Matcher mat;
+    int begin = 0;
+
     XSSFRichTextString richText = new XSSFRichTextString();
-    boolean found;
+
+
     if (text == null) {
       cell.setCellValue("");
     } else {
+      //
       tokens = new StringTokenizer(text);
       while (tokens.hasMoreTokens()) {
-        found = false;
         token = tokens.nextToken();
+
         richText.append(token);
-
-        // searching terms in text
-        for (String term : terms) {
-
-          pat = Pattern.compile("^\\p{Punct}?+" + term.toLowerCase() + "\\p{Punct}?");
-          mat = pat.matcher(token.toLowerCase());
-          if (mat.matches()) {
-            found = true;
-            break;
-          }
+        begin = richText.length() - token.length();
+        for (Point point : this.auxiliarRichText(token, terms)) {
+          richText.applyFont(begin + point.x, begin + point.y + 1, this.richTextFont);
         }
-        if (found) {
-          richText.applyFont(richText.length() - token.length(), richText.length(), richTextFont);
-        }
+
         richText.append(" ");
       }
 
