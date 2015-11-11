@@ -226,6 +226,7 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append(userID);
     query.append(" AND pp.project_id = ");
     query.append(projectID);
+    query.append(" AND a.is_active = 1");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
