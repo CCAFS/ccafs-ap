@@ -542,8 +542,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
-    return projectDAO.summaryGetAllProjectPartnerLeaders();
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders(int year) {
+    return projectDAO.summaryGetAllProjectPartnerLeaders(year);
   }
 
   @Override

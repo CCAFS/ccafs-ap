@@ -107,18 +107,18 @@ public class SubmissionProjectSummaryXLS {
 
     /***************** Submmited project level ******************/
     // Defining headers
-    String[] headersProject = new String[] {"ID", "Title", "Summary", "Type", "Submmited by", "Submmited on", " Cycle"};
+    String[] headersProject = new String[] {"ID", "Title", "Summary", "Type", "Submitted by", "Submitted on", " Cycle"};
 
     // Defining header types
     int[] headerTypesProject =
-      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE_TIME,
-        BaseXLS.COLUMN_TYPE_TEXT_SHORT};
+    {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+      BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE_TIME,
+      BaseXLS.COLUMN_TYPE_TEXT_SHORT};
 
     // creating sheet
 
     Sheet sheet = workbook.getSheetAt(0);
-    workbook.setSheetName(0, "Submmited Projects");
+    workbook.setSheetName(0, "Submitted Projects");
 
     try {
       xls.initializeSheet(sheet, headerTypesProject);
@@ -127,10 +127,10 @@ public class SubmissionProjectSummaryXLS {
       this.addContent(projectList, sheet);
 
       // Set description
-      xls.writeDescription(sheet, xls.getText("summaries.project.submmited.description"));
+      xls.writeDescription(sheet, xls.getText("summaries.project.submitted.description"));
 
       // write text box
-      xls.writeTitleBox(sheet, "Submmited Projects Summary");
+      xls.writeTitleBox(sheet, "Submitted Projects Summary");
 
       // write text box
       xls.createLogo(workbook, sheet);

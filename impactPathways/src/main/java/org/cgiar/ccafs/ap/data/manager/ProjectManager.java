@@ -267,9 +267,10 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary report project partner leaders.
    * 
+   * @param year the current planning year to generate the report budget figures
    * @return a list of Project objects with the Project Partner Leader information.
    */
-  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders(int year);
 
   /**
    * This method will return the list of all the projects and all their respective deliverables.
