@@ -128,11 +128,11 @@
         [/#if]
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
-        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.user.id)!-1)?has_content) /]
+        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.id)!-1)?has_content) /]
         <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
         [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditLeader /]
-        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />   
+        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.id)!'-1'}" />   
         [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
@@ -155,11 +155,11 @@
         [/#if]
       </div>
       <div class="partnerPerson-email userField halfPartBlock clearfix">
-        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.user.id)!-1)?has_content) /]
+        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.id)!-1)?has_content) /]
         <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
         [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditLeader /]
-        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />   
+        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.id)!'-1'}" />   
         [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
@@ -173,24 +173,24 @@
     [#if !template]
       [#-- Activities leading and Deliverables with responsibilities --]
       <div class="contactTags fullPartBlock clearfix">
-        [#if (contact.user.id??)!false ]
-          [#if action.getActivitiesLedByUser(contact.user.id)?has_content]
-            <div class="tag activities">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+        [#if (contact.id??)!false ]
+          [#if action.getActivitiesLedByUser(contact.id)?has_content]
+            <div class="tag activities">[@s.text name="planning.projectPartners.personActivities"][@s.param]${action.getActivitiesLedByUser(contact.id)?size}[/@s.param][/@s.text]</div>
             <div class="activitiesList"  style="display:none">
               <h3>Activities</h3>
               <ul>
-              [#list action.getActivitiesLedByUser(contact.user.id) as activity]
+              [#list action.getActivitiesLedByUser(contact.id) as activity]
                 <li>${activity.title}  <a target="_blank" href="[@s.url namespace=namespace action='activities' ][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]#activity-${activity.id}"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
               [/#list]
               </ul>
             </div>
           [/#if]
-          [#if action.getDeliverablesLedByUser(contact.user.id)?has_content]
-            <div class="tag deliverables">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.user.id)?size}[/@s.param][/@s.text]</div>
+          [#if action.getDeliverablesLedByUser(contact.id)?has_content]
+            <div class="tag deliverables">[@s.text name="planning.projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(contact.id)?size}[/@s.param][/@s.text]</div>
             <div class="deliverablesList" style="display:none">
               <h3>Deliverables</h3>
               <ul>
-              [#list action.getDeliverablesLedByUser(contact.user.id) as deliverable]
+              [#list action.getDeliverablesLedByUser(contact.id) as deliverable]
                 <li>${deliverable.title}  <a target="_blank" href="[@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${deliverable.id}[/@s.param][/@s.url]"><img class="external-link" src="${baseUrl}/images/global/external-link.png" /></a></li>
               [/#list]
               </ul>
