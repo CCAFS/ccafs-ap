@@ -46,7 +46,22 @@ function generateReport(e) {
     var notyOptions = jQuery.extend({}, notyDefaultOptions);
     notyOptions.text = 'You must to select a report option';
     noty(notyOptions);
+  }else{
+
+
+
+    if($formOptions[0].value == "project") {
+      var projectId = $('#projectID').val();
+      if(projectId == -1) {
+        e.preventDefault();
+        var notyOptions = jQuery.extend({}, notyDefaultOptions);
+        notyOptions.text = 'You must to select a project';
+        noty(notyOptions);
+    }
   }
+  }
+
+
 }
 
 function updateUrl() {
