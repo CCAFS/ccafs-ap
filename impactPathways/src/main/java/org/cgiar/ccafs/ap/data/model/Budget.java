@@ -29,7 +29,7 @@ public class Budget {
   private Institution institution;
   private double amount;
   private BudgetType type;
-  private int genderPercentage;
+  private double genderPercentage;
   private Project cofinancingProject;
 
 
@@ -54,7 +54,7 @@ public class Budget {
     return cofinancingProject;
   }
 
-  public int getGenderPercentage() {
+  public double getGenderPercentage() {
     return genderPercentage;
   }
 
@@ -91,7 +91,7 @@ public class Budget {
     this.cofinancingProject = cofinancingProject;
   }
 
-  public void setGenderPercentage(int genderPercentage) {
+  public void setGenderPercentage(double genderPercentage) {
     this.genderPercentage = genderPercentage;
   }
 
