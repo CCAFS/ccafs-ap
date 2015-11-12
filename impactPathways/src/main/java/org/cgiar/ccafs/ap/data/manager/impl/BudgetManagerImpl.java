@@ -175,7 +175,8 @@ public class BudgetManagerImpl implements BudgetManager {
       budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
       if (budgetData.get("gender_percentage") != null) {
-        budget.setGenderPercentage(Integer.parseInt(budgetData.get("gender_percentage")));
+        budget.setGenderPercentage(Double.parseDouble(budgetData.get("gender_percentage")));
+
       }
 
       // Institution as institution_id

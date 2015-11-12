@@ -142,34 +142,40 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
     // Validating the title
     if (!deliverableValidator.isValidTitle(deliverable.getTitle())) {
-      action.addFieldError("deliverable.title", action.getText("validation.field.required"));
+      // action.addFieldError("deliverable.title", action.getText("validation.field.required"));
       this.addMessage("projects.deliverable(" + deliverable.getId() + ").title");
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").title");
     }
 
     // Validating that a MOG is selected.
     if (!deliverableValidator.isValidMOG(deliverable.getOutput())) {
-      action.addFieldError("deliverable.output", action.getText("validation.field.required"));
+      // action.addFieldError("deliverable.output", action.getText("validation.field.required"));
       this.addMessage("projects.deliverable(" + deliverable.getId() + ").output");
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").output");
     }
 
     // Validating that a year is selected.
     if (!deliverableValidator.isValidYear(deliverable.getYear())) {
-      action.addFieldError("deliverable.year", action.getText("validation.field.required"));
+      // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
       this.addMessage("projects.deliverable(" + deliverable.getId() + ").year");
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").year");
     }
 
     // Validating that some sub-type is selected.
     if (!deliverableValidator.isValidType(deliverable.getType())) {
       // Indicate problem in the missing field.
-      action.addFieldError("deliverable.type", action.getText("validation.field.required"));
+      // action.addFieldError("deliverable.type", action.getText("validation.field.required"));
       this.addMessage("projects.deliverable(" + deliverable.getId() + ").type");
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").type");
+
     }
 
     // Validating type other was filled.
     if (!deliverableValidator.isValidTypeOther(deliverable.getType(), deliverable.getTypeOther())) {
       // Indicate problem in the missing field.
-      action.addFieldError("deliverable.typeOther", action.getText("validation.field.required"));
+      // action.addFieldError("deliverable.typeOther", action.getText("validation.field.required"));
       this.addMessage("projects.deliverable(" + deliverable.getId() + ").typeOther");
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").typeOther");
     }
 
     // Deliverables has to have at least one next user.

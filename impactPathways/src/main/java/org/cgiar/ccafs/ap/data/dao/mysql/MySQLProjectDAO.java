@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.data.dao.mysql;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectDAO;
-import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.utils.db.DAOManager;
 
 import java.sql.Connection;
@@ -168,33 +167,44 @@ public class MySQLProjectDAO implements ProjectDAO {
     List<Map<String, String>> projectList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    String regionsSubquery =
-      "SELECT GROUP_CONCAT(ipp.acronym) "
-        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.REGION_PROGRAM_TYPE;
 
-    String flagshipsSubquery =
-      "SELECT GROUP_CONCAT(ipp.acronym) "
-        + "FROM ip_programs ipp INNER JOIN project_focuses pf ON ipp.id = pf.program_id "
-        + "WHERE pf.project_id = p.id AND ipp.type_id = " + APConstants.FLAGSHIP_PROGRAM_TYPE;
+    query.append("SELECT p.id,");
+    query.append("       p.title,");
+    query.append("       p.type,");
+    query.append("       p.summary,");
+    query.append("       p.active_since,");
+    query.append("       p.is_cofinancing,");
+    query.append("       (SELECT Ifnull(Sum(pb.amount), 0)");
+    query.append("        FROM   project_budgets pb");
+    query.append("        WHERE  p.id = pb.project_id");
+    query.append("               AND pb.is_active = true");
+    query.append("               AND pb.budget_type = 1)  AS 'total_ccafs_amount',");
+    query.append("       (SELECT Ifnull(Sum(pb2.amount), 0)");
+    query.append("        FROM   project_budgets pb2");
+    query.append("        WHERE  p.id = pb2.project_id");
+    query.append("               AND pb2.is_active = true");
+    query.append("               AND pb2.budget_type = 2) AS 'total_bilateral_amount',");
+    query.append("       (SELECT Group_concat(ipp.acronym)");
+    query.append("        FROM   ip_programs ipp");
+    query.append("               INNER JOIN project_focuses pf");
+    query.append("                       ON ipp.id = pf.program_id");
+    query.append("        WHERE  pf.project_id = p.id");
+    query.append("               AND ipp.type_id = 5)     AS 'regions',");
+    query.append("       (SELECT Group_concat(ipp.acronym)");
+    query.append("        FROM   ip_programs ipp");
+    query.append("               INNER JOIN project_focuses pf");
+    query.append("                       ON ipp.id = pf.program_id");
+    query.append("        WHERE  pf.project_id = p.id");
+    query.append("               AND ipp.type_id = 4)     AS 'flagships'");
+    query.append(" FROM   projects AS p");
+    query.append(" WHERE  p.is_active = true");
 
-    query
-      .append("SELECT p.id, p.title, p.type, p.summary, p.active_since, p.is_cofinancing,SUM(pb.amount) as 'total_ccafs_amount', ");
-    query.append("SUM(pb2.amount) as 'total_bilateral_amount', ");
-    query.append("( " + regionsSubquery + " )  as 'regions', ");
-    query.append("( " + flagshipsSubquery + " )  as 'flagships' ");
-    query.append("FROM projects as p ");
-    query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id AND pb.is_active= TRUE AND pb.budget_type =  ");
-    query.append(BudgetType.W1_W2.getValue());
-    query
-      .append(" LEFT JOIN project_budgets pb2 ON p.id = pb2.project_id AND pb2.is_active=TRUE AND pb2.budget_type =  ");
-    query.append(BudgetType.W3_BILATERAL.getValue());
-    query.append(" WHERE p.is_active = TRUE ");
-    query.append("GROUP BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
+
+
         Map<String, String> projectData = new HashMap<String, String>();
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
@@ -1976,7 +1986,7 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetProjectSubmmited(int year) {
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year, String cycle) {
     LOG.debug("<< summaryGetProjectSubmmited ");
     List<Map<String, Object>> csvRecords = new ArrayList<>();
     StringBuilder query = new StringBuilder();
@@ -1987,12 +1997,12 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("p.summary AS 'project_summary', ");
     query.append("p.type AS 'project_type', ");
     query.append("CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') as submmited_by , ");
-    query.append("ps.date_time AS submmited_on, ");
-    query.append("ps.cycle AS cycle ");
+    query.append("ps.date_time AS submmited_on ");
     query.append("FROM projects p ");
     query.append("INNER JOIN project_submissions ps ON p.id = ps.project_id ");
     query.append("INNER JOIN users u ON ps.user_id = u.id ");
     query.append("WHERE p.is_active = 1 AND ps.year = " + year);
+    query.append(" AND ps.cycle = '" + cycle + "' ORDER BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -2005,7 +2015,6 @@ public class MySQLProjectDAO implements ProjectDAO {
         csvData.put("project_type", rs.getString("project_type"));
         csvData.put("submmited_by", rs.getString("submmited_by"));
         csvData.put("submmited_on", rs.getTimestamp("submmited_on"));
-        csvData.put("cycle", rs.getString("cycle"));
         csvRecords.add(csvData);
       }
       rs.close();
@@ -2045,7 +2054,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       StringBuilder query = new StringBuilder();
       query.append("UPDATE projects p ");
       query
-        .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
+      .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
       query.append("SET p.type = ?");
       result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
     }
