@@ -112,13 +112,13 @@ public class SubmissionProjectSummaryAction extends BaseAction implements Summar
     if (strYear != null) {
       year = Integer.parseInt(strYear);
     }
-    /*
-     * String cycle = "planning";
-     * if (strYear != null) {
-     * cycle = StringUtils.trim(this.getRequest().getParameter(APConstants.CYCLE));
-     * }
-     */
 
-    projectList = projectManager.summaryGetProjectSubmmited(year);
+    String cycle = "planning";
+    if (strYear != null) {
+      cycle = StringUtils.trim(this.getRequest().getParameter(APConstants.CYCLE));
+    }
+
+
+    projectList = projectManager.summaryGetProjectSubmmited(year, cycle);
   }
 }
