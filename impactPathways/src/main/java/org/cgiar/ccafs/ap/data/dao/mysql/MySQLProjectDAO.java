@@ -204,9 +204,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
 
-        if (rs.getString("id").equals("131")) {
-          System.out.println(rs.getString("total_bilateral_amount"));
-        }
+
         Map<String, String> projectData = new HashMap<String, String>();
         projectData.put("id", rs.getString("id"));
         projectData.put("title", rs.getString("title"));
