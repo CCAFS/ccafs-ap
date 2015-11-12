@@ -1167,6 +1167,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+
   /**
    * This method is used for add Overview in the project summary
    * 
@@ -1176,20 +1177,14 @@ public class ProjectSummaryPDF extends BasePDF {
    */
   private void addOverview(PdfPTable table, IPElement mog, int year) {
 
-    // Paragraph paragraph = new Paragraph();
-
     Paragraph overviewBlock = new Paragraph();
     overviewBlock.setAlignment(Element.ALIGN_JUSTIFIED);
     // overviewBlock.setKeepTogether(true);
     StringBuffer overviewLabel = new StringBuffer();
 
     // Get OverviewByMog, Year and project
-    List<OutputOverview> listOver =
-      overviewManager.getProjectContributionOverviewsByYearAndOutput(project, year, mog.getId());
-    OutputOverview overviewYear = null;
-    if (listOver.size() != 0) {
-      overviewYear = overviewManager.getProjectContributionOverviewsByYearAndOutput(project, year, mog.getId()).get(0);
-    }
+    OutputOverview overviewYear = project.getOverviewByMOGAndYear(mog.getId(), year);
+
     // Mog contribution
     // overviewBlock.setAlignment(Element.ALIGN_JUSTIFIED);
     overviewBlock.setFont(TABLE_BODY_BOLD_FONT);
@@ -2498,7 +2493,6 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
-
   /**
    * @param paragraph paragraph for write
    * @param institution PPA to calculate your budget
@@ -2543,6 +2537,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
     this.addTableBodyCell(table, paragraph, Element.ALIGN_RIGHT, 1);
   }
+
 
   /**
    * Method used for to add the project summary
@@ -2675,6 +2670,7 @@ public class ProjectSummaryPDF extends BasePDF {
   public InputStream getInputStream() {
     return inputStream;
   }
+
 
   /**
    * Method used for to get outcomes by indicator

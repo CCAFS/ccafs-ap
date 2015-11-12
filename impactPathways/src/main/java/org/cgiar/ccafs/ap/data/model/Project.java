@@ -552,6 +552,22 @@ public class Project {
     return overhead;
   }
 
+  /**
+   * This method returns the OutputOverview gived a mogId and year
+   * 
+   * @param mogId MOG id
+   * @param year specific year
+   * @return the Overview by MOG founded
+   */
+  public OutputOverview getOverviewByMOGAndYear(int mogId, int year) {
+    for (OutputOverview overview : this.getOutputsOverview()) {
+      if (overview.getOutput().getId() == mogId && overview.getYear() == year) {
+        return overview;
+      }
+    }
+    return null;
+  }
+
   public User getOwner() {
     return owner;
   }
@@ -613,18 +629,18 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-      // Standar identifier
+    // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-      // PDF Identifier
+        // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
         // Acronym leader institution
         if (this.getLeader() != null && this.getLeader().getInstitution() != null
-          && this.getLeader().getInstitution().getAcronym() != null) {
+        && this.getLeader().getInstitution().getAcronym() != null) {
           result.append(this.getLeader().getInstitution().getAcronym() + "-");
         }
 
@@ -648,12 +664,12 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-      // Excel Identifier
+        // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
         break;
 
-      // Email Subject Identifier
+        // Email Subject Identifier
       case Project.EMAIL_SUBJECT_IDENTIFIER:
         result.append("P" + this.getId());
         break;
@@ -824,6 +840,7 @@ public class Project {
 
     return false;
   }
+
 
   /**
    * Return if the project is new.
