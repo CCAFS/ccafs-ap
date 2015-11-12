@@ -18,6 +18,7 @@
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
+  [#-- 
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" /> 
     <p> [@s.text name="planning.projectBudget.help1" /] 
@@ -25,6 +26,8 @@
     <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
     <a href="[@s.url namespace="/" action='glossary'][/@s.url]"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
   </div>
+  --]
+
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="budgetByMog" cssClass="pure-form"]
