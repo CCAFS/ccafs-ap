@@ -397,6 +397,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     query.append("WHERE project_id =  ");
     query.append(projectID);
     query.append(" AND ipc.is_active = TRUE ");
+    query.append("GROUP BY id ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -428,8 +429,8 @@ public class MySQLIPElementDAO implements IPElementDAO {
   @Override
   @Deprecated
   public int relateIPElement(int elementID, int programID, int relationTypeID) {
-    LOG.debug(">> relateIPElement(elementID={}, programID={}, relationTypeID={})", new int[] {elementID, programID,
-      relationTypeID});
+    LOG.debug(">> relateIPElement(elementID={}, programID={}, relationTypeID={})",
+      new int[] {elementID, programID, relationTypeID});
 
     StringBuilder query = new StringBuilder();
     query.append("INSERT IGNORE INTO ip_program_elements (element_id, program_id, relation_type_id) ");
