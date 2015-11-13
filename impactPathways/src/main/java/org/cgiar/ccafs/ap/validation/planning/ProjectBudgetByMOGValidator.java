@@ -74,7 +74,7 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
           }
         }
         if (project.isBilateralProject()) {
-          if (bilateralBudgeGenderPorcentage != 100 && bilateralBudgetByYear > 0) {
+          if (bilateralBudgeTotalPorcentage != 100 && bilateralBudgetByYear > 0) {
             this.addMessage(("Invalid Percentage Distribution W3/Bilateral budge"));
             this.addMissingField("project.budgetbyMog.invalidPorcentage");
           }
