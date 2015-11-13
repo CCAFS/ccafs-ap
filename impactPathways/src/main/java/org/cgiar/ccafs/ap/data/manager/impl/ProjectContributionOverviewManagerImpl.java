@@ -99,6 +99,7 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
     boolean saved = true;
     for (OutputOverview overview : project.getOutputsOverview()) {
       Map<String, Object> values = new HashMap<>();
+
       if (overview.getId() != -1) {
         values.put("id", overview.getId());
       } else {

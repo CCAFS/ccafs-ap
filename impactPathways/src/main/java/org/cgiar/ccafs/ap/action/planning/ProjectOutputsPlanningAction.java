@@ -108,17 +108,27 @@ public class ProjectOutputsPlanningAction extends BaseAction {
 
     // Remove the outputs duplicated
     Set<IPElement> outputsTemp = new HashSet<>(project.getOutputs());
+
+
     project.getOutputs().clear();
+
     project.getOutputs().addAll(outputsTemp);
 
-    // Get the project outputs from database
-    project.setOutputsOverview(overviewManager.getProjectContributionOverviews(project));
+
+    // if (!this.isHttpPost())
+    {
+      // Get the project outputs from database
+      project.setOutputsOverview(overviewManager.getProjectContributionOverviews(project));
+      previousOverviews = new ArrayList<>();
+      for (OutputOverview output : project.getOutputsOverview()) {
+        previousOverviews.add(new OutputOverview(output.getId()));
+
+      }
+    }
+
 
     // save previous output overviews
-    previousOverviews = new ArrayList<>();
-    for (OutputOverview output : project.getOutputsOverview()) {
-      previousOverviews.add(new OutputOverview(output.getId()));
-    }
+
 
     // Getting the Project lessons for this section.
     this.setProjectLessons(
