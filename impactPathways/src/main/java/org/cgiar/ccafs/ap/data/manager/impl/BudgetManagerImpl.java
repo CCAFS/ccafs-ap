@@ -108,8 +108,9 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
-    return budgetDAO.calculateTotalGenderPercentageByYearAndType(projectID, year, budgetTypeID);
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID,
+    boolean coreCofunded) {
+    return budgetDAO.calculateTotalGenderPercentageByYearAndType(projectID, year, budgetTypeID, coreCofunded);
   }
 
   @Override

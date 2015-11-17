@@ -348,7 +348,8 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID,
+    boolean coreCofunded) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
 
@@ -368,29 +369,40 @@ public class MySQLBudgetDAO implements BudgetDAO {
         break;
 
       case 2:
+        if (coreCofunded) {
+          query.append("SELECT SUM((");
+
+          query.append(" SELECT b2.gender_percentage FROM project_budgets b2 ");
+          query.append(" WHERE b2.project_id =  b.cofinance_project_id ");
+
+          query.append(" AND b2.budget_type = ");
+          query.append(budgetTypeID);
+          query.append(" AND b2.year = ");
+          query.append(year);
+          query.append(" AND b2.is_active = TRUE )");
 
 
-        query.append("SELECT SUM((");
+          query.append(" * amount * 0.01) as total ");
+          query.append("FROM project_budgets b ");
+          query.append(" WHERE b.project_id = ");
+          query.append(projectID);
+          query.append(" AND b.budget_type = ");
+          query.append(budgetTypeID);
+          query.append(" AND b.year = ");
+          query.append(year);
+          query.append(" AND b.is_active = TRUE");
+        } else {
 
-        query.append(" SELECT b2.gender_percentage FROM project_budgets b2 ");
-        query.append(" WHERE b2.project_id =  b.cofinance_project_id ");
-
-        query.append(" AND b2.budget_type = ");
-        query.append(budgetTypeID);
-        query.append(" AND b2.year = ");
-        query.append(year);
-        query.append(" AND b2.is_active = TRUE )");
-
-
-        query.append(" * amount * 0.01) as total ");
-        query.append("FROM project_budgets b ");
-        query.append(" WHERE b.project_id = ");
-        query.append(projectID);
-        query.append(" AND b.budget_type = ");
-        query.append(budgetTypeID);
-        query.append(" AND b.year = ");
-        query.append(year);
-        query.append(" AND b.is_active = TRUE");
+          query.append("SELECT SUM(gender_percentage * amount * 0.01) as total ");
+          query.append("FROM project_budgets ");
+          query.append(" WHERE project_id = ");
+          query.append(projectID);
+          query.append(" AND budget_type = ");
+          query.append(budgetTypeID);
+          query.append(" AND year = ");
+          query.append(year);
+          query.append(" AND is_active = TRUE");
+        }
 
 
         break;
