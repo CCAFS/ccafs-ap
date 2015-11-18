@@ -138,14 +138,11 @@
     </div>
     [#else]
     
-     <div class="fullPartBlock"> 
-    
-       [#assign canEditLeader=(editable)/]
-      
+     <div class="fullPartBlock">
       <div class="partnerPerson-type halfPartBlock clearfix">
       [#-- Contact type --]
-        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
-        [#if !canEditLeader]
+        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=editable required=true /]
+        [#if !editable]
           <div class="select">
             [#if (!securityContext.canUpdatePPAPartners(project.id)) && (contact.leader)!false]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
