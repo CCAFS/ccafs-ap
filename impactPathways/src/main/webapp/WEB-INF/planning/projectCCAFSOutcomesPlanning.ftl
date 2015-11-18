@@ -42,6 +42,7 @@
       </p>
     [/#if] 
       
+    [#if project.startDate?? && project.endDate??]
     <div class="borderBox">
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
@@ -268,8 +269,11 @@
         [/#if] 
       [#else]
         <p class="emptyText">[@s.text name="planning.projectImpactPathways.contributionsEmpty"][@s.param]<a href="[@s.url action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]#projectWorking">[/@s.param][@s.param]</a>[/@s.param][/@s.text]</p> 
-      [/#if]   
+      [/#if] 
     </div>
+    [#else]
+      <p class="simpleBox center">[@s.text name="planning.projectOutcome.message.dateUndefined" /]</p>
+    [/#if]
     
     [#if !newProject]
     <div id="lessons" class="borderBox">
@@ -390,8 +394,12 @@
 
 [#-- Get if the year is required--]
 [#function isYearRequired year]
-  [#assign endDate = (project.endDate?string.yyyy)?number]
-  [#return (!project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))) && (endDate gte year)]
+  [#if project.endDate??]
+    [#assign endDate = (project.endDate?string.yyyy)?number]
+    [#return (!project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))) && (endDate gte year)]
+  [#else]
+    [#return false]
+  [/#if]
 [/#function]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

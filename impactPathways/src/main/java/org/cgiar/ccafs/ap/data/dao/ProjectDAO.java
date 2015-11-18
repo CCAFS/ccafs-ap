@@ -402,11 +402,12 @@ public interface ProjectDAO {
    * This method returns the information of all project submmmited with the information for the summary report of
    * Submmited summary.
    * 
-   * @param year year to search
+   * @param year year to search submitted projects
+   * @param cycle cycle for to search submitted projects
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
-  public List<Map<String, Object>> summaryGetProjectSubmmited(int year);
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year, String cycle);
 
   /**
    * This method updates the project cofinancing into the database according to the values received by parameter.

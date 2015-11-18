@@ -502,8 +502,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public
+  boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 
@@ -580,8 +580,8 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetProjectSubmmited(int year) {
-    return projectDAO.summaryGetProjectSubmmited(year);
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year, String cycle) {
+    return projectDAO.summaryGetProjectSubmmited(year, cycle);
   }
 
   @Override

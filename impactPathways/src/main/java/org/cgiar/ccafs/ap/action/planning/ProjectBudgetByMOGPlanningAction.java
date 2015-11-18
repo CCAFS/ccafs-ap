@@ -205,12 +205,14 @@ public class ProjectBudgetByMOGPlanningAction extends BaseAction {
       project.setOutputsBudgets(budgets);
 
       ccafsBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(projectID, ccafsBudgetType, year);
+
+
       bilateralBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(projectID, bilateralBudgetType, year);
 
-      ccafsGenderPercentage =
-        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, ccafsBudgetType);
-      bilateralGenderPercentage =
-        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, bilateralBudgetType);
+      ccafsGenderPercentage = budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year,
+        ccafsBudgetType, project.isCoFundedProject() || project.isCoreProject());
+      bilateralGenderPercentage = budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year,
+        bilateralBudgetType, project.isCoFundedProject() || project.isCoreProject());
 
       if (!allYears.contains(new Integer(year))) {
         year = allYears.get(0);

@@ -20,6 +20,7 @@ package org.cgiar.ccafs.ap.config;
  */
 public final class APConstants {
 
+
   public static final String SESSION_USER = "current_user";
   public static final String ACTIVITY_REQUEST_ID = "activityID";
   public static final String PUBLIC_ACTIVITY_ID = "id";
@@ -47,6 +48,7 @@ public final class APConstants {
   public static final String DELIVERABLE_REQUEST_ID = "deliverableID";
   public static final String CCAFS_ORGANIZATION_IDENTIFIER = "XM-DAC-47015-CRP7";
   public static final String SECTION_NAME = "sectionName";
+  public static final String CYCLE = "cycle";
 
   // Identifiers for element types which come from the database
   public static final int ELEMENT_TYPE_IDOS = 1;

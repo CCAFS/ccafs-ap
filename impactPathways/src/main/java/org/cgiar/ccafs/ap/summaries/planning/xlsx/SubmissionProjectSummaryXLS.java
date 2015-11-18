@@ -86,9 +86,6 @@ public class SubmissionProjectSummaryXLS {
       xls.nextColumn();
 
       xls.writeString(sheet, formatter.format((Date) projectMap.get("submmited_on")));
-      xls.nextColumn();
-
-      xls.writeString(sheet, (String) projectMap.get("cycle"));
 
       xls.nextRow();
     }
@@ -107,13 +104,12 @@ public class SubmissionProjectSummaryXLS {
 
     /***************** Submmited project level ******************/
     // Defining headers
-    String[] headersProject = new String[] {"ID", "Title", "Summary", "Type", "Submitted by", "Submitted on", " Cycle"};
+    String[] headersProject = new String[] {"ID", "Title", "Summary", "Type", "Submitted by", "Submitted Date"};
 
     // Defining header types
     int[] headerTypesProject =
     {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-      BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE_TIME,
-      BaseXLS.COLUMN_TYPE_TEXT_SHORT};
+      BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE_TIME};
 
     // creating sheet
 

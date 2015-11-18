@@ -246,9 +246,13 @@ public class ProjectDeliverableAction extends BaseAction {
       // -------- Saving main information
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
 
+
+      if (deliverable.getOutput() != null) {
+        deliverableManager.saveDeliverableOutput(deliverable.getId(), deliverable.getOutput().getId(),
+          this.getCurrentUser(), this.getJustification());
+
+      }
       // Saving MOG
-      deliverableManager.saveDeliverableOutput(deliverable.getId(), deliverable.getOutput().getId(),
-        this.getCurrentUser(), this.getJustification());
 
       // -------- Saving next users.
 

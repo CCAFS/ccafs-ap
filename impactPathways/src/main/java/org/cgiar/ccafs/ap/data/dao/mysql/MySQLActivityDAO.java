@@ -222,10 +222,11 @@ public class MySQLActivityDAO implements ActivityDAO {
     query.append("SELECT a.* FROM activities a ");
     query.append("INNER JOIN project_partner_persons ppp ON a.leader_id = ppp.id ");
     query.append("INNER JOIN project_partners pp ON ppp.project_partner_id = pp.id ");
-    query.append("WHERE ppp.user_id = ");
+    query.append("WHERE ppp.id = ");
     query.append(userID);
     query.append(" AND pp.project_id = ");
     query.append(projectID);
+    query.append(" AND a.is_active = 1");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
