@@ -1320,12 +1320,12 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("WHERE pf.project_id = p.id ");
     query.append("AND pro.region_id IS NOT NULL ");
     query.append(") as 'regions', ");
-    query.append("IFNULL ");
     query.append("( ");
-    query.append("( ");
-    query.append("SELECT CONCAT(i.acronym, ' - ', i.name) ");
-    query.append("), ");
-    query.append("i.name");
+    query.append("SELECT IFNULL( CONCAT(i.acronym, ' - ', i.name), i.name) ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("INNER JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PL' AND pp.is_active = 1 AND ppp.is_active = 1 ");
     query.append(") as 'Lead_institution', ");
     query.append("( ");
     query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
@@ -1358,11 +1358,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("GROUP BY p.id ");
     query.append(") as 'budget_w3bilateral' ");
     query.append("FROM projects p ");
-    query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id ");
-    query.append("LEFT JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
-    query.append("LEFT JOIN institutions i ON pp.institution_id = i.id ");
-    query.append("WHERE ppp.contact_type = 'PL' ");
-    query.append("ORDER BY p.id ");
+    query.append("WHERE p.is_active = 1 ");
+    query.append("GROUP BY p.id ");
+    query.append("ORDER BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
