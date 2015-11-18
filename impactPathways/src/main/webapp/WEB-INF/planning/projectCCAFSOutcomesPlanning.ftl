@@ -121,12 +121,11 @@
                                     <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
-                                      [#if isYearRequired(year) ]
-                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
-                                      [/#if]
+                                      [#if isYearRequired(year) ]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if]
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${projectIndicator.target}</p></div>
+                                      <input type="hidden" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${(projectIndicator.target)!}"/>
                                     [/#if]
                                   [/#if]
                                 </div> 
@@ -144,6 +143,7 @@
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.description)!}</p></div>
+                                      <input type="hidden" class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description" value="${(projectIndicator.description)!}"/>
                                     [/#if] 
                                   [/#if] 
                                 </div>
@@ -161,6 +161,7 @@
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.gender)!}</p></div>
+                                      <input type="hidden" class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender" value="${(projectIndicator.gender)!}"/>
                                     [/#if] 
                                   [/#if] 
                                 </div>
