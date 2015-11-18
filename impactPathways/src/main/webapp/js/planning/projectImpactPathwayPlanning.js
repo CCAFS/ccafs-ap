@@ -87,15 +87,15 @@ function removeContributionBlock(event) {
 
 function selectMogEvent(event) {
   var $checkbox = $(event.target);
-  if ($checkbox.hasClass("disabled")){
-    return
-  }
+
   var checkStatus = $checkbox.is(":checked");
   var $hiddenInput = $checkbox.prev();
   if(checkStatus) {
     $hiddenInput.attr("disabled", false);
   } else {
-    $hiddenInput.attr("disabled", true);
+    if(!$checkbox.hasClass("disabled")) {
+      $hiddenInput.attr("disabled", true);
+    }
   }
   setMogsIndexes();
 }
@@ -289,15 +289,16 @@ function setMogsIndexes() {
   var $contributionsBlock = $("#contributionsBlock");
   // Indicators indexes
   $contributionsBlock.find(".mog").each(function(index,mog) {
+    var $checkBox = $(mog).find("input[type='checkbox']");
     var mogsName = "project.outputs[" + index + "]";
-
+    console.log(mogsName);
     // Checkbox
-    $(mog).find("input[type='checkbox']").attr("id", "mog-" + index);
-    $(mog).find("input[type='checkbox']").attr("name", mogsName + ".id");
+    $checkBox.attr("id", "mog-" + index);
+    $checkBox.attr("name", mogsName + ".id");
 
     // Hidden input
     $(mog).find("input[type='hidden']").attr("name", mogsName + ".contributesTo[0].id");
-    if($(mog).find("input[type='checkbox']").is(":checked")) {
+    if($checkBox.is(":checked")) {
       $(mog).find("input[type='hidden']").attr("disabled", false);
     } else {
       $(mog).find("input[type='hidden']").attr("disabled", true);

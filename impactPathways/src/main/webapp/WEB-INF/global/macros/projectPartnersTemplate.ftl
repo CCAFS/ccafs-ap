@@ -113,7 +113,7 @@
     [#-- Partner Person type and email--]
     <div class="fullPartBlock"> 
     
-       [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id))/]
+      [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id))/]
       
       <div class="partnerPerson-type halfPartBlock clearfix">
       [#-- Contact type --]

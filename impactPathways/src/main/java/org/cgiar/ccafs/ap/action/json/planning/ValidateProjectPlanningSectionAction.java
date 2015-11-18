@@ -323,7 +323,7 @@ public class ValidateProjectPlanningSectionAction extends BaseAction {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
     // Get the project outputs from database
-    project.setOutputs(ipElementManager.getProjectOutputs(projectID));
+    project.setOutputs(ipElementManager.getProjectOutputsCcafs(projectID));
     // Get the project indicators from database
     project.setIndicators(indicatorManager.getProjectIndicators(projectID));
     // Getting the outcomes for each indicator
