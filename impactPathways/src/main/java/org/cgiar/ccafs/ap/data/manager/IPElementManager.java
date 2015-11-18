@@ -139,6 +139,14 @@ public interface IPElementManager {
   public List<IPElement> getProjectOutputs(int projectID);
 
   /**
+   * Get all the Ccafs ipElements (outputs) presents in the database and linked to the project identified by the value
+   * received by parameter.
+   * 
+   * @return all list of maps with the information of all ipElements
+   */
+  public List<IPElement> getProjectOutputsCcafs(int projectID);
+
+  /**
    * This method save into the database the information of the IPElements
    * 
    * @param elements - List of objects to save
