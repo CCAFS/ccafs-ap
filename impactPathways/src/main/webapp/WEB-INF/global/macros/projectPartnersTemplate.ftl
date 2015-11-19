@@ -108,13 +108,11 @@
     </div>
     <input id="id" class="partnerPersonId" type="hidden" name="${contactName}[${contactIndex}].id" value="${(contact.id)!-1}" />
     
+    [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id))!false /]
     
     [#if (contact.leader)!false]
     [#-- Partner Person type and email--]
-    <div class="fullPartBlock"> 
-    
-      [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id))/]
-      
+    <div class="fullPartBlock">
       <div class="partnerPerson-type halfPartBlock clearfix">
       [#-- Contact type --]
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
@@ -137,7 +135,6 @@
       </div>
     </div>
     [#else]
-    
      <div class="fullPartBlock">
       <div class="partnerPerson-type halfPartBlock clearfix">
       [#-- Contact type --]
@@ -156,7 +153,7 @@
         <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
         [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditLeader /]
-        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />   
+        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />
         [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
