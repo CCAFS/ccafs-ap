@@ -32,14 +32,14 @@ import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class GenderSummaryXLS {
+public class SearchTermsSummaryXLS {
 
   private APConfig config;
   private BaseXLS xls;
 
 
   @Inject
-  public GenderSummaryXLS(APConfig config, BaseXLS xls) {
+  public SearchTermsSummaryXLS(APConfig config, BaseXLS xls) {
     this.config = config;
     this.xls = xls;
   }
