@@ -19,7 +19,6 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPCrossCuttingManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
@@ -92,7 +91,6 @@ public class ProjectSummaryPDF extends BasePDF {
   private static final Logger LOG = LoggerFactory.getLogger(ProjectSummaryPDF.class);
 
   // Managers
-  private ProjectContributionOverviewManager overviewManager;
   private IPElementManager elementManager;
   private InputStream inputStream;
   private BudgetManager budgetManager;
@@ -114,12 +112,10 @@ public class ProjectSummaryPDF extends BasePDF {
   @Inject
   public ProjectSummaryPDF(APConfig config, BudgetManager budgetManager, IPElementManager elementManager,
     IPCrossCuttingManager ipCrossCuttingManager, LocationManager locationManager,
-    ProjectContributionOverviewManager overviewManager, ProjectPartnerManager projectPartnerManager,
-    BudgetByMogManager budgetByMogManager) {
+    ProjectPartnerManager projectPartnerManager, BudgetByMogManager budgetByMogManager) {
     this.config = config;
     this.budgetManager = budgetManager;
     this.elementManager = elementManager;
-    this.overviewManager = overviewManager;
     this.budgetByMogManager = budgetByMogManager;
     this.projectPartnerManager = projectPartnerManager;
     this.initialize(config.getBaseUrl());
@@ -1491,31 +1487,39 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(paragraph);
 
 
-      for (ProjectPartner projectPartner : listProjectPartner) {
+      if (project.isBilateralProject()) {
         table = new PdfPTable(4);
         table.setWidths(new int[] {2, 3, 3, 3});
         table.setTotalWidth(480);
+        this.addBudgetPartner(project.getLeader(), paragraph, table, BudgetType.W3_BILATERAL, startYear, endYear);
 
-        if (project.isCoFundedProject()) {
-          this.addBudgetPartner(projectPartner, paragraph, table, BudgetType.W1_W2, startYear, endYear);
-          document.add(table);
-          paragraph = new Paragraph(Chunk.NEWLINE);
-          paragraph.add(Chunk.NEWLINE);
-          document.add(paragraph);
-
+      } else {
+        for (ProjectPartner projectPartner : listProjectPartner) {
           table = new PdfPTable(4);
           table.setWidths(new int[] {2, 3, 3, 3});
           table.setTotalWidth(480);
-          this.addBudgetPartner(projectPartner, paragraph, table, BudgetType.W3_BILATERAL, startYear, endYear);
-        } else {
-          this.addBudgetPartner(projectPartner, paragraph, table, this.getBudgetType(), startYear, endYear);
+
+          if (project.isCoFundedProject()) {
+            this.addBudgetPartner(projectPartner, paragraph, table, BudgetType.W1_W2, startYear, endYear);
+            document.add(table);
+            paragraph = new Paragraph(Chunk.NEWLINE);
+            paragraph.add(Chunk.NEWLINE);
+            document.add(paragraph);
+
+            table = new PdfPTable(4);
+            table.setWidths(new int[] {2, 3, 3, 3});
+            table.setTotalWidth(480);
+            this.addBudgetPartner(projectPartner, paragraph, table, BudgetType.W3_BILATERAL, startYear, endYear);
+          } else {
+            this.addBudgetPartner(projectPartner, paragraph, table, this.getBudgetType(), startYear, endYear);
+          }
+
+          document.add(table);
+          paragraph = new Paragraph(Chunk.NEWLINE);
+          paragraph = new Paragraph(Chunk.NEWLINE);
+
+          document.add(paragraph);
         }
-
-        document.add(table);
-        paragraph = new Paragraph(Chunk.NEWLINE);
-        paragraph = new Paragraph(Chunk.NEWLINE);
-
-        document.add(paragraph);
       }
       // }
     } catch (DocumentException e) {
