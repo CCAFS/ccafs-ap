@@ -117,8 +117,8 @@
       [#-- Contact type --]
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
         [#if !canEditLeader]
-          <div class="select">
-            [#if (!securityContext.canUpdatePPAPartners(project.id)) && (contact.leader)!false]
+          <div class="select"> 
+            [#if (!securityContext.canUpdatePartnerLeader(project.id))]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
             [/#if]
             <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
