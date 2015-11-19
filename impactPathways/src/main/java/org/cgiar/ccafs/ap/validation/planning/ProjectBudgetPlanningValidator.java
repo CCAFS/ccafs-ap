@@ -44,6 +44,9 @@ public class ProjectBudgetPlanningValidator extends BaseValidator {
 
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
+      if (project.getBudgets().isEmpty()) {
+        this.addMissingField("project.budgets.nosection");
+      }
       this.validateProjectJustification(action, project);
       if (projectValidator.isValidBudget(project.getBudgets())) {
 
