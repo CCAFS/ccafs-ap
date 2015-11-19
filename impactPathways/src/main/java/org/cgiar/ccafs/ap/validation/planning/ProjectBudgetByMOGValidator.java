@@ -48,6 +48,9 @@ public class ProjectBudgetByMOGValidator extends BaseValidator {
     double bilateralBudgeGenderPorcentage = 0;
     if (project != null) {
 
+      if (project.getOutputsBudgets().isEmpty() && !project.isBilateralProject()) {
+        this.addMissingField("project.budgetbyMog.nosection");
+      }
       int year = config.getPlanningCurrentYear();
       ccafsBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), 1, year);
       bilateralBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), 2, year);
