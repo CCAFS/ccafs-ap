@@ -232,6 +232,43 @@ public class IPElementManagerImpl implements IPElementManager {
     return elementsList;
   }
 
+
+  @Override
+  public List<IPElement> getProjectOutputsCcafs(int projectID) {
+    List<Map<String, String>> elementDataList = ipElementDAO.getProjectOutputsCcafs(projectID);
+    List<IPElement> elementsList = new ArrayList<>();
+
+    for (Map<String, String> elementData : elementDataList) {
+      IPElement element = new IPElement();
+      element.setId(Integer.parseInt(elementData.get("id")));
+      element.setDescription(elementData.get("description"));
+
+      // Create an object program
+      IPProgram programTemp = new IPProgram();
+      programTemp.setId(Integer.parseInt(elementData.get("program_id")));
+      programTemp.setAcronym(elementData.get("program_acronym"));
+      element.setProgram(programTemp);
+
+      // Create an object IPElementType
+      IPElementType type = new IPElementType();
+      type.setId(Integer.parseInt(elementData.get("element_type_id")));
+      type.setName(elementData.get("element_type_name"));
+      element.setType(type);
+
+      // Set the parent element
+      List<IPElement> elementsRelated = new ArrayList<>();
+      IPElement parentElement = new IPElement();
+      parentElement.setId(Integer.parseInt(elementData.get("parent_id")));
+      parentElement.setDescription(elementData.get("parent_description"));
+      elementsRelated.add(parentElement);
+      element.setContributesTo(elementsRelated);
+
+      elementsList.add(element);
+    }
+
+    return elementsList;
+  }
+
   @Override
   public boolean saveIPElements(List<IPElement> elements, User user, String justification) {
     Map<String, Object> ipElementData;

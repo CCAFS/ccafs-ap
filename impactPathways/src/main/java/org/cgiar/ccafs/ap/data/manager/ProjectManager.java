@@ -204,7 +204,6 @@ public interface ProjectManager {
    */
   public List<Project> getProjectsList(String[] values);
 
-
   /**
    * This method create or updates a project into the database.
    * 
@@ -234,9 +233,21 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary Gender Report.
    * 
+   * @param termsToSearch a array string that contains the terms for to search in the query.
    * @return a list of columns with the information summary
    */
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch);
+
+  /**
+   * This method will return the list of all the impact pathways
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary Impact Pathway Report.
+   * 
+   * @param year - Specific year to search in the report.
+   * @return a list of columns with the information summary
+   */
+  public List<Map<String, Object>> summaryGetAllCCAFSOutcomes(int year);
 
   /**
    * This method will return the list of all the deliverables with your next users.
@@ -244,9 +255,11 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary Gender Report.
    * 
+   * @param termsToSearch a array string that contains the terms for to search in the query.
    * @return a list of columns with the information summary
    */
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch);
+
 
   /**
    * This method will return the list of all the projects and their respective leaders.
@@ -254,10 +267,10 @@ public interface ProjectManager {
    * letting the charge to the RAM memory.
    * This method should be used to the summary report project partner leaders.
    * 
+   * @param year the current planning year to generate the report budget figures
    * @return a list of Project objects with the Project Partner Leader information.
    */
-  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
-
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders(int year);
 
   /**
    * This method will return the list of all the projects and all their respective deliverables.
@@ -269,15 +282,17 @@ public interface ProjectManager {
    */
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables();
 
+
   /**
    * This method will return the list of all the projects and their respective gender contribution.
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
    * This method should be used to the summary report project gender contribution.
    * 
+   * @param termsToSearch a array string that contains the terms for to search in the query.
    * @return a list of Project objects with the gender contribution information.
    */
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch);
 
 
   /**
@@ -303,7 +318,6 @@ public interface ProjectManager {
    */
   public List<Map<String, Object>> summaryGetInformationPOWBDetail(int year);
 
-
   /**
    * This method will return the list of all the project with the budget contribution information for a specific year.
    * This method also gets all the information in one single query to the database, improving its performance and
@@ -314,6 +328,29 @@ public interface ProjectManager {
    * @return a list of columns with the information detail summary
    */
   public List<Map<String, Object>> summaryGetProjectBudgetPerPartners(int year);
+
+  /**
+   * This method will return the list of all the projects don't modified from planning open (October 20th 2015)
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary projects not modified Report.
+   * 
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetProjectsNotModified();
+
+  /**
+   * This method will return the list of all the project that have submission
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the summary project submission Report.
+   * 
+   * @param year - Specific year to search in the report.
+   * @param cycle -- Specific cycle for to search in the report
+   * @return a list of columns with the information detail summary
+   */
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year, String cycle);
+
 
   /**
    * This method updates the project type into the database according to the values contained in the project received by
@@ -343,6 +380,5 @@ public interface ProjectManager {
    * @return true if the changes was made succesfully. False otherwise.
    */
   public boolean updateProjectTypes();
-
 
 }

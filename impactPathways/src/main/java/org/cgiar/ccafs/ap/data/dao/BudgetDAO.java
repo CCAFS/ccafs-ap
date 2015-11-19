@@ -157,7 +157,8 @@ public interface BudgetDAO {
    * @param year is the year.
    * @return a double representing this value, or -1 if some error found.
    */
-  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID);
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID,
+    boolean coreCofunded);
 
   /**
    * This method calculates the total budget of some type for a given project.
@@ -167,6 +168,17 @@ public interface BudgetDAO {
    * @return a double representing this value, or -1 if some error was found.
    */
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID);
+
+
+  /**
+   * This method calculates the total budget of some type for a given project.
+   * 
+   * @param projectID is the project identifier.
+   * @param budgetTypeID budget type identifier.
+   * @param year .
+   * @return a double representing this value, or -1 if some error was found.
+   */
+  public double calculateTotalProjectBudgetByTypeYear(int projectID, int budgetTypeID, int year);
 
   /**
    * Deletes the information of a Budget associated by a given id

@@ -16,9 +16,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.summaries.planning.xlsx.GenderSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
@@ -44,7 +42,8 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   private static final long serialVersionUID = 5110987672008315842L;;
   private GenderSummaryXLS genderSummaryXLS;
   private ProjectManager projectManager;
-  private String[] termsToSearch;
+  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
+    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
 
   private List<Map<String, Object>> projectList, deliverableList, activityList;
 
@@ -55,16 +54,13 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   InputStream inputStream;
 
   @Inject
-  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, InstitutionManager institutionManager,
-    ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
+  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, ProjectManager projectManager) {
 
 
     super(config);
     this.genderSummaryXLS = genderSummaryXLS;
     this.projectManager = projectManager;
-    // termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    // "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children",
-    // "child"};
+
   }
 
   @Override
@@ -107,10 +103,12 @@ public class GenderSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.TERMS_TO_SEARCH)));
-    termsToSearch = StringUtils.split(string, ',');
-    projectList = projectManager.summaryGetAllProjectsWithGenderContribution();
-    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution();
-    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution();
+    String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.QUERY_PARAMETER)));
+    if (string != null) {
+      termsToSearch = StringUtils.split(string, ',');
+    }
+    projectList = projectManager.summaryGetAllProjectsWithGenderContribution(termsToSearch);
+    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution(termsToSearch);
+    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution(termsToSearch);
   }
 }

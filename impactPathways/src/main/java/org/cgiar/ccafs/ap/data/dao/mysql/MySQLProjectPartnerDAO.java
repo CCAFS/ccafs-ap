@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Héctor Fabio Tobón R.
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  * @author Javier Andrés Gallego
  */
 public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
@@ -95,7 +95,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution() {
+  public Map<String, String> getAllProjectPartnersPersonsWithTheirInstitution() {
     StringBuilder query = new StringBuilder();
     LOG.debug("getAllProjectPartnersPersonWithTheirPartners");
     query.append("SELECT ppp.id  as partner_person_id ,IFNULL(CONCAT(i.acronym, ' - ',  i.name), i.name) ");
@@ -105,15 +105,12 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     query.append("WHERE pp.is_active = 1 AND ppp.is_active = 1 ");
     query.append("ORDER BY ppp.id");
 
-    List<Map<String, String>> projectPartnerList = new ArrayList<>();
+    Map<String, String> projectPartnerData = new HashMap<String, String>();
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
-      Map<String, String> projectPartnerData;
+
       while (rs.next()) {
-        projectPartnerData = new HashMap<String, String>();
-        projectPartnerData.put("project_partner_person_id", rs.getString("partner_person_id"));
-        projectPartnerData.put("institution_name", rs.getString("institution_name"));
-        projectPartnerList.add(projectPartnerData);
+        projectPartnerData.put(rs.getString("partner_person_id"), rs.getString("institution_name"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -122,7 +119,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       LOG.error(exceptionMessage, e);
       return null;
     }
-    return projectPartnerList;
+    return projectPartnerData;
   }
 
   private List<Map<String, String>> getData(String query) {
@@ -261,27 +258,6 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
   }
 
   @Override
-  @Deprecated
-  public List<Map<String, String>> getProjectPartners(int projectID, String projectPartnerType) {
-    LOG.debug(">> getProjectPartners projectID = {},  projectPartnerType = {})",
-      new Object[] {projectID, projectPartnerType});
-
-    StringBuilder query = new StringBuilder();
-    query.append("SELECT *   ");
-    query.append("FROM project_partners ");
-    query.append("WHERE project_id = ");
-    query.append(projectID);
-    query.append(" AND partner_type = '");
-    query.append(projectPartnerType);
-    query.append("'");
-    query.append(" AND is_active = 1 ");
-    query.append("ORDER BY partner_id");
-
-    LOG.debug("-- getProjectPartners() > Calling method executeQuery to get the results");
-    return this.getData(query.toString());
-  }
-
-  @Override
   public int saveProjectPartner(Map<String, Object> projectPartnerData) {
     LOG.debug(">> saveProjectPartner(projectPartnerData)", projectPartnerData);
     StringBuilder query = new StringBuilder();
@@ -302,8 +278,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       values[5] = projectPartnerData.get("modification_justification");
     } else {
       // update record
-      query.append(
-        "UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
+      query
+      .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
@@ -363,5 +339,111 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     return result;
 
 
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetActivePartners() {
+    List<Map<String, Object>> projectPartnersData = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT i.id as 'institution_id', ");
+    query.append("group_concat(DISTINCT pp.project_id SEPARATOR ',') as 'project_ids', ");
+    query.append("group_concat(DISTINCT ip.id SEPARATOR ',') as 'ip_programs', ");
+    query.append("i.name as 'institution_name', ");
+    query.append("i.acronym as 'institution_acronym', ");
+    query.append("i.website_link as 'institution_website', ");
+    query.append("i.institution_type_id as 'institution_type_id', ");
+    query.append("it.name as 'institution_type_name', ");
+    query.append("it.acronym as 'institution_type_acronym' , ");
+    query.append(" le.code   as 'country_code' ,  ");
+    query.append(" le.name   as 'country_name' , ");
+    query.append(" re.id   as 'region_id' ,  ");
+    query.append(" re.name   as 'region_name', ");
+    query.append(" i.city   as 'city' ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN institutions i ON i.id = pp.institution_id ");
+    query.append("INNER JOIN institution_types it ON it.id = i.institution_type_id ");
+    query.append("INNER JOIN projects p ON p.id = pp.project_id  ");
+    query.append("INNER JOIN project_focuses pf ON pf.project_id = p.id ");
+    query.append("INNER JOIN ip_programs ip ON ip.id = pf.program_id ");
+    query.append("INNER JOIN loc_elements le ON i.country_id = le.id ");
+    query.append("INNER JOIN loc_elements re ON le.parent_id = re.id ");
+    query.append("WHERE pp.is_active = 1 ");
+    query.append("AND p.is_active = 1 ");
+    query.append("AND pf.is_active = 1 ");
+    query.append("GROUP BY i.id ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> projectPartnerData = new HashMap<>();
+        projectPartnerData.put("id", rs.getInt("institution_id"));
+        projectPartnerData.put("project_ids", rs.getString("project_ids"));
+        projectPartnerData.put("ip_programs", rs.getString("ip_programs"));
+        projectPartnerData.put("institution_name", rs.getString("institution_name"));
+        projectPartnerData.put("institution_acronym", rs.getString("institution_acronym"));
+        projectPartnerData.put("institution_website", rs.getString("institution_website"));
+        projectPartnerData.put("institution_type_id", rs.getString("institution_type_id"));
+        projectPartnerData.put("institution_type_name", rs.getString("institution_type_name"));
+        projectPartnerData.put("institution_type_acronym", rs.getString("institution_type_acronym"));
+        projectPartnerData.put("country_code", rs.getString("country_code"));
+        projectPartnerData.put("country_name", rs.getString("country_name"));
+        projectPartnerData.put("region_id", rs.getString("region_id"));
+        projectPartnerData.put("region_name", rs.getString("region_name"));
+        projectPartnerData.put("city", rs.getString("city"));
+        projectPartnersData.add(projectPartnerData);
+      }
+    } catch (SQLException e) {
+      LOG.error("summaryGetActivePartners > Exception raised trying to get the project partners for the XML", e);
+    }
+
+    return projectPartnersData;
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetNotLoggedInPartners() {
+    List<Map<String, Object>> projectPartnersData = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT u.id as 'user_id' , CONCAT( u.last_name, ', ', u.first_name) as 'name', u.email as 'email', ");
+    query.append("(SELECT ");
+    query.append("(SELECT GROUP_CONCAT( DISTINCT ppp.contact_type SEPARATOR ', ') ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE ppp.user_id = u.id AND ppp.is_active = 1 AND pp.is_active = 1 ");
+    query.append(") ");
+    query.append("FROM institutions ins ");
+    query.append("WHERE ins.id = i.id ");
+    query.append(") as 'contact_type', ");
+    query.append("(SELECT ");
+    query.append("(SELECT GROUP_CONCAT('P', p.id ORDER BY p.id asc SEPARATOR ', ') ");
+    query.append("FROM projects p ");
+    query.append("INNER JOIN project_partners pp ON p.id = pp.project_id ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("WHERE ppp.user_id = u.id AND ppp.is_active = 1 AND pp.is_active = 1 AND p.is_active = 1 ");
+    query.append(") ");
+    query.append("FROM institutions ins ");
+    query.append("WHERE ins.id = i.id ");
+    query.append(") as 'project_id' ");
+    query.append("FROM project_partners pp ");
+    query.append("INNER JOIN institutions i ON pp.institution_id = i.id ");
+    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
+    query.append("INNER JOIN users u ON u.id = ppp.user_id ");
+    query.append("INNER JOIN projects p ON pp.project_id = p.id ");
+    query.append("WHERE pp.is_active = 1 AND u.last_login IS NULL AND p.is_active = 1 AND ppp.is_active = 1 ");
+    query.append("GROUP BY u.id ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, Object> projectPartnerData = new HashMap<>();
+        projectPartnerData.put("user_id", rs.getInt("user_id"));
+        projectPartnerData.put("name", rs.getString("name"));
+        projectPartnerData.put("email", rs.getString("email"));
+        projectPartnerData.put("contact_type", rs.getString("contact_type"));
+        projectPartnerData.put("project_id", rs.getString("project_id"));
+        projectPartnersData.add(projectPartnerData);
+      }
+    } catch (SQLException e) {
+      LOG.error("summaryGetNotLoggedInPartners > Exception raised trying to get the project partners for the XML", e);
+    }
+
+    return projectPartnersData;
   }
 }

@@ -130,7 +130,7 @@
       [#if canEdit && editable && !action.canDelete()]
 
       <div class="note left">
-        [#if editable && deliverable.type.description??]
+        [#if editable && deliverable.type??]
           <p><b>Deliverable type description:</b> [@s.text name="${(deliverable.type.description)!}" /]</p>
           <br />
         [/#if]

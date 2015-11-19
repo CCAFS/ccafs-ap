@@ -247,6 +247,13 @@ public class ProjectDeliverableAction extends BaseAction {
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
 
 
+      if (deliverable.getOutput() != null) {
+        deliverableManager.saveDeliverableOutput(deliverable.getId(), deliverable.getOutput().getId(),
+          this.getCurrentUser(), this.getJustification());
+
+      }
+      // Saving MOG
+
       // -------- Saving next users.
 
       // Getting previous next users in order to identify those that need to be deleted.

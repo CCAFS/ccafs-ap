@@ -18,6 +18,7 @@
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
+  [#-- 
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" /> 
     <p> [@s.text name="planning.projectBudget.help1" /] 
@@ -25,6 +26,8 @@
     <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.projectBudget.partners" /]</a> [@s.text name="planning.projectBudget.help3" /] 
     <a href="[@s.url namespace="/" action='glossary'][/@s.url]"> [@s.text name="planning.projectBudget.managementLiaison" /]</a> [@s.text name="planning.projectBudget.help4" /]</p>
   </div>
+  --]
+
   [#include "/WEB-INF/planning/planningProjectsSubMenu.ftl" /]
   
   [@s.form action="budgetByMog" cssClass="pure-form"]
@@ -87,19 +90,17 @@
               [#if project.bilateralProject || project.coFundedProject]
                 [#-- Total budget amount W3/Bilateral for bilateral and Co-funded projects --]
                 <div class="BudgetByYear">
-                  [#assign totalCoFundedBudgetByYear="100000" /]
-                  <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${bilateralGenderPercentage?number?string(",##0.00")}</span></h6> 
+                  <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] budget: US$ <span>${bilateralBudgetByYear?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedBudgetByYear">
-                    [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${bilateralGenderPercentage?number?string(",##0.00")}</span>
+                    [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${bilateralBudgetByYear?number?string(",##0.00")}</span>
                   </p>
                 </div>
 
                 [#-- Total gender budget amount (W3/Bilateral) for Co-funded projects --]
                 <div class="BudgetByYear">
-                  [#assign totalCoFundedGenderBudgetByYear="50000" /]
-                  <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] Gender budget : US$ <span>${totalBilateralGenderBudgetByYear?number?string(",##0.00")}</span></h6> 
+                  <h6 class="subTitle">Total ${year} [@s.text name="planning.projectBudget.W3Bilateral" /] Gender budget : US$ <span>${bilateralGenderPercentage?number?string(",##0.00")}</span></h6> 
                   <p id="coFundedGenderBudgetByYear">
-                    [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${totalBilateralGenderBudgetByYear?number?string(",##0.00")}</span>
+                    [@s.text name="planning.projectBudget.W3Bilateral" /] budget remaining: (<span class="percentage"></span>) US$ <span class="amount">${bilateralGenderPercentage?number?string(",##0.00")}</span>
                   </p>
                 </div>
               [/#if]

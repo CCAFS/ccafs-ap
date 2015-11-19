@@ -23,7 +23,7 @@ import org.cgiar.ccafs.security.data.model.ProjectUserRole;
 import org.cgiar.ccafs.security.data.model.User;
 import org.cgiar.ccafs.security.data.model.UserRole;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +31,6 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -44,8 +43,8 @@ import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +82,7 @@ public class APCustomRealm extends AuthorizingRealm {
   public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager,
     ProjectSpecificUserRoleManagerImpl projectSpecificUserRoleManager, @Named("DB") Authenticator dbAuthenticator,
     @Named("LDAP") Authenticator ldapAuthenticator) {
+    super(new MemoryConstrainedCacheManager());
     this.userManager = userManager;
     this.userRoleManager = userRoleManager;
     this.projectSpecificUserRoleManager = projectSpecificUserRoleManager;
@@ -95,7 +95,6 @@ public class APCustomRealm extends AuthorizingRealm {
   @Override
   public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
     super.clearCachedAuthorizationInfo(principals);
-    // authorizationInfo = null;
   }
 
   @Override
@@ -141,44 +140,57 @@ public class APCustomRealm extends AuthorizingRealm {
 
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-    Session session = SecurityUtils.getSubject().getSession();
-    if (session.getAttribute("auth_info") == null) {
-      // if ((Integer) principals.getPrimaryPrincipal() != userID) {
-      SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+    SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
-      userID = (Integer) principals.getPrimaryPrincipal();
-      List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
-      Map<String, UserRole> projectRoles = new HashMap<>();
+    userID = (Integer) principals.getPrimaryPrincipal();
+    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
+    List<Map<String, UserRole>> projectRoles = new ArrayList<>();
 
-      // Get the roles general to the platform
-      for (UserRole role : roles) {
-        authorizationInfo.addRole(role.getAcronym());
+    if (roles.size() == 0) {
+      roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
+    }
+    // Get the roles general to the platform
+    for (UserRole role : roles) {
+      authorizationInfo.addRole(role.getAcronym());
 
-        switch (role.getId()) {
-          case APConstants.ROLE_ADMIN:
-            for (String permission : role.getPermissions()) {
-              authorizationInfo.addStringPermission(permission);
-            }
-            break;
+      switch (role.getId()) {
+        case APConstants.ROLE_ADMIN:
+          for (String permission : role.getPermissions()) {
 
-          case APConstants.ROLE_MANAGEMENT_LIAISON:
-          case APConstants.ROLE_COORDINATING_UNIT:
-            projectRoles.putAll(userRoleManager.getManagementLiaisonProjects(userID));
-            break;
+            authorizationInfo.addStringPermission(permission);
+          }
+          break;
 
-          case APConstants.ROLE_PROJECT_LEADER:
-          case APConstants.ROLE_PROJECT_COORDINATOR:
-            projectRoles.putAll(userRoleManager.getProjectLeaderProjects(userID));
-            break;
 
-          case APConstants.ROLE_CONTACT_POINT:
-            projectRoles.putAll(userRoleManager.getContactPointProjects(userID));
-            break;
-        }
+        case APConstants.ROLE_FINANCING_PROJECT:
+          for (String permission : role.getPermissions()) {
+            permission = permission.replace("projects:", "projects:*:");
+            authorizationInfo.addStringPermission(permission);
+          }
+          break;
+        case APConstants.ROLE_MANAGEMENT_LIAISON:
+        case APConstants.ROLE_COORDINATING_UNIT:
+          projectRoles.add(userRoleManager.getManagementLiaisonProjects(userID));
+          break;
+
+        case APConstants.ROLE_PROJECT_LEADER:
+        case APConstants.ROLE_PROJECT_COORDINATOR:
+          projectRoles.add(userRoleManager.getProjectLeaderProjects(userID));
+          break;
+
+        case APConstants.ROLE_CONTACT_POINT:
+          projectRoles.add(userRoleManager.getContactPointProjects(userID));
+          break;
       }
+    }
 
-      // Converting those general roles into specific for the projects where they are able to edit.
-      for (Map.Entry<String, UserRole> entry : projectRoles.entrySet()) {
+    // Adding the permissions for each role exactly as they come from the database:
+    for (UserRole role : roles) {
+      authorizationInfo.addStringPermissions(role.getPermissions());
+    }
+    // Converting those general roles into specific for the projects where they are able to edit.
+    for (Map<String, UserRole> mapRoles : projectRoles) {
+      for (Map.Entry<String, UserRole> entry : mapRoles.entrySet()) {
         String projectID = entry.getKey();
         UserRole role = entry.getValue();
 
@@ -193,23 +205,22 @@ public class APCustomRealm extends AuthorizingRealm {
           // }
         }
       }
-
-      // Getting the specific roles based on the table project_roles.
-      List<ProjectUserRole> projectSpecificUserRoles =
-        projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
-      // Adding the specific project roles to the user.
-      for (ProjectUserRole projectUserRole : projectSpecificUserRoles) {
-        for (String permission : projectUserRole.getUserRole().getPermissions()) {
-          if (permission.contains(":projects:")) {
-            permission = permission.replace("projects:", "projects:" + projectUserRole.getProjectID() + ":");
-          }
-          authorizationInfo.addStringPermission(permission);
-        }
-      }
-      session.setAttribute("auth_info", authorizationInfo);
-      return authorizationInfo;
     }
-    return (AuthorizationInfo) session.getAttribute("auth_info");
+
+
+    // Getting the specific roles based on the table project_roles.
+    List<ProjectUserRole> projectSpecificUserRoles = projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
+    // Adding the specific project roles to the user.
+    for (ProjectUserRole projectUserRole : projectSpecificUserRoles) {
+      for (String permission : projectUserRole.getUserRole().getPermissions()) {
+        if (permission.contains(":projects:")) {
+          permission = permission.replace("projects:", "projects:" + projectUserRole.getProjectID() + ":");
+        }
+        authorizationInfo.addStringPermission(permission);
+      }
+    }
+
+    return authorizationInfo;
 
   }
 

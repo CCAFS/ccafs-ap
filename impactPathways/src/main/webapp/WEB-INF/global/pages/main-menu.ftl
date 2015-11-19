@@ -30,39 +30,33 @@
 	      [/#if]
 	      
 	      [#-- Planning section --]
-	      [#if !securityContext.guest ]
-	        [#if planningActive ]               
-	          <a  href="[@s.url namespace="/planning" action='projectsList'/]">
-	        [#else]
-	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
-	        [/#if]
-	          <li [#if currentSection?? && currentSection == "planning"] class="currentSection" [/#if]>[@s.text name="menu.planning" /]</li>
-	        </a>
-	      [/#if]
+        [#if planningActive ]               
+          <a  href="[@s.url namespace="/planning" action='projectsList'/]">
+        [#else]
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
+        [/#if]
+          <li [#if currentSection?? && currentSection == "planning"] class="currentSection" [/#if]>[@s.text name="menu.planning" /]</li>
+        </a>
 	      
 	      [#-- Reporting section --]
-	      [#if !securityContext.guest ] 
-	        [#if reportingActive ]               
-	          <a href="${baseUrl}/reporting/introduction.do" >
-	        [#else]
-	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
-	        [/#if]
-	          <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
-	        </a>
-	      [/#if]	      
+        [#if reportingActive ]               
+          <a href="${baseUrl}/reporting/introduction.do" >
+        [#else]
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
+        [/#if]
+          <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
+        </a>      
 	     
 	      [#-- Summaries section --]
-	      [#if !securityContext.guest ] 
-	        [#if summariesActive ]
-	          <a href="${baseUrl}/summaries/board.do" /]" >
-	              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
-	          </a>
-	        [#else]
-	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
-	              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
-	          </a>
-	        [/#if]
-	      [/#if]
+        [#if summariesActive ]
+          <a href="${baseUrl}/summaries/board.do" /]" >
+              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
+          </a>
+        [#else]
+          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
+              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
+          </a>
+        [/#if]
 	      
 	      [#-- P&R Help --]
         <a href="${baseUrl}/help.do">
@@ -104,7 +98,7 @@
         <p class="userId" style="display:none">${currentUser.id}</p> 
         <p class="name">${currentUser.firstName} ${currentUser.lastName}</p>  
         <p class="institution">${currentUser.email}</p>
-        <p class="roles">${(securityContext.rolesAsString)!}</p>
+        <p class="roles">${(securityContext.roles)!}</p>
       </div>
   	[/#if]
   </div>

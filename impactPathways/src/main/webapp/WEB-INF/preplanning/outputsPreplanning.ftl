@@ -7,9 +7,9 @@
 [#assign currentStage = "outputs" /]
 
 [#assign breadCrumb = [
-  {"label":"preplanning", "nameSpace":"pre-planning", "action":"outcomes"},
-  {"label":"impactPathways", "nameSpace":"pre-planning", "action":"outcomes"},
-  {"label":"outputs", "nameSpace":"pre-planning", "action":"outputs"}
+  {"label":"preplanning", "nameSpace":"pre-planning", "action":"intro"},
+  {"label":"impactPathways", "nameSpace":"pre-planning", "action":"outcomes", "param":"programID=${program.id}"},
+  {"label":"outputs", "nameSpace":"pre-planning", "action":"outputs", "param":"programID=${program.id}"}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

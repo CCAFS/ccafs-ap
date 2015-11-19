@@ -19,14 +19,19 @@ package org.cgiar.ccafs.ap.summaries.planning.xlsx;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.DefaultTextProvider;
@@ -55,7 +60,6 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFTextBox;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
-import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +80,7 @@ public class BaseXLS {
   public static final int COLUMN_TYPE_NUMERIC = 6;
   public static final int COLUMN_TYPE_DATE = 7;
   public static final int COLUMN_TYPE_HYPERLINK = 8;
+  public static final int COLUMN_TYPE_DATE_TIME = 9;
 
   // Constants for write description
   public static final int REPORT_DESCRIPTION_ROW = 7;
@@ -101,6 +106,7 @@ public class BaseXLS {
   private static final short TEXTBOX_FONT_COLOR_INDEX = HSSFColor.WHITE.index;
   // Cell Style
   private static final String CELL_DATE_FORMAT = "yyyy-MM-dd";
+  private static final String CELL_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
 
   private static final String CELL_TRUE_BOOLEAN = "Yes";
@@ -132,7 +138,7 @@ public class BaseXLS {
   @Inject
   public BaseXLS(APConfig config) {
     this.config = config;
-    this.excelTemplateFile = new File(config.getResourcePath(), "templates/template.xlsx");
+    this.excelTemplateFile = new File(config.getResourcePath(), "templates" + File.separator + "template.xlsx");
   }
 
   /**
@@ -147,6 +153,46 @@ public class BaseXLS {
     header.setRight("Report generated on " + date);
   }
 
+
+  private List<Point> auxiliarRichText(String token, String[] terms) {
+
+    List<Point> listPointPaint = new ArrayList<Point>();
+
+    int beginSubToken = 0;
+    int endSubToken = 0;
+
+    Pattern pat;
+    Matcher mat;
+    String analizator = new String();
+    for (String term : terms) {
+      while (token.indexOf(term.toLowerCase()) > -1) {
+        beginSubToken = token.indexOf(term);
+        endSubToken = beginSubToken + term.length() - 1;
+
+        analizator = token.substring(beginSubToken, endSubToken + 1);
+
+        if (beginSubToken != 0) {
+          analizator = token.charAt(beginSubToken - 1) + analizator;
+        }
+
+        if (endSubToken != token.length() - 1) {
+          analizator = analizator + token.charAt(endSubToken + 1);
+        }
+
+        pat = Pattern.compile("^\\p{Punct}?+" + term.toLowerCase() + "\\p{Punct}?");
+        mat = pat.matcher(analizator);
+
+        if (mat.matches()) {
+          listPointPaint.add(new Point(beginSubToken, endSubToken));
+        }
+
+        token = token.substring(beginSubToken + term.length(), token.length());
+      }
+    }
+
+    return listPointPaint;
+
+  }
 
   /**
    * This method closes all the streams opened in the process.
@@ -164,7 +210,9 @@ public class BaseXLS {
   public void createLogo(Workbook workbook, Sheet sheet) throws IOException {
     // FileInputStream obtains input bytes from the image file
     InputStream inputStream =
-      new FileInputStream(ServletActionContext.getServletContext().getRealPath("images/global/logo-ccafs.png"));
+
+
+    new FileInputStream(new File(config.getResourcePath(), "templates" + File.separator + "logo-ccafs.png"));
     // Get the contents of an InputStream as a byte[].
     byte[] bytes = IOUtils.toByteArray(inputStream);
     // Adds a picture to the workbook
@@ -298,7 +346,7 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-        // Style numeric
+      // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
@@ -309,13 +357,13 @@ public class BaseXLS {
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // styleBoleean
+          // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // styleBudget
+          // styleBudget
         case COLUMN_TYPE_BUDGET:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("$#,##0.00"));
@@ -334,12 +382,12 @@ public class BaseXLS {
           columnStyles[c].setWrapText(true);
           break;
 
-        // Style short string
+          // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style hyperlink
+          // Style hyperlink
         case COLUMN_TYPE_HYPERLINK:
           XSSFFont hlinkfont = (XSSFFont) workbook.createFont();
           hlinkfont.setUnderline(XSSFFont.U_SINGLE);
@@ -347,6 +395,14 @@ public class BaseXLS {
           columnStyles[c].setFont(hlinkfont);
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
+
+        // Style hyperlink
+        case COLUMN_TYPE_DATE_TIME:
+          columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_TIME_FORMAT));
+          columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
+          break;
+
+
       }
       this.setBottomBorderCell(columnStyles[c], Color.decode(CELL_BORDER_COLOR_HEX));
       if (c == 0) {
@@ -378,6 +434,7 @@ public class BaseXLS {
     try {
       // validating the type of format.
       if (useTemplate) {
+        LOG.info("Loading template from: " + this.excelTemplateFile);
         InputStream templateStream = new FileInputStream(this.excelTemplateFile);
         // creating workbook based on the template.
         workbook = new XSSFWorkbook(templateStream);
@@ -402,6 +459,7 @@ public class BaseXLS {
   public void nextColumn() {
     columnCounter++;
   }
+
 
   /**
    * This method move the cursor to the beginning of the next row.
@@ -430,7 +488,6 @@ public class BaseXLS {
     cell.setCellStyle(columnStyles[columnCounter - 1]);
   }
 
-
   private void setBottomBorderCell(XSSFCellStyle cellStyle, Color color) {
     // Create the border
     cellStyle.setBorderBottom(CELL_BORDER_TYPE_BOTTOM);
@@ -440,6 +497,7 @@ public class BaseXLS {
 
     cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
   }
+
 
   /**
    * This method writes boolean value into a specific cell.
@@ -455,7 +513,6 @@ public class BaseXLS {
       cell.setCellValue(CELL_FALSE_BOOLEAN);
     }
   }
-
 
   /**
    * This method writes double value with format budget into a specific cell.
@@ -479,6 +536,7 @@ public class BaseXLS {
     cell.setCellValue(value);
   }
 
+
   /**
    * This method writes double value with format budget into a specific cell.
    * 
@@ -495,7 +553,6 @@ public class BaseXLS {
 
   }
 
-
   /**
    * This method writes integer value into a specific cell.
    * 
@@ -506,6 +563,7 @@ public class BaseXLS {
     this.prepareCell(sheet);
     cell.setCellValue(value);
   }
+
 
   /**
    * This method writes the headers into the given sheet.
@@ -529,10 +587,8 @@ public class BaseXLS {
         sheet.autoSizeColumn(counter);
       }
     } else {
-      // TODO To develop the same algorithm but without style starting in the first row of the sheet.
     }
   }
-
 
   /**
    * This method writes string value with hyperlink url into a specific cell.
@@ -543,6 +599,7 @@ public class BaseXLS {
    */
   public void writeHyperlink(Sheet sheet, String value, XSSFHyperlink link) {
     // Set description
+    sheet.setColumnWidth(columnCounter, 5000);
     this.prepareCell(sheet);
     cell.setCellValue(value);
     cell.setHyperlink(link);
@@ -576,12 +633,13 @@ public class BaseXLS {
     } else {
       if (value.toString().length() > 30) {
         sheet.setColumnWidth(columnCounter, 12000);
+      } else {
+        sheet.setColumnWidth(columnCounter, 8000);
       }
       cell.setCellValue(value);
     }
 
   }
-
 
   /**
    * This method writes string value into a specific cell.
@@ -594,28 +652,25 @@ public class BaseXLS {
     this.prepareCell(sheet);
     StringTokenizer tokens;
     String token;
+    int begin = 0;
 
     XSSFRichTextString richText = new XSSFRichTextString();
-    boolean found;
+
+
     if (text == null) {
       cell.setCellValue("");
     } else {
+      //
       tokens = new StringTokenizer(text);
       while (tokens.hasMoreTokens()) {
-        found = false;
-        token = tokens.nextToken();
-        richText.append(token);
+        token = tokens.nextToken().toLowerCase();
 
-        // searching terms in text
-        for (String term : terms) {
-          if (token.equals(term)) {
-            found = true;
-            break;
-          }
+        richText.append(token);
+        begin = richText.length() - token.length();
+        for (Point point : this.auxiliarRichText(token, terms)) {
+          richText.applyFont(begin + point.x, begin + point.y + 1, this.richTextFont);
         }
-        if (found) {
-          richText.applyFont(richText.length() - token.length(), richText.length(), richTextFont);
-        }
+
         richText.append(" ");
       }
 

@@ -108,13 +108,19 @@ public class BudgetManagerImpl implements BudgetManager {
   }
 
   @Override
-  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
-    return budgetDAO.calculateTotalGenderPercentageByYearAndType(projectID, year, budgetTypeID);
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID,
+    boolean coreCofunded) {
+    return budgetDAO.calculateTotalGenderPercentageByYearAndType(projectID, year, budgetTypeID, coreCofunded);
   }
 
   @Override
   public double calculateTotalProjectBudgetByType(int projectID, int budgetTypeID) {
     return budgetDAO.calculateTotalProjectBudgetByType(projectID, budgetTypeID);
+  }
+
+  @Override
+  public double calculateTotalProjectBudgetByTypeYear(int projectID, int budgetTypeID, int year) {
+    return budgetDAO.calculateTotalProjectBudgetByTypeYear(projectID, budgetTypeID, year);
   }
 
   @Override
@@ -170,7 +176,8 @@ public class BudgetManagerImpl implements BudgetManager {
       budget.setType(BudgetType.getBudgetType(Integer.parseInt(budgetData.get("budget_type"))));
       budget.setAmount(Double.parseDouble(budgetData.get("amount")));
       if (budgetData.get("gender_percentage") != null) {
-        budget.setGenderPercentage(Integer.parseInt(budgetData.get("gender_percentage")));
+        budget.setGenderPercentage(Double.parseDouble(budgetData.get("gender_percentage")));
+
       }
 
       // Institution as institution_id

@@ -70,6 +70,9 @@ public class DeliverableValidator extends BaseValidator {
   }
 
   public boolean isValidTypeOther(DeliverableType type, String typeOther) {
+    if (type == null) {
+      return true;
+    }
     if (type.getId() == APConstants.DELIVERABLE_SUBTYPE_OTHER_ID) {
       return this.isValidString(typeOther); // type other has to be filled.
     }

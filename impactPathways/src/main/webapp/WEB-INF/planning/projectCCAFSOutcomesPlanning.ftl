@@ -42,6 +42,7 @@
       </p>
     [/#if] 
       
+    [#if project.startDate?? && project.endDate??]
     <div class="borderBox">
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
@@ -117,15 +118,14 @@
                                 <div class="checkboxGroup vertical indicatorNarrative" >
                                   <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                   [#if editable && (currentPlanningYear lte year)]
-                                    <input type="text" class="projectIndicatorTarget" name="project.indicators.target" value="${projectIndicator.target!}"/> 
+                                    <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                   [#else]
                                     [#if !projectIndicator.target?has_content]
-                                      [#if isYearRequired(year) ]
-                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
-                                      [/#if]
+                                      [#if isYearRequired(year) ]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if]
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${projectIndicator.target}</p></div>
+                                      <input type="hidden" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${(projectIndicator.target)!}"/>
                                     [/#if]
                                   [/#if]
                                 </div> 
@@ -143,6 +143,7 @@
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.description)!}</p></div>
+                                      <input type="hidden" class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description" value="${(projectIndicator.description)!}"/>
                                     [/#if] 
                                   [/#if] 
                                 </div>
@@ -160,6 +161,7 @@
                                       [#if currentPlanningYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.gender)!}</p></div>
+                                      <input type="hidden" class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender" value="${(projectIndicator.gender)!}"/>
                                     [/#if] 
                                   [/#if] 
                                 </div>
@@ -203,7 +205,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /]</h6></label>
                                 [#if editable]
-                                  <input type="text" class="projectIndicatorTarget" name="project.indicators.target" />
+                                  <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" />
                                 [/#if]
                               </div>
                               
@@ -211,7 +213,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label><h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /]</h6></label>
                                 [#if editable]
-                                  <textarea class="projectIndicatorDescription" name="project.indicators.description" ></textarea>
+                                  <textarea class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description" ></textarea>
                                 [/#if]
                               </div>
                               
@@ -219,7 +221,7 @@
                               <div class="checkboxGroup vertical indicatorNarrative">
                                 <label><h6>[@s.text name="planning.projectImpactPathways.targetGender" /]:</h6></label>
                                 [#if editable]
-                                  <textarea class="projectIndicatorGender" name="project.indicators.gender" ></textarea>
+                                  <textarea class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender" ></textarea>
                                 [/#if]
                               </div>
                               
@@ -242,10 +244,10 @@
                           <div class="mog">
                             [#if editable]
                               <input name="project.outputs.contributesTo[0].id" value="${midOutcome.id}"  type="hidden" />
-                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if project.containsOutput(output.id, midOutcome.id)]class="disabled" checked onclick="return false"[/#if] />
+                              <input type="checkbox" name="outputs.id" value="${output.id}" [#if (project.containsOutput(output.id, midOutcome.id))!false]class="disabled" checked onclick="return false"[/#if] />
                               <label class=""> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
                             [#else]
-                               [#if project.containsOutput(output.id, midOutcome.id)] 
+                               [#if (project.containsOutput(output.id, midOutcome.id))!false] 
                                <label class="checked"> ${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </label>
                                [/#if] 
                             [/#if]
@@ -267,14 +269,17 @@
           </div>
         [/#if] 
       [#else]
-        <p class="emptyText">[@s.text name="planning.projectImpactPathways.contributionsEmpty" /]</p> 
-      [/#if]   
+        <p class="emptyText">[@s.text name="planning.projectImpactPathways.contributionsEmpty"][@s.param]<a href="[@s.url action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]#projectWorking">[/@s.param][@s.param]</a>[/@s.param][/@s.text]</p> 
+      [/#if] 
     </div>
+    [#else]
+      <p class="simpleBox center">[@s.text name="planning.projectOutcome.message.dateUndefined" /]</p>
+    [/#if]
     
     [#if !newProject]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
         [#if canEdit && !newProject]
           <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
@@ -390,7 +395,12 @@
 
 [#-- Get if the year is required--]
 [#function isYearRequired year]
-  [#return !project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))]
+  [#if project.endDate??]
+    [#assign endDate = (project.endDate?string.yyyy)?number]
+    [#return (!project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))) && (endDate gte year)]
+  [#else]
+    [#return false]
+  [/#if]
 [/#function]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Hector Fabio Tobón R.
  * @author Javier Andrés Gallego.
+ * @author Carlos Alberto Martínez M.
  */
 public class MySQLInstitutionDAO implements InstitutionDAO {
 
@@ -330,21 +331,19 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("le.id as 'country_id', ");
     query.append("le.name as 'country_name', ");
     query.append("(SELECT ");
-    query.append("(SELECT GROUP_CONCAT('P', p.id ORDER BY p.id asc SEPARATOR ', ') ");
-    query.append("FROM project_partners pp ");
-    query.append("INNER JOIN projects p ON p.id = pp.project_id ");
-    query.append("WHERE pp.institution_id = ins.id ");
-    query.append("GROUP BY pp.institution_id ");
-    query.append(") ");
-    query.append("FROM institutions ins ");
-    query.append("WHERE ins.id = i.id ");
+    query.append("(SELECT GROUP_CONCAT(DISTINCT 'P', p.id ORDER BY p.id asc SEPARATOR ', ') ");
+    query.append("FROM projects p ");
+    query.append("INNER JOIN project_partners pp ON p.id = pp.project_id ");
+    query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+    query.append("WHERE pp.institution_id = ins.id AND ppp.contact_type = 'PL' AND p.is_active = 1 ");
+    query.append(") FROM institutions ins WHERE ins.id = i.id ");
     query.append(") as 'projects' ");
     query.append("FROM institutions i ");
     query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("INNER JOIN users u ON u.id = ppp.user_id ");
     query.append("LEFT JOIN loc_elements le ON le.id = i.country_id ");
-    query.append("WHERE ppp.contact_type = 'PL' ");
+    query.append("WHERE ppp.contact_type = 'PL' AND pp.is_active = 1 ");
     query.append("ORDER BY i.id");
 
     try (Connection con = databaseManager.getConnection()) {
@@ -388,14 +387,12 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     query.append("it.id as institution_type_id, it.acronym as 'institution_type_acronym', ");
     query.append("it.name as 'institution_type_name', ");
     query.append("(SELECT ");
-    query.append("(SELECT GROUP_CONCAT('P', p.id ORDER BY p.id asc SEPARATOR ', ') ");
-    query.append("FROM project_partners pp ");
-    query.append("INNER JOIN projects p ON p.id = pp.project_id ");
-    query.append("WHERE pp.institution_id = ins.id ");
-    query.append("GROUP BY pp.institution_id ");
-    query.append(") ");
-    query.append("FROM institutions ins ");
-    query.append("WHERE ins.id = i.id ");
+    query.append("(SELECT GROUP_CONCAT(DISTINCT 'P', p.id ORDER BY p.id asc SEPARATOR ', ') ");
+    query.append("FROM projects p ");
+    query.append("INNER JOIN project_partners pp ON p.id = pp.project_id ");
+    query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+    query.append("WHERE pp.institution_id = ins.id AND p.is_active = 1 ");
+    query.append(") FROM institutions ins WHERE ins.id = i.id ");
     query.append(") as 'projects' ");
     query.append("FROM institutions i ");
     query.append("INNER JOIN project_partners pp ON pp.institution_id = i.id ");
@@ -492,7 +489,7 @@ public class MySQLInstitutionDAO implements InstitutionDAO {
     StringBuilder query = new StringBuilder();
 
     query
-      .append("SELECT COUNT(*) FROM project_partners pp WHERE pp.project_id = (SELECT pp2.project_id FROM project_partners pp2 WHERE pp2.id = ");
+    .append("SELECT COUNT(*) FROM project_partners pp WHERE pp.project_id = (SELECT pp2.project_id FROM project_partners pp2 WHERE pp2.id = ");
     query.append(projectPartnerID);
     query.append(") AND pp.partner_id = (SELECT pp3.partner_id FROM project_partners pp3 WHERE pp3.id = ");
     query.append(projectPartnerID);

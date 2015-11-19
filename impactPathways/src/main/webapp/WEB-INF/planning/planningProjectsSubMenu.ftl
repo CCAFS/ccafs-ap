@@ -15,9 +15,14 @@
       <p><b>[@s.text name="planning.projects.type.ccafs_core" /]</b></p>
     </div>
   [/#if]
-  [#if project.bilateralProject]
+  [#if project.bilateralStandAlone]
     <div id="projectType-quote" class="aux-quote-bilateral" title="[@s.text name="planning.projects.type.bilateral" /] project">
       <p><b>[@s.text name="planning.projects.type.bilateral" /]</b></p>
+    </div>
+  [/#if]
+  [#if project.bilateralProject && project.cofinancing]
+    <div id="projectType-quote" class="aux-quote-bilateral" title="[@s.text name="planning.projects.type.bilateralCoFinancing" /] project">
+      <p><b>[@s.text name="planning.projects.type.bilateralCoFinancing" /]</b></p>
     </div>
   [/#if]
   [#if project.coFundedProject]

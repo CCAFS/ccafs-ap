@@ -67,8 +67,8 @@ public class UnhandledExceptionAction extends BaseAction {
     }
 
     subject = "Exception occurred in CCAFS P&R";
-    message
-    .append("The user " + this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " ");
+    message.append("The user " + this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName()
+      + " <" + this.getCurrentUser().getEmail() + "> ");
     message.append("has experienced an exception on the platform. \n");
     message.append("This execption occurs in the server: " + config.getBaseUrl() + ".\n");
     message.append("The exception message was: \n\n");
@@ -76,8 +76,8 @@ public class UnhandledExceptionAction extends BaseAction {
 
     SendMail sendMail = new SendMail(this.config);
     sendMail.send(config.getEmailNotification(), null, null, subject, message.toString(), null, null, null);
-    LOG.info("sendExceptionMessage() > The platform has sent a message reporting a exception.",
-      this.getCurrentUser().getEmail());
+    LOG.info("sendExceptionMessage() > The platform has sent a message reporting a exception.", this.getCurrentUser()
+      .getEmail());
   }
 
   public void setException(Exception exception) {

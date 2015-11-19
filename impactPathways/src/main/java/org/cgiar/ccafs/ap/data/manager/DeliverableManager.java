@@ -152,12 +152,12 @@ public interface DeliverableManager {
    * This method saves the Deliverable Contribution relation
    * 
    * @param deliverableID - is the Id of the deliverable
-   * @param projectID - is the Id of the project
+   * @param outputID - is the Id of the output (MOG)
    * @param user - is the user that is making the change.
    * @param justification - is the justification statement.
    * @return true if the relation Deliverable Contribution is successfully saved,
    *         false otherwise
    */
-  public boolean saveDeliverableOutput(int deliverableID, int projectID, User user, String justification);
+  public boolean saveDeliverableOutput(int deliverableID, int outputID, User user, String justification);
 
 }

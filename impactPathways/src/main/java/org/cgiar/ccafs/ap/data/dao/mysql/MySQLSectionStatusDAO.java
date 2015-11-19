@@ -47,8 +47,8 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
 
   @Override
   public Map<String, String> getDeliverableSectionStatus(int deliverableID, String cycle, String section) {
-    LOG.debug(">> getDeliverableSectionStatus deliverableID = {}, cycle = {} and section = {})",
-      new Object[] {deliverableID, cycle, section});
+    LOG.debug(">> getDeliverableSectionStatus deliverableID = {}, cycle = {} and section = {})", new Object[] {
+      deliverableID, cycle, section});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
@@ -89,8 +89,8 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
 
   @Override
   public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section) {
-    LOG.debug(">> getProjectSectionStatus projectID = {}, cycle = {} and section = {})",
-      new Object[] {projectID, cycle, section});
+    LOG.debug(">> getProjectSectionStatus projectID = {}, cycle = {} and section = {})", new Object[] {projectID,
+      cycle, section});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
@@ -142,6 +142,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     query.append(" AND cycle = '");
     query.append(cycle);
     query.append("' AND (d.is_active IS NULL OR d.is_active = 1)");
+    // query.append(" AND ss.deliverable_id is NULL");
 
     LOG.debug(">> getProjectSectionStatuses() > Calling method executeQuery to get the results");
     List<Map<String, String>> statusDataList = new ArrayList<>();
@@ -191,8 +192,8 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
       }
     } else {
       // Updating submission record.
-      query.append(
-        "UPDATE section_statuses SET project_id = ?, deliverable_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
+      query
+        .append("UPDATE section_statuses SET project_id = ?, deliverable_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
       query.append("WHERE id = ? ");
       values = new Object[6];
       values[0] = statusData.get("project_id");

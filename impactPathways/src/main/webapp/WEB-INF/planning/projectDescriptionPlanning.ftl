@@ -111,9 +111,10 @@
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
-              <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a>  [#if editable]<span id="remove-file" class="ui-icon ui-icon-closethick remove"></span>[/#if] </p>
+                 [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
+              <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a> 
             [#else]
-              [#if editable] 
+              [#if editable]
                 [@customForm.inputFile name="file"  /]
               [#else]  
                 <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
@@ -134,9 +135,9 @@
           <div id="projectFlagshipsBlock" class="grid_5">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
             <div class="checkboxGroup">  
-              [#if editable && securityContext.canEditProjectFlagships(project.id)]
+              [#if editable && (securityContext.canEditProjectFlagships(project.id) || project.bilateralProject)]
                 [@s.fielderror cssClass="fieldError" fieldName="project.flagships"/]
-                [@s.checkboxlist name="project.flagships" disabled=!securityContext.canEditProjectFlagships(project.id) list="ipProgramFlagships" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="flagshipIds" /]
+                [@s.checkboxlist name="project.flagships" disabled=!(securityContext.canEditProjectFlagships(project.id) || project.bilateralProject) list="ipProgramFlagships" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="flagshipIds" /]
               [#else]
                 [#if project.flagships?has_content]
                   [#list project.flagships as element]
@@ -152,9 +153,9 @@
           <div id="projectRegionsBlock" class="grid_4">
             <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
             <div class="checkboxGroup">
-              [#if editable && securityContext.canEditProjectRegions(project.id)]
+              [#if editable && (securityContext.canEditProjectRegions(project.id) || project.bilateralProject)]
                 [@s.fielderror cssClass="fieldError" fieldName="project.regions"/]
-                [@s.checkboxlist name="project.regions" disabled=!securityContext.canEditProjectRegions(project.id)  list="ipProgramRegions" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="regionIds" /]
+                [@s.checkboxlist name="project.regions" disabled=!(securityContext.canEditProjectRegions(project.id) || project.bilateralProject)  list="ipProgramRegions" listKey="id" listValue="getComposedName()" cssClass="checkbox" value="regionIds" /]
               [#else]
                 [#if project.regions?has_content]
                   [#list project.regions as element]

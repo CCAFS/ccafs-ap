@@ -66,10 +66,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution() {
-    // TODO Auto-generated method stub
+  public Map<String, String> getAllProjectPartnersPersonsWithTheirInstitution() {
     return this.projectPartnerDAO.getAllProjectPartnersPersonsWithTheirInstitution();
-
   }
 
   @Override
@@ -289,5 +287,15 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   public void setUserManager(UserManager userManager) {
     this.userManager = userManager;
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetActivePartners() {
+    return projectPartnerDAO.summaryGetActivePartners();
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetNotLoggedInPartners() {
+    return projectPartnerDAO.summaryGetNotLoggedInPartners();
   }
 }

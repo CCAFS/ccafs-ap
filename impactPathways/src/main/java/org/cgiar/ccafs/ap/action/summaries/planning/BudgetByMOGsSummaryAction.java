@@ -106,7 +106,11 @@ public class BudgetByMOGsSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    int year = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST)));
+    int year = config.getPlanningCurrentYear();
+    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
+    if (strYear != null) {
+      year = Integer.parseInt(strYear);
+    }
     informationBudgetReportByMOG = projectManager.summaryGetInformationPOWB(year);
     informationBudgetReportByMOGDetail = projectManager.summaryGetInformationPOWBDetail(year);
   }

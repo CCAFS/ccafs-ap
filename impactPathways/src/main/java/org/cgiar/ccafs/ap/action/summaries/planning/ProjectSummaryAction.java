@@ -146,6 +146,16 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     return SUCCESS;
   }
 
+  private String getBilateralContractRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getBilateralProjectContractProposalFolder() + File.separator;
+  }
+
+  public String getBilateralContractURL() {
+    return config.getDownloadURL() + "/" + this.getBilateralContractRelativePath().replace('\\', '/');
+  }
+
+
   public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
 
     List<Budget> budgets = this.project.getBudgets();
@@ -171,17 +181,16 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     return "application/pdf";
   }
 
+
   @Override
   public String getFileName() {
     return projectPDF.getFileName();
   }
 
-
   @Override
   public InputStream getInputStream() {
     return projectPDF.getInputStream();
   }
-
 
   private String getWorkplanRelativePath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
@@ -191,7 +200,6 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   public String getWorkplanURL() {
     return config.getDownloadURL() + "/" + this.getWorkplanRelativePath().replace('\\', '/');
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -204,7 +212,14 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     if (project.isWorkplanRequired()) {
       String workPlanURL = this.getWorkplanURL();
       if (workPlanURL != null || project.getWorkplanName() != null) {
-        project.setWorkplanName(workPlanURL + project.getWorkplanName());
+        project.setWorkplanURL(workPlanURL + project.getWorkplanName());
+      }
+    }
+    // Get a route for the bilateral contract
+    if (project.isBilateralProject()) {
+      String bilateralContractURL = this.getBilateralContractURL();
+      if (bilateralContractURL != null || project.getBilateralContractProposalName() != null) {
+        project.setWorkplanURL(bilateralContractURL + project.getBilateralContractProposalName());
       }
     }
 

@@ -58,11 +58,12 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
   public List<Map<String, String>> getProjectContributionOverviews(int projectID) {
     List<Map<String, String>> overviewsData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
+    query.append("SELECT distinct ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
     query.append("ie.id as 'output_id', ie.description as output_description ");
     query.append("FROM ip_project_contributions ipc ");
-    query.append("INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipc.mog_id ");
-    query.append("INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
+    query.append(
+      "INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipc.mog_id  and ipc.project_id=ipco.project_id");
+    query.append(" INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
     query.append("WHERE ipc.project_id = ");
     query.append(projectID);
 
@@ -89,8 +90,8 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
 
 
   @Override
-  public List<Map<String, String>>
-  getProjectContributionOverviewsByYearAndOutput(int projectID, int year, int outputID) {
+  public List<Map<String, String>> getProjectContributionOverviewsByYearAndOutput(int projectID, int year,
+    int outputID) {
     List<Map<String, String>> overviewsData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
@@ -129,23 +130,45 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
   @Override
   public boolean saveProjectContribution(int projectID, Map<String, Object> overviewData, int userID,
     String justification) {
-    StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO ip_project_contribution_overviews (id, project_id, output_id, year, ");
-    query.append("anual_contribution, gender_contribution, created_by, modified_by, modification_justification) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE anual_contribution = VALUES(anual_contribution), ");
-    query.append("gender_contribution = VALUES(gender_contribution), is_active = TRUE ");
 
-    Object[] values = new Object[9];
-    values[0] = overviewData.get("id");
-    values[1] = projectID;
-    values[2] = overviewData.get("output_id");
-    values[3] = overviewData.get("year");
-    values[4] = overviewData.get("annual_contribution");
-    values[5] = overviewData.get("gender_contribution");
-    values[6] = userID;
-    values[7] = userID;
-    values[8] = justification;
+    StringBuilder query = new StringBuilder();
+    Object[] values = null;
+    if (overviewData.get("id") == null) {
+
+      query.append("INSERT INTO ip_project_contribution_overviews (project_id, output_id, year, ");
+      query.append("anual_contribution, gender_contribution, created_by, modified_by, modification_justification) ");
+      query.append("VALUES ( ?, ?, ?, ?, ?, ?, ?, ?) ");
+
+
+      values = new Object[8];
+      values[0] = projectID;
+      values[1] = overviewData.get("output_id");
+      values[2] = overviewData.get("year");
+      values[3] = overviewData.get("annual_contribution");
+      values[4] = overviewData.get("gender_contribution");
+      values[5] = userID;
+      values[6] = userID;
+      values[7] = justification;
+
+    } else {
+
+
+      query.append("update ip_project_contribution_overviews set project_id=?, output_id=?, year=?, ");
+      query.append(
+        "anual_contribution=?, gender_contribution=?, created_by=?, modified_by=?, modification_justification=? where id=?");
+      values = new Object[9];
+      values[0] = projectID;
+      values[1] = overviewData.get("output_id");
+      values[2] = overviewData.get("year");
+      values[3] = overviewData.get("annual_contribution");
+      values[4] = overviewData.get("gender_contribution");
+      values[5] = userID;
+      values[6] = userID;
+      values[7] = justification;
+      values[8] = overviewData.get("id");
+
+    }
+
 
     int result = daoManager.saveData(query.toString(), values);
     return result != -1;

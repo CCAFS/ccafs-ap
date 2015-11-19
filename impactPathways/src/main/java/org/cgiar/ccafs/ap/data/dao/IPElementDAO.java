@@ -155,6 +155,15 @@ public interface IPElementDAO {
    */
   public List<Map<String, String>> getProjectOutputs(int projectID);
 
+
+  /**
+   * Get all the ipElements (outputs) presents in the database and linked to the project identified by the value
+   * received by parameter.
+   * 
+   * @return all list of maps with the information of all ipElements
+   */
+  public List<Map<String, String>> getProjectOutputsCcafs(int projectID);
+
   /**
    * This method relates an existent ip element with the program given.
    * 

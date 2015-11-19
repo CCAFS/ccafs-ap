@@ -111,7 +111,10 @@ public class ProjectManagerImpl implements ProjectManager {
     for (Map<String, String> projectData : projectDataList) {
 
       project = new Project(Integer.parseInt(projectData.get("id")));
+
       project.setTitle(projectData.get("title"));
+      project.setCofinancing(Boolean.parseBoolean(projectData.get("is_cofinancing")));
+
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
       List<Budget> budgets = new ArrayList<>(2);
@@ -307,7 +310,9 @@ public class ProjectManagerImpl implements ProjectManager {
     Map<String, String> projectData = projectDAO.getProjectBasicInfo(projectID);
     Project project = new Project(Integer.parseInt(projectData.get("id")));
     project.setTitle(projectData.get("title"));
+    project.setCofinancing(Boolean.valueOf(projectData.get("is_cofinancing")));
     project.setType(projectData.get("type"));
+
     Budget totalBudget = new Budget();
     List<Budget> budgets = new ArrayList<>(1);
     if (projectData.get("total_budget_amount") != null) {
@@ -508,6 +513,8 @@ public class ProjectManagerImpl implements ProjectManager {
       outputData = new HashMap<>();
       outputData.put("project_id", String.valueOf(projectID));
       outputData.put("mog_id", String.valueOf(output.getId()));
+
+      System.out.println(String.valueOf(output.getContributesTo().get(0).getId()));
       outputData.put("midOutcome_id", String.valueOf(output.getContributesTo().get(0).getId()));
       outputData.put("user_id", String.valueOf(user.getId()));
       outputData.put("justification", justification);
@@ -520,31 +527,36 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution() {
-    return projectDAO.summaryGetAllActivitiesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch) {
+    return projectDAO.summaryGetAllActivitiesWithGenderContribution(termsToSearch);
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution() {
-    return projectDAO.summaryGetAllDeliverablesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllCCAFSOutcomes(int year) {
+    return projectDAO.summaryGetAllCCAFSOutcomes(year);
   }
 
   @Override
-  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders() {
-    return projectDAO.summaryGetAllProjectPartnerLeaders();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch) {
+    return projectDAO.summaryGetAllDeliverablesWithGenderContribution(termsToSearch);
   }
 
+
+  @Override
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders(int year) {
+    return projectDAO.summaryGetAllProjectPartnerLeaders(year);
+  }
 
   @Override
   public List<Map<String, Object>> summaryGetAllProjectsWithDeliverables() {
     return projectDAO.summaryGetAllProjectsWithDeliverables();
   }
 
-  @Override
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution() {
-    return projectDAO.summaryGetAllProjectsWithGenderContribution();
-  }
 
+  @Override
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch) {
+    return projectDAO.summaryGetAllProjectsWithGenderContribution(termsToSearch);
+  }
 
   @Override
   public List<Map<String, Object>> summaryGetInformationPOWB(int year) {
@@ -561,6 +573,16 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Map<String, Object>> summaryGetProjectBudgetPerPartners(int year) {
     return projectDAO.summaryGetProjectBudgetPerPartners(year);
 
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetProjectsNotModified() {
+    return projectDAO.summaryGetProjectsNotModified();
+  }
+
+  @Override
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year, String cycle) {
+    return projectDAO.summaryGetProjectSubmmited(year, cycle);
   }
 
   @Override

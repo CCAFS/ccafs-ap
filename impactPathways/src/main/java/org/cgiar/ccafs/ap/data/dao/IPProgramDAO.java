@@ -75,6 +75,7 @@ public interface IPProgramDAO {
    */
   public List<Map<String, String>> getProjectFocuses(int projectID, int typeID);
 
+
   /**
    * This method creates or update into the table project_focuses new relations between a project and a program.
    * 

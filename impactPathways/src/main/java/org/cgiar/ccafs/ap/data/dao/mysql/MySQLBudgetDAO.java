@@ -348,18 +348,68 @@ public class MySQLBudgetDAO implements BudgetDAO {
   }
 
   @Override
-  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID) {
+  public double calculateTotalGenderPercentageByYearAndType(int projectID, int year, int budgetTypeID,
+    boolean coreCofunded) {
     Double total = 0.0;
     StringBuilder query = new StringBuilder();
-    query.append("SELECT SUM(gender_percentage * amount * 0.01) as total ");
-    query.append("FROM project_budgets ");
-    query.append(" WHERE project_id = ");
-    query.append(projectID);
-    query.append(" AND budget_type = ");
-    query.append(budgetTypeID);
-    query.append(" AND year = ");
-    query.append(year);
-    query.append(" AND is_active = TRUE");
+
+
+    switch (budgetTypeID) {
+      case 1:
+        query.append("SELECT SUM(gender_percentage * amount * 0.01) as total ");
+        query.append("FROM project_budgets ");
+        query.append(" WHERE project_id = ");
+        query.append(projectID);
+        query.append(" AND budget_type = ");
+        query.append(budgetTypeID);
+        query.append(" AND year = ");
+        query.append(year);
+        query.append(" AND is_active = TRUE");
+
+        break;
+
+      case 2:
+        if (coreCofunded) {
+          query.append("SELECT SUM((");
+
+          query.append(" SELECT b2.gender_percentage FROM project_budgets b2 ");
+          query.append(" WHERE b2.project_id =  b.cofinance_project_id ");
+
+          query.append(" AND b2.budget_type = ");
+          query.append(budgetTypeID);
+          query.append(" AND b2.year = ");
+          query.append(year);
+          query.append(" AND b2.is_active = TRUE )");
+
+
+          query.append(" * amount * 0.01) as total ");
+          query.append("FROM project_budgets b ");
+          query.append(" WHERE b.project_id = ");
+          query.append(projectID);
+          query.append(" AND b.budget_type = ");
+          query.append(budgetTypeID);
+          query.append(" AND b.year = ");
+          query.append(year);
+          query.append(" AND b.is_active = TRUE");
+        } else {
+
+          query.append("SELECT SUM(gender_percentage * amount * 0.01) as total ");
+          query.append("FROM project_budgets ");
+          query.append(" WHERE project_id = ");
+          query.append(projectID);
+          query.append(" AND budget_type = ");
+          query.append(budgetTypeID);
+          query.append(" AND year = ");
+          query.append(year);
+          query.append(" AND is_active = TRUE");
+        }
+
+
+        break;
+
+      default:
+        break;
+    }
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
@@ -402,6 +452,37 @@ public class MySQLBudgetDAO implements BudgetDAO {
     }
     return total;
   }
+
+
+  @Override
+  public double calculateTotalProjectBudgetByTypeYear(int projectID, int budgetTypeID, int year) {
+    Double total = 0.0;
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT SUM(amount) as total ");
+    query.append("FROM project_budgets ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND budget_type = ");
+    query.append(budgetTypeID);
+    query.append(" AND is_active = 1");
+    query.append(" AND year = ");
+    query.append(year);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        if (rs.getString("total") != null) {
+          total = Double.parseDouble(rs.getString("total"));
+        }
+      }
+      con.close();
+    } catch (SQLException e) {
+      LOG.error("Exception arised calculating the total project budget W1+W2 {}.", projectID, e.getMessage());
+      total = -1.0;
+    }
+    return total;
+  }
+
 
   @Override
   public boolean deleteBudget(int budgetId, int userId, String justification) {
@@ -649,8 +730,9 @@ public class MySQLBudgetDAO implements BudgetDAO {
         // Insert new budget record
         query.setLength(0);
         query.append("INSERT INTO project_budgets (project_id, year, budget_type, institution_id, amount, ");
-        query.append("gender_percentage, cofinance_project_id, created_by, modified_by, modification_justification) ");
-        query.append("VALUES (?,?,?,?,?,?,?,?,?,?)  ");
+        query.append(
+          "gender_percentage, cofinance_project_id, created_by, modified_by, modification_justification,is_active) ");
+        query.append("VALUES (?,?,?,?,?,?,?,?,?,?,1)  ");
         values = new Object[10];
         values[0] = projectID;
         values[1] = budgetData.get("year");

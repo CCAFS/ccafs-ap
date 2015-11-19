@@ -71,6 +71,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
   private ActivityManager activityManager;
   private DeliverableManager deliverableManager;
   private HistoryManager historyManager;
+  private BudgetManager budgetManager;
   // private BudgetManager budgetManager;
   // private DeliverablePartnerManager deliverablePartnerManager;
   // private DeliverableManager deliverableManager;
@@ -115,7 +116,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     this.roleManager = roleManager;
     this.sendMail = sendMail;
     this.historyManager = historyManager;
-    // this.budgetManager = budgetManager;
+    this.budgetManager = budgetManager;
     // this.deliverablePartnerManager = deliverablePartnerManager;
   }
 
@@ -324,7 +325,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.assigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-        message.toString(), null, null, null);
+      message.toString(), null, null, null);
   }
 
   /**
@@ -364,7 +365,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     sendMail.send(toEmail, ccEmail, bbcEmails,
       this.getText("planning.manageUsers.email.project.unAssigned.subject",
         new String[] {projectRole, project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER)}),
-        message.toString(), null, null, null);
+      message.toString(), null, null, null);
   }
 
   @Override
@@ -417,16 +418,16 @@ public class ProjectPartnersPlanningAction extends BaseAction {
     partnerPersonTypes = new HashMap<>();
     partnerPersonTypes.put(APConstants.PROJECT_PARTNER_CP, this.getText("planning.projectPartners.types.CP"));
 
-    if (!project.isLeader(this.getCurrentUser()) && !project.isCoordinator(this.getCurrentUser())) {
+    if (securityContext.canUpdatePartnerLeader(project.getId())) {
       partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PL, this.getText("planning.projectPartners.types.PL"));
     }
 
-    if (!project.isCoordinator(this.getCurrentUser())) {
+    if (securityContext.canUpdatePartnerCordinator(project.getId())) {
       partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PC, this.getText("planning.projectPartners.types.PC"));
     }
 
     // If the user is not admin or the project owner, we should keep some information
-    // immutable
+
     previousProject = new Project();
     previousProject.setId(project.getId());
     previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project));
@@ -471,6 +472,8 @@ public class ProjectPartnersPlanningAction extends BaseAction {
       for (ProjectPartner previousPartner : previousProject.getProjectPartners()) {
         if (!project.getProjectPartners().contains(previousPartner)) {
           projectPartnerManager.deleteProjectPartner(previousPartner, this.getCurrentUser(), this.getJustification());
+          budgetManager.deleteBudgetsByInstitution(project.getId(), previousPartner.getInstitution(),
+            this.getCurrentUser(), this.getJustification());
         }
       }
 
@@ -560,6 +563,7 @@ public class ProjectPartnersPlanningAction extends BaseAction {
         this.notifyRoleUnassigned(previousPartnerPerson.getUser(), role);
       }
     }
+    this.clearPermissionsCache();
   }
 
   @Override

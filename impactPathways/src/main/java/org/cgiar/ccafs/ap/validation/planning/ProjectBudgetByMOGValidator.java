@@ -16,9 +16,11 @@
 package org.cgiar.ccafs.ap.validation.planning;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
+import org.cgiar.ccafs.ap.validation.model.BudgetValidator;
 
 import com.google.inject.Inject;
 
@@ -27,42 +29,57 @@ import com.google.inject.Inject;
  */
 public class ProjectBudgetByMOGValidator extends BaseValidator {
 
+  private BudgetManager budgetManager;
+  private BudgetValidator budgetValidator;
 
   @Inject
-  public ProjectBudgetByMOGValidator() {
+  public ProjectBudgetByMOGValidator(BudgetValidator budgetValidator, BudgetManager budgetManager) {
 
-
+    this.budgetValidator = budgetValidator;
+    this.budgetManager = budgetManager;
   }
-
 
   public void validate(BaseAction action, Project project, String cycle) {
     double ccafsBudgetTotalPorcentage = 0;
     double bilateralBudgeTotalPorcentage = 0;
     double ccafsBudgetGenderPorcentage = 0;
+    double ccafsBudgetByYear = 0;
+    double bilateralBudgetByYear = 0;
     double bilateralBudgeGenderPorcentage = 0;
     if (project != null) {
-      for (OutputBudget budgetbyMog : project.getOutputsBudgets()) {
-        if (budgetbyMog.getType().isCCAFSBudget()) {
-          ccafsBudgetTotalPorcentage = ccafsBudgetTotalPorcentage + budgetbyMog.getTotalContribution();
-          ccafsBudgetGenderPorcentage = ccafsBudgetGenderPorcentage + budgetbyMog.getGenderContribution();
-        }
-        if (budgetbyMog.getType().isBilateral()) {
-          bilateralBudgeTotalPorcentage = bilateralBudgeTotalPorcentage + budgetbyMog.getTotalContribution();
-          bilateralBudgeGenderPorcentage = bilateralBudgeGenderPorcentage + budgetbyMog.getGenderContribution();
-        }
-      }
 
-      if (project.isCoreProject() || project.isCoFundedProject()) {
-        if (!(ccafsBudgetTotalPorcentage == 100 && ccafsBudgetGenderPorcentage == 100)) {
-          this.addMessage(("Invalid, Percentage Distribution"));
-          this.addMissingField("project.budgetbyMog.invalidPorcentage");
+      int year = config.getPlanningCurrentYear();
+      ccafsBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), 1, year);
+      bilateralBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(project.getId(), 2, year);
+
+      if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
+
+        for (OutputBudget budgetbyMog : project.getOutputsBudgets()) {
+
+
+          if (budgetbyMog.getType().isCCAFSBudget()) {
+            ccafsBudgetTotalPorcentage = ccafsBudgetTotalPorcentage + budgetbyMog.getTotalContribution();
+            ccafsBudgetGenderPorcentage = ccafsBudgetGenderPorcentage + budgetbyMog.getGenderContribution();
+          }
+          if (budgetbyMog.getType().isBilateral()) {
+            bilateralBudgeTotalPorcentage = bilateralBudgeTotalPorcentage + budgetbyMog.getTotalContribution();
+            bilateralBudgeGenderPorcentage = bilateralBudgeGenderPorcentage + budgetbyMog.getGenderContribution();
+          }
         }
-      }
-      if (project.isBilateralProject()) {
-        if (!(bilateralBudgeGenderPorcentage == 100 && bilateralBudgeTotalPorcentage == 100)) {
-          this.addMessage(("Invalid, Percentage Distribution"));
-          this.addMissingField("project.budgetbyMog.invalidPorcentage");
+
+        if (project.isCoreProject() || project.isCoFundedProject()) {
+          if ((ccafsBudgetTotalPorcentage != 100) && ccafsBudgetByYear > 0) {
+            this.addMessage(("Invalid Percentage Distribution  W1/W2 "));
+            this.addMissingField("project.budgetbyMog.invalidPorcentage");
+          }
         }
+        if (project.isBilateralProject()) {
+          if (bilateralBudgeTotalPorcentage != 100 && bilateralBudgetByYear > 0) {
+            this.addMessage(("Invalid Percentage Distribution W3/Bilateral budge"));
+            this.addMissingField("project.budgetbyMog.invalidPorcentage");
+          }
+        }
+
       }
     }
     if (validationMessage.length() > 0) {

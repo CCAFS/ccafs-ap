@@ -55,6 +55,7 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
 
   // Model
   List<Map<String, Object>> informationBudgetByPartners;
+  int year;
 
   @Inject
   public BudgetPerPartnersSummaryAction(APConfig config, ProjectManager projectManager,
@@ -68,7 +69,7 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = budgetPerPartnersSummaryXLS.generateXLS(informationBudgetByPartners);
+    bytesXLS = budgetPerPartnersSummaryXLS.generateXLS(informationBudgetByPartners, year);
 
     return SUCCESS;
   }
@@ -86,8 +87,15 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
 
   @Override
   public String getFileName() {
+    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
+    year = config.getPlanningCurrentYear();
+
+    if (strYear != null) {
+      year = Integer.parseInt(strYear);
+    }
     StringBuffer fileName = new StringBuffer();
-    fileName.append("BudgetPerPartnersSummary-");
+    fileName.append("BudgetPerPartnersSummary");
+    fileName.append(year + "-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -105,8 +113,13 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
 
   @Override
   public void prepare() {
+    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
+    year = config.getPlanningCurrentYear();
 
-    int year = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST)));
+    if (strYear != null) {
+      year = Integer.parseInt(strYear);
+    }
+
     informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetPerPartners(year);
 
 

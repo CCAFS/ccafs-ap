@@ -25,9 +25,24 @@ function attachEvents() {
   $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
-  $targetValue.on("keydown", function(event) {
-    isNumber(event);
+  // Disabled values thas is not number
+  $targetValue.on("keydown", function(e) {
+    isNumber(e);
   });
+  // Check for numeric value already inserted
+  $targetValue.on("keyup", function(e) {
+    var isEmpty = (e.target.value == "");
+    var isRequired = $(e.target).hasClass("required");
+    var isNumeric = $.isNumeric(e.target.value);
+    var hasMissFields = $('.hasMissingFields').exists();
+    var valueError = (!isNumeric && isRequired && hasMissFields);
+    if(valueError) {
+      $(e.target).addClass("fieldError").attr("title", "This field require a numeric value");
+    } else {
+      $(e.target).removeClass("fieldError").attr("title", "");
+    }
+  });
+  $targetValue.trigger("keyup");
   validateEvent([
     "#justification"
   ]);
@@ -72,16 +87,16 @@ function removeContributionBlock(event) {
 
 function selectMogEvent(event) {
   var $checkbox = $(event.target);
+  if(!$checkbox.hasClass("disabled")) {
+    return
+  }
+  var checkStatus = $checkbox.is(":checked");
   var $hiddenInput = $checkbox.prev();
-  // var index = $checkbox.attr("id").split("-")[1];
-  // var name;
-
-  if($checkbox.is(":checked")) {
+  if(checkStatus) {
     $hiddenInput.attr("disabled", false);
   } else {
     $hiddenInput.attr("disabled", true);
   }
-
   setMogsIndexes();
 }
 
@@ -274,15 +289,16 @@ function setMogsIndexes() {
   var $contributionsBlock = $("#contributionsBlock");
   // Indicators indexes
   $contributionsBlock.find(".mog").each(function(index,mog) {
+    var $checkBox = $(mog).find("input[type='checkbox']");
     var mogsName = "project.outputs[" + index + "]";
-
+    console.log(mogsName);
     // Checkbox
-    $(mog).find("input[type='checkbox']").attr("id", "mog-" + index);
-    $(mog).find("input[type='checkbox']").attr("name", mogsName + ".id");
+    $checkBox.attr("id", "mog-" + index);
+    $checkBox.attr("name", mogsName + ".id");
 
     // Hidden input
     $(mog).find("input[type='hidden']").attr("name", mogsName + ".contributesTo[0].id");
-    if($(mog).find("input[type='checkbox']").is(":checked")) {
+    if($checkBox.is(":checked")) {
       $(mog).find("input[type='hidden']").attr("disabled", false);
     } else {
       $(mog).find("input[type='hidden']").attr("disabled", true);
@@ -297,6 +313,23 @@ function toogleIndicatorInfo(event) {
   var $indicatorBlock = $(event.target).parent();
 
   if(event.target.checked) {
+    // Show popup
+    var notyOptions = jQuery.extend({}, notyDefaultOptions);
+    notyOptions.text = "Please be aware that if you check this indicator, once saved, you won't be able to uncheck it.";
+    notyOptions.type = 'confirm';
+    notyOptions.layout = 'center';
+    notyOptions.modal = true;
+    notyOptions.buttons = [
+      {
+          addClass: 'btn btn-primary',
+          text: 'Ok',
+          onClick: function($noty) {
+            $noty.close();
+          }
+      }
+    ];
+    noty(notyOptions);
+
     $indicatorBlock.find("input[type='hidden']").attr("disabled", false);
 
     // Show the block

@@ -53,10 +53,10 @@ public interface ProjectPartnerDAO {
   /**
    * This method returns the information of the project partners with the information of their institutions name
    * 
-   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   * @return a Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
-  public List<Map<String, String>> getAllProjectPartnersPersonsWithTheirInstitution();
+  public Map<String, String> getAllProjectPartnersPersonsWithTheirInstitution();
 
   /**
    * This method gets a project partner information identified with the given ID.
@@ -97,16 +97,6 @@ public interface ProjectPartnerDAO {
   public List<Map<String, String>> getProjectPartners(int projectId);
 
   /**
-   * This method gets the project partners information given the project Id and type of project partner
-   * 
-   * @param projectId is the id of a project
-   * @param projectPartnerType is the type of a project partner (PPA, PL, PC, etc.).
-   * @return a list of project partners that belong to the given project and project partner type; an empty list if
-   *         nothing was found or NULL if an error occurred.
-   */
-  public List<Map<String, String>> getProjectPartners(int projectId, String projectPartnerType);
-
-  /**
    * This method saves into the database a new Project Partner
    * 
    * @param projectPartnerData - Information to be saved
@@ -121,4 +111,20 @@ public interface ProjectPartnerDAO {
    * @return The last inserted id if there was a new record, 0 if the record was updated or -1 if any error happened.
    */
   public int saveProjectPartnerContribution(Map<String, Object> partnerContributionData);
+
+  /**
+   * This method is used to export all the current and active partners that are working with CCAFS in an XML format for
+   * the CCAFS Web-site.
+   * 
+   * @return a List of Maps with the information populated on it.
+   */
+  public List<Map<String, Object>> summaryGetActivePartners();
+
+  /**
+   * This method is used to export all the partners not logged in P&R in an XML format for
+   * the CCAFS Web-site.
+   * 
+   * @return a List of Maps with the information populated on it.
+   */
+  public List<Map<String, Object>> summaryGetNotLoggedInPartners();
 }

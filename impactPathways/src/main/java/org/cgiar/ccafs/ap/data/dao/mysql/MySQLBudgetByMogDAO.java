@@ -117,26 +117,50 @@ public class MySQLBudgetByMogDAO implements BudgetByMogDAO {
 
   @Override
   public boolean saveProjectOutputsBudget(Map<String, Object> budgetByMOGData, int userID, String justification) {
-    StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO project_mog_budgets (project_id, mog_id, total_contribution, gender_contribution,  ");
-    query.append("budget_type, year, created_by, modified_by, modification_justification) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
-    query.append("ON DUPLICATE KEY UPDATE is_active=TRUE, total_contribution=VALUES(total_contribution), ");
-    query.append("gender_contribution=VALUES(gender_contribution), modified_by=VALUES(modified_by), ");
-    query.append("year=VALUES(year), modification_justification=VALUES(modification_justification) ");
+    if (Integer.parseInt(budgetByMOGData.get("id").toString()) == -1) {
 
-    Object[] values = new Object[9];
-    values[0] = budgetByMOGData.get("project_id");
-    values[1] = budgetByMOGData.get("mog_id");
-    values[2] = budgetByMOGData.get("total_contribution");
-    values[3] = budgetByMOGData.get("gender_contribution");
-    values[4] = budgetByMOGData.get("budget_type");
-    values[5] = budgetByMOGData.get("year");
-    values[6] = userID;
-    values[7] = userID;
-    values[8] = justification;
+      StringBuilder query = new StringBuilder();
+      query.append("INSERT INTO project_mog_budgets (project_id, mog_id, total_contribution, gender_contribution,  ");
+      query.append("budget_type, year, created_by, modified_by, modification_justification) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 
-    int result = daoManager.saveData(query.toString(), values);
-    return (result != -1);
+      Object[] values = new Object[9];
+      values[0] = budgetByMOGData.get("project_id");
+      values[1] = budgetByMOGData.get("mog_id");
+      values[2] = budgetByMOGData.get("total_contribution");
+      values[3] = budgetByMOGData.get("gender_contribution");
+      values[4] = budgetByMOGData.get("budget_type");
+      values[5] = budgetByMOGData.get("year");
+      values[6] = userID;
+      values[7] = userID;
+      values[8] = justification;
+
+      int result = daoManager.saveData(query.toString(), values);
+      return (result != -1);
+    } else {
+      StringBuilder query = new StringBuilder();
+      query.append(
+        "update project_mog_budgets " + "set project_id=?, mog_id=?, total_contribution=?, gender_contribution=?,  ");
+      query.append("budget_type=?, year=?, created_by=?, modified_by=?, modification_justification= ? ");
+      query.append(" where id=?");
+
+      Object[] values = new Object[10];
+
+      values[0] = budgetByMOGData.get("project_id");
+      values[1] = budgetByMOGData.get("mog_id");
+      values[2] = budgetByMOGData.get("total_contribution");
+      values[3] = budgetByMOGData.get("gender_contribution");
+      values[4] = budgetByMOGData.get("budget_type");
+      values[5] = budgetByMOGData.get("year");
+      values[6] = userID;
+      values[7] = userID;
+      values[8] = justification;
+      values[9] = budgetByMOGData.get("id");
+
+      int result = daoManager.saveData(query.toString(), values);
+      return (result != -1);
+    }
+
+
   }
 }

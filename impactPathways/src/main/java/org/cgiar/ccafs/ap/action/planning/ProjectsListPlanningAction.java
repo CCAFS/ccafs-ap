@@ -45,7 +45,6 @@ public class ProjectsListPlanningAction extends BaseAction {
   private List<Project> projects;
   private List<Project> allProjects;
 
-
   // Model for the front-end
   private int projectID;
   private double totalBudget;
@@ -128,7 +127,11 @@ public class ProjectsListPlanningAction extends BaseAction {
     }
 
     newProject.setCreated(new Date().getTime());
-    return projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());
+    int result = projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());
+
+    this.clearPermissionsCache();
+
+    return result;
   }
 
   @Override

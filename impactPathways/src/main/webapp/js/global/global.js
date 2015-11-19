@@ -243,13 +243,16 @@ function applyWordCounter($textArea,wordCount) {
 }
 
 function word_count(field) {
-  var value = $(field).val();
+  var value = $.trim($(field).val());
   if(typeof value === "undefined") {
     return 0;
   } else {
-    var matches = value.match(/\b/g);
-    return number = (matches) ? matches.length / 2 : 0;
+    var regex = /\s+/gi;
+    return value.replace(regex, ' ').split(' ').length;
   }
+// var matches = value.match(/\b/g);
+// return number = (matches) ? matches.length / 2 : 0;
+// }
 }
 
 /**

@@ -21,6 +21,8 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,8 +120,22 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         } else {
           // Populating years to validate.
           yearsToValidate.put(config.getPlanningCurrentYear(), false); // 2016
-          yearsToValidate.put(config.getPlanningCurrentYear() + 1, false); // 2017
-          yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+          SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+          try {
+            if (project.getEndDate().compareTo(sdf.parse("01/01/2017")) >= 0) {
+
+              yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
+            }
+
+            if (project.getEndDate().compareTo(sdf.parse("01/01/2019")) >= 0) {
+
+              yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+            }
+          } catch (ParseException e) {
+
+          }
+
 
           for (IPIndicator indicator : indicatorsMap.get(outcome)) {
             // Validate only those indicators for 2016, 2017 and 2019.
@@ -148,7 +164,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         }
       }
     } else {
-      action.addActionError(action.getText("planning.projectImpactPathways.indicators.empty"));
+      this.addMessage(action.getText("planning.projectImpactPathways.indicators.empty"));
       this.addMissingField("project.indicators.empty");
     }
   }
@@ -179,7 +195,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
       this.addMissingField("project.indicators[" + c + "].target");
     } else if (!projectValidator.isValidTargetValueNumber(targetValue)) {
       // If target is not null but is not a valid number, we don't let user to save.
-      action.addFieldError("project.indicators[" + c + "].target", action.getText("validation.number.format"));
+      this.addMessage("Target value for '" + outcomeAconmyn + "' in '" + year + "' is invalid.");
       this.addMissingField("project.indicators[" + c + "].target");
     }
 

@@ -97,6 +97,8 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
 
   public void validateOutputOverviews(BaseAction action, Project project) {
     if (projectValidator.hasOutputOverviews(project.getOutputsOverview())) {
+
+
       int c = 0;
       for (OutputOverview overview : project.getOutputsOverview()) {
         // Validate only current planning year which is 2016 at this moment.
@@ -106,6 +108,28 @@ public class ProjectOutputsPlanningValidator extends BaseValidator {
           c++;
         }
       }
+
+      for (IPElement ipElement : project.getOutputs()) {
+        boolean isContain = false;
+        for (OutputOverview overview : project.getOutputsOverview()) {
+
+          if (overview.getYear() == this.config.getPlanningCurrentYear()) {
+
+            if (overview.getOutput().equals(ipElement)) {
+              isContain = true;
+              break;
+            }
+
+          }
+
+        }
+        if (!isContain) {
+          this.addMessage("For" + ipElement.getProgram().getAcronym() + "- MOG #"
+            + ipElementManager.getMOGIndex(ipElement) + " Incomplete Information");
+          this.addMissingField("project.outputsOverview.nocomplete");
+        }
+      }
+
     } else {
       action.addActionMessage(action.getText("planning.projectOutputs.validation.empty"));
     }

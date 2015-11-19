@@ -20,6 +20,7 @@ package org.cgiar.ccafs.ap.config;
  */
 public final class APConstants {
 
+
   public static final String SESSION_USER = "current_user";
   public static final String ACTIVITY_REQUEST_ID = "activityID";
   public static final String PUBLIC_ACTIVITY_ID = "id";
@@ -47,7 +48,7 @@ public final class APConstants {
   public static final String DELIVERABLE_REQUEST_ID = "deliverableID";
   public static final String CCAFS_ORGANIZATION_IDENTIFIER = "XM-DAC-47015-CRP7";
   public static final String SECTION_NAME = "sectionName";
-  public static final String TERMS_TO_SEARCH = "query";
+  public static final String CYCLE = "cycle";
 
   // Identifiers for element types which come from the database
   public static final int ELEMENT_TYPE_IDOS = 1;
@@ -85,6 +86,7 @@ public final class APConstants {
   // Identifier for Format Date
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
+  public static final String DATE_TIME_FORMAT_TIMEZONE = "yyyy-MM-dd HH:mm z";
 
   // Identifier for role
   public static final int ROLE_ADMIN = 1;
@@ -93,6 +95,7 @@ public final class APConstants {
   public static final int ROLE_PROJECT_LEADER = 7;
   public static final int ROLE_PROJECT_COORDINATOR = 9;
   public static final int ROLE_COORDINATING_UNIT = 6;
+  public static final int ROLE_FINANCING_PROJECT = 10;
 
   // Location types identifiers
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;

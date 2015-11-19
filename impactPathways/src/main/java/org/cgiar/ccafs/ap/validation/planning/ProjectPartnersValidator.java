@@ -53,7 +53,7 @@ public class ProjectPartnersValidator extends BaseValidator {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
 
       // Saving missing fields.
@@ -63,12 +63,14 @@ public class ProjectPartnersValidator extends BaseValidator {
 
   private void validateBilateralProject(BaseAction action, Project project) {
     // So far, if this is a bilateral project the only validation needed is the project leader.
+    this.validateInstitutionsEmpty(action, project);
     this.validateProjectLeader(action, project);
+    this.validateContactPersons(action, project);
   }
 
   private void validateCCAFSProject(BaseAction action, Project project) {
-    this.validateProjectLeader(action, project);
     this.validateInstitutionsEmpty(action, project);
+    this.validateProjectLeader(action, project);
     this.validateContactPersons(action, project);
   }
 
@@ -143,7 +145,7 @@ public class ProjectPartnersValidator extends BaseValidator {
   private void validateProjectLeader(BaseAction action, Project project) {
     // All projects must specify the project leader
     if (!projectValidator.isValidLeader(project.getLeader(), project.isBilateralProject())) {
-      this.addMessage(action.getText("home.glossary.projectLeader").toLowerCase());
+      this.addMessage(action.getText("planning.projectPartners.types.PL").toLowerCase());
       this.addMissingField("project.leader");
     }
   }

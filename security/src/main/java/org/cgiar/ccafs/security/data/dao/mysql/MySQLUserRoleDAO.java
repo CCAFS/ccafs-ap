@@ -108,6 +108,27 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
   }
 
   @Override
+  public Map<String, String> getUserRole(int roleID) {
+    Map<String, String> roleData = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym FROM roles r ");
+    query.append("WHERE r.id = ");
+    query.append(roleID);
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        roleData.put("id", rs.getString("id"));
+        roleData.put("name", rs.getString("name"));
+        roleData.put("acronym", rs.getString("acronym"));
+      }
+    } catch (SQLException e) {
+      LOG.error("getUserRole() > There was an error getting the role with ID = {}", roleID, e);
+    }
+    return roleData;
+  }
+
+  @Override
   public List<Map<String, String>> getUserRolesByUserID(String userID) {
     List<Map<String, String>> userRolesList = new ArrayList<>();
     StringBuilder query = new StringBuilder();

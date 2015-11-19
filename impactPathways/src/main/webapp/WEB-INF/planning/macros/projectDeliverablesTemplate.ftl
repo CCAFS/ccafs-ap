@@ -1,6 +1,7 @@
 [#ftl]
 [#macro deliverablesList deliverables canEdit=true]
   [#if deliverables?has_content]
+    [@s.set var="counter" value=0/] 
     <table id="projectDeliverables">
       <thead>
         <tr>
@@ -13,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-      [#list deliverables as dl]  
+      [#list deliverables as dl]
         [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${dl.id}[/@s.param][/@s.url][/#assign]
         <tr>
           <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
@@ -23,10 +24,13 @@
           <td class="status">
             [#if action.getDeliverableStatus(dl.id,'deliverable')??]
               [#if !((action.getDeliverableStatus(dl.id,'deliverable')).missingFieldsWithPrefix)?has_content]
-                <span class="icon-20 icon-check" title="Complete"></span> 
+                <span class="icon-20 icon-check" title="Complete"></span>
+                [@s.set var="counter" value=counter+1/] 
               [#else]
                 <span class="icon-20 icon-uncheck" title=""></span> 
               [/#if]
+            [#else]
+                <span class="icon-20 icon-uncheck" title=""></span>
             [/#if]
           </td>
           
@@ -44,6 +48,7 @@
       </tbody> 
     </table>
     <div class="clearfix"></div>
+    <p id="deliverables-status" style="display:none"> <br /> (${counter}/${deliverables?size})</p>
   [/#if]  
 [/#macro] 
 

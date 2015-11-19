@@ -25,6 +25,7 @@ import com.google.inject.ImplementedBy;
  * @author Javier Andrés Gallego
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal.
+ * @author Jorge Leonardo Solis B.
  */
 @ImplementedBy(MySQLProjectDAO.class)
 public interface ProjectDAO {
@@ -298,11 +299,22 @@ public interface ProjectDAO {
    * This method returns the information of all the activities by project and their gender contribution to be used in
    * the summary report of the same name
    * 
+   * @param termsToSearch
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
 
-  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllActivitiesWithGenderContribution(String[] termsToSearch);
+
+  /**
+   * This method returns the information of all project CCAFS Outcomes with their information to be used in
+   * the summary report of Impact Pathway summary.
+   * 
+   * @param year year of to search the indicators
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetAllCCAFSOutcomes(int year);
 
   /**
    * This method returns the information of all the deliverable with their next users to be used in the summary report
@@ -312,17 +324,18 @@ public interface ProjectDAO {
    *         occurs.
    */
 
-  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch);
 
   /**
    * This method returns the information of all the projects with their partner leaders to be used in the summary report
    * of
    * project partner leaders.
    * 
+   * @param year he current planning year to generate the report budget figures
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
-  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders();
+  public List<Map<String, Object>> summaryGetAllProjectPartnerLeaders(int year);
 
   /**
    * This method returns the information of all the deliverables and their projects to be used in the summary report of
@@ -342,12 +355,13 @@ public interface ProjectDAO {
    *         occurs.
    */
 
-  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution();
+  public List<Map<String, Object>> summaryGetAllProjectsWithGenderContribution(String[] termsToSearch);
 
   /**
    * This method returns the information of all project MOG with your budget by Year and their information to be used in
    * the summary report of POWBMOGs summary.
    * 
+   * @param year
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
@@ -357,10 +371,12 @@ public interface ProjectDAO {
    * This method returns the information of all project MOG with your budget by Year and their information to be used in
    * the summary report of POWBMOGs summary.
    * 
+   * @param year year to search
    * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
    *         occurs.
    */
   public List<Map<String, Object>> summaryGetInformationPOWB(int year);
+
 
   /**
    * This method returns the information of all project with your budget by partner of the currentPlanningYear their
@@ -371,6 +387,27 @@ public interface ProjectDAO {
    *         occurs.
    */
   public List<Map<String, Object>> summaryGetProjectBudgetPerPartners(int year);
+
+  /**
+   * This method returns the information of all project submmmited with the information for the summary report of
+   * Submmited summary.
+   * 
+   * @param year year to search
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetProjectsNotModified();
+
+  /**
+   * This method returns the information of all project submmmited with the information for the summary report of
+   * Submmited summary.
+   * 
+   * @param year year to search submitted projects
+   * @param cycle cycle for to search submitted projects
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetProjectSubmmited(int year, String cycle);
 
   /**
    * This method updates the project cofinancing into the database according to the values received by parameter.

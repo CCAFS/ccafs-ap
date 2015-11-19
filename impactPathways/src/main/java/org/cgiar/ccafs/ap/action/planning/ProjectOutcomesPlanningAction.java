@@ -97,7 +97,7 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     // Load the project outcomes
     Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
 
-    for (int year = this.getCurrentPlanningYear(); year <= midOutcomeYear; year++) {
+    for (int year = this.getCurrentPlanningYear() - 1; year <= midOutcomeYear; year++) {
       ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
       if (projectOutcome == null) {
         projectOutcome = new ProjectOutcome(-1);
@@ -109,8 +109,8 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
     project.setOutcomes(projectOutcomes);
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+      this.getCurrentPlanningYear()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, "Planning");
@@ -131,8 +131,10 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
       // Saving Project Outcome
       for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
         ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
-        success = success && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
-          this.getJustification());
+        success =
+          success
+            && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
+              this.getJustification());
       }
 
       if (success) {
@@ -143,8 +145,8 @@ public class ProjectOutcomesPlanningAction extends BaseAction {
           this.setActionMessages(null);
           this.addActionWarning(this.getText("saving.saved") + validationMessage);
         } else {
-          this.addActionMessage(
-            this.getText("saving.success", new String[] {this.getText("planning.projectOutcome.title")}));
+          this.addActionMessage(this.getText("saving.success",
+            new String[] {this.getText("planning.projectOutcome.title")}));
         }
         return SUCCESS;
       } else {

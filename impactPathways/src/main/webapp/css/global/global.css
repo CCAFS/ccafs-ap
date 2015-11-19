@@ -1914,6 +1914,7 @@ h1.simpleTitle span {
 .buttons button[name=next] {
     background: #BDC3C7;
     border-bottom: 3px solid #B0B0B0;
+    display: none;
 }
 
 .buttons button[name=next]:hover{
@@ -2696,6 +2697,12 @@ button.ipGraph-btn{
 
 /********** Projects *********/
 
+/* Project menu */
+
+#projectType-quote {
+  font-size: 0.8em;
+}
+
 /* Project List */
 .content .projectSubTitle {
   text-align: center;
@@ -2952,6 +2959,8 @@ textarea[id$='summary'] {
     /* padding: 10px 0px; */
 }
 
+
+
 .projectPartner .filters-link {
   cursor: pointer;
   color: #848484;
@@ -2972,6 +2981,10 @@ textarea[id$='summary'] {
   padding: 8px;
   border: 1px dotted #D2D2D2;
   display: none;
+}
+
+.contactsPerson {
+  margin-bottom: 0;
 }
 
 .projectPartner {
@@ -3065,6 +3078,7 @@ span.partnerTag {
 #projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
   text-align:center;
   vertical-align: middle;
+  width: 41px;
 }
 
 .icon-uncheck{
@@ -3894,6 +3908,12 @@ aside[id*="-control"] .slidr-control:after {
 }
 
 /*** Glossary ***/
+
+#glossary-content {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .wordTitle{
   font-size: 14px;
   font-weight: bold;
@@ -4393,6 +4413,8 @@ background: #E0E0E0;
 
 #glossary{
   float:right;
-  /* margin-top: 15px; */
-  font-weight: lighter;
+  margin-top: 15px;
+  /* font-weight: lighter; */
+  /* width: 95%; */
+  /* margin: 0 auto; */
 }

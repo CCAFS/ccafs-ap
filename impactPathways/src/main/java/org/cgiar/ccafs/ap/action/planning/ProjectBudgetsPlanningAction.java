@@ -71,6 +71,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
   private boolean invalidYear;
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
+  private double totalCCAFSBudgetbyYear;
+  private double totalBilateralBudgetbyYear;
+
   private Project previousProject;
 
   @Inject
@@ -144,8 +147,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return totalBilateralBudget;
   }
 
+  public double getTotalBilateralBudgetbyYear() {
+    return totalBilateralBudgetbyYear;
+  }
+
   public double getTotalCCAFSBudget() {
     return totalCCAFSBudget;
+  }
+
+  public double getTotalCCAFSBudgetbyYear() {
+    return totalCCAFSBudgetbyYear;
   }
 
   public String getW1W2BudgetLabel() {
@@ -164,9 +175,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return BudgetType.W3_BILATERAL.toString();
   }
 
+
   public int getYear() {
     return year;
   }
+
 
   public boolean isHasLeader() {
     return hasLeader;
@@ -214,7 +227,10 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
     // If the project is bilateral only ask budget for the lead institution
     if (project.isBilateralProject()) {
-      projectPPAPartners.add(project.getLeader().getInstitution());
+      if (project.getLeader() != null) {
+        projectPPAPartners.add(project.getLeader().getInstitution());
+
+      }
     } else {
       for (ProjectPartner partner : project.getProjectPartners()) {
         if (partner.getInstitution().isPPA()) {
@@ -241,6 +257,11 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
         year = config.getPlanningCurrentYear();
       }
 
+      totalCCAFSBudgetbyYear =
+        budgetManager.calculateTotalProjectBudgetByTypeYear(projectID, BudgetType.W1_W2.getValue(), year);
+      totalBilateralBudgetbyYear =
+        budgetManager.calculateTotalProjectBudgetByTypeYear(projectID, BudgetType.W3_BILATERAL.getValue(), year);
+
       if (!allYears.contains(new Integer(year))) {
         year = config.getPlanningCurrentYear();
       }
@@ -248,6 +269,9 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
       if (project.getLeader() != null) {
         // Getting the list of budgets.
         project.setBudgets(budgetManager.getBudgetsByYear(project.getId(), year));
+        List<Budget> budgetsPrevious = new ArrayList<Budget>();
+        budgetsPrevious.addAll(project.getBudgets());
+        previousProject.setBudgets(budgetsPrevious);
       } else {
         hasLeader = false;
       }
@@ -285,12 +309,18 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
       for (Budget budget : project.getBudgets()) {
         // Only can save the budgets to which the user is authorized
-        if (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget(projectID)) {
-          continue;
-        }
 
-        if (budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget(projectID)) {
-          continue;
+
+        if ((budget.getType().isBilateral() && !securityContext.canUpdateAnnualBilateralBudget(projectID))
+          || (budget.getType().isCCAFSBudget() && !securityContext.canUpdateAnnualW1W2Budget(projectID))) {
+          Budget previous =
+            previousProject.getBudget(budget.getInstitution().getId(), budget.getType().getValue(), year);
+          if (previous == null) {
+            budget.setAmount(0);
+          } else {
+            budget.setAmount(previous.getAmount());
+          }
+
         }
 
         if (budget.getCofinancingProject() == null) {
@@ -378,7 +408,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
 
       // Adjust the type of all projects according to their links with other projects.
       projectManager.updateProjectTypes();
-      budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID, this.getCurrentPlanningYear());
+      // budgetManager.deleteBudgetsWithNoLinkToInstitutions(projectID, this.getCurrentPlanningYear());
       if (project.getLinkedProjects().isEmpty()) {
         project.setCofinancing(false);
       } else {
@@ -404,6 +434,7 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     return NOT_AUTHORIZED;
   }
 
+
   public void setProject(Project project) {
     this.project = project;
   }
@@ -416,8 +447,16 @@ public class ProjectBudgetsPlanningAction extends BaseAction {
     this.totalBilateralBudget = totalBilateralBudget;
   }
 
+  public void setTotalBilateralBudgetbyYear(double totalBilateralBudgetbyYear) {
+    this.totalBilateralBudgetbyYear = totalBilateralBudgetbyYear;
+  }
+
   public void setTotalCCAFSBudget(double totalCCAFSBudget) {
     this.totalCCAFSBudget = totalCCAFSBudget;
+  }
+
+  public void setTotalCCAFSBudgetbyYear(double totalCCAFSBudgetbyYear) {
+    this.totalCCAFSBudgetbyYear = totalCCAFSBudgetbyYear;
   }
 
   @Override

@@ -25,11 +25,16 @@ $(document).ready(function() {
    */
 
   $('.fileUpload .remove').on('click', function(e) {
+
+    console.log('entra remove 2');
     var context = $(this).attr('id').split('-')[1];
     var $parent = $(this).parent().parent();
     var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
     $parent.empty().append($inputFile);
     $inputFile.hide().fadeIn('slow');
+    project.workplanName=null;
+    project.bilateralContractProposalName=null;
+
   });
 
   /**
@@ -50,6 +55,7 @@ $(document).ready(function() {
 
   // Event to remove an element 'li' from core project list
   $('ul li .remove').on('click', function(e) {
+    console.log('entra remove 1');
     removeItemList($(this).parents('li'));
   });
 
@@ -134,14 +140,15 @@ function datePickerConfig(element) {
   var finalMaxDate = (maxDateValue != 0) ? maxDateValue : defaultMaxDateValue;
   $(element.startDate).datepicker({
       dateFormat: "yy-mm-dd",
-      minDate: defaultMinDateValue,
-      maxDate: finalMaxDate,
+
+      minDate: '2015-01-01',
+      maxDate: '2019-12-31',
       changeMonth: true,
       changeYear: true,
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-          $(element.endDate).datepicker("option", "minDate", selectedDate);
+         // $(element.endDate).datepicker("option", "minDate", selectedDate);
         }
       }
   });
@@ -154,14 +161,14 @@ function datePickerConfig(element) {
   var finalMinDate = (minDateValue != 0) ? minDateValue : defaultMinDateValue;
   $(element.endDate).datepicker({
       dateFormat: "yy-mm-dd",
-      minDate: finalMinDate,
-      maxDate: defaultMaxDateValue,
+      minDate: '2015-01-01',
+      maxDate: '2019-12-31',
       changeMonth: true,
       changeYear: true,
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-          $(element.startDate).datepicker("option", "maxDate", selectedDate);
+          //$(element.startDate).datepicker("option", "maxDate", selectedDate);
         }
       }
   });
