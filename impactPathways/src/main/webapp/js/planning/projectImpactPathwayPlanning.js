@@ -87,15 +87,15 @@ function removeContributionBlock(event) {
 
 function selectMogEvent(event) {
   var $checkbox = $(event.target);
-
+  if(!$checkbox.hasClass("disabled")) {
+    return
+  }
   var checkStatus = $checkbox.is(":checked");
   var $hiddenInput = $checkbox.prev();
   if(checkStatus) {
     $hiddenInput.attr("disabled", false);
   } else {
-    if(!$checkbox.hasClass("disabled")) {
-      $hiddenInput.attr("disabled", true);
-    }
+    $hiddenInput.attr("disabled", true);
   }
   setMogsIndexes();
 }
