@@ -32,7 +32,7 @@
       </result>
     </action>
    
-    <action name="genderContributionSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.GenderSummaryAction">
+    <action name="searchTermsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.SearchTermsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
