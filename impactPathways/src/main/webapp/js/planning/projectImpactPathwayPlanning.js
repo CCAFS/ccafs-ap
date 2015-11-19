@@ -87,7 +87,7 @@ function removeContributionBlock(event) {
 
 function selectMogEvent(event) {
   var $checkbox = $(event.target);
-  if(!$checkbox.hasClass("disabled")) {
+  if($checkbox.hasClass("disabled")) {
     return
   }
   var checkStatus = $checkbox.is(":checked");
