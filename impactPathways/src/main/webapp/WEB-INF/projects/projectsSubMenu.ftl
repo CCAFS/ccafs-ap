@@ -38,37 +38,37 @@
     <li class="[#if currentStage == "description"]${currCss}[/#if]">
       <p>[@s.text name="menu.planning.submenu.projectDescription" /]</p>
       <ul>
-        [@menu actionName="description" stageName="description" textName="menu.secondary.planning.project.description"/] 
-        [@menu actionName="partners" stageName="partners" textName="menu.planning.submenu.projectPartners"/] 
-        [@menu actionName="locations" stageName="locations" textName="menu.planning.submenu.projectLocations"/] 
+        [@menu actionName="description" stageName="description" textName="menu.secondary.planning.project.description" /] 
+        [@menu actionName="partners" stageName="partners" textName="menu.planning.submenu.projectPartners" disabled=reportingCycle /] 
+        [@menu actionName="locations" stageName="locations" textName="menu.planning.submenu.projectLocations" disabled=reportingCycle/] 
       </ul>
     </li>
     <li class="[#if currentStage == "outcomes"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.outcome" /]</p>
       <ul>
-        [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes"/]
-        [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes"/]
-        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions"/]
+        [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes" disabled=reportingCycle/]
+        [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes" disabled=reportingCycle/]
+        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" disabled=reportingCycle/]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.outputs" /]</p>
       <ul>
-        [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs"/]
-        [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables"/]
+        [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" disabled=reportingCycle/]
+        [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" disabled=reportingCycle/]
       </ul>
     </li>
     <li class="[#if currentStage == "activities"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.activities" /]</p>
       <ul>
-        [@menu actionName="activities" stageName="activities" textName="menu.planning.submenu.projectActivities.activitiesList"/]
+        [@menu actionName="activities" stageName="activities" textName="menu.planning.submenu.projectActivities.activitiesList" disabled=reportingCycle/]
       </ul>
     </li>
     <li class="[#if currentStage == "budget"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.budget" /]</p>
       <ul> 
-        [@menu actionName="budget" stageName="budgetByPartner" textName="menu.planning.submenu.projectBudget.budgetByPartner"/]
-        [@menu actionName="budgetByMog" stageName="budgetByMog" textName="menu.planning.submenu.projectBudget.budgetByMog"/]
+        [@menu actionName="budget" stageName="budgetByPartner" textName="menu.planning.submenu.projectBudget.budgetByPartner" disabled=reportingCycle/]
+        [@menu actionName="budgetByMog" stageName="budgetByMog" textName="menu.planning.submenu.projectBudget.budgetByMog" disabled=reportingCycle/]
       </ul>
     </li>
   </ul>
@@ -95,7 +95,7 @@
 
 [#-- Menu element --]
 [#macro menu actionName stageName textName disabled=false]
-  <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss} [/#if]${sectionCompleted(actionName)?string('submitted','toSubmit')}">
+  <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss} [/#if] [#if canEdit]${sectionCompleted(actionName)?string('submitted','toSubmit')}[/#if]">
     [#if disabled]
       <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
     [#else]
