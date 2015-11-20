@@ -390,7 +390,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public boolean isReportingCycle() {
     String namespace = ServletActionContext.getActionMapping().getNamespace();
-    return namespace.equals("/reporting");
+    return namespace.contains("/reporting");
 
   }
 
