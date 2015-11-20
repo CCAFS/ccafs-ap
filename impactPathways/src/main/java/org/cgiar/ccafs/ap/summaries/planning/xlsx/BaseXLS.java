@@ -164,31 +164,36 @@ public class BaseXLS {
     Pattern pat;
     Matcher mat;
     String analizator = new String();
+
     for (String term : terms) {
-      while (token.indexOf(term.toLowerCase()) > -1) {
+
+      while (token.indexOf(term) > -1) {
         beginSubToken = token.indexOf(term);
         endSubToken = beginSubToken + term.length() - 1;
 
-        analizator = token.substring(beginSubToken, endSubToken + 1);
+        if (beginSubToken != -1) {
+          analizator = token.substring(beginSubToken, endSubToken + 1);
 
-        if (beginSubToken != 0) {
-          analizator = token.charAt(beginSubToken - 1) + analizator;
+          if (beginSubToken != 0) {
+            analizator = token.charAt(beginSubToken - 1) + analizator;
+          }
+
+          if (endSubToken != token.length() - 1) {
+            analizator = analizator + token.charAt(endSubToken + 1);
+          }
+
+          pat = Pattern.compile("^\\p{Punct}?+" + term.toLowerCase() + "\\p{Punct}?");
+          mat = pat.matcher(analizator);
+
+          if (mat.matches()) {
+            listPointPaint.add(new Point(beginSubToken, endSubToken));
+          }
         }
-
-        if (endSubToken != token.length() - 1) {
-          analizator = analizator + token.charAt(endSubToken + 1);
-        }
-
-        pat = Pattern.compile("^\\p{Punct}?+" + term.toLowerCase() + "\\p{Punct}?");
-        mat = pat.matcher(analizator);
-
-        if (mat.matches()) {
-          listPointPaint.add(new Point(beginSubToken, endSubToken));
-        }
-
         token = token.substring(beginSubToken + term.length(), token.length());
+
       }
     }
+
 
     return listPointPaint;
 
@@ -620,6 +625,46 @@ public class BaseXLS {
 
 
   /**
+   * This method writes string founded value into a specific cell
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   * @param terms terms to compare the string.
+   */
+  public void writeSearchString(Sheet sheet, String text, String[] terms) {
+    this.prepareCell(sheet);
+    StringTokenizer tokens;
+    String token;
+    int begin = 0;
+
+    XSSFRichTextString richText = new XSSFRichTextString();
+
+
+    if (text == null) {
+      cell.setCellValue("");
+    } else {
+      //
+      tokens = new StringTokenizer(text);
+      while (tokens.hasMoreTokens()) {
+        token = tokens.nextToken().toLowerCase();
+        richText.append(token);
+        begin = richText.length() - token.length();
+        for (Point point : this.auxiliarRichText(token, terms)) {
+          richText.applyFont(begin + point.x, begin + point.y + 1, this.richTextFont);
+        }
+
+        richText.append(" ");
+      }
+
+      if (text.toString().length() > 30) {
+        sheet.setColumnWidth(columnCounter, 12000);
+      }
+      cell.setCellValue(richText);
+    }
+
+  }
+
+  /**
    * This method writes string value into a specific cell.
    * 
    * @param sheet is the sheet where you want to add information into.
@@ -637,47 +682,6 @@ public class BaseXLS {
         sheet.setColumnWidth(columnCounter, 8000);
       }
       cell.setCellValue(value);
-    }
-
-  }
-
-  /**
-   * This method writes string value into a specific cell.
-   * 
-   * @param sheet is the sheet where you want to add information into.
-   * @param value is the specific information to be written.
-   * @param terms
-   */
-  public void writeString(Sheet sheet, String text, String[] terms) {
-    this.prepareCell(sheet);
-    StringTokenizer tokens;
-    String token;
-    int begin = 0;
-
-    XSSFRichTextString richText = new XSSFRichTextString();
-
-
-    if (text == null) {
-      cell.setCellValue("");
-    } else {
-      //
-      tokens = new StringTokenizer(text);
-      while (tokens.hasMoreTokens()) {
-        token = tokens.nextToken().toLowerCase();
-
-        richText.append(token);
-        begin = richText.length() - token.length();
-        for (Point point : this.auxiliarRichText(token, terms)) {
-          richText.applyFont(begin + point.x, begin + point.y + 1, this.richTextFont);
-        }
-
-        richText.append(" ");
-      }
-
-      if (text.toString().length() > 30) {
-        sheet.setColumnWidth(columnCounter, 12000);
-      }
-      cell.setCellValue(richText);
     }
 
   }

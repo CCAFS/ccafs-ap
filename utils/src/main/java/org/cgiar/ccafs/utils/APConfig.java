@@ -47,6 +47,7 @@ public class APConfig {
   private static final String PLANNING_FUTURE_YEARS = "ccafsap.planning.future.years";
   private static final String PREPLANNING_ACTIVE = "ccafsap.preplanning.active";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
+  private static final String IS_CLOSED = "ccafsap.is-closed";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String EMAIL_USER = "email.user";
@@ -419,6 +420,22 @@ public class APConfig {
    */
   public boolean isPlanningActive() {
     String planningActive = properties.getPropertiesAsString(PLANNING_ACTIVE);
+    if (planningActive == null) {
+      LOG.error("There is not a planning active configured");
+      return false;
+    }
+
+    return planningActive.equals("true");
+  }
+
+
+  /**
+   * Get the flag that indicate is planing stage is close that is in the configuration file.
+   * 
+   * @return a boolean indicating if it is active.
+   */
+  public boolean isClosed() {
+    String planningActive = properties.getPropertiesAsString(IS_CLOSED);
     if (planningActive == null) {
       LOG.error("There is not a planning active configured");
       return false;

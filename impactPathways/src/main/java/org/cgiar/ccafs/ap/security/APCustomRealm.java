@@ -22,6 +22,7 @@ import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.ProjectUserRole;
 import org.cgiar.ccafs.security.data.model.User;
 import org.cgiar.ccafs.security.data.model.UserRole;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,7 @@ public class APCustomRealm extends AuthorizingRealm {
   private UserManagerImpl userManager;
   private UserRoleManagerImpl userRoleManager;
   private ProjectSpecificUserRoleManagerImpl projectSpecificUserRoleManager;
+  private APConfig config;
 
   @Named("DB")
   Authenticator dbAuthenticator;
@@ -81,7 +83,7 @@ public class APCustomRealm extends AuthorizingRealm {
   @Inject
   public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager,
     ProjectSpecificUserRoleManagerImpl projectSpecificUserRoleManager, @Named("DB") Authenticator dbAuthenticator,
-    @Named("LDAP") Authenticator ldapAuthenticator) {
+    @Named("LDAP") Authenticator ldapAuthenticator, APConfig config) {
     super(new MemoryConstrainedCacheManager());
     this.userManager = userManager;
     this.userRoleManager = userRoleManager;
@@ -89,6 +91,7 @@ public class APCustomRealm extends AuthorizingRealm {
     this.dbAuthenticator = dbAuthenticator;
     this.ldapAuthenticator = ldapAuthenticator;
     injector = Guice.createInjector();
+    this.config = config;
     this.setName("APCustomRealm");
   }
 
@@ -149,9 +152,21 @@ public class APCustomRealm extends AuthorizingRealm {
     if (roles.size() == 0) {
       roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
     }
+
+
     // Get the roles general to the platform
     for (UserRole role : roles) {
+
+
+      if (config.isClosed() && !role.getId().equals(APConstants.ROLE_ADMIN)) {
+
+        roles.clear();
+        roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
+        authorizationInfo.addRole(userRoleManager.getUserRole(8).getAcronym());
+        break;
+      }
       authorizationInfo.addRole(role.getAcronym());
+
 
       switch (role.getId()) {
         case APConstants.ROLE_ADMIN:
@@ -163,24 +178,35 @@ public class APCustomRealm extends AuthorizingRealm {
 
 
         case APConstants.ROLE_FINANCING_PROJECT:
+
+
           for (String permission : role.getPermissions()) {
             permission = permission.replace("projects:", "projects:*:");
             authorizationInfo.addStringPermission(permission);
+
           }
+
           break;
         case APConstants.ROLE_MANAGEMENT_LIAISON:
         case APConstants.ROLE_COORDINATING_UNIT:
+
           projectRoles.add(userRoleManager.getManagementLiaisonProjects(userID));
+
           break;
 
         case APConstants.ROLE_PROJECT_LEADER:
         case APConstants.ROLE_PROJECT_COORDINATOR:
+
+
           projectRoles.add(userRoleManager.getProjectLeaderProjects(userID));
           break;
 
+
         case APConstants.ROLE_CONTACT_POINT:
+
           projectRoles.add(userRoleManager.getContactPointProjects(userID));
           break;
+
       }
     }
 
@@ -207,19 +233,20 @@ public class APCustomRealm extends AuthorizingRealm {
       }
     }
 
-
-    // Getting the specific roles based on the table project_roles.
-    List<ProjectUserRole> projectSpecificUserRoles = projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
-    // Adding the specific project roles to the user.
-    for (ProjectUserRole projectUserRole : projectSpecificUserRoles) {
-      for (String permission : projectUserRole.getUserRole().getPermissions()) {
-        if (permission.contains(":projects:")) {
-          permission = permission.replace("projects:", "projects:" + projectUserRole.getProjectID() + ":");
+    if (!config.isClosed()) {
+      // Getting the specific roles based on the table project_roles.
+      List<ProjectUserRole> projectSpecificUserRoles =
+        projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
+      // Adding the specific project roles to the user.
+      for (ProjectUserRole projectUserRole : projectSpecificUserRoles) {
+        for (String permission : projectUserRole.getUserRole().getPermissions()) {
+          if (permission.contains(":projects:")) {
+            permission = permission.replace("projects:", "projects:" + projectUserRole.getProjectID() + ":");
+          }
+          authorizationInfo.addStringPermission(permission);
         }
-        authorizationInfo.addStringPermission(permission);
       }
     }
-
     return authorizationInfo;
 
   }
