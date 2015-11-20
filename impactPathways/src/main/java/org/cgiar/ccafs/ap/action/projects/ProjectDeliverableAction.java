@@ -83,10 +83,11 @@ public class ProjectDeliverableAction extends BaseAction {
 
 
   @Inject
-  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
-    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
-    DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager,
-    IPElementManager ipElementManager, HistoryManager historyManager, ProjectDeliverableValidator validator) {
+  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager,
+    DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
+    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
+    ProjectPartnerManager projectPartnerManager, IPElementManager ipElementManager, HistoryManager historyManager,
+    ProjectDeliverableValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -212,8 +213,8 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Getting the other partners that are contributing to this deliverable.
-    deliverable.setOtherPartners(
-      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
+    deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverableID,
+      APConstants.DELIVERABLE_PARTNER_OTHER));
 
     super.setHistory(historyManager.getProjectDeliverablesHistory(deliverableID));
 
@@ -231,7 +232,7 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
 
 
@@ -325,7 +326,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public void validate() {
     super.validate();
     if (save) {
-      validator.validate(this, project, deliverable, "Planning");
+      validator.validate(this, project, deliverable, this.getCycleName());
     }
   }
 }

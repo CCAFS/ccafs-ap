@@ -113,7 +113,7 @@ public class ProjectOutcomesAction extends BaseAction {
       this.getCurrentPlanningYear()));
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
 
     // Getting the last history
     super.setHistory(historyManager.getProjectOutcomeHistory(project.getId()));
@@ -172,7 +172,7 @@ public class ProjectOutcomesAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
+      validator.validate(this, project, midOutcomeYear, currentPlanningYear, this.getCycleName());
     }
   }
 }

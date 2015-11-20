@@ -128,8 +128,8 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     previousCRPContributions.addAll(project.getIpOtherContribution().getCrpContributions());
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+      this.getCurrentPlanningYear()));
 
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
@@ -138,7 +138,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     }
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
 
   @Override

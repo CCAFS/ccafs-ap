@@ -68,8 +68,9 @@ public class ProjectDeliverablesListAction extends BaseAction {
     // newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
     newDeliverable.setYear(project.getAllYears().get(0));
 
-    deliverableID = deliverableManager.saveDeliverable(project.getId(), newDeliverable, this.getCurrentUser(),
-      "New expected deliverable created");
+    deliverableID =
+      deliverableManager.saveDeliverable(project.getId(), newDeliverable, this.getCurrentUser(),
+        "New expected deliverable created");
 
     if (deliverableID > 0) {
       return SUCCESS;
@@ -83,14 +84,15 @@ public class ProjectDeliverablesListAction extends BaseAction {
     // Deleting deliverable.
     for (Deliverable deliverable : project.getDeliverables()) {
       if (deliverable.getId() == deliverableID) {
-        boolean deleted = deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(),
-          this.getJustification() == null ? "Deleting deliverable" : this.getJustification());
+        boolean deleted =
+          deliverableManager.deleteDeliverable(deliverableID, this.getCurrentUser(), this.getJustification() == null
+            ? "Deleting deliverable" : this.getJustification());
         if (deleted) {
-          this.addActionMessage(
-            this.getText("deleting.success", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+          this.addActionMessage(this.getText("deleting.success",
+            new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
         } else {
-          this.addActionError(
-            this.getText("deleting.problem", new String[] {this.getText("planning.projectDeliverable").toLowerCase()}));
+          this.addActionError(this.getText("deleting.problem", new String[] {this
+            .getText("planning.projectDeliverable").toLowerCase()}));
         }
       }
     }
@@ -156,7 +158,7 @@ public class ProjectDeliverablesListAction extends BaseAction {
     project.setDeliverables(deliverables);
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
 
   }
 

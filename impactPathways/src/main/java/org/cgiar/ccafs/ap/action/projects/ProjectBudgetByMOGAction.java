@@ -209,10 +209,12 @@ public class ProjectBudgetByMOGAction extends BaseAction {
 
       bilateralBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(projectID, bilateralBudgetType, year);
 
-      ccafsGenderPercentage = budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year,
-        ccafsBudgetType, project.isCoFundedProject() || project.isCoreProject());
-      bilateralGenderPercentage = budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year,
-        bilateralBudgetType, project.isCoFundedProject() || project.isCoreProject());
+      ccafsGenderPercentage =
+        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, ccafsBudgetType,
+          project.isCoFundedProject() || project.isCoreProject());
+      bilateralGenderPercentage =
+        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, bilateralBudgetType,
+          project.isCoFundedProject() || project.isCoreProject());
 
       if (!allYears.contains(new Integer(year))) {
         year = allYears.get(0);
@@ -220,7 +222,7 @@ public class ProjectBudgetByMOGAction extends BaseAction {
     }
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
 
     // Getting the history for this section
     this.setHistory(historyManager.getProjectBudgetByMogHistory(projectID));
@@ -270,7 +272,7 @@ public class ProjectBudgetByMOGAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      projectBudgetByMOGValidator.validate(this, project, "Planning");
+      projectBudgetByMOGValidator.validate(this, project, this.getCycleName());
     }
   }
 }

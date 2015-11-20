@@ -131,11 +131,11 @@ public class ProjectOutputsAction extends BaseAction {
 
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+      this.getCurrentPlanningYear()));
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
     // Getting the history for this section.
     this.setHistory(historyManager.getProjectOutputsHistory(projectID));
   }
@@ -152,8 +152,9 @@ public class ProjectOutputsAction extends BaseAction {
       // Check if there are output overviews to delete
       for (OutputOverview overview : previousOverviews) {
         if (!project.getOutputsOverview().contains(overview)) {
-          success = overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
-            this.getJustification());
+          success =
+            overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
+              this.getJustification());
         }
       }
 
@@ -188,7 +189,7 @@ public class ProjectOutputsAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, "Planning");
+      validator.validate(this, project, this.getCycleName());
     }
   }
 }

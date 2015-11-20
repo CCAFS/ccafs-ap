@@ -86,7 +86,7 @@ public class ProjectSubmissionAction extends BaseAction {
         for (Submission theSubmission : submissions) {
           // Get the submission we need.
           if (theSubmission.getYear() == config.getPlanningCurrentYear()
-            && theSubmission.getCycle().equals("Planning")) {
+            && theSubmission.getCycle().equals(this.getCycleName())) {
             submission = theSubmission;
             alreadySubmitted = true;
           }
@@ -144,7 +144,7 @@ public class ProjectSubmissionAction extends BaseAction {
     project.setProjectPartners(partnerManager.getProjectPartners(project));
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
 
   private void sendNotficationEmail() {
@@ -157,8 +157,9 @@ public class ProjectSubmissionAction extends BaseAction {
     message.append(this.getText("planning.submit.email.message", values));
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("planning.manageUsers.email.bye"));
-    String subject = this.getText("planning.submit.email.subject",
-      new String[] {String.valueOf(project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER))});
+    String subject =
+      this.getText("planning.submit.email.subject",
+        new String[] {String.valueOf(project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER))});
 
     String toEmail = null;
     String ccEmail = null;
@@ -216,8 +217,8 @@ public class ProjectSubmissionAction extends BaseAction {
       LOG.error("There was an error trying to get the URL to download the PDF file: " + e.getMessage());
     } catch (IOException e) {
       // Do nothing
-      LOG.error(
-        "There was a problem trying to download the PDF file for the projectID=" + projectID + " : " + e.getMessage());
+      LOG.error("There was a problem trying to download the PDF file for the projectID=" + projectID + " : "
+        + e.getMessage());
     }
 
     if (buffer != null && fileName != null && contentType != null) {
@@ -238,7 +239,7 @@ public class ProjectSubmissionAction extends BaseAction {
   private void submitProject() {
     submission = new Submission();
     submission.setId(-1);
-    submission.setCycle("Planning");
+    submission.setCycle(this.getCycleName());
     submission.setUser(this.getCurrentUser());
     submission.setYear((short) config.getPlanningCurrentYear());
     submission.setDateTime(new Date());

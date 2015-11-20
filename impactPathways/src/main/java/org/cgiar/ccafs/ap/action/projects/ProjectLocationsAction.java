@@ -221,13 +221,13 @@ public class ProjectLocationsAction extends BaseAction {
     }
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+      this.getCurrentPlanningYear()));
 
     super.setHistory(historyManager.getProjectLocationsHistory(project.getId()));
 
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
 
   @Override
@@ -246,8 +246,9 @@ public class ProjectLocationsAction extends BaseAction {
         success = false;
       }
 
-      boolean added = locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
-        this.getJustification());
+      boolean added =
+        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+          this.getJustification());
       if (!added) {
         success = false;
       }
@@ -322,7 +323,7 @@ public class ProjectLocationsAction extends BaseAction {
   public void validate() {
     LOG.debug(">> validate() ");
     if (save) {
-      validator.validate(this, project, "Planning");
+      validator.validate(this, project, this.getCycleName());
     }
   }
 }
