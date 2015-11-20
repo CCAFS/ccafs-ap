@@ -47,13 +47,13 @@
       
       <!-- Custom interceptor to grant access to the users when accessing a specific project -->
       <interceptor name="grantProjectPlanningAccess" class="org.cgiar.ccafs.ap.interceptor.planning.GrantProjectPlanningAccessInterceptor" />
-      <interceptor name="canEditProjectPlanning" class="org.cgiar.ccafs.ap.interceptor.planning.EditProjectPlanningInterceptor" />
+      <interceptor name="canEditProjectPlanning" class="org.cgiar.ccafs.ap.interceptor.EditProjectPlanningInterceptor" />
       
        <!-- ************************** Interceptors for Planning (Deliverables) ****************************** -->
       
       <!-- Custom interceptor to validate that the deliverable parameter is correct and the deliverable actually exists -->
       <interceptor name="validateDeliverableParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateDeliverableParameterInterceptor" />
-      <interceptor name="canEditDeliverablePlanning" class="org.cgiar.ccafs.ap.interceptor.planning.EditDeliverablePlanningInterceptor" />
+      <interceptor name="canEditDeliverablePlanning" class="org.cgiar.ccafs.ap.interceptor.EditDeliverablePlanningInterceptor" />
       
       <!-- ************************** Interceptors for Planning (Activities) ****************************** -->
       
