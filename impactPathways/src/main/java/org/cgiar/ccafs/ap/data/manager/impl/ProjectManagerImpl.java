@@ -510,17 +510,20 @@ public class ProjectManagerImpl implements ProjectManager {
       if (output == null) {
         continue;
       }
-      outputData = new HashMap<>();
-      outputData.put("project_id", String.valueOf(projectID));
-      outputData.put("mog_id", String.valueOf(output.getId()));
+      try {
+        outputData = new HashMap<>();
+        outputData.put("project_id", String.valueOf(projectID));
+        outputData.put("mog_id", String.valueOf(output.getId()));
+        outputData.put("midOutcome_id", String.valueOf(output.getContributesTo().get(0).getId()));
+        outputData.put("user_id", String.valueOf(user.getId()));
+        outputData.put("justification", justification);
+        int relationID = projectDAO.saveProjectOutput(outputData);
+        saved = (relationID != -1) && saved;
+      } catch (Exception e) {
 
-      System.out.println(String.valueOf(output.getContributesTo().get(0).getId()));
-      outputData.put("midOutcome_id", String.valueOf(output.getContributesTo().get(0).getId()));
-      outputData.put("user_id", String.valueOf(user.getId()));
-      outputData.put("justification", justification);
+      }
 
-      int relationID = projectDAO.saveProjectOutput(outputData);
-      saved = (relationID != -1) && saved;
+
     }
     return saved;
   }

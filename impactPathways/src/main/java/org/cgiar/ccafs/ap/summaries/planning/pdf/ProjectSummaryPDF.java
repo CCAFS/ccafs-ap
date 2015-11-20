@@ -1478,9 +1478,6 @@ public class ProjectSummaryPDF extends BasePDF {
       paragraph.add("7.1 " + this.getText("summaries.project.budget.partners"));
       paragraph.add(Chunk.NEWLINE);
 
-      List<ProjectPartner> listProjectPartner = project.getPPAPartners();
-      listProjectPartner.add(project.getLeader());
-      listProjectPartner = this.removePartnersRepeat(listProjectPartner);
 
       paragraph.add(Chunk.NEWLINE);
       paragraph.add(Chunk.NEWLINE);
@@ -1493,7 +1490,19 @@ public class ProjectSummaryPDF extends BasePDF {
         table.setTotalWidth(480);
         this.addBudgetPartner(project.getLeader(), paragraph, table, BudgetType.W3_BILATERAL, startYear, endYear);
 
+        document.add(table);
+        paragraph = new Paragraph(Chunk.NEWLINE);
+        paragraph = new Paragraph(Chunk.NEWLINE);
+
+        document.add(paragraph);
+
+
       } else {
+
+        List<ProjectPartner> listProjectPartner = project.getPPAPartners();
+        listProjectPartner.add(project.getLeader());
+        listProjectPartner = this.removePartnersRepeat(listProjectPartner);
+
         for (ProjectPartner projectPartner : listProjectPartner) {
           table = new PdfPTable(4);
           table.setWidths(new int[] {2, 3, 3, 3});
@@ -1522,9 +1531,9 @@ public class ProjectSummaryPDF extends BasePDF {
         }
       }
       // }
-    } catch (DocumentException e) {
-      LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
-    }
+  } catch (DocumentException e) {
+    LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
+  }
 
     // ************************Budget By Contributions*************************************
     paragraph = new Paragraph();

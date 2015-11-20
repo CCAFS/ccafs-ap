@@ -38,8 +38,11 @@ import org.slf4j.LoggerFactory;
  */
 public class ImpactPathwayContributionsSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(GenderSummaryAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;;
+  /**
+   * Logger
+   */
+  private static final long serialVersionUID = 9053693628930993346L;
+  public static Logger LOG = LoggerFactory.getLogger(ImpactPathwayContributionsSummaryAction.class);
   private ImpactPathwayContributionsSummaryXLS impactPathwayContributionsSummaryXLS;
   private ProjectManager projectManager;
   private List<Map<String, Object>> projectListMap;
