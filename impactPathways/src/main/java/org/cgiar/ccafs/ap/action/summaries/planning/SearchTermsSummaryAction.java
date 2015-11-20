@@ -17,7 +17,7 @@ package org.cgiar.ccafs.ap.action.summaries.planning;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.GenderSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.SearchTermsSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -36,14 +36,14 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class GenderSummaryAction extends BaseAction implements Summary {
+public class SearchTermsSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(GenderSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(SearchTermsSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;;
-  private GenderSummaryXLS genderSummaryXLS;
+  private SearchTermsSummaryXLS searchTermsSummaryXLS;
   private ProjectManager projectManager;
   private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
+    "inequality", "equity", "social", "differentiation", "inclusion", "youth", "class", "children", "child"};
 
   private List<Map<String, Object>> projectList, deliverableList, activityList;
 
@@ -54,11 +54,12 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   InputStream inputStream;
 
   @Inject
-  public GenderSummaryAction(APConfig config, GenderSummaryXLS genderSummaryXLS, ProjectManager projectManager) {
+  public SearchTermsSummaryAction(APConfig config, SearchTermsSummaryXLS searchTermsSummary,
+    ProjectManager projectManager) {
 
 
     super(config);
-    this.genderSummaryXLS = genderSummaryXLS;
+    this.searchTermsSummaryXLS = searchTermsSummary;
     this.projectManager = projectManager;
 
   }
@@ -66,7 +67,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = genderSummaryXLS.generateXLS(projectList, activityList, deliverableList, termsToSearch);
+    bytesXLS = searchTermsSummaryXLS.generateXLS(projectList, activityList, deliverableList, termsToSearch);
 
     return SUCCESS;
   }
@@ -86,7 +87,7 @@ public class GenderSummaryAction extends BaseAction implements Summary {
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("GenderContribution_");
+    fileName.append("SearchTermsSummary_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
