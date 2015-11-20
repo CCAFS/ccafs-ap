@@ -49,7 +49,7 @@
 
   </package>
   
-  <package name="planningProjects" namespace="/reporting/projects" extends="ccafsap-default">
+  <package name="reportingProjects" namespace="/reporting/projects" extends="ccafsap-default">
     <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
 
@@ -269,7 +269,7 @@
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">projectsList</param>
-        <param name="namespace">/planning</param>
+        <param name="namespace">/reporting</param>
       </result>
       <result name="cancel" type="redirectAction">
         <param name="actionName">budgetByMog</param>
