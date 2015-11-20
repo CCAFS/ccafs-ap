@@ -300,7 +300,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     List<Map<String, String>> expectedDeliverables = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT COUNT(d.year) as count, d.year ");
-    query.append(" FROM ccafspr_ip_test.deliverables d ");
+    query.append(" FROM deliverables d ");
     query.append(" WHERE d.is_active = TRUE ");
     query.append(" GROUP BY d.year ");
     query.append(" ORDER BY d.year ASC ");
@@ -367,7 +367,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       query.append("VALUES (?,?,?,?,?,?,?,?,?) ");
       values = new Object[9];
       values[0] = deliverableData.get("id");
-      values[1] = deliverableData.get("project_id");;
+      values[1] = deliverableData.get("project_id");
+      ;
       values[2] = deliverableData.get("title");
       values[3] = deliverableData.get("type_id");
       values[4] = deliverableData.get("type_other");
@@ -378,8 +379,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       values[8] = deliverableData.get("modification_justification");
     } else {
       // Updating existing deliverable record
-      query.append(
-        "UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+      query
+        .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
       values = new Object[7];
       values[0] = deliverableData.get("title");
@@ -445,7 +446,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       result = databaseManager.saveData(query.toString(), values);
     } else {
       query
-      .append("INSERT INTO ip_deliverable_contributions (id, deliverable_id, project_contribution_id, created_by,");
+        .append("INSERT INTO ip_deliverable_contributions (id, deliverable_id, project_contribution_id, created_by,");
       query.append(" modified_by, modification_justification ) ");
       query.append("SELECT ?, ?, id, ?, ?, ? ");
       query.append("FROM ip_project_contributions ");

@@ -1,5 +1,8 @@
 $(document).ready(init);
 
+$(function() {
+  $( "#tabs" ).tabs();
+});
 function init() {
   console.log('P&R Help');
   attachEvents();
