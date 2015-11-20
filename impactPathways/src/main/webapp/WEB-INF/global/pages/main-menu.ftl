@@ -40,7 +40,7 @@
 	      
 	      [#-- Reporting section --]
         [#if reportingActive ]               
-          <a href="${baseUrl}/reporting/introduction.do" >
+          <a href="${baseUrl}/reporting/projectsList.do" >
         [#else]
           <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
         [/#if]

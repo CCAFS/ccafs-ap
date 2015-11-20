@@ -146,8 +146,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * This method clears the cache and re-load the user permissions in the next iteration.
    */
   public void clearPermissionsCache() {
-    ((APCustomRealm) securityContext.getRealm()).clearCachedAuthorizationInfo(securityContext.getSubject()
-      .getPrincipals());
+    ((APCustomRealm) securityContext.getRealm())
+      .clearCachedAuthorizationInfo(securityContext.getSubject().getPrincipals());
   }
 
   /* Override this method depending of the delete action. */
@@ -344,6 +344,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return true;
   }
 
+
   public boolean isDataSaved() {
     return dataSaved;
   }
@@ -385,6 +386,12 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public boolean isReportingActive() {
     return config.isReportingActive();
+  }
+
+  public boolean isReportingCycle() {
+    String namespace = ServletActionContext.getActionMapping().getNamespace();
+    return namespace.equals("/reporting");
+
   }
 
   public boolean isSaveable() {

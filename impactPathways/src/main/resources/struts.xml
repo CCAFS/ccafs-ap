@@ -170,6 +170,7 @@
   -->
   <include file="struts-home.xml" />
   <include file="struts-planning.xml" />
+   <include file="struts-reporting.xml" />
   <include file="struts-pre-planning.xml" />
   <include file="struts-json.xml" />
   <include file="struts-summaries.xml" />

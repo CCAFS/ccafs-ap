@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+  <package name="reporting" namespace="/reporting" extends="ccafsap-default">
+    <default-interceptor-ref name="planningStackProjects" />
+    <default-action-ref name="projects" />
+    
+    <action name="projectsList" class="org.cgiar.ccafs.ap.action.projects.ProjectsListAction">
+      <result name="input">/WEB-INF/projects/projectsList.ftl</result>
+    </action>
+    
+    <action name="deleteProject" method="delete" class="org.cgiar.ccafs.ap.action.projects.ProjectsListAction">
+      <result name="success" type="redirectAction">
+        <param name="actionName">projectsList</param>
+        <param name="namespace">/reporting</param>
+      </result>
+    </action>
+    
+    <action name="addNewCoreProject" method="addCoreProject" class="org.cgiar.ccafs.ap.action.projects.ProjectsListAction">
+      <result name="input">/WEB-INF/projects/projectsList.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/reporting/projects</param>
+        <param name="actionName">description</param>
+        <param name="projectID">${projectID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+    
+    <action name="addNewBilateralProject" method="addBilateralProject" class="org.cgiar.ccafs.ap.action.projects.ProjectsListAction">
+      <result name="input">/WEB-INF/projects/projectsList.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/reporting/projects</param>
+        <param name="actionName">description</param>
+        <param name="projectID">${projectID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+
+    <action name="addCoFundedProject" class="org.cgiar.ccafs.ap.action.projects.AddCofoundedProjectAction">
+      <result name="input">/WEB-INF/global/pages/addCoFundedProject.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/reporting/projects</param>
+        <param name="actionName">description</param>
+        <param name="projectID">${coreProjectID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+
+  </package>
+  
+  <package name="planningProjects" namespace="/reporting/projects" extends="ccafsap-default">
+    <default-interceptor-ref name="planningStackProjects" />
+    <default-action-ref name="projects" />
+
+    <!-- Sections -->
+    
+    <!-- Section: Projects  -->
+   
+    <action name="description" class="org.cgiar.ccafs.ap.action.projects.ProjectDescriptionAction">
+      <result name="input">/WEB-INF/projects/projectDescription.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">description</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">description</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <!-- Partners  -->
+    
+    <action name="partners" class="org.cgiar.ccafs.ap.action.projects.ProjectPartnersAction">
+      <result name="input">/WEB-INF/projects/projectPartners.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">partners</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+
+    <action name="locations" class="org.cgiar.ccafs.ap.action.projects.ProjectLocationsAction">
+      <result name="input">/WEB-INF/projects/projectLocations.ftl</result> 
+      <result name="success" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">outcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">locations</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <!-- Project Outcomes  -->
+    
+    <action name="outcomes" class="org.cgiar.ccafs.ap.action.projects.ProjectOutcomesAction">
+      <result name="input">/WEB-INF/projects/projectOutcomes.ftl</result>		
+      <result name="success" type="redirectAction">		
+        <param name="actionName">outcomes</param>		
+        <param name="projectID">${project.id}</param>		
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">ccafsOutcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">outcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <action name="ccafsOutcomes" class="org.cgiar.ccafs.ap.action.projects.ProjectCCAFSOutcomesAction">
+      <result name="input">/WEB-INF/projects/projectCCAFSOutcomes.ftl</result>   
+      <result name="success" type="redirectAction">   
+        <param name="actionName">ccafsOutcomes</param>    
+        <param name="projectID">${project.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">otherContributions</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">ccafsOutcomes</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+
+    <action name="otherContributions" class="org.cgiar.ccafs.ap.action.projects.ProjectIPOtherContributionAction">
+      <result name="input">/WEB-INF/projects/projectOtherContribution.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">otherContributions</param>
+        <param name="projectID">${project.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">outputs</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">otherContributions</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <!-- Project Outputs  -->
+    
+    <action name="outputs" class="org.cgiar.ccafs.ap.action.projects.ProjectOutputsAction">
+      <result name="input">/WEB-INF/projects/projectOutputs.ftl</result>
+      <result name="success" type="redirectAction">   
+        <param name="actionName">outputs</param>
+        <param name="projectID">${project.id}</param>   
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">deliverablesList</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">outputs</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <action name="deliverablesList" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverablesListAction">
+      <result name="input">/WEB-INF/projects/projectDeliverablesList.ftl</result>
+    </action>
+    
+    <action name="addNewDeliverable" method="add" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverablesListAction">
+      <result name="input">/WEB-INF/projects/projectDeliverablesList.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/reporting/projects</param>
+        <param name="actionName">deliverable</param>
+        <param name="deliverableID">${deliverableID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+    
+    <action name="deleteDeliverable" method="delete" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverablesListAction">
+      <result name="success" type="redirectAction">
+        <param name="namespace">/reporting/projects</param>
+        <param name="actionName">deliverablesList</param>
+        <param name="projectID">${projectID}</param>
+      </result>
+    </action>
+    
+    <action name="deliverable" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverableAction">
+      <interceptor-ref name="planningStackDeliverables" />
+      <result name="input">/WEB-INF/projects/projectDeliverable.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">deliverable</param>
+        <param name="deliverableID">${deliverable.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">impactPathway</param>
+        <param name="deliverableID">${deliverable.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">deliverable</param>
+        <param name="deliverableID">${deliverable.id}</param>
+      </result>
+    </action>
+
+
+    
+    <action name="partnerSave" class="org.cgiar.ccafs.ap.action.projects.PartnersSaveAction">
+      <result name="input">/WEB-INF/global/pages/partnersSave.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">partnerSave</param>
+      </result>
+    </action>
+    
+    <!-- Section: Activities  -->
+    
+    <action name="activities" class="org.cgiar.ccafs.ap.action.projects.ActivitiesListAction">
+      <result name="input">/WEB-INF/projects/projectActivitiesList.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">activities</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <!-- Project Budget  -->
+    
+    <action name="budget" class="org.cgiar.ccafs.ap.action.projects.ProjectBudgetsAction">
+      <result name="input">/WEB-INF/projects/projectBudget.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
+        <param name="year">${year}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">budgetByMog</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">budget</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.projects.ProjectBudgetByMOGAction">
+      <result name="input">/WEB-INF/projects/projectBudgetByMog.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">budgetByMog</param>
+        <param name="projectID">${project.id}</param>
+        <param name="year">${targetYear}</param>
+      </result>
+      <result name="next" type="redirectAction">
+        <param name="actionName">projectsList</param>
+        <param name="namespace">/planning</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">budgetByMog</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
+    <!-- Project Submission -->
+    <action name="submit" class="org.cgiar.ccafs.ap.action.projects.ProjectSubmissionAction">
+      <result name="input">/WEB-INF/projects/projectSubmission.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">submit</param>
+        <param name="projectID">${projectID}</param>        
+      </result>
+    </action>      
+  </package>  
+</struts>
