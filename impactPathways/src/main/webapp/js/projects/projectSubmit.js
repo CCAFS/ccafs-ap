@@ -76,7 +76,7 @@ function processTasks(tasks,projectId,button) {
       var $sectionMenu = $('#menu-' + sectionName);
       $
           .ajax({
-              url: baseURL + '/planning/validateProjectPlanningSection.do',
+              url: baseURL + '/planning/validateProjectSection.do',
               data: {
                   projectID: projectId,
                   sectionName: sectionName

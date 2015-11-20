@@ -16,7 +16,7 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
     
 <section class="content">
-  [#include "/WEB-INF/projects/planningProjectsSubMenu.ftl" /]
+  [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   <article class="halfContent" id="projectSubmition">
     <h1 class="successfullyTitle">Project Submit</h1>
     <div class="borderBox">
