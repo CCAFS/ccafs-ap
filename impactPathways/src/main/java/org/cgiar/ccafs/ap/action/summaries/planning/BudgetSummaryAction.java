@@ -109,7 +109,7 @@ public class BudgetSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
 
-    projectList = projectManager.getAllProjectsBasicInfo();
+    projectList = projectManager.getAllProjectsBasicInfo(this.getSectionName());
     List<ProjectPartner> partnersList;
 
     for (Project project : projectList) {

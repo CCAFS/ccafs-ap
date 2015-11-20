@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysql.MySQLProjectDAO;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -86,9 +87,11 @@ public interface ProjectDAO {
    * The information of the project that this method returns is:
    * ID, title and total CCAFS budget
    * 
+   * @param cycle name of section
+   * @reportingStratDate The start of reporting cycle
    * @return a list of maps with the information
    */
-  public List<Map<String, String>> getAllProjectsBasicInfo();
+  public List<Map<String, String>> getAllProjectsBasicInfo(String cycle, Date reportingStratDate);
 
   /**
    * This method returns the bilateral projects that contributes with the flagship and the regions received by

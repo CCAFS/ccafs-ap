@@ -76,9 +76,10 @@ public interface ProjectManager {
    * ID, title, the regions and flagships to which the project contributes
    * and the total budget
    * 
+   * @param section name of section
    * @return a list with Project objects.
    */
-  public List<Project> getAllProjectsBasicInfo();
+  public List<Project> getAllProjectsBasicInfo(String section);
 
   /**
    * This method returns the bilateral projects that contributes with the flagship and the regions received by

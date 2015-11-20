@@ -199,12 +199,13 @@ public class ProjectsListAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     projects = new ArrayList<>();
+    String section = this.getSectionName();
 
     if (securityContext.isAdmin()) {
-      projects = projectManager.getAllProjectsBasicInfo();
+      projects = projectManager.getAllProjectsBasicInfo(section);
       allProjects = new ArrayList<>();
     } else {
-      allProjects = projectManager.getAllProjectsBasicInfo();
+      allProjects = projectManager.getAllProjectsBasicInfo(section);
       List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
 
       // We should remove from the allProjects list the project
@@ -221,7 +222,7 @@ public class ProjectsListAction extends BaseAction {
     // Validating if projects are complete or not.
     projectStatuses = new LinkedHashMap<>();
     for (Project project : projects) {
-      this.initializeProjectSectionStatuses(project, "Planning");
+      this.initializeProjectSectionStatuses(project, this.getSectionName());
       projectStatuses.put(project.getId(), this.isComplete());
     }
 

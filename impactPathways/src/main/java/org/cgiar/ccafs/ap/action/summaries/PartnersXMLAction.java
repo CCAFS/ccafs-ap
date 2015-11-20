@@ -246,7 +246,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     }
 
     projects = new HashMap<String, Project>();
-    List<Project> projectList = projectManager.getAllProjectsBasicInfo();
+    List<Project> projectList = projectManager.getAllProjectsBasicInfo(this.getSectionName());
     for (Project project : projectList) {
       projects.put(String.valueOf(project.getId()), project);
     }
