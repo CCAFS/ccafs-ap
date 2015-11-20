@@ -71,12 +71,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected boolean cancel;
   protected boolean dataSaved;
   protected boolean add;
-
   // User actions
   private boolean isEditable; // If user is able to edit the form.
+
   private boolean canEdit; // If user is able to edit the form.
   private boolean saveable; // If user is able to see the save, cancel, delete buttons
-
   private boolean fullEditable; // If user is able to edit all the form.
 
   @SuppressWarnings("rawtypes")
@@ -86,18 +85,18 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private String justification;
 
   private ComponentLesson projectLessons;
+
   private Map<String, Object> session;
   private HttpServletRequest request;
   private List<SectionStatus> sectionStatuses;
-
   // Config
   protected APConfig config;
 
   @Inject
   protected SecurityContext securityContext;
+
   @Inject
   private BoardMessageManager boardMessageManager;
-
   @Inject
   protected ProjectLessonsManager lessonManager;
 
@@ -117,7 +116,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return SUCCESS;
   }
 
-
   /**
    * This function add a flag (--warn--) to the message in order to give
    * a different style to the success message using javascript once the html is ready.
@@ -127,6 +125,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public void addActionWarning(String message) {
     this.addActionMessage("--warn--" + message);
   }
+
 
   /* Override this method depending of the cancel action. */
   public String cancel() {
@@ -229,7 +228,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return null;
   }
 
-
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
@@ -239,6 +237,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String getJustification() {
     return justification;
   }
+
 
   /**
    * Define default locale while we decide to support other languages in the future.
@@ -292,6 +291,15 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public HttpServletRequest getRequest() {
     return request;
+  }
+
+  public String getSectionName() {
+    boolean isReporting = this.isReportingCycle();
+    if (isReporting) {
+      return APConstants.REPORTING_SECTION;
+    } else {
+      return APConstants.PLANNING_SECTION;
+    }
   }
 
   public SecurityContext getSecurityContext() {

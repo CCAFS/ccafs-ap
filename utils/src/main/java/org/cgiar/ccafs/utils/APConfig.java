@@ -16,6 +16,7 @@ package org.cgiar.ccafs.utils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.google.inject.Inject;
@@ -156,6 +157,12 @@ public class APConfig {
       String stringDate = properties.getPropertiesAsString(CURRENT_REPORTING_START_DATE);
       date = formatter.parse(stringDate);
 
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(date);
+
+      cal.set(Calendar.MONTH, 11);
+      cal.set(Calendar.DATE, 31);
+      date = cal.getTime();
     } catch (Exception e) {
       LOG.error("There is not a current year configured for the planning section or has an invalid format.");
     }

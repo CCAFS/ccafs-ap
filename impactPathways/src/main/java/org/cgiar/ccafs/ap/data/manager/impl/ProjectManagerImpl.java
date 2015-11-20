@@ -27,6 +27,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,18 +61,20 @@ public class ProjectManagerImpl implements ProjectManager {
   private BudgetManager budgetManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private SubmissionManager submissionManager;
+  private APConfig config;
 
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, IPProgramManager ipProgramManager,
     BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager,
-    SubmissionManager submissionManager) {
+    SubmissionManager submissionManager, APConfig config) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
     this.ipProgramManager = ipProgramManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.submissionManager = submissionManager;
+    this.config = config;
   }
 
   @Override
@@ -104,8 +107,9 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getAllProjectsBasicInfo() {
-    List<Map<String, String>> projectDataList = projectDAO.getAllProjectsBasicInfo();
+  public List<Project> getAllProjectsBasicInfo(String section) {
+    List<Map<String, String>> projectDataList =
+      projectDAO.getAllProjectsBasicInfo(section, config.getCurrentReportingStartDate());
     List<Project> projectsList = new ArrayList<>();
     Project project;
     for (Map<String, String> projectData : projectDataList) {
@@ -450,7 +454,7 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getProjectsList(String[] values) {
     List<Project> projects = new ArrayList<>();
     List<String> ids = new ArrayList<String>(Arrays.asList(values));
-    for (Project project : this.getAllProjectsBasicInfo()) {
+    for (Project project : this.getAllProjectsBasicInfo(APConstants.PLANNING_SECTION)) {
       if (ids.contains(String.valueOf(project.getId()))) {
         projects.add(project);
       }
