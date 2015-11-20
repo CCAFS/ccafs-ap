@@ -1,5 +1,6 @@
 var tasksLength;
 var sections;
+var currentCycle;
 
 $(document).ready(
     function() {
@@ -8,6 +9,9 @@ $(document).ready(
               "description", "partners", "locations", "outcomes", "ccafsOutcomes", "otherContributions", "outputs",
               "deliverablesList", "activities", "budget", "budgetByMog"
           ];
+      // currentCycle section service
+      currentCycle = $('#currentCycle').val();
+      // Progress bar
       tasksLength = sections.length;
       $(".progressbar").progressbar({
         max: tasksLength
@@ -76,10 +80,11 @@ function processTasks(tasks,projectId,button) {
       var $sectionMenu = $('#menu-' + sectionName);
       $
           .ajax({
-              url: baseURL + '/planning/validateProjectSection.do',
+              url: baseURL + '/projects/validateProjectSection.do',
               data: {
                   projectID: projectId,
-                  sectionName: sectionName
+                  sectionName: sectionName,
+                  cycle: currentCycle
               },
               beforeSend: function() {
                 $sectionMenu.removeClass('animated flipInX').addClass('loadingSection');

@@ -128,7 +128,7 @@
   </package>
   
   <!-- JSON Set that are being used by planning only -->
-  <package name="json-planning" namespace="/planning" extends="json-default">
+  <package name="json-planning" namespace="/projects" extends="json-default">
     <action name="validateProjectSection" class="org.cgiar.ccafs.ap.action.json.projects.ValidateProjectSectionAction">
       <result type="json">        
         <param name="noCache">true</param>

@@ -6,8 +6,8 @@
 [#assign currentSection = reportingCycle?string('reporting','planning') /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":""}
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":""}
 ]/]
 
 
@@ -35,7 +35,7 @@
       <h3 class="projectSubTitle">[@s.text name="preplanning.projects.yourProjects"/]</h3>
       <div class="loadingBlock"></div>
       <div style="display:none">
-        [@projectList.projectsList projects=projects canValidate=true canEdit=true namespace="/planning/projects" /]
+        [@projectList.projectsList projects=projects canValidate=true canEdit=true namespace="/${currentSection}/projects" /]
       </div>
     [#else]
       <div class="borderBox center">
@@ -50,23 +50,23 @@
     [#if securityContext.canAddCoreProject() || securityContext.canAddBilateralProject()]
       <div class="buttons">
         [#if securityContext.canAddCoreProject()]
-          <a class="addButton" href="[@s.url namespace="/planning" action='addNewCoreProject'/]">[@s.text name="preplanning.projects.addCoreProject" /]</a>
+          <a class="addButton" href="[@s.url namespace="/${currentSection}" action='addNewCoreProject'/]">[@s.text name="preplanning.projects.addCoreProject" /]</a>
         [/#if]
         [#if securityContext.canAddBilateralProject()]
-          <a class="addButton" href="[@s.url namespace="/planning" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
+          <a class="addButton" href="[@s.url namespace="/${currentSection}" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
         [/#if]
       </div>
     [/#if]
 
-    <div class="clearfix"></div>  
+    <div class="clearfix"></div>
     <hr/>
     [#-- Projects List (Other Projects) --]
     <h3 class="projectSubTitle">[@s.text name="preplanning.projects.otherProjects" /]</h3>
     <div class="loadingBlock"></div>
     <div style="display:none">
-      [@projectList.projectsList projects=allProjects canValidate=true namespace="/planning/projects" /]
+      [@projectList.projectsList projects=allProjects canValidate=true namespace="/${currentSection}/projects" /]
     </div>
   </article>
 </section>
-[@customForm.confirmJustification action="deleteProject" namespace="/planning" title="Remove Project" /]
+[@customForm.confirmJustification action="deleteProject" namespace="/${currentSection}" title="Remove Project" /]
 [#include "/WEB-INF/global/pages/footer.ftl"]

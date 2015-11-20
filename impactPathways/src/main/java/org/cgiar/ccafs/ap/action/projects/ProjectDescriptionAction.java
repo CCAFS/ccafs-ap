@@ -77,10 +77,10 @@ public class ProjectDescriptionAction extends BaseAction {
   private ProjectDescriptionValidator validator;
 
   @Inject
-  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager,
-    IPProgramManager ipProgramManager, UserManager userManager, BudgetManager budgetManager,
-    LiaisonInstitutionManager liaisonInstitutionManager, ProjectCofinancingLinkageManager linkedCoreProjectManager,
-    HistoryManager historyManager, ProjectDescriptionValidator validator) {
+  public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
+    UserManager userManager, BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager,
+    ProjectCofinancingLinkageManager linkedCoreProjectManager, HistoryManager historyManager,
+    ProjectDescriptionValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
@@ -327,9 +327,9 @@ public class ProjectDescriptionAction extends BaseAction {
       }
 
     }
-
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, "Planning");
+    this.initializeProjectSectionStatuses(project, this.isReportingCycle() ? APConstants.REPORTING_SECTION
+      : APConstants.PLANNING_SECTION);
   }
 
   @Override
@@ -401,8 +401,8 @@ public class ProjectDescriptionAction extends BaseAction {
       } else if (previousProject.isBilateralProject()) {
         if (file != null) {
           if (previousProject.getBilateralContractProposalName() != null) {
-            FileManager
-              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
+            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
+              + previousProject.getBilateralContractProposalName());
           }
 
           previousProject.setBilateralContractProposalName(fileFileName);
@@ -412,8 +412,8 @@ public class ProjectDescriptionAction extends BaseAction {
 
           if (previousProject.getBilateralContractProposalName() != null
             && previousProject.getBilateralContractProposalName().isEmpty()) {
-            FileManager
-              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
+            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
+              + previousProject.getBilateralContractProposalName());
             previousProject.setBilateralContractProposalName("");
           }
         }
@@ -425,8 +425,8 @@ public class ProjectDescriptionAction extends BaseAction {
       if (project.isBilateralProject()) {
         if (securityContext.canUploadBilateralContract(projectID)) {
           if (file != null) {
-            FileManager
-              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
+            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
+              + previousProject.getBilateralContractProposalName());
             FileManager.copyFile(file,
               this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             previousProject.setBilateralContractProposalName(fileFileName);
@@ -435,8 +435,8 @@ public class ProjectDescriptionAction extends BaseAction {
             if (project.getBilateralContractProposalName() != null
               && project.getBilateralContractProposalName().isEmpty()) {
               previousProject.setBilateralContractProposalName("");
-              FileManager
-                .deleteFile(this.getWorplansAbsolutePath() + previousProject.getBilateralContractProposalName());
+              FileManager.deleteFile(this.getWorplansAbsolutePath()
+                + previousProject.getBilateralContractProposalName());
             }
           }
         }
@@ -473,8 +473,9 @@ public class ProjectDescriptionAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved = ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+                this.getJustification());
           }
         }
 
@@ -492,8 +493,10 @@ public class ProjectDescriptionAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-              this.getJustification());
+            saved =
+              saved
+                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+                  this.getJustification());
           }
         }
 
@@ -580,24 +583,19 @@ public class ProjectDescriptionAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-
-
       if (!project.isBilateralProject() && project.isWorkplanRequired()) {
         if (file != null) {
-
           project.setWorkplanName(fileFileName);
-
         }
       }
-
       if (project.isBilateralProject()) {
 
         if (file != null) {
           project.setBilateralContractProposalName(fileFileName);
         }
       }
-      validator.validate(this, project, "Planning");
+      validator.validate(this, project, this.isReportingCycle() ? APConstants.REPORTING_SECTION
+        : APConstants.PLANNING_SECTION);
     }
-
   }
 }

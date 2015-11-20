@@ -69,6 +69,7 @@ public class ValidateProjectSectionAction extends BaseAction {
   private boolean existProject;
   private boolean validSection;
   private String sectionName;
+  private String currentCycle;
   private int projectID;
 
   // Managers
@@ -180,9 +181,8 @@ public class ValidateProjectSectionAction extends BaseAction {
       // for deliverables, we going to create a fake section status with all the missing fields for all the deliverables
       // on it. Please refer to the method validateDeliverables().
       if (!sectionName.equals("deliverablesList")) {
-        sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), "Planning", sectionName);
+        sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), currentCycle, sectionName);
       }
-
     }
     return SUCCESS;
   }
@@ -205,8 +205,8 @@ public class ValidateProjectSectionAction extends BaseAction {
   public Budget getCofinancingBudget(int projectID, int cofinanceProjectID, int year) {
     Budget budged;
     Project cofinancingProject = projectManager.getProject(cofinanceProjectID);
-    cofinancingProject
-      .setBudgets(budgetManager.getBudgetsByYear(cofinancingProject.getId(), config.getPlanningCurrentYear()));
+    cofinancingProject.setBudgets(budgetManager.getBudgetsByYear(cofinancingProject.getId(),
+      config.getPlanningCurrentYear()));
     if (cofinancingProject.isBilateralProject()) {
 
       budged = this.getBilateralCofinancingBudget(projectID, cofinanceProjectID, year);
@@ -226,6 +226,7 @@ public class ValidateProjectSectionAction extends BaseAction {
   public void prepare() throws Exception {
     // Validating parameters.
     sectionName = this.getRequest().getParameter(APConstants.SECTION_NAME);
+    currentCycle = this.getRequest().getParameter(APConstants.CYCLE);
     projectID = -1;
     if (this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID) != null) {
       try {
@@ -263,10 +264,10 @@ public class ValidateProjectSectionAction extends BaseAction {
     project.setActivities(activityManager.getActivitiesByProject(projectID));
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, "activities", this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "activities",
+      this.getCurrentPlanningYear()));
 
-    activityListValidator.validate(this, project, "Planning");
+    activityListValidator.validate(this, project, currentCycle);
   }
 
   private void validateBudgetByMOG() {
@@ -287,7 +288,7 @@ public class ValidateProjectSectionAction extends BaseAction {
     budgets.addAll(budgetByMogManager.getProjectOutputsBudgetByTypeAndYear(projectID, bilateralBudgetType, year));
     project.setOutputsBudgets(budgets);
 
-    budgetbyMOGValidator.validate(this, project, "Planning");
+    budgetbyMOGValidator.validate(this, project, currentCycle);
 
   }
 
@@ -311,11 +312,11 @@ public class ValidateProjectSectionAction extends BaseAction {
     }
 
     for (Project contribution : project.getLinkedProjects()) {
-      contribution.setAnualContribution(
-        this.getCofinancingBudget(projectID, contribution.getId(), this.getConfig().getPlanningCurrentYear()));
+      contribution.setAnualContribution(this.getCofinancingBudget(projectID, contribution.getId(), this.getConfig()
+        .getPlanningCurrentYear()));
     }
     // TODO
-    budgetValidator.validate(this, project, "Planning");
+    budgetValidator.validate(this, project, currentCycle);
 
   }
 
@@ -332,11 +333,11 @@ public class ValidateProjectSectionAction extends BaseAction {
     }
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, "ccafsOutcomes", this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "ccafsOutcomes",
+      this.getCurrentPlanningYear()));
 
     // Validating
-    projectCCAFSOutcomesValidator.validate(this, project, "Planning");
+    projectCCAFSOutcomesValidator.validate(this, project, currentCycle);
   }
 
 
@@ -346,22 +347,22 @@ public class ValidateProjectSectionAction extends BaseAction {
     // Getting the list of deliverables.
     project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
     // we need to make two validations here. One at project level, and the other one for each deliverable.
-    deliverableValidator.validate(this, project, "Planning");
+    deliverableValidator.validate(this, project, currentCycle);
 
     sectionStatus = new SectionStatus();
     sectionStatus.setId(-1);
     sectionStatus.setSection("deliverablesList");
     StringBuilder missingFieldsAllDeliverables = new StringBuilder();
     // Getting the status made before.
-    SectionStatus tempStatus = sectionStatusManager.getSectionStatus(project, "Planning", "deliverablesList");
+    SectionStatus tempStatus = sectionStatusManager.getSectionStatus(project, currentCycle, "deliverablesList");
     // Adding the missing fields to the concatenated deliverablesStatus.
     missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
 
     if (project.getDeliverables() != null && !project.getDeliverables().isEmpty()) {
       for (Deliverable deliverable : project.getDeliverables()) {
-        deliverableValidator.validate(this, project, deliverable, "Planning");
+        deliverableValidator.validate(this, project, deliverable, currentCycle);
         // Appending all the missing fields for the current deliverable.
-        tempStatus = sectionStatusManager.getSectionStatus(deliverable, "Planning", "deliverable");
+        tempStatus = sectionStatusManager.getSectionStatus(deliverable, currentCycle, "deliverable");
         missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
       }
     }
@@ -381,7 +382,7 @@ public class ValidateProjectSectionAction extends BaseAction {
       .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear()));
 
     // Validate
-    projectOutputValidator.validate(this, project, "Planning");
+    projectOutputValidator.validate(this, project, currentCycle);
   }
 
   /**
@@ -404,7 +405,7 @@ public class ValidateProjectSectionAction extends BaseAction {
       project.setLinkedProjects(linkedProjectManager.getLinkedCoreProjects(projectID));
     }
     // Validate.
-    descriptionValidator.validate(this, project, "Planning");
+    descriptionValidator.validate(this, project, currentCycle);
 
   }
 
@@ -414,10 +415,10 @@ public class ValidateProjectSectionAction extends BaseAction {
     project.setLocations(locationManager.getProjectLocations(projectID));
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, "locations", this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "locations",
+      this.getCurrentPlanningYear()));
 
-    locationValidator.validate(this, project, "Planning");
+    locationValidator.validate(this, project, currentCycle);
   }
 
   private void validateProjectOtherContributions() {
@@ -425,8 +426,8 @@ public class ValidateProjectSectionAction extends BaseAction {
     Project project = projectManager.getProject(projectID);
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
     // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, "otherContributions", this.getCurrentPlanningYear()));
+    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "otherContributions",
+      this.getCurrentPlanningYear()));
     // Validating.
     projectOtherContributionValidator.validate(this, project);
   }
@@ -453,7 +454,7 @@ public class ValidateProjectSectionAction extends BaseAction {
     this
       .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear()));
 
-    projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, "Planning");
+    projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, currentCycle);
 
   }
 
@@ -467,6 +468,6 @@ public class ValidateProjectSectionAction extends BaseAction {
       .setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear()));
 
     // Validating.
-    projectPartnersValidator.validate(this, project, "Planning");
+    projectPartnersValidator.validate(this, project, currentCycle);
   }
 }

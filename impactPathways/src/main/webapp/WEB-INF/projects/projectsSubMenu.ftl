@@ -1,11 +1,13 @@
 [#ftl]
+[#-- validateProjectSection.do --]
+<input type="hidden" id="currentCycle" value="${currentSection?cap_first}" />
 [#-- Submit controller --]
 <script src="${baseUrl}/js/projects/projectSubmit.js"></script>
 
 [#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
 [#assign projectStage = (currentSubStage)!"" /] 
-[#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
+[#assign submission = (project.isSubmitted(currentPlanningYear, reportingCycle?string('Reporting','Planning') ))!/]
 [#assign projectSectionStatus= (action.getProjectSectionStatus(actionName))!{} /]
 
 <nav id="secondaryMenu" class="projectMenu ${(project.type)!''} ${(projectSectionStatus.missingFieldsWithPrefix?has_content)?string("hasMissingFields","")}">

@@ -2,16 +2,16 @@
 [#assign title = "Project Description" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectDescription.js"] /]
-[#assign currentSection = "planning" /]
+[#assign currentSection = reportingCycle?string('reporting','planning') /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 [#assign currentSubStage = "description" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"description", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
-  {"label":"information", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"}
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"description", "nameSpace":"${currentSection}/projects", "action":"description", "param":"projectID=${project.id}"},
+  {"label":"information", "nameSpace":"${currentSection}/projects", "action":"description", "param":"projectID=${project.id}"}
 ] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
