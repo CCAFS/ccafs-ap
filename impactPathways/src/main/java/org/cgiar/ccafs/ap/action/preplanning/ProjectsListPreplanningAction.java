@@ -133,7 +133,7 @@ public class ProjectsListPreplanningAction extends BaseAction {
 
     // Depending on the user that is logged-in, the list of projects will be displayed. - currentUser.
 
-    allProjects = projectManager.getAllProjectsBasicInfo(this.getSectionName());
+    allProjects = projectManager.getAllProjectsBasicInfo(this.getCycleName());
 
     // Getting the list of projects that the user's program created and also those where the users is the project owner.
     List<Integer> projectIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());

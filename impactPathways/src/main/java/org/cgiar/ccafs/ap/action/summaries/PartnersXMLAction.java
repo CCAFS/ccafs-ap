@@ -72,8 +72,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
   // rootElement.appendChild(this.buildElement(doc, "id", "123"));
   private void buildXML(Document doc) {
     // root element
-    Element partner, location, country, region, type, flagshipsLabel, regionsLabel, flagship, regionEt, projectsLabel,
-      projectLabel;
+    Element partner, location, country, region, type, flagshipsLabel, regionsLabel, flagship, regionEt, projectsLabel, projectLabel;
     Element rootElement = doc.createElement("partners");
     IPProgram ipProgram;
     doc.appendChild(rootElement);
@@ -86,11 +85,11 @@ public class PartnersXMLAction extends BaseAction implements Summary {
       // name
       partner.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("institution_name"))));
       // acronym
-      partner
-        .appendChild(this.buildElement(doc, "acronym", this.convertToString(partnerData.get("institution_acronym"))));
+      partner.appendChild(this.buildElement(doc, "acronym",
+        this.convertToString(partnerData.get("institution_acronym"))));
       // website
-      partner
-        .appendChild(this.buildElement(doc, "website", this.convertToString(partnerData.get("institution_website"))));
+      partner.appendChild(this.buildElement(doc, "website",
+        this.convertToString(partnerData.get("institution_website"))));
 
       // location ---
       location = doc.createElement("location");
@@ -113,8 +112,8 @@ public class PartnersXMLAction extends BaseAction implements Summary {
       type = doc.createElement("type");
       type.appendChild(this.buildElement(doc, "id", this.convertToString(partnerData.get("institution_type_id"))));
       type.appendChild(this.buildElement(doc, "name", this.convertToString(partnerData.get("institution_type_name"))));
-      type.appendChild(
-        this.buildElement(doc, "acronym", this.convertToString(partnerData.get("institution_type_acronym"))));
+      type.appendChild(this.buildElement(doc, "acronym",
+        this.convertToString(partnerData.get("institution_type_acronym"))));
       partner.appendChild(type);
 
       // flagships
@@ -246,7 +245,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     }
 
     projects = new HashMap<String, Project>();
-    List<Project> projectList = projectManager.getAllProjectsBasicInfo(this.getSectionName());
+    List<Project> projectList = projectManager.getAllProjectsBasicInfo(this.getCycleName());
     for (Project project : projectList) {
       projects.put(String.valueOf(project.getId()), project);
     }
