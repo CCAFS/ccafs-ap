@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Overview by MOGs" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectOutputsPlanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectOutputs.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outputs" /]

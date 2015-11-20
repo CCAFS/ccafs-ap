@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Location" /]
 [#assign globalLibs =["jquery", "noty","googleMaps"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectLocationsPlanning.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectLocations.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
