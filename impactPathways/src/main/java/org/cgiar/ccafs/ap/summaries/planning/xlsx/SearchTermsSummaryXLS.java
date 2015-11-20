@@ -54,6 +54,11 @@ public class SearchTermsSummaryXLS {
 
     Map<String, Object> projectContribution, activityContribution, deliverableContribution;
 
+    for (int counter = 0; counter < terms.length; counter++) {
+      terms[counter] = terms[counter].toLowerCase();
+    }
+
+
     int projectID, deliverableID;
     CreationHelper createHelper = sheet.getWorkbook().getCreationHelper();
     XSSFHyperlink link; // = (XSSFHyperlink) createHelper.createHyperlink(Hyperlink.LINK_URL);
@@ -70,13 +75,13 @@ public class SearchTermsSummaryXLS {
         xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) projectContribution.get("project_title"));
+        xls.writeSearchString(sheet, (String) projectContribution.get("project_title"), terms);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) projectContribution.get("project_summary"), terms);
+        xls.writeSearchString(sheet, (String) projectContribution.get("project_summary"), terms);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) projectContribution.get("outcome_statement"), terms);
+        xls.writeSearchString(sheet, (String) projectContribution.get("outcome_statement"), terms);
         xls.nextColumn();
 
         xls.writeString(sheet, (String) projectContribution.get("start_date"));
@@ -116,7 +121,7 @@ public class SearchTermsSummaryXLS {
         xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) activityContribution.get("project_title"), terms);
+        xls.writeSearchString(sheet, (String) activityContribution.get("project_title"), terms);
         xls.nextColumn();
 
         // Activity id
@@ -126,9 +131,9 @@ public class SearchTermsSummaryXLS {
           "P" + String.valueOf(projectID) + "-" + "A" + (int) activityContribution.get("activity_id"), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) activityContribution.get("activity_title"));
+        xls.writeSearchString(sheet, (String) activityContribution.get("activity_title"), terms);
         xls.nextColumn();
-        xls.writeString(sheet, (String) activityContribution.get("activity_description"));
+        xls.writeSearchString(sheet, (String) activityContribution.get("activity_description"), terms);
         xls.nextColumn();
         xls.writeString(sheet, (String) activityContribution.get("activity_startDate"));
         xls.nextColumn();
@@ -153,7 +158,7 @@ public class SearchTermsSummaryXLS {
         xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) deliverableContribution.get("project_title"), terms);
+        xls.writeSearchString(sheet, (String) deliverableContribution.get("project_title"), terms);
         xls.nextColumn();
 
         // Deliverable id
@@ -163,17 +168,17 @@ public class SearchTermsSummaryXLS {
         xls.writeHyperlink(sheet, "P" + String.valueOf(projectID) + "-" + "D" + String.valueOf(deliverableID), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) deliverableContribution.get("deliverable_title"));
+        xls.writeSearchString(sheet, (String) deliverableContribution.get("deliverable_title"), terms);
         xls.nextColumn();
         xls.writeString(sheet, (String) deliverableContribution.get("deliverable_type"));
         xls.nextColumn();
         xls.writeString(sheet, (String) deliverableContribution.get("deliverable_subtype"));
         xls.nextColumn();
-        xls.writeString(sheet, (String) deliverableContribution.get("next_user"));
+        xls.writeSearchString(sheet, (String) deliverableContribution.get("next_user"), terms);
         xls.nextColumn();
-        xls.writeString(sheet, (String) deliverableContribution.get("expected_changes"));
+        xls.writeSearchString(sheet, (String) deliverableContribution.get("expected_changes"), terms);
         xls.nextColumn();
-        xls.writeString(sheet, (String) deliverableContribution.get("strategies"));
+        xls.writeSearchString(sheet, (String) deliverableContribution.get("strategies"), terms);
         xls.nextColumn();
         xls.writeString(sheet, (String) deliverableContribution.get("institution"));
         xls.nextColumn();
@@ -201,16 +206,16 @@ public class SearchTermsSummaryXLS {
     // Defining headers
     String[] headersProject =
       new String[] {"Project Id", "Title", "Summary", "Outcome statement", "Start date", "End date", "Flagship(s)",
-      "Region(s)", "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral",
-      "Total gender W1/W2", "Total gender W3/Bilateral"};
+        "Region(s)", "Lead institution", "Leader", "Coordinator", "Total budget W1/W2", "Total budget W3/Bilateral",
+        "Total gender W1/W2", "Total gender W3/Bilateral"};
 
     // Defining header types
     int[] headerTypesProject =
-    {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-      BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
-      BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-      BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-      BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_DATE,
+        BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
     // creating sheet
     Sheet[] sheets = new Sheet[3];
@@ -246,13 +251,13 @@ public class SearchTermsSummaryXLS {
       // Defining headers
       String[] headersActivity =
         new String[] {"Project Id", "Project Title", "Activity Id", "Activity Title", "Description", "Start date",
-        "End date", "Leader Institution", "Leader Person"};
+          "End date", "Leader Institution", "Leader Person"};
 
       // Defining header types
       int[] headerTypesActivity =
-      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE,
-        BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_DATE,
+          BaseXLS.COLUMN_TYPE_DATE, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
 
       xls.initializeSheet(sheets[1], headerTypesActivity);
@@ -278,15 +283,15 @@ public class SearchTermsSummaryXLS {
       // Defining headers
       String[] headersDeliverable =
         new String[] {"Project Id", "Project Title", "Deliverable Id", "Deliverable Title", "Deliverable Type",
-        "Deliverable Sub-Type", "Next User", "Knowledge, attitude, skills and practice changes ", " Strategies",
-        "Leader Institution", "Responsible Person"};
+          "Deliverable Sub-Type", "Next User", "Knowledge, attitude, skills and practice changes ", " Strategies",
+          "Leader Institution", "Responsible Person"};
 
       // Defining header types
       int[] headerTypesDeliverable =
-      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_HYPERLINK,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+          BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
 
       xls.initializeSheet(sheets[2], headerTypesDeliverable);

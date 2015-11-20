@@ -164,16 +164,15 @@ public class BaseXLS {
     Pattern pat;
     Matcher mat;
     String analizator = new String();
+
     for (String term : terms) {
-      while (token.indexOf(term.toLowerCase()) > -1) {
+
+      while (token.indexOf(term) > -1) {
         beginSubToken = token.indexOf(term);
         endSubToken = beginSubToken + term.length() - 1;
 
-        System.out.println("beginSubToken : " + beginSubToken + " endSubToken : " + endSubToken + " token : " + token);
         if (beginSubToken != -1) {
           analizator = token.substring(beginSubToken, endSubToken + 1);
-
-          System.out.println(" analizator : " + analizator);
 
           if (beginSubToken != 0) {
             analizator = token.charAt(beginSubToken - 1) + analizator;
@@ -189,9 +188,9 @@ public class BaseXLS {
           if (mat.matches()) {
             listPointPaint.add(new Point(beginSubToken, endSubToken));
           }
-
-          token = token.substring(beginSubToken + term.length(), token.length());
         }
+        token = token.substring(beginSubToken + term.length(), token.length());
+
       }
     }
 
@@ -218,7 +217,7 @@ public class BaseXLS {
     InputStream inputStream =
 
 
-      new FileInputStream(new File(config.getResourcePath(), "templates" + File.separator + "logo-ccafs.png"));
+    new FileInputStream(new File(config.getResourcePath(), "templates" + File.separator + "logo-ccafs.png"));
     // Get the contents of an InputStream as a byte[].
     byte[] bytes = IOUtils.toByteArray(inputStream);
     // Adds a picture to the workbook
@@ -352,48 +351,48 @@ public class BaseXLS {
       columnStyles[c] = (XSSFCellStyle) workbook.createCellStyle();
       switch (columnTypes[c]) {
 
-        // Style numeric
+      // Style numeric
         case COLUMN_TYPE_NUMERIC:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style date
+          // Style date
         case COLUMN_TYPE_DATE:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // styleBoleean
+          // styleBoleean
         case COLUMN_TYPE_BOOLEAN:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // styleBudget
+          // styleBudget
         case COLUMN_TYPE_BUDGET:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("$#,##0.00"));
           // "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)"
           break;
 
-        // Style decimal
+          // Style decimal
         case COLUMN_TYPE_DECIMAL:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           columnStyles[c].setDataFormat(workbook.createDataFormat().getFormat("#.##"));
           break;
 
-        // Style long string
+          // Style long string
         case COLUMN_TYPE_TEXT_LONG:
           columnStyles[c].setAlignment(HorizontalAlignment.LEFT);
           columnStyles[c].setWrapText(true);
           break;
 
-        // Style short string
+          // Style short string
         case COLUMN_TYPE_TEXT_SHORT:
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-        // Style hyperlink
+          // Style hyperlink
         case COLUMN_TYPE_HYPERLINK:
           XSSFFont hlinkfont = (XSSFFont) workbook.createFont();
           hlinkfont.setUnderline(XSSFFont.U_SINGLE);
@@ -402,7 +401,7 @@ public class BaseXLS {
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
           break;
 
-          // Style hyperlink
+        // Style hyperlink
         case COLUMN_TYPE_DATE_TIME:
           columnStyles[c].setDataFormat(createHelper.createDataFormat().getFormat(CELL_DATE_TIME_FORMAT));
           columnStyles[c].setAlignment(CellStyle.ALIGN_CENTER);
@@ -626,6 +625,46 @@ public class BaseXLS {
 
 
   /**
+   * This method writes string founded value into a specific cell
+   * 
+   * @param sheet is the sheet where you want to add information into.
+   * @param value is the specific information to be written.
+   * @param terms terms to compare the string.
+   */
+  public void writeSearchString(Sheet sheet, String text, String[] terms) {
+    this.prepareCell(sheet);
+    StringTokenizer tokens;
+    String token;
+    int begin = 0;
+
+    XSSFRichTextString richText = new XSSFRichTextString();
+
+
+    if (text == null) {
+      cell.setCellValue("");
+    } else {
+      //
+      tokens = new StringTokenizer(text);
+      while (tokens.hasMoreTokens()) {
+        token = tokens.nextToken().toLowerCase();
+        richText.append(token);
+        begin = richText.length() - token.length();
+        for (Point point : this.auxiliarRichText(token, terms)) {
+          richText.applyFont(begin + point.x, begin + point.y + 1, this.richTextFont);
+        }
+
+        richText.append(" ");
+      }
+
+      if (text.toString().length() > 30) {
+        sheet.setColumnWidth(columnCounter, 12000);
+      }
+      cell.setCellValue(richText);
+    }
+
+  }
+
+  /**
    * This method writes string value into a specific cell.
    * 
    * @param sheet is the sheet where you want to add information into.
@@ -643,47 +682,6 @@ public class BaseXLS {
         sheet.setColumnWidth(columnCounter, 8000);
       }
       cell.setCellValue(value);
-    }
-
-  }
-
-  /**
-   * This method writes string value into a specific cell.
-   * 
-   * @param sheet is the sheet where you want to add information into.
-   * @param value is the specific information to be written.
-   * @param terms
-   */
-  public void writeString(Sheet sheet, String text, String[] terms) {
-    this.prepareCell(sheet);
-    StringTokenizer tokens;
-    String token;
-    int begin = 0;
-
-    XSSFRichTextString richText = new XSSFRichTextString();
-
-
-    if (text == null) {
-      cell.setCellValue("");
-    } else {
-      //
-      tokens = new StringTokenizer(text);
-      while (tokens.hasMoreTokens()) {
-        token = tokens.nextToken().toLowerCase();
-
-        richText.append(token);
-        begin = richText.length() - token.length();
-        for (Point point : this.auxiliarRichText(token, terms)) {
-          richText.applyFont(begin + point.x, begin + point.y + 1, this.richTextFont);
-        }
-
-        richText.append(" ");
-      }
-
-      if (text.toString().length() > 30) {
-        sheet.setColumnWidth(columnCounter, 12000);
-      }
-      cell.setCellValue(richText);
     }
 
   }
