@@ -39,7 +39,7 @@ ccafsap.preplanning.active=true
 ccafsap.planning.active=true
 ccafsap.reporting.active=true
 ccafsap.summaries.active=false
-
+ccafsap.is-closed=false
 # ------------------------------------------------
 #             Files upload configuration
 # ------------------------------------------------
