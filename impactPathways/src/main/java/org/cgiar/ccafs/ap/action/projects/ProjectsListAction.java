@@ -121,8 +121,8 @@ public class ProjectsListAction extends BaseAction {
     if (liaisonInstitution != null) {
       newProject.setLiaisonInstitution(liaisonInstitution);
     } else {
-      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!",
-        this.getCurrentUser().getId());
+      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!", this
+        .getCurrentUser().getId());
       return -1;
     }
 
@@ -138,14 +138,15 @@ public class ProjectsListAction extends BaseAction {
   public String delete() {
     // Deleting project.
     if (this.canDelete(projectID)) {
-      boolean deleted = projectManager.deleteProject(projectID, this.getCurrentUser(),
-        this.getJustification() == null ? "Project deleted" : this.getJustification());
+      boolean deleted =
+        projectManager.deleteProject(projectID, this.getCurrentUser(), this.getJustification() == null
+          ? "Project deleted" : this.getJustification());
       if (deleted) {
-        this.addActionMessage(
-          this.getText("deleting.success", new String[] {this.getText("planning.project").toLowerCase()}));
+        this.addActionMessage(this.getText("deleting.success", new String[] {this.getText("planning.project")
+          .toLowerCase()}));
       } else {
-        this.addActionError(
-          this.getText("deleting.problem", new String[] {this.getText("planning.project").toLowerCase()}));
+        this.addActionError(this.getText("deleting.problem", new String[] {this.getText("planning.project")
+          .toLowerCase()}));
       }
     } else {
       this.addActionError(this.getText("planning.projects.cannotDelete"));
@@ -199,7 +200,7 @@ public class ProjectsListAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     projects = new ArrayList<>();
-    String section = this.getSectionName();
+    String section = this.getCycleName();
 
     if (securityContext.isAdmin()) {
       projects = projectManager.getAllProjectsBasicInfo(section);
@@ -222,7 +223,7 @@ public class ProjectsListAction extends BaseAction {
     // Validating if projects are complete or not.
     projectStatuses = new LinkedHashMap<>();
     for (Project project : projects) {
-      this.initializeProjectSectionStatuses(project, this.getSectionName());
+      this.initializeProjectSectionStatuses(project, this.getCycleName());
       projectStatuses.put(project.getId(), this.isComplete());
     }
 

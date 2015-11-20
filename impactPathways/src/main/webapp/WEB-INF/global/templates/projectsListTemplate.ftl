@@ -89,9 +89,8 @@
           </td>
           [#-- Project Action Status --]
           <td>
-            [#-- Check button --]
-            ${cycleName}
-            [#assign submission = (project.isSubmitted(currentPlanningYear, reportingCycle?string('Reporting','Planning')))! /]
+            [#-- Check button --] 
+            [#assign submission = (project.isSubmitted(currentPlanningYear, cycleName))! /]
 
             [#if !submission?has_content ]
               [#if canEdit && securityContext.canSubmitProject(project.id) && !action.isProjectComplete(project.id)]

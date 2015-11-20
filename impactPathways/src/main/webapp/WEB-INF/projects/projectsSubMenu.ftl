@@ -1,6 +1,6 @@
 [#ftl]
 [#-- validateProjectSection.do --]
-<input type="hidden" id="currentCycle" value="${currentSection?cap_first}" />
+<input type="hidden" id="currentCycle" value="${cycleName}" />
 [#-- Submit controller --]
 <script src="${baseUrl}/js/projects/projectSubmit.js"></script>
 

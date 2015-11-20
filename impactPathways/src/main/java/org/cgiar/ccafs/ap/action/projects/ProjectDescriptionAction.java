@@ -328,8 +328,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
     }
     // Initializing Section Statuses:
-    this.initializeProjectSectionStatuses(project, this.isReportingCycle() ? APConstants.REPORTING_SECTION
-      : APConstants.PLANNING_SECTION);
+    this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
 
   @Override
@@ -594,8 +593,7 @@ public class ProjectDescriptionAction extends BaseAction {
           project.setBilateralContractProposalName(fileFileName);
         }
       }
-      validator.validate(this, project, this.isReportingCycle() ? APConstants.REPORTING_SECTION
-        : APConstants.PLANNING_SECTION);
+      validator.validate(this, project, this.getCycleName());
     }
   }
 }

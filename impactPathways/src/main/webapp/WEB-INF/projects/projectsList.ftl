@@ -69,4 +69,7 @@
   </article>
 </section>
 [@customForm.confirmJustification action="deleteProject" namespace="/${currentSection}" title="Remove Project" /]
+
+[#-- validateProjectSection.do --]
+<input type="hidden" id="currentCycle" value="${cycleName}" />
 [#include "/WEB-INF/global/pages/footer.ftl"]
