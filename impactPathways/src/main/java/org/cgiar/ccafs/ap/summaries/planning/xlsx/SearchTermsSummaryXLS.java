@@ -70,7 +70,7 @@ public class SearchTermsSummaryXLS {
         xls.writeHyperlink(sheet, "P" + String.valueOf(projectID), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) projectContribution.get("project_title"), terms);
+        xls.writeString(sheet, (String) projectContribution.get("project_title"));
         xls.nextColumn();
 
         xls.writeString(sheet, (String) projectContribution.get("project_summary"), terms);
@@ -126,9 +126,9 @@ public class SearchTermsSummaryXLS {
           "P" + String.valueOf(projectID) + "-" + "A" + (int) activityContribution.get("activity_id"), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) activityContribution.get("activity_title"), terms);
+        xls.writeString(sheet, (String) activityContribution.get("activity_title"));
         xls.nextColumn();
-        xls.writeString(sheet, (String) activityContribution.get("activity_description"), terms);
+        xls.writeString(sheet, (String) activityContribution.get("activity_description"));
         xls.nextColumn();
         xls.writeString(sheet, (String) activityContribution.get("activity_startDate"));
         xls.nextColumn();
@@ -163,17 +163,17 @@ public class SearchTermsSummaryXLS {
         xls.writeHyperlink(sheet, "P" + String.valueOf(projectID) + "-" + "D" + String.valueOf(deliverableID), link);
         xls.nextColumn();
 
-        xls.writeString(sheet, (String) deliverableContribution.get("deliverable_title"), terms);
+        xls.writeString(sheet, (String) deliverableContribution.get("deliverable_title"));
         xls.nextColumn();
         xls.writeString(sheet, (String) deliverableContribution.get("deliverable_type"));
         xls.nextColumn();
         xls.writeString(sheet, (String) deliverableContribution.get("deliverable_subtype"));
         xls.nextColumn();
-        xls.writeString(sheet, (String) deliverableContribution.get("next_user"), terms);
+        xls.writeString(sheet, (String) deliverableContribution.get("next_user"));
         xls.nextColumn();
-        xls.writeString(sheet, (String) deliverableContribution.get("expected_changes"), terms);
+        xls.writeString(sheet, (String) deliverableContribution.get("expected_changes"));
         xls.nextColumn();
-        xls.writeString(sheet, (String) deliverableContribution.get("strategies"), terms);
+        xls.writeString(sheet, (String) deliverableContribution.get("strategies"));
         xls.nextColumn();
         xls.writeString(sheet, (String) deliverableContribution.get("institution"));
         xls.nextColumn();
@@ -235,7 +235,7 @@ public class SearchTermsSummaryXLS {
           new String[] {StringUtils.join(termsToSearch, ", ")}));
 
       // write text box
-      xls.writeTitleBox(sheets[0], "Gender Contribution Project Level Summary");
+      xls.writeTitleBox(sheets[0], "Search Terms Summary Project Level Summary");
 
       // write text box
       xls.createLogo(workbook, sheets[0]);
@@ -267,7 +267,7 @@ public class SearchTermsSummaryXLS {
           new String[] {StringUtils.join(termsToSearch, ", ")}));
 
       // write text box
-      xls.writeTitleBox(sheets[1], "Gender Contribution Activity Level Summary");
+      xls.writeTitleBox(sheets[1], "Search Terms Summary Project Level Summary");
 
       // write text box
       xls.createLogo(workbook, sheets[1]);
@@ -301,7 +301,7 @@ public class SearchTermsSummaryXLS {
           new String[] {StringUtils.join(termsToSearch, ", ")}));
 
       // write text box
-      xls.writeTitleBox(sheets[2], "Gender Contribution Deliverable Level Summary");
+      xls.writeTitleBox(sheets[2], "Search Terms Summary Project Level Summary");
 
       // write text box
       xls.createLogo(workbook, sheets[2]);
