@@ -69,6 +69,14 @@ public class ProjectDescriptionValidator extends BaseValidator {
     }
   }
 
+  public void validateAnualRecordName(BaseAction action, String proposalName) {
+    if (!projectValidator.isValidAnualRecordName(proposalName)) {
+      this.addMessage(action.getText("reporting.projectDescription.annualreportDonor.readText").toLowerCase());
+      this.addMissingField("project.annualRecord");
+    }
+  }
+
+
   public void validateBilateralContractProposalName(BaseAction action, String proposalName) {
     if (!projectValidator.isValidBilateralContractProposalName(proposalName)) {
       this.addMessage(action.getText("preplanning.projectDescription.uploadBilateral.readText").toLowerCase());
@@ -84,6 +92,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     if (cycle.equals(APConstants.REPORTING_SECTION)) {
       this.validateStatus(action, project.getStatus());
       this.validateDesciptionStatus(action, project.getStatusDescription());
+      this.validateAnualRecordName(action, project.getBilateralContractProposalName());
     }
   }
 

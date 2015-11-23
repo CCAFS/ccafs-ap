@@ -98,6 +98,10 @@ public class ProjectValidator extends BaseValidator {
     return false;
   }
 
+  public boolean isValidAnualRecordName(String proposalName) {
+    return (this.isValidString(proposalName)) ? true : false;
+  }
+
   public boolean isValidBilateralContractProposalName(String proposalName) {
     return (this.isValidString(proposalName)) ? true : false;
   }
