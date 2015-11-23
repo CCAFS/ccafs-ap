@@ -46,7 +46,7 @@ public interface ProjectLessonsDAO {
    * @param year
    * @return a map with the information.
    */
-  public Map<String, String> getProjectComponentLesson(int projectID, String componentName, int year);
+  public Map<String, String> getProjectComponentLesson(int projectID, String componentName, int year, String cycle);
 
   /**
    * This method saves the lessons of a project component in the database.

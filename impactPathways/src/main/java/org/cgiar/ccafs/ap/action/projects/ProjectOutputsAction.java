@@ -132,7 +132,7 @@ public class ProjectOutputsAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear()));
+      this.getCurrentPlanningYear(), this.getCycleName()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
@@ -152,9 +152,8 @@ public class ProjectOutputsAction extends BaseAction {
       // Check if there are output overviews to delete
       for (OutputOverview overview : previousOverviews) {
         if (!project.getOutputsOverview().contains(overview)) {
-          success =
-            overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
-              this.getJustification());
+          success = overviewManager.deleteProjectContributionOverview(overview.getId(), this.getCurrentUser(),
+            this.getJustification());
         }
       }
 

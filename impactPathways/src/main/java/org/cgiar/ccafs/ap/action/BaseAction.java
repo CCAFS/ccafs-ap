@@ -145,8 +145,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * This method clears the cache and re-load the user permissions in the next iteration.
    */
   public void clearPermissionsCache() {
-    ((APCustomRealm) securityContext.getRealm()).clearCachedAuthorizationInfo(securityContext.getSubject()
-      .getPrincipals());
+    ((APCustomRealm) securityContext.getRealm())
+      .clearCachedAuthorizationInfo(securityContext.getSubject().getPrincipals());
   }
 
   /* Override this method depending of the delete action. */
@@ -438,7 +438,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
   protected boolean saveProjectLessons(int projectID) {
-    return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification);
+    return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification,
+      this.getCycleName());
   }
 
   public void setAdd(boolean add) {

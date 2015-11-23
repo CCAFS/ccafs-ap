@@ -63,7 +63,7 @@ public class ProjectDescriptionAction extends BaseAction {
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
   private List<LiaisonInstitution> liaisonInstitutions;
-  private List<ProjectStatusEnum> projectStauses;
+  private Map<String, String> projectStauses;
   private List<User> allOwners;
   private Map<String, String> projectTypes;
 
@@ -222,7 +222,7 @@ public class ProjectDescriptionAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
-  public List<ProjectStatusEnum> getProjectStauses() {
+  public Map<String, String> getProjectStauses() {
     return projectStauses;
   }
 
@@ -310,8 +310,11 @@ public class ProjectDescriptionAction extends BaseAction {
     // Get the list of institutions that can be management liaison of a project.
     liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
 
-    projectStauses = new ArrayList<>();
-    projectStauses.addAll(Arrays.asList(ProjectStatusEnum.values()));
+    projectStauses = new HashMap<>();
+    List<ProjectStatusEnum> list = Arrays.asList(ProjectStatusEnum.values());
+    for (ProjectStatusEnum projectStatusEnum : list) {
+      projectStauses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
+    }
     // Getting project
     project = projectManager.getProject(projectID);
     if (project != null) {
@@ -648,7 +651,7 @@ public class ProjectDescriptionAction extends BaseAction {
     this.projectID = projectID;
   }
 
-  public void setStatusProject(List<ProjectStatusEnum> projectStauses) {
+  public void setStatusProject(Map<String, String> projectStauses) {
     this.projectStauses = projectStauses;
   }
 

@@ -19,17 +19,29 @@ package org.cgiar.ccafs.ap.data.model;
 public enum ProjectStatusEnum {
 
 
-  IMPLEMENTATION("Implementation"), ONGOING("On Going"), FINISHED("Finished");
+  IMPLEMENTATION("IMPLEMENTATION", "Implementation"), ONGOING("ONGOING", "On Going"), FINISHED("FINISHED", "Finished");
 
   private String status;
+  private String statusId;
 
-  private ProjectStatusEnum(String status) {
+  private ProjectStatusEnum(String statusId, String status) {
+    this.statusId = statusId;
     this.status = status;
   }
 
 
   public String getStatus() {
     return status;
+  }
+
+
+  public String getStatusId() {
+    return statusId;
+  }
+
+
+  public void setStatusId(String statusId) {
+    this.statusId = statusId;
   }
 
 

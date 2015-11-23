@@ -74,9 +74,9 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
   private ProjectCCAFSOutcomesValidator validator;
 
   @Inject
-  public ProjectCCAFSOutcomesAction(APConfig config, IPProgramManager programManager,
-    IPElementManager ipElementManager, ProjectManager projectManager, HistoryManager historyManager,
-    IPIndicatorManager indicatorManager, ProjectCCAFSOutcomesValidator validator) {
+  public ProjectCCAFSOutcomesAction(APConfig config, IPProgramManager programManager, IPElementManager ipElementManager,
+    ProjectManager projectManager, HistoryManager historyManager, IPIndicatorManager indicatorManager,
+    ProjectCCAFSOutcomesValidator validator) {
     super(config);
     this.programManager = programManager;
     this.ipElementManager = ipElementManager;
@@ -181,9 +181,8 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
     for (IPIndicator indicator : project.getIndicators()) {
       IPElement midoutcome = ipElementManager.getIPElement(indicator.getOutcome().getId());
       if (!midOutcomesSelected.contains(midoutcome)) {
-        String description =
-          midoutcome.getProgram().getAcronym() + " - " + this.getText("planning.activityImpactPathways.outcome2019")
-            + ": " + midoutcome.getDescription();
+        String description = midoutcome.getProgram().getAcronym() + " - "
+          + this.getText("planning.activityImpactPathways.outcome2019") + ": " + midoutcome.getDescription();
         midoutcome.setDescription(description);
 
         midOutcomesSelected.add(midoutcome);
@@ -353,8 +352,8 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
     previousIndicators.addAll(project.getIndicators());
 
     // Getting the Project lessons for this section.
-    ComponentLesson lessons =
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), this.getCurrentPlanningYear());
+    ComponentLesson lessons = lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+      this.getCurrentPlanningYear(), this.getCycleName());
     this.setProjectLessons(lessons);
 
     super.setHistory(historyManager.getCCAFSOutcomesHistory(projectID));
@@ -396,36 +395,30 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
       // Delete the outputs removed
       for (IPElement output : previousOutputs) {
         if (!project.containsOutput(output)) {
-          boolean deleted =
-            projectManager.deleteProjectOutput(projectID, output.getId(), output.getContributesToIDs()[0], this
-              .getCurrentUser().getId(), this.getJustification());
+          boolean deleted = projectManager.deleteProjectOutput(projectID, output.getId(),
+            output.getContributesToIDs()[0], this.getCurrentUser().getId(), this.getJustification());
           if (!deleted) {
             success = false;
           }
         }
       }
 
-      success =
-        success
-          && projectManager.saveProjectOutputs(project.getOutputs(), projectID, this.getCurrentUser(),
-            this.getJustification());
+      success = success && projectManager.saveProjectOutputs(project.getOutputs(), projectID, this.getCurrentUser(),
+        this.getJustification());
 
       // Delete the indicators removed
       for (IPIndicator indicator : previousIndicators) {
         if (!project.getIndicators().contains(indicator)) {
-          boolean deleted =
-            projectManager
-              .deleteIndicator(projectID, indicator.getId(), this.getCurrentUser(), this.getJustification());
+          boolean deleted = projectManager.deleteIndicator(projectID, indicator.getId(), this.getCurrentUser(),
+            this.getJustification());
           if (!deleted) {
             success = false;
           }
         }
       }
 
-      success =
-        success
-          && indicatorManager.saveProjectIndicators(project.getIndicators(), projectID, this.getCurrentUser(),
-            this.getJustification());
+      success = success && indicatorManager.saveProjectIndicators(project.getIndicators(), projectID,
+        this.getCurrentUser(), this.getJustification());
 
       // Displaying user messages.
       if (success == false) {

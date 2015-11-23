@@ -110,7 +110,7 @@ public class ProjectOutcomesAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear()));
+      this.getCurrentPlanningYear(), this.getCycleName()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
@@ -131,10 +131,8 @@ public class ProjectOutcomesAction extends BaseAction {
       // Saving Project Outcome
       for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
         ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
-        success =
-          success
-            && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
-              this.getJustification());
+        success = success && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
+          this.getJustification());
       }
 
       if (success) {
@@ -145,8 +143,8 @@ public class ProjectOutcomesAction extends BaseAction {
           this.setActionMessages(null);
           this.addActionWarning(this.getText("saving.saved") + validationMessage);
         } else {
-          this.addActionMessage(this.getText("saving.success",
-            new String[] {this.getText("planning.projectOutcome.title")}));
+          this.addActionMessage(
+            this.getText("saving.success", new String[] {this.getText("planning.projectOutcome.title")}));
         }
         return SUCCESS;
       } else {

@@ -83,7 +83,7 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
   }
 
   @Override
-  public Map<String, String> getProjectComponentLesson(int projectID, String componentName, int year) {
+  public Map<String, String> getProjectComponentLesson(int projectID, String componentName, int year, String cycle) {
     Map<String, String> componentLesson = new HashMap<>();
 
     StringBuilder query = new StringBuilder();
@@ -94,6 +94,9 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
     query.append(componentName);
     query.append("' AND year = ");
     query.append(year);
+    query.append(" AND cycle = '");
+    query.append(cycle);
+    query.append("' ");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
@@ -115,11 +118,12 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
   @Override
   public boolean saveProjectComponentLesson(Map<String, Object> lessonData) {
     String query = "INSERT INTO project_component_lessons (id, project_id, component_name, lessons, year, created_by, ";
-    query += "modified_by, modification_justification) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
-    query += "ON DUPLICATE KEY UPDATE is_active=TRUE, lessons = VALUES(lessons), modified_by=VALUES(modified_by), ";
+    query += "modified_by, modification_justification,cycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?) ";
+    query +=
+      "ON DUPLICATE KEY UPDATE is_active=TRUE, lessons = VALUES(lessons), cycle = VALUES(cycle), modified_by=VALUES(modified_by), ";
     query += "modification_justification=VALUES(modification_justification) ";
 
-    Object[] values = new Object[8];
+    Object[] values = new Object[9];
     values[0] = lessonData.get("id");
     values[1] = lessonData.get("project_id");
     values[2] = lessonData.get("component_name");
@@ -128,7 +132,7 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
     values[5] = lessonData.get("created_by");
     values[6] = lessonData.get("modified_by");
     values[7] = lessonData.get("justification");
-
+    values[8] = lessonData.get("cycle");
     int result = daoManager.saveData(query, values);
     return result != -1;
   }

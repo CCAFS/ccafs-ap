@@ -222,7 +222,7 @@ public class ProjectLocationsAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear()));
+      this.getCurrentPlanningYear(), this.getCycleName()));
 
     super.setHistory(historyManager.getProjectLocationsHistory(project.getId()));
 
@@ -246,9 +246,8 @@ public class ProjectLocationsAction extends BaseAction {
         success = false;
       }
 
-      boolean added =
-        locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
-          this.getJustification());
+      boolean added = locationManager.saveProjectLocation(project.getLocations(), projectID, this.getCurrentUser(),
+        this.getJustification());
       if (!added) {
         success = false;
       }

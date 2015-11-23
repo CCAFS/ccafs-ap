@@ -167,7 +167,7 @@ public class ActivitiesListAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear()));
+      this.getCurrentPlanningYear(), this.getCycleName()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
@@ -201,9 +201,8 @@ public class ActivitiesListAction extends BaseAction {
         }
       }
       // Saving new and old Activities
-      boolean saved =
-        activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
-          this.getJustification());
+      boolean saved = activityManager.saveActivityList(projectID, project.getActivities(), this.getCurrentUser(),
+        this.getJustification());
 
       if (!saved) {
         success = false;

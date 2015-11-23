@@ -129,7 +129,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear()));
+      this.getCurrentPlanningYear(), this.getCycleName()));
 
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
