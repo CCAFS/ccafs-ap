@@ -78,6 +78,7 @@ public class Project {
   private String statusDescription;
   private String AnnualreportDonor;
 
+
   public Project() {
   }
 
@@ -190,6 +191,10 @@ public class Project {
     }
 
     return allYears;
+  }
+
+  public String getAnnualreportDonor() {
+    return AnnualreportDonor;
   }
 
   public Budget getAnualContribution() {
@@ -349,6 +354,7 @@ public class Project {
     return flagships;
   }
 
+
   /**
    * This method gets the list of Flagships acronyms separated by comma (, ).
    * 
@@ -366,7 +372,6 @@ public class Project {
     }
     return flagshipAcronym.toString();
   }
-
 
   public int getId() {
     return id;
@@ -395,6 +400,7 @@ public class Project {
     return emptyIndicator;
   }
 
+
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
@@ -422,6 +428,7 @@ public class Project {
     return indicators;
   }
 
+
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
@@ -444,9 +451,11 @@ public class Project {
     return emptyIndicator;
   }
 
+
   public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
+
 
   /**
    * This method returns the project partner institution that is leading the project.
@@ -467,6 +476,7 @@ public class Project {
     return null;
   }
 
+
   /**
    * This method returns the project partner person who is leading the project.
    * 
@@ -484,6 +494,7 @@ public class Project {
     }
     return null;
   }
+
 
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
@@ -522,6 +533,7 @@ public class Project {
     }
     return null;
   }
+
 
   /**
    * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
@@ -691,6 +703,14 @@ public class Project {
     return startDate;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
+  public String getStatusDescription() {
+    return statusDescription;
+  }
+
   public List<Submission> getSubmissions() {
     return submissions;
   }
@@ -844,7 +864,6 @@ public class Project {
     return false;
   }
 
-
   /**
    * Return if the project is new.
    * A project is new when it was created in the planning phase for the current year
@@ -878,8 +897,13 @@ public class Project {
     return workplanRequired;
   }
 
+
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
+  }
+
+  public void setAnnualreportDonor(String annualreportDonor) {
+    AnnualreportDonor = annualreportDonor;
   }
 
   public void setAnualContribution(Budget anualContribution) {
@@ -995,6 +1019,14 @@ public class Project {
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public void setStatusDescription(String statusDescription) {
+    this.statusDescription = statusDescription;
   }
 
   public void setSubmissions(List<Submission> submissions) {
