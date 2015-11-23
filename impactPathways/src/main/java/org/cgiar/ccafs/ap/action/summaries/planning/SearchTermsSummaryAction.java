@@ -43,7 +43,7 @@ public class SearchTermsSummaryAction extends BaseAction implements Summary {
   private SearchTermsSummaryXLS searchTermsSummaryXLS;
   private ProjectManager projectManager;
   private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    "inequality", "equity", "social differentiation", "social inclusion", "youth", "social class", "children", "child"};
+    "inequality", "equity", "social", "differentiation", "inclusion", "youth", "class", "children", "child"};
 
   private List<Map<String, Object>> projectList, deliverableList, activityList;
 
