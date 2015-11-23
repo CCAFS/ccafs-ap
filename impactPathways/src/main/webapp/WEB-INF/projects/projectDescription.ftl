@@ -138,7 +138,7 @@
             <div class="uploadContainer">
               [#if project.annualreportDonor?has_content]
                    [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
-                <p> <a href="${getAnualReportURL}${project.annualreportDonor}">${project.annualreportDonor}</a> 
+                <p> <a href="${AnualReportURL}${project.annualreportDonor}">${project.annualreportDonor}</a> 
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="fileReporting"  /]

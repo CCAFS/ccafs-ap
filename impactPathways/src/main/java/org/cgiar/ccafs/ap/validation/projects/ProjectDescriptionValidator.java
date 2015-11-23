@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -51,9 +52,9 @@ public class ProjectDescriptionValidator extends BaseValidator {
 
       // The projects will be validated according to their type.
       if (project.isCoreProject() || project.isCoFundedProject()) {
-        this.validateCoreProject(action, project);
+        this.validateCoreProject(action, project, cycle);
       } else {
-        this.validateBilateralProject(action, project);
+        this.validateBilateralProject(action, project, cycle);
       }
 
       if (!action.getFieldErrors().isEmpty()) {
@@ -75,14 +76,18 @@ public class ProjectDescriptionValidator extends BaseValidator {
     }
   }
 
-  private void validateBilateralProject(BaseAction action, Project project) {
+  private void validateBilateralProject(BaseAction action, Project project, String cycle) {
     this.validateTitle(action, project.getTitle());
     this.validateStartDate(action, project.getStartDate());
     this.validateEndDate(action, project.getEndDate());
     this.validateBilateralContractProposalName(action, project.getBilateralContractProposalName());
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      this.validateStatus(action, project.getStatus());
+      this.validateDesciptionStatus(action, project.getStatusDescription());
+    }
   }
 
-  private void validateCoreProject(BaseAction action, Project project) {
+  private void validateCoreProject(BaseAction action, Project project, String cycle) {
     this.validateTitle(action, project.getTitle());
     this.validateManagementLiaison(action, project.getLiaisonInstitution());
     this.validateLiaisonContactPerson(action, project.getOwner());
@@ -92,12 +97,25 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateRegions(action, project.getRegions());
     this.validateFlagships(action, project.getFlagships());
 
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      this.validateStatus(action, project.getStatus());
+      this.validateDesciptionStatus(action, project.getStatusDescription());
+    }
+
+
     if (project.isWorkplanRequired()) {
       if (!projectValidator.isValidProjectWorkplanName(project.getWorkplanName())) {
         this
           .addMessage(action.getText("preplanning.projectDescription.isRequiredUploadworkplan.readText").toLowerCase());
         this.addMissingField("project.workplanName");
       }
+    }
+  }
+
+  private void validateDesciptionStatus(BaseAction action, String status) {
+    if (!projectValidator.isValidDescriptionStatus(status)) {
+      this.addMessage(action.getText("preplanning.projectDescription.statusDescription.readText").toLowerCase());
+      this.addMissingField("project.descstatus");
     }
   }
 
@@ -157,12 +175,20 @@ public class ProjectDescriptionValidator extends BaseValidator {
     }
   }
 
+  private void validateStatus(BaseAction action, String status) {
+    if (!projectValidator.isValidStatus(status)) {
+      this.addMessage(action.getText("planning.projectDescription.projectStatus").toLowerCase());
+      this.addMissingField("project.status");
+    }
+  }
+
   private void validateSummary(BaseAction action, String summary) {
     if (!projectValidator.isValidSummary(summary)) {
       this.addMessage(action.getText("preplanning.projectDescription.projectSummary").toLowerCase());
       this.addMissingField("project.summary");
     }
   }
+
 
   private void validateTitle(BaseAction action, String title) {
     if (!projectValidator.isValidTitle(title)) {

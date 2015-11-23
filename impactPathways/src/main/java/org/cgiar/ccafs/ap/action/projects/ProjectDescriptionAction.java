@@ -489,8 +489,7 @@ public class ProjectDescriptionAction extends BaseAction {
         if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
           if (fileReporting != null) {
             FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
-            FileManager.copyFile(fileReporting,
-              this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
+            FileManager.copyFile(fileReporting, this.getAnnualReportAbsolutePath() + fileReportingFileName);
             previousProject.setAnnualreportDonor(fileReportingFileName);
           } else {
             previousProject.setAnnualreportDonor(project.getAnnualreportDonor());

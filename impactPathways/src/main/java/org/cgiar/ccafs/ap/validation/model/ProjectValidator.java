@@ -106,6 +106,10 @@ public class ProjectValidator extends BaseValidator {
     return (budgets != null && !budgets.isEmpty());
   }
 
+  public boolean isValidDescriptionStatus(String statusDescription) {
+    return (this.isValidString(statusDescription) && this.wordCount(statusDescription) <= 100) ? true : false;
+  }
+
   public boolean isValidEndDate(Date endDate) {
     return (endDate != null) ? true : false;
   }
@@ -162,6 +166,10 @@ public class ProjectValidator extends BaseValidator {
 
   public boolean isValidStartDate(Date startDate) {
     return (startDate != null) ? true : false;
+  }
+
+  public boolean isValidStatus(String status) {
+    return (this.isValidString(status)) ? true : false;
   }
 
   public boolean isValidSummary(String summary) {
