@@ -131,16 +131,10 @@
         
         [#-- -- -- REPORTING BLOCK -- -- --]
         [#if reportingCycle]
-          [#-- Project Status --]
-          <div class="fullBlock">
-            <div class="halfPartBlock"> 
-              [@customForm.select name="project.status" value="project.status" i18nkey="planning.projectDescription.projectStatus" listName="projectStauses" editable=editable stringKey=true /]
-            </div>
-          </div>
           [#-- Project upload annual report to donor--]
           [#if project.bilateralProject]
           <div class="fullBlock fileUpload annualreportDonor">
-            <h6>[@customForm.text name="preplanning.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
+            <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
             <div class="uploadContainer">
               [#if project.annualreportDonor?has_content]
                    [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
@@ -155,12 +149,19 @@
             </div>  
           </div>
           [/#if]
+          [#-- Project Status --]
+          <div class="fullBlock">
+            <div class="halfPartBlock"> 
+              [@customForm.select name="project.status" value="project.status" i18nkey="reporting.projectDescription.projectStatus" listName="projectStauses" required=true editable=editable stringKey=true /]
+            </div>
+          </div>
           [#-- Project status description/justification --]
           <div class="fullBlock">
-            [@customForm.textArea name="project.statusDescription" i18nkey="preplanning.projectDescription.statusDescription" className="project-statusDescription" editable=editable /]
+            [@customForm.textArea name="project.statusDescription" i18nkey="reporting.projectDescription.statusDescription" className="project-statusDescription" required=true editable=editable /]
           </div>
         [/#if]
         
+        [#--  Regions/global and Flagships that the project is working on --]
         <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]:[#if !project.bilateralProject ]<span class="red">*</span>[/#if] </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
