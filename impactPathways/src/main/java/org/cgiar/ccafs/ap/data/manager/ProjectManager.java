@@ -228,6 +228,16 @@ public interface ProjectManager {
   public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification);
 
   /**
+   * This method will return the list of all the active projects.
+   * This method also gets all the information in one single query to the database, improving its performance and
+   * letting the charge to the RAM memory.
+   * This method should be used to the XML report.
+   * 
+   * @return a list of active Project objects with their information.
+   */
+  public List<Map<String, Object>> summaryGetActiveProjects();
+
+  /**
    * This method will return the list of all the activities with their corresponding projects
    * This method also gets all the information in one single query to the database, improving its performance and
    * letting the charge to the RAM memory.
@@ -259,7 +269,6 @@ public interface ProjectManager {
    * @return a list of columns with the information summary
    */
   public List<Map<String, Object>> summaryGetAllDeliverablesWithGenderContribution(String[] termsToSearch);
-
 
   /**
    * This method will return the list of all the projects and their respective leaders.
