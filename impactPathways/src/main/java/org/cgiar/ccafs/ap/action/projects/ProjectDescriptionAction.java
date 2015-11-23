@@ -493,9 +493,10 @@ public class ProjectDescriptionAction extends BaseAction {
             previousProject.setAnnualreportDonor(fileReportingFileName);
           } else {
             previousProject.setAnnualreportDonor(project.getAnnualreportDonor());
-            if (project.getAnnualreportDonor() != null && project.getAnnualreportDonor().isEmpty()) {
-              previousProject.setAnnualreportDonor("");
+            if (project.getAnnualreportDonor() != null && !project.getAnnualreportDonor().isEmpty()) {
+
               FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
+              previousProject.setAnnualreportDonor("");
             }
           }
         }
