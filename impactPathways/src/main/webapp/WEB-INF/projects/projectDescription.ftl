@@ -129,6 +129,38 @@
           [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=!project.bilateralProject className="project-description" editable=editable /]
         </div>
         
+        [#-- -- -- REPORTING BLOCK -- -- --]
+        [#if reportingCycle]
+          [#-- Project Status --]
+          <div class="fullBlock">
+            <div class="halfPartBlock"> 
+              [@customForm.select name="project.status" value="project.status" i18nkey="planning.projectDescription.projectStatus" listName="projectStauses" editable=editable stringKey=true /]
+            </div>
+          </div>
+          [#-- Project upload annual report to donor--]
+          [#if (project.bilateralProject && securityContext.canUploadBilateralContract(project.id))]
+          <div class="fullBlock fileUpload bilateralContract">
+            <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
+            <div class="uploadContainer">
+              [#if project.bilateralContractProposalName?has_content]
+                   [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
+                <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a> 
+              [#else]
+                [#if editable]
+                  [@customForm.inputFile name="file"  /]
+                [#else]  
+                  <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
+                [/#if] 
+              [/#if]
+            </div>  
+          </div>
+          [/#if]
+          [#-- Project status description/justification --]
+          <div class="fullBlock">
+            [@customForm.textArea name="project.statusJustification" i18nkey="preplanning.projectDescription.statusJustification" className="project-statusJustification" editable=editable /]
+          </div>
+        [/#if]
+        
         <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]:[#if !project.bilateralProject ]<span class="red">*</span>[/#if] </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
