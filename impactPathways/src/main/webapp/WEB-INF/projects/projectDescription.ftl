@@ -138,13 +138,13 @@
             </div>
           </div>
           [#-- Project upload annual report to donor--]
-          [#if (project.bilateralProject && securityContext.canUploadBilateralContract(project.id))]
-          <div class="fullBlock fileUpload bilateralContract">
-            <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
+          [#if project.bilateralProject]
+          <div class="fullBlock fileUpload annualreportDonor">
+            <h6>[@customForm.text name="preplanning.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
             <div class="uploadContainer">
-              [#if project.bilateralContractProposalName?has_content]
+              [#if project.annualreportDonor?has_content]
                    [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
-                <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a> 
+                <p> <a href="${bilateralContractURL}${project.annualreportDonor}">${project.annualreportDonor}</a> 
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="file"  /]
@@ -157,7 +157,7 @@
           [/#if]
           [#-- Project status description/justification --]
           <div class="fullBlock">
-            [@customForm.textArea name="project.statusJustification" i18nkey="preplanning.projectDescription.statusJustification" className="project-statusJustification" editable=editable /]
+            [@customForm.textArea name="project.statusDescription" i18nkey="preplanning.projectDescription.statusDescription" className="project-statusDescription" editable=editable /]
           </div>
         [/#if]
         
