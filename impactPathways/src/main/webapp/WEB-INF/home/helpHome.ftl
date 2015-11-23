@@ -13,7 +13,7 @@
 <section class="content">
   <article id="helpHome" class="content">
     <h1 class="">P&R Help</h1>
-    <div class="borderBox">
+
       <div id="tabs">
         <ul>
           <li><a href="#tabs-1">[@s.text name="home.help.menu.userManual" /]</a></li>
@@ -24,7 +24,6 @@
         </ul>
         [#-- User Manual --]
         <div id="tabs-1">
-          <h1 class="contentTitle">[@s.text name="home.help.menu.userManual" /]</h1>
           <div id="userManualSection">
             <a href="${baseUrl}/resources/helpDocs/CCAFS_PR_UserManual_20151015.pdf" target="_blank">
               [@s.text name="home.help.download" /]&nbsp;<p>[@s.text name="home.help.menu.userManual" /]</p>
@@ -34,7 +33,6 @@
         </div>
         [#-- Templates --]
         <div id="tabs-2">
-          <h1 class="contentTitle">[@s.text name="home.help.menu.templates" /]</h1></a>
           <div id="templatesSection">
             <div id="template-downloads1">
               <a href="${baseUrl}/resources/helpDocs/CCAFS_PR_UserManual_20151015.pdf" target="_blank">
@@ -52,14 +50,12 @@
         </div>
         [#-- Data Management Support Pack --]
         <div id="tabs-3">
-          <h1 class="contentTitle">[@s.text name="home.help.menu.dmsp" /]</h1>
           <div id="dmspSection">
-            <iframe src="https://dmsp.ccafs.cgiar.org" frameborder="0" width="100%" height="800" scrolling="no"></iframe>
+            <iframe id="iframeDMSP" src="https://dmsp.ccafs.cgiar.org" frameborder="0" width="100%" height="1000" scrolling="yes"></iframe>
           </div>
         </div>
         [#-- Glossary --]
         <div id="tabs-4">
-          <h1 class="contentTitle">[@s.text name="home.glossary.title"/]</h1>
           [#assign glossaryContent= [ 
           [ "accountability", "mutualAccountability", "activities", "adoption", "appraisal", "attribution", "audit"],
           [ "baseline", "behavioralIndependence", "beneficiaries", "budget"],
@@ -78,23 +74,21 @@
           [ "update" , "use"]
           ] /]
       
-          [@s.form action="glossary" cssClass="pure-form"]
-            <article id="glossary-content">
-              [@s.text name="home.glossary.contact"/] [@s.text name="home.glossary.mailto"/]
+          
+          [@s.text name="home.glossary.contact"/] [@s.text name="home.glossary.mailto"/]
 
-              [#-- List the terms with his definition --]
-              [#list glossaryContent as letter]
-                <hr />
-                [#list letter as word] 
-                  [@wordDefinition word=word /]
-                [/#list]
-              [/#list]  
-              
-              <div class="lastUpdate">
-                <p>[@s.text name="home.glossary.lastUpdate"/]</p>
-              </div>
-            </article>
-          [/@s.form]
+          [#-- List the terms with his definition --]
+          [#list glossaryContent as letter]
+            <hr />
+            [#list letter as word] 
+              [@wordDefinition word=word /]
+            [/#list]
+          [/#list]  
+          
+          <div class="lastUpdate">
+            <p>[@s.text name="home.glossary.lastUpdate"/]</p>
+          </div>
+            
     
           [#macro wordDefinition word]
           <div id="${word}" class="word">
@@ -125,7 +119,7 @@
           <div >&nbsp;</div>
         </div>--]
       </div>
-    </div>
+
   </article>
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]

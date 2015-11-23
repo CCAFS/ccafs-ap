@@ -276,7 +276,7 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     query.append(" WHERE dt.parent_id IS NOT NULL ");
     query.append(" AND d.is_active = TRUE ");
     query.append(" GROUP BY dt.name ");
-    query.append(" ORDER BY dt.name ASC ");
+    query.append(" ORDER BY count DESC ");
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
