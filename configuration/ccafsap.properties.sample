@@ -65,8 +65,14 @@ file.uploads.projectsFolder=projects/
 # folder to upload project work plans
 file.uploads.project.WorkplanFolder=workplan/
 
+
+
+
+
 # folder to upload bilateral project contract proposal
 file.uploads.project.bilateralProposalFolder=bilateralProposal/
+
+file.uploads.project.bilateralPAnualReport=anualReport/
 
 # URL where the files uploaded can be downloaded
 file.downloads=localhost/ccafspr_ip/

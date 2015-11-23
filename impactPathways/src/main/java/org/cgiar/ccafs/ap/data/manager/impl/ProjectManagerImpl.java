@@ -292,6 +292,10 @@ public class ProjectManagerImpl implements ProjectManager {
 
       project.setWorkplanName(projectData.get("workplan_name"));
       project.setBilateralContractProposalName(projectData.get("bilateral_contract_name"));
+      project.setAnnualreportDonor(projectData.get("annual_report_to_dornor"));
+      project.setStatus(projectData.get("status"));
+      project.setStatusDescription(projectData.get("status_description"));
+
       // Getting the project Owner.
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("liaison_user_id"))));
       // Getting the creation date timestamp.
@@ -493,6 +497,9 @@ public class ProjectManagerImpl implements ProjectManager {
       }
       projectData.put("requires_workplan_upload", project.isWorkplanRequired());
       projectData.put("workplan_name", project.getWorkplanName());
+      projectData.put("annual_report_to_dornor", project.getAnnualreportDonor());
+      projectData.put("status", project.getStatus());
+      projectData.put("status_description", project.getStatusDescription());
       projectData.put("bilateral_contract_name", project.getBilateralContractProposalName());
       projectData.put("user_id", project.getOwner().getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());

@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDescriptionValidator;
@@ -32,6 +33,7 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,7 @@ public class ProjectDescriptionAction extends BaseAction {
   private List<IPProgram> ipProgramRegions;
   private List<IPProgram> ipProgramFlagships;
   private List<LiaisonInstitution> liaisonInstitutions;
+  private List<ProjectStatusEnum> projectStauses;
   private List<User> allOwners;
   private Map<String, String> projectTypes;
 
@@ -71,10 +74,13 @@ public class ProjectDescriptionAction extends BaseAction {
 
   // These variables can contain either the information of the project workplan or the bilateral contract proposal
   private File file;
+  private File fileReporting;
   private String fileContentType;
   private String fileFileName;
+  private String fileReportingFileName;
 
   private ProjectDescriptionValidator validator;
+
 
   @Inject
   public ProjectDescriptionAction(APConfig config, ProjectManager projectManager, IPProgramManager ipProgramManager,
@@ -92,10 +98,29 @@ public class ProjectDescriptionAction extends BaseAction {
     this.validator = validator;
   }
 
+
   public List<User> getAllOwners() {
     return allOwners;
   }
 
+
+  /**
+   * Return the absolute path where the bilateral contract is or should be located.
+   * 
+   * @return complete path where the image is stored
+   */
+  private String getAnnualReportAbsolutePath() {
+    return config.getUploadsBaseFolder() + File.separator + this.getAnualReportRelativePath() + File.separator;
+  }
+
+  private String getAnualReportRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
+      + config.getAnualReportFolder() + File.separator;
+  }
+
+  public String getAnualReportURL() {
+    return config.getDownloadURL() + "/" + this.getAnualReportRelativePath().replace('\\', '/');
+  }
 
   /**
    * Return the absolute path where the bilateral contract is or should be located.
@@ -110,10 +135,12 @@ public class ProjectDescriptionAction extends BaseAction {
     return config.getDownloadURL() + "/" + this.getBilateralProposalRelativePath().replace('\\', '/');
   }
 
+
   private String getBilateralProposalRelativePath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator
       + config.getBilateralProjectContractProposalFolder() + File.separator;
   }
+
 
   /**
    * This method returns a composed name with the Acronym and Name.
@@ -145,6 +172,14 @@ public class ProjectDescriptionAction extends BaseAction {
 
   public String getFileFileName() {
     return fileFileName;
+  }
+
+  public File getFileReporting() {
+    return fileReporting;
+  }
+
+  public String getFileReportingFileName() {
+    return fileReportingFileName;
   }
 
   /**
@@ -185,6 +220,10 @@ public class ProjectDescriptionAction extends BaseAction {
 
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
+  }
+
+  public List<ProjectStatusEnum> getProjectStauses() {
+    return projectStauses;
   }
 
   public Map<String, String> getProjectTypes() {
@@ -234,6 +273,7 @@ public class ProjectDescriptionAction extends BaseAction {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
 
+
   @Override
   public String next() {
     String result = this.save();
@@ -243,6 +283,7 @@ public class ProjectDescriptionAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -269,6 +310,8 @@ public class ProjectDescriptionAction extends BaseAction {
     // Get the list of institutions that can be management liaison of a project.
     liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
 
+    projectStauses = new ArrayList<>();
+    projectStauses.addAll(Arrays.asList(ProjectStatusEnum.values()));
     // Getting project
     project = projectManager.getProject(projectID);
     if (project != null) {
@@ -309,6 +352,9 @@ public class ProjectDescriptionAction extends BaseAction {
     previousProject.setBilateralContractRequired(project.isBilateralContractRequired());
     previousProject.setWorkplanName(project.getWorkplanName());
     previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
+    previousProject.setAnnualreportDonor(project.getAnnualreportDonor());
+    previousProject.setStatus(project.getStatus());
+    previousProject.setStatusDescription(project.getStatusDescription());
 
     if (project.getLinkedProjects() != null) {
       List<Project> linkedProjects = new ArrayList<>();
@@ -330,6 +376,7 @@ public class ProjectDescriptionAction extends BaseAction {
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
+
 
   @Override
   public String save() {
@@ -400,8 +447,8 @@ public class ProjectDescriptionAction extends BaseAction {
       } else if (previousProject.isBilateralProject()) {
         if (file != null) {
           if (previousProject.getBilateralContractProposalName() != null) {
-            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
-              + previousProject.getBilateralContractProposalName());
+            FileManager
+              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
           }
 
           previousProject.setBilateralContractProposalName(fileFileName);
@@ -411,8 +458,8 @@ public class ProjectDescriptionAction extends BaseAction {
 
           if (previousProject.getBilateralContractProposalName() != null
             && previousProject.getBilateralContractProposalName().isEmpty()) {
-            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
-              + previousProject.getBilateralContractProposalName());
+            FileManager
+              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             previousProject.setBilateralContractProposalName("");
           }
         }
@@ -424,8 +471,8 @@ public class ProjectDescriptionAction extends BaseAction {
       if (project.isBilateralProject()) {
         if (securityContext.canUploadBilateralContract(projectID)) {
           if (file != null) {
-            FileManager.deleteFile(this.getBilateralContractAbsolutePath()
-              + previousProject.getBilateralContractProposalName());
+            FileManager
+              .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             FileManager.copyFile(file,
               this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
             previousProject.setBilateralContractProposalName(fileFileName);
@@ -434,15 +481,32 @@ public class ProjectDescriptionAction extends BaseAction {
             if (project.getBilateralContractProposalName() != null
               && project.getBilateralContractProposalName().isEmpty()) {
               previousProject.setBilateralContractProposalName("");
-              FileManager.deleteFile(this.getWorplansAbsolutePath()
-                + previousProject.getBilateralContractProposalName());
+              FileManager
+                .deleteFile(this.getWorplansAbsolutePath() + previousProject.getBilateralContractProposalName());
             }
           }
         }
+        if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+          if (fileReporting != null) {
+            FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
+            FileManager.copyFile(fileReporting,
+              this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
+            previousProject.setAnnualreportDonor(fileReportingFileName);
+          } else {
+            previousProject.setAnnualreportDonor(project.getAnnualreportDonor());
+            if (project.getAnnualreportDonor() != null && project.getAnnualreportDonor().isEmpty()) {
+              previousProject.setAnnualreportDonor("");
+              FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
+            }
+          }
+        }
+
+
       }
 
       previousProject.setSummary(project.getSummary());
-
+      previousProject.setStatus(project.getStatus());
+      previousProject.setStatusDescription(project.getStatusDescription());
 
       // Save the information
       int result =
@@ -472,9 +536,8 @@ public class ProjectDescriptionAction extends BaseAction {
         // Save only the new flagships
         for (IPProgram flagship : flagships) {
           if (!previousFlagships.contains(flagship)) {
-            saved =
-              ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
-                this.getJustification());
+            saved = ipProgramManager.saveProjectFocus(project.getId(), flagship.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 
@@ -492,10 +555,8 @@ public class ProjectDescriptionAction extends BaseAction {
         // Save only the new regions
         for (IPProgram region : project.getRegions()) {
           if (!previousRegions.contains(region)) {
-            saved =
-              saved
-                && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
-                  this.getJustification());
+            saved = saved && ipProgramManager.saveProjectFocus(project.getId(), region.getId(), this.getCurrentUser(),
+              this.getJustification());
           }
         }
 
@@ -563,6 +624,14 @@ public class ProjectDescriptionAction extends BaseAction {
     this.fileFileName = fileFileName;
   }
 
+  public void setFileReporting(File fileReporting) {
+    this.fileReporting = fileReporting;
+  }
+
+  public void setFileReportingFileName(String fileReportingFileName) {
+    this.fileReportingFileName = fileReportingFileName;
+  }
+
   public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
     this.ipProgramFlagships = ipProgramFlagships;
   }
@@ -577,6 +646,10 @@ public class ProjectDescriptionAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setStatusProject(List<ProjectStatusEnum> projectStauses) {
+    this.projectStauses = projectStauses;
   }
 
   @Override

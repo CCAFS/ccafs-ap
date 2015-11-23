@@ -62,6 +62,7 @@ public class APConfig {
   private static final String PROJECTS_BASE_FOLDER = "file.uploads.projectsFolder";
   private static final String PROJECT_WORKPLAN_FOLDER = "file.uploads.project.WorkplanFolder";
   private static final String PROJECT_BILATERAL_PROPOSAL_FOLDER = "file.uploads.project.bilateralProposalFolder";
+  private static final String PROJECT_BILATERAL_ANUAL_REPORT_FOLDER = "file.uploads.project.bilateralPAnualReport";
   private static final String FILE_DOWNLOADS = "file.downloads";
   private static final String RESOURCE_PATH = "resource.path";
 
@@ -74,6 +75,20 @@ public class APConfig {
   @Inject
   public APConfig(PropertiesManager properties) {
     this.properties = properties;
+  }
+
+  /**
+   * Get the folder where the bilateral project contract proposal should be loaded
+   * 
+   * @return a string with the path
+   */
+  public String getAnualReportFolder() {
+    try {
+      return properties.getPropertiesAsString(PROJECT_BILATERAL_ANUAL_REPORT_FOLDER);
+    } catch (Exception e) {
+      LOG.error("there is not a base folder to save the uploaded files configured.");
+    }
+    return null;
   }
 
   /**
@@ -97,6 +112,7 @@ public class APConfig {
     return base;
   }
 
+
   /**
    * Get the folder where the bilateral project contract proposal should be loaded
    * 
@@ -110,7 +126,6 @@ public class APConfig {
     }
     return null;
   }
-
 
   /**
    * Get the folder where the case studies images uploaded should be saved
@@ -414,12 +429,12 @@ public class APConfig {
   }
 
   /**
-   * Get the flag that indicate is planing stage is active that is in the configuration file.
+   * Get the flag that indicate is planing stage is close that is in the configuration file.
    * 
    * @return a boolean indicating if it is active.
    */
-  public boolean isPlanningActive() {
-    String planningActive = properties.getPropertiesAsString(PLANNING_ACTIVE);
+  public boolean isClosed() {
+    String planningActive = properties.getPropertiesAsString(IS_CLOSED);
     if (planningActive == null) {
       LOG.error("There is not a planning active configured");
       return false;
@@ -430,12 +445,12 @@ public class APConfig {
 
 
   /**
-   * Get the flag that indicate is planing stage is close that is in the configuration file.
+   * Get the flag that indicate is planing stage is active that is in the configuration file.
    * 
    * @return a boolean indicating if it is active.
    */
-  public boolean isClosed() {
-    String planningActive = properties.getPropertiesAsString(IS_CLOSED);
+  public boolean isPlanningActive() {
+    String planningActive = properties.getPropertiesAsString(PLANNING_ACTIVE);
     if (planningActive == null) {
       LOG.error("There is not a planning active configured");
       return false;
