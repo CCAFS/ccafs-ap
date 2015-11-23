@@ -25,22 +25,17 @@ $(document).ready(function() {
    */
 
   $('.fileUpload .remove').on('click', function(e) {
-
-    console.log('entra remove 2');
     var context = $(this).attr('id').split('-')[1];
-    var $parent = $(this).parent().parent();
+    var $parent = $(this).parent();
     var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
+    console.log($inputFile);
     $parent.empty().append($inputFile);
     $inputFile.hide().fadeIn('slow');
-    project.workplanName=null;
-    project.bilateralContractProposalName=null;
-
   });
 
   /**
    * CORE-Projects
    */
-
   var $coreSelect = $('#projectsList select');
   var $coreProjects = $('#projectsList .list');
 
@@ -148,7 +143,7 @@ function datePickerConfig(element) {
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-         // $(element.endDate).datepicker("option", "minDate", selectedDate);
+          // $(element.endDate).datepicker("option", "minDate", selectedDate);
         }
       }
   });
@@ -168,7 +163,7 @@ function datePickerConfig(element) {
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-          //$(element.startDate).datepicker("option", "maxDate", selectedDate);
+          // $(element.startDate).datepicker("option", "maxDate", selectedDate);
         }
       }
   });

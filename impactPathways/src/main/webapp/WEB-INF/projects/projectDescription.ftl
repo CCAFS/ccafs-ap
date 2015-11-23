@@ -137,7 +137,7 @@
             <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
             <div class="uploadContainer">
               [#if project.annualreportDonor?has_content]
-                   [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
+                [#if editable]<span id="remove-fileReporting" class="remove"></span>[/#if] 
                 <p> <a href="${AnualReportURL}${project.annualreportDonor}">${project.annualreportDonor}</a> 
               [#else]
                 [#if editable]
@@ -271,6 +271,7 @@
   
   [#-- File upload Template--] 
   [@customForm.inputFile name="file" template=true /] 
+  [@customForm.inputFile name="fileReporting" template=true /] 
   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
