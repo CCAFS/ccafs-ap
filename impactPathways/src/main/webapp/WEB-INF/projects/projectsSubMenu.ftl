@@ -39,8 +39,8 @@
       <p>[@s.text name="menu.planning.submenu.projectDescription" /]</p>
       <ul>
         [@menu actionName="description" stageName="description" textName="menu.secondary.planning.project.description" /] 
-        [@menu actionName="partners" stageName="partners" textName="menu.planning.submenu.projectPartners" disabled=reportingCycle /] 
-        [@menu actionName="locations" stageName="locations" textName="menu.planning.submenu.projectLocations" disabled=reportingCycle/] 
+        [@menu actionName="partners" stageName="partners" textName="menu.planning.submenu.projectPartners"  /] 
+        [@menu actionName="locations" stageName="locations" textName="menu.planning.submenu.projectLocations" /] 
       </ul>
     </li>
     <li class="[#if currentStage == "outcomes"]${currCss}[/#if]">
