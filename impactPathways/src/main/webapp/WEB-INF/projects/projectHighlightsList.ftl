@@ -20,7 +20,7 @@
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
 [#-- TODO: Make a new template --]
-[#import "/WEB-INF/projects/macros/projectDeliverablesTemplate.ftl" as deliverableTemplate/]
+[#import "/WEB-INF/projects/macros/projectHighlightsTemplate.ftl" as highlightTemplate/]
     
 <section class="content">
   <div class="helpMessage">
@@ -38,7 +38,7 @@
         <div class="fullBlock clearfix">
           <h3 class="projectSubTitle">[@s.text name="reporting.projectHighlights.highlights" /]</h3>
           [#if project.deliverables?has_content]
-            [@deliverableTemplate.deliverablesList deliverables=project.deliverables canEdit=canEdit /]
+            [@highlightTemplate.highlightsList highlights=project.deliverables canEdit=canEdit /]
           [#else]
             [#-- Just show this empty message to those users who are not able to modify this section --]
             <p class="simpleBox center">[@s.text name="reporting.projectHighlights.empty"/]</p> 
