@@ -97,6 +97,15 @@
       </result>
     </action> 
     
+    <!-- Exporting our active projects in XML format-->
+    <action name="projectsXml" class="org.cgiar.ccafs.ap.action.summaries.ProjectsXMLAction">
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">${contentType}</param>
+        <param name="contentDisposition">filename="${fileName}"</param>
+      </result>
+    </action> 
+    
          <action name="submmitedProjects" class="org.cgiar.ccafs.ap.action.summaries.planning.SubmissionProjectSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
