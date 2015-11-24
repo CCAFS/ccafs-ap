@@ -1,5 +1,5 @@
 [#ftl]
-[#assign title = "Project Highlights" /]
+[#assign title = "Project Highlights List" /]
 [#assign globalLibs = ["jquery", "noty", "dataTable", "autoSave", "chosen"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectHighlights.js"] /]

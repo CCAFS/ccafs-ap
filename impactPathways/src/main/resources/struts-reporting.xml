@@ -215,23 +215,23 @@
     </action>
     
     <action name="highlights" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverablesListAction">
-      <result name="input">/WEB-INF/projects/projectHighlights.ftl</result>
+      <result name="input">/WEB-INF/projects/projectHighlightsList.ftl</result>
     </action>
     
     <action name="highlight" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverableAction">
       <interceptor-ref name="planningStackDeliverables" />
-      <result name="input">/WEB-INF/projects/projectDeliverable.ftl</result>
+      <result name="input">/WEB-INF/projects/projectHighlight.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">deliverable</param>
-        <param name="deliverableID">${deliverable.id}</param>
+        <param name="actionName">highlight</param>
+        <param name="highlightID">${highlight.id}</param>
       </result>
       <result name="next" type="redirectAction">
-        <param name="actionName">impactPathway</param>
-        <param name="deliverableID">${deliverable.id}</param>
+        <param name="actionName">highlights</param>
+        <param name="highlightID">${highlight.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">deliverable</param>
-        <param name="deliverableID">${deliverable.id}</param>
+        <param name="actionName">highlight</param>
+        <param name="highlightID">${highlight.id}</param>
       </result>
     </action>
     
