@@ -1,7 +1,6 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -13,7 +12,6 @@ import org.cgiar.ccafs.utils.summaries.Summary;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,10 +67,9 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
     return partnerID;
   }
 
-  // rootElement.appendChild(this.buildElement(doc, "id", "123"));
   private void buildXML(Document doc) {
     // root element
-    Element project, location, institutions, type, flagshipsLabel, regionsLabel, flagship, regionEt, projectsLabel, projectLabel, locationsLabel, institutionsLabel;
+    Element project, location, contactPerson, institutions, partner, contribution, flagshipsLabel, regionsLabel, flagship, region, contributionsLabel, partnersLabel, outcomesLabel, locationsLabel, contactPersonsLabel, institutionsLabel;
     Element rootElement = doc.createElement("projects");
     IPProgram ipProgram;
     doc.appendChild(rootElement);
@@ -93,81 +90,80 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       // end date
       project.appendChild(this.buildElement(doc, "endDate", this.convertToString(projectData.get("end_date"))));
       // lead institution
-      institutionsLabel = doc.createElement("lead-institution");
+      institutionsLabel = doc.createElement("leader");
       institutions = doc.createElement("institution");
       // lead institution acronym
-      institutions.appendChild(this.buildElement(doc, "leadInstitutionAcronym",
+      institutions.appendChild(this.buildElement(doc, "acronym",
         this.convertToString(projectData.get("lead_institution_acronym"))));
       // lead institution name
-      institutions.appendChild(this.buildElement(doc, "leadInstitutionName",
+      institutions.appendChild(this.buildElement(doc, "name",
         this.convertToString(projectData.get("lead_institution_name"))));
-      // contact person name
-      institutions.appendChild(this.buildElement(doc, "contactPersonName",
-        this.convertToString(projectData.get("contact_person_name"))));
-      // contact person email
-      institutions.appendChild(this.buildElement(doc, "contactPersonEmail",
-        this.convertToString(projectData.get("contact_person_email"))));
-      // project coordinator
-      institutions.appendChild(this.buildElement(doc, "projectCoordinator",
-        this.convertToString(projectData.get("project_coordinator"))));
+      // contact persons
+      contactPersonsLabel = doc.createElement("contactPersons");
+      contactPerson = doc.createElement("contactPerson");
+      // name
+      contactPerson
+      .appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("contact_persons"))));
+      // email
+      contactPerson.appendChild(this.buildElement(doc, "email",
+        this.convertToString(projectData.get("contact_persons"))));
+      contactPersonsLabel.appendChild(contactPerson);
+      institutions.appendChild(contactPersonsLabel);
       institutionsLabel.appendChild(institutions);
       project.appendChild(institutionsLabel);
+      // partners
+      partnersLabel = doc.createElement("partners");
+      partner = doc.createElement("partner");
+      // acronym
+      partner.appendChild(this.buildElement(doc, "acronym", this.convertToString(projectData.get("partners"))));
+      // name
+      partner.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("partners"))));
+      partnersLabel.appendChild(partner);
+      project.appendChild(partnersLabel);
+      // flagships
+      flagshipsLabel = doc.createElement("flagships");
+      flagship = doc.createElement("flagship");
+      flagship.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("flagships"))));
+      flagshipsLabel.appendChild(flagship);
+      project.appendChild(flagshipsLabel);
+      // regions
+      regionsLabel = doc.createElement("regions");
+      region = doc.createElement("region");
+      region.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("regions"))));
+      regionsLabel.appendChild(region);
+      project.appendChild(regionsLabel);
       // location
       locationsLabel = doc.createElement("locations");
       location = doc.createElement("location");
       // location type
-      location.appendChild(this.buildElement(doc, "locationType",
-        this.convertToString(projectData.get("location_type"))));
+      location.appendChild(this.buildElement(doc, "level", this.convertToString(projectData.get("locations"))));
       // location name
-      location.appendChild(this.buildElement(doc, "locationName",
-        this.convertToString(projectData.get("location_name"))));
+      location.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("locations"))));
       // location latitude
-      location.appendChild(this.buildElement(doc, "latitude",
-        this.convertToString(projectData.get("location_latitude"))));
+      location.appendChild(this.buildElement(doc, "latitude", this.convertToString(projectData.get("locations"))));
       // location longitude
-      location.appendChild(this.buildElement(doc, "longitude",
-        this.convertToString(projectData.get("location_longitude"))));
-
+      location.appendChild(this.buildElement(doc, "longitude", this.convertToString(projectData.get("locations"))));
       locationsLabel.appendChild(location);
       project.appendChild(locationsLabel);
-
-      //
-      // // flagships
-      // ipProgramIds = this.convertToString(projectData.get("ip_programs")).split(",");
-      //
-      // flagshipsLabel = doc.createElement("flagship-programs");
-      // regionsLabel = doc.createElement("region-programs");
-      //
-      // for (String ipProgramId : ipProgramIds) {
-      // ipProgram = ipPrograms.get(ipProgramId);
-      // switch (ipProgram.getType().getId()) {
-      // case APConstants.FLAGSHIP_PROGRAM_TYPE:
-      // // --- flagship
-      // flagship = doc.createElement("flagship");
-      // flagship.appendChild(this.buildElement(doc, "id", this.convertToString(ipProgram.getId())));
-      // flagship.appendChild(this.buildElement(doc, "acronym", ipProgram.getAcronym()));
-      // flagship.appendChild(this.buildElement(doc, "name", ipProgram.getName()));
-      // flagshipsLabel.appendChild(flagship);
-      // break;
-      //
-      // case APConstants.REGION_PROGRAM_TYPE:
-      // // --- regions
-      // regionEt = doc.createElement("region");
-      // regionEt.appendChild(this.buildElement(doc, "id", this.convertToString(ipProgram.getId())));
-      // regionEt.appendChild(this.buildElement(doc, "acronym", ipProgram.getAcronym()));
-      // regionEt.appendChild(this.buildElement(doc, "name", ipProgram.getName()));
-      // regionsLabel.appendChild(regionEt);
-      // break;
-      //
-      // default:
-      // break;
-      // }
-      // }
-      //
-      // project.appendChild(flagshipsLabel);
-      // project.appendChild(regionsLabel);
-
-      // Add partner
+      // contributions
+      contributionsLabel = doc.createElement("contribution");
+      contribution = doc.createElement("project");
+      if (this.convertToString(projectData.get("project_type")).equals("CCAFS_COFUNDED")) {
+        contribution.appendChild(this.buildElement(doc, "title",
+          this.convertToString(projectData.get("cofunded_contributions"))));
+      } else if (this.convertToString(projectData.get("project_type")).equals("BILATERAL")) {
+        contribution.appendChild(this.buildElement(doc, "title",
+          this.convertToString(projectData.get("bilateral_contributions"))));
+      } else {
+        contribution.appendChild(this.buildElement(doc, "title", ""));
+      }
+      contributionsLabel.appendChild(contribution);
+      project.appendChild(contributionsLabel);
+      // outcomes
+      outcomesLabel = doc.createElement("outcomes");
+      outcomesLabel.appendChild(this.buildElement(doc, "statement",
+        this.convertToString(projectData.get("outcome_statement"))));
+      project.appendChild(outcomesLabel);
       rootElement.appendChild(project);
     }
   }
@@ -228,29 +224,8 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
   public void prepare() throws Exception {
     super.prepare();
     LOG.info("Initiating the export for all the active projects in XML format for the CCAFS Website.");
-    // Getting the partner info from the SQL query.
-    // System.out.println();
+    // Getting all the active projects with their corresponding information
     projectsData = projectManager.summaryGetActiveProjects();
-
-    ipPrograms = new HashMap<String, IPProgram>();
-
-    // Getting all the flagships.
-    List<IPProgram> flagshipList = programManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
-    for (IPProgram iPProgram : flagshipList) {
-      ipPrograms.put(String.valueOf(iPProgram.getId()), iPProgram);
-    }
-
-    // Getting all the regions.
-    List<IPProgram> regionList = programManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
-    for (IPProgram iPProgram : regionList) {
-      ipPrograms.put(String.valueOf(iPProgram.getId()), iPProgram);
-    }
-
-    projects = new HashMap<String, Project>();
-    List<Project> projectList = projectManager.getAllProjectsBasicInfo();
-    for (Project project : projectList) {
-      projects.put(String.valueOf(project.getId()), project);
-    }
 
 
     LOG.info("XML format for the CCAFS Website exported.");

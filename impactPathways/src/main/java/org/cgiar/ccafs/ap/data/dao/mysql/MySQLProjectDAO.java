@@ -1122,30 +1122,30 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("p.type as 'project_type', ");
     query.append("i.acronym as 'lead_institution_acronym', ");
     query.append("i.name as 'lead_institution_name', ");
-    query.append("( SELECT CONCAT( u.last_name, ', ', u.first_name)) as 'contact_person_name', ");
-    query.append("u.email as 'contact_person_email', ");
-    query.append("( ");
-    query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
-    query.append("FROM project_partners pp ");
-    query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
-    query.append("INNER JOIN users u ON ppp.user_id = u.id ");
     query
-    .append("WHERE pp.project_id = p.id AND ppp.contact_type = 'PC' AND  u.is_active = 1 AND pp.is_active = 1 AND ppp.is_active = 1 ");
-    query.append(") as 'project_coordinator', ");
-    query.append("let.name as 'location_type', ");
-    query.append("le.name as 'location_name', ");
-    query.append("lg.latitude as 'location_latitude', ");
-    query.append("lg.longitude as 'location_longitude', ");
+    .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( u.last_name, ', ', u.first_name, '-', u.email) SEPARATOR ';' ) FROM project_partner_persons ppp INNER JOIN users u ON ppp.user_id = u.id WHERE pp.id = ppp.project_partner_id AND ppp.is_active = 1 ) as 'contact_persons', ");
+    query
+    .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( i.acronym, '-', i.name) SEPARATOR ';' ) FROM project_partners pp INNER JOIN institutions i ON pp.institution_id = i.id WHERE p.id = pp.project_id AND pp.is_active = 1 GROUP BY p.id ) as 'partners', ");
+    query
+    .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( pro.acronym, ': ', pro.name ) SEPARATOR ';') FROM ip_programs pro INNER JOIN project_focuses pf ON pro.id = pf.program_id WHERE pf.project_id = p.id AND pro.region_id IS NULL ) as 'flagships', ");
+    query
+    .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( pro.acronym, ': ', pro.name ) SEPARATOR ';') FROM ip_programs pro INNER JOIN project_focuses pf ON pro.id = pf.program_id WHERE pf.project_id = p.id AND pro.region_id IS NOT NULL ) as 'regions', ");
+    query
+    .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT(let.name, CONCAT('--', le.name), IFNULL(CONCAT('--', lg.latitude) ,'') , IFNULL(CONCAT('--', lg.longitude),'')) SEPARATOR ';') ");
+    query
+    .append("FROM project_locations po INNER JOIN loc_elements le ON po.loc_element_id = le.id INNER JOIN loc_element_types let ON le.element_type_id = let.id ");
+    query.append("LEFT JOIN loc_geopositions lg ON le.geoposition_id = lg.id ");
+    query.append("WHERE p.id = po.project_id GROUP BY p.id ) as 'locations', ");
+    query
+    .append("( SELECT GROUP_CONCAT( DISTINCT CONCAT(pj.id, ' - ', pj.title) SEPARATOR '--' ) FROM project_cofinancing_linkages pcl INNER JOIN projects pj ON pcl.bilateral_project_id = pj.id WHERE p.type = 'CCAFS_COFUNDED' AND p.id = pcl.core_project_id AND pcl.is_active = 1 GROUP BY p.id) as 'cofunded_contributions', ");
+    query
+    .append("( SELECT GROUP_CONCAT( DISTINCT CONCAT(pj.id, ' - ', pj.title) SEPARATOR '--' ) FROM project_cofinancing_linkages pcl INNER JOIN projects pj ON pcl.core_project_id = pj.id WHERE p.type = 'BILATERAL' AND p.id = pcl.bilateral_project_id AND pcl.is_active = 1 GROUP BY p.id) as 'bilateral_contributions', ");
     query.append("po.statement as 'outcome_statement' ");
     query.append("FROM projects p ");
     query.append("INNER JOIN project_partners pp ON pp.project_id = p.id ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("INNER JOIN institutions i ON pp.institution_id = i.id ");
     query.append("INNER JOIN users u ON ppp.user_id = u.id ");
-    query.append("LEFT JOIN project_locations pl ON p.id = pl.project_id ");
-    query.append("LEFT JOIN loc_elements le ON pl.loc_element_id = le.id ");
-    query.append("LEFT JOIN loc_geopositions lg ON le.geoposition_id = lg.id ");
-    query.append("LEFT JOIN loc_element_types let ON le.element_type_id = let.id ");
     query.append("LEFT JOIN project_outcomes po ON p.id = po.project_id AND po.year = 2016 ");
     query.append("WHERE ppp.contact_type = 'PL' AND pp.is_active = 1 AND ppp.is_active = 1 AND p.is_active = 1 ");
     query.append("GROUP BY p.id ");
@@ -1163,13 +1163,13 @@ public class MySQLProjectDAO implements ProjectDAO {
         csvData.put("project_summary", rs.getString("project_summary"));
         csvData.put("lead_institution_acronym", rs.getString("lead_institution_acronym"));
         csvData.put("lead_institution_name", rs.getString("lead_institution_name"));
-        csvData.put("contact_person_name", rs.getString("contact_person_name"));
-        csvData.put("contact_person_email", rs.getString("contact_person_email"));
-        csvData.put("project_coordinator", rs.getString("project_coordinator"));
-        csvData.put("location_type", rs.getString("location_type"));
-        csvData.put("location_name", rs.getString("location_name"));
-        csvData.put("location_latitude", rs.getString("location_latitude"));
-        csvData.put("location_longitude", rs.getString("location_longitude"));
+        csvData.put("contact_persons", rs.getString("contact_persons"));
+        csvData.put("partners", rs.getString("partners"));
+        csvData.put("flagships", rs.getString("flagships"));
+        csvData.put("regions", rs.getString("regions"));
+        csvData.put("locations", rs.getString("locations"));
+        csvData.put("cofunded_contributions", rs.getString("cofunded_contributions"));
+        csvData.put("bilateral_contributions", rs.getString("bilateral_contributions"));
         csvData.put("outcome_statement", rs.getString("outcome_statement"));
         csvRecords.add(csvData);
       }
