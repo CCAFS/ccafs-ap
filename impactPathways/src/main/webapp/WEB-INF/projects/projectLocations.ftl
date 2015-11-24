@@ -2,16 +2,16 @@
 [#assign title = "Project Location" /]
 [#assign globalLibs =["jquery", "noty","googleMaps"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectLocations.js"] /]
-[#assign currentSection = "planning" /]
+[#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 [#assign currentSubStage = "locations" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"description", "nameSpace":"planning/projects", "action":"description", "param":"projectID=${project.id}"},
-  {"label":"locations", "nameSpace":"planning/projects", "action":"locations", "param":"projectID=${project.id}"}
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"description", "nameSpace":"${currentSection}/projects", "action":"description", "param":"projectID=${project.id}"},
+  {"label":"locations", "nameSpace":"${currentSection}/projects", "action":"locations", "param":"projectID=${project.id}"}
 ] /]
 
 
@@ -173,7 +173,7 @@
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
         <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="${reportingCycle?string('reporting','planning')}.project.locations.lessons" required=!project.bilateralProject editable=editable /]
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.project.locations.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
     [/#if]
