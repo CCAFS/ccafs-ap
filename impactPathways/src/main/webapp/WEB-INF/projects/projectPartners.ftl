@@ -3,7 +3,7 @@
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectPartners.js", "${baseUrl}/js/global/usersManagement.js"] /]
 
-[#assign currentSection = reportingCycle?string('reporting','planning') /]
+[#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
 [#assign currentSubStage = "partners" /]
@@ -77,7 +77,7 @@
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
         <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="${reportingCycle?string('reporting','planning')}.projectPartners.lessons" required=!project.bilateralProject editable=editable /]
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectPartners.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
     [/#if]
