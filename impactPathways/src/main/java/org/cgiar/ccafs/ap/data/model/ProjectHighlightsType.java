@@ -16,33 +16,29 @@
 package org.cgiar.ccafs.ap.data.model;
 
 
-public enum ProjectStatusEnum {
+public enum ProjectHighlightsType {
 
+  Gender_and_social_inclusion("1", "Gender and social inclusion"),
+  Innovative_non_research_partnerships("2", "Innovative non-research partnerships"),
+  Participatory_action_research("3", "Participatory action research"),
+  Successful_communications("4", "Successful communications"), Capacity_enhancement("5", "Capacity enhancement"),
+  Breakthrough_science("6", "Breakthrough science"), Inter_center_collaboration("7", "Inter-center collaboration"),
+  Policy_engagement("8", "Policy engagement"), Food_security("9", "Food security");
 
-  Identification("1", "Identification"), Implementation("2", "Implementation"), Completion("3", "Completion"),
-  Post_completion("4", "Post-completion"), Cancelled("5", "Cancelled"), Suspended("6", "Suspended");
+  private String description;
+  private String id;
 
-  private String status;
-  private String statusId;
-
-  private ProjectStatusEnum(String statusId, String status) {
-    this.statusId = statusId;
-    this.status = status;
+  private ProjectHighlightsType(String id, String description) {
+    this.description = description;
+    this.id = id;
   }
 
-
-  public String getStatus() {
-    return status;
+  public String getDescription() {
+    return description;
   }
 
-
-  public String getStatusId() {
-    return statusId;
-  }
-
-
-  public void setStatusId(String statusId) {
-    this.statusId = statusId;
+  public String getId() {
+    return id;
   }
 
 
