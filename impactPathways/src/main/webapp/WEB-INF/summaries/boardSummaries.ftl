@@ -28,17 +28,17 @@
       <form action="">
       <h6>[@s.text name="summaries.board.projectResearchCycle" /]</h6>
       <div class="summariesOption">
-        <input type="radio" name="phase" id="planning" value="planning" checked="checked"/>
+        <input type="radio" name="cycle" id="planning" value="planning" checked="checked"/>
         <label for="planning">[@s.text name="summaries.board.projectResearchCycle.planning" /]</label>
       </div>
       <div class="summariesOption">
-        <input type="radio" name="phase" id="reporting" value="reporting" disabled="disabled"/>
+        <input type="radio" name="cycle" id="reporting" value="reporting" disabled="disabled"/>
         <label for="reporting">[@s.text name="summaries.board.projectResearchCycle.reporting" /]</label>
       </div>
       
       <h6>[@s.text name="summaries.board.selectReportType" /]</h6>
       <div class="summariesOptions">
-        [#-- Projects reports --]
+        [#-- -- -- Projects reports -- -- --]
         <div id="projects-contentOptions">
           [#-- Full Project Report (PDF) --]
           <div class="summariesOption">
@@ -55,19 +55,37 @@
             <label for="leadProjectPartnersSummary">[@s.text name="summaries.board.report.projectPartnersSummary" /]  <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.projectPartnersSummary.description" /]</p>
           </div>
+          [#-- List of all Submmited Projects --] 
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="submmitedProjects" value="submmitedProjects"/>
+            <label for="submmitedProjects">[@s.text name="summaries.board.report.submmitedProjects" /]  <span>XLSx</span></label>
+            <p class="description">[@s.text name="summaries.board.report.submmitedProjects.description" /]</p>
+            <div class="extraOptions" style="display:none"> 
+              <input type="hidden" name="year" value="${currentPlanningYear}" />
+            </div>
+          </div>
           [#-- Gender Contribution Project Level Summary --]
           <div class="summariesOption">
-            <input type="radio" name="formOptions" id="genderContributionSummary" value="genderContributionSummary"/>
-            <label for="genderContributionSummary">[@s.text name="summaries.board.report.genderContributionSummary" /] <span>XLSx</span></label>
+            <input type="radio" name="formOptions" id="searchTermsSummary" value="searchTermsSummary"/>
+            <label for="searchTermsSummary">[@s.text name="summaries.board.report.genderContributionSummary" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.genderContributionSummary.description" /] </p>
             [#--<div class="extraOptions" style="display:none"> 
-              [@customForm.input name="genderKeywords" className="" i18nkey="summaries.board.report.genderContributionSummary.keywords" /]
+              [@customForm.input name="q" className="" i18nkey="summaries.board.report.genderContributionSummary.keywords" /]
+            </div> --]
+          </div>
+          
+          [#-- Impact Pathways Contributions --] 
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="impactPathwayContributionsSummary" value="impactPathwayContributionsSummary"/>
+            <label for="impactPathwayContributionsSummary">[@s.text name="summaries.board.report.impactPathwayContributionsSummary" /] <span>XLSx</span></label>
+            <p class="description">[@s.text name="summaries.board.report.impactPathwayContributionsSummary.description" /] </p>
+            <div class="extraOptions" style="display:none"> 
+              <input type="hidden" name="year" value="${currentPlanningYear}" />
             </div>
-            --]
           </div>
           
         </div>
-        [#-- Partners reports --]
+        [#-- -- -- Partners reports -- -- --]
         <div id="partners-contentOptions" style="display:none">
           [#-- Partners and lead projects --]
           <div class="summariesOption">
@@ -91,19 +109,25 @@
             <p class="description">[@s.text name="summaries.board.report.expectedDeliverables.description" /] </p>
           </div>
         </div>
-        [#-- Budget reports --]
+        [#-- -- -- Budget reports -- -- --]
         <div id="budget-contentOptions" style="display:none">
           [#-- Budget Summary per Partners --]
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="budgetPerPartnersSummary" value="budgetPerPartnersSummary"/>
             <label for="budgetPerPartnersSummary">[@s.text name="summaries.board.report.powb" /] <span>XLSx</span></label>
             <p class="description"> [@s.text name="summaries.board.report.powb.description" /]</p>
+            <div class="extraOptions" style="display:none"> 
+              <input type="hidden" name="year" value="${currentPlanningYear}" />
+            </div>
           </div>
           [#-- Budget Summary by MOGs --]
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="budgetByMOGsSummary" value="budgetByMOGsSummary"/>
             <label for="budgetByMOGsSummary">[@s.text name="summaries.board.report.powbMOG" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.powbMOG.description" /] </p>
+            <div class="extraOptions" style="display:none"> 
+              <input type="hidden" name="year" value="${currentPlanningYear}" />
+            </div>
           </div>
         </div>
       </div>
