@@ -55,59 +55,71 @@
       
       [#-- Title --]
       <div class="fullBlock">
-        [@customForm.input name="highlight.title" type="text" i18nkey="reporting.projectHighlight.title" /]
+        [@customForm.input name="highlight.title" type="text" i18nkey="reporting.projectHighlight.title" editable=editable /]
       </div> 
       
       <div class="fullPartBlock">
         [#-- Author --]
         <div class="halfPartBlock" >
-          [@customForm.input name="highlight.author" type="text" i18nkey="reporting.projectHighlight.author" /]
+          [@customForm.input name="highlight.author" type="text" i18nkey="reporting.projectHighlight.author" editable=editable /]
         </div>
       
         [#-- Subject --]
         <div class="halfPartBlock" >
-          [@customForm.input name="highlight.subject"  type="text" i18nkey="reporting.projectHighlight.subject" help="reporting.projectHighlight.subject.help" /] 
+          [@customForm.input name="highlight.subject"  type="text" i18nkey="reporting.projectHighlight.subject" help="reporting.projectHighlight.subject.help" editable=editable /] 
         </div> 
       </div>
 
       <div class="fullPartBlock">
         [#-- Contributor --]
         <div class="halfPartBlock" > 
-          [@customForm.input name="highlight.contributor"  type="text" i18nkey="reporting.projectHighlight.contributor" help="reporting.projectHighlight.contributor.help" /] 
+          [@customForm.input name="highlight.contributor"  type="text" i18nkey="reporting.projectHighlight.contributor" help="reporting.projectHighlight.contributor.help" editable=editable /] 
         </div> 
       
         [#-- Publisher --]
         <div class="halfPartBlock" >
-          [@customForm.input name="highlight.publisher" type="text" i18nkey="reporting.projectHighlight.publisher" help="reporting.projectHighlight.publisher.help" /]   
+          [@customForm.input name="highlight.publisher" type="text" i18nkey="reporting.projectHighlight.publisher" help="reporting.projectHighlight.publisher.help" editable=editable /]   
         </div>
       </div>
       
       <div class="fullPartBlock">
         [#-- Relation --]
         <div class="halfPartBlock" >
-          [@customForm.input name="highlight.relation" type="text" i18nkey="reporting.projectHighlight.relation" help="reporting.projectHighlight.relation.help" /]
+          [@customForm.input name="highlight.relation" type="text" i18nkey="reporting.projectHighlight.relation" help="reporting.projectHighlight.relation.help" editable=editable /]
         </div>
       
         [#-- Coverage --]
         <div class="halfPartBlock" >
-          [@customForm.input name="highlight.coverage" type="text" i18nkey="reporting.projectHighlight.coverage" help="reporting.projectHighlight.coverage.help" /]
+          [@customForm.input name="highlight.coverage" type="text" i18nkey="reporting.projectHighlight.coverage" help="reporting.projectHighlight.coverage.help" editable=editable /]
         </div>
       </div>
 
       [#-- Rights --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.rights" i18nkey="reporting.projectHighlight.rights" help="reporting.projectHighlight.rights.help" /]
+        [@customForm.textArea name="highlight.rights" i18nkey="reporting.projectHighlight.rights" help="reporting.projectHighlight.rights.help" editable=editable/]
       </div>
       
       <div class="fullPartBlock">
         [#-- Start Date --]
         <div class="halfPartBlock">
-          [@customForm.input name="highlight.startDate" type="text" i18nkey="reporting.projectHighlight.startDate" /]
+          [@customForm.input name="highlight.startDate" type="text" i18nkey="reporting.projectHighlight.startDate" editable=editable/]
         </div>
   
         [#-- End Date --]
         <div class="halfPartBlock">
-          [@customForm.input name="highlight.endDate" type="text" i18nkey="reporting.projectHighlight.endDate" /]
+          [@customForm.input name="highlight.endDate" type="text" i18nkey="reporting.projectHighlight.endDate" editable=editable/]
+        </div>
+      </div>
+      
+      <div class="fullPartBlock">
+        [#-- Year --]
+        <div class="halfPartBlock">
+          [@customForm.input name="highlight.year" type="text" i18nkey="reporting.projectHighlight.year" editable=editable/]
+        </div>
+  
+        [#-- Status --]
+        <div class="halfPartBlock">
+          [@customForm.select name="highlight.status" value="highlight.status" i18nkey="reporting.projectHighlight.status" listName="highlightStatuses" editable=editable stringKey=true /]
         </div>
       </div>
       
@@ -122,64 +134,53 @@
         </div>
       </div>
       
-      [#-- image --]
+      [#-- Image --]
       <div class="fullBlock imageBlock">
-        [#if (highlight.imageFileName??)!false]
-          <div class="halfPartBlock browseInput">
-            [@customForm.input name="highlight.image" type="file" i18nkey="reporting.projectHighlight.image" /]
-          </div>                            
-          <div id="highlight.image" class="halfPartBlock image">
-            <img src="${(highlightsImagesUrl)!}/${(highlight.imageFileName)!'highlightTemplate.png'}" width="100%">
-          </div>
-        [#else]
-          <div class="halfPartBlock browseInput">
-            [@customForm.input name="highlight.image" type="file" i18nkey="reporting.projectHighlight.image" /]
-          </div>
-          <div id="highlight.image" class="halfPartBlock image"></div>
-        [/#if]
-        <div class="clear"> </div>
+        <div class="halfPartBlock browseInput">
+          [@customForm.input name="highlight.image" type="file" i18nkey="reporting.projectHighlight.image" editable=editable/]
+        </div>                            
+        <div id="highlight.image" class="halfPartBlock image">
+          <img src="${(highlightsImagesUrl)!baseUrl}/${(highlight.imageFileName)!'images/global/defaultImage.png'}" width="100%">
+        </div>
+        <div class="clear"></div>
       </div>
 
       [#-- Is global --]
-      <div class="halfPartBlock">
-        [@customForm.checkbox  name="highlight.global" i18nkey="reporting.projectHighlight.isGlobal" checked=(highlight.global)!false value="true" /]
-      </div>
-
-      [#-- Countries --]
-      <div class="fullBlock countriesBlock chosen">
-        [@customForm.select name="highlight.countries" label="" i18nkey="reporting.projectHighlight.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="highlight.countriesIds" multiple=true disabled="${(highlight.global?string('1', '0'))!0}"/]              
+      <div class="fullBlock">
+        <div class="halfPartBlock">
+          [@customForm.checkbox  name="highlight.global" i18nkey="reporting.projectHighlight.isGlobal" checked=(highlight.global)!false value="true" editable=editable/]
+        </div>
       </div>
 
       [#-- Keywords --]
       <div class="fullBlock">
-        [@customForm.input name="highlight.keywords" type="text" i18nkey="reporting.projectHighlight.keywords" /]
+        [@customForm.input name="highlight.keywords" type="text" i18nkey="reporting.projectHighlight.keywords" editable=editable/]
       </div>
 
       [#-- Description --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.description" i18nkey="reporting.projectHighlight.descripition" /]
+        [@customForm.textArea name="highlight.description" i18nkey="reporting.projectHighlight.descripition" editable=editable/]
       </div>
 
       [#-- Objectives --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.objectives" i18nkey="reporting.projectHighlight.objectives" /]
+        [@customForm.textArea name="highlight.objectives" i18nkey="reporting.projectHighlight.objectives" editable=editable/]
       </div>
 
       [#-- Result --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.results" i18nkey="reporting.projectHighlight.results" /]
+        [@customForm.textArea name="highlight.results" i18nkey="reporting.projectHighlight.results" editable=editable/]
       </div>
 
       [#-- Partners --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.partners" i18nkey="reporting.projectHighlight.partners" /]
+        [@customForm.textArea name="highlight.partners" i18nkey="reporting.projectHighlight.partners" editable=editable/]
       </div>
 
       [#-- Links / resources --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.links" i18nkey="reporting.projectHighlight.links" /]
+        [@customForm.textArea name="highlight.links" i18nkey="reporting.projectHighlight.links" editable=editable/]
       </div>
-      
     </div>
     
     [#if editable] 

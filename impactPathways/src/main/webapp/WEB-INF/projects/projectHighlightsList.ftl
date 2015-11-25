@@ -2,7 +2,7 @@
 [#assign title = "Project Highlights List" /]
 [#assign globalLibs = ["jquery", "noty", "dataTable", "autoSave", "chosen"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectHighlights.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectHighlightsList.js"] /]
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outputs" /]
@@ -36,7 +36,6 @@
       [#if allYears?has_content]
         [#-- Project Highlights --]
         <div class="fullBlock clearfix">
-          <h3 class="projectSubTitle">[@s.text name="reporting.projectHighlights.highlights" /]</h3>
           [#if project.deliverables?has_content]
             [@highlightTemplate.highlightsList highlights=project.deliverables canEdit=canEdit /]
           [#else]
