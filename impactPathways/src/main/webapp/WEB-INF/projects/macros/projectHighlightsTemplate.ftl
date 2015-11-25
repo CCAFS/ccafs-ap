@@ -6,7 +6,7 @@
       <thead>
         <tr>
           <th class="id" >ID</th> 
-          <th class="name">Highlight Name</th>
+          <th class="name">Project highlight Name</th>
           <th class="type">Type</th>  
           <th class="removeHighlight">Remove</th> 
         </tr>

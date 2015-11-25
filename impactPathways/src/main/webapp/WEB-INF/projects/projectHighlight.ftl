@@ -11,8 +11,7 @@
   {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
   {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"},
   {"label":"projectOutputs", "nameSpace":"${currentSection}/projects", "action":"outputs", "param":"projectID=${project.id}"},
-  {"label":"projectHighlights", "nameSpace":"${currentSection}/projects", "action":"highlights", "param":"projectID=${project.id}"},
-  {"label":"projectHighlight", "nameSpace":"${currentSection}/projects", "action":"highlight", "param":"highlightID={highlight.id}"}
+  {"label":"projectHighlights", "nameSpace":"${currentSection}/projects", "action":"highlights", "param":"projectID=${project.id}"}
 ]/]
 
 
@@ -115,11 +114,7 @@
       [#-- Types --]
       <div class="fullBlock">
         <h6>
-          <label for="highlight.types">
-            [@s.text name="reporting.projectHighlight.types" /]
-            <span class="red">*</span>
-          </label>
-          <img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="reporting.caseStudies.types.help"/]" />
+          <label for="highlight.types">[@s.text name="reporting.projectHighlight.types" /]<span class="red">*</span></label>
         </h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="highlight.types"/]
