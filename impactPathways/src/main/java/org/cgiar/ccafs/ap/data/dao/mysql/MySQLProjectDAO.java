@@ -1718,7 +1718,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     query.append("SELECT distinct p.id                                                                  AS");
     query.append("       'project_id',");
-    query.append("       p.title                                                               AS");
+    query.append("       p.title                                                               AS  'project_title', ");
     query.append(
       "      case p.type  when 'BILATERAL' then case (select COUNT('x') from project_cofinancing_linkages pcp  where pcp.bilateral_project_id=p.id)when 0 then 'Bilateral Standalone' else 'BILATERAL Co-financing'END else p.type end AS project_type,  ");
     query.append("       ipr.acronym                                                           AS");
