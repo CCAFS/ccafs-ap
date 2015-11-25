@@ -46,10 +46,7 @@ function generateReport(e) {
     var notyOptions = jQuery.extend({}, notyDefaultOptions);
     notyOptions.text = 'You must to select a report option';
     noty(notyOptions);
-  }else{
-
-
-
+  } else {
     if($formOptions[0].value == "project") {
       var projectId = $('#projectID').val();
       if(projectId == -1) {
@@ -57,10 +54,9 @@ function generateReport(e) {
         var notyOptions = jQuery.extend({}, notyDefaultOptions);
         notyOptions.text = 'You must to select a project';
         noty(notyOptions);
+      }
     }
   }
-  }
-
 
 }
 
@@ -68,7 +64,7 @@ function updateUrl() {
   var generateUrl = "";
   var $formOptions = $('input[name=formOptions]:checked');
   var formOption = $formOptions.val() || 0;
-  var extraOptions = $('form [name!="formOptions"][name!="phase"]').serialize() || 0;
+  var extraOptions = $('form [name!="formOptions"]').serialize() || 0;
   if(formOption != 0) {
     generateUrl = baseURL + "/summaries/" + formOption + ".do";
     if(extraOptions != 0) {
@@ -88,7 +84,7 @@ function setUrl(url) {
   }
 }
 
-// Activate the chosen plugin.
+// Activate the select plugin.
 function addSelect2() {
   $("form select#projectID").select2({
     search_contains: true
