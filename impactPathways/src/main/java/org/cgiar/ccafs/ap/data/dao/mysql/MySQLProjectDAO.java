@@ -1775,14 +1775,15 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("IFNULL(((SELECT SUM(pmb.total_contribution)");
     query.append("                                FROM   project_mog_budgets pmb");
     query.append("                                WHERE  pmb.project_id = p.id");
-    query.append("                                       AND pmb.year= ipco.year");
+    query.append("                                       AND pmb.year= " + year + "");
     query.append("                                       AND pmb.budget_type = 1");
     query.append("                                       AND pmb.is_active = 1");
     query.append("                                       and  pmb.mog_id=ipe.id");
     query.append("                                )*0.01 *(");
     query.append("                              select sum(pb.amount)");
     query.append("                              from project_budgets pb");
-    query.append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type = 1 AND pb.year= ipco.year");
+    query
+      .append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type = 1 AND pb.year= " + year + "");
     query.append("                                )),0)");
     query.append("                               AS");
     query.append("       'budget_W1_W2'");
@@ -1790,14 +1791,15 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("IFNULL(((SELECT SUM(pmb.gender_contribution)");
     query.append("                                FROM   project_mog_budgets pmb");
     query.append("                                WHERE  pmb.project_id = p.id");
-    query.append("                                       AND pmb.year= ipco.year");
+    query.append("                                       AND pmb.year= " + year + "");
     query.append("                                       AND pmb.budget_type = 1");
     query.append("                                       AND pmb.is_active = 1");
     query.append("                                       and  pmb.mog_id=ipe.id");
     query.append("                                )*0.01 *(");
     query.append("                              select sum(pb.amount*(pb.gender_percentage*0.01) )");
     query.append("                              from project_budgets pb");
-    query.append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type = 1 AND pb.year= ipco.year");
+    query
+      .append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type = 1 AND pb.year= " + year + "");
     query.append("                                )),0)");
     query.append("                               AS");
     query.append("       'gender_W1_W2'");
@@ -1805,14 +1807,15 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("ifnull(((SELECT SUM(pmb.total_contribution)");
     query.append("                                FROM   project_mog_budgets pmb");
     query.append("                                WHERE  pmb.project_id = p.id");
-    query.append("                                       AND pmb.year= ipco.year");
+    query.append("                                       AND pmb.year= " + year + "");
     query.append("                                       AND pmb.budget_type = 2");
     query.append("                                       AND pmb.is_active = 1");
     query.append("                                       and  pmb.mog_id=ipe.id");
     query.append("                                )*0.01 *(");
     query.append("                              select sum(pb.amount)");
     query.append("                              from project_budgets pb");
-    query.append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type = 2 AND pb.year= ipco.year");
+    query
+      .append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type = 2 AND pb.year= " + year + "");
     query.append("                                )),0)");
     query.append("                               AS");
     query.append("       'budget_W3_Bilateral'");
@@ -1820,7 +1823,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("IFNULL((SELECT SUM(pmb.gender_contribution)");
     query.append("                                FROM   project_mog_budgets pmb");
     query.append("                                WHERE  pmb.project_id = p.id");
-    query.append("                                       AND pmb.year= ipco.year");
+    query.append("                                       AND pmb.year= " + year + "");
     query.append("                                       AND pmb.budget_type = 2");
     query.append("                                       AND pmb.is_active = 1");
     query.append("                                       and  pmb.mog_id=ipe.id");
@@ -1831,17 +1834,18 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("            FROM   project_budgets b2");
     query.append("            WHERE  b2.project_id = b.cofinance_project_id");
     query.append("                   AND b2.budget_type = 2");
-    query.append("                   AND b2.year = ipco.year");
+    query.append("                   AND b2.year = " + year + "");
     query.append("                   AND b2.is_active = true) * amount * 0.01) AS total");
     query.append(" FROM   project_budgets b");
     query.append(" WHERE  b.project_id = p.id");
     query.append("       AND b.budget_type = 2");
-    query.append("       AND b.year = ipco.year");
+    query.append("       AND b.year = " + year + "");
     query.append("       AND b.is_active = true");
     query.append(")");
     query.append("else (select sum(pb.amount*(pb.gender_percentage*0.01) )");
     query.append("                              from project_budgets pb");
-    query.append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type =2 AND pb.year= ipco.year");
+    query
+      .append("  WHERE  pb.project_id = p.id and   pb.is_active = 1 and pb.budget_type =2 AND pb.year= " + year + "");
     query.append("                                )");
     query.append("                        END");
     query.append("");
