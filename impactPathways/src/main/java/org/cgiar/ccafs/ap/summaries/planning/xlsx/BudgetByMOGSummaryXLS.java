@@ -113,6 +113,7 @@ public class BudgetByMOGSummaryXLS {
 
         // gender_W3_Bilateral
         xls.writeBudget(sheet, (double) mapObject.get("gender_W3_Bilateral"));
+
         xls.nextRow();
 
       }
@@ -132,6 +133,10 @@ public class BudgetByMOGSummaryXLS {
 
         // Title
         xls.writeString(sheet, (String) mapObject.get("project_title"));
+        xls.nextColumn();
+
+        // project Type
+        xls.writeString(sheet, ((String) mapObject.get("project_type")).replace("_", " "));
         xls.nextColumn();
 
         // MOG description
@@ -196,12 +201,12 @@ public class BudgetByMOGSummaryXLS {
       // Writting headers
       String[] headersPOWB =
         new String[] {"Outcome 2019", "MOG", "Total Budget W1/W2 (USD)", "Gender W1/W2 (USD)",
-        "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
+          "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
 
       // defining header types.
       int[] headerTypesPOWB =
         new int[] {BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+          BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
 
       // creating sheet
       Sheet[] sheets = new Sheet[2];
@@ -230,15 +235,16 @@ public class BudgetByMOGSummaryXLS {
       // Writting headers
 
       String[] headersPOWBDetail =
-        new String[] {"Project Id", "Project title", "MOG", "Expected annual contribution",
-        "Expected plan of the gender and social inclusion", "Total Budget W1/W2 (USD)", " Gender W1/W2 (USD)",
-          "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
+        new String[] {"Project Id", "Project title", "Project type", "MOG", "Expected annual contribution",
+          "Expected plan of the gender and social inclusion", "Total Budget W1/W2 (USD)", " Gender W1/W2 (USD)",
+        "Total Budget W3/Bilateral (USD)", "Gender W3/Bilateral (USD)"};
 
       // defining header types.
       int[] headerTypesPOWBDetail =
-        new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_BUDGET,
-        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET};
+        new int[] {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+        BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET, BaseXLS.COLUMN_TYPE_BUDGET,
+        BaseXLS.COLUMN_TYPE_BUDGET};
 
 
       workbook.setSheetName(1, "Level - 2");
