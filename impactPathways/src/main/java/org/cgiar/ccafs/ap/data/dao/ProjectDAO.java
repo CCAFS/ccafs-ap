@@ -27,6 +27,7 @@ import com.google.inject.ImplementedBy;
  * @author Héctor Fabio Tobón R.
  * @author Hernán David Carvajal.
  * @author Jorge Leonardo Solis B.
+ * @author Carlos Alberto Martínez M.
  */
 @ImplementedBy(MySQLProjectDAO.class)
 public interface ProjectDAO {
@@ -299,6 +300,14 @@ public interface ProjectDAO {
   public int saveProjectOutput(Map<String, String> outputData);
 
   /**
+   * This method returns the information of all the active projects to be used in the XML report
+   * 
+   * @return a list of Map with the information requested, or an empty List if nothing found. Or null if some error
+   *         occurs.
+   */
+  public List<Map<String, Object>> summaryGetActiveProjects();
+
+  /**
    * This method returns the information of all the activities by project and their gender contribution to be used in
    * the summary report of the same name
    * 
@@ -370,6 +379,7 @@ public interface ProjectDAO {
    */
   public List<Map<String, Object>> summaryGetInformationDetailPOWB(int year);
 
+
   /**
    * This method returns the information of all project MOG with your budget by Year and their information to be used in
    * the summary report of POWBMOGs summary.
@@ -379,7 +389,6 @@ public interface ProjectDAO {
    *         occurs.
    */
   public List<Map<String, Object>> summaryGetInformationPOWB(int year);
-
 
   /**
    * This method returns the information of all project with your budget by partner of the currentPlanningYear their
