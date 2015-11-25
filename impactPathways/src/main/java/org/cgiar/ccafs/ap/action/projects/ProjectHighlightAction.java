@@ -88,12 +88,12 @@ public class ProjectHighlightAction extends BaseAction {
     return allYears;
   }
 
-  public Deliverable getDeliverable() {
+  public Deliverable getHighlight() {
     return highlight;
   }
 
 
-  public List<DeliverableType> getDeliverableTypes() {
+  public List<DeliverableType> getHighlightTypes() {
     return highlightTypes;
   }
 
