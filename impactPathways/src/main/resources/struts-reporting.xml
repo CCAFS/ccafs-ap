@@ -218,7 +218,7 @@
       <result name="input">/WEB-INF/projects/projectHighlightsList.ftl</result>
     </action>
     
-    <action name="highlight" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverableAction">
+    <action name="highlight" class="org.cgiar.ccafs.ap.action.projects.ProjectHighlightAction">
       <interceptor-ref name="planningStackDeliverables" />
       <result name="input">/WEB-INF/projects/projectHighlight.ftl</result>
       <result name="success" type="redirectAction">

@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Highlight" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "select2"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectHighlight.js"] /]
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "projects" /]
@@ -45,10 +45,10 @@
     [#--  Highlight Information --] 
     <div id="highlight-information" class="borderBox clearfix"> 
       [#if !editable && canEdit]
-        <div class="editButton"><a href="[@s.url][@s.param name ="HighlightID"]{highlight.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        <div class="editButton"><a href="[@s.url][@s.param name ="HighlightID"]${highlight.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
         [#if canEdit && !newProject]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="HighlightID"]{highlight.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+          <div class="viewButton"><a href="[@s.url][@s.param name ="HighlightID"]${highlight.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
       <h1 class="contentTitle">[@s.text name="reporting.projectHighlight.information" /] </h1>  
@@ -114,7 +114,7 @@
       <div class="fullPartBlock">
         [#-- Year --]
         <div class="halfPartBlock">
-          [@customForm.input name="highlight.year" type="text" i18nkey="reporting.projectHighlight.year" editable=editable/]
+          [@customForm.select name="highlight.year" value="highlight.year" i18nkey="reporting.projectHighlight.year" listName="allYears" editable=editable stringKey=true /]
         </div>
   
         [#-- Status --]
@@ -130,7 +130,7 @@
         </h6>
         <div class="checkboxGroup">
           [@s.fielderror cssClass="fieldError" fieldName="highlight.types"/]
-          [@s.checkboxlist name="highlight.types" list="caseStudyTypeList" listKey="id" listValue="name" value="highlight.typesIds" cssClass="checkbox" help="reporting.caseStudies.types.help" /]
+          [@s.checkboxlist name="highlight.types" list="highlightTypes" listKey="id" listValue="name" value="highlight.typesIds" cssClass="checkbox" /]
         </div>
       </div>
       
@@ -150,6 +150,11 @@
         <div class="halfPartBlock">
           [@customForm.checkbox  name="highlight.global" i18nkey="reporting.projectHighlight.isGlobal" checked=(highlight.global)!false value="true" editable=editable/]
         </div>
+      </div>
+      
+      [#-- Countries --]
+      <div class="fullBlock countriesBlock chosen">
+        [@customForm.select name="highlight.countries" label="" i18nkey="reporting.projectHighlight.countries" listName="countryList" keyFieldName="id"  displayFieldName="name" value="highlight.countriesIds" multiple=true disabled="${(highlight.global?string(1, 0))!0}"/]              
       </div>
 
       [#-- Keywords --]
