@@ -1719,7 +1719,8 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("SELECT distinct p.id                                                                  AS");
     query.append("       'project_id',");
     query.append("       p.title                                                               AS");
-    query.append("       'project_title',");
+    query.append(
+      "      case p.type  when 'BILATERAL' then case (select COUNT('x') from project_cofinancing_linkages pcp  where pcp.bilateral_project_id=p.id)when 0 then 'Bilateral Standalone' else 'BILATERAL Co-financing'END else p.type end AS project_type,  ");
     query.append("       ipr.acronym                                                           AS");
     query.append("       'flagship',");
     query.append("       ipe.description                                                       AS");
@@ -1833,6 +1834,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         Map<String, Object> csvData = new HashMap<>();
         csvData.put("project_id", rs.getInt("project_id"));
         csvData.put("project_title", rs.getString("project_title"));
+        csvData.put("project_type", rs.getString("project_type"));
         csvData.put("flagship", rs.getString("flagship"));
         csvData.put("mog_description", rs.getString("mog_description"));
         csvData.put("anual_contribution", rs.getString("anual_contribution"));
