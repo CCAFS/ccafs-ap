@@ -1154,10 +1154,9 @@ a#userLogOut {
 }
 
 #mainLogo p#infoMessage {
-  color: #989898;
-  font-weight: 200;
+  color: #EF8080;
+  font-weight: bold;
   font-size: 0.7em;
-  font-style: italic;
 }
 
 #mainLogo img {
