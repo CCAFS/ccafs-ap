@@ -1969,7 +1969,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("INNER JOIN institutions i ON ");
     query.append(" IF(p.type = 'BILATERAL', (pp.institution_id = i.id AND ppp.contact_type = 'PL'), ");
     query.append("(pp.institution_id = i.id AND i.is_ppa = 1))   ");
-    query.append("GROUP BY p.id, i.id ");
+    query.append("where p.is_active=1 GROUP BY p.id, i.id ");
     query.append("ORDER BY p.id ");
 
 
