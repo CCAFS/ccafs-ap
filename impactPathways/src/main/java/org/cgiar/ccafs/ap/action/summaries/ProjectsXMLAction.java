@@ -1,11 +1,7 @@
 package org.cgiar.ccafs.ap.action.summaries;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
-import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -37,15 +33,10 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
   private static final Logger LOG = LoggerFactory.getLogger(ProjectsXMLAction.class);
 
   // Managers
-  private ProjectPartnerManager partnerManager;
-  private IPProgramManager programManager;
   private ProjectManager projectManager;
 
   // Models
   private List<Map<String, Object>> projectsData;
-  private Map<String, IPProgram> ipPrograms;
-  private Map<String, Project> projects;
-
 
   // Model for the front-end
   private byte[] bytesXML;
@@ -53,11 +44,8 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
 
 
   @Inject
-  public ProjectsXMLAction(APConfig config, IPProgramManager programManager, ProjectPartnerManager partnerManager,
-    ProjectManager projectManager) {
+  public ProjectsXMLAction(APConfig config, ProjectManager projectManager) {
     super(config);
-    this.partnerManager = partnerManager;
-    this.programManager = programManager;
     this.projectManager = projectManager;
   }
 
@@ -71,10 +59,8 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
     // root element
     Element project, location, contactPerson, institutions, partner, contribution, flagshipsLabel, regionsLabel, flagship, region, contributionsLabel, partnersLabel, outcomesLabel, locationsLabel, contactPersonsLabel, institutionsLabel;
     Element rootElement = doc.createElement("projects");
-    IPProgram ipProgram;
     doc.appendChild(rootElement);
-    // Project project;
-    String[] ipProgramIds, projectIds;
+    String[] partners, singlePartner, flagships, singleFlagship, regions, singleRegion, locations, singleLocation, contributions, singleContribution;
     for (Map<String, Object> projectData : projectsData) {
       project = doc.createElement("project");
       // id
@@ -82,9 +68,11 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       // type
       project.appendChild(this.buildElement(doc, "type", this.convertToString(projectData.get("project_type"))));
       // title
-      project.appendChild(this.buildElement(doc, "title", this.convertToString(projectData.get("project_title"))));
+      project.appendChild(this.buildElement(doc, "title",
+        String.valueOf(doc.createCDATASection(this.convertToString(projectData.get("project_title"))))));
       // summary
-      project.appendChild(this.buildElement(doc, "summary", this.convertToString(projectData.get("project_summary"))));
+      project.appendChild(this.buildElement(doc, "summary",
+        String.valueOf(doc.createCDATASection(this.convertToString(projectData.get("project_summary"))))));
       // start date
       project.appendChild(this.buildElement(doc, "startDate", this.convertToString(projectData.get("start_date"))));
       // end date
@@ -102,67 +90,120 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       contactPersonsLabel = doc.createElement("contactPersons");
       contactPerson = doc.createElement("contactPerson");
       // name
-      contactPerson
-      .appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("contact_persons"))));
+      contactPerson.appendChild(this.buildElement(doc, "name",
+        this.convertToString(projectData.get("contact_person_name"))));
       // email
       contactPerson.appendChild(this.buildElement(doc, "email",
-        this.convertToString(projectData.get("contact_persons"))));
+        this.convertToString(projectData.get("contact_person_email"))));
       contactPersonsLabel.appendChild(contactPerson);
       institutions.appendChild(contactPersonsLabel);
       institutionsLabel.appendChild(institutions);
       project.appendChild(institutionsLabel);
       // partners
       partnersLabel = doc.createElement("partners");
-      partner = doc.createElement("partner");
-      // acronym
-      partner.appendChild(this.buildElement(doc, "acronym", this.convertToString(projectData.get("partners"))));
-      // name
-      partner.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("partners"))));
-      partnersLabel.appendChild(partner);
+      partners = this.convertToString(projectData.get("partners")).split(";");
+      for (String eachPartner : partners) {
+        partner = doc.createElement("partner");
+        singlePartner = eachPartner.split("@");
+        // acronym
+        partner.appendChild(this.buildElement(doc, "acronym", singlePartner[0]));
+        if (singlePartner.length > 1) {
+          // name
+          partner.appendChild(this.buildElement(doc, "name", singlePartner[1]));
+        }
+        partnersLabel.appendChild(partner);
+      }
       project.appendChild(partnersLabel);
       // flagships
       flagshipsLabel = doc.createElement("flagships");
-      flagship = doc.createElement("flagship");
-      flagship.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("flagships"))));
-      flagshipsLabel.appendChild(flagship);
+      flagships = this.convertToString(projectData.get("flagships")).split(";");
+      for (String eachFlagship : flagships) {
+        flagship = doc.createElement("flagship");
+        singleFlagship = eachFlagship.split("@");
+        // acronym
+        flagship.appendChild(this.buildElement(doc, "acronym", singleFlagship[0]));
+        if (singleFlagship.length > 1) {
+          // name
+          flagship.appendChild(this.buildElement(doc, "name", singleFlagship[1]));
+        }
+        flagshipsLabel.appendChild(flagship);
+      }
       project.appendChild(flagshipsLabel);
       // regions
       regionsLabel = doc.createElement("regions");
-      region = doc.createElement("region");
-      region.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("regions"))));
-      regionsLabel.appendChild(region);
+      regions = this.convertToString(projectData.get("regions")).split(";");
+      for (String eachRegion : regions) {
+        region = doc.createElement("region");
+        singleRegion = eachRegion.split("@");
+        // acronym
+        region.appendChild(this.buildElement(doc, "acronym", singleRegion[0]));
+        if (singleRegion.length > 1) {
+          // name
+          region.appendChild(this.buildElement(doc, "name", singleRegion[1]));
+        }
+        regionsLabel.appendChild(region);
+      }
       project.appendChild(regionsLabel);
-      // location
+      // locations
       locationsLabel = doc.createElement("locations");
-      location = doc.createElement("location");
-      // location type
-      location.appendChild(this.buildElement(doc, "level", this.convertToString(projectData.get("locations"))));
-      // location name
-      location.appendChild(this.buildElement(doc, "name", this.convertToString(projectData.get("locations"))));
-      // location latitude
-      location.appendChild(this.buildElement(doc, "latitude", this.convertToString(projectData.get("locations"))));
-      // location longitude
-      location.appendChild(this.buildElement(doc, "longitude", this.convertToString(projectData.get("locations"))));
-      locationsLabel.appendChild(location);
+      locations = this.convertToString(projectData.get("locations")).split(";");
+      for (String eachLocation : locations) {
+        location = doc.createElement("location");
+        singleLocation = eachLocation.split("@@");
+        // location type
+        location.appendChild(this.buildElement(doc, "level", singleLocation[0]));
+        if (singleLocation.length > 1) {
+          // name
+          location.appendChild(this.buildElement(doc, "name", singleLocation[1]));
+        }
+        if (singleLocation.length > 2) {
+          // latitude
+          location.appendChild(this.buildElement(doc, "latitude", singleLocation[2]));
+        }
+        if (singleLocation.length > 3) {
+          // longitude
+          location.appendChild(this.buildElement(doc, "longitude", singleLocation[3]));
+        }
+        locationsLabel.appendChild(location);
+      }
       project.appendChild(locationsLabel);
       // contributions
-      contributionsLabel = doc.createElement("contribution");
-      contribution = doc.createElement("project");
+      contributionsLabel = doc.createElement("contributions");
+      // cofunded projects
       if (this.convertToString(projectData.get("project_type")).equals("CCAFS_COFUNDED")) {
-        contribution.appendChild(this.buildElement(doc, "title",
-          this.convertToString(projectData.get("cofunded_contributions"))));
-      } else if (this.convertToString(projectData.get("project_type")).equals("BILATERAL")) {
-        contribution.appendChild(this.buildElement(doc, "title",
-          this.convertToString(projectData.get("bilateral_contributions"))));
-      } else {
-        contribution.appendChild(this.buildElement(doc, "title", ""));
+        contributions = this.convertToString(projectData.get("cofunded_contributions")).split(";");
+        for (String eachContribution : contributions) {
+          contribution = doc.createElement("bilateralProject");
+          singleContribution = eachContribution.split("@@");
+          contribution.appendChild(this.buildElement(doc, "id", singleContribution[0]));
+          if (singleContribution.length > 1) {
+            // title
+            contribution.appendChild(this.buildElement(doc, "title",
+              String.valueOf(doc.createCDATASection(singleContribution[1]))));
+          }
+          contributionsLabel.appendChild(contribution);
+        }
+      }// bilateral projects
+      else if (this.convertToString(projectData.get("project_type")).equals("BILATERAL")) {
+        contributions = this.convertToString(projectData.get("bilateral_contributions")).split(";");
+        for (String eachContribution : contributions) {
+          contribution = doc.createElement("cofundedProject");
+          singleContribution = eachContribution.split("@@");
+          // id
+          contribution.appendChild(this.buildElement(doc, "id", singleContribution[0]));
+          if (singleContribution.length > 1) {
+            // title
+            contribution.appendChild(this.buildElement(doc, "title",
+              String.valueOf(doc.createCDATASection(singleContribution[1]))));
+          }
+          contributionsLabel.appendChild(contribution);
+        }
       }
-      contributionsLabel.appendChild(contribution);
       project.appendChild(contributionsLabel);
       // outcomes
       outcomesLabel = doc.createElement("outcomes");
       outcomesLabel.appendChild(this.buildElement(doc, "statement",
-        this.convertToString(projectData.get("outcome_statement"))));
+        String.valueOf(doc.createCDATASection(this.convertToString(projectData.get("outcome_statement"))))));
       project.appendChild(outcomesLabel);
       rootElement.appendChild(project);
     }
