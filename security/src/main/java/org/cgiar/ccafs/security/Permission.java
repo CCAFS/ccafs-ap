@@ -193,6 +193,11 @@ public class Permission {
    */
   public static final String PLANNING_PROJECT_DELIVERABLE_UPDATE = "planning:projects:deliverable:update";
 
+  /**
+   * Can update the reporting project highlight section
+   */
+  public static final String REPORTING_PROJECT_HIGHLIGHT_UPDATE = "reporting:projects:highlight:update";
+
   // --------------------------- End of Project outputs ---------------------------------
 
   // --------------------------- Project activities list---------------------------------

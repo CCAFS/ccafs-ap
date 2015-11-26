@@ -314,6 +314,16 @@ public class SecurityContext extends BaseSecurityContext {
   }
 
   /**
+   * Verify if can update the project highlights section
+   * 
+   * @return
+   */
+  public boolean canUpdateProjectHighlights(int projectID) {
+    return this.hasPermission(Permission.REPORTING_PROJECT_HIGHLIGHT_UPDATE.replace("projects:", "projects:"
+      + projectID + ":"));
+  }
+
+  /**
    * Verify if can update the project locations section
    * 
    * @return

@@ -219,14 +219,10 @@
     </action>
     
     <action name="highlight" class="org.cgiar.ccafs.ap.action.projects.ProjectHighlightAction">
-      <interceptor-ref name="planningStackDeliverables" />
+      <interceptor-ref name="projectStackHighlights" />
       <result name="input">/WEB-INF/projects/projectHighlight.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">highlight</param>
-        <param name="highlightID">${highlight.id}</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">highlights</param>
         <param name="highlightID">${highlight.id}</param>
       </result>
       <result name="cancel" type="redirectAction">
