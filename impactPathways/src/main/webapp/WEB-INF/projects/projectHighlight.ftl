@@ -171,22 +171,22 @@
 
       [#-- Description --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.description" i18nkey="reporting.projectHighlight.descripition" editable=editable/]
+        [@customForm.textArea name="highlight.description" className="limitWords-300" i18nkey="reporting.projectHighlight.descripition" editable=editable/]
       </div>
 
       [#-- Objectives --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.objectives" i18nkey="reporting.projectHighlight.objectives" editable=editable/]
+        [@customForm.textArea name="highlight.objectives" className="limitWords-100" i18nkey="reporting.projectHighlight.objectives" editable=editable/]
       </div>
 
       [#-- Result --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.results" i18nkey="reporting.projectHighlight.results" editable=editable/]
+        [@customForm.textArea name="highlight.results" className="limitWords-300" i18nkey="reporting.projectHighlight.results" editable=editable/]
       </div>
 
       [#-- Partners --]
       <div class="fullBlock">
-        [@customForm.textArea name="highlight.partners" i18nkey="reporting.projectHighlight.partners" editable=editable/]
+        [@customForm.textArea name="highlight.partners" className="limitWords-300" i18nkey="reporting.projectHighlight.partners" editable=editable/]
       </div>
 
       [#-- Links / resources --]

@@ -220,9 +220,10 @@ function applyCharCounter($textArea,charCount) {
 
 /* Add a word counter to a specific text area */
 function applyWordCounter($textArea,wordCount) {
-  $textArea.parent().append(
-      "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>");
+  var message = "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>";
+  $textArea.parent().append(message);
   $textArea.parent().find(".charCount").find("span").text(wordCount - word_count($textArea));
+  console.log(word_count($textArea));
   $textArea.on("keyup", function(event) {
     var valueLength = $(event.target).val().length;
     var $charCount = $(event.target).parent().find(".charCount");
@@ -244,15 +245,12 @@ function applyWordCounter($textArea,wordCount) {
 
 function word_count(field) {
   var value = $.trim($(field).val());
-  if(typeof value === "undefined") {
+  if(typeof value === "undefined" || value.length == 0) {
     return 0;
   } else {
     var regex = /\s+/gi;
     return value.replace(regex, ' ').split(' ').length;
   }
-// var matches = value.match(/\b/g);
-// return number = (matches) ? matches.length / 2 : 0;
-// }
 }
 
 /**
