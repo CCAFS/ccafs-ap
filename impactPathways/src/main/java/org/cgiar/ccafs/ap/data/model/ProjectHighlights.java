@@ -51,6 +51,9 @@ public class ProjectHighlights
 
 
   private String subject;
+  private String year;
+
+  private String status;
 
   private String contributor;
   private String publisher;
@@ -67,13 +70,16 @@ public class ProjectHighlights
     return author;
   }
 
+
   public String getContributor() {
     return contributor;
   }
 
+
   public List<Country> getCountries() {
     return countries;
   }
+
 
   public List<String> getCountriesIds() {
     ArrayList<String> ids = new ArrayList<>();
@@ -83,6 +89,7 @@ public class ProjectHighlights
     return ids;
   }
 
+
   public String getCountry() {
     return country;
   }
@@ -91,11 +98,9 @@ public class ProjectHighlights
     return coverage;
   }
 
-
   public String getDescription() {
     return description;
   }
-
 
   public Date getEndDate() {
     return endDate;
@@ -108,6 +113,7 @@ public class ProjectHighlights
   public String getImage() {
     return image;
   }
+
 
   public String getImageContentType() {
     return imageContentType;
@@ -129,6 +135,7 @@ public class ProjectHighlights
   public String getLinks() {
     return links;
   }
+
 
   public String getObjectives() {
     return objectives;
@@ -162,6 +169,10 @@ public class ProjectHighlights
     return startDate;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
   public String getSubject() {
     return subject;
   }
@@ -174,11 +185,9 @@ public class ProjectHighlights
     return type;
   }
 
-
   public List<ProjectHighlightsType> getTypes() {
     return types;
   }
-
 
   public List<String> getTypesIds() {
     ArrayList<String> ids = new ArrayList<>();
@@ -188,9 +197,15 @@ public class ProjectHighlights
     return ids;
   }
 
+  public String getYear() {
+    return year;
+  }
+
+
   public boolean isGlobal() {
     return isGlobal;
   }
+
 
   public void setAuthor(String author) {
     this.author = author;
@@ -228,7 +243,6 @@ public class ProjectHighlights
     this.id = id;
   }
 
-
   public void setImage(String image) {
     this.image = image;
   }
@@ -236,6 +250,7 @@ public class ProjectHighlights
   public void setImageContentType(String imageContentType) {
     this.imageContentType = imageContentType;
   }
+
 
   public void setImageFileName(String imageFileName) {
     this.imageFileName = imageFileName;
@@ -285,14 +300,18 @@ public class ProjectHighlights
     this.startDate = startDate;
   }
 
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
   public void setSubject(String subject) {
     this.subject = subject;
   }
 
-
   public void setTitle(String title) {
     this.title = title;
   }
+
 
   public void setType(ProjectHighlightsType type) {
     this.type = type;
@@ -300,6 +319,10 @@ public class ProjectHighlights
 
   public void setTypes(List<ProjectHighlightsType> types) {
     this.types = types;
+  }
+
+  public void setYear(String year) {
+    this.year = year;
   }
 
   @Override

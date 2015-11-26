@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.interceptor;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 
 import java.util.Map;
 
@@ -39,10 +39,10 @@ public class ValidateHighlightParameterInterceptor extends AbstractInterceptor {
   private static final Logger LOG = LoggerFactory.getLogger(ValidateHighlightParameterInterceptor.class);
 
   // Managers
-  private DeliverableManager deliverableManager;
+  private HighLightManager deliverableManager;
 
   @Inject
-  public ValidateHighlightParameterInterceptor(DeliverableManager deliverableManager) {
+  public ValidateHighlightParameterInterceptor(HighLightManager deliverableManager) {
     this.deliverableManager = deliverableManager;
   }
 
@@ -59,7 +59,7 @@ public class ValidateHighlightParameterInterceptor extends AbstractInterceptor {
       if (StringUtils.isNumeric(deliverableParameter)) {
         int deliverableID = Integer.parseInt(deliverableParameter);
         // If the deliverable doesn't exist.
-        if (!deliverableManager.existDeliverable(deliverableID)) {
+        if (!deliverableManager.existHighLight(deliverableID)) {
           return BaseAction.NOT_FOUND;
         } else {
           // If deliverable exists, continue!

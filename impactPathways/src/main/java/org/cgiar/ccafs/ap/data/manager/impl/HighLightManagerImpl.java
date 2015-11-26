@@ -97,18 +97,18 @@ public class HighLightManagerImpl implements HighLightManager {
 
       if (highLightData.get("end_date") != null) {
         try {
-          Date endDate = dateformatter.parse(highLightData.get("end_date"));
+          Date endDate = (new Date(Long.parseLong(highLightData.get("end_date"))));
           highLight.setEndDate(endDate);
-        } catch (ParseException e) {
+        } catch (Exception e) {
           LOG.error("There was an error formatting the end date", e);
         }
       }
 
       if (highLightData.get("start_date") != null) {
         try {
-          Date endDate = dateformatter.parse(highLightData.get("start_date"));
-          highLight.setEndDate(endDate);
-        } catch (ParseException e) {
+          Date endDate = (new Date(Long.parseLong(highLightData.get("start_date"))));
+          highLight.setStartDate(endDate);
+        } catch (Exception e) {
           LOG.error("There was an error formatting the end date", e);
         }
       }
@@ -126,9 +126,10 @@ public class HighLightManagerImpl implements HighLightManager {
       highLight.setRelation(highLightData.get("relation"));
       highLight.setResults(highLightData.get("results"));
       highLight.setSubject(highLightData.get("subject"));
+      highLight.setYear(highLightData.get("year"));
+      highLight.setStatus(highLightData.get("status"));
 
-
-      highLight.setType(ProjectHighlightsType.valueOf((Integer.parseInt(highLightData.get("type_id"))) + ""));
+      highLight.setType(ProjectHighlightsType.getEnum((Integer.parseInt(highLightData.get("type"))) + ""));
 
       return highLight;
     }
@@ -185,9 +186,9 @@ public class HighLightManagerImpl implements HighLightManager {
       highLight.setRelation(highLightData.get("relation"));
       highLight.setResults(highLightData.get("results"));
       highLight.setSubject(highLightData.get("subject"));
-
-
-      highLight.setType(ProjectHighlightsType.valueOf((Integer.parseInt(highLightData.get("type_id"))) + ""));
+      highLight.setYear(highLightData.get("year"));
+      highLight.setStatus(highLightData.get("status"));
+      highLight.setType(ProjectHighlightsType.getEnum((Integer.parseInt(highLightData.get("type"))) + ""));
 
       highLightList.add(highLight);
     }
@@ -246,7 +247,8 @@ public class HighLightManagerImpl implements HighLightManager {
     highLightData.put("rights", highLight.getRights());
     highLightData.put("is_global", highLight.isGlobal());
     highLightData.put("leader", highLight.getLeader());
-
+    highLightData.put("year", highLight.getYear());
+    highLightData.put("status", highLight.getStatus());
 
     highLightData.put("modified_by", user.getId());
     highLightData.put("modification_justification", justification);

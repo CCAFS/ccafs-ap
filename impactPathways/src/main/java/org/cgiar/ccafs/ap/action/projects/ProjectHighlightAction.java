@@ -15,13 +15,13 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
+import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Country;
-import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlightsType;
 import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
@@ -51,14 +51,14 @@ public class ProjectHighlightAction extends BaseAction {
 
   // Manager
   private ProjectManager projectManager;
-  private DeliverableManager deliverableManager;
+  private HighLightManager highLightManager;
   private DeliverableTypeManager deliverableTypeManager;
   private LocationManager locationManager;
 
   private ProjectDeliverableValidator validator;
 
   // Model for the back-end
-  private Deliverable highlight;
+  private ProjectHighlights highlight;
   private Project project;
 
   // Model for the front-end
@@ -69,12 +69,12 @@ public class ProjectHighlightAction extends BaseAction {
   private List<Country> countries;
 
   @Inject
-  public ProjectHighlightAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
+  public ProjectHighlightAction(APConfig config, ProjectManager projectManager, HighLightManager highLightManager,
     DeliverableTypeManager deliverableTypeManager, LocationManager locationManager,
     ProjectDeliverableValidator validator) {
     super(config);
     this.projectManager = projectManager;
-    this.deliverableManager = deliverableManager;
+    this.highLightManager = highLightManager;
     this.deliverableTypeManager = deliverableTypeManager;
     this.locationManager = locationManager;
     this.validator = validator;
@@ -89,7 +89,8 @@ public class ProjectHighlightAction extends BaseAction {
    */
   public boolean canDelete() {
     // Loop all the deliverables that are in the interface.
-    return highlight.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
+    // return highlight.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
+    return true;
   }
 
 
@@ -106,7 +107,7 @@ public class ProjectHighlightAction extends BaseAction {
     return Integer.parseInt(dateFormat.format(project.getEndDate()));
   }
 
-  public Deliverable getHighlight() {
+  public ProjectHighlights getHighlight() {
     return highlight;
   }
 
@@ -141,7 +142,8 @@ public class ProjectHighlightAction extends BaseAction {
     super.prepare();
 
     highlightID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.HIGHLIGHT_REQUEST_ID)));
-    project = projectManager.getProjectFromDeliverableId(highlightID);
+    ProjectHighlights higligth = highLightManager.getHighLightById(highlightID);
+    project = projectManager.getProject(higligth.getProject_id());
 
     // Getting highlights Types
     highlightsTypes = new HashMap<>();
@@ -164,7 +166,7 @@ public class ProjectHighlightAction extends BaseAction {
     countries = locationManager.getAllCountries();
 
     // Getting the highlight information.
-    highlight = deliverableManager.getDeliverableById(highlightID);
+    highlight = highLightManager.getHighLightById(highlightID);
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
@@ -176,7 +178,7 @@ public class ProjectHighlightAction extends BaseAction {
     return SUCCESS;
   }
 
-  public void setDeliverable(Deliverable deliverable) {
+  public void setDeliverable(ProjectHighlights deliverable) {
     this.highlight = deliverable;
   }
 
@@ -185,7 +187,7 @@ public class ProjectHighlightAction extends BaseAction {
   public void validate() {
     super.validate();
     if (save) {
-      validator.validate(this, project, highlight, this.getCycleName());
+      // validator.validate(this, project, highlight, this.getCycleName());
     }
   }
 }

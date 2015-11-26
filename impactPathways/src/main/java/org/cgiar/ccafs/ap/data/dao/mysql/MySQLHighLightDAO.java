@@ -146,7 +146,8 @@ public class MySQLHighLightDAO implements HighLightDAO {
         highLightData.put("leader", rs.getString("leader"));
         highLightData.put("type", rs.getString("type"));
         highLightData.put("project_id", rs.getString("project_id"));
-
+        highLightData.put("year", rs.getString("year"));
+        highLightData.put("status", rs.getString("status"));
 
         highLightsList.add(highLightData);
       }
@@ -198,6 +199,8 @@ public class MySQLHighLightDAO implements HighLightDAO {
         highLightData.put("leader", rs.getString("leader"));
         highLightData.put("type", rs.getString("type"));
         highLightData.put("project_id", rs.getString("project_id"));
+        highLightData.put("year", rs.getString("year"));
+        highLightData.put("status", rs.getString("status"));
       }
       con.close();
     } catch (SQLException e) {
@@ -236,9 +239,10 @@ public class MySQLHighLightDAO implements HighLightDAO {
       query.append(
         "INSERT INTO project_highligths (title,author,start_date,end_date,photo,objectives,description,results,partners,links,keywords,subject,contributor,publisher,relation,coverage,");
 
-      query.append("rights,is_global,leader,type,project_id,created_by,modified_by, modification_justification) ");
-      query.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
-      values = new Object[24];
+      query.append(
+        "rights,is_global,leader,type,project_id,created_by,modified_by, modification_justification,year,status) ");
+      query.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
+      values = new Object[26];
       values[0] = highLightData.get("title");
       values[1] = highLightData.get("author");
       values[2] = highLightData.get("start_date");
@@ -262,15 +266,16 @@ public class MySQLHighLightDAO implements HighLightDAO {
       values[20] = highLightData.get("project_id");
       values[21] = highLightData.get("created_by");
       values[22] = highLightData.get("modified_by");
-      values[23] = highLightData.get(" modification_justification");
-
+      values[23] = highLightData.get("modification_justification");
+      values[24] = highLightData.get("year");
+      values[25] = highLightData.get("status");
 
     } else {
       // Updating existing highLight record
       query.append(
-        "UPDATE project_highligths SET title=?,author=?,start_date=?,end_date=?,photo=?,objectives=?,description=?,results=?,partners=?,links=?,keywords=?,subject=?,contributor=?,publisher=?,relation=?,coverage=?,rights=?,is_global=?,leader=?,type=?,project_id=?,modified_by=?, modification_justification ");
+        "UPDATE project_highligths SET title=?,author=?,start_date=?,end_date=?,photo=?,objectives=?,description=?,results=?,partners=?,links=?,keywords=?,subject=?,contributor=?,publisher=?,relation=?,coverage=?,rights=?,is_global=?,leader=?,type=?,project_id=?,modified_by=?, modification_justification=?,year=?,status=? ");
       query.append("WHERE id = ? ");
-      values = new Object[24];
+      values = new Object[26];
       values[0] = highLightData.get("title");
       values[1] = highLightData.get("author");
       values[2] = highLightData.get("start_date");
@@ -294,8 +299,10 @@ public class MySQLHighLightDAO implements HighLightDAO {
       values[20] = highLightData.get("project_id");
 
       values[21] = highLightData.get("modified_by");
-      values[22] = highLightData.get(" modification_justification");
-      values[23] = highLightData.get("id");
+      values[22] = highLightData.get("modification_justification");
+      values[23] = highLightData.get("year");
+      values[24] = highLightData.get("status");
+      values[25] = highLightData.get("id");
     }
     result = databaseManager.saveData(query.toString(), values);
 

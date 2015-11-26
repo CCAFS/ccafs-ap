@@ -13,7 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager;
 
-import org.cgiar.ccafs.ap.data.manager.impl.DeliverableManagerImpl;
+import org.cgiar.ccafs.ap.data.manager.impl.HighLightManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -25,7 +25,7 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Christian Garcia
  */
-@ImplementedBy(DeliverableManagerImpl.class)
+@ImplementedBy(HighLightManagerImpl.class)
 public interface HighLightManager {
 
 

@@ -25,13 +25,24 @@ public enum ProjectHighlightsType {
   Breakthrough_science("6", "Breakthrough science"), Inter_center_collaboration("7", "Inter-center collaboration"),
   Policy_engagement("8", "Policy engagement"), Food_security("9", "Food security");
 
+  public static ProjectHighlightsType getEnum(String value) {
+    for (ProjectHighlightsType v : values()) {
+      if (v.getId().equalsIgnoreCase(value)) {
+        return v;
+      }
+    }
+    throw new IllegalArgumentException();
+  }
+
   private String description;
+
   private String id;
 
   private ProjectHighlightsType(String id, String description) {
     this.description = description;
     this.id = id;
   }
+
 
   public String getDescription() {
     return description;
