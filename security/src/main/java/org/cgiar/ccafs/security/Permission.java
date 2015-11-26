@@ -130,8 +130,10 @@ public class Permission {
   /**
    * Can update the project leader in the planning project partners section
    */
+
   // upload
   public static final String PLANNING_PROJECT_PARTNER_LEADER_UPDATE = "planning:projects:partner:leader:update";
+
   /**
    * Can update the project leader in the planning project partners section
    */
