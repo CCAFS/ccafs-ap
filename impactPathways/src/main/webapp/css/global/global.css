@@ -515,8 +515,8 @@ input.target {
 
 .checkboxGroup .checkboxLabel {
   display: inline-block;
-  font-size: 0.9em;
-  width: 88%; 
+  font-size: 0.95em;
+  width: 91%;
 }
 
 .fileUpload .upload::-webkit-file-upload-button {
@@ -1871,17 +1871,13 @@ h1.simpleTitle span {
 }
 
 .imageBlock {
-  margin-top: 20px !important;
 }
 
 .imageBlock .image {
   border: 1px solid #E5E5E5;
   background-color: #fafafa;
-  height: 160px;
   text-align: center;
-  margin-right: 91px;
   width: 235px;
-  float: right;  
 }
 
 .imageBlock .image img {
@@ -1892,8 +1888,7 @@ h1.simpleTitle span {
 }
 
 .imageBlock .browseInput {
-  padding: 65px 0;
-  float: left;
+  margin-bottom: 10px;
 }
 
 .imageBlock .clear {
@@ -3087,13 +3082,6 @@ span.partnerTag {
 }
 
 .budget .title {
-  /* width: 98%; */
-  /* padding: 5px 0; */
-  /* float: left; */
-  /* height: 56px; */
-  /* line-height: 7px; */
-  /* border-radius: 2px; */
-  /* position: relative; */
   margin-bottom: 4px;
 }
 
@@ -3229,11 +3217,7 @@ table#deliverableTypes, #deliverableTypes th, #deliverableTypes td {
 }
 
 .partnerBudget.row {
-    /* margin-bottom: 5px; */
-    /* padding: 4px 0px 1px 19px; */
-    border: 1px solid #CCD;
-    /* border-radius: 4px; */
-    /* box-shadow: 0px 0px 4px #E5E5E5; */
+  border: 1px solid #CCD;
 }
 
 .budgetPartnerTitle {
@@ -3449,7 +3433,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   margin-right: 12px;
 }
 
-/** Project Deliberables **/
+/** Project Deliverables **/
 
 .projectNextUser textarea{
     height: 60px;
@@ -3577,25 +3561,6 @@ div#gender .fullBlock,div#gender .halfPartBlock {
     margin-top: 15px;
 }
 
-/* Activity partners*/ 
-
-.activityPartner .filters-link {
-  cursor: pointer;
-  color: #848484;
-  padding-left: 7px;
-  margin-bottom: 7px;
-}
-
-.activityPartner .filters-link:hover {
- text-decoration:underline;
-}
-
-.activityPartner .filters-content {
-  margin: 7px 0px;
-  padding: 8px;
-  border: 1px dotted #D2D2D2;
-  display: none;
-}
 
 /* Project Locations */
 
@@ -4236,6 +4201,16 @@ span.elementId{
 
 .tlDescription, .rplDescription {
   margin-bottom: 10px;
+}
+
+/* Project Highlights */
+
+.highlightsTypes label {
+  width: 97%;
+}
+
+.highlightsTypes input {
+  
 }
 
 /* -------------- SUMMARIES -----------------*/

@@ -43,19 +43,25 @@
       <!-- Custom interceptor to validate that the project parameter is correct and the project actually exists -->
       <interceptor name="validateProjectParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateProjectParameterInterceptor" />
       
-      <!-- ************************** Interceptors for Planning (Projects) ******************************** -->
+      <!-- ************************** Interceptors for (Projects) ******************************** -->
       
       <!-- Custom interceptor to grant access to the users when accessing a specific project -->
       <interceptor name="grantProjectPlanningAccess" class="org.cgiar.ccafs.ap.interceptor.planning.GrantProjectPlanningAccessInterceptor" />
       <interceptor name="canEditProjectPlanning" class="org.cgiar.ccafs.ap.interceptor.EditProjectInterceptor" />
       
-       <!-- ************************** Interceptors for Planning (Deliverables) ****************************** -->
+      <!-- ************************** Interceptors for (Deliverables) ****************************** -->
       
       <!-- Custom interceptor to validate that the deliverable parameter is correct and the deliverable actually exists -->
       <interceptor name="validateDeliverableParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateDeliverableParameterInterceptor" />
       <interceptor name="canEditDeliverablePlanning" class="org.cgiar.ccafs.ap.interceptor.EditDeliverableInterceptor" />
       
-      <!-- ************************** Interceptors for Planning (Activities) ****************************** -->
+      <!-- ************************** Interceptors for (Highlights) ****************************** -->
+      
+      <!-- Custom interceptor to validate that the deliverable parameter is correct and the deliverable actually exists -->
+      <interceptor name="validateHighlightParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateHighlightParameterInterceptor" />
+      <interceptor name="canEditHighlight" class="org.cgiar.ccafs.ap.interceptor.EditHighlightInterceptor" />
+      
+      <!-- ************************** Interceptors for (Activities) ****************************** -->
       
       <!-- Custom interceptor to validate that the activity parameter is correct and the activity actually exists -->
       <interceptor name="validateActivityParameter" class="org.cgiar.ccafs.ap.interceptor.ValidateActivityParameterInterceptor" />
@@ -103,6 +109,18 @@
         <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="validateDeliverableParameter" />
         <interceptor-ref name="canEditDeliverablePlanning" />
+        <interceptor-ref name="trimInputs" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+      
+      <interceptor-stack name="projectStackHighlights">
+        <!-- Uncomment the following interceptor only for DEVELOPING purposes -->
+        <!--  interceptor-ref name="autoLogin" /-->
+        <interceptor-ref name="requireUser" />
+        <interceptor-ref name="keepRedirectMessages"/>
+        <interceptor-ref name="accessibleStage" />
+        <interceptor-ref name="validateHighlightParameter" /> 
+        <interceptor-ref name="canEditHighlight" />
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
