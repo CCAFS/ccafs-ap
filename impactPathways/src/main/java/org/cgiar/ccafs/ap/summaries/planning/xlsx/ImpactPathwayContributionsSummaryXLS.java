@@ -73,6 +73,10 @@ public class ImpactPathwayContributionsSummaryXLS {
       xls.writeString(sheet, (String) projectMap.get("project_title"));
       xls.nextColumn();
 
+      // Flagship
+      xls.writeString(sheet, (String) projectMap.get("flagship"));
+      xls.nextColumn();
+
       // Outcome 2019
       xls.writeString(sheet, (String) projectMap.get("outcome_2019"));
       xls.nextColumn();
@@ -111,14 +115,14 @@ public class ImpactPathwayContributionsSummaryXLS {
     /***************** Indicator Contribution Report Project Level ******************/
     // Defining headers
     String[] headersProject =
-      new String[] {"Project Id", "Title", "Outcome statement", "Indicator", "Target", "Target narrative",
-        "Target gender"};
+      new String[] {"Project Id", "Title", "Flagship", "Outcome statement", "Indicator", "Target", "Target narrative",
+    "Target gender "};
 
     // Defining header types
     int[] headerTypesProject =
-      {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
+    {BaseXLS.COLUMN_TYPE_HYPERLINK, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_SHORT,
         BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG,
-        BaseXLS.COLUMN_TYPE_TEXT_LONG};
+        BaseXLS.COLUMN_TYPE_TEXT_LONG, BaseXLS.COLUMN_TYPE_TEXT_LONG};
 
     // creating sheet
     Sheet sheet = workbook.getSheetAt(0);
