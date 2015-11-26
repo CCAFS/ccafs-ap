@@ -15,7 +15,6 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,16 +23,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ProjectHighlights
 
-  extends Deliverable
 
 {
 
   private int id;
+  private int project_id;
+
+
   private String title;
+
+
   private String author;
+
   private Date startDate;
   private Date endDate;
-  private File image;
+  private String image;
   private String imageContentType;
   private String imageFileName;
   private String objectives;
@@ -41,16 +45,21 @@ public class ProjectHighlights
   private String results;
   private String partners;
   private String links;
+  private String country;
+
   private String keywords;
+
+
   private String subject;
+
   private String contributor;
   private String publisher;
   private String relation;
   private String coverage;
   private String rights;
+  private ProjectHighlightsType type;
   private List<Country> countries;
-
-  private ProjectPartner leader;
+  private String leader;
   private boolean isGlobal;
   private List<ProjectHighlightsType> types;
 
@@ -74,30 +83,36 @@ public class ProjectHighlights
     return ids;
   }
 
+  public String getCountry() {
+    return country;
+  }
+
   public String getCoverage() {
     return coverage;
   }
+
 
   public String getDescription() {
     return description;
   }
 
+
   public Date getEndDate() {
     return endDate;
   }
 
-  @Override
   public int getId() {
     return id;
   }
 
-  public File getImage() {
+  public String getImage() {
     return image;
   }
 
   public String getImageContentType() {
     return imageContentType;
   }
+
 
   public String getImageFileName() {
     return imageFileName;
@@ -107,7 +122,7 @@ public class ProjectHighlights
     return keywords;
   }
 
-  public ProjectPartner getLeader() {
+  public String getLeader() {
     return leader;
   }
 
@@ -121,6 +136,10 @@ public class ProjectHighlights
 
   public String getPartners() {
     return partners;
+  }
+
+  public int getProject_id() {
+    return project_id;
   }
 
   public String getPublisher() {
@@ -147,14 +166,19 @@ public class ProjectHighlights
     return subject;
   }
 
-  @Override
   public String getTitle() {
     return title;
   }
 
+  public ProjectHighlightsType getType() {
+    return type;
+  }
+
+
   public List<ProjectHighlightsType> getTypes() {
     return types;
   }
+
 
   public List<String> getTypesIds() {
     ArrayList<String> ids = new ArrayList<>();
@@ -180,6 +204,10 @@ public class ProjectHighlights
     this.countries = countries;
   }
 
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
   public void setCoverage(String coverage) {
     this.coverage = coverage;
   }
@@ -196,12 +224,12 @@ public class ProjectHighlights
     this.isGlobal = isGlobal;
   }
 
-  @Override
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setImage(File image) {
+
+  public void setImage(String image) {
     this.image = image;
   }
 
@@ -217,7 +245,7 @@ public class ProjectHighlights
     this.keywords = keywords;
   }
 
-  public void setLeader(ProjectPartner leader) {
+  public void setLeader(String leader) {
     this.leader = leader;
   }
 
@@ -231,6 +259,10 @@ public class ProjectHighlights
 
   public void setPartners(String partners) {
     this.partners = partners;
+  }
+
+  public void setProject_id(int project_id) {
+    this.project_id = project_id;
   }
 
   public void setPublisher(String publisher) {
@@ -257,9 +289,13 @@ public class ProjectHighlights
     this.subject = subject;
   }
 
-  @Override
+
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public void setType(ProjectHighlightsType type) {
+    this.type = type;
   }
 
   public void setTypes(List<ProjectHighlightsType> types) {
