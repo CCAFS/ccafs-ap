@@ -63,7 +63,7 @@
       <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1>  
       <div class="fullBlock">
         [#-- Title --] 
-        [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle" i18nkey="planning.deliverables.title" required=true editable=editable /]
+        [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable /]
       </div>
       <div class="fullBlock">
         [#-- MOG  --]
@@ -268,13 +268,14 @@
           <table id="alreadyDisseminated" class="default">
             <tbody>
               <tr>
-                <td class="key" title="[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.help" /]">
+                <td class="key">
                   <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated" /]</p>
                   <div id="aditional-alreadyDisseminated"class="aditional" style="display:none">
-                     
-                    <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.description" /]</p>
+                    <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.description" /]</p><br />
                     <div class="fullBlock">
                       [@customForm.select name="${params.deliverable.name}.disseminationChannel" label=""  disabled=false i18nkey="reporting.projectDeliverable.disseminationChannel" listName="channels" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
+                    </div>
+                    <div class="fullBlock">
                       [@customForm.input name="${params.deliverable.name}.disseminationUrl" className="deliverableTitle" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
                     </div>
                   </div><!-- End aditional-alreadyDisseminated -->
@@ -289,10 +290,9 @@
           <table id="openAccessRestriction" class="default">
             <tbody>
               <tr>
-                <td class="key" title="[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction.help" /]">
+                <td class="key"">
                   <p>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction" /]</p>
-                  <div id="aditional-openAccessRestriction" class="aditional" style="display:none">
-                    
+                  <div id="aditional-openAccessRestriction" class="aditional" style="display:block">
                     <h6>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction.title" /]</h6>
                     <div class="fullBlock">
                       [#-- Intellectual Property Rights --]
@@ -318,19 +318,28 @@
                     </div>
                     [#-- Periods --]
                     <div class="fullBlock">
-                      <div id="period-restrictedAccess" class="halfPartBlock" style="display:block">
+                      <div id="period-restrictedAccess" class="halfPartBlock" style="display:none">
                         [@customForm.input name="${params.deliverable.name}.restrictedAccessDate" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.restrictedAccessDate" editable=editable/]
                       </div>
-                      <div id="period-embargoedPeriods" class="halfPartBlock" style="display:block">
+                      <div id="period-embargoedPeriods" class="halfPartBlock" style="display:none">
                         [@customForm.input name="${params.deliverable.name}.embargoedPeriodDate" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.embargoedPeriodDate" editable=editable/]
                       </div>
                     </div>
                   </div><!-- End aditional-openAccessRestriction -->
                 </td> 
-                <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.openAccessRestriction" disabled=!editable/]</td>
+                <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.openAccessRestriction" disabled=!editable inverse=true/]</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        [#-- Deliverable metadata --]
+        <div class="fullBlock">
+          <h6>Deliverable metadata</h6>
+          [#-- Subject --]
+          <div class="halfPartBlock" >
+            [@customForm.input name="${params.deliverable.name}." type="text" i18nkey="reporting.projectDeliverable.metadata.subject" help="reporting.projectDeliverable.metadata.subject.help" /] 
+          </div>
+          
         </div>
       </div>
     [/#if]

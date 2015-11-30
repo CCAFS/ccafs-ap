@@ -1,8 +1,4 @@
 // Limits for textarea input
-var lWordsDTitle = 15;
-var lWordsNextUsers = 20;
-var lWordsNextUsersDesc = 50;
-var lWordsLessons = 100;
 var $deliverablesTypes, $deliverablesSubTypes;
 var hashRegenerated = false;
 
@@ -14,10 +10,9 @@ function init() {
   attachEvents();
   addChosen();
 
-  applyWordCounter($(".deliverableTitle"), lWordsDTitle);
-  applyWordCounter($(".projectNextUser .input input"), lWordsNextUsers);
-  applyWordCounter($(".projectNextUser .textArea textarea"), lWordsNextUsersDesc);
-  applyWordCounter($("#lessons textarea"), lWordsLessons);
+  // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
+  setWordCounterToInputs('limitWords');
+
   $deliverablesTypes.trigger('change');
 
   validateEvent([
@@ -41,16 +36,22 @@ function attachEvents() {
   // Partnership contribution to deliverable
   $(".addPartner").on("click", addPartnerEvent);
 
-  $('input.onoffswitch-checkbox').on('change', function() {
-    var isChecked = $(this).is(':checked');
-    var $aditional = $('#aditional-' + (this.name).split('.')[1]);
-    if(isChecked) {
-      $aditional.slideDown("slow");
-    } else {
-      $aditional.slideUp("slow");
-    }
-  });
+  // Yes / No Event
+  $('input.onoffswitch-checkbox').on('change', yesnoEvent);
 
+}
+
+function yesnoEvent() {
+  var isChecked = $(this).is(':checked');
+  var $aditional = $('#aditional-' + (this.name).split('.')[1]);
+  if($(this).hasClass('inverse')) {
+    isChecked = !isChecked;
+  }
+  if(isChecked) {
+    $aditional.slideDown("slow");
+  } else {
+    $aditional.slideUp("slow");
+  }
 }
 
 function addChosen() {
@@ -70,9 +71,7 @@ function removeElementEvent(e) {
 }
 
 function openDialog() {
-
   $("#dialog").dialog("open");
-
 }
 
 function addNextUserEvent(e) {
@@ -81,8 +80,6 @@ function addNextUserEvent(e) {
   $(e.target).parent().before($newElement);
   $('#deliverable-nextUsers').find('.emptyText').hide();
   $newElement.fadeIn("slow");
-  applyWordCounter($newElement.find(".input input"), lWordsNextUsers);
-  applyWordCounter($newElement.find(".textArea textarea"), lWordsNextUsersDesc);
   setDeliverablesIndexes();
 }
 

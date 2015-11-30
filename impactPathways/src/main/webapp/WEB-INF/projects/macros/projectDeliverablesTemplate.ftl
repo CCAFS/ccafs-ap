@@ -98,10 +98,10 @@
   </div>
 [/#macro]
 
-[#macro yesNoInput name disabled=false]
+[#macro yesNoInput name disabled=false inverse=false]
   [#assign value][@s.property value="${name}"/][/#assign]
   <div class="onoffswitch">
-    <input id="myonoffswitch-${name}" class="onoffswitch-checkbox" type="checkbox" name="${name}" [#if disabled]disabled[/#if] />
+    <input id="myonoffswitch-${name}" class="onoffswitch-checkbox [#if inverse]inverse[/#if]" type="checkbox" name="${name}" [#if disabled]disabled[/#if] />
     <label class="onoffswitch-label" for="myonoffswitch-${name}">
         <span class="onoffswitch-inner"></span>
         <span class="onoffswitch-switch"></span>
@@ -122,11 +122,11 @@
         <span class="index">${nu_index?number+1}</span>
       </div>
       [#-- Next User --]
-      [@customForm.input name="user" type="text" i18nkey="planning.deliverables.nextUser" required=true /]<br/>
+      [@customForm.input name="user" type="text" i18nkey="planning.deliverables.nextUser" className="limitWords-20" required=true /]<br/>
       [#-- Expected Changes --]
-      [@customForm.textArea name="expectedChanges" i18nkey="planning.deliverables.expectedChanges" required=true /]<br/>
+      [@customForm.textArea name="expectedChanges" i18nkey="planning.deliverables.expectedChanges" className="limitWords-50" required=true /]<br/>
       [#-- Strategies --]
-      [@customForm.textArea name="strategies" i18nkey="planning.deliverables.strategies" required=true /]<br/>
+      [@customForm.textArea name="strategies" i18nkey="planning.deliverables.strategies" className="limitWords-50" required=true /]<br/>
     </div>
   [#else]
     <div id="projectNextUser-${nu_index}" class="projectNextUser simpleBox">
@@ -138,11 +138,11 @@
         <span class="index">${nu_index?number+1}</span>
       </div>
       [#-- Next User --]
-      [@customForm.input name="${nu_name}[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" required=true editable=editable /]<br/>
+      [@customForm.input name="${nu_name}[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" className="limitWords-20" required=true editable=editable /]<br/>
       [#-- Expected Changes --]
-      [@customForm.textArea name="${nu_name}[${nu_index}].expectedChanges" i18nkey="planning.deliverables.expectedChanges" required=true editable=editable /]<br/>
+      [@customForm.textArea name="${nu_name}[${nu_index}].expectedChanges" i18nkey="planning.deliverables.expectedChanges" className="limitWords-50" required=true editable=editable /]<br/>
       [#-- Strategies --]
-      [@customForm.textArea name="${nu_name}[${nu_index}].strategies" i18nkey="planning.deliverables.strategies" required=true editable=editable /]<br/>
+      [@customForm.textArea name="${nu_name}[${nu_index}].strategies" i18nkey="planning.deliverables.strategies" className="limitWords-50" required=true editable=editable /]<br/>
     </div>
   [/#if]
 [/#macro]

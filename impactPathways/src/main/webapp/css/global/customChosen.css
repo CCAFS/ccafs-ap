@@ -77,11 +77,11 @@
 }
 
 .fullBlock .chzn-container .chzn-results {
-  width: 608px !important;  
+  width: 100% !important;
 }
 
 .fullBlock .chzn-container .chzn-drop {
-  width: 632px !important;  
+  width: 100% !important;
 }
 
 .fullBlock .chzn-container .chzn-choices .default{

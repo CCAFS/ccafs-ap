@@ -205,6 +205,22 @@ function getHash(str) {
   return hash;
 }
 
+/* Set word counter to inputs list where cssName could be limitWords */
+function setWordCounterToInputs(cssName) {
+  // Attribute contains certain value somewhere -> [class*="limitWords"]
+  var check = cssName + "-";
+  $('input[class*="' + cssName + '"], textarea[class*="' + cssName + '"]').each(function(i,input) {
+    console.log($(input));
+    var className = $(input).attr('class') || '';
+    var cls = $.map(className.split(' '), function(val,i) {
+      if(val.indexOf(check) > -1) {
+        return val.slice(check.length, val.length);
+      }
+    });
+    applyWordCounter($(input), (cls.join(' ')) || 100);
+  });
+}
+
 /* Add a char counter to a specific text area */
 function applyCharCounter($textArea,charCount) {
   $textArea.parent().append("<p class='charCount'>(<span>" + charCount + "</span> characters remaining)</p>");

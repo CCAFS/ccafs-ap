@@ -5,23 +5,9 @@ $(document).ready(function() {
   // Add JQuery Calendar widget to start dates and end dates
   datePickerConfig($("form input.startDate"), $("form input.endDate"));
   // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
-  setWordCounterToInputsList();
+  setWordCounterToInputs('limitWords');
 
 });
-
-function setWordCounterToInputsList() {
-  // Attribute contains certain value somewhere -> [class*="limitWords"]
-  $('[class*="limitWords"]').each(function(i,input) {
-    var check = "limitWords-";
-    var className = $(input).attr('class') || '';
-    var cls = $.map(className.split(' '), function(val,i) {
-      if(val.indexOf(check) > -1) {
-        return val.slice(check.length, val.length);
-      }
-    });
-    applyWordCounter($(input), (cls.join(' ')) || 100);
-  });
-}
 
 function addSelect2() {
   $('form select').select2();

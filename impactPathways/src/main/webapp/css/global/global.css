@@ -3498,17 +3498,25 @@ position: relative;}
 }
 
 #dataCompliance .aditional {
-  padding: 10px 5px;
+  padding: 10px 14px;
 }
 #dataCompliance .aditional h6 {
 color: #717171;font-weight: normal;}
 
 #aditional-alreadyDisseminated {
-padding: 16px 14px 0 14px;
+  padding: 16px 14px 0 14px;
 }
 
 #aditional-openAccessRestriction{
-padding: 17px 14px 0 14px;
+  padding: 17px 14px 0 14px;
+}
+
+.openAccessRestrictionOption {
+  padding: 4px;
+}
+.openAccessRestrictionOption input {
+margin: 0;}
+.openAccessRestrictionOption label {
 }
 
 .icon-uncheck{
