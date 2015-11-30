@@ -50,6 +50,13 @@ table.dataTable thead tr th{
 }
 
 
+/* Switch  */
 
+.onoffswitch-checkbox {
+    display: block;
+}
+.onoffswitch-label {
+    display: none;
+}
 
  

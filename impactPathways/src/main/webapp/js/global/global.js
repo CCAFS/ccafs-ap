@@ -223,7 +223,6 @@ function applyWordCounter($textArea,wordCount) {
   var message = "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>";
   $textArea.parent().append(message);
   $textArea.parent().find(".charCount").find("span").text(wordCount - word_count($textArea));
-  console.log(word_count($textArea));
   $textArea.on("keyup", function(event) {
     var valueLength = $(event.target).val().length;
     var $charCount = $(event.target).parent().find(".charCount");

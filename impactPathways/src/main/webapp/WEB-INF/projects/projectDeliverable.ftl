@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Deliverable" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen", "star-rating"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/usersManagement.js", "${baseUrl}/js/projects/projectDeliverables.js"] /]
 [#assign currentSection = "planning" /]
 [#assign currentPlanningSection = "projects" /]
@@ -95,47 +95,29 @@
         </div> 
       </div>
       
-      [#-- Deliverables table dialog --]
-      [#if canEdit && !action.canDelete()]
-      <div id="dialog" title="Deliverable types" style="display: none">
-        <table id="deliverableTypes" style="height:700px; width:900px;">
-          <th> [@s.text name="planning.deliverables.dialogMessage.part1" /] </th>
-          <th> [@s.text name="planning.deliverables.dialogMessage.part2" /] </th>
-          <th> [@s.text name="planning.deliverables.dialogMessage.part3" /] </th>
-          [#list deliverableTypes as mt]
-            [#list action.getDeliverableSubTypes(mt.id) as st]
-              [#if st_index == 0]
-              <tr>
-                <th rowspan="${action.getDeliverableSubTypes(mt.id).size()}"> ${mt.name} </th>
-                    <td> ${st.name} </td>
-                    <td> ${(st.description)!}</td>
-              </tr>
-              [#else]
-              <tr>
-                <td> ${st.name} </td>
-                <td> ${(st.description)!} </td>
-              </tr>
-              [/#if]
-            [/#list]
-          [/#list]  
-        </table>
-      </div> <!-- End dialog-->
-      <div class="helpMessage3">
-        <p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]</a></p>
-      </div>
-      <br />
-      [/#if]
+      [#-- Deliverables table dialog --] 
+      [@deliverableTemplate.deliverablesTypesTable types=deliverableTypes show=(canEdit && !action.canDelete() && !reportingCycle) /]
       
       [#-- Deliverable type description and message--]
-      [#if canEdit && editable && !action.canDelete()]
-
-      <div class="note left">
-        [#if editable && deliverable.type??]
-          <p><b>Deliverable type description:</b> [@s.text name="${(deliverable.type.description)!}" /]</p>
-          <br />
-        [/#if]
-        <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
+      [#if canEdit && editable && !action.canDelete() && !reportingCycle]
+      <div class="fullBlock">
+        <div class="note left">
+          [#if deliverable.type??]<p><b>Deliverable type description:</b> [@s.text name="${(deliverable.type.description)!}" /]</p>[/#if]
+          <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
+        </div>
       </div>
+      [/#if]
+      
+      [#-- -- -- REPORTING BLOCK -- -- --]
+      [#if reportingCycle]
+        [#-- Deliverable Status  --]
+        <div class="halfPartBlock"> 
+          [@customForm.select name="${params.deliverable.name}.status" label=""  disabled=false i18nkey="reporting.projectDeliverable.status" listName="statuses" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
+        </div> 
+        [#-- Status justification  --]
+        <div class="fullBlock">
+          [@customForm.textArea name="${params.deliverable.name}.statusJustification" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
+        </div>
       [/#if]
     </div>
     
@@ -180,10 +162,11 @@
           [@deliverableTemplate.deliverablePartner dp=deliverable.responsiblePartner dp_name=params.responsiblePartner.name dp_index=dp_index isResponsable=true editable=editable /]
         </div>
         [#-- Other contact person that will contribute --]
-        <p>[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
-        <div class="simpleBox">
+        [#assign displayOtherPerson = (!deliverable.otherPartners?has_content && !editable)?string('none','block') /]
+        <p style="display:${displayOtherPerson}">[@customForm.text name="planning.projectDeliverable.indicateOtherContact" readText=!editable/]</p>
+        <div class="simpleBox" style="display:${displayOtherPerson}">
           [#if deliverable.otherPartners?has_content]
-            [#list deliverable.otherPartners as dp]  
+            [#list deliverable.otherPartners as dp]
               [@deliverableTemplate.deliverablePartner dp=dp dp_name=params.partners.name dp_index=dp_index editable=editable /]
             [/#list]
           [#else]
@@ -195,14 +178,162 @@
         </div>
       </div>
       [#if editable]
-      <div class="partnerListMsj note">
-        [@s.text name="preplanning.projectBudget.partnerNotList" /]
-        <a href="[@s.url action='partners'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
-          [@s.text name="preplanning.projectBudget.partnersLink" /] 
-        </a>
-      </div>
+        <div class="partnerListMsj note">
+          [@s.text name="preplanning.projectBudget.partnerNotList" /]
+          <a href="[@s.url action='partners'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> 
+            [@s.text name="preplanning.projectBudget.partnersLink" /] 
+          </a>
+        </div>
       [/#if]
     </div>
+    
+    [#-- -- -- REPORTING BLOCK -- -- --]
+    [#if reportingCycle]
+      [#-- Deliverable ranking --]
+      <div id="deliverable-ranking" class="borderBox clearfix">
+        [#if !editable && canEdit]
+          <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-ranking">[@s.text name="form.buttons.edit" /]</a></div>
+        [#else]
+          [#if canEdit && !newProject]
+            <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-ranking">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        [/#if]
+        <h1 class="contentTitle">[@s.text name="reporting.projectDeliverable.rankingTitle" /] </h1>
+        [#-- Ranking --]
+        <div class="fullBlock">
+        <h6>Ranking</h6>
+          <table id="rankingTable" class="default">
+            <tbody>
+              <tr>
+                <td class="key">[@s.text name="reporting.projectDeliverable.ranking.addressGenderSocial" /]</td> 
+                <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.addressGenderSocial" disabled=!editable/]</td>
+              </tr>
+              <tr>
+                <td class="key">[@s.text name="reporting.projectDeliverable.ranking.potencialActualContribution" /]</td>
+                <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.potencialActualContribution" disabled=!editable/]</td>
+              </tr>
+              <tr>
+                <td class="key">[@s.text name="reporting.projectDeliverable.ranking.levelSharedOwnership" /] [@s.text name="reporting.projectDeliverable.ranking.levelSharedOwnership.complement" /]</td> 
+                <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.levelSharedOwnership" disabled=!editable/]</td>
+              </tr>
+              <tr>
+                <td class="key">[@s.text name="reporting.projectDeliverable.ranking.productImportance" /]</td> 
+                <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.productImportance" disabled=!editable/]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        [#-- Compliance check (Data products only) --]
+        <div class="fullBlock">
+        <h6>[@s.text name="reporting.projectDeliverable.complianceTitle" /]</h6>
+          <table id="dataCompliance" class="default">
+            <tbody>
+              <tr>
+                <td class="key">[@s.text name="reporting.projectDeliverable.compliance.dataQualityAssurance" /]
+                  <div id="aditional-dataQualityAssurance" class="aditional fileUpload" style="display:none">
+                    [@customForm.input name="${params.deliverable.name}.dataQualityAssuranceUpload" type="file" className="upload" i18nkey="reporting.projectDeliverable.compliance.dataQualityAssurance.upload" editable=editable/]
+                  </div>
+                </td> 
+                <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dataQualityAssurance" disabled=!editable/]</td>
+              </tr>
+              <tr>
+                <td class="key">[@s.text name="reporting.projectDeliverable.compliance.dataDictionary" /]</td> 
+                <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dataDictionary" disabled=!editable/]</td>
+              </tr>
+              <tr>
+                <td class="key">[@s.text name="reporting.projectDeliverable.compliance.toolsUsedDataCollection" /]
+                  <div id="aditional-toolsUsedDataCollection" class="aditional" style="display:none">
+                    [@customForm.textArea name="${params.deliverable.name}.toolsUsedDataCollectionLinks" i18nkey="reporting.projectDeliverable.compliance.toolsUsedDataCollection.links" editable=editable/]
+                  </div>
+                </td> 
+                <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.toolsUsedDataCollection" disabled=!editable/]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      [#-- Deliverable dissemination --]
+      <div id="deliverable-dissemination" class="borderBox clearfix">
+        [#if !editable && canEdit]
+          <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-dissemination">[@s.text name="form.buttons.edit" /]</a></div>
+        [#else]
+          [#if canEdit && !newProject]
+            <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-dissemination">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        [/#if]
+        <h1 class="contentTitle">[@s.text name="reporting.projectDeliverable.disseminationTitle" /] </h1>
+        [#-- Is this deliverable disseminated --]
+        <div class="fullBlock">
+          <table id="alreadyDisseminated" class="default">
+            <tbody>
+              <tr>
+                <td class="key" title="[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.help" /]">
+                  <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated" /]</p>
+                  <div id="aditional-alreadyDisseminated"class="aditional" style="display:none">
+                     
+                    <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.description" /]</p>
+                    <div class="fullBlock">
+                      [@customForm.select name="${params.deliverable.name}.disseminationChannel" label=""  disabled=false i18nkey="reporting.projectDeliverable.disseminationChannel" listName="channels" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
+                      [@customForm.input name="${params.deliverable.name}.disseminationUrl" className="deliverableTitle" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
+                    </div>
+                  </div><!-- End aditional-alreadyDisseminated -->
+                </td> 
+                <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.alreadyDisseminated" disabled=!editable/]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        [#-- Is there an Open Access restriction --]
+        <div class="fullBlock">
+          <table id="openAccessRestriction" class="default">
+            <tbody>
+              <tr>
+                <td class="key" title="[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction.help" /]">
+                  <p>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction" /]</p>
+                  <div id="aditional-openAccessRestriction" class="aditional" style="display:none">
+                    
+                    <h6>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction.title" /]</h6>
+                    <div class="fullBlock">
+                      [#-- Intellectual Property Rights --]
+                      <div class="openAccessRestrictionOption">
+                        <input id="intellectualProperty" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="1" />
+                        <label for="intellectualProperty">[@s.text name="reporting.projectDeliverable.dissemination.intellectualProperty" /]</label>
+                      </div>
+                      [#-- Limited Exclusivity Agreements --]
+                      <div class="openAccessRestrictionOption">
+                        <input id="limitedExclusivity" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="2" /> 
+                        <label for="limitedExclusivity">[@s.text name="reporting.projectDeliverable.dissemination.limitedExclusivity" /]</label>
+                      </div>
+                      [#-- Restricted Use Agreement - Restricted access --]
+                      <div class="openAccessRestrictionOption">
+                        <input id="restrictedAccess" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="3" />
+                        <label for="restrictedAccess">[@s.text name="reporting.projectDeliverable.dissemination.restrictedAccess" /]</label>
+                      </div>
+                      [#-- Effective Date Restriction - embargoed periods --]
+                      <div class="openAccessRestrictionOption">
+                        <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="4" />
+                        <label for="embargoedPeriods">[@s.text name="reporting.projectDeliverable.dissemination.embargoedPeriod" /]</label>
+                      </div>
+                    </div>
+                    [#-- Periods --]
+                    <div class="fullBlock">
+                      <div id="period-restrictedAccess" class="halfPartBlock" style="display:block">
+                        [@customForm.input name="${params.deliverable.name}.restrictedAccessDate" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.restrictedAccessDate" editable=editable/]
+                      </div>
+                      <div id="period-embargoedPeriods" class="halfPartBlock" style="display:block">
+                        [@customForm.input name="${params.deliverable.name}.embargoedPeriodDate" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.embargoedPeriodDate" editable=editable/]
+                      </div>
+                    </div>
+                  </div><!-- End aditional-openAccessRestriction -->
+                </td> 
+                <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.openAccessRestriction" disabled=!editable/]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    [/#if]
     
     [#if editable] 
       <input name="projectID" type="hidden" value="${project.id?c}" />

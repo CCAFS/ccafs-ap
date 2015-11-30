@@ -59,6 +59,9 @@
         [#if libraryName="select2"]          
           <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/select2-3.5.4/select2.custom.css" />
         [/#if]
+        [#if libraryName="star-rating"]
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/star-rating/jquery.rating.css" />
+        [/#if]
   	 [/#list]
   	[/#if]
     [#-- Second, import global javascripts and templates. --]
@@ -66,8 +69,9 @@
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/custom-forms-min.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/animate/animate.min.css" />
-    <!--[if lte IE 7]>
-      <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/onoffswitch.css" />
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie8.css"/> 
     <![endif]-->
     [#-- import the custom CSS --]
     [#if customCSS??]

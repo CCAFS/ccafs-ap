@@ -58,7 +58,7 @@
       <p>[@s.text name="menu.secondary.planning.project.outputs" /]</p>
       <ul>
         [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" disabled=reportingCycle/]
-        [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" disabled=reportingCycle/]
+        [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" /]
         [#if reportingCycle]
           [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" /]
         [/#if]

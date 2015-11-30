@@ -24,24 +24,16 @@ function init() {
     "#justification"
   ]);
 
-  $("#dialog").dialog({
-      autoOpen: false,
-      buttons: {
-        Close: function() {
-          $(this).dialog("close");
-        }
-      },
-      width: 925,
-      modal: true
-  });
+  addHoverStar();
+  addDeliverablesTypesDialog();
 }
 
 function attachEvents() {
   // Deliverables Events
   $(".removeDeliverable, .removeNextUser, .removeElement").click(removeElementEvent);
   $deliverablesTypes.on("change", updateDeliverableSubTypeList);
-
   $deliverablesSubTypes.on("change", checkOtherType);
+  $('.helpMessage3').on("click", openDialog);
 
   // Next users events
   $(".addNextUser").on("click", addNextUserEvent);
@@ -49,7 +41,16 @@ function attachEvents() {
   // Partnership contribution to deliverable
   $(".addPartner").on("click", addPartnerEvent);
 
-  $('.helpMessage3').on("click", openDialog);
+  $('input.onoffswitch-checkbox').on('change', function() {
+    var isChecked = $(this).is(':checked');
+    var $aditional = $('#aditional-' + (this.name).split('.')[1]);
+    if(isChecked) {
+      $aditional.slideDown("slow");
+    } else {
+      $aditional.slideUp("slow");
+    }
+  });
+
 }
 
 function addChosen() {
@@ -140,6 +141,35 @@ function updateDeliverableSubTypeList(event) {
     }
   }).fail(function() {
     console.log("error");
+  });
+}
+
+function addHoverStar() {
+  $('.hover-star').rating({
+      cancel: 'Cancel',
+      cancelValue: '0',
+      focus: function(value,link) {
+        var $tip = $(this).parent().find('.hover-test');
+        $tip[0].data = $tip[0].data || $tip.html();
+        $tip.html(link.title || 'value: ' + value);
+      },
+      blur: function(value,link) {
+        var $tip = $(this).parent().find('.hover-test');
+        $tip.html($tip[0].data || '');
+      }
+  });
+}
+
+function addDeliverablesTypesDialog() {
+  $("#dialog").dialog({
+      autoOpen: false,
+      buttons: {
+        Close: function() {
+          $(this).dialog("close");
+        }
+      },
+      width: 925,
+      modal: true
   });
 }
 

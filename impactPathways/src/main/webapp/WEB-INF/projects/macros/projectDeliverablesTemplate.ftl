@@ -50,11 +50,72 @@
     <div class="clearfix"></div>
     <p id="deliverables-status" style="display:none"> <br /> (${counter}/${deliverables?size})</p>
   [/#if]  
-[/#macro] 
+[/#macro]
+
+[#macro deliverablesTypesTable types show=true]
+[#if show]
+  <div id="dialog" title="Deliverable types" style="display: none">
+    <table id="deliverableTypes" style="height:700px; width:900px;">
+      <th> [@s.text name="planning.deliverables.dialogMessage.part1" /] </th>
+      <th> [@s.text name="planning.deliverables.dialogMessage.part2" /] </th>
+      <th> [@s.text name="planning.deliverables.dialogMessage.part3" /] </th>
+      [#list deliverableTypes as mt]
+        [#list action.getDeliverableSubTypes(mt.id) as st]
+          [#if st_index == 0]
+          <tr>
+            <th rowspan="${action.getDeliverableSubTypes(mt.id).size()}"> ${mt.name} </th>
+                <td> ${st.name} </td>
+                <td> ${(st.description)!}</td>
+          </tr>
+          [#else]
+          <tr>
+            <td> ${st.name} </td>
+            <td> ${(st.description)!} </td>
+          </tr>
+          [/#if]
+        [/#list]
+      [/#list]  
+    </table>
+  </div> <!-- End dialog-->
+  <div class="helpMessage3">
+    <p><a href="#" id="opener"><img src="${baseUrl}/images/global/icon-help.png" />[@s.text name="planning.deliverables.deliverableType" /]</a></p>
+  </div>
+  <br />
+[/#if] 
+[/#macro]
+
+
+[#macro rank name disabled=false]
+  [#assign score][@s.property value="${name}"/][/#assign]
+  <div class="rankingBlock" style="text-align:center;">
+    <input class="hover-star required" type="radio" name="${name}" value="1" [#if score == "1"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title=""/>
+    <input class="hover-star" type="radio" name="${name}" value="2" [#if score == "2"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title=""/>
+    <input class="hover-star" type="radio" name="${name}" value="3" [#if score == "3"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
+    <input class="hover-star" type="radio" name="${name}" value="4" [#if score == "4"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
+    <input class="hover-star" type="radio" name="${name}" value="5" [#if score == "5"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
+    <div class="hover-test" style=""></div> 
+    <div class="clearfix"></div>
+  </div>
+[/#macro]
+
+[#macro yesNoInput name disabled=false]
+  [#assign value][@s.property value="${name}"/][/#assign]
+  <div class="onoffswitch">
+    <input id="myonoffswitch-${name}" class="onoffswitch-checkbox" type="checkbox" name="${name}" [#if disabled]disabled[/#if] />
+    <label class="onoffswitch-label" for="myonoffswitch-${name}">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+    </label>
+  [#if !disabled] 
+    <input type="hidden" name="${name}" value="on" />
+   [/#if] 
+    ${value}
+  </div>
+[/#macro]
 
 [#macro nextUserTemplate nu_name="" nu_index="0" nextUserValue="-1" template=false editable=true canEdit=true ]
   [#if template]
-    <div id="projectNextUserTemplate" class="borderBox" style="display:none">
+    <div id="projectNextUserTemplate" class="simpleBox" style="display:none">
       <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
       <input type="hidden" value="${nextUserValue}" name="].id" />
       <div class="leftHead">
@@ -68,7 +129,7 @@
       [@customForm.textArea name="strategies" i18nkey="planning.deliverables.strategies" required=true /]<br/>
     </div>
   [#else]
-    <div id="projectNextUser-${nu_index}" class="projectNextUser borderBox">
+    <div id="projectNextUser-${nu_index}" class="projectNextUser simpleBox">
       [#if editable]
         <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
         <input type="hidden" name="${nu_name}[${nu_index}].id" value="${nextUserValue}" />

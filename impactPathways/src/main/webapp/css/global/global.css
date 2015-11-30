@@ -192,6 +192,7 @@ textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldErro
 
 /* Table default style*/
 table.default {
+    margin: 6px 0 !important;
     width: 100%;
 }
 
@@ -201,9 +202,10 @@ table.default th{
     padding: 5px 0px 3px 8px;
 }
 table.default td{
-    padding: 6px 10px 0 10px;
-    border: 1px solid #f1f1f1;
+    padding: 6px 10px 6px 10px;
+    border: 1px solid #DEDEDE;
     font-size: 0.97em;
+    vertical-align: middle;
 }
 
 table.default tbody tr:hover{ 
@@ -528,11 +530,11 @@ input.target {
   background: #2BA6CB;
   border-radius: 3px;
   margin-top: 1px;
-  padding: 3px 6px;
+  padding: 2px 6px;
   outline: none;
   white-space: nowrap;
   -webkit-user-select: none;
-  cursor: pointer; 
+  cursor: pointer;
   font-weight: 700;
   font-size: 10pt;
   color: #fff;
@@ -2018,8 +2020,8 @@ h1.simpleTitle span {
   -webkit-border-radius:2px;
   -moz-border-radius:2px;
   border-radius:2px;
-  padding: 5px;
-  border: 1px dashed #c0c0c0;
+  /* padding: 5px; */
+  /* border: 1px dashed #c0c0c0; */
   background: #FFFFFF;
   margin: 5px 373px 5px 0px;
   text-align: center;
@@ -2041,12 +2043,11 @@ h1.simpleTitle span {
 
 .helpMessage3 img {
   float: left;
-  padding: 2px;
-  width: 20px;
+  width: 18px;
 }
 
 .helpMessage3 p {
-  padding: 1px;
+  /* padding: 1px; */
   color: #636368;
   margin-bottom: 5px;
 }
@@ -3054,20 +3055,7 @@ span.partnerTag {
   display: none;
 }
 
-/* Project deliverables */
 
-#projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
-  text-align:center;
-  vertical-align: middle;
-  width: 41px;
-}
-
-.icon-uncheck{
-  background: url('../../images/global/sprite-icons-activities.png') 0 -85px;
-}
-.icon-check{
-  background: url('../../images/global/sprite-icons-activities.png') 0 -150px;
-}
 
 /* Project Budget */
 
@@ -3444,12 +3432,90 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 }
 
 .deliverablePartner {
-    font-size: 0.95em;
+  font-size: 0.95em;
+  padding: 13px 30px 2px 30px !important;
 }
+
+.deliverablePartner span.index{
+padding: 2px 6px 3px 6px;}
 
 .input-otherType {
     margin-top: 3px;
     padding-left: 2px;
+}
+
+#projectDeliverables .removeDeliverable-row, #projectDeliverables .status{
+  text-align:center;
+  vertical-align: middle;
+  width: 41px;
+}
+
+/* Ranking */
+
+.rankingBlock{
+position: relative;}
+
+#rate-legend {
+    margin: 15px 10px;
+    padding: 14px;
+    border: 1px dotted rgba(0, 0, 0, 0.1);
+}
+
+#rate-legend ul {
+    padding: 0;
+    margin: 0;
+}
+
+#rate-legend ul li {
+    list-style: none; 
+    font-style: italic;
+    color: #5D5D5D;
+}
+
+.hover-test {
+    color: #fff;
+    float: left;
+    margin: 0px 10px;
+    padding: 0px 4px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background: rgba(0,0,0,0.2);
+    border-radius: 2px;
+    position: absolute;
+    right: 0;
+    top: 2px;
+}
+
+#rankingTable .value{
+  width: 25%;
+  padding-left: 25px;
+}
+#dataCompliance .value, 
+#alreadyDisseminated .value, 
+#openAccessRestriction .value{
+  width: 20%;
+  padding-left: 49px;
+}
+
+#dataCompliance .aditional {
+  padding: 10px 5px;
+}
+#dataCompliance .aditional h6 {
+color: #717171;font-weight: normal;}
+
+#aditional-alreadyDisseminated {
+padding: 16px 14px 0 14px;
+}
+
+#aditional-openAccessRestriction{
+padding: 17px 14px 0 14px;
+}
+
+.icon-uncheck{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -85px;
+}
+.icon-check{
+  background: url('../../images/global/sprite-icons-activities.png') 0 -150px;
 }
 
 /*** Activities ***/
@@ -4379,3 +4445,5 @@ background: #E0E0E0;
   /* width: 95%; */
   /* margin: 0 auto; */
 }
+
+

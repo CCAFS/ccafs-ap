@@ -127,7 +127,7 @@
         <div class="halfPartBlock imageBlock">
           <div class="browseInput fileUpload">
             [@customForm.input name="highlight.image" type="file" className="upload" i18nkey="reporting.projectHighlight.image" editable=editable/]
-          </div>                            
+          </div>
           <div id="highlight.image" class="image">
             <img src="${(highlightsImagesUrl)!baseUrl}/${(highlight.imageFileName)!'images/global/defaultImage.png'}" width="100%">
           </div>
