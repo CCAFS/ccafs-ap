@@ -204,7 +204,6 @@ table.default th{
 table.default td{
     padding: 6px 10px 6px 10px;
     border: 1px solid #DEDEDE;
-    font-size: 0.97em;
     vertical-align: middle;
 }
 
@@ -240,7 +239,7 @@ p.fieldChecked{
 span.fieldError{
   background-color: #F59898;
   color: #fff;
-  padding: 0px 6px 2px 6px;
+  padding: 1px 6px 1px 6px;
   margin-right: 4px;
   margin-top: 2px;
   border-radius: 2px;
@@ -346,8 +345,9 @@ textarea#justification {
 }
 
 input[type="radio"] {
-  margin-left: 15px;
+  /* margin-left: 15px; */
   margin-right: 3px;
+  vertical-align: middle;
 }
 
 select{
@@ -508,6 +508,13 @@ input.target {
     width: 100%;
 }
 
+.radiosList {
+}
+.radiosList input{}
+.radiosList label{
+  margin-right: 20px;
+}
+
 .checkboxGroup input {
   margin-left: 0px;
   width: 14px;
@@ -518,7 +525,7 @@ input.target {
 .checkboxGroup .checkboxLabel {
   display: inline-block;
   font-size: 0.95em;
-  width: 91%;
+  width: 97%;
 }
 
 .fileUpload .upload::-webkit-file-upload-button {
@@ -1845,6 +1852,24 @@ h1.simpleTitle span {
   width: 48%;
   vertical-align: top;
   position: relative;
+}
+
+.verticallyCheckBox{
+  padding: 5px;
+  margin-bottom:10px;
+}
+.verticallyCheckBox input{
+  float: left;
+  width: 2%;
+  vertical-align: middle;
+}
+.verticallyCheckBox h6{
+  width: 98%;
+  float: left;
+  font-weight: normal;
+}
+.verticallyCheckBox h6,.verticallyCheckBox input{
+  margin:4px 0;
 }
 
 .fullPartBlock {
@@ -3482,19 +3507,20 @@ position: relative;}
     background: rgba(0,0,0,0.2);
     border-radius: 2px;
     position: absolute;
-    right: 0;
+    right: -30px;
     top: 2px;
 }
 
 #rankingTable .value{
-  width: 25%;
-  padding-left: 25px;
+  width: 20%;
+  padding-left: 12px;
 }
 #dataCompliance .value, 
 #alreadyDisseminated .value, 
 #openAccessRestriction .value{
   width: 20%;
   padding-left: 49px;
+  /* text-align: center; */
 }
 
 #dataCompliance .aditional {
@@ -3517,6 +3543,10 @@ color: #717171;font-weight: normal;}
 .openAccessRestrictionOption input {
 margin: 0;}
 .openAccessRestrictionOption label {
+}
+
+#metadata-block .halfPartBlock{
+  margin-bottom:10px;
 }
 
 .icon-uncheck{

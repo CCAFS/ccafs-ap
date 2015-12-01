@@ -119,6 +119,10 @@ public final class APConstants {
   // Deliverable Sub-type Other
   public static final int DELIVERABLE_SUBTYPE_OTHER_ID = 38;
 
+  // Deliverable open access statuses
+  public static final String OA_OPEN = "OPEN";
+  public static final String OA_LIMITED = "LIMITED";
+
   // Query parameter
   public static final String QUERY_PARAMETER = "q";
 

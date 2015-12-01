@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -27,6 +28,7 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -66,6 +68,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private IPElementManager ipElementManager;
   private HistoryManager historyManager;
   private ProjectDeliverableValidator validator;
+  private IPProgramManager ipProgramManager;
 
   // Model for the back-end
   private Deliverable deliverable;
@@ -80,6 +83,8 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<ProjectPartner> projectPartners;
   private Map<Integer, String> projectPartnerPersons;
   private List<DeliverablePartner> deliverablePartners;
+  private List<IPProgram> ipProgramFlagships;
+  private Map<String, String> openAccessStatuses;
 
 
   @Inject
@@ -87,7 +92,7 @@ public class ProjectDeliverableAction extends BaseAction {
     DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
     NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
     ProjectPartnerManager projectPartnerManager, IPElementManager ipElementManager, HistoryManager historyManager,
-    ProjectDeliverableValidator validator) {
+    ProjectDeliverableValidator validator, IPProgramManager ipProgramManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -98,6 +103,7 @@ public class ProjectDeliverableAction extends BaseAction {
     this.ipElementManager = ipElementManager;
     this.historyManager = historyManager;
     this.validator = validator;
+    this.ipProgramManager = ipProgramManager;
   }
 
 
@@ -113,13 +119,16 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
   }
 
+
   public List<Integer> getAllYears() {
     return allYears;
   }
 
+
   public Deliverable getDeliverable() {
     return deliverable;
   }
+
 
   public List<DeliverablePartner> getDeliverablePartners() {
     return deliverablePartners;
@@ -148,6 +157,14 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
+  }
+
+  public List<IPProgram> getIpProgramFlagships() {
+    return ipProgramFlagships;
+  }
+
+  public Map<String, String> getOpenAccessStatuses() {
+    return openAccessStatuses;
   }
 
   public List<IPElement> getOutputs() {
@@ -188,6 +205,10 @@ public class ProjectDeliverableAction extends BaseAction {
     deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
     allYears = project.getAllYears();
     outputs = ipElementManager.getProjectOutputs(project.getId());
+    ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    openAccessStatuses = new HashMap<>();
+    openAccessStatuses.put(APConstants.OA_OPEN, this.getText("reporting.projectDeliverable.openAccess.open"));
+    openAccessStatuses.put(APConstants.OA_LIMITED, this.getText("reporting.projectDeliverable.openAccess.limited"));
 
     projectPartners = projectPartnerManager.getProjectPartners(project);
 
@@ -234,7 +255,6 @@ public class ProjectDeliverableAction extends BaseAction {
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
-
 
   @Override
   public String save() {
@@ -316,6 +336,11 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
+  }
+
+
+  public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
+    this.ipProgramFlagships = ipProgramFlagships;
   }
 
   public void setProjectPartnerPersons(Map<Integer, String> projectPartnerPersons) {

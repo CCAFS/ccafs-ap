@@ -85,9 +85,10 @@
 [/#macro]
 
 
-[#macro rank name disabled=false]
+[#macro rank name disabled=false editable=true]
   [#assign score][@s.property value="${name}"/][/#assign]
   <div class="rankingBlock" style="text-align:center;">
+    [#if editable]
     <input class="hover-star required" type="radio" name="${name}" value="1" [#if score == "1"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title=""/>
     <input class="hover-star" type="radio" name="${name}" value="2" [#if score == "2"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title=""/>
     <input class="hover-star" type="radio" name="${name}" value="3" [#if score == "3"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
@@ -95,21 +96,25 @@
     <input class="hover-star" type="radio" name="${name}" value="5" [#if score == "5"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
     <div class="hover-test" style=""></div> 
     <div class="clearfix"></div>
+    [#else]
+      [#if score?has_content]Rate ${score}[#else]Not rated[/#if]
+    [/#if]
   </div>
 [/#macro]
 
-[#macro yesNoInput name disabled=false inverse=false]
+[#macro yesNoInput name disabled=false editable=true inverse=false]
   [#assign value][@s.property value="${name}"/][/#assign]
   <div class="onoffswitch">
-    <input id="myonoffswitch-${name}" class="onoffswitch-checkbox [#if inverse]inverse[/#if]" type="checkbox" name="${name}" [#if disabled]disabled[/#if] />
-    <label class="onoffswitch-label" for="myonoffswitch-${name}">
-        <span class="onoffswitch-inner"></span>
-        <span class="onoffswitch-switch"></span>
-    </label>
-  [#if !disabled] 
-    <input type="hidden" name="${name}" value="on" />
-   [/#if] 
-    ${value}
+    [#if editable]
+      <input id="myonoffswitch-${name}" class="onoffswitch-checkbox [#if inverse]inverse[/#if]" type="checkbox" name="${name}" value="yes" [#if disabled]disabled[/#if] />
+      <label class="onoffswitch-label" for="myonoffswitch-${name}">
+          <span class="onoffswitch-inner"></span>
+          <span class="onoffswitch-switch"></span>
+      </label>
+      [#if !disabled] <input type="hidden" name="${name}" value="yes" />[/#if]
+    [#else]
+      [#if value?has_content]Yes[#else]No[/#if]
+    [/#if]
   </div>
 [/#macro]
 

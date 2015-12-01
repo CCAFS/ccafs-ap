@@ -5,6 +5,18 @@ var hashRegenerated = false;
 $(document).ready(init);
 
 function init() {
+  $('#projectDeliverable').tabs({
+      active: $('#indexTabCurrentYear').val(),
+      show: {
+          effect: "fadeIn",
+          duration: 200
+      },
+      hide: {
+          effect: "fadeOut",
+          duration: 100
+      }
+  });
+
   $deliverablesTypes = $("#deliverable_mainType");
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
   attachEvents();
