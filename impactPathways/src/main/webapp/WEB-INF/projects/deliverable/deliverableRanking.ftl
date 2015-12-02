@@ -33,7 +33,7 @@
     </table>
   </div>
   [#-- Compliance check (Data products only) --]
-  <div class="fullBlock">
+  <div class="fullBlock requiredForType-10 requiredForType-11 requiredForType-10 requiredForType-12 requiredForType-13 requiredForType-37">
   <h6>[@s.text name="reporting.projectDeliverable.complianceTitle" /]</h6>
     <table id="dataCompliance" class="default">
       <tbody>

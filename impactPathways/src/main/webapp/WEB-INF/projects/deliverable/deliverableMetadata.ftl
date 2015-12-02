@@ -1,14 +1,12 @@
 [#ftl]
 <div id="deliverable-metadata" class="clearfix">
-  [#if !editable && canEdit]
-    <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-metadata">[@s.text name="form.buttons.edit" /]</a></div>
-  [#else]
-    [#if canEdit && !newProject]
-      <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-metadata">[@s.text name="form.buttons.unedit" /]</a></div>
-    [/#if]
-  [/#if]
   <h1 class="contentTitle">Deliverable Metadata</h1>
   <div id="metadata-block" class="fullBlock">
+    <div class="fullBlock">
+      [#-- Description --] 
+      [@customForm.textArea name="${params.deliverable.name}.metadata.description" i18nkey="reporting.projectDeliverable.metadata.description" help="reporting.projectDeliverable.metadata.description.help" required=true editable=editable /]
+    </div>
+    
     [#-- Creators / Authors --]
     <div class="halfPartBlock" >
       [@customForm.input name="${params.deliverable.name}.metadata.creator" type="text" i18nkey="reporting.projectDeliverable.metadata.creator" help="reporting.projectDeliverable.metadata.creator.help" editable=editable/] 
@@ -71,16 +69,16 @@
   </div>
   
   [#-- Deliverable Publications Metadata --]  
-  <div id="publicationQuestions" class="fullBlock publicationQuestions" style="display:block"> 
+  <div id="publicationQuestions" class="fullBlock publicationQuestions requiredForType-3 requiredForType-21 requiredForType-23 requiredForType-24" style="display:block"> 
     <h1 class="contentTitle publicationQuestions" style="display:block">[@s.text name="reporting.projectDeliverable.deliverablePublications" /] </h1> 
     
     [#-- Open access status --]
-    <div class="fullBlock">
+    <div class="fullBlock requiredForType-21">
       [@customForm.radioButtonGroup name="${params.deliverable.name}.publicationAccessStatus" label="" i18nkey="reporting.projectDeliverable.publicationAccessStatus" listName="openAccessStatuses" required=true editable=editable /]
     </div>
     
     [#-- Indicators for journal articles --]
-    <div class="fullBlock ">
+    <div class="fullBlock requiredForType-21">
       <h6>[@s.text name="reporting.projectDeliverable.journalIndicators" /]:</h6>
       <div class="fullBlock verticallyCheckBox">
         [@customForm.checkbox name="${params.deliverable.name}.isiPublication" i18nkey="reporting.projectDeliverable.isiPublication"  value="true" editable=editable /]

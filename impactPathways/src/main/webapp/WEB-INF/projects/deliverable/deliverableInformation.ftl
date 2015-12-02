@@ -11,24 +11,10 @@
   <div class="fullBlock">
     [#-- Title --] 
     [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable /]
-  </div>
-  [#-- -- -- REPORTING BLOCK -- -- --]
-  [#if reportingCycle]
-  <div class="fullBlock">
-    [#-- Description --] 
-    [@customForm.textArea name="${params.deliverable.name}.description" className="deliverableDescription limitWords-15" i18nkey="planning.deliverables.description" required=true editable=editable /]
-  </div>
-  [/#if]
-  <div class="fullBlock">
-    [#-- MOG  --]
-    <div class="${editable?string('halfPartBlock','fullBlock')} chosen"> 
-      [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
-    </div> 
-    [#-- Year  --]
-    <div class="halfPartBlock chosen">
-      [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable /]
-      [#if !editable] <div class="select"><p>${deliverable.year}</p></div> [/#if]
-    </div>
+  </div> 
+  [#-- MOG  --]
+  <div class="fullBlock chosen"> 
+    [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
   </div> 
   <div class="fullBlock">
     [#assign deliverableType][#if deliverable.type??]${deliverable.type.category.id}[#else]-1[/#if][/#assign]
@@ -49,6 +35,26 @@
     </div> 
   </div>
   
+  [#-- Year  --]
+  <div class="halfPartBlock chosen">
+    [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable /]
+    [#if !editable] <div class="select"><p>${deliverable.year}</p></div> [/#if]
+  </div>
+  
+  [#-- -- -- REPORTING BLOCK -- -- --]
+  [#if reportingCycle]
+    [#-- Deliverable Status  --]
+    <div class="fullBlock">
+      <div class="halfPartBlock"> 
+        [@customForm.select name="${params.deliverable.name}.status" label=""  disabled=false i18nkey="reporting.projectDeliverable.status" listName="statuses" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
+      </div>
+    </div>
+    [#-- Status justification  --]
+    <div class="fullBlock">
+      [@customForm.textArea name="${params.deliverable.name}.statusJustification" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
+    </div>
+  [/#if]
+  
   [#-- Deliverables table dialog --] 
   [@deliverableTemplate.deliverablesTypesTable types=deliverableTypes show=(canEdit && !action.canDelete() && !reportingCycle) /]
   
@@ -60,17 +66,5 @@
       <p>[@s.text name="planning.deliverables.disclaimerMessage" /]</p>
     </div>
   </div>
-  [/#if]
-  
-  [#-- -- -- REPORTING BLOCK -- -- --]
-  [#if reportingCycle]
-    [#-- Deliverable Status  --]
-    <div class="halfPartBlock"> 
-      [@customForm.select name="${params.deliverable.name}.status" label=""  disabled=false i18nkey="reporting.projectDeliverable.status" listName="statuses" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
-    </div> 
-    [#-- Status justification  --]
-    <div class="fullBlock">
-      [@customForm.textArea name="${params.deliverable.name}.statusJustification" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
-    </div>
   [/#if]
 </div>

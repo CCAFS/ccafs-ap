@@ -81,10 +81,11 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<Integer> allYears;
   private List<IPElement> outputs;
   private List<ProjectPartner> projectPartners;
-  private Map<Integer, String> projectPartnerPersons;
   private List<DeliverablePartner> deliverablePartners;
   private List<IPProgram> ipProgramFlagships;
+  private Map<Integer, String> projectPartnerPersons;
   private Map<String, String> openAccessStatuses;
+  private Map<String, String> disseminationChannels;
 
 
   @Inject
@@ -134,6 +135,7 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverablePartners;
   }
 
+
   public List<DeliverableType> getDeliverableSubTypes() {
     return deliverableSubTypes;
   }
@@ -157,6 +159,10 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
+  }
+
+  public Map<String, String> getDisseminationChannels() {
+    return disseminationChannels;
   }
 
   public List<IPProgram> getIpProgramFlagships() {
@@ -206,9 +212,16 @@ public class ProjectDeliverableAction extends BaseAction {
     allYears = project.getAllYears();
     outputs = ipElementManager.getProjectOutputs(project.getId());
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+
     openAccessStatuses = new HashMap<>();
     openAccessStatuses.put(APConstants.OA_OPEN, this.getText("reporting.projectDeliverable.openAccess.open"));
     openAccessStatuses.put(APConstants.OA_LIMITED, this.getText("reporting.projectDeliverable.openAccess.limited"));
+
+    disseminationChannels = new HashMap<>();
+    disseminationChannels.put("amkn", "AMKN");
+    disseminationChannels.put("cgspace", "CGSpace");
+    disseminationChannels.put("agtrials", "AgTrials");
+    disseminationChannels.put("other", "Other");
 
     projectPartners = projectPartnerManager.getProjectPartners(project);
 

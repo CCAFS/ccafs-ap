@@ -3,6 +3,7 @@ var formBefore;
 var justificationLimitWords = 100;
 var errorMessages = [];
 var forceChange = false;
+var hashScroll = true;
 var Tawk_API, Tawk_LoadStart;
 var notyDefaultOptions = {
     text: '',
@@ -33,9 +34,11 @@ $(document).ready(function() {
 
   // hash url animation
   if(window.location.hash) {
-    $('html, body').animate({
-      scrollTop: ($(window.location.hash).offset().top || 10) - 10
-    }, 2000);
+    if($(window.location.hash).exists && hashScroll) {
+      $('html, body').animate({
+        scrollTop: $(window.location.hash).offset().top
+      }, 1500);
+    }
   }
 
   $(window).scroll(function() {

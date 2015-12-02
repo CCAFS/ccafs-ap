@@ -192,7 +192,7 @@ textarea.fieldError, input.fieldError,textarea.fieldError:focus, input.fieldErro
 
 /* Table default style*/
 table.default {
-    margin: 6px 0 !important;
+    margin: 0px 0 !important;
     width: 100%;
 }
 
@@ -506,6 +506,10 @@ input.target {
 
 .halfPartBlock .input, .fullPartBlock .input {
     width: 100%;
+}
+
+.fullBlock .textArea, .fullBlock .input {
+  width: 99%;
 }
 
 .radiosList {
@@ -3530,11 +3534,15 @@ position: relative;}
 color: #717171;font-weight: normal;}
 
 #aditional-alreadyDisseminated {
-  padding: 16px 14px 0 14px;
+  padding: 17px 14px 17px 14px;
+  border: 1px solid #DEDEDE;
+  margin-top: -1px;
 }
 
 #aditional-openAccessRestriction{
-  padding: 17px 14px 0 14px;
+  padding: 13px 14px 0px 14px;
+  border: 1px solid #DEDEDE;
+  margin-top: -1px;
 }
 
 .openAccessRestrictionOption {

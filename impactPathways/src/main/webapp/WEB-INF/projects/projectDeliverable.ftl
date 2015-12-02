@@ -58,8 +58,7 @@
       <li class=""><a href="#deliverable-mainInformation">General Information</a></li>
       [#if reportingCycle] 
         <li class=""><a href="#deliverable-ranking">Ranking</a></li> 
-        <li class=""><a href="#deliverable-dissemination">Dissemination</a></li> 
-        <li class=""><a href="#deliverable-metadata">Metadata</a></li> 
+        <li class=""><a href="#deliverable-disseminationMetadata">Dissemination & Metadata</a></li> 
       [/#if]
     </ul>
     <div id="deliverable-mainInformation">
@@ -74,10 +73,12 @@
     [#if reportingCycle]
       [#-- Deliverable ranking --]
       [#include "/WEB-INF/projects/deliverable/deliverableRanking.ftl" /]
-      [#-- Deliverable Dissemination --]
-      [#include "/WEB-INF/projects/deliverable/deliverableDissemination.ftl" /]
-      [#-- Deliverable Metadata --]
-      [#include "/WEB-INF/projects/deliverable/deliverableMetadata.ftl" /]
+      <div id="deliverable-disseminationMetadata">
+        [#-- Deliverable Dissemination --]
+        [#include "/WEB-INF/projects/deliverable/deliverableDissemination.ftl" /]
+        [#-- Deliverable Metadata --]
+        [#include "/WEB-INF/projects/deliverable/deliverableMetadata.ftl" /]
+      </div>
     [/#if]
     
     [#if editable] 

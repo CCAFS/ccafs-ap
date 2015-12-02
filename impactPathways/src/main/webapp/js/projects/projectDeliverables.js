@@ -1,44 +1,31 @@
 // Limits for textarea input
 var $deliverablesTypes, $deliverablesSubTypes;
 var hashRegenerated = false;
+hashScroll = false;
 
 $(document).ready(init);
 
 function init() {
   $deliverablesTypes = $("#deliverable_mainType");
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
-
-  // Initialize the tabs
-  $('#projectDeliverable').tabs({
-      active: $('#indexTabCurrentYear').val(),
-      show: {
-          effect: "fadeIn",
-          duration: 200
-      },
-      hide: {
-          effect: "fadeOut",
-          duration: 100
-      }
-  });
-
-  $('.openAccessRestrictionOption input').on('change', function() {
-    console.log(this.value);
-    $('#period-' + this.value).show();
-
-  });
+  $disseminationChannels = $('#deliverable_deliverable_disseminationChannel');
 
   attachEvents();
-  addChosen();
 
-  // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
-  setWordCounterToInputs('limitWords');
+  // Initialize the tabs
+  initDeliverableTabs();
 
+  // Execute a change in deliverables types once
   $deliverablesTypes.trigger('change');
 
   validateEvent([
     "#justification"
   ]);
 
+  // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
+  setWordCounterToInputs('limitWords');
+  // Add some plugins
+  addChosen();
   addHoverStar();
   addDeliverablesTypesDialog();
 }
@@ -46,8 +33,8 @@ function init() {
 function attachEvents() {
   // Deliverables Events
   $(".removeDeliverable, .removeNextUser, .removeElement").click(removeElementEvent);
-  $deliverablesTypes.on("change", updateDeliverableSubTypeList);
-  $deliverablesSubTypes.on("change", checkOtherType);
+  $deliverablesTypes.on("change", changeDeliverableTypes);
+  $deliverablesSubTypes.on("change", changeDeliverableSubTypes);
   $('.helpMessage3').on("click", openDialog);
 
   // Next users events
@@ -56,9 +43,21 @@ function attachEvents() {
   // Partnership contribution to deliverable
   $(".addPartner").on("click", addPartnerEvent);
 
+  // Event when open access restriction is changed
+  $('.openAccessRestrictionOption input').on('change', changeOARestriction);
+
   // Yes / No Event
   $('input.onoffswitch-checkbox').on('change', yesnoEvent);
 
+}
+
+function changeOARestriction() {
+  var $period = $('#period-' + this.value);
+  if($period.exists()) {
+    $period.show().siblings().hide();
+  } else {
+    $('[id*="period"]').hide();
+  }
 }
 
 function yesnoEvent() {
@@ -92,6 +91,20 @@ function removeElementEvent(e) {
 
 function openDialog() {
   $("#dialog").dialog("open");
+}
+
+function initDeliverableTabs() {
+  $('#projectDeliverable').tabs({
+      active: $('#indexTabCurrentYear').val(),
+      show: {
+          effect: "fadeIn",
+          duration: 200
+      },
+      hide: {
+          effect: "fadeOut",
+          duration: 100
+      }
+  });
 }
 
 function addNextUserEvent(e) {
@@ -135,10 +148,34 @@ function setDeliverablesIndexes() {
   });
 }
 
-function updateDeliverableSubTypeList(event) {
-  var $mainTypeSelect = $(event.target);
+function changeDeliverableTypes(event) {
+  var typeId = $(event.target).val();
+  updateDeliverableSubTypes(typeId);
+}
+
+function changeDeliverableSubTypes() {
+  var typeId = $deliverablesSubTypes.val();
+  checkRequiredBlock(typeId);
+  checkOtherSubType(typeId);
+}
+
+function checkRequiredBlock(typeId) {
+  $('[class*="requiredForType"]').hide();
+  var $requiredTypeBlock = $('.requiredForType-' + typeId);
+  $requiredTypeBlock.show();
+}
+
+function checkOtherSubType(typeId) {
+  if(typeId == 38) {
+    $(".input-otherType").show('slow').find('input').attr('disabled', false);
+  } else {
+    $(".input-otherType").hide('slow').find('input').attr('disabled', true);
+  }
+}
+
+function updateDeliverableSubTypes(typeId) {
   var $subTypeSelect = $("#projectDeliverable select[name$='type'] ");
-  var source = baseURL + "/json/deliverablesByType.do?deliverableTypeID=" + $mainTypeSelect.val();
+  var source = baseURL + "/json/deliverablesByType.do?deliverableTypeID=" + typeId;
   $.getJSON(source).done(function(data) {
     // First delete all the options already present in the subtype select
     $subTypeSelect.empty();
@@ -150,14 +187,14 @@ function updateDeliverableSubTypeList(event) {
     // Refresh the plugin in order to show the changes
     $subTypeSelect.trigger("liszt:updated");
     // Check if other specify is selected
-    checkOtherType();
+    changeDeliverableSubTypes();
     // Regenerating hash from form information
     if(!hashRegenerated) {
       setFormHash();
       hashRegenerated = true;
     }
   }).fail(function() {
-    console.log("error");
+    console.log("Error updating deliverables sub types");
   });
 }
 
@@ -188,12 +225,4 @@ function addDeliverablesTypesDialog() {
       width: 925,
       modal: true
   });
-}
-
-function checkOtherType() {
-  if($deliverablesSubTypes.val() == 38) {
-    $(".input-otherType").show('slow').find('input').attr('disabled', false);
-  } else {
-    $(".input-otherType").hide('slow').find('input').attr('disabled', true);
-  }
 }
