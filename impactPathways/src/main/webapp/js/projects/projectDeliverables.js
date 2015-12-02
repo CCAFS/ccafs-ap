@@ -5,6 +5,10 @@ var hashRegenerated = false;
 $(document).ready(init);
 
 function init() {
+  $deliverablesTypes = $("#deliverable_mainType");
+  $deliverablesSubTypes = $("#deliverable_deliverable_type");
+
+  // Initialize the tabs
   $('#projectDeliverable').tabs({
       active: $('#indexTabCurrentYear').val(),
       show: {
@@ -17,8 +21,12 @@ function init() {
       }
   });
 
-  $deliverablesTypes = $("#deliverable_mainType");
-  $deliverablesSubTypes = $("#deliverable_deliverable_type");
+  $('.openAccessRestrictionOption input').on('change', function() {
+    console.log(this.value);
+    $('#period-' + this.value).show();
+
+  });
+
   attachEvents();
   addChosen();
 

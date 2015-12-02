@@ -113,7 +113,7 @@
       </label>
       [#if !disabled] <input type="hidden" name="${name}" value="yes" />[/#if]
     [#else]
-      [#if value?has_content]Yes[#else]No[/#if]
+      <p style="text-align:center;">[#if value?has_content]Yes[#else]No[/#if]</p>
     [/#if]
   </div>
 [/#macro]

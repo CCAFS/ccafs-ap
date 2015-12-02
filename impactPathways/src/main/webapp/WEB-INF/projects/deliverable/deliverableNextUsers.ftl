@@ -1,12 +1,5 @@
 [#ftl]
 <div id="deliverable-nextUsers" class="clearfix">
-  [#if !editable && canEdit]
-    <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.edit" /]</a></div>
-  [#else]
-    [#if canEdit && !newProject]
-      <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-nextUsers">[@s.text name="form.buttons.unedit" /]</a></div>
-    [/#if]
-  [/#if]
   <div class="fullBlock">
     <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.nextUsers" /] </h1> 
     [#if deliverable.nextUsers?has_content]

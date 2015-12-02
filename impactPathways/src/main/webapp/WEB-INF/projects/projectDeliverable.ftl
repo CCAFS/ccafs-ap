@@ -55,22 +55,21 @@
      
     [#--  Deliverable Menu --] 
     <ul> 
-      <li class=""><a href="#deliverable-information">Information</a></li>
-      <li class=""><a href="#deliverable-nextUsers">Next Users</a></li> 
-      <li class=""><a href="#deliverable-partnership">Partners </a></li>
+      <li class=""><a href="#deliverable-mainInformation">General Information</a></li>
       [#if reportingCycle] 
         <li class=""><a href="#deliverable-ranking">Ranking</a></li> 
         <li class=""><a href="#deliverable-dissemination">Dissemination</a></li> 
         <li class=""><a href="#deliverable-metadata">Metadata</a></li> 
       [/#if]
-    </ul> 
-    [#-- Deliverable Information --] 
-    [#include "/WEB-INF/projects/deliverable/deliverableInformation.ftl" /]
-    [#-- Deliverable Next Users block  --]
-    [#include "/WEB-INF/projects/deliverable/deliverableNextUsers.ftl" /]
-    [#-- Deliverable partnership  --]
-    [#include "/WEB-INF/projects/deliverable/deliverablePartners.ftl" /]
-    
+    </ul>
+    <div id="deliverable-mainInformation">
+      [#-- Deliverable Information --] 
+      [#include "/WEB-INF/projects/deliverable/deliverableInformation.ftl" /]
+      [#-- Deliverable Next Users block  --]
+      [#include "/WEB-INF/projects/deliverable/deliverableNextUsers.ftl" /]
+      [#-- Deliverable partnership  --]
+      [#include "/WEB-INF/projects/deliverable/deliverablePartners.ftl" /]
+    </div>
     [#-- -- -- REPORTING BLOCK -- -- --]
     [#if reportingCycle]
       [#-- Deliverable ranking --]

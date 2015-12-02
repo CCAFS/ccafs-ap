@@ -1,12 +1,5 @@
 [#ftl]
 <div id="deliverable-partnership" class="clearfix">
-  [#if !editable && canEdit]
-    <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.edit" /]</a></div>
-  [#else]
-    [#if canEdit && !newProject]
-      <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-partnership">[@s.text name="form.buttons.unedit" /]</a></div>
-    [/#if]
-  [/#if]
   <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.partnership" /] </h1> 
   <div class="fullBlock">
     [#-- Partner who is responsible --]

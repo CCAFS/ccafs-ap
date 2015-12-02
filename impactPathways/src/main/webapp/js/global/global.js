@@ -210,7 +210,6 @@ function setWordCounterToInputs(cssName) {
   // Attribute contains certain value somewhere -> [class*="limitWords"]
   var check = cssName + "-";
   $('input[class*="' + cssName + '"], textarea[class*="' + cssName + '"]').each(function(i,input) {
-    console.log($(input));
     var className = $(input).attr('class') || '';
     var cls = $.map(className.split(' '), function(val,i) {
       if(val.indexOf(check) > -1) {
