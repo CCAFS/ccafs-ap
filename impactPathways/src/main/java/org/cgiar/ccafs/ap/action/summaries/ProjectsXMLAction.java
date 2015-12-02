@@ -163,7 +163,7 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       locations = this.convertToString(projectData.get("locations")).split(";");
       for (String eachLocation : locations) {
         location = doc.createElement("location");
-        singleLocation = eachLocation.split("@@");
+        singleLocation = eachLocation.split("@");
         if (singleLocation.length > 1) {
           // location id (only for CCAFS Sites and Climate Smart Villages)
           if (singleLocation[1].equals("Climate smart village") || singleLocation[1].equals("CCAFS Site")) {
@@ -178,14 +178,24 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
         }
         // ISO
         if (singleLocation.length == 4) {
-          location.appendChild(this.buildElement(doc, "ISO", singleLocation[3], false));
+          if (singleLocation[1].equals("Climate smart village") || singleLocation[1].equals("CCAFS Site")
+            || singleLocation[1].equals("Region")) {
+            location.appendChild(this.buildElement(doc, "code", singleLocation[3], false));
+          } else {
+            location.appendChild(this.buildElement(doc, "iso2", singleLocation[3], false));
+          }
         } else if (singleLocation.length == 5) {
           // latitude
           location.appendChild(this.buildElement(doc, "latitude", singleLocation[3], false));
           // longitude
           location.appendChild(this.buildElement(doc, "longitude", singleLocation[4], false));
         } else if (singleLocation.length == 6) {
-          location.appendChild(this.buildElement(doc, "ISO", singleLocation[5], false));
+          if (singleLocation[1].equals("Climate smart village") || singleLocation[1].equals("CCAFS Site")
+            || singleLocation[1].equals("Region")) {
+            location.appendChild(this.buildElement(doc, "code", singleLocation[5], false));
+          } else {
+            location.appendChild(this.buildElement(doc, "iso2", singleLocation[5], false));
+          }
           // latitude
           location.appendChild(this.buildElement(doc, "latitude", singleLocation[3], false));
           // longitude
