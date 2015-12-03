@@ -57,8 +57,9 @@
     <ul> 
       <li class=""><a href="#deliverable-mainInformation">General Information</a></li>
       [#if reportingCycle] 
-        <li class=""><a href="#deliverable-ranking">Ranking</a></li> 
-        <li class=""><a href="#deliverable-disseminationMetadata">Dissemination & Metadata</a></li> 
+        <li class=""><a href="#deliverable-ranking">Ranking</a></li>
+        <li class=""><a href="#deliverable-disseminationMetadata">Dissemination & Metadata</a></li>
+        <li class=""><a href="#deliverable-dataSharing">Data Sharing</a></li>
       [/#if]
     </ul>
     <div id="deliverable-mainInformation">
@@ -79,6 +80,8 @@
         [#-- Deliverable Metadata --]
         [#include "/WEB-INF/projects/deliverable/deliverableMetadata.ftl" /]
       </div>
+      [#-- Deliverable data sharing --]
+      [#include "/WEB-INF/projects/deliverable/deliverableDataSharing.ftl" /]
     [/#if]
     
     [#if editable] 
