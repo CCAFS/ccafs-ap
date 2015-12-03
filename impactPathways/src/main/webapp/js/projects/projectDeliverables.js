@@ -46,9 +46,25 @@ function attachEvents() {
   // Event when open access restriction is changed
   $('.openAccessRestrictionOption input').on('change', changeOARestriction);
 
+  $disseminationChannels.on('change', changeDisseminationChannel);
+
   // Yes / No Event
   $('input.onoffswitch-checkbox').on('change', yesnoEvent);
 
+}
+
+function changeDisseminationChannel() {
+  var channel = $disseminationChannels.val();
+  if(channel != "-1") {
+    if(channel == "other") {
+      $('#disseminationName').slideDown("slow");
+    } else {
+      $('#disseminationName').slideUp("slow");
+    }
+    $('#disseminationUrl').slideDown("slow");
+  } else {
+    $('#disseminationUrl').slideUp("slow");
+  }
 }
 
 function changeOARestriction() {

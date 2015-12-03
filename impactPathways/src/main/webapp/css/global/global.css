@@ -3539,6 +3539,10 @@ color: #717171;font-weight: normal;}
   margin-top: -1px;
 }
 
+#aditional-alreadyDisseminated .fullBlock{
+  margin-bottom: 2px;
+}
+
 #aditional-openAccessRestriction{
   padding: 13px 14px 0px 14px;
   border: 1px solid #DEDEDE;

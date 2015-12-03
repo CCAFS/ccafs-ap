@@ -72,8 +72,14 @@
     <div id="aditional-alreadyDisseminated"class="aditional" style="display:none">
       <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.description" /]</p><br />
       [#-- Dissemination channel list --]
-      <div class="halfPartBlock">
-        [@customForm.select name="${params.deliverable.name}.disseminationChannel" label=""  disabled=false i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels" required=true editable=editable /]
+      <div class="fullBlock">
+        <div class="halfPartBlock">
+          [@customForm.select name="${params.deliverable.name}.disseminationChannel" label=""  disabled=false i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels" required=true editable=editable /]
+        </div>
+      </div>
+      [#-- Dissemination name --]
+      <div id="disseminationName" class="fullBlock" style="display:none">
+        [@customForm.input name="${params.deliverable.name}.disseminationName" className="" i18nkey="reporting.projectDeliverable.disseminationName" required=true editable=editable /]
       </div>
       [#-- Dissemination channel URL / URI --]
       <div id="disseminationUrl" class="fullBlock" style="display:none">
