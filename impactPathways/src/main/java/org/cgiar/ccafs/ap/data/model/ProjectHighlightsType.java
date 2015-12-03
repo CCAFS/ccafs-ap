@@ -15,7 +15,6 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
-
 public enum ProjectHighlightsType {
 
   Gender_and_social_inclusion("1", "Gender and social inclusion"),
@@ -32,6 +31,19 @@ public enum ProjectHighlightsType {
       }
     }
     throw new IllegalArgumentException();
+  }
+
+  public static ProjectHighlightsType value(String id) {
+
+    ProjectHighlightsType[] types = ProjectHighlightsType.values();
+    for (ProjectHighlightsType projectHighlightsType : types) {
+      if (projectHighlightsType.getId().equals(id)) {
+        return projectHighlightsType;
+      }
+
+    }
+    return null;
+
   }
 
   private String description;

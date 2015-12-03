@@ -18,7 +18,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
+import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 
 import java.util.Map;
@@ -58,9 +58,9 @@ public class EditHighlightInterceptor extends AbstractInterceptor {
     Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
     String editParameterStr = ((String[]) parameters.get(APConstants.HIGHLIGHT_REQUEST_ID))[0];
     int deliverableID = Integer.parseInt(editParameterStr);
-    ProjectHighlights highlt = deliverableManager.getHighLightById(deliverableID);
+    ProjectHighligths highlt = deliverableManager.getHighLightById(deliverableID);
     // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
-    Project project = projectManager.getProject(highlt.getProject_id());
+    Project project = projectManager.getProject(Integer.parseInt(highlt.getProjectId() + ""));
 
     // Add the project ID in the invocations parameters and validate if the user has permission to edit the project.
     parameters.put(APConstants.PROJECT_REQUEST_ID, new String[] {String.valueOf(project.getId())});

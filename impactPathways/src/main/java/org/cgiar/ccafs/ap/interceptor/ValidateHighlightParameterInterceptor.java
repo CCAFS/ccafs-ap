@@ -39,11 +39,11 @@ public class ValidateHighlightParameterInterceptor extends AbstractInterceptor {
   private static final Logger LOG = LoggerFactory.getLogger(ValidateHighlightParameterInterceptor.class);
 
   // Managers
-  private HighLightManager deliverableManager;
+  private HighLightManager highlightManager;
 
   @Inject
   public ValidateHighlightParameterInterceptor(HighLightManager deliverableManager) {
-    this.deliverableManager = deliverableManager;
+    this.highlightManager = deliverableManager;
   }
 
   @Override
@@ -59,7 +59,7 @@ public class ValidateHighlightParameterInterceptor extends AbstractInterceptor {
       if (StringUtils.isNumeric(deliverableParameter)) {
         int deliverableID = Integer.parseInt(deliverableParameter);
         // If the deliverable doesn't exist.
-        if (!deliverableManager.existHighLight(deliverableID)) {
+        if (!highlightManager.existHighLight(deliverableID)) {
           return BaseAction.NOT_FOUND;
         } else {
           // If deliverable exists, continue!

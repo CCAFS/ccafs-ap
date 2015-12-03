@@ -15,21 +15,14 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.dao.HighLightDAO;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
-import org.cgiar.ccafs.ap.data.model.ProjectHighlightsType;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.hibernate.dao.ProjectHightLihgtDAO;
+import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -44,13 +37,13 @@ public class HighLightManagerImpl implements HighLightManager {
   private static Logger LOG = LoggerFactory.getLogger(HighLightManagerImpl.class);
 
   // DAO's
-  private HighLightDAO highLightDAO;
+  private ProjectHightLihgtDAO highLightDAO;
   // Managers
 
 
   @Inject
-  public HighLightManagerImpl(HighLightDAO highLightDAO) {
-    this.highLightDAO = highLightDAO;
+  public HighLightManagerImpl() {
+    highLightDAO = new ProjectHightLihgtDAO();
 
 
   }
@@ -81,117 +74,22 @@ public class HighLightManagerImpl implements HighLightManager {
   }
 
   @Override
-  public ProjectHighlights getHighLightById(int highLightID) {
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-    Map<String, String> highLightData = highLightDAO.getHighLightById(highLightID);
-    if (!highLightData.isEmpty()) {
-      ProjectHighlights highLight = new ProjectHighlights();
-      // Basic information
-      highLight.setId(highLightID);
-      highLight.setTitle(highLightData.get("title"));
-      highLight.setAuthor(highLightData.get("author"));
-      highLight.setContributor(highLightData.get("contributor"));
-      highLight.setCountry(highLightData.get("country"));
-      highLight.setCoverage(highLightData.get("coverage"));
-      highLight.setDescription(highLightData.get("description"));
+  public ProjectHighligths getHighLightById(int highLightID) {
 
-      if (highLightData.get("end_date") != null) {
-        try {
-          Date endDate = (new Date(Long.parseLong(highLightData.get("end_date"))));
-          highLight.setEndDate(endDate);
-        } catch (Exception e) {
-          LOG.error("There was an error formatting the end date", e);
-        }
-      }
+    ProjectHighligths highLight = highLightDAO.find(highLightID);
 
-      if (highLightData.get("start_date") != null) {
-        try {
-          Date endDate = (new Date(Long.parseLong(highLightData.get("start_date"))));
-          highLight.setStartDate(endDate);
-        } catch (Exception e) {
-          LOG.error("There was an error formatting the end date", e);
-        }
-      }
 
-      highLight.setGlobal(Boolean.valueOf(highLightData.get("is_global")));
-      highLight.setImage(highLightData.get("photo"));
-      highLight.setKeywords(highLightData.get("keywords"));
-      highLight.setLeader(highLightData.get("leader"));
-      highLight.setLinks(highLightData.get("links"));
-      highLight.setObjectives(highLightData.get("objectives"));
-      highLight.setPartners(highLightData.get("partners"));
-      highLight.setProject_id(Integer.parseInt(highLightData.get("project_id")));
-      highLight.setPublisher(highLightData.get("publisher"));
-      highLight.setRights(highLightData.get("rights"));
-      highLight.setRelation(highLightData.get("relation"));
-      highLight.setResults(highLightData.get("results"));
-      highLight.setSubject(highLightData.get("subject"));
-      highLight.setYear(highLightData.get("year"));
-      highLight.setStatus(highLightData.get("status"));
+    return highLight;
 
-      highLight.setType(ProjectHighlightsType.getEnum((Integer.parseInt(highLightData.get("type"))) + ""));
-
-      return highLight;
-    }
-    return null;
 
   }
 
 
   @Override
-  public List<ProjectHighlights> getHighLightsByProject(int projectID) {
-    List<ProjectHighlights> highLightList = new ArrayList<>();
-    List<Map<String, String>> highLightDataList = highLightDAO.getHighLightsByProject(projectID);
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+  public List<ProjectHighligths> getHighLightsByProject(int projectID) {
+    List<ProjectHighligths> highLightList = highLightDAO.getHighLightsByProject(projectID);
 
-    for (Map<String, String> highLightData : highLightDataList) {
-      ProjectHighlights highLight = new ProjectHighlights();
-      // HighLight basic information
-      highLight.setId(Integer.parseInt(highLightData.get("id")));
-      highLight.setTitle(highLightData.get("title"));
-      highLight.setAuthor(highLightData.get("author"));
-      highLight.setContributor(highLightData.get("contributor"));
-      highLight.setCountry(highLightData.get("country"));
-      highLight.setCoverage(highLightData.get("coverage"));
-      highLight.setDescription(highLightData.get("description"));
 
-      if (highLightData.get("end_date") != null) {
-        try {
-          Date endDate = dateformatter.parse(highLightData.get("end_date"));
-          highLight.setEndDate(endDate);
-        } catch (ParseException e) {
-          LOG.error("There was an error formatting the end date", e);
-        }
-      }
-
-      if (highLightData.get("start_date") != null) {
-        try {
-          Date endDate = dateformatter.parse(highLightData.get("start_date"));
-          highLight.setEndDate(endDate);
-        } catch (ParseException e) {
-          LOG.error("There was an error formatting the end date", e);
-        }
-      }
-
-      highLight.setGlobal(Boolean.valueOf(highLightData.get("is_global")));
-      highLight.setImage(highLightData.get("photo"));
-      highLight.setKeywords(highLightData.get("keywords"));
-      highLight.setLeader(highLightData.get("leader"));
-      highLight.setLinks(highLightData.get("links"));
-      highLight.setObjectives(highLightData.get("objectives"));
-      highLight.setPartners(highLightData.get("partners"));
-      highLight.setProject_id(Integer.parseInt(highLightData.get("project_id")));
-      highLight.setPublisher(highLightData.get("publisher"));
-      highLight.setRights(highLightData.get("rights"));
-      highLight.setRelation(highLightData.get("relation"));
-      highLight.setResults(highLightData.get("results"));
-      highLight.setSubject(highLightData.get("subject"));
-      highLight.setYear(highLightData.get("year"));
-      highLight.setStatus(highLightData.get("status"));
-      highLight.setType(ProjectHighlightsType.getEnum((Integer.parseInt(highLightData.get("type"))) + ""));
-
-      highLightList.add(highLight);
-    }
     return highLightList;
   }
 
@@ -215,45 +113,13 @@ public class HighLightManagerImpl implements HighLightManager {
   }
 
   @Override
-  public int saveHighLight(int projectID, ProjectHighlights highLight, User user, String justification) {
-    Map<String, Object> highLightData = new HashMap<>();
-    if (highLight.getId() != -1) {
-      highLightData.put("id", highLight.getId());
-    } else {
-      highLightData.put("id", null);
-      highLightData.put("created_by", user.getId());
+  public int saveHighLight(int projectID, ProjectHighligths highLight, User user, String justification) {
+    if (highLight.getId() == null) {
+      highLight.setCreatedBy(Long.parseLong(user.getId() + ""));
     }
-    highLightData.put("project_id", projectID);
-    highLightData.put("title", highLight.getTitle());
-    highLightData.put("type", highLight.getType() != null ? highLight.getType().getId() : null);
-
-
-    highLightData.put("author", highLight.getAuthor());
-    SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
-    highLightData.put("start_date", format.format(highLight.getStartDate()));
-    highLightData.put("end_date", format.format(highLight.getEndDate()));
-    highLightData.put("photo", highLight.getImage());
-    highLightData.put("objectives", highLight.getObjectives());
-    highLightData.put("description", highLight.getDescription());
-    highLightData.put("results", highLight.getResults());
-    highLightData.put("partners", highLight.getPartners());
-    highLightData.put("links", highLight.getLinks());
-    highLightData.put("keywords", highLight.getKeywords());
-    highLightData.put("subject", highLight.getSubject());
-    highLightData.put("contributor", highLight.getContributor());
-    highLightData.put("publisher", highLight.getPublisher());
-    highLightData.put("relation", highLight.getRelation());
-    highLightData.put("coverage", highLight.getCoverage());
-    highLightData.put("rights", highLight.getRights());
-    highLightData.put("is_global", highLight.isGlobal());
-    highLightData.put("leader", highLight.getLeader());
-    highLightData.put("year", highLight.getYear());
-    highLightData.put("status", highLight.getStatus());
-
-    highLightData.put("modified_by", user.getId());
-    highLightData.put("modification_justification", justification);
-
-    int result = highLightDAO.saveHighLight(highLightData);
+    highLight.setModifiedBy(Long.parseLong(user.getId() + ""));
+    highLight.setModificationJustification(justification);
+    int result = highLightDAO.save(highLight);
 
     if (result > 0) {
       LOG.debug("saveHighLight > New HighLight added with id {}", result);

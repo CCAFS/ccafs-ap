@@ -115,10 +115,22 @@
           <h6><label for="highlight.types">[@s.text name="reporting.projectHighlight.types" /]<span class="red">*</span></label></h6>
           <div class="checkboxGroup">
           [#if editable]
-            [@s.fielderror cssClass="fieldError" fieldName="highlight.types"/]
-            [@s.checkboxlist name="highlight.types" list="highlightsTypes" value="highlight.typesIds" cssClass="checkbox" /]
+            [@s.fielderror cssClass="fieldError" fieldName="highlight.typesIds"/]
+            [@s.checkboxlist name="highlight.typesids" list="highlightsTypes" value="highlight.typesids" itemKey="id"  cssClass="checkbox" /]
           [#else]
-            <div class="select"><p>${(highlight.types)!'Field is empty'}</p></div>
+          
+          
+            <div class="select"> <p>
+           [#if highlight.typesIds?has_content]
+                  [#list highlight.typesIds as element]
+                   <p class="checked">${element.description}</p>
+                  [/#list]
+                [#else]
+                 'Field is empty'
+                [/#if]
+                </p></div>
+                
+      
           [/#if]
           </div>
         </div>
@@ -157,10 +169,20 @@
       [#-- Countries --]
       <div class="fullBlock countriesBlock chosen">
         [#if editable]
-          [@customForm.select name="highlight.countries" label="" i18nkey="reporting.projectHighlight.countries" listName="countries" keyFieldName="id"  displayFieldName="name" value="highlight.countriesIds" multiple=true disabled="${(highlight.global?string(1, 0))!0}"/]              
+          [@customForm.select name="highlight.countriesIds" label="" i18nkey="reporting.projectHighlight.countries" listName="countries" keyFieldName="id"  displayFieldName="name" value="highlight.countriesIds" multiple=true disabled="${(highlight.global?string(1, 0))!0}"/]              
         [#else]
           <h6>[@s.text name="reporting.projectHighlight.countries" /]</h6>
-          <div class="select"><p>${(highlight.countries)!'Field is empty'}</p></div>
+          <div class="select">
+          
+                     [#if highlight.countries?has_content]
+                  [#list highlight.countries as element]
+                   <p class="checked">${element.name}</p>
+                  [/#list]
+                [#else]
+                 'Field is empty'
+                [/#if]
+                
+       
         [/#if]
       </div>
 
@@ -199,7 +221,7 @@
       <input id="minDateValue" value="${startYear?c}-01-01" type="hidden"/>
       <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
       <input name="projectID" type="hidden" value="${project.id?c}" />
-      <input name="HighlightID"type="hidden" value="${highlight.id}">
+      <input name="highlightID"type="hidden" value="${highlight.id}">
       <div class="[#if !newProject]borderBox[/#if]" >
         [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">

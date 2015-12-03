@@ -21,16 +21,21 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlightsType;
 import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
+import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
+import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligthsCountry;
+import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligthsTypes;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +63,7 @@ public class ProjectHighlightAction extends BaseAction {
   private ProjectDeliverableValidator validator;
 
   // Model for the back-end
-  private ProjectHighlights highlight;
+  private ProjectHighligths highlight;
   private Project project;
 
   // Model for the front-end
@@ -67,6 +72,8 @@ public class ProjectHighlightAction extends BaseAction {
   private Map<String, String> statuses;
   private List<Integer> allYears;
   private List<Country> countries;
+  private List<ProjectHighlightsType> previewTypes;
+  private List<ProjectHighligthsCountry> previewCountries;
 
   @Inject
   public ProjectHighlightAction(APConfig config, ProjectManager projectManager, HighLightManager highLightManager,
@@ -107,7 +114,7 @@ public class ProjectHighlightAction extends BaseAction {
     return Integer.parseInt(dateFormat.format(project.getEndDate()));
   }
 
-  public ProjectHighlights getHighlight() {
+  public ProjectHighligths getHighlight() {
     return highlight;
   }
 
@@ -140,10 +147,10 @@ public class ProjectHighlightAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-
+    previewTypes = new ArrayList<>();
     highlightID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.HIGHLIGHT_REQUEST_ID)));
-    ProjectHighlights higligth = highLightManager.getHighLightById(highlightID);
-    project = projectManager.getProject(higligth.getProject_id());
+    ProjectHighligths higligth = highLightManager.getHighLightById(highlightID);
+    project = projectManager.getProject(Integer.parseInt(higligth.getProjectId() + ""));
 
     // Getting highlights Types
     highlightsTypes = new HashMap<>();
@@ -151,6 +158,7 @@ public class ProjectHighlightAction extends BaseAction {
     for (ProjectHighlightsType ProjectHighlightsType : list) {
       highlightsTypes.put(ProjectHighlightsType.getId(), ProjectHighlightsType.getDescription());
     }
+
 
     // Getting statuses
     statuses = new HashMap<>();
@@ -167,7 +175,33 @@ public class ProjectHighlightAction extends BaseAction {
 
     // Getting the highlight information.
     highlight = highLightManager.getHighLightById(highlightID);
+    Iterator<ProjectHighligthsTypes> iteratorTypes = higligth.getProjectHighligthsTypeses().iterator();
+    List<ProjectHighlightsType> typesids = new ArrayList<>();
+    List<String> ids = new ArrayList<>();
+    while (iteratorTypes.hasNext()) {
+      ProjectHighligthsTypes projectHighligthsTypes = iteratorTypes.next();
+      typesids.add(ProjectHighlightsType.value(projectHighligthsTypes.getIdType() + ""));
+      ids.add(projectHighligthsTypes.getIdType() + "");
+    }
+    Iterator<ProjectHighligthsCountry> iteratorCountry = higligth.getProjectHighligthsCountries().iterator();
+    List<Country> countrys = new ArrayList<>();
+    List<Integer> countryids = new ArrayList<>();
+    while (iteratorCountry.hasNext()) {
+      ProjectHighligthsCountry projectHighligthsCountry = iteratorCountry.next();
+      Country country = new Country();
+      country.setId(projectHighligthsCountry.getIdCountry());
+      int indexCountry = this.countries.indexOf(country);
+      country.setName(this.countries.get(indexCountry).getName());
+      countryids.add(projectHighligthsCountry.getIdCountry());
+      countrys.add(country);
+    }
 
+    highlight.setYear(higligth.getYear());
+    highlight.setCountriesIds(countryids);
+    highlight.setCountries(countrys);
+    highlight.setTypesIds(typesids);
+    previewTypes.addAll(typesids);
+    highlight.setTypesids(ids);
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
@@ -175,19 +209,42 @@ public class ProjectHighlightAction extends BaseAction {
 
   @Override
   public String save() {
+
+    List<ProjectHighligthsTypes> actualTypes = new ArrayList<>();
+    for (String type : highlight.getTypesids()) {
+      ProjectHighligthsTypes typeHigh = new ProjectHighligthsTypes();
+      typeHigh.setIdType(Integer.parseInt(type));
+      typeHigh.setProjectHighligths(highlight);
+      actualTypes.add(typeHigh);
+
+
+    }
+    List<ProjectHighligthsCountry> actualcountries = new ArrayList<>();
+    for (Integer countries : highlight.getCountriesIds()) {
+      ProjectHighligthsCountry countryHigh = new ProjectHighligthsCountry();
+      countryHigh.setIdCountry(countries);
+      countryHigh.setProjectHighligths(highlight);
+      actualcountries.add(countryHigh);
+    }
+    highlight.setProjectId(new Long(project.getId() + ""));
+    highlight.setProjectHighligthsTypeses(new HashSet<>(actualTypes));
+    highlight.setProjectHighligthsCountries(new HashSet<>(actualcountries));
+    highLightManager.saveHighLight(project.getId(), highlight, this.getCurrentUser(), this.getJustification());
+
     return SUCCESS;
   }
 
-  public void setDeliverable(ProjectHighlights deliverable) {
+  public void setDeliverable(ProjectHighligths deliverable) {
     this.highlight = deliverable;
   }
 
 
   @Override
   public void validate() {
-    super.validate();
+
     if (save) {
       // validator.validate(this, project, highlight, this.getCycleName());
+
     }
   }
 }

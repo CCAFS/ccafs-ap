@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.impl.HighLightManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 
 import java.util.List;
 
@@ -62,7 +63,7 @@ public interface HighLightManager {
    * @param highLightID is the highLight identifier.
    * @return a HighLight object.
    */
-  public ProjectHighlights getHighLightById(int highLightID);
+  public ProjectHighligths getHighLightById(int highLightID);
 
 
   /**
@@ -71,7 +72,7 @@ public interface HighLightManager {
    * @param projectID - is the Id of the project
    * @return a List of highLights with the Information related with the project
    */
-  public List<ProjectHighlights> getHighLightsByProject(int projectID);
+  public List<ProjectHighligths> getHighLightsByProject(int projectID);
 
 
   /**
@@ -97,7 +98,7 @@ public interface HighLightManager {
    * @return a number greater than 0 representing the new ID assigned by the database, 0 if the highLight was updated
    *         or -1 is some error occurred.
    */
-  public int saveHighLight(int projectID, ProjectHighlights highLight, User user, String justification);
+  public int saveHighLight(int projectID, ProjectHighligths highLight, User user, String justification);
 
   /**
    * This method saves the HighLight Contribution relation
