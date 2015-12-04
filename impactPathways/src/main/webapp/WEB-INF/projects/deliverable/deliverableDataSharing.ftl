@@ -14,7 +14,7 @@
     <div id="filesUploaded">
       <ul>
        [#if deliverable.files?has_content]
-        [#list deliverable.files as file] 
+        [#list deliverable.files as file]
          <li class="fileUploaded"> 
            <input class="fileID" name="deliverable.files[${file_index}].id" type="hidden" value="${file.id}">
            <input class="fileHosted" name="deliverable.files[${file_index}].hosted" type="hidden" value="${file.hosted}">

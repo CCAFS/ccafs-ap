@@ -2,17 +2,17 @@
 [#assign title = "Project Deliverable" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen", "star-rating", "dropzone"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/usersManagement.js", "${baseUrl}/js/projects/projectDeliverables.js"] /]
-[#assign currentSection = "planning" /]
+[#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outputs" /]
 [#assign currentSubStage = "deliverables" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projectOutputs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"},
-  {"label":"projectDeliverables", "nameSpace":"planning/projects", "action":"deliverablesList", "param":"projectID=${project.id}"}
-  {"label":"projectDeliverable", "nameSpace":"planning/projects", "action":"deliverable", "param":"deliverableID=${deliverable.id}"}
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projectOutputs", "nameSpace":"${currentSection}/projects", "action":"outputs", "param":"projectID=${project.id}"},
+  {"label":"projectDeliverables", "nameSpace":"${currentSection}/projects", "action":"deliverablesList", "param":"projectID=${project.id}"}
+  {"label":"projectDeliverable", "nameSpace":"${currentSection}/projects", "action":"deliverable", "param":"deliverableID=${deliverable.id}"}
 ]/]
 
 [#assign params = {

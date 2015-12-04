@@ -214,6 +214,10 @@
       </result>
     </action>
     
+    <action name="nextUsers" class="org.cgiar.ccafs.ap.action.projects.ProjectNextUsersAction">
+      <result name="input">/WEB-INF/projects/projectNextUsers.ftl</result>
+    </action>
+    
     <action name="highlights" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverablesListAction">
       <result name="input">/WEB-INF/projects/projectHighlightsList.ftl</result>
     </action>

@@ -60,6 +60,7 @@
         [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" disabled=reportingCycle/]
         [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" /]
         [#if reportingCycle]
+          [@menu actionName="nextUsers" stageName="nextUsers" textName="menu.reporting.submenu.nextUsers" /]
           [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" /]
         [/#if]
       </ul>
