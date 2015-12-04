@@ -16,7 +16,7 @@
         [#assign dlurl][@s.url namespace=namespace action='highlight' ][@s.param name='highlightID']${hl.id}[/@s.param][/@s.url][/#assign]
         <tr>
           <td class="id" ><a href="${dlurl}">${hl.id}</a></td> 
-          <td class="name"><a href="${dlurl}">${hl.title!"Untitled"}</a></td>
+          <td class="name"><a href="${dlurl}">${(hl.title)!"Untitled"}</a></td>
           <td class="type">${(hl.author)!"Not defined"}</td> 
           <td class="removeHighlight-row">
             [#if canEdit]

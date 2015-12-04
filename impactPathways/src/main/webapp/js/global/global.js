@@ -36,7 +36,7 @@ $(document).ready(function() {
   if(window.location.hash) {
     if($(window.location.hash).exists && hashScroll) {
       $('html, body').animate({
-        scrollTop: $(window.location.hash).offset().top
+        scrollTop: $(window.location.hash).offset().top - 110
       }, 1500);
     }
   }

@@ -473,7 +473,7 @@ ul#noty_bottomRight_layout_container {
 .create-button {
 }
 
-input[type="submit"], button:hover, .addButton:hover {
+.addButton:hover {
   background-color: #239FC5 !important;
 }
 
@@ -530,7 +530,7 @@ input.target {
 .checkboxGroup .checkboxLabel {
   display: inline-block;
   font-size: 0.95em;
-  width: 97%;
+  width: 95%;
 }
 
 .fileUpload .upload::-webkit-file-upload-button {
@@ -1237,13 +1237,17 @@ nav#mainMenu ul a{
  text-decoration: none;
 } 
 
-
 nav#mainMenu ul li {
   display: inline; 
   padding: 16px 24px 19px 23px; 
-  margin: -3px;
+  margin: -1px;
   color: #FFFFFF;
 }
+
+nav#mainMenu ul li:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 nav#mainMenu ul li.currentSection {
   /* background-image: url("../../images/global/mainMenuMarker.png"); */
   font-weight: bold;
@@ -1251,6 +1255,7 @@ nav#mainMenu ul li.currentSection {
   background: rgba(0, 0, 0, 0.1);
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
+
 nav#mainMenu ul a.disabled li{
   color: #5FAAC7;
 }
@@ -1943,7 +1948,7 @@ h1.simpleTitle span {
 }
 
 .buttons button[name=save]:hover{
-    background-color: #8BA383;
+  background-color: #8BA383;
 }
 
 .buttons button[name=next] {
@@ -3676,6 +3681,13 @@ li.fileUploaded span {
   background: url('../../images/global/sprite-icons-activities.png') 0 -150px;
 }
 
+/*** Project next users  ***/
+
+#nextUsersBlock .nextUser {
+  
+padding-top: 33px;
+}
+
 /*** Activities ***/
 
 .activity {
@@ -4435,7 +4447,7 @@ span.elementId{
 
 .highlightsTypes input {
   
-}
+} 
 
 /* -------------- SUMMARIES -----------------*/
 

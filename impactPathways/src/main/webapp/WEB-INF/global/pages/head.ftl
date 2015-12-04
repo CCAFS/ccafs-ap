@@ -1,5 +1,4 @@
 [#ftl]
-[#compress]
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +17,7 @@
     [#-- Google webmaster tools tag --]
     <meta name="google-site-verification" content="uDt49ijI7uKxK60GeIDi2N1DedHr3hsomqFzE7ngwqw" />
     [#-- TODO - Still need to integrate google verification for google webmaster tools --] 
-    <title>${title!"CCAFS Activity Planning"}</title> 
+    <title>${(title)!"CCAFS Activity Planning"}</title> 
     [#-- This file must be called before close the body tag in order to allow first the page load --]
 	  [#-- import js files of external libraries--]
   	<!-- Support for lower versions of IE 9 -->
@@ -83,4 +82,3 @@
     [#-- import the JS files --]
     [#include "/WEB-INF/global/pages/js-imports.ftl"]
   </head>
-  [/#compress]

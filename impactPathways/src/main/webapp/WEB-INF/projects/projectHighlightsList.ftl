@@ -19,7 +19,6 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
-[#-- TODO: Make a new template --]
 [#import "/WEB-INF/projects/macros/projectHighlightsTemplate.ftl" as highlightTemplate/]
     
 <section class="content">
@@ -29,7 +28,7 @@
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   
-  <article class="halfContent" id="mainInformation"> 
+  <article class="halfContent" id="mainInformation">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     <h1 class="contentTitle">[@s.text name="reporting.projectHighlights.title" /]</h1> 
     <div id="projectDeliverables" class="clearfix">
