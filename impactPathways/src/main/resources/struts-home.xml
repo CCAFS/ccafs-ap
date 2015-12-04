@@ -27,6 +27,10 @@
       <result name="input">/WEB-INF/home/overviewHome.ftl</result>
     </action>
     
+    <action name="help" class="org.cgiar.ccafs.ap.action.home.HelpAction">
+      <result name="input">/WEB-INF/home/helpHome.ftl</result>
+    </action>
+    
     <action name="glossary" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/global/pages/glossary.ftl</result>
     </action>

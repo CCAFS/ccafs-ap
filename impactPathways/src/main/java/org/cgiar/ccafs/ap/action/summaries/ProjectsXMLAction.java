@@ -91,6 +91,9 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       // lead institution name
       institutions.appendChild(this.buildElement(doc, "name",
         this.convertToString(projectData.get("lead_institution_name")), false));
+      // lead institution website
+      institutions.appendChild(this.buildElement(doc, "webSite",
+        this.convertToString(projectData.get("lead_institution_web_site")), false));
       // contact persons
       contactPersonsLabel = doc.createElement("contactPersons");
       contactPerson = doc.createElement("contactPerson");
@@ -110,11 +113,17 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       for (String eachPartner : partners) {
         partner = doc.createElement("partner");
         singlePartner = eachPartner.split("@");
-        // acronym
-        partner.appendChild(this.buildElement(doc, "acronym", singlePartner[0], false));
-        if (singlePartner.length > 1) {
-          // name
-          partner.appendChild(this.buildElement(doc, "name", singlePartner[1], false));
+        if (!singlePartner[0].equals(this.convertToString(projectData.get("lead_institution_acronym")))) {
+          // acronym
+          partner.appendChild(this.buildElement(doc, "acronym", singlePartner[0], false));
+          if (singlePartner.length > 1) {
+            // name
+            partner.appendChild(this.buildElement(doc, "name", singlePartner[1], false));
+          }
+          if (singlePartner.length > 2) {
+            // website
+            partner.appendChild(this.buildElement(doc, "webSite", singlePartner[2], false));
+          }
         }
         partnersLabel.appendChild(partner);
       }
@@ -154,20 +163,43 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       locations = this.convertToString(projectData.get("locations")).split(";");
       for (String eachLocation : locations) {
         location = doc.createElement("location");
-        singleLocation = eachLocation.split("@@");
-        // location type
-        location.appendChild(this.buildElement(doc, "level", singleLocation[0], false));
+        singleLocation = eachLocation.split("@");
         if (singleLocation.length > 1) {
-          // name
-          location.appendChild(this.buildElement(doc, "name", singleLocation[1], false));
+          // location id (only for CCAFS Sites and Climate Smart Villages)
+          if (singleLocation[1].equals("Climate smart village") || singleLocation[1].equals("CCAFS Site")) {
+            location.appendChild(this.buildElement(doc, "id", singleLocation[0], false));
+          }
+          // location type
+          location.appendChild(this.buildElement(doc, "level", singleLocation[1], false));
         }
         if (singleLocation.length > 2) {
-          // latitude
-          location.appendChild(this.buildElement(doc, "latitude", singleLocation[2], false));
+          // name
+          location.appendChild(this.buildElement(doc, "name", singleLocation[2], false));
         }
-        if (singleLocation.length > 3) {
+        // ISO
+        if (singleLocation.length == 4) {
+          if (singleLocation[1].equals("Climate smart village") || singleLocation[1].equals("CCAFS Site")
+            || singleLocation[1].equals("Region")) {
+            location.appendChild(this.buildElement(doc, "code", singleLocation[3], false));
+          } else {
+            location.appendChild(this.buildElement(doc, "iso2", singleLocation[3], false));
+          }
+        } else if (singleLocation.length == 5) {
+          // latitude
+          location.appendChild(this.buildElement(doc, "latitude", singleLocation[3], false));
           // longitude
-          location.appendChild(this.buildElement(doc, "longitude", singleLocation[3], false));
+          location.appendChild(this.buildElement(doc, "longitude", singleLocation[4], false));
+        } else if (singleLocation.length == 6) {
+          if (singleLocation[1].equals("Climate smart village") || singleLocation[1].equals("CCAFS Site")
+            || singleLocation[1].equals("Region")) {
+            location.appendChild(this.buildElement(doc, "code", singleLocation[5], false));
+          } else {
+            location.appendChild(this.buildElement(doc, "iso2", singleLocation[5], false));
+          }
+          // latitude
+          location.appendChild(this.buildElement(doc, "latitude", singleLocation[3], false));
+          // longitude
+          location.appendChild(this.buildElement(doc, "longitude", singleLocation[4], false));
         }
         locationsLabel.appendChild(location);
       }

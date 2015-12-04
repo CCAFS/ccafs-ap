@@ -1176,14 +1176,15 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("i.name as 'lead_institution_name', ");
     query.append("( SELECT CONCAT( u.last_name, ', ', u.first_name)) as 'contact_person_name', ");
     query.append("u.email as 'contact_person_email', ");
+    query.append("i.website_link as 'lead_institution_web_site', ");
     query
-      .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( i.acronym, '@', i.name) SEPARATOR ';' ) FROM project_partners pp INNER JOIN institutions i ON pp.institution_id = i.id WHERE p.id = pp.project_id AND pp.is_active = 1 GROUP BY p.id ) as 'partners', ");
+      .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( i.acronym, '@', i.name, IFNULL(CONCAT('@', i.website_link) ,' ')) SEPARATOR ';' ) FROM project_partners pp INNER JOIN institutions i ON pp.institution_id = i.id WHERE p.id = pp.project_id AND pp.is_active = 1 GROUP BY p.id) as 'partners', ");
     query
       .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( pro.acronym, '@', pro.name ) SEPARATOR ';') FROM ip_programs pro INNER JOIN project_focuses pf ON pro.id = pf.program_id WHERE pf.project_id = p.id AND pro.region_id IS NULL ) as 'flagships', ");
     query
       .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( pro.acronym, '@', pro.name ) SEPARATOR ';') FROM ip_programs pro INNER JOIN project_focuses pf ON pro.id = pf.program_id WHERE pf.project_id = p.id AND pro.region_id IS NOT NULL ) as 'regions', ");
     query
-      .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT(let.name, CONCAT('@@', le.name), IFNULL(CONCAT('@@', lg.latitude) ,'') , IFNULL(CONCAT('@@', lg.longitude),'')) SEPARATOR ';') ");
+      .append("( SELECT GROUP_CONCAT(DISTINCT CONCAT( le.id, CONCAT('@', let.name), CONCAT('@', le.name), IFNULL(CONCAT('@', lg.latitude) ,' ') , IFNULL(CONCAT('@', lg.longitude),' '), IFNULL(CONCAT('@', le.code) ,' ')) SEPARATOR ';') ");
     query
       .append("FROM project_locations po INNER JOIN loc_elements le ON po.loc_element_id = le.id INNER JOIN loc_element_types let ON le.element_type_id = let.id ");
     query.append("LEFT JOIN loc_geopositions lg ON le.geoposition_id = lg.id ");
@@ -1204,6 +1205,7 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("ORDER BY p.id");
 
     try (Connection con = databaseManager.getConnection()) {
+      databaseManager.makeChange("SET GLOBAL GROUP_CONCAT_MAX_LEN=6999; ", con);
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       while (rs.next()) {
         Map<String, Object> csvData = new HashMap<>();
@@ -1215,6 +1217,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         csvData.put("project_summary", rs.getString("project_summary"));
         csvData.put("lead_institution_acronym", rs.getString("lead_institution_acronym"));
         csvData.put("lead_institution_name", rs.getString("lead_institution_name"));
+        csvData.put("lead_institution_web_site", rs.getString("lead_institution_web_site"));
         csvData.put("contact_person_name", rs.getString("contact_person_name"));
         csvData.put("contact_person_email", rs.getString("contact_person_email"));
         csvData.put("partners", rs.getString("partners"));
