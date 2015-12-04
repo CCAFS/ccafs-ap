@@ -26,9 +26,11 @@ import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligthsCountry;
 import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligthsTypes;
+import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,18 +61,28 @@ public class ProjectHighlightAction extends BaseAction {
   private HighLightManager highLightManager;
   private DeliverableTypeManager deliverableTypeManager;
   private LocationManager locationManager;
-
+  private String highlightsImagesUrl;
+  private File file;
   private ProjectDeliverableValidator validator;
+  private String fileFileName;
+
 
   // Model for the back-end
   private ProjectHighligths highlight;
+
+
   private Project project;
+
 
   // Model for the front-end
   private int highlightID;
+
+
   private Map<String, String> highlightsTypes;
+
   private Map<String, String> statuses;
   private List<Integer> allYears;
+
   private List<Country> countries;
   private List<ProjectHighlightsType> previewTypes;
   private List<ProjectHighligthsCountry> previewCountries;
@@ -100,9 +112,13 @@ public class ProjectHighlightAction extends BaseAction {
     return true;
   }
 
-
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  private String getAnualReportRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "hightlihts"
+      + File.separator;
   }
 
   public List<Country> getCountries() {
@@ -114,12 +130,36 @@ public class ProjectHighlightAction extends BaseAction {
     return Integer.parseInt(dateFormat.format(project.getEndDate()));
   }
 
+
+  public File getFile() {
+    return file;
+  }
+
+  public String getFileFileName() {
+    return fileFileName;
+  }
+
   public ProjectHighligths getHighlight() {
     return highlight;
   }
 
+
+  public String getHighlightsImagesUrl() {
+    return config.getDownloadURL() + "/" + this.getHighlightsImagesUrlPath().replace('\\', '/');
+  }
+
+  public String getHighlightsImagesUrlPath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "hightlightsImage"
+      + File.separator;
+  }
+
   public Map<String, String> getHighlightsTypes() {
     return highlightsTypes;
+  }
+
+
+  private String getHightlightImagePath() {
+    return config.getUploadsBaseFolder() + File.separator + this.getAnualReportRelativePath() + File.separator;
   }
 
   public Project getProject() {
@@ -142,7 +182,6 @@ public class ProjectHighlightAction extends BaseAction {
   public String next() {
     return SUCCESS;
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -206,7 +245,6 @@ public class ProjectHighlightAction extends BaseAction {
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
 
-
   @Override
   public String save() {
 
@@ -226,16 +264,41 @@ public class ProjectHighlightAction extends BaseAction {
       countryHigh.setProjectHighligths(highlight);
       actualcountries.add(countryHigh);
     }
+
+
+    if (file != null) {
+      FileManager.deleteFile(this.getHightlightImagePath() + highlight.getPhoto());
+      FileManager.copyFile(file, this.getHightlightImagePath() + fileFileName);
+      System.out.println(this.getHightlightImagePath());
+      highlight.setPhoto(fileFileName);
+    }
+
+
     highlight.setProjectId(new Long(project.getId() + ""));
     highlight.setProjectHighligthsTypeses(new HashSet<>(actualTypes));
     highlight.setProjectHighligthsCountries(new HashSet<>(actualcountries));
     highLightManager.saveHighLight(project.getId(), highlight, this.getCurrentUser(), this.getJustification());
 
     return SUCCESS;
+
   }
 
   public void setDeliverable(ProjectHighligths deliverable) {
     this.highlight = deliverable;
+  }
+
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+
+  public void setFileFileName(String fileFileName) {
+    this.fileFileName = fileFileName;
+  }
+
+  public void setHighlightsImagesUrl(String highlightsImagesUrl) {
+    this.highlightsImagesUrl = highlightsImagesUrl;
   }
 
 

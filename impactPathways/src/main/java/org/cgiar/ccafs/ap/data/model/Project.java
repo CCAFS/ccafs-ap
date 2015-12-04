@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,8 +55,14 @@ public class Project {
   private List<ComponentLesson> componentLessons;
   private ProjectPartner coordinator; // Project Coordinator.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
+  private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
+
   private List<IPIndicator> indicators;
+
+
   private OtherContribution ipOtherContribution;
+
+
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private List<Project> linkedProjects;
@@ -78,14 +85,13 @@ public class Project {
   private String statusDescription;
   private String AnnualreportDonor;
 
-
   public Project() {
   }
-
 
   public Project(int id) {
     this.id = id;
   }
+
 
   /**
    * This method validates if the current project contributes to a specific output (MOG).
@@ -103,6 +109,7 @@ public class Project {
     }
     return false;
   }
+
 
   /**
    * This method validates if the current project contributes to a specific output and if the given output contributes
@@ -124,7 +131,6 @@ public class Project {
     }
     return false;
   }
-
 
   /**
    * this method validates if the current project contributes to a given output (MOG).
@@ -164,6 +170,7 @@ public class Project {
     }
     return super.equals(obj);
   }
+
 
   public List<Activity> getActivities() {
     return activities;
@@ -354,7 +361,6 @@ public class Project {
     return flagships;
   }
 
-
   /**
    * This method gets the list of Flagships acronyms separated by comma (, ).
    * 
@@ -372,6 +378,11 @@ public class Project {
     }
     return flagshipAcronym.toString();
   }
+
+  public List<ProjectHighligths> getHighlights() {
+    return highlights;
+  }
+
 
   public int getId() {
     return id;
@@ -399,7 +410,6 @@ public class Project {
     }
     return emptyIndicator;
   }
-
 
   public List<IPIndicator> getIndicators() {
     return indicators;
@@ -505,6 +515,7 @@ public class Project {
     return liaisonInstitution;
   }
 
+
   public List<Project> getLinkedProjects() {
     return linkedProjects;
   }
@@ -534,7 +545,6 @@ public class Project {
     return null;
   }
 
-
   /**
    * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
    * 
@@ -550,6 +560,7 @@ public class Project {
     }
     return null;
   }
+
 
   public List<IPElement> getOutputs() {
     return outputs;
@@ -897,10 +908,10 @@ public class Project {
     return workplanRequired;
   }
 
-
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
   }
+
 
   public void setAnnualreportDonor(String annualreportDonor) {
     AnnualreportDonor = annualreportDonor;
@@ -955,6 +966,10 @@ public class Project {
 
   public void setGlobal(boolean isGlobal) {
     this.isGlobal = isGlobal;
+  }
+
+  public void setHighlights(List<ProjectHighligths> highlights) {
+    this.highlights = highlights;
   }
 
   public void setId(int id) {

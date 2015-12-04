@@ -7,7 +7,7 @@
         <tr>
           <th class="id" >ID</th> 
           <th class="name">Highlight Name</th>
-          <th class="type">Type</th>  
+          <th class="type">Author</th>  
           <th class="removeHighlight">Remove</th> 
         </tr>
       </thead>
@@ -17,7 +17,7 @@
         <tr>
           <td class="id" ><a href="${dlurl}">${hl.id}</a></td> 
           <td class="name"><a href="${dlurl}">${hl.title!"Untitled"}</a></td>
-          <td class="type">${(hl.type.name)!"Not defined"}</td> 
+          <td class="type">${(hl.author)!"Not defined"}</td> 
           <td class="removeHighlight-row">
             [#if canEdit]
               <a id="removeHighlight-${hl.id}" class="removeHighlight" href="highlightID${hl.id}" title="" >
