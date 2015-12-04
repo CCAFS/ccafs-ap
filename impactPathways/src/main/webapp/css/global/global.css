@@ -3611,13 +3611,13 @@ margin: 0;}
 li.fileUploaded {
     text-align: left;
     list-style: none;
-    border: 1px solid rgba(0, 0, 0, 0.05);    
-    -webkit-border-radius: 3px;  
-    border-radius: 3px;  
-    background: rgba(0, 0, 0, 0.03);  
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.03);
     padding: 6px 7px 2px 7px;
     margin: 2px 0;
-    font-size: 0.9em;
+    font-size: 0.95em;
 }
 
 li.fileUploaded div {
@@ -3653,6 +3653,10 @@ li.fileUploaded span {
 
 .fallback #addFileInput{
   
+}
+
+.addFileURL {
+  width: 60px;
 }
 
 .uploadBlock {

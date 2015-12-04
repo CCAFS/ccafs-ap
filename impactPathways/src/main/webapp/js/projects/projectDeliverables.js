@@ -285,7 +285,7 @@ function addDropzone() {
       paramName: "file", // The name that will be used to transfer the file
       addRemoveLinks: true,
       params: {
-          activityID: $("input[name^='activityID']").val(),
+          activityID: $("input[name^='projectID']").val(),
           deliverableID: $("input[name^='deliverableID']").val()
       },
       url: "uploadDeliverable.do",
@@ -344,7 +344,9 @@ function addfileURL(e) {
     addFileToUploaded(file);
     $target.find("input").val("http://");
   } else {
-    $.prompt("Invalid URL");
+    var notyOptions = jQuery.extend({}, notyDefaultOptions);
+    notyOptions.text = 'Invalid URL';
+    noty(notyOptions);
   }
 }
 

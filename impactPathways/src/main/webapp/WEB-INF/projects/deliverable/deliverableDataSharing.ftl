@@ -73,3 +73,25 @@
     [/#if]
   </div>
 </div>
+
+[#-- File Input template --]
+<div id="fileInputTemplate" class="fileInput" style="display:none">
+  <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"> 
+  <input name="filesUploaded" type="file" />
+</div>
+ 
+[#-- File uploaded template --]
+<ul>
+  <li id="deliverableFileTemplate" class="fileUploaded" style="display:none">
+    <input class="fileID" name="" type="hidden">
+    <input class="fileHosted" name="" type="hidden">
+    <input class="fileLink" name="" type="hidden">
+    <div class="fileName">filename</div>
+    <div class="fileFormat">- -</div>
+    <div class="fileSize">- -</div>
+    <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/>
+  </li>
+</ul>
+
+[#-- Remove deliverable files modal  template --]
+<div id="removeDeliverableFiles" style="display:none" title="Modal title"></div> 
