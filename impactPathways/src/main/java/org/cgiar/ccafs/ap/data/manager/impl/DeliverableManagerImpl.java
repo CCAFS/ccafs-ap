@@ -19,13 +19,10 @@ import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPElementType;
-import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -53,16 +50,14 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private DeliverableTypeManager deliverableTypeManager;
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
-  private IPProgramManager ipProgramManager;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager, IPProgramManager ipProgramManager) {
+    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = partnerManager;
-    this.ipProgramManager = ipProgramManager;
   }
 
   @Override
@@ -117,8 +112,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       if (deliverableData.get("type_id") != null) {
-        deliverable
-          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
+          .get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // Next Users
@@ -132,8 +127,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setResponsiblePartner(deliverablePartners.get(0));
       }
       // Other Partner Persons
-      deliverable.setOtherPartners(
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
+        APConstants.DELIVERABLE_PARTNER_OTHER));
 
       return deliverable;
     }
@@ -147,15 +142,6 @@ public class DeliverableManagerImpl implements DeliverableManager {
     if (!deliverableOutputData.isEmpty()) {
       deliverableOutput.setId(Integer.parseInt(deliverableOutputData.get("id")));
       deliverableOutput.setDescription(deliverableOutputData.get("description"));
-      IPProgram ipProgram =
-        this.ipProgramManager.getIPProgramById(Integer.parseInt(deliverableOutputData.get("ip_program_id")));
-      if (ipProgram != null) {
-        deliverableOutput.setProgram(ipProgram);
-      }
-      IPElementType ipElementType = new IPElementType();
-      ipElementType.setId(Integer.parseInt(deliverableOutputData.get("element_type_id")));
-      ipElementType.setName(deliverableOutputData.get("element_type_name"));
-      deliverableOutput.setType(ipElementType);
       return deliverableOutput;
     }
     return null;
@@ -174,12 +160,12 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // Type
       if (deliverableData.get("type_id") != null) {
-        deliverable
-          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
+          .get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // Next users
-      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
       // MOG
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
       // Partner Person Responsible
@@ -189,8 +175,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setResponsiblePartner(deliverablePartners.get(0));
       }
       // Other Partner Persons
-      deliverable.setOtherPartners(
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
+        APConstants.DELIVERABLE_PARTNER_OTHER));
 
       // adding information of the object to the array
       deliverableList.add(deliverable);
@@ -211,14 +197,24 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // Type
       if (deliverableData.get("type_id") != null) {
-        deliverable
-          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
+          .get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // adding information of the object to the array
       deliverableList.add(deliverable);
     }
     return deliverableList;
+  }
+
+  @Override
+  public List<Map<String, String>> getDeliverablesCountByType() {
+    return deliverableDAO.getDeliverablesCountByType();
+  }
+
+  @Override
+  public List<Map<String, String>> getExpectedDeliverablesCountByYear() {
+    return deliverableDAO.getExpectedDeliverablesCountByYear();
   }
 
   @Override
@@ -280,8 +276,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
     } else if (result == 0) {
       LOG.debug("saveDeliverable > Deliverable with id={} was updated", deliverable.getId());
     } else {
-      LOG.error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}",
-        projectID);
+      LOG
+        .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
     }
     return result;
   }

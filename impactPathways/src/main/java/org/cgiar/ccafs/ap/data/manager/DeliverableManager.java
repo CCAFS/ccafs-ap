@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.ImplementedBy;
 
@@ -29,7 +30,6 @@ import com.google.inject.ImplementedBy;
  */
 @ImplementedBy(DeliverableManagerImpl.class)
 public interface DeliverableManager {
-
 
   /**
    * This method removes a specific deliverable value from the database.
@@ -98,6 +98,20 @@ public interface DeliverableManager {
    *         if some problem occurred.
    */
   public List<Deliverable> getDeliverablesByProjectPartnerID(int projectPartnerID);
+
+  /**
+   * This method gets the list of Deliverable by type
+   * 
+   * @return a List of Map of the account of Deliverable Types
+   */
+  public List<Map<String, String>> getDeliverablesCountByType();
+
+  /**
+   * This method gets the list of Expected Deliverables by Year
+   * 
+   * @return a List of Map of the account of the Expected Deliverables per Year
+   */
+  public List<Map<String, String>> getExpectedDeliverablesCountByYear();
 
   /**
    * This method return all the deliverables that belongs to a given project and which are led by a given user.
