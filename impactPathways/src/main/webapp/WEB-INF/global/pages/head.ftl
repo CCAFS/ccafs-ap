@@ -62,6 +62,9 @@
         [#if libraryName="star-rating"]
           <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/star-rating/jquery.rating.css" />
         [/#if]
+        [#if libraryName="dropzone"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/dropzone/css/dropzone.css" />
+        [/#if]
   	 [/#list]
   	[/#if]
     [#-- Second, import global javascripts and templates. --]

@@ -127,11 +127,17 @@
         <span class="index">${nu_index?number+1}</span>
       </div>
       [#-- Next User --]
-      [@customForm.input name="user" type="text" i18nkey="planning.deliverables.nextUser" className="limitWords-20" required=true /]<br/>
+      <div class="fullBlock">
+        [@customForm.input name="user" type="text" i18nkey="planning.deliverables.nextUser" className="limitWords-20" required=true /] 
+      </div>
       [#-- Expected Changes --]
-      [@customForm.textArea name="expectedChanges" i18nkey="planning.deliverables.expectedChanges" className="limitWords-50" required=true /]<br/>
+      <di class="fullBlock">
+      [@customForm.textArea name="expectedChanges" i18nkey="planning.deliverables.expectedChanges" className="limitWords-50" required=true /] 
+      </di>
       [#-- Strategies --]
-      [@customForm.textArea name="strategies" i18nkey="planning.deliverables.strategies" className="limitWords-50" required=true /]<br/>
+      <div class="fullBlock">
+        [@customForm.textArea name="strategies" i18nkey="planning.deliverables.strategies" className="limitWords-50" required=true /] 
+      </div>
     </div>
   [#else]
     <div id="projectNextUser-${nu_index}" class="projectNextUser simpleBox">
@@ -143,11 +149,17 @@
         <span class="index">${nu_index?number+1}</span>
       </div>
       [#-- Next User --]
-      [@customForm.input name="${nu_name}[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" className="limitWords-20" required=true editable=editable /]<br/>
+      <div class="fullBlock">
+        [@customForm.input name="${nu_name}[${nu_index}].user" type="text" i18nkey="planning.deliverables.nextUser" className="limitWords-20" required=true editable=editable /]
+      </div>
       [#-- Expected Changes --]
-      [@customForm.textArea name="${nu_name}[${nu_index}].expectedChanges" i18nkey="planning.deliverables.expectedChanges" className="limitWords-50" required=true editable=editable /]<br/>
+      <div class="fullBlock">
+        [@customForm.textArea name="${nu_name}[${nu_index}].expectedChanges" i18nkey="planning.deliverables.expectedChanges" className="limitWords-50" required=true editable=editable /]
+      </div>
       [#-- Strategies --]
-      [@customForm.textArea name="${nu_name}[${nu_index}].strategies" i18nkey="planning.deliverables.strategies" className="limitWords-50" required=true editable=editable /]<br/>
+      <div class="fullBlock">
+        [@customForm.textArea name="${nu_name}[${nu_index}].strategies" i18nkey="planning.deliverables.strategies" className="limitWords-50" required=true editable=editable /]
+      </div> 
     </div>
   [/#if]
 [/#macro]

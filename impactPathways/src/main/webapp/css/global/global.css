@@ -365,7 +365,7 @@ select{
 }
 
 input[type="submit"], button, .addButton {
-  background-color:#2BA6CB;
+  background-color: #2BA6CB;
   color: #fff;
   border: 0;
   padding: 4px 20px 4px 20px;
@@ -379,7 +379,8 @@ input[type="submit"], button, .addButton {
   padding: 4px 25px 4px 28px;
   margin: 5px 0;
   text-decoration: none;
-}
+  cursor: pointer;
+} 
 
 a.addButton, a.addButton:active, a.addButton:visited, a.addButton:hover{
   color: #fff; 
@@ -473,7 +474,7 @@ ul#noty_bottomRight_layout_container {
 }
 
 input[type="submit"], button:hover, .addButton:hover {
-  background-color: #239FC5;
+  background-color: #239FC5 !important;
 }
 
 input[type="text"] {
@@ -782,6 +783,7 @@ span.logType.insert {
   font-size: 0.85em !important;
   margin-right: 12px;
   text-align: right !important;
+  float: right;
 }
 
 a.popup-link {
@@ -3565,15 +3567,16 @@ margin: 0;}
 
 #dataSharingOptions label {
     display: inline-block;
-    padding: 5px 10px 10px 0px;
+    /* padding: 5px 10px 10px 0px; */
 }
 
 #dataSharingOptions label .quote{
-    color: #979797;  font-size: 0.9em;  font-style: italic;
-    margin-left: 33px;
+    color: #979797;
+    font-size: 1em;
+    font-style: italic;
+    margin-left: 16px;
     display: inline-block;
     text-align: justify;
-    margin-top: 0.3em;
 }
 
 #dataSharingOptions input {
@@ -3596,8 +3599,7 @@ margin: 0;}
 
 #filesUploaded p{
     border: 1px solid #D8D8D8;  border-radius: 2px;  text-align: center;
-    padding: 20px;
-  
+    padding: 20px; 
     font-size: 1.2em;
     color: #717171;
 }
@@ -3609,7 +3611,10 @@ margin: 0;}
 li.fileUploaded {
     text-align: left;
     list-style: none;
-    border: 1px solid rgba(0, 0, 0, 0.05);    -webkit-border-radius: 3px;  border-radius: 3px;  background: rgba(0, 0, 0, 0.03);  
+    border: 1px solid rgba(0, 0, 0, 0.05);    
+    -webkit-border-radius: 3px;  
+    border-radius: 3px;  
+    background: rgba(0, 0, 0, 0.03);  
     padding: 6px 7px 2px 7px;
     margin: 2px 0;
     font-size: 0.9em;
