@@ -45,8 +45,11 @@ public class HibernateListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
 
     try {
+      System.out.println("Entro al listener");
       URL url = HibernateListener.class.getResource(path);
+      System.out.println(url.toString());
       config = new Configuration().configure(url);
+      System.out.println("Entro al listener config" + config);
       PropertiesManager manager = new PropertiesManager();
 
       config.setProperty("hibernate.connection.username", manager.getPropertiesAsString(APConfig.MYSQL_USER));

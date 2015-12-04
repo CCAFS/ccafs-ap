@@ -18,6 +18,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
+
 [#import "/WEB-INF/global/macros/usersPopup.ftl" as usersForm/]
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
 [#import "/WEB-INF/projects/macros/projectDeliverablesTemplate.ftl" as deliverableTemplate/]
@@ -29,7 +30,7 @@
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   
-  [@s.form action="highlight" cssClass="pure-form"]
+  [@s.form action="highlight" cssClass="pure-form" method="POST" enctype="multipart/form-data" ]
   <article class="halfContent" id="projectHighlight">  
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     <br />
@@ -138,10 +139,18 @@
         [#-- Image --]
         <div class="halfPartBlock imageBlock">
           <div class="browseInput fileUpload">
-            [@customForm.input name="highlight.image" type="file" className="upload" i18nkey="reporting.projectHighlight.image" editable=editable/]
+                [#if editable]
+                  [@customForm.inputFile name="file"  /]
+                [/#if]  
+             
           </div>
           <div id="highlight.image" class="image">
-            <img src="${(highlightsImagesUrl)!baseUrl}/${(highlight.imageFileName)!'images/global/defaultImage.png'}" width="100%">
+             [#if highlight.photo?has_content]
+               <img src="${(highlightsImagesUrl)!baseUrl}/${(highlight.photo)!'images/global/defaultImage.png'}" width="100%">
+             [#else]
+               <img src="${baseUrl}/${(highlight.photo)!'images/global/defaultImage.png'}" width="100%">
+              [/#if]
+          
           </div>
           <div class="clear"></div>
         </div>
@@ -236,7 +245,7 @@
     [/#if]
   </article>
   [/@s.form] 
-   
+     [@customForm.inputFile name="file" template=true /] 
 </section> 
 
 

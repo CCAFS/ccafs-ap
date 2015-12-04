@@ -149,15 +149,12 @@ public class ProjectHightLihgtDAO extends StandardDao {
     try {
       this.getSession();
       this.InitTransaction();
+      this.CommitTransaction();
       Query query = this.getSession().createQuery(
         "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1");
       list_programs.addAll(query.list());
 
-      for (ProjectHighligths projectHighligths : list_programs) {
-        projectHighligths.setIsActive(false);
-        this.save(projectHighligths);
-      }
-      this.CommitTransaction();
+
       return list_programs;
     } catch (
 
@@ -176,6 +173,10 @@ public class ProjectHightLihgtDAO extends StandardDao {
   public int save(ProjectHighligths projectHighlihts) {
     try {
       ProjectHighligths projectHighlihtsPrev = this.find(projectHighlihts.getId());
+      if (projectHighlihts.getId() == -1) {
+        projectHighlihts.setId(null);
+      }
+
       super.saveOrUpdate(projectHighlihts);
 
       Iterator<ProjectHighligthsTypes> iter = projectHighlihts.getProjectHighligthsTypeses().iterator();
@@ -191,14 +192,6 @@ public class ProjectHightLihgtDAO extends StandardDao {
 
       }
 
-      Iterator<ProjectHighligthsTypes> iter_prev = projectHighlihtsPrev.getProjectHighligthsTypeses().iterator();
-      while (iter_prev.hasNext()) {
-        ProjectHighligthsTypes projectHighligthsTypes = iter_prev.next();
-
-        if (!projectHighlihts.getProjectHighligthsTypeses().contains(projectHighligthsTypes)) {
-          this.delete(projectHighligthsTypes);
-        }
-      }
 
       Iterator<ProjectHighligthsCountry> iter_con = projectHighlihts.getProjectHighligthsCountries().iterator();
       while (iter_con.hasNext()) {
@@ -214,17 +207,28 @@ public class ProjectHightLihgtDAO extends StandardDao {
       }
 
 
-      Iterator<ProjectHighligthsCountry> iter_con_2 = projectHighlihtsPrev.getProjectHighligthsCountries().iterator();
-      while (iter_con_2.hasNext()) {
-        ProjectHighligthsCountry projectHighligthsTypes = iter_con_2.next();
+      if (projectHighlihtsPrev != null) {
+        Iterator<ProjectHighligthsTypes> iter_prev = projectHighlihtsPrev.getProjectHighligthsTypeses().iterator();
+        while (iter_prev.hasNext()) {
+          ProjectHighligthsTypes projectHighligthsTypes = iter_prev.next();
 
-        if (!projectHighlihts.getProjectHighligthsCountries().contains(projectHighligthsTypes)) {
-          this.delete(projectHighligthsTypes);
+          if (!projectHighlihts.getProjectHighligthsTypeses().contains(projectHighligthsTypes)) {
+            this.delete(projectHighligthsTypes);
+          }
+        }
+
+        Iterator<ProjectHighligthsCountry> iter_con_2 = projectHighlihtsPrev.getProjectHighligthsCountries().iterator();
+        while (iter_con_2.hasNext()) {
+          ProjectHighligthsCountry projectHighligthsTypes = iter_con_2.next();
+
+          if (!projectHighlihts.getProjectHighligthsCountries().contains(projectHighligthsTypes)) {
+            this.delete(projectHighligthsTypes);
+          }
         }
       }
 
 
-      return 1;
+      return projectHighlihts.getId();
     } catch (Exception e) {
 
       return 0;

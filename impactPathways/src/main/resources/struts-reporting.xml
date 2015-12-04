@@ -197,6 +197,24 @@
       </result>
     </action>
     
+    <action name="addNewhighlight" method="add" class="org.cgiar.ccafs.ap.action.projects.ProjectHighListAction">
+      <result name="input">/WEB-INF/projects/projectHighlightsList.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="namespace">/reporting/projects</param>
+        <param name="actionName">highlight</param>
+        <param name="highlightID">${deliverableID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+    
+        <action name="deleteHighLight" method="delete" class="org.cgiar.ccafs.ap.action.projects.ProjectHighListAction">
+      <result name="success" type="redirectAction">
+        <param name="namespace">/reporting/projects</param>
+        <param name="actionName">highlights</param>
+        <param name="projectID">${projectID}</param>
+      </result>
+    </action>
+    
     <action name="deliverable" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverableAction">
       <interceptor-ref name="planningStackDeliverables" />
       <result name="input">/WEB-INF/projects/projectDeliverable.ftl</result>
@@ -214,7 +232,7 @@
       </result>
     </action>
     
-    <action name="highlights" class="org.cgiar.ccafs.ap.action.projects.ProjectDeliverablesListAction">
+    <action name="highlights" class="org.cgiar.ccafs.ap.action.projects.ProjectHighListAction">
       <result name="input">/WEB-INF/projects/projectHighlightsList.ftl</result>
     </action>
     

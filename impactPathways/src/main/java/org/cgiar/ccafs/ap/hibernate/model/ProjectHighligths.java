@@ -57,6 +57,9 @@ public class ProjectHighligths implements java.io.Serializable {
   public ProjectHighligths() {
   }
 
+  public ProjectHighligths(int id) {
+    this.id = (id);
+  }
 
   public ProjectHighligths(String title, String author, boolean isGlobal, int leader, boolean isActive, long projectId,
     Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {

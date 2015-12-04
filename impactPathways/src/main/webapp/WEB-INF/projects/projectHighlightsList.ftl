@@ -36,8 +36,8 @@
       [#if allYears?has_content]
         [#-- Project Highlights --]
         <div class="fullBlock clearfix">
-          [#if project.deliverables?has_content]
-            [@highlightTemplate.highlightsList highlights=project.deliverables canEdit=canEdit /]
+          [#if project.highlights?has_content]
+            [@highlightTemplate.highlightsList highlights=project.highlights canEdit=canEdit /]
           [#else]
             [#-- Just show this empty message to those users who are not able to modify this section --]
             <p class="simpleBox center">[@s.text name="reporting.projectHighlights.empty"/]</p> 
@@ -59,6 +59,6 @@
   
 </section>
 [#-- TODO: Change function to delete --]
-[@customForm.confirmJustification action="deleteHighlights" namespace="/reporting/projects" nameId="highlightID" projectID="${projectID}" title="Remove project highlights" /]
+[@customForm.confirmJustification action="deleteHighLight" namespace="/reporting/projects" nameId="deliverableID" projectID="${projectID}" title="Remove project highlights" /]
  
 [#include "/WEB-INF/global/pages/footer.ftl"]
