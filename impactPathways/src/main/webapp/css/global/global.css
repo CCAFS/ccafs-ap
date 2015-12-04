@@ -1223,11 +1223,17 @@ nav#mainMenu ul a{
 
 
 nav#mainMenu ul li {
-  display: inline; 
-  padding: 16px 24px 19px 23px; 
-  margin: -3px;
+  display: inline;
+  padding: 16px 24px 19px 23px;
+  /* margin: -3px; */
   color: #FFFFFF;
 }
+
+nav#mainMenu ul li:hover {
+  background: rgba(0, 0, 0, 0.05);
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
 nav#mainMenu ul li.currentSection {
   /* background-image: url("../../images/global/mainMenuMarker.png"); */
   font-weight: bold;
