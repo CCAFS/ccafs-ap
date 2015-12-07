@@ -57,7 +57,7 @@
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.outputs" /]</p>
       <ul>
-        [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" disabled=reportingCycle/]
+        [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" /]
         [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" /]
         [#if reportingCycle]
           [@menu actionName="nextUsers" stageName="nextUsers" textName="menu.reporting.submenu.nextUsers" /]

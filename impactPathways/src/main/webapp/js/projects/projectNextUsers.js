@@ -18,9 +18,9 @@ function init() {
 }
 
 function attachEvents() {
-  // Remove an activity event
+  // Remove a next user event
   $('.removeElement').on('click', removeElement);
-  // Add new activity event
+  // Add new next user event
   $('#projectNextUsers_add .addButton').on('click', addElement);
 }
 

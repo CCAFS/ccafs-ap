@@ -2,16 +2,16 @@
 [#assign title = "Overview by MOGs" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectOutputs.js"] /]
-[#assign currentSection = "planning" /]
+[#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "outputs" /]
 [#assign currentSubStage = "overviewByMogs" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projectOutputs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"},
-  {"label":"projectMogs", "nameSpace":"planning/projects", "action":"outputs", "param":"projectID=${project.id}"}
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projectOutputs", "nameSpace":"${currentSection}/projects", "action":"outputs", "param":"projectID=${project.id}"},
+  {"label":"projectMogs", "nameSpace":"${currentSection}/projects", "action":"outputs", "param":"projectID=${project.id}"}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -27,7 +27,7 @@
     [#assign years= [midOutcomeYear, currentPlanningYear-1,currentPlanningYear, currentPlanningYear+1] /]
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     <br />
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
+    [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
     [#if submission?has_content]
       <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
     [#elseif !canEdit ]
@@ -64,18 +64,32 @@
                   <input type="hidden" name="project.outputsOverview[${index}].year" value="${year}" />
                   <input type="hidden" name="project.outputsOverview[${index}].output.id" value="${output.id}" />
                   [#-- MOG Title --]
-                  <div class="fullPartBlock">
-                    <p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p>
-                  </div>
+                  <div class="fullPartBlock"><p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p></div>
                   [#-- Brief bullet points of your expected annual year contribution towards the selected MOG --]
                   <div class="fullBlock">
-                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
-                    [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=isYearRequired(year) showTitle=false editable=editable /]
+                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!(editable && !reportingCycle) param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
+                    [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=isYearRequired(year) showTitle=false editable=(editable && !reportingCycle) /]
                   </div>
+                  [#-- Brief summary of your actual annual contribution --]
+                  [#if reportingCycle]
+                  <div class="fullBlock">
+                    <h6>[@customForm.text name="reporting.projectOutputs.summaryAnnualContribution" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
+                    [@customForm.textArea name="project.outputsOverview[${index}].summaryAnnualContribution" value=""  required=isYearRequired(year) showTitle=false editable=editable /]
+                  </div>
+                  [/#if]
                   [#-- Brief plan of the gender and social inclusion dimension of the expected annual output --]
                   <div class="fullBlock">
-                    [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" i18nkey="planning.projectOutputs.expectedSocialAndGenderPlan" required=isYearRequired(year) editable=editable /]
+                    <h6>[@customForm.text name="planning.projectOutputs.expectedSocialAndGenderPlan" readText=!(editable && !reportingCycle) param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>
+                    [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" showTitle=false required=isYearRequired(year) editable=(editable && !reportingCycle) /]
                   </div>
+                  
+                  [#-- Summary of the gender and social inclusion dimension --]
+                  [#if reportingCycle]
+                  <div class="fullBlock">
+                    <h6>[@customForm.text name="reporting.projectOutputs.summarySocialInclusionDimmension" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6> 
+                    [@customForm.textArea name="project.outputsOverview[${index}].summarySocialInclusionDimmension" value="" required=isYearRequired(year) showTitle=false editable=editable /]
+                  </div>
+                  [/#if]
                 </div>
               [/#list] [#-- End Outcomes 2019 list --]
             </div>
@@ -99,7 +113,7 @@
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
         <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectOutputs.lessons" required=!project.bilateralProject editable=editable /]
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectOutputs.lessons" required=!project.bilateralProject editable=editable /]
       </div>
     </div>
     [/#if]
