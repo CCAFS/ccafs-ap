@@ -106,14 +106,14 @@
   [#assign value][@s.property value="${name}"/][/#assign]
   <div class="onoffswitch">
     [#if editable]
-      <input id="myonoffswitch-${name}" class="onoffswitch-checkbox [#if inverse]inverse[/#if]" type="checkbox" name="${name}" value="yes" [#if disabled]disabled[/#if] />
+      <input id="myonoffswitch-${name}" class="onoffswitch-checkbox [#if inverse]inverse[/#if]"  [#if value=="true"]checked[/#if] type="checkbox" name="${name}" value="true" [#if disabled]disabled[/#if] />
       <label class="onoffswitch-label" for="myonoffswitch-${name}">
           <span class="onoffswitch-inner"></span>
           <span class="onoffswitch-switch"></span>
       </label>
-      [#if !disabled] <input type="hidden" name="${name}" value="yes" />[/#if]
+      [#if !disabled] <input type="hidden" name="${name}" value="true" />[/#if]
     [#else]
-      <p style="text-align:center;">[#if value?has_content]Yes[#else]No[/#if]</p>
+      <p style="text-align:center;">[#if value=="true"]Yes[#else]No[/#if]</p>
     [/#if]
   </div>
 [/#macro]

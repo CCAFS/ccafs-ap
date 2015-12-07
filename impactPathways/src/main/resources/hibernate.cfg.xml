@@ -15,5 +15,6 @@
         <mapping resource="org/cgiar/ccafs/ap/hibernate/model/ProjectHighligthsCountry.hbm.xml" />
         <mapping resource="org/cgiar/ccafs/ap/hibernate/model/ProjectHighligths.hbm.xml" />
         <mapping resource="org/cgiar/ccafs/ap/hibernate/model/ProjectHighligthsTypes.hbm.xml" />
+          <mapping resource="org/cgiar/ccafs/ap/hibernate/model/DeliverablesRanking.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

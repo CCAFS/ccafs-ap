@@ -97,11 +97,7 @@ public class ProjectHightLihgtDAO extends StandardDao {
         return list_programs.get(0);
       }
       return null;
-    } catch (
-
-    HibernateException e)
-
-    {
+    } catch (HibernateException e) {
       this.RollBackTransaction();
     } finally
 

@@ -15,19 +15,19 @@
       <tbody>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.ranking.addressGenderSocial" /]</td> 
-          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.addressGenderSocial" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.address" editable=editable/]</td>
         </tr>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.ranking.potencialActualContribution" /]</td>
-          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.potencialActualContribution" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.potential" editable=editable/]</td>
         </tr>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.ranking.levelSharedOwnership" /] [@s.text name="reporting.projectDeliverable.ranking.levelSharedOwnership.complement" /]</td> 
-          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.levelSharedOwnership" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.level" editable=editable/]</td>
         </tr>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.ranking.productImportance" /]</td> 
-          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.productImportance" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.personalPerspective" editable=editable/]</td>
         </tr>
       </tbody>
     </table>
@@ -39,23 +39,29 @@
       <tbody>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.compliance.dataQualityAssurance" /]
-            <div id="aditional-dataQualityAssurance" class="aditional fileUpload" style="display:none">
-              [@customForm.input name="${params.deliverable.name}.dataQualityAssuranceUpload" type="file" className="upload" i18nkey="reporting.projectDeliverable.compliance.dataQualityAssurance.upload" editable=editable/]
+            <div id="aditional-file" class="aditional fileUpload" style="display:none">
+             
+             
+               [#if editable]
+                  [@customForm.inputFile name="file"  /]
+                [/#if]  
+             
+             
             </div>
           </td> 
-          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dataQualityAssurance" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.ranking.processData" editable=editable/]</td>
         </tr>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.compliance.dataDictionary" /]</td> 
-          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dataDictionary" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.ranking.dictionary" editable=editable/]</td>
         </tr>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.compliance.toolsUsedDataCollection" /]
-            <div id="aditional-toolsUsedDataCollection" class="aditional" style="display:none">
-              [@customForm.textArea name="${params.deliverable.name}.toolsUsedDataCollectionLinks" i18nkey="reporting.projectDeliverable.compliance.toolsUsedDataCollection.links" editable=editable/]
+            <div id="aditional-tooldataComment" class="aditional" style="display:none">
+              [@customForm.textArea name="${params.deliverable.name}.ranking.tooldataComment" i18nkey="reporting.projectDeliverable.compliance.toolsUsedDataCollection.links" editable=editable/]
             </div>
           </td> 
-          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.toolsUsedDataCollection" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.ranking.tooldata" editable=editable/]</td>
         </tr>
       </tbody>
     </table>

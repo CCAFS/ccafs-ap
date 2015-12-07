@@ -33,9 +33,11 @@ import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -69,14 +71,18 @@ public class ProjectDeliverableAction extends BaseAction {
   private HistoryManager historyManager;
   private ProjectDeliverableValidator validator;
   private IPProgramManager ipProgramManager;
-
+  private File file;
+  private String fileFileName;
   // Model for the back-end
   private Deliverable deliverable;
+
+
   private Project project;
 
   // Model for the front-end
   private int deliverableID;
   private List<DeliverableType> deliverableTypes;
+
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
   private List<IPElement> outputs;
@@ -87,13 +93,12 @@ public class ProjectDeliverableAction extends BaseAction {
   private Map<String, String> openAccessStatuses;
   private Map<String, String> disseminationChannels;
 
-
   @Inject
-  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager,
-    DeliverableManager deliverableManager, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager deliverablePartnerManager,
-    ProjectPartnerManager projectPartnerManager, IPElementManager ipElementManager, HistoryManager historyManager,
-    ProjectDeliverableValidator validator, IPProgramManager ipProgramManager) {
+  public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
+    DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
+    DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager,
+    IPElementManager ipElementManager, HistoryManager historyManager, ProjectDeliverableValidator validator,
+    IPProgramManager ipProgramManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -107,7 +112,6 @@ public class ProjectDeliverableAction extends BaseAction {
     this.ipProgramManager = ipProgramManager;
   }
 
-
   /**
    * This method validates if this deliverable can be deleted or not.
    * Keep in mind that a deliverable can be deleted if it was created in the current planning cycle.
@@ -120,11 +124,9 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
   }
 
-
   public List<Integer> getAllYears() {
     return allYears;
   }
-
 
   public Deliverable getDeliverable() {
     return deliverable;
@@ -139,6 +141,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public List<DeliverableType> getDeliverableSubTypes() {
     return deliverableSubTypes;
   }
+
 
   /**
    * This method returns a list of DeliverableSubTypes depending on the deliverableMainTypeID received as parameter.
@@ -157,12 +160,19 @@ public class ProjectDeliverableAction extends BaseAction {
     return listSubTypes;
   }
 
+
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
   }
 
+
   public Map<String, String> getDisseminationChannels() {
     return disseminationChannels;
+  }
+
+
+  public File getFile() {
+    return file;
   }
 
   public List<IPProgram> getIpProgramFlagships() {
@@ -187,6 +197,26 @@ public class ProjectDeliverableAction extends BaseAction {
 
   public List<ProjectPartner> getProjectPartners() {
     return this.projectPartners;
+  }
+
+  private String getRankingAbsoloutUrlPath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "hightlihts"
+      + File.separator;
+  }
+
+  private String getRankingPath() {
+    return config.getUploadsBaseFolder() + File.separator + this.getRankingAbsoloutUrlPath() + File.separator;
+  }
+
+
+  public String getRankingUrl() {
+    return config.getDownloadURL() + "/" + this.getRankingUrlPath().replace('\\', '/');
+  }
+
+
+  public String getRankingUrlPath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "rankingsImage"
+      + File.separator;
   }
 
   public boolean isNewProject() {
@@ -247,8 +277,8 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     // Getting the other partners that are contributing to this deliverable.
-    deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverableID,
-      APConstants.DELIVERABLE_PARTNER_OTHER));
+    deliverable.setOtherPartners(
+      deliverablePartnerManager.getDeliverablePartners(deliverableID, APConstants.DELIVERABLE_PARTNER_OTHER));
 
     super.setHistory(historyManager.getProjectDeliverablesHistory(deliverableID));
 
@@ -276,7 +306,12 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting the project
     project = projectManager.getProjectFromDeliverableId(deliverableID);
     if (securityContext.canUpdateProjectDeliverables(project.getId())) {
+      if (file != null) {
+        FileManager.deleteFile(this.getRankingPath() + deliverable.getRanking().getProcessDataFile());
+        FileManager.copyFile(file, this.getRankingPath() + fileFileName);
 
+        deliverable.getRanking().setProcessDataFile(fileFileName);
+      }
       // -------- Saving main information
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
 
@@ -346,9 +381,13 @@ public class ProjectDeliverableAction extends BaseAction {
     return NOT_AUTHORIZED;
   }
 
-
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
+  }
+
+
+  public void setFile(File file) {
+    this.file = file;
   }
 
 

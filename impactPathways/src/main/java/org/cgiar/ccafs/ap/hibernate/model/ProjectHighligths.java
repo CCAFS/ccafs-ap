@@ -1,10 +1,11 @@
 package org.cgiar.ccafs.ap.hibernate.model;
-// Generated Dec 2, 2015 8:36:16 AM by Hibernate Tools 3.5.0.Final
+// Generated Dec 7, 2015 8:15:11 AM by Hibernate Tools 3.5.0.Final
 
 
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlightsType;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -17,10 +18,7 @@ public class ProjectHighligths implements java.io.Serializable {
 
 
   private Integer id;
-
-
   private String title;
-
   private String author;
   private Date startDate;
   private Date endDate;
@@ -39,6 +37,7 @@ public class ProjectHighligths implements java.io.Serializable {
   private String rights;
   private boolean isGlobal;
   private int leader;
+  private Integer type;
   private Long year;
   private boolean isActive;
   private Long status;
@@ -49,17 +48,19 @@ public class ProjectHighligths implements java.io.Serializable {
   private String modificationJustification;
   private Set<ProjectHighligthsTypes> projectHighligthsTypeses = new HashSet<ProjectHighligthsTypes>(0);
   private Set<ProjectHighligthsCountry> projectHighligthsCountries = new HashSet<ProjectHighligthsCountry>(0);
-  private List<ProjectHighlightsType> typesIds;
-  private List<String> typesids;
-  private List<Country> countries;
-  private List<Integer> countriesIds;
+  private List<Country> countries = new ArrayList<>();
+  private List<Integer> countriesIds = new ArrayList<>();
+  private List<ProjectHighlightsType> TypesIds = new ArrayList<>();
+  private List<String> typesids = new ArrayList<>();
 
   public ProjectHighligths() {
   }
 
+
   public ProjectHighligths(int id) {
-    this.id = (id);
+    this.id = id;
   }
+
 
   public ProjectHighligths(String title, String author, boolean isGlobal, int leader, boolean isActive, long projectId,
     Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
@@ -79,8 +80,8 @@ public class ProjectHighligths implements java.io.Serializable {
   public ProjectHighligths(String title, String author, Date startDate, Date endDate, String photo, String objectives,
     String description, String results, String partners, String links, String keywords, String subject,
     String contributor, String publisher, String relation, String coverage, String rights, boolean isGlobal, int leader,
-    Long year, boolean isActive, Long status, long projectId, Date activeSince, long createdBy, long modifiedBy,
-    String modificationJustification, Set<ProjectHighligthsTypes> projectHighligthsTypeses,
+    Integer type, Long year, boolean isActive, Long status, long projectId, Date activeSince, long createdBy,
+    long modifiedBy, String modificationJustification, Set<ProjectHighligthsTypes> projectHighligthsTypeses,
     Set<ProjectHighligthsCountry> projectHighligthsCountries) {
     this.title = title;
     this.author = author;
@@ -101,6 +102,7 @@ public class ProjectHighligths implements java.io.Serializable {
     this.rights = rights;
     this.isGlobal = isGlobal;
     this.leader = leader;
+    this.type = type;
     this.year = year;
     this.isActive = isActive;
     this.status = status;
@@ -114,31 +116,10 @@ public class ProjectHighligths implements java.io.Serializable {
   }
 
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    ProjectHighligths other = (ProjectHighligths) obj;
-    if (id == null) {
-      if (other.id != null) {
-        return false;
-      }
-    } else if (!id.equals(other.id)) {
-      return false;
-    }
-    return true;
-  }
-
   public Date getActiveSince() {
     return this.activeSince;
   }
+
 
   public String getAuthor() {
     return this.author;
@@ -159,7 +140,6 @@ public class ProjectHighligths implements java.io.Serializable {
     return countriesIds;
   }
 
-
   public String getCoverage() {
     return this.coverage;
   }
@@ -168,7 +148,6 @@ public class ProjectHighligths implements java.io.Serializable {
   public long getCreatedBy() {
     return this.createdBy;
   }
-
 
   public String getDescription() {
     return this.description;
@@ -258,24 +237,20 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.title;
   }
 
+  public Integer getType() {
+    return this.type;
+  }
+
   public List<String> getTypesids() {
     return typesids;
   }
 
   public List<ProjectHighlightsType> getTypesIds() {
-    return typesIds;
+    return TypesIds;
   }
 
   public Long getYear() {
     return this.year;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    return result;
   }
 
   public boolean isIsActive() {
@@ -410,12 +385,16 @@ public class ProjectHighligths implements java.io.Serializable {
     this.title = title;
   }
 
+  public void setType(Integer type) {
+    this.type = type;
+  }
+
   public void setTypesids(List<String> typesids) {
     this.typesids = typesids;
   }
 
   public void setTypesIds(List<ProjectHighlightsType> typesIds) {
-    this.typesIds = typesIds;
+    TypesIds = typesIds;
   }
 
   public void setYear(Long year) {

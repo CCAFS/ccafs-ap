@@ -1,5 +1,5 @@
 package org.cgiar.ccafs.ap.hibernate.model;
-// Generated Dec 2, 2015 8:36:16 AM by Hibernate Tools 3.5.0.Final
+// Generated Dec 7, 2015 8:15:11 AM by Hibernate Tools 3.5.0.Final
 
 
 /**
@@ -20,62 +20,28 @@ public class ProjectHighligthsTypes implements java.io.Serializable {
     this.idType = idType;
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    ProjectHighligthsTypes other = (ProjectHighligthsTypes) obj;
-    if (idType != other.idType) {
-      return false;
-    }
-    if (projectHighligths == null) {
-      if (other.projectHighligths != null) {
-        return false;
-      }
-    } else if (!projectHighligths.equals(other.projectHighligths)) {
-      return false;
-    }
-    return true;
-  }
-
   public Integer getId() {
     return this.id;
-  }
-
-  public int getIdType() {
-    return this.idType;
-  }
-
-  public ProjectHighligths getProjectHighligths() {
-    return this.projectHighligths;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + idType;
-    result = prime * result + ((projectHighligths == null) ? 0 : projectHighligths.hashCode());
-    return result;
   }
 
   public void setId(Integer id) {
     this.id = id;
   }
 
-  public void setIdType(int idType) {
-    this.idType = idType;
+  public ProjectHighligths getProjectHighligths() {
+    return this.projectHighligths;
   }
 
   public void setProjectHighligths(ProjectHighligths projectHighligths) {
     this.projectHighligths = projectHighligths;
+  }
+
+  public int getIdType() {
+    return this.idType;
+  }
+
+  public void setIdType(int idType) {
+    this.idType = idType;
   }
 
 

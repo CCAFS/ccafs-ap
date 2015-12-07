@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.hibernate.dao.DeliverableRankingDAO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,8 +113,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       if (deliverableData.get("type_id") != null) {
-        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
-          .get("type_id"))));
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // Next Users
@@ -127,9 +128,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setResponsiblePartner(deliverablePartners.get(0));
       }
       // Other Partner Persons
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
 
+      DeliverableRankingDAO rankingDao = new DeliverableRankingDAO();
+      deliverable.setRanking(rankingDao.findDeliverableRanking(deliverableID));
       return deliverable;
     }
     return null;
@@ -160,8 +163,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // Type
       if (deliverableData.get("type_id") != null) {
-        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
-          .get("type_id"))));
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // Next users
@@ -175,8 +178,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
         deliverable.setResponsiblePartner(deliverablePartners.get(0));
       }
       // Other Partner Persons
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
 
       // adding information of the object to the array
       deliverableList.add(deliverable);
@@ -197,8 +200,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       // Type
       if (deliverableData.get("type_id") != null) {
-        deliverable.setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData
-          .get("type_id"))));
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // adding information of the object to the array
@@ -270,14 +273,23 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("modification_justification", justification);
 
     int result = deliverableDAO.saveDeliverable(deliverableData);
+    if (deliverable.getRanking().getDeliverableId() == null) {
+      if (result == 0) {
+        deliverable.getRanking().setDeliverableId(new Long(deliverable.getId()));
+      } else {
+        deliverable.getRanking().setDeliverableId(new Long(result));
+      }
 
+    }
+    DeliverableRankingDAO rankingdao = new DeliverableRankingDAO();
+    rankingdao.save(deliverable.getRanking());
     if (result > 0) {
       LOG.debug("saveDeliverable > New Deliverable added with id {}", result);
     } else if (result == 0) {
       LOG.debug("saveDeliverable > Deliverable with id={} was updated", deliverable.getId());
     } else {
-      LOG
-        .error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}", projectID);
+      LOG.error("saveDeliverable > There was an error trying to save/update a Deliverable from projectId={}",
+        projectID);
     }
     return result;
   }

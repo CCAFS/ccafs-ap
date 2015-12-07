@@ -39,7 +39,7 @@
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   
-  [@s.form action="deliverable" cssClass="pure-form"]
+  [@s.form action="deliverable" cssClass="pure-form" enctype="multipart/form-data"]
   <article class="halfContent" id="projectDeliverable">  
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     <br />
@@ -101,7 +101,7 @@
     [/#if]
   </article>
   [/@s.form] 
-   
+     [@customForm.inputFile name="file" template=true /] 
 </section> 
 
 [#-- Internal parameters --]   

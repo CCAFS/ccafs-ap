@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.hibernate.model.DeliverablesRanking;
+
 import java.util.Date;
 import java.util.List;
 
@@ -38,10 +40,13 @@ public class Deliverable {
   private DeliverablePartner responsiblePartner;
   private List<DeliverablePartner> otherPartners;
   private long created;
+  private DeliverablesRanking ranking;
+
 
   public Deliverable() {
     super();
   }
+
 
   public Deliverable(int id) {
     this.id = id;
@@ -74,6 +79,10 @@ public class Deliverable {
 
   public IPElement getOutput() {
     return output;
+  }
+
+  public DeliverablesRanking getRanking() {
+    return ranking;
   }
 
   public DeliverablePartner getResponsiblePartner() {
@@ -130,6 +139,10 @@ public class Deliverable {
 
   public void setOutput(IPElement output) {
     this.output = output;
+  }
+
+  public void setRanking(DeliverablesRanking ranking) {
+    this.ranking = ranking;
   }
 
   public void setResponsiblePartner(DeliverablePartner responsiblePartner) {

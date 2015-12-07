@@ -65,6 +65,7 @@ public class HibernateListener implements ServletContextListener {
       // save the Hibernate session factory into serlvet context
       event.getServletContext().setAttribute(KEY_NAME, factory);
     } catch (Exception e) {
+      e.printStackTrace();
       System.out.println(e.getMessage());
     }
   }

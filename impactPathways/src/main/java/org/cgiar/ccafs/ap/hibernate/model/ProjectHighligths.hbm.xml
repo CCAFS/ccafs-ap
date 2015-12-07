@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Dec 2, 2015 8:36:16 AM by Hibernate Tools 3.5.0.Final -->
+<!-- Generated Dec 7, 2015 8:15:11 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths" table="project_highligths" catalog="ccafspr_ip">
         <id name="id" type="java.lang.Integer">
@@ -65,6 +65,9 @@
         <property name="leader" type="int">
             <column name="leader" not-null="true" />
         </property>
+        <property name="type" type="java.lang.Integer">
+            <column name="type" />
+        </property>
         <property name="year" type="java.lang.Long">
             <column name="year" />
         </property>
@@ -89,13 +92,13 @@
         <property name="modificationJustification" type="string">
             <column name="modification_justification" length="65535" not-null="true" />
         </property>
-        <set name="projectHighligthsTypeses" table="project_highligths_types" inverse="true" lazy="false" fetch="select">
+        <set name="projectHighligthsTypeses" table="project_highligths_types" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="project_highlights_id" not-null="true" />
             </key>
             <one-to-many class="org.cgiar.ccafs.ap.hibernate.model.ProjectHighligthsTypes" />
         </set>
-        <set name="projectHighligthsCountries" table="project_highligths_country" inverse="true" lazy="false" fetch="select">
+        <set name="projectHighligthsCountries" table="project_highligths_country" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="project_highlights_id" not-null="true" />
             </key>

@@ -269,7 +269,7 @@ public class ProjectHighlightAction extends BaseAction {
     if (file != null) {
       FileManager.deleteFile(this.getHightlightImagePath() + highlight.getPhoto());
       FileManager.copyFile(file, this.getHightlightImagePath() + fileFileName);
-      System.out.println(this.getHightlightImagePath());
+
       highlight.setPhoto(fileFileName);
     }
 
