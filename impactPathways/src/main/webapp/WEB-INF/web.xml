@@ -13,7 +13,7 @@
   <!-- Struts Hibernate  -->
    <listener>
 	   <listener-class>
-	    org.cgiar.ccafs.ap.hibernate.HibernateListener
+	    org.cgiar.ccafs.ap.config.HibernateListener
 	   </listener-class>
   </listener>
   
