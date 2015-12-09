@@ -29,6 +29,7 @@ import org.hibernate.Query;
 
 public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHighlightDAO {
 
+  @Override
   public boolean deleteHighLight(int highLightId, int userID, String justification) {
 
     ProjectHighligths project = this.find(highLightId);
@@ -39,25 +40,24 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
 
   }
 
+  @Override
   public boolean deleteHighLightsByProject(int projectID) {
-    List<ProjectHighligths> list_programs = new ArrayList<>();
+    List<ProjectHighligths> list = new ArrayList<>();
 
     try {
       this.getSession();
       this.InitTransaction();
       Query query = this.getSession().createQuery(
         "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1");
-      list_programs.addAll(query.list());
+      list.addAll(query.list());
 
-      for (ProjectHighligths projectHighligths : list_programs) {
+      for (ProjectHighligths projectHighligths : list) {
         projectHighligths.setIsActive(false);
         this.save(projectHighligths);
       }
       this.CommitTransaction();
       return true;
-    } catch (
-
-    HibernateException e)
+    } catch (HibernateException e)
 
     {
       this.RollBackTransaction();
@@ -69,6 +69,7 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
     return false;
   }
 
+  @Override
   public boolean existHighLight(int highLightID) {
     ProjectHighligths project = this.find(highLightID);
     if (project == null) {
@@ -77,13 +78,15 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
     return true;
   }
 
+  @Override
   public ProjectHighligths find(int id) {
     return (ProjectHighligths) this.find(ProjectHighligths.class, new Integer(id));
   }
 
 
+  @Override
   public ProjectHighligthsCountry findProjectHighligthsCountries(int highlighid, int country) {
-    List<ProjectHighligthsCountry> list_programs = new ArrayList<>();
+    List<ProjectHighligthsCountry> list = new ArrayList<>();
 
     try {
       this.getSession();
@@ -91,11 +94,11 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
       this.CommitTransaction();
       Query query = this.getSession().createQuery("from " + ProjectHighligthsCountry.class.getName()
         + " where project_highlights_id=" + highlighid + " and id_country=" + country);
-      list_programs.addAll(query.list());
+      list.addAll(query.list());
 
 
-      if (list_programs.size() > 0) {
-        return list_programs.get(0);
+      if (list.size() > 0) {
+        return list.get(0);
       }
       return null;
     } catch (HibernateException e) {
@@ -109,8 +112,9 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
   }
 
 
+  @Override
   public ProjectHighligthsTypes findProjectHighligthsTypes(int highlighid, int type) {
-    List<ProjectHighligthsTypes> list_programs = new ArrayList<>();
+    List<ProjectHighligthsTypes> list = new ArrayList<>();
 
     try {
       this.getSession();
@@ -118,18 +122,14 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
       this.CommitTransaction();
       Query query = this.getSession().createQuery("from " + ProjectHighligthsTypes.class.getName()
         + " where project_highlights_id=" + highlighid + " and id_type=" + type);
-      list_programs.addAll(query.list());
+      list.addAll(query.list());
 
 
-      if (list_programs.size() > 0) {
-        return list_programs.get(0);
+      if (list.size() > 0) {
+        return list.get(0);
       }
       return null;
-    } catch (
-
-    HibernateException e)
-
-    {
+    } catch (HibernateException e) {
       this.RollBackTransaction();
     } finally
 
@@ -140,8 +140,9 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
   }
 
 
+  @Override
   public List<ProjectHighligths> getHighLightsByProject(int projectID) {
-    List<ProjectHighligths> list_programs = new ArrayList<>();
+    List<ProjectHighligths> list = new ArrayList<>();
 
     try {
       this.getSession();
@@ -149,15 +150,11 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
       this.CommitTransaction();
       Query query = this.getSession().createQuery(
         "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1");
-      list_programs.addAll(query.list());
+      list.addAll(query.list());
 
 
-      return list_programs;
-    } catch (
-
-    HibernateException e)
-
-    {
+      return list;
+    } catch (HibernateException e) {
       this.RollBackTransaction();
     } finally
 
@@ -167,6 +164,7 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
     return null;
   }
 
+  @Override
   public int save(ProjectHighligths projectHighlihts) {
     try {
       ProjectHighligths projectHighlihtsPrev = this.find(projectHighlihts.getId());
