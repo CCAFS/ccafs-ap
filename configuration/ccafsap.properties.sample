@@ -31,15 +31,23 @@ ccafsap.startYear=2010
 ccafsap.endYear=2015
 ccafsap.midOutcome.revisionYear=2019
 
-# Is planning active?
 ccafsap.planning.future.years.active=true
 ccafsap.planning.future.years=3
+
+# Is pre-planning section active?
 ccafsap.preplanning.active=true
-# Is reporting active?
+
+# Is planning section active?
 ccafsap.planning.active=true
+
+# Is reporting section active?
 ccafsap.reporting.active=true
-ccafsap.summaries.active=false
-ccafsap.is-closed=false
+
+# Is summaries section active?
+ccafsap.summaries.active=true
+
+# System is closed for editing
+ccafsap.isClosed=false
 # ------------------------------------------------
 #             Files upload configuration
 # ------------------------------------------------

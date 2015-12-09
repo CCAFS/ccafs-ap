@@ -47,7 +47,7 @@ public class APConfig {
   private static final String PLANNING_FUTURE_YEARS = "ccafsap.planning.future.years";
   private static final String PREPLANNING_ACTIVE = "ccafsap.preplanning.active";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
-  private static final String IS_CLOSED = "ccafsap.is-closed";
+  private static final String IS_CLOSED = "ccafsap.isClosed";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String EMAIL_USER = "email.user";
