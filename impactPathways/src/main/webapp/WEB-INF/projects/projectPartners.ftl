@@ -79,24 +79,33 @@
           [@customForm.textArea name="project.partnershipsOverall" i18nkey="reporting.projectPartners.partnershipsOverall" required=!project.bilateralProject editable=editable /]
         </div>
       [/#if]
+      
+      
+       [#-- -- -- REPORTING BLOCK -- -- --]
+      [#if reportingCycle && projectLessonsPreview.lessons?has_content]
+      <div class="fullBlock">
+        [#-- Reporting lessons --]
+        <input type="hidden" name="projectLessonsPreview.id" value=${(projectLessons.id)!"-1"} />
+        <input type="hidden" name="projectLessonsPreview.year" value=${currentReportingYear} />
+        <input type="hidden" name="projectLessonsPreview.componentName" value="${actionName}">
+       [#assign planningLessonsLabel= "${reportingCycle?string('reporting.projectPartners.previousLessons','planning.projectPartners.lessons')}" /]
+        [@customForm.textArea name="projectLessonsPreview.lessons" i18nkey=planningLessonsLabel required=(!project.bilateralProject && !reportingCycle) editable=(editable && !reportingCycle) /]
+     
+      
+      
+      </div>
+      [/#if]
+      
+      
       <div class="fullBlock">
         [#-- Planning lessons --]
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
         <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [#assign planningLessonsLabel= "${reportingCycle?string('reporting.projectPartners.previousLessons','planning.projectPartners.lessons')}" /]
-        [@customForm.textArea name="projectLessons.lessons" i18nkey=planningLessonsLabel required=(!project.bilateralProject && !reportingCycle) editable=(editable && !reportingCycle) /]
-      </div>
-      [#-- -- -- REPORTING BLOCK -- -- --]
-      [#if reportingCycle]
-      <div class="fullBlock">
-        [#-- Reporting lessons --]
-        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
-        <input type="hidden" name="projectLessons.year" value=${currentReportingYear} />
-        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
         [@customForm.textArea name="projectLessons.lessons" i18nkey="reporting.projectPartners.lessons" required=!project.bilateralProject editable=editable /]
+      
       </div>
-      [/#if]
+     
     </div>
     [/#if]
     

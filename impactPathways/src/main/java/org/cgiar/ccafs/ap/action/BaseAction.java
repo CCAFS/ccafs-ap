@@ -85,18 +85,21 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private String justification;
 
   private ComponentLesson projectLessons;
+  private ComponentLesson projectLessonsPreview;
 
   private Map<String, Object> session;
+
+
   private HttpServletRequest request;
+
   private List<SectionStatus> sectionStatuses;
   // Config
   protected APConfig config;
-
   @Inject
   protected SecurityContext securityContext;
-
   @Inject
   private BoardMessageManager boardMessageManager;
+
   @Inject
   protected ProjectLessonsManager lessonManager;
 
@@ -126,7 +129,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.addActionMessage("--warn--" + message);
   }
 
-
   /* Override this method depending of the cancel action. */
   public String cancel() {
     return CANCEL;
@@ -140,6 +142,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       sectionStatuses.clear();
     }
   }
+
 
   /**
    * This method clears the cache and re-load the user permissions in the next iteration.
@@ -199,7 +202,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getReportingCurrentYear();
   }
 
-
   /**
    * Get the user that is currently saved in the session.
    * 
@@ -224,6 +226,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     }
   }
 
+
   /**
    * This method gets the specific section status from the sectionStatuses array for a Deliverable.
    * 
@@ -242,16 +245,15 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return null;
   }
 
-
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
   }
 
-
   public String getJustification() {
     return justification;
   }
+
 
   /**
    * Define default locale while we decide to support other languages in the future.
@@ -261,12 +263,17 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
+
   public String getOrganizationIdentifier() {
     return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
   }
 
   public ComponentLesson getProjectLessons() {
     return projectLessons;
+  }
+
+  public ComponentLesson getProjectLessonsPreview() {
+    return projectLessonsPreview;
   }
 
   /**
@@ -357,10 +364,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return true;
   }
 
-
   public boolean isDataSaved() {
     return dataSaved;
   }
+
 
   public boolean isEditable() {
     return isEditable;
@@ -459,10 +466,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.canEdit = canEdit;
   }
 
-
   public void setDataSaved(boolean dataSaved) {
     this.dataSaved = dataSaved;
   }
+
 
   public void setDelete(boolean delete) {
     this.delete = delete;
@@ -491,6 +498,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public void setProjectLessons(ComponentLesson projectLessons) {
     this.projectLessons = projectLessons;
+  }
+
+  public void setProjectLessonsPreview(ComponentLesson projectLessonsPreview) {
+    this.projectLessonsPreview = projectLessonsPreview;
   }
 
   public void setSave(boolean save) {
