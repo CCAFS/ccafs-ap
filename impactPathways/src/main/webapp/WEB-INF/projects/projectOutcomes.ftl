@@ -51,30 +51,30 @@
         [#if canEdit && !newProject]
         <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
-      [/#if]   
+      [/#if]
+      [#assign canEditPlanningCycle = !reportingCycle /]
       [#-- Project  outcome block --]
       <div class="fullPartBlock clearfix">
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.narrative" /] </h1> 
         [#-- Project Outcome statement --]
         <div class="fullPartBlock" id="projectOutcomeStatement">
-          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" required=!project.bilateralProject className="limitWords-150" i18nkey="planning.projectOutcome.statement" editable=editable /]
+          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" required=!project.bilateralProject className="limitWords-150" i18nkey="planning.projectOutcome.statement" editable=(editable && canEditPlanningCycle) /]
         </div>
         [#-- Annual progress --]
         [#list project.startDate?string.yyyy?number..midOutcomeYear?number-1 as year]
+          [#assign yearEditable = editable && (year gte currentPlanningYear?number) && canEditPlanningCycle /]
+          [#assign yearRequired = !project.bilateralProject && ((year == currentPlanningYear) || (year == currentPlanningYear+1)) /]
           <div class="fullPartBlock">
-            [#if year lt currentPlanningYear?number]
-              <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=true param="${year}" /]</h6>
-              [@customForm.textArea name="project.outcomes[${year?string}].statement" className="limitWords-80" showTitle=false editable=false /]
-            [#else]
-              [#if (year == currentPlanningYear) || (year == currentPlanningYear+1)]
-                <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /] [@customForm.req required=!project.bilateralProject /]</h6>
-                [@customForm.textArea name="project.outcomes[${year?string}].statement" required=!project.bilateralProject className="limitWords-80" showTitle=false editable=editable /]
-              [#else]  
-                <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /]</h6>
-                [@customForm.textArea name="project.outcomes[${year?string}].statement" className="limitWords-80" showTitle=false editable=editable /]
-              [/#if]
-            [/#if]
+            <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /] [@customForm.req required=yearRequired /]</h6>
+            [@customForm.textArea name="project.outcomes[${year?string}].statement" required=yearRequired className="limitWords-150" showTitle=false editable=yearEditable /]
           </div>
+          [#-- -- -- REPORTING BLOCK -- -- --]
+          [#if reportingCycle && (year == currentReportingYear) ]
+          <div class="fullPartBlock">
+            <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /] [@customForm.req required=true /]</h6>
+            [@customForm.textArea name="project.outcomes[${year?string}].statementReporting" required=true className="limitWords-300" showTitle=false editable=editable /]
+          </div>
+          [/#if]
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
       </div>
