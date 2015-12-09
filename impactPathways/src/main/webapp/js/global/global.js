@@ -192,7 +192,6 @@ function validateField($input) {
   } else {
     return true;
   }
-
 }
 
 function getHash(str) {

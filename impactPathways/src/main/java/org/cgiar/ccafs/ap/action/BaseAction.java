@@ -195,6 +195,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getPlanningCurrentYear();
   }
 
+  public int getCurrentReportingYear() {
+    return config.getReportingCurrentYear();
+  }
+
+
   /**
    * Get the user that is currently saved in the session.
    * 
