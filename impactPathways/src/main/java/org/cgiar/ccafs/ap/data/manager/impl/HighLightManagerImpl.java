@@ -15,12 +15,13 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.dao.ProjectHighlightDAO;
+import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.ProjectHightLihgtMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.hibernate.dao.ProjectHightLihgtDAO;
-import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 
 import java.util.List;
 
@@ -37,13 +38,13 @@ public class HighLightManagerImpl implements HighLightManager {
   private static Logger LOG = LoggerFactory.getLogger(HighLightManagerImpl.class);
 
   // DAO's
-  private ProjectHightLihgtDAO highLightDAO;
+  private ProjectHighlightDAO highLightDAO;
   // Managers
 
 
   @Inject
   public HighLightManagerImpl() {
-    highLightDAO = new ProjectHightLihgtDAO();
+    highLightDAO = new ProjectHightLihgtMySQLDAO();
 
 
   }

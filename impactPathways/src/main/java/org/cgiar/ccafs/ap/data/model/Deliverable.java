@@ -13,8 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import org.cgiar.ccafs.ap.hibernate.model.DeliverablesRanking;
-
 import java.util.Date;
 import java.util.List;
 

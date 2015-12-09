@@ -13,9 +13,10 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafs.ap.hibernate.dao;
+package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 
-import org.cgiar.ccafs.ap.hibernate.model.DeliverablesRanking;
+import org.cgiar.ccafs.ap.data.dao.DeliverableRankingDAO;
+import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,9 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
-public class DeliverableRankingDAO extends StandardDao {
+public class DeliverableRankingMySQLDAO extends StandardDao implements DeliverableRankingDAO {
 
+  @Override
   public DeliverablesRanking findDeliverableRanking(int deliverableId) {
     List<DeliverablesRanking> listRanking = new ArrayList<>();
 
@@ -52,6 +54,7 @@ public class DeliverableRankingDAO extends StandardDao {
   }
 
 
+  @Override
   public int save(DeliverablesRanking ranking) {
     this.saveOrUpdate(ranking);
     return ranking.getId();

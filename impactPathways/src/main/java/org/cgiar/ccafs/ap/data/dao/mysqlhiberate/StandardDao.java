@@ -13,9 +13,9 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafs.ap.hibernate.dao;
+package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 
-import org.cgiar.ccafs.ap.hibernate.HibernateListener;
+import org.cgiar.ccafs.ap.config.HibernateListener;
 
 import java.io.Serializable;
 import java.util.List;

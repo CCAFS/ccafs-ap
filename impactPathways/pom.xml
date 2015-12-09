@@ -215,9 +215,9 @@
   
   
   <!-- Struts 2 Hibernate Plugins -->
-  <dependency>
-    <groupId>com.google.code</groupId>
-    <artifactId>struts2-fullhibernatecore-plugin</artifactId>
+  <dependency> 
+    <groupId>com.googlecode.s2hibernate.struts2</groupId>
+    <artifactId>plugin</artifactId>
     <version>2.2</version>
   </dependency>
   
@@ -398,9 +398,18 @@
       </plugin> 
     </plugins>
   </build>
+  
+  
   <description>CCAFS Activity Planning and Reporting platform</description>
   <organization>
     <name>CCAFS</name>
     <url>http://ccafs.cgiar.org</url>
   </organization>
+  
+  <repositories>
+    <repository>
+      <id>Internal project repo</id>
+      <url>file://${basedir}/src/main/resources/libs/</url>
+    </repository>
+  </repositories>
 </project>

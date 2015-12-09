@@ -18,7 +18,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Date;

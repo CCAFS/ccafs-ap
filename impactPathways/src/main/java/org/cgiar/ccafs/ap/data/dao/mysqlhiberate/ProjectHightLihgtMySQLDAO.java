@@ -13,11 +13,12 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafs.ap.hibernate.dao;
+package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 
-import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
-import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligthsCountry;
-import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligthsTypes;
+import org.cgiar.ccafs.ap.data.dao.ProjectHighlightDAO;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligthsCountry;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
-public class ProjectHightLihgtDAO extends StandardDao {
+public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHighlightDAO {
 
   public boolean deleteHighLight(int highLightId, int userID, String justification) {
 

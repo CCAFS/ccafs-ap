@@ -1,4 +1,4 @@
-package org.cgiar.ccafs.ap.hibernate.model;
+package org.cgiar.ccafs.ap.data.model;
 // Generated Dec 7, 2015 11:32:58 AM by Hibernate Tools 3.5.0.Final
 
 

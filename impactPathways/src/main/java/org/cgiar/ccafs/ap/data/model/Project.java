@@ -14,7 +14,6 @@
 package org.cgiar.ccafs.ap.data.model;
 
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 
 import java.util.ArrayList;
 import java.util.Calendar;

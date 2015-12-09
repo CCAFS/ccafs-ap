@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+import org.cgiar.ccafs.ap.data.dao.DeliverableRankingDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
@@ -25,7 +26,6 @@ import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.hibernate.dao.DeliverableRankingDAO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,14 +51,16 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private DeliverableTypeManager deliverableTypeManager;
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
+  private DeliverableRankingDAO rankingDao;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager) {
+    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager, DeliverableRankingDAO rankingDao) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = partnerManager;
+    this.rankingDao = rankingDao;
   }
 
   @Override
@@ -131,7 +133,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setOtherPartners(
         deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
 
-      DeliverableRankingDAO rankingDao = new DeliverableRankingDAO();
+
       deliverable.setRanking(rankingDao.findDeliverableRanking(deliverableID));
       return deliverable;
     }
@@ -281,8 +283,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       }
 
     }
-    DeliverableRankingDAO rankingdao = new DeliverableRankingDAO();
-    rankingdao.save(deliverable.getRanking());
+
+    rankingDao.save(deliverable.getRanking());
     if (result > 0) {
       LOG.debug("saveDeliverable > New Deliverable added with id {}", result);
     } else if (result == 0) {

@@ -16,8 +16,8 @@ package org.cgiar.ccafs.ap.data.manager;
 import org.cgiar.ccafs.ap.data.manager.impl.HighLightManagerImpl;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.hibernate.model.ProjectHighligths;
 
 import java.util.List;
 

@@ -1,9 +1,6 @@
-package org.cgiar.ccafs.ap.hibernate.model;
+package org.cgiar.ccafs.ap.data.model;
 // Generated Dec 7, 2015 8:15:11 AM by Hibernate Tools 3.5.0.Final
 
-
-import org.cgiar.ccafs.ap.data.model.Country;
-import org.cgiar.ccafs.ap.data.model.ProjectHighlightsType;
 
 import java.util.ArrayList;
 import java.util.Date;
