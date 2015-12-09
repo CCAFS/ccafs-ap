@@ -223,6 +223,10 @@ public class ProjectLocationsAction extends BaseAction {
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
       this.getCurrentPlanningYear(), this.getCycleName()));
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      this.setProjectLessonsPreview(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+        this.getCurrentReportingYear(), APConstants.PLANNING_SECTION));
+    }
 
     super.setHistory(historyManager.getProjectLocationsHistory(project.getId()));
 
