@@ -76,7 +76,7 @@
       [#-- -- -- REPORTING BLOCK -- -- --]
       [#if reportingCycle]
         <div class="fullBlock">
-          [@customForm.textArea name="project.partnershipsOverall" i18nkey="reporting.projectPartners.partnershipsOverall" required=!project.bilateralProject editable=editable /]
+          [@customForm.textArea name="overrall" i18nkey="reporting.projectPartners.partnershipsOverall" required=!project.bilateralProject editable=editable /]
         </div>
       [/#if]
       
