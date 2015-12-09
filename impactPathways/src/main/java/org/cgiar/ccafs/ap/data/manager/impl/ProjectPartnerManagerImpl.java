@@ -76,10 +76,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     Map<String, String> projectPartnerData = projectPartnerDAO.getProjectPartner(partnerID);
     if (projectPartnerData != null && projectPartnerData.size() > 0) {
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
-      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
-        .get("institution_id"))));
-      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
-        .get("institution_id"))));
+      projectPartner
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
+      projectPartner
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
 
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if the institution is not a PPA.
@@ -147,9 +147,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     List<Map<String, String>> projectPartnerDataList = projectPartnerDAO.getProjectPartners(project.getId());
     for (Map<String, String> projectPartnerData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
+      projectPartner.setOverall((projectPartnerData.get("overall")));
       projectPartner.setId(Integer.parseInt(projectPartnerData.get("id")));
-      projectPartner.setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData
-        .get("institution_id"))));
+      projectPartner
+        .setInstitution(institutionManager.getInstitution(Integer.parseInt(projectPartnerData.get("institution_id"))));
       projectPartner.setPartnerPersons(partnerPersonManager.getPartnerPersons(projectPartner));
       // We just need to get the partner contributors if its institution is not a PPA.
       if (projectPartner.getInstitution().isPPA() == false) {
@@ -182,6 +183,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       projectPartnerData.put("created_by", user.getId());
     }
     projectPartnerData.put("project_id", project.getId());
+    projectPartnerData.put("overall", projectPartner.getOverall());
     projectPartnerData.put("institution_id", projectPartner.getInstitution().getId());
     projectPartnerData.put("modified_by", user.getId());
     projectPartnerData.put("modification_justification", justification);
@@ -266,7 +268,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   @Override
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
-    String justification) {
+    String justification, String overall) {
     boolean result = true;
 
 
@@ -274,7 +276,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     // saved correctly
     for (ProjectPartner partner : projectPartners) {
 
-
+      partner.setOverall(overall);
       if (this.saveProjectPartner(project, partner, user, justification) == -1) {
         result = false;
 

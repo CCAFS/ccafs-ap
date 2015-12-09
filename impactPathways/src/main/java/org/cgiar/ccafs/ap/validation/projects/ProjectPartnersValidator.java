@@ -42,6 +42,12 @@ public class ProjectPartnersValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
+      if (!project.getProjectPartners().isEmpty()) {
+        if (!this.isValidString(project.getProjectPartners().get(0).getOverall())) {
+          this.addMessage(action.getText("Partnerships overall has invalid value"));
+          this.addMissingField("project.partners.overall");
+        }
+      }
       if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateLessonsLearn(action, project, "partners");
         this.validateCCAFSProject(action, project);

@@ -72,31 +72,33 @@ public class ProjectPartnersAction extends BaseAction {
   private DeliverableManager deliverableManager;
   private HistoryManager historyManager;
   private BudgetManager budgetManager;
+
+  private String overrall;
   // private BudgetManager budgetManager;
   // private DeliverablePartnerManager deliverablePartnerManager;
   // private DeliverableManager deliverableManager;
+
 
   // Validator
   private ProjectPartnersValidator projectPartnersValidator;
 
   // Model for the back-end
   private int projectID;
-  private Project previousProject;
-  private Project project;
 
+  private Project previousProject;
+
+  private Project project;
   // Model for the view
   private List<InstitutionType> intitutionTypes;
   private Map<String, String> partnerPersonTypes; // List of partner person types (CP, PL, PC).
+
   private List<Country> countries;
   private List<Institution> allInstitutions; // Is used to list all the partner institutions that have the system.
   private List<Institution> allPPAInstitutions; // Is used to list all the PPA partners institutions
   private List<ProjectPartner> projectPPAPartners; // Is used to list all the PPA partners that belongs to the project.
   private List<User> allUsers; // will be used to list all the project leaders that have the system.
-
   // Util
   private SendMail sendMail;
-
-  // private List<Institution> contributionPartners; // this would get the partners contributing to others
 
   @Inject
   public ProjectPartnersAction(APConfig config, ProjectPartnerManager projectPartnerManager,
@@ -124,12 +126,22 @@ public class ProjectPartnersAction extends BaseAction {
     return activityManager.getProjectActivitiesLedByUser(projectID, userID);
   }
 
+  // private List<Institution> contributionPartners; // this would get the partners contributing to others
+
   public List<Institution> getAllInstitutions() {
     return allInstitutions;
   }
 
   public List<Institution> getAllPPAInstitutions() {
     return allPPAInstitutions;
+  }
+
+  public List<Institution> getAllPPAPartners() {
+    return allPPAInstitutions;
+  }
+
+  public List<User> getAllUsers() {
+    return allUsers;
   }
 
   // private boolean deletePartner(ProjectPartner partnerToDelete, List<ProjectPartner> partners) {
@@ -180,14 +192,6 @@ public class ProjectPartnersAction extends BaseAction {
   // return deleted;
   // }
 
-  public List<Institution> getAllPPAPartners() {
-    return allPPAInstitutions;
-  }
-
-  public List<User> getAllUsers() {
-    return allUsers;
-  }
-
   public List<Country> getCountries() {
     return countries;
   }
@@ -198,6 +202,10 @@ public class ProjectPartnersAction extends BaseAction {
 
   public List<InstitutionType> getInstitutionTypes() {
     return intitutionTypes;
+  }
+
+  public String getOverrall() {
+    return overrall;
   }
 
   public Map<String, String> getPartnerPersonTypes() {
@@ -396,6 +404,9 @@ public class ProjectPartnersAction extends BaseAction {
 
     // Getting all the project partners.
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    if (!project.getProjectPartners().isEmpty()) {
+      overrall = project.getProjectPartners().get(0).getOverall();
+    }
 
     // Positioning project leader to be the first in the list.
     ProjectPartner leader = project.getLeader();
@@ -481,7 +492,7 @@ public class ProjectPartnersAction extends BaseAction {
       }
 
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
-        this.getJustification());
+        this.getJustification(), overrall);
 
       // Check if the project leader has changed and send the corresponding emails
       PartnerPerson previousLeader = previousProject.getLeaderPerson();
@@ -530,6 +541,10 @@ public class ProjectPartnersAction extends BaseAction {
     this.allUsers = allProjectLeaders;
   }
 
+  public void setOverrall(String overrall) {
+    this.overrall = overrall;
+  }
+
   public void setProject(Project project) {
     this.project = project;
   }
@@ -572,6 +587,9 @@ public class ProjectPartnersAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
+      if (!project.getProjectPartners().isEmpty()) {
+        project.getProjectPartners().get(0).setOverall(overrall);
+      }
       projectPartnersValidator.validate(this, project, this.getCycleName());
     }
   }

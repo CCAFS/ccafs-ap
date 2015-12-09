@@ -27,8 +27,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ProjectPartner {
 
   private int id;
+
+  private String overall;
+
   private Institution institution;
+
+
   private List<PartnerPerson> partnerPersons; // List of people working for this partner.
+
   private List<ProjectPartner> partnerContributors; // CCAFS PPA institutions this project partner is collaborating.
 
   public ProjectPartner() {
@@ -55,6 +61,10 @@ public class ProjectPartner {
 
   public Institution getInstitution() {
     return institution;
+  }
+
+  public String getOverall() {
+    return overall;
   }
 
   /**
@@ -135,6 +145,10 @@ public class ProjectPartner {
 
   public void setInstitution(Institution institution) {
     this.institution = institution;
+  }
+
+  public void setOverall(String overall) {
+    this.overall = overall;
   }
 
   public void setPartnerContributors(List<ProjectPartner> partnerContributors) {

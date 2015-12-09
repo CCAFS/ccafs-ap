@@ -120,10 +120,11 @@ public interface ProjectPartnerManager {
    * @param partners is a list of ProjectPartner objects with the information to be saved.
    * @param user is the user that is making the change.
    * @param justification is the justification statement.
+   * @param overall is the overall statement.
    * @return true if all partners were successfully saved; false otherwise.
    */
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
-    String justification);
+    String justification, String overall);
 
   /**
    * This method is used to export all the current and active partners that are working with CCAFS in an XML format for
