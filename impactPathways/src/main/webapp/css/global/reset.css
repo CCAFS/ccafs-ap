@@ -144,8 +144,7 @@ input:invalid, textarea:invalid { border-radius: 1px; -moz-box-shadow: 0px 0px 5
 
 body, select, input, textarea {
   /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
-  color: #444;
-  /* Set your base font here, to apply evenly */
+  color: #525252;/* Set your base font here, to apply evenly */
   /* font-family: Georgia, serif;  */
   background: #FFFFFF;
 }
