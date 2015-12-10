@@ -64,12 +64,14 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
   private List<IPElement> midOutcomesSelected;
   private List<IPElement> previousOutputs;
   private List<IPIndicator> previousIndicators;
+  private List<Integer> allYears;
+
 
   // Front-end
   private int activityID;
+
   private int projectID;
   private Project project;
-
   // Validator
   private ProjectCCAFSOutcomesValidator validator;
 
@@ -92,6 +94,10 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
 
   public int getActivityID() {
     return activityID;
+  }
+
+  public List<Integer> getAllYears() {
+    return allYears;
   }
 
   /**
@@ -318,6 +324,9 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
 
+    // Get all years
+    allYears = project.getAllYears();
+    allYears.add(this.getMidOutcomeYear());
 
     // Load the project impact pathway
 

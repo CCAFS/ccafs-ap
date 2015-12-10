@@ -2,7 +2,6 @@
 [#assign title = "Project Partners" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectPartners.js", "${baseUrl}/js/global/usersManagement.js"] /]
-
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "projects" /]
 [#assign currentStage = "description" /]
