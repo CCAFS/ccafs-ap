@@ -65,9 +65,6 @@
         <property name="leader" type="int">
             <column name="leader" not-null="true" />
         </property>
-        <property name="type" type="java.lang.Integer">
-            <column name="type" />
-        </property>
         <property name="year" type="java.lang.Long">
             <column name="year" />
         </property>
