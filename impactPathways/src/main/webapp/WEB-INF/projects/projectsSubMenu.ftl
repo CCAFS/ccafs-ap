@@ -73,9 +73,13 @@
     </li>
     <li class="[#if currentStage == "budget"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.budget" /]</p>
-      <ul> 
-        [@menu actionName="budget" stageName="budgetByPartner" textName="menu.planning.submenu.projectBudget.budgetByPartner" disabled=reportingCycle/]
-        [@menu actionName="budgetByMog" stageName="budgetByMog" textName="menu.planning.submenu.projectBudget.budgetByMog" disabled=reportingCycle/]
+      <ul>
+      [#if reportingCycle]
+        [@menu actionName="budget" stageName="leverages" textName="menu.reporting.submenu.projectBudget.leverages" disabled=true/]
+      [#else]
+        [@menu actionName="budget" stageName="budgetByPartner" textName="menu.planning.submenu.projectBudget.budgetByPartner" /]
+        [@menu actionName="budgetByMog" stageName="budgetByMog" textName="menu.planning.submenu.projectBudget.budgetByMog" /]
+      [/#if]
       </ul>
     </li>
   </ul>
