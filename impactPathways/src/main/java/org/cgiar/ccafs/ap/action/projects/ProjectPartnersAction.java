@@ -455,8 +455,15 @@ public class ProjectPartnersAction extends BaseAction {
     }
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    int evaluatingYear = 0;
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
     if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
       this.setProjectLessonsPreview(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
         this.getCurrentReportingYear(), APConstants.PLANNING_SECTION));

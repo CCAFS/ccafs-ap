@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.cgiar.ccafs</groupId>
   <artifactId>pandr</artifactId>
-  <version>2.0-SNAPSHOT</version>
+  <version>4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>CCAFS Planning and Reporting Platform</name>
 

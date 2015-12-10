@@ -112,8 +112,15 @@ public class ProjectOutcomesAction extends BaseAction {
         this.getCurrentReportingYear(), APConstants.PLANNING_SECTION));
     }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    int evaluatingYear = 0;
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
@@ -132,7 +139,7 @@ public class ProjectOutcomesAction extends BaseAction {
       }
       int evaluatingYear = 0;
       if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
-        evaluatingYear = config.getReportingCurrentYear();
+        evaluatingYear = this.getCurrentReportingYear();
       } else {
         evaluatingYear = currentPlanningYear;
       }
