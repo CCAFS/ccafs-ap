@@ -107,7 +107,10 @@ public class ProjectOutcomesAction extends BaseAction {
       projectOutcomes.put(String.valueOf(year), projectOutcome);
     }
     project.setOutcomes(projectOutcomes);
-
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      this.setProjectLessonsPreview(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+        this.getCurrentReportingYear(), APConstants.PLANNING_SECTION));
+    }
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
       this.getCurrentPlanningYear(), this.getCycleName()));
@@ -127,13 +130,19 @@ public class ProjectOutcomesAction extends BaseAction {
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);
       }
-
+      int evaluatingYear = 0;
+      if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+        evaluatingYear = config.getReportingCurrentYear();
+      } else {
+        evaluatingYear = currentPlanningYear;
+      }
       // Saving Project Outcome
-      for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+      for (int year = evaluatingYear; year <= midOutcomeYear; year++) {
         ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
         success = success && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
           this.getJustification());
       }
+
 
       if (success) {
         // Get the validation messages and append them to the save message if any

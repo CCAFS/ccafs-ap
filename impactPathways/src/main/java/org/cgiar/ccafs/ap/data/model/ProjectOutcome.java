@@ -27,34 +27,45 @@ public class ProjectOutcome {
   private int id;
   private int year;
   private String statement;
+  private String anualProgress;
   // private String stories;
   // private String genderDimension;
+
 
   public ProjectOutcome() {
   }
 
+
   public ProjectOutcome(int id) {
     this.id = id;
+  }
+
+  public String getAnualProgress() {
+    return anualProgress;
+  }
+
+  public int getId() {
+    return id;
   }
 
   // public String getGenderDimension() {
   // return genderDimension;
   // }
 
-  public int getId() {
-    return id;
-  }
-
   public String getStatement() {
     return statement;
+  }
+
+  public int getYear() {
+    return year;
   }
 
   // public String getStories() {
   // return stories;
   // }
 
-  public int getYear() {
-    return year;
+  public void setAnualProgress(String anualProgress) {
+    this.anualProgress = anualProgress;
   }
 
   // public void setGenderDimension(String genderDimension) {
