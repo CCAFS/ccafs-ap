@@ -173,7 +173,7 @@
       [#-- Lessons learnt from last planning/reporting cycle --]
       [#if (projectLessonsPreview.lessons?has_content)!false]
       <div class="fullBlock">
-        <h6>[@customForm.text name="${currentSection}.project.locations.lessons" param="${reportingCycle?string(currentReportingYear,currentPlanningYear-1)}" /]:</h6>
+        <h6>[@customForm.text name="${currentSection}.project.locations.previousLessons" param="${reportingCycle?string(currentReportingYear,currentPlanningYear-1)}" /]:</h6>
         <div class="textArea "><p>${projectLessonsPreview.lessons}</p></div>
       </div>
       [/#if]

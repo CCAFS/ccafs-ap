@@ -84,11 +84,8 @@
                           [#if editable] 
                             <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" [#if projectIndicator.id != -1 || isUniqueIndicator]checked="checked" disabled="disabled"[/#if] />
                           [/#if]
-                          [#if indicator.parent?has_content] 
-                            <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.parent.description}</label>
-                          [#else]
-                            <label class="indicatorDescription [#if !editable]checked[/#if]">${indicator.description}</label>
-                          [/#if]
+                          [#-- Indicator description --]
+                          <label class="indicatorDescription [#if !editable]checked[/#if]">${(indicator.parent.description)!indicator.description}</label>
                           <div class="indicatorTargets">
                              <ul class="">
                               [#list years as year]
@@ -175,11 +172,7 @@
                           <input type="hidden"  name="indicators.id" value="-1" disabled="disabled"/>
                           [#if editable]
                             <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" />
-                            [#if indicator.parent?has_content]
-                              <label class="indicatorDescription">${indicator.parent.description}</label> 
-                            [#else]
-                              <label class="indicatorDescription">${indicator.description}</label> 
-                            [/#if]
+                            <label class="indicatorDescription">${(indicator.parent.description)!indicator.description}</label> 
                           [/#if]
                           <div class="indicatorTargets" style="display:none">
                              <ul class="">
@@ -190,11 +183,7 @@
                             [#list years as year]
                             <div id="target-${year}" class="targetIndicator"> 
                               [#-- Indicator ID --]
-                              [#if indicator.parent?has_content]
-                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.parent.id}"  />
-                              [#else]
-                                <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${indicator.id}"  />
-                              [/#if]
+                              <input type="hidden" class="projectIndicatorParent" name="project.indicators.parent" value="${(indicator.parent.id)!indicator.id}"  />
                               
                               [#-- Check if the value of this hidden input should be arbitrarily -1 --]
                               <input type="hidden" class="projectIndicatorID" name="project.indicators.id" value="-1" />
