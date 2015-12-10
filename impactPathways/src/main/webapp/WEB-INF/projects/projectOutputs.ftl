@@ -68,7 +68,7 @@
                   [#-- Brief bullet points of your expected annual year contribution towards the selected MOG --]
                   <div class="fullBlock">
                     <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!(editable && !reportingCycle) param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
-                    [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" i18nkey="planning.projectOutputs.expectedBulletPoints" required=isYearRequired(year) showTitle=false editable=(editable && !reportingCycle) /]
+                    [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" required=isYearRequired(year) showTitle=false editable=(editable && !reportingCycle) /]
                   </div>
                   [#-- Brief summary of your actual annual contribution --]
                   [#if reportingCycle]

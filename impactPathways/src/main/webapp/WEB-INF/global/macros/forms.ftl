@@ -1,8 +1,5 @@
 [#ftl]
-[#macro text name readText=false param="" ]
-  [#assign customName][#if readText]${name}.readText[#else]${name}[/#if][/#assign]
-  [@s.text name="${customName}"][@s.param]${param}[/@s.param][/@s.text]
-[/#macro]
+[#macro text name readText=false param="" ][#assign customName][#if readText]${name}.readText[#else]${name}[/#if][/#assign][@s.text name="${customName}"][@s.param]${param}[/@s.param][/@s.text][/#macro]
 
 [#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="" readOnly=false showTitle=true editable=true placeholder=false]
   <div class="input ${(className?has_content)?string('input-','')}${className}" style="display:${display?string('block','none')};">
@@ -207,11 +204,7 @@
   [@s.file name="${name}" id="${customId}" cssClass="upload" cssStyle="${template?string('display:none','')}"  /]
 [/#macro] 
 
-[#macro req required=true ]
-  [#if required]
-    <span class="red">*</span>
-  [/#if]
-[/#macro]
+[#macro req required=true ][#if required]<span class="red">*</span>[/#if][/#macro]
 
 [#macro confirmJustification action="" namespace="/" nameId="" title="" projectID=""]
   <div id="dialog-justification" title="${title}" style="display:none"> 
