@@ -72,7 +72,7 @@
           [#if reportingCycle && (year == currentReportingYear) ]
           <div class="fullPartBlock">
             <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /] [@customForm.req required=true /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].statementReporting" required=true className="limitWords-300" showTitle=false editable=editable /]
+            [@customForm.textArea name="project.outcomes[${year?string}].anualProgress" required=true className="limitWords-300" showTitle=false editable=editable /]
           </div>
           [/#if]
         [/#list]
