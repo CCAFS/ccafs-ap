@@ -12,9 +12,9 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
-        <mapping resource="org/cgiar/ccafs/ap/data/xmls/ProjectHighligthsCountry.hbm.xml" />
-        <mapping resource="org/cgiar/ccafs/ap/data/xmls/ProjectHighligths.hbm.xml" />
-        <mapping resource="org/cgiar/ccafs/ap/data/xmls/ProjectHighligthsTypes.hbm.xml" />
-          <mapping resource="org/cgiar/ccafs/ap/data/xmls/DeliverablesRanking.hbm.xml" />
+        <mapping resource="xmls/ProjectHighligthsCountry.hbm.xml" />
+        <mapping resource="xmls/ProjectHighligths.hbm.xml" />
+        <mapping resource="xmls/ProjectHighligthsTypes.hbm.xml" />
+          <mapping resource="xmls/DeliverablesRanking.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

@@ -61,10 +61,13 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
 
   private void buildXML(Document doc) {
     // root element
-    Element project, location, contactPerson, institutions, partner, contribution, flagshipsLabel, regionsLabel, flagship, region, contributionsLabel, partnersLabel, outcomesLabel, locationsLabel, contactPersonsLabel, institutionsLabel;
+    Element project, location, contactPerson, institutions, partner, contribution, flagshipsLabel, regionsLabel,
+      flagship, region, contributionsLabel, partnersLabel, outcomesLabel, locationsLabel, contactPersonsLabel,
+      institutionsLabel;
     Element rootElement = doc.createElement("projects");
     doc.appendChild(rootElement);
-    String[] partners, singlePartner, flagships, singleFlagship, regions, singleRegion, locations, singleLocation, contributions, singleContribution;
+    String[] partners, singlePartner, flagships, singleFlagship, regions, singleRegion, locations, singleLocation,
+      contributions, singleContribution;
     for (Map<String, Object> projectData : projectsData) {
       project = doc.createElement("project");
       // id
@@ -73,36 +76,36 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       project.appendChild(this.buildElement(doc, "type", this.convertToString(projectData.get("project_type")), false));
       // title
       project
-      .appendChild(this.buildElement(doc, "title", this.convertToString(projectData.get("project_title")), true));
+        .appendChild(this.buildElement(doc, "title", this.convertToString(projectData.get("project_title")), true));
       // summary
-      project.appendChild(this.buildElement(doc, "summary", this.convertToString(projectData.get("project_summary")),
-        true));
+      project
+        .appendChild(this.buildElement(doc, "summary", this.convertToString(projectData.get("project_summary")), true));
       // start date
-      project.appendChild(this.buildElement(doc, "startDate", this.convertToString(projectData.get("start_date")),
-        false));
+      project
+        .appendChild(this.buildElement(doc, "startDate", this.convertToString(projectData.get("start_date")), false));
       // end date
       project.appendChild(this.buildElement(doc, "endDate", this.convertToString(projectData.get("end_date")), false));
       // lead institution
       institutionsLabel = doc.createElement("leader");
       institutions = doc.createElement("institution");
       // lead institution acronym
-      institutions.appendChild(this.buildElement(doc, "acronym",
-        this.convertToString(projectData.get("lead_institution_acronym")), false));
+      institutions.appendChild(
+        this.buildElement(doc, "acronym", this.convertToString(projectData.get("lead_institution_acronym")), false));
       // lead institution name
-      institutions.appendChild(this.buildElement(doc, "name",
-        this.convertToString(projectData.get("lead_institution_name")), false));
+      institutions.appendChild(
+        this.buildElement(doc, "name", this.convertToString(projectData.get("lead_institution_name")), false));
       // lead institution website
-      institutions.appendChild(this.buildElement(doc, "webSite",
-        this.convertToString(projectData.get("lead_institution_web_site")), false));
+      institutions.appendChild(
+        this.buildElement(doc, "webSite", this.convertToString(projectData.get("lead_institution_web_site")), false));
       // contact persons
       contactPersonsLabel = doc.createElement("contactPersons");
       contactPerson = doc.createElement("contactPerson");
       // name
-      contactPerson.appendChild(this.buildElement(doc, "name",
-        this.convertToString(projectData.get("contact_person_name")), false));
+      contactPerson.appendChild(
+        this.buildElement(doc, "name", this.convertToString(projectData.get("contact_person_name")), false));
       // email
-      contactPerson.appendChild(this.buildElement(doc, "email",
-        this.convertToString(projectData.get("contact_person_email")), false));
+      contactPerson.appendChild(
+        this.buildElement(doc, "email", this.convertToString(projectData.get("contact_person_email")), false));
       contactPersonsLabel.appendChild(contactPerson);
       institutions.appendChild(contactPersonsLabel);
       institutionsLabel.appendChild(institutions);
@@ -237,8 +240,8 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
       project.appendChild(contributionsLabel);
       // outcomes
       outcomesLabel = doc.createElement("outcomes");
-      outcomesLabel.appendChild(this.buildElement(doc, "statement",
-        this.convertToString(projectData.get("outcome_statement")), true));
+      outcomesLabel.appendChild(
+        this.buildElement(doc, "statement", this.convertToString(projectData.get("outcome_statement")), true));
       project.appendChild(outcomesLabel);
       rootElement.appendChild(project);
     }
@@ -257,7 +260,7 @@ public class ProjectsXMLAction extends BaseAction implements Summary {
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.newDocument();
 
-    doc.setXmlVersion("1.0");
+    // doc.setXmlVersion("1.0");
     // Lets build the XMLS into the document.
     this.buildXML(doc);
 
