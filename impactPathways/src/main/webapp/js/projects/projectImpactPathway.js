@@ -274,6 +274,7 @@ function setIndicatorIndexes() {
         $(target).find(".projectIndicatorNarrativeAchieved").attr("name", indicatorsName + "[" + index + "].narrativeAchieved");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
         $(target).find(".projectIndicatorGender").attr("name", indicatorsName + "[" + index + "].gender");
+        $(target).find(".projectIndicatorNarrativeGenderAchieved").attr("name", indicatorsName + "[" + index + "].narrativeGenderAchieved");
         index++;
       } else {
 
