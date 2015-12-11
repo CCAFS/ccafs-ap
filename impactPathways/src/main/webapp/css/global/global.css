@@ -1549,7 +1549,7 @@ a.currentReportingSection li #i-additionalInformation{
   margin-left: 0px;
   padding-bottom: 5px;
   padding-left: 10px;
-  padding-top: 6px;
+  padding-top: 4px;
   color: #535353;
   text-decoration: none;
 }
@@ -1662,9 +1662,10 @@ a.currentReportingSection li #i-additionalInformation{
   color: #FFFFFF;
   font-weight: bold;
   background-color: #47939C;
-  height: 17px;
+  height: 16px;
   width: 189px;
   border-radius: 1px;
+  /* display: none; */
 }
 
 #secondaryMenu.BILATERAL > ul > li > p{

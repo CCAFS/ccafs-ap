@@ -91,7 +91,7 @@
                           [#-- Indicator description --]
                           <label class="indicatorDescription [#if !editable]checked[/#if]">${(indicator.parent.description)!indicator.description}</label>
                           <div class="indicatorTargets">
-                             <ul class="">
+                            <ul class="">
                               [#list years as year]
                                 <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
                               [/#list]   
@@ -189,6 +189,17 @@
                                     [/#if] 
                                   [/#if] 
                                 </div>
+                                
+                                [#-- -- -- REPORTING BLOCK -- -- --]
+                                [#if reportingCycle && (year == cycleYear)]
+                                  [#--  Narrative for your achieved annual gender and social --]
+                                  <div class="textArea fullBlock">
+                                    <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeGenderAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
+                                    [#if editable && (cycleYear lte year)]
+                                      <textarea class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGenderAchieved" >${(projectIndicator.targetNarrativeAchieved)!}</textarea>
+                                    [/#if]
+                                  </div>
+                                [/#if]
                                 
                               </div>  
                             [/#list] 
