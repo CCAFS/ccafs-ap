@@ -310,12 +310,22 @@
           <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
+      
+      [#-- Lessons learnt from last planning/reporting cycle --]
+      [#if (projectLessonsPreview.lessons?has_content)!false]
+      <div class="fullBlock">
+        <h6>[@customForm.text name="${currentSection}.projectCcafsOutcomes.previousLessons" param="${reportingCycle?string(currentReportingYear,currentPlanningYear-1)}" /]:</h6>
+        <div class="textArea "><p>${projectLessonsPreview.lessons}</p></div>
+      </div>
+      [/#if]
+      [#-- Planning/Reporting lessons --]
       <div class="fullBlock">
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
-        <input type="hidden" name="projectLessons.year" value=${cycleYear} />
+        <input type="hidden" name="projectLessons.year" value=${reportingCycle?string(currentReportingYear,currentPlanningYear)} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
       </div>
+      
     </div>
     [/#if]
     

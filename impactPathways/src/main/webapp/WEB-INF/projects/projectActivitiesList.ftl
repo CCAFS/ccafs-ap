@@ -3,15 +3,15 @@
 [#assign globalLibs = ["jquery", "noty","autoSave", "dataTable", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/usersManagement.js", "${baseUrl}/js/projects/activity-list.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
-[#assign currentSection = "planning" /]
+[#assign currentSection = cycleName?lower_case /]
 [#assign currentPlanningSection = "activities" /]
 [#assign currentStage = "activities" /]
 [#assign currentSubStage = "activities" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"activities", "nameSpace":"planning/projects", "action":"activities", "param":"projectID=${projectID}" }
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"activities", "nameSpace":"${currentSection}/projects", "action":"activities", "param":"projectID=${projectID}" }
 ]/]
 
 [#assign params = {
@@ -70,7 +70,7 @@
             [/#if]
           </div><!-- End Activities list -->
           [#-- Add activity button --]
-          [#if editable && canEdit]
+          [#if editable && canEdit && !reportingCycle]
             <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
           [/#if]
         </div>
@@ -83,13 +83,23 @@
             [#if canEdit && !newProject]
               <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
             [/#if]
+          [/#if] 
+          
+          [#-- Lessons learnt from last planning/reporting cycle --]
+          [#if (projectLessonsPreview.lessons?has_content)!false]
+          <div class="fullBlock">
+            <h6>[@customForm.text name="${currentSection}.activities.previousLessons" param="${reportingCycle?string(currentReportingYear,currentPlanningYear-1)}" /]:</h6>
+            <div class="textArea "><p>${projectLessonsPreview.lessons}</p></div>
+          </div>
           [/#if]
+          [#-- Planning/Reporting lessons --]
           <div class="fullBlock">
             <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
-            <input type="hidden" name="projectLessons.year" value=${currentPlanningYear} />
+            <input type="hidden" name="projectLessons.year" value=${reportingCycle?string(currentReportingYear,currentPlanningYear)} />
             <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-            [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.activities.lessons" required=!project.bilateralProject editable=editable /]
+            [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.activities.lessons" required=!project.bilateralProject editable=editable /]
           </div>
+          
         </div>
         [/#if]
         
