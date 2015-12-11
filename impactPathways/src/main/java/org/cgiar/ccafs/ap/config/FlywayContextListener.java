@@ -74,6 +74,7 @@ public class FlywayContextListener implements ServletContextListener {
     // flyway.setValidateOnMigrate(false);
     flyway.setOutOfOrder(true);
     flyway.migrate();
+    System.out.println("Finaliza los listenrs");
 
   }
 
