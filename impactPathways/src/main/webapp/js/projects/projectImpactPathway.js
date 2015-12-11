@@ -6,7 +6,7 @@ $(document).ready(init);
 function init() {
   $contributionsBlock = $('#contributionsBlock');
   $midOutcomesList = $('#ccafsOutcomes_midOutcomesList');
-  $targetValue = $('.projectIndicatorTarget');
+  $targetValue = $('.projectIndicatorTarget, .projectIndicatorAchievedTarget');
   setWordCounters();
   setIndicatorIndexes();
   setMogsIndexes();
@@ -270,6 +270,8 @@ function setIndicatorIndexes() {
         $(target).find(".projectIndicatorYear").attr("name", indicatorsName + "[" + index + "].year");
         $(target).find(".projectIndicatorOutcome").attr("name", indicatorsName + "[" + index + "].outcome");
         $(target).find(".projectIndicatorTarget").attr("name", indicatorsName + "[" + index + "].target");
+        $(target).find(".projectIndicatorAchievedTarget").attr("name", indicatorsName + "[" + index + "].achievedTarget");
+        $(target).find(".projectIndicatorNarrativeAchieved").attr("name", indicatorsName + "[" + index + "].narrativeAchieved");
         $(target).find(".projectIndicatorDescription").attr("name", indicatorsName + "[" + index + "].description");
         $(target).find(".projectIndicatorGender").attr("name", indicatorsName + "[" + index + "].gender");
         index++;
