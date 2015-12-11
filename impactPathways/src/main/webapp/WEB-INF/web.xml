@@ -9,11 +9,7 @@
   <listener>
     <listener-class>org.cgiar.ccafs.ap.config.APGuiceContextListener</listener-class>
   </listener>
-      <listener>
-    <listener-class>
-    org.cgiar.ccafs.ap.config.ContainerContextClosedHandler
-    </listener-class>
-  </listener>
+
   <listener>
     <listener-class>
     org.cgiar.ccafs.ap.config.HibernateListener
