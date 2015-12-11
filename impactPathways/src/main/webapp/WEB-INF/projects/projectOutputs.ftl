@@ -18,13 +18,16 @@
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
+
+[#-- Cycle year --]
+[#assign cycleYear = (reportingCycle?string(currentReportingYear,currentPlanningYear))?number /]
     
 <section class="content">
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   
   [@s.form action="outputs" cssClass="pure-form"]
   <article class="halfContent" id="mainInformation"> 
-    [#assign years= [midOutcomeYear, currentPlanningYear-1,currentPlanningYear, currentPlanningYear+1] /]
+    [#assign years= [midOutcomeYear, cycleYear-1,cycleYear, cycleYear+1] /]
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     <br />
     [#-- Informing user that he/she doesnt have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
@@ -71,7 +74,7 @@
                     [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" required=isYearRequired(year) showTitle=false editable=(editable && !reportingCycle) /]
                   </div>
                   [#-- Brief summary of your actual annual contribution --]
-                  [#if reportingCycle]
+                  [#if reportingCycle && (year == currentReportingYear)]
                   <div class="fullBlock">
                     <h6>[@customForm.text name="reporting.projectOutputs.summaryAnnualContribution" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
                     [@customForm.textArea name="project.outputsOverview[${index}].summaryAnnualContribution" value=""  required=isYearRequired(year) showTitle=false editable=editable /]
@@ -84,7 +87,7 @@
                   </div>
                   
                   [#-- Summary of the gender and social inclusion dimension --]
-                  [#if reportingCycle]
+                  [#if reportingCycle && (year == currentReportingYear)]
                   <div class="fullBlock">
                     <h6>[@customForm.text name="reporting.projectOutputs.summarySocialInclusionDimmension" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6> 
                     [@customForm.textArea name="project.outputsOverview[${index}].summarySocialInclusionDimmension" value="" required=isYearRequired(year) showTitle=false editable=editable /]
@@ -146,14 +149,14 @@
   [/@s.form] 
 
   [#-- Index active tab --]
-  [#assign indexTabCurrentYear][#list years as year][#if year == currentPlanningYear]${year_index}[/#if][/#list][/#assign]
+  [#assign indexTabCurrentYear][#list years as year][#if year == cycleYear]${year_index}[/#if][/#list][/#assign]
   <input type="hidden" id="indexTabCurrentYear" value="${(indexTabCurrentYear)!0}" />
   
 </section>
 
 [#-- Get if the year is required--]
 [#function isYearRequired year]
-  [#return (!project.bilateralProject && (currentPlanningYear == year))]
+  [#return (!project.bilateralProject && (cycleYear == year))]
 [/#function]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
