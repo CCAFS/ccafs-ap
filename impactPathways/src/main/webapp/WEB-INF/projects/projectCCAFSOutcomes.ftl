@@ -123,8 +123,7 @@
                                       <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                     [#else]
                                       [#if !projectIndicator.target?has_content]
-                                        [#if isYearRequired(year) ]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if]
-                                        [#if cycleYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
+                                        [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                       [#else]
                                         <div class="select"><p>${projectIndicator.target}</p></div>
                                         <input type="hidden" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${(projectIndicator.target)!}"/>
@@ -157,10 +156,7 @@
                                     <textarea class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
-                                      [#if isYearRequired(year)]
-                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
-                                      [/#if] 
-                                      [#if cycleYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
+                                      [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.description)!}</p></div>
                                       <input type="hidden" class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description" value="${(projectIndicator.description)!}"/>
@@ -186,10 +182,7 @@
                                     <textarea class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender">${(projectIndicator.gender)!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.gender?has_content]
-                                      [#if isYearRequired(year)]
-                                        <span class="fieldError">[@s.text name="form.values.required" /]</span>
-                                      [/#if] 
-                                      [#if cycleYear lte year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
+                                      [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.gender)!}</p></div>
                                       <input type="hidden" class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender" value="${(projectIndicator.gender)!}"/>
@@ -310,12 +303,22 @@
           <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
+      
+      [#-- Lessons learnt from last planning/reporting cycle --]
+      [#if (projectLessonsPreview.lessons?has_content)!false]
+      <div class="fullBlock">
+        <h6>[@customForm.text name="${currentSection}.projectCcafsOutcomes.previousLessons" param="${reportingCycle?string(currentReportingYear,currentPlanningYear-1)}" /]:</h6>
+        <div class="textArea "><p>${projectLessonsPreview.lessons}</p></div>
+      </div>
+      [/#if]
+      [#-- Planning/Reporting lessons --]
       <div class="fullBlock">
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
-        <input type="hidden" name="projectLessons.year" value=${cycleYear} />
+        <input type="hidden" name="projectLessons.year" value=${reportingCycle?string(currentReportingYear,currentPlanningYear)} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="planning.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
       </div>
+      
     </div>
     [/#if]
     

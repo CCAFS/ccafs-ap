@@ -64,6 +64,9 @@ function setActivitiesIndexes() {
     $(element).find(".startDate").attr("name", name + "startDate").attr("id", name + "startDate");
     $(element).find(".endDate").attr("name", name + "endDate").attr("id", name + "endDate");
     $(element).find(".leader").attr("name", name + "leader");
+    // Reporting fields
+    $(element).find(".activityStatus").attr("name", name + "activityStatus");
+    $(element).find(".activityProgress").attr("name", name + "activityProgress");
   });
 }
 
@@ -124,7 +127,7 @@ function datePickerConfig($startDate,$endDate) {
       defaultDate: null,
       onClose: function(selectedDate) {
         if(selectedDate != "") {
-          //$startDate.datepicker("option", "maxDate", selectedDate);
+          // $startDate.datepicker("option", "maxDate", selectedDate);
         }
       }
   });

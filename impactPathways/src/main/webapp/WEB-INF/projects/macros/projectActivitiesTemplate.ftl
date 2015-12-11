@@ -30,24 +30,37 @@
     <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
     [#-- Title --]
     <div class="fullPartBlock clearfix">
-      [@customForm.input name="${activitiesName}.title" className="title" type="text" required=true i18nkey="planning.activityDescription.title" editable=editable/]
+      [@customForm.input name="${activitiesName}.title" className="title" type="text" required=true i18nkey="planning.activityDescription.title" editable=editable && !reportingCycle/]
     </div>
     [#-- Description --]
     <div class="fullPartBlock clearfix">
-      [@customForm.textArea name="${activitiesName}.description" className="description" required=true i18nkey="planning.activityDescription.description" editable=editable/]
+      [@customForm.textArea name="${activitiesName}.description" className="description" required=true i18nkey="planning.activityDescription.description" editable=editable && !reportingCycle/]
     </div>  
     [#-- Start and End Date --]
     <div class="fullPartBlock clearfix"> 
       <div class="halfPartBlock">
-        [@customForm.input name="${activitiesName}.startDate" className="startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true editable=editable/]
+        [@customForm.input name="${activitiesName}.startDate" className="startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true editable=editable && !reportingCycle/]
       </div>   
       <div class="halfPartBlock">
-        [@customForm.input name="${activitiesName}.endDate" className="endDate"  type="text" i18nkey="planning.activityDescription.endDate" required=true editable=editable/]
+        [@customForm.input name="${activitiesName}.endDate" className="endDate"  type="text" i18nkey="planning.activityDescription.endDate" required=true editable=editable && !reportingCycle/]
       </div>
     </div>
+    [#-- -- -- REPORTING BLOCK -- -- --]
+    [#if reportingCycle]
+      [#-- Activity status --]
+      <div class="fullPartBlock clearfix"> 
+        <div class="halfPartBlock">
+          [@customForm.select name="${activitiesName}.activityStatus" className="activityStatus" label="" required=true i18nkey="reporting.activityDescription.activityStatus" listName="statuses" editable=editable/]
+        </div>   
+      </div>
+      [#-- Overall Activity progress --]
+      <div class="fullPartBlock clearfix">
+        [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress" required=true i18nkey="reporting.activityDescription.activityProgress" editable=editable /]
+      </div>
+    [/#if]
     [#-- Project Leader --]
     <div class="fullPartBlock">
-      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable/]
+      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable && !reportingCycle/]
     </div>
   </div><!-- End ${activityId} -->
 [/#macro]
