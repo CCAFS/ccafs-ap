@@ -131,15 +131,15 @@
                                       [/#if]
                                     [/#if]
                                   </div>
+                                  [#-- Cumulative target --]
+                                  <div class="thirdPartBlock">
+                                    <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
+                                    [#if editable && (cycleYear lte year)]
+                                       <div class="select"><p>{cumulative}</p></div>
+                                    [/#if]
+                                  </div>
                                   [#-- -- -- REPORTING BLOCK -- -- --]
                                   [#if reportingCycle && (year == cycleYear)]
-                                    [#-- Cumulative target --]
-                                    <div class="thirdPartBlock">
-                                      <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                      [#if editable && (cycleYear lte year)]
-                                         <div class="select"><p>{cumulative}</p></div>
-                                      [/#if]
-                                    </div>
                                     [#-- Reporting target --]
                                     <div class="thirdPartBlock">
                                       <label><h6>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
@@ -174,7 +174,7 @@
                                   <div class="textArea fullBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                     [#if editable && (cycleYear lte year)]
-                                      <textarea class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description">${(projectIndicator.targetNarrativeAchieved)!}</textarea>
+                                      <textarea class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeAchieved">${(projectIndicator.targetNarrativeAchieved)!}</textarea>
                                     [/#if]
                                   </div>
                                 [/#if]
@@ -201,15 +201,15 @@
                             [/#list] 
                           </div>   
                         </div>  
-                      [#else] 
+                      [#else]
                         <div class="midOutcomeIndicator" >
                           <input type="hidden"  name="indicators.id" value="-1" disabled="disabled"/>
-                          [#if editable]
+                          [#if editable && !reportingCycle]
                             <input type="checkbox" class="projectIndicatorCheckbox" id="indicatorIndex-${indicator_index}" />
                             <label class="indicatorDescription">${(indicator.parent.description)!indicator.description}</label> 
                           [/#if]
                           <div class="indicatorTargets" style="display:none">
-                             <ul class="">
+                            <ul class="">
                               [#list years as year]
                                 <li class="target-${year}"><a href="#target-${year}">${year} [#if isYearRequired(year)]*[/#if]</a></li> 
                               [/#list]   
@@ -288,7 +288,7 @@
           [/#if]
         </div> <!-- End Contributions Block -->
         [#-- Outcomes 2019 select list --]
-        [#if editable]
+        [#if editable && !reportingCycle]
           <div id="midOutcomesSelect">
             [@customForm.select name="midOutcomesList" i18nkey="planning.projectImpactPathways.outcome" listName="midOutcomes" className="midOutcomeSelect" /]
           </div>
