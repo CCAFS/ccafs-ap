@@ -51,7 +51,21 @@ public class ContainerContextClosedHandler implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent servletContextEvent) {
-    // nothing to do
+    Enumeration<Driver> drivers = DriverManager.getDrivers();
+
+    Driver driver = null;
+
+    // clear drivers
+    while (drivers.hasMoreElements()) {
+      try {
+        driver = drivers.nextElement();
+        DriverManager.deregisterDriver(driver);
+        System.out.println("Delete");
+      } catch (SQLException ex) {
+        // deregistration failed, might want to do something, log at the very least
+        ex.printStackTrace();
+      }
+    }
   }
 
 }
