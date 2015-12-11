@@ -32,6 +32,12 @@ public class APGuiceContextListener extends GuiceServletContextListener {
   private ServletContext servletContext;
 
   @Override
+  public void contextDestroyed(ServletContextEvent servletContextEvent) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
   public void contextInitialized(ServletContextEvent servletContextEvent) {
     LOG.info("-- ContextInitialized start -- ");
     servletContext = servletContextEvent.getServletContext();
@@ -43,5 +49,4 @@ public class APGuiceContextListener extends GuiceServletContextListener {
     return Guice.createInjector(new APShiroWebModule(this.servletContext), ShiroWebModule.guiceFilterModule(),
       new Struts2GuicePluginModule(), new APModule());
   }
-
 }

@@ -11,9 +11,7 @@
   </listener>
   
   <listener>
-    <listener-class>
-    org.cgiar.ccafs.ap.config.HibernateListener
-    </listener-class>
+    <listener-class>org.cgiar.ccafs.ap.config.HibernateListener</listener-class>
   </listener>
   <!-- Google Guice integration with our web application -->
   <filter>
