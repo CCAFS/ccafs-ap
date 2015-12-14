@@ -23,8 +23,12 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DeliverableRankingMySQLDAO extends StandardDao implements DeliverableRankingDAO {
+
+  private static Logger LOG = LoggerFactory.getLogger(DeliverableRankingMySQLDAO.class);
 
   @Override
   public DeliverablesRanking findDeliverableRanking(int deliverableId) {
@@ -45,6 +49,7 @@ public class DeliverableRankingMySQLDAO extends StandardDao implements Deliverab
       return null;
     } catch (HibernateException e) {
       e.printStackTrace();
+      LOG.error("Exception DeliverablesRanking", e);
       this.RollBackTransaction();
     } finally
 
