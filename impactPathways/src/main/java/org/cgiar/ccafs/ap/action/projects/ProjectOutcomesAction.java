@@ -186,7 +186,13 @@ public class ProjectOutcomesAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, midOutcomeYear, currentPlanningYear, this.getCycleName());
+      int evaluatingYear = 0;
+      if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+        evaluatingYear = this.getCurrentReportingYear();
+      } else {
+        evaluatingYear = currentPlanningYear;
+      }
+      validator.validate(this, project, midOutcomeYear, evaluatingYear, this.getCycleName());
     }
   }
 }

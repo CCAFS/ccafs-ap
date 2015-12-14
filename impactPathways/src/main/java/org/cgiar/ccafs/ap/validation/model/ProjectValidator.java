@@ -84,6 +84,19 @@ public class ProjectValidator extends BaseValidator {
     return (locations != null && !locations.isEmpty());
   }
 
+  public boolean hasValidAnualProgress(Map<String, ProjectOutcome> outcomes, int year) {
+    if (outcomes != null && !outcomes.isEmpty()) {
+      ProjectOutcome outcome = outcomes.get(String.valueOf(year));
+      if (outcome != null) {
+        if (this.isValidString(outcome.getAnualProgress())) {
+          return true;
+        }
+
+      }
+    }
+    return false;
+  }
+
   // This method validates if the outcome statement given as parameter is not empty and different from null
   // If so, it returns true
   public boolean hasValidOutcomeStatement(Map<String, ProjectOutcome> outcomes, int year) {
@@ -93,6 +106,7 @@ public class ProjectValidator extends BaseValidator {
         if (this.isValidString(outcome.getStatement())) {
           return true;
         }
+
       }
     }
     return false;

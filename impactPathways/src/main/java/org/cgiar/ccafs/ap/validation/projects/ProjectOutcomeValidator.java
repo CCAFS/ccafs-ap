@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
@@ -77,10 +78,22 @@ public class ProjectOutcomeValidator extends BaseValidator {
           } else {
             message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
           }
+          if (year == config.getReportingCurrentYear() && cycle.equals(APConstants.REPORTING_SECTION)) {
+            if (!projectValidator.hasValidAnualProgress(project.getOutcomes(), year)) {
+              if (year == midOutcomeYear) {
+                message = action.getText("planning.projectOutcome.annualProgress.readText");
+              } else {
+                message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
+              }
+            }
+          }
+
           this.addMessage(message.toLowerCase());
           this.addMissingField("project.outcomes[" + year + "].statement");
         }
+
       }
+
     }
   }
 }

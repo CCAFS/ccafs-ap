@@ -440,7 +440,15 @@ public class ValidateProjectSectionAction extends BaseAction {
 
     // Loading the project outcomes
     Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
-    for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
+
+    int evaluatingYear = 0;
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = currentPlanningYear;
+    }
+
+    for (int year = evaluatingYear; year <= midOutcomeYear; year++) {
       ProjectOutcome projectOutcome = projectOutcomeManager.getProjectOutcomeByYear(projectID, year);
       if (projectOutcome == null) {
         projectOutcome = new ProjectOutcome(-1);
