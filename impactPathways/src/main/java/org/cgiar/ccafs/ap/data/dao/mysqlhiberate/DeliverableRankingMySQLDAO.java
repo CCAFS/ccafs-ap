@@ -44,6 +44,7 @@ public class DeliverableRankingMySQLDAO extends StandardDao implements Deliverab
       }
       return null;
     } catch (HibernateException e) {
+      e.printStackTrace();
       this.RollBackTransaction();
     } finally
 
