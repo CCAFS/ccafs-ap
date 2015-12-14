@@ -7,7 +7,7 @@
     <header class="clearfix">
       <div id="mainLogo">Planning & Reporting Platform
       [#if !config.production]<p id="testingMessage"> Test platform </p>[/#if]
-      [#if config.closed]<p id="infoMessage"> Planning closed </p>[/#if]
+      [#if config.closed]<p id="infoMessage"> Closed </p>[/#if]
       </div>
       <div id="ccafsLogo"><img src="${baseUrl}/images/global/logo-ccafs.png" alt="CCAFS Logo" width="300px"></div>
       <div id="autoSavingMessages">
