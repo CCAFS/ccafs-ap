@@ -34,7 +34,7 @@ public abstract class DAOManager {
 
   public DAOManager(PropertiesManager properties) {
     this.properties = properties;
-    // this.registerDriver();
+    this.registerDriver();
   }
 
   /**

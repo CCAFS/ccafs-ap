@@ -131,8 +131,9 @@ public class MySQLDAOManager extends DAOManager {
 
   @Override
   public Connection getConnection() throws SQLException {
-    return this.openConnection(this.getProperties().getPropertiesAsString(APConfig.MYSQL_USER), this.getProperties()
-      .getPropertiesAsString(APConfig.MYSQL_PASSWORD), this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
+    return this.openConnection(this.getProperties().getPropertiesAsString(APConfig.MYSQL_USER),
+      this.getProperties().getPropertiesAsString(APConfig.MYSQL_PASSWORD),
+      this.getProperties().getPropertiesAsString(APConfig.MYSQL_HOST),
       this.getProperties().getPropertiesAsString(APConfig.MYSQL_PORT),
       this.getProperties().getPropertiesAsString(APConfig.MYSQL_DATABASE));
     // return null;

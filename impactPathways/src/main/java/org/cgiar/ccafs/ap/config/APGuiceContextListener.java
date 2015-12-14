@@ -14,11 +14,6 @@
 package org.cgiar.ccafs.ap.config;
 
 
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Enumeration;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
@@ -45,18 +40,6 @@ public class APGuiceContextListener extends GuiceServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent servletContextEvent) {
 
-    System.out.println("Elimian los registrados");
-    Enumeration<Driver> drivers = DriverManager.getDrivers();
-    Driver d = null;
-    while (drivers.hasMoreElements()) {
-      try {
-        d = drivers.nextElement();
-        DriverManager.deregisterDriver(d);
-
-      } catch (SQLException ex) {
-        ex.printStackTrace();
-      }
-    }
 
     LOG.info("-- ContextInitialized start -- ");
     servletContext = servletContextEvent.getServletContext();
