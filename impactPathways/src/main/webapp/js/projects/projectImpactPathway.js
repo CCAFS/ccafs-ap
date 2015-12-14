@@ -262,7 +262,6 @@ function setIndicatorIndexes() {
       // Checkbox
       $(indicator).find("input[type='checkbox']").attr("id", "indicatorIndex-" + indicatorIndex);
       if($(indicator).find("input[type='checkbox']").is(":checked")) {
-
         $(target).find("input.projectIndicatorParent").attr("name", indicatorsName + "[" + index + "].parent");
         $(target).find("input[type='hidden']").attr("disabled", false);
         $(target).find(".projectIndicatorID").attr("id", indicatorsName + "-" + indicatorIndex);
@@ -277,14 +276,10 @@ function setIndicatorIndexes() {
         $(target).find(".projectIndicatorNarrativeGenderAchieved").attr("name", indicatorsName + "[" + index + "].narrativeGenderAchieved");
         index++;
       } else {
-
         $(target).find("input[type='hidden']").attr("disabled", true);
         $(target).find(".indicatorNarrative textarea").attr("name", "");
-
       }
-
     });
-
   });
 }
 

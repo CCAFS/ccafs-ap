@@ -139,18 +139,14 @@
         [#-- Image --]
         <div class="halfPartBlock imageBlock">
           <div class="browseInput fileUpload">
-                [#if editable]
-                  [@customForm.inputFile name="file"  /]
-                [/#if]  
-             
+            [#if editable][@customForm.inputFile name="file"  /][/#if]  
           </div>
           <div id="highlight.image" class="image">
-             [#if highlight.photo?has_content]
-               <img src="${(highlightsImagesUrl)!baseUrl}/${(highlight.photo)!'images/global/defaultImage.png'}" width="100%">
-             [#else]
-               <img src="${baseUrl}/${(highlight.photo)!'images/global/defaultImage.png'}" width="100%">
-              [/#if]
-          
+           [#if highlight.photo?has_content]
+             <img src="${(highlightsImagesUrl)!baseUrl}/${(highlight.photo)!'images/global/defaultImage.png'}" width="100%">
+           [#else]
+             <img src="${baseUrl}/${(highlight.photo)!'images/global/defaultImage.png'}" width="100%">
+           [/#if]
           </div>
           <div class="clear"></div>
         </div>

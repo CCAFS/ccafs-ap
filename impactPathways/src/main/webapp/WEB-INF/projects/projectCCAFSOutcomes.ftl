@@ -130,18 +130,20 @@
                                       [/#if]
                                     [/#if]
                                   </div>
-                                  [#-- Cumulative target --]
-                                  <div class="thirdPartBlock">
-                                    <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                    [#if editable && (cycleYear lte year)]
-                                       <div class="select"><p>{cumulative}</p></div>
-                                    [/#if]
-                                  </div>
                                   [#-- -- -- REPORTING BLOCK -- -- --]
-                                  [#if reportingCycle && (year == cycleYear)]
-                                    [#-- Reporting target --]
+                                  [#-- Cumulative target --]
+                                  [#if reportingCycle]
                                     <div class="thirdPartBlock">
-                                      <label><h6>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
+                                      <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
+                                      [#if editable && (cycleYear lte year)]
+                                         <div class="select"><p>{cumulative}</p></div>
+                                      [/#if]
+                                    </div>
+                                  [/#if]
+                                  [#-- Reporting target --]
+                                  [#if reportingCycle && (year == cycleYear)]
+                                    <div class="thirdPartBlock">
+                                      <label><h6 title='[@s.text name="reporting.projectImpactPathways.achievedTarget.help" /]'>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                       [#if editable && (cycleYear lte year)]
                                         <input type="text" class="projectIndicatorAchievedTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.achievedTarget" value="${(projectIndicator.achievedTarget)!}"/> 
                                       [/#if]
