@@ -48,10 +48,9 @@
       <ul>
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes" /]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes" /]
+        [@menu actionName="crossCutting" stageName="crossCutting" textName="menu.reporting.submenu.crossCutting" active=reportingCycle/]
         [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" disabled=reportingCycle/]
-        [#if reportingCycle]
-          [@menu actionName="caseStudy" stageName="caseStudy" textName="menu.reporting.submenu.caseStudy" disabled=reportingCycle/]
-        [/#if]
+        [@menu actionName="caseStudy" stageName="caseStudy" textName="menu.reporting.submenu.caseStudy" active=reportingCycle disabled=reportingCycle/]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
@@ -59,10 +58,8 @@
       <ul>
         [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" /]
         [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" /]
-        [#if reportingCycle]
-          [@menu actionName="nextUsers" stageName="nextUsers" textName="menu.reporting.submenu.nextUsers" /]
-          [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" /]
-        [/#if]
+        [@menu actionName="nextUsers" stageName="nextUsers" textName="menu.reporting.submenu.nextUsers" active=reportingCycle/]
+        [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" active=reportingCycle/]
       </ul>
     </li>
     <li class="[#if currentStage == "activities"]${currCss}[/#if]">
@@ -74,12 +71,9 @@
     <li class="[#if currentStage == "budget"]${currCss}[/#if]">
       <p>[@s.text name="menu.secondary.planning.project.budget" /]</p>
       <ul>
-      [#if reportingCycle]
-        [@menu actionName="budget" stageName="leverages" textName="menu.reporting.submenu.projectBudget.leverages" disabled=true/]
-      [#else]
+        [@menu actionName="budget" stageName="leverages" textName="menu.reporting.submenu.projectBudget.leverages" active=reportingCycle disabled=true /]
         [@menu actionName="budget" stageName="budgetByPartner" textName="menu.planning.submenu.projectBudget.budgetByPartner" /]
         [@menu actionName="budgetByMog" stageName="budgetByMog" textName="menu.planning.submenu.projectBudget.budgetByMog" /]
-      [/#if]
       </ul>
     </li>
   </ul>
@@ -105,18 +99,20 @@
 
 
 [#-- Menu element --]
-[#macro menu actionName stageName textName disabled=false]
-  <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss} [/#if] [#if canEdit]${sectionCompleted(actionName)?string('submitted','toSubmit')}[/#if]">
-    [#if disabled]
-      <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
-    [#else]
-      [#if canEdit && !sectionCompleted(actionName)]
-        <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+[#macro menu actionName stageName textName disabled=false active=true]
+  [#if active]
+    <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss} [/#if] [#if canEdit]${sectionCompleted(actionName)?string('submitted','toSubmit')}[/#if]">
+      [#if disabled]
+        <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
       [#else]
-        <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+        [#if canEdit && !sectionCompleted(actionName)]
+          <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+        [#else]
+          <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+        [/#if]
       [/#if]
-    [/#if]
-  </li> 
+    </li>
+  [/#if]
 [/#macro]
 
 [#-- Submitted CSS class for section status--]

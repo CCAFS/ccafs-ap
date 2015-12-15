@@ -140,6 +140,18 @@
         <param name="projectID">${project.id}</param>
       </result>
     </action>
+    
+    <action name="crossCutting" class="org.cgiar.ccafs.ap.action.projects.ProjectCrossCuttingAction">
+      <result name="input">/WEB-INF/projects/projectCrossCutting.ftl</result>   
+      <result name="success" type="redirectAction">   
+        <param name="actionName">crossCutting</param>    
+        <param name="projectID">${project.id}</param>   
+      </result> 
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">crossCutting</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
 
     <action name="otherContributions" class="org.cgiar.ccafs.ap.action.projects.ProjectIPOtherContributionAction">
       <result name="input">/WEB-INF/projects/projectOtherContribution.ftl</result>
