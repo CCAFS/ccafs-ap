@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -93,6 +94,13 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
     }
   }
 
+  private void validateArchived(BaseAction action, int archived, String outcomeAcronym, int year, int c) {
+    if (!(archived >= 0)) {
+      this.addMessage(" Achieved in current reporting period   '" + outcomeAcronym + "' in '" + year + "' year");
+      this.addMissingField("project.indicators[" + c + "].archivied");
+    }
+  }
+
   private void validateCoreProject(BaseAction action, Project project) {
     this.validateIndicators(action, project);
     this.validateMOGs(action, project);
@@ -143,8 +151,22 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
               this.validateTargetValue(action, indicator.getTarget(), outcome.getComposedId(), indicator.getYear(), c);
               this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
                 indicator.getYear(), c);
+
+              this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
+                indicator.getYear(), c);
               this.validateGenderNarrative(action, indicator.getGender(), outcome.getComposedId(), indicator.getYear(),
                 c);
+
+              if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+                this.validateNarrativeTargets(action, indicator.getNarrativeTargets(), outcome.getComposedId(),
+                  action.getCurrentReportingYear(), c);
+
+                this.validateNarrativeGender(action, indicator.getNarrativeGender(), outcome.getComposedId(),
+                  action.getCurrentReportingYear(), c);
+                this.validateArchived(action, indicator.getArchived(), outcome.getComposedId(),
+                  action.getCurrentReportingYear(), c);
+              }
+
 
               // Marking that the year was validated.
               if (yearsToValidate.get(indicator.getYear()) != null) {
@@ -176,6 +198,25 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
       this.addMissingField("project.outputs.empty");
     }
 
+  }
+
+
+  private void validateNarrativeGender(BaseAction action, String targetNarrative, String outcomeAcronym, int year,
+    int c) {
+    if (!projectValidator.isValidTargetNarrative(targetNarrative)) {
+      this.addMessage("Narrative for your achieved annual gender and social inclusion   '" + outcomeAcronym + "' in '"
+        + year + "' year");
+      this.addMissingField("project.indicators[" + c + "].narrativeGender");
+    }
+  }
+
+  private void validateNarrativeTargets(BaseAction action, String targetNarrative, String outcomeAcronym, int year,
+    int c) {
+    if (!projectValidator.isValidTargetNarrative(targetNarrative)) {
+      this.addMessage(
+        "Narrative for your achieved targets, including evidence  '" + outcomeAcronym + "' in '" + year + "' year");
+      this.addMissingField("project.indicators[" + c + "].narrativeTargets");
+    }
   }
 
   private void validateTargetNarrative(BaseAction action, String targetNarrative, String outcomeAcronym, int year,
