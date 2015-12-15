@@ -72,8 +72,8 @@
       <p>[@s.text name="menu.secondary.planning.project.budget" /]</p>
       <ul>
         [@menu actionName="budget" stageName="leverages" textName="menu.reporting.submenu.projectBudget.leverages" active=reportingCycle disabled=true /]
-        [@menu actionName="budget" stageName="budgetByPartner" textName="menu.planning.submenu.projectBudget.budgetByPartner" /]
-        [@menu actionName="budgetByMog" stageName="budgetByMog" textName="menu.planning.submenu.projectBudget.budgetByMog" /]
+        [@menu actionName="budget" stageName="budgetByPartner" textName="menu.planning.submenu.projectBudget.budgetByPartner" active=!reportingCycle /]
+        [@menu actionName="budgetByMog" stageName="budgetByMog" textName="menu.planning.submenu.projectBudget.budgetByMog" active=!reportingCycle /]
       </ul>
     </li>
   </ul>
