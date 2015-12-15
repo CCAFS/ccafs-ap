@@ -157,7 +157,8 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
               this.validateGenderNarrative(action, indicator.getGender(), outcome.getComposedId(), indicator.getYear(),
                 c);
 
-              if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+              if (action.getCycleName().equals(APConstants.REPORTING_SECTION)
+                && indicator.getYear() == action.getCurrentReportingYear()) {
                 this.validateNarrativeTargets(action, indicator.getNarrativeTargets(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
 

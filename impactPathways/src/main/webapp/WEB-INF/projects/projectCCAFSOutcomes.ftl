@@ -134,7 +134,7 @@
                                   <div class="thirdPartBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                     [#if editable && (cycleYear lte year)]
-                                       <div class="select"><p>{cumulative}</p></div>
+                                       <div class="select"><p>${project.calculateAcumulativeTarget(year)}</p></div>
                                     [/#if]
                                   </div>
                                   [#-- -- -- REPORTING BLOCK -- -- --]

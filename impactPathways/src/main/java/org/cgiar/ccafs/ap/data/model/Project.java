@@ -91,6 +91,31 @@ public class Project {
     this.id = id;
   }
 
+  /**
+   * Calculate the acumulative target
+   * 
+   * @return
+   */
+  public String calculateAcumulativeTarget(int year) {
+
+    double acumulative = 0;
+
+    for (IPIndicator indicators : this.getIndicators()) {
+      if (indicators.getYear() <= year) {
+        if (indicators.getTarget() != null) {
+
+          try {
+            acumulative = acumulative + Double.parseDouble(indicators.getTarget());
+          } catch (NumberFormatException e) {
+            return "Can not be Calculated";
+          }
+        }
+      }
+
+    }
+    return String.valueOf(acumulative);
+  }
+
 
   /**
    * This method validates if the current project contributes to a specific output (MOG).
@@ -108,7 +133,6 @@ public class Project {
     }
     return false;
   }
-
 
   /**
    * This method validates if the current project contributes to a specific output and if the given output contributes
@@ -158,6 +182,7 @@ public class Project {
     return false;
   }
 
+
   /**
    * Equals based on the the project id.
    */
@@ -169,7 +194,6 @@ public class Project {
     }
     return super.equals(obj);
   }
-
 
   public List<Activity> getActivities() {
     return activities;
@@ -378,10 +402,10 @@ public class Project {
     return flagshipAcronym.toString();
   }
 
+
   public List<ProjectHighligths> getHighlights() {
     return highlights;
   }
-
 
   public int getId() {
     return id;
