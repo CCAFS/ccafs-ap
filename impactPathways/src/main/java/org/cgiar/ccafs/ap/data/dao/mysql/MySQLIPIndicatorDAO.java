@@ -235,7 +235,8 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT ai.id, ai.description, ai.gender, ai.target, ai.year, aip.id as 'parent_id', ");
     query.append("aip.description as 'parent_description', aip.target as 'parent_target', ");
-    query.append("ie.id as 'outcome_id', ie.description as 'outcome_description' ");
+    query.append(
+      "ie.id as 'outcome_id', ie.description as 'outcome_description',ai.archived,ai.narrative_gender,ai.narrative_targets ");
     query.append("FROM ip_project_indicators as ai ");
     query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
     query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
@@ -258,6 +259,9 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         indicatorData.put("parent_target", rs.getString("parent_target"));
         indicatorData.put("outcome_id", rs.getString("outcome_id"));
         indicatorData.put("outcome_description", rs.getString("outcome_description"));
+        indicatorData.put("archived", rs.getString("archived"));
+        indicatorData.put("narrative_gender", rs.getString("narrative_gender"));
+        indicatorData.put("narrative_targets", rs.getString("narrative_targets"));
 
         indicatorsDataList.add(indicatorData);
       }
@@ -309,14 +313,15 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     Object[] values;
     // Insert new activity indicator record
     query.append("INSERT INTO ip_project_indicators (id, description, gender, target, year, project_id, ");
-    query.append("parent_id, outcome_id, created_by, modified_by, modification_justification) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+    query.append(
+      "parent_id, outcome_id, created_by, modified_by, modification_justification,archived,narrative_gender,narrative_targets) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?) ");
     query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, ");
     query.append("description = VALUES(description), target = VALUES(target), ");
     query.append("modified_by = VALUES(modified_by), ");
     query.append("modification_justification = VALUES(modification_justification) ");
 
-    values = new Object[11];
+    values = new Object[14];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("gender");
@@ -328,7 +333,9 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     values[8] = indicatorData.get("user_id");
     values[9] = indicatorData.get("user_id");
     values[10] = indicatorData.get("justification");
-
+    values[11] = indicatorData.get("archived");
+    values[12] = indicatorData.get("narrative_gender");
+    values[13] = indicatorData.get("narrative_targets");
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
       LOG.warn(
@@ -352,16 +359,19 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     // Insert new activity indicator record
     query.append("UPDATE ip_project_indicators SET ");
     query.append("modified_by = ? , modification_justification = ?, ");
-    query.append("description = ?, gender = ?, target = ? ");
+    query.append("description = ?, gender = ?, target = ?,archived=?,narrative_gender=?,narrative_targets=? ");
     query.append("WHERE id = ? ");
 
-    values = new Object[6];
+    values = new Object[9];
     values[0] = indicatorData.get("user_id");
     values[1] = indicatorData.get("justification");
     values[2] = indicatorData.get("description");
     values[3] = indicatorData.get("gender");
     values[4] = indicatorData.get("target");
-    values[5] = indicatorData.get("id");
+    values[5] = indicatorData.get("archived");
+    values[6] = indicatorData.get("narrative_gender");
+    values[7] = indicatorData.get("narrative_targets");
+    values[8] = indicatorData.get("id");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {

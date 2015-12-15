@@ -142,8 +142,10 @@
                                     [#-- Reporting target --]
                                     <div class="thirdPartBlock">
                                       <label><h6>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
+                                      
                                       [#if editable && (cycleYear lte year)]
-                                        <input type="text" class="projectIndicatorAchievedTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.achievedTarget" value="${(projectIndicator.achievedTarget)!}"/> 
+                                      
+                                        <input type="text" class="projectIndicatorAchievedTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.archived" value="${(projectIndicator.archived)!}"/> 
                                       [/#if]
                                     </div>
                                   [/#if]
@@ -170,7 +172,7 @@
                                   <div class="textArea fullBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                     [#if editable && (cycleYear lte year)]
-                                      <textarea class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeAchieved">${(projectIndicator.targetNarrativeAchieved)!}</textarea>
+                                      <textarea class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeTargets">${(projectIndicator.narrativeTargets)!}</textarea>
                                     [/#if]
                                   </div>
                                 [/#if]
@@ -196,7 +198,7 @@
                                   <div class="textArea fullBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeGenderAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                     [#if editable && (cycleYear lte year)]
-                                      <textarea class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGenderAchieved" >${(projectIndicator.targetNarrativeAchieved)!}</textarea>
+                                      <textarea class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGender" >${(projectIndicator.narrativeGender)!}</textarea>
                                     [/#if]
                                   </div>
                                 [/#if]

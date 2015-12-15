@@ -192,6 +192,14 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicator.setId(Integer.parseInt(iData.get("id")));
       indicator.setDescription(iData.get("description"));
       indicator.setGender(iData.get("gender"));
+      if (iData.get("archived") != null) {
+        indicator.setArchived(Integer.parseInt(iData.get("archived")));
+      } else {
+        indicator.setArchived(0);
+      }
+
+      indicator.setNarrativeGender(iData.get("narrative_gender"));
+      indicator.setNarrativeTargets(iData.get("narrative_targets"));
       indicator.setTarget(iData.get("target"));
       indicator.setYear(Integer.parseInt(iData.get("year")));
 
@@ -231,6 +239,9 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
       indicatorData.put("gender", indicator.getGender());
+      indicatorData.put("archived", String.valueOf(indicator.getArchived()));
+      indicatorData.put("narrative_gender", indicator.getNarrativeGender());
+      indicatorData.put("narrative_targets", indicator.getNarrativeTargets());
       indicatorData.put("year", String.valueOf(indicator.getYear()));
       indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("project_id", String.valueOf(projectID));

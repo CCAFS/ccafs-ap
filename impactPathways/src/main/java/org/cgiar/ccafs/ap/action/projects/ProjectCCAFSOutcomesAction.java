@@ -369,7 +369,10 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
-
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      this.setProjectLessonsPreview(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+        this.getCurrentReportingYear(), APConstants.PLANNING_SECTION));
+    }
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getIndicators() != null) {

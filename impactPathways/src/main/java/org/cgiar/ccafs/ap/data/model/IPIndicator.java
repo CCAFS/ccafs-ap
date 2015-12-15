@@ -26,13 +26,19 @@ public class IPIndicator {
   private IPIndicator parent;
   private IPElement outcome;
   private int year;
+  private int archived;
+  private String narrativeTargets;
+  private String narrativeGender;
+
 
   public IPIndicator() {
   }
 
+
   public IPIndicator(int id) {
     this.id = id;
   }
+
 
   @Override
   public boolean equals(Object obj) {
@@ -52,9 +58,16 @@ public class IPIndicator {
     return false;
   }
 
+
+  public int getArchived() {
+    return archived;
+  }
+
+
   public String getDescription() {
     return description;
   }
+
 
   public String getGender() {
     return gender;
@@ -62,6 +75,14 @@ public class IPIndicator {
 
   public int getId() {
     return id;
+  }
+
+  public String getNarrativeGender() {
+    return narrativeGender;
+  }
+
+  public String getNarrativeTargets() {
+    return narrativeTargets;
   }
 
   public IPElement getOutcome() {
@@ -85,6 +106,10 @@ public class IPIndicator {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
   }
 
+  public void setArchived(int archived) {
+    this.archived = archived;
+  }
+
   public void setDescription(String description) {
     this.description = description;
   }
@@ -95,6 +120,14 @@ public class IPIndicator {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setNarrativeGender(String narrativeGender) {
+    this.narrativeGender = narrativeGender;
+  }
+
+  public void setNarrativeTargets(String narrativeTargets) {
+    this.narrativeTargets = narrativeTargets;
   }
 
   public void setOutcome(IPElement outcome) {
