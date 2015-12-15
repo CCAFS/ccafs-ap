@@ -38,8 +38,14 @@ public class Project {
   public static final int EMAIL_SUBJECT_IDENTIFIER = 4;
 
   private int id;
+  private CrossCuttingContribution projectCrossCutting;
+
   private String title;
+
+
   private String summary;
+
+
   private Date startDate;
   private Date endDate;
   private long created; // Timestamp number when the project was created
@@ -55,15 +61,15 @@ public class Project {
   private ProjectPartner coordinator; // Project Coordinator.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
-
   private List<IPIndicator> indicators;
-
-
   private OtherContribution ipOtherContribution;
 
-
   private String leaderResponsabilities;
+
+
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
+
+
   private List<Project> linkedProjects;
   private List<Location> locations; // Project locations.
   private Map<String, ProjectOutcome> outcomes;
@@ -116,7 +122,6 @@ public class Project {
     return String.valueOf(acumulative);
   }
 
-
   /**
    * This method validates if the current project contributes to a specific output (MOG).
    * 
@@ -155,6 +160,7 @@ public class Project {
     return false;
   }
 
+
   /**
    * this method validates if the current project contributes to a given output (MOG).
    * 
@@ -182,7 +188,6 @@ public class Project {
     return false;
   }
 
-
   /**
    * Equals based on the the project id.
    */
@@ -198,6 +203,7 @@ public class Project {
   public List<Activity> getActivities() {
     return activities;
   }
+
 
   /**
    * This method calculates all the years between the start date and the end date.
@@ -402,7 +408,6 @@ public class Project {
     return flagshipAcronym.toString();
   }
 
-
   public List<ProjectHighligths> getHighlights() {
     return highlights;
   }
@@ -410,6 +415,7 @@ public class Project {
   public int getId() {
     return id;
   }
+
 
   /**
    * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
@@ -438,7 +444,6 @@ public class Project {
     return indicators;
   }
 
-
   /**
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
    * parameter.
@@ -460,7 +465,6 @@ public class Project {
     }
     return indicators;
   }
-
 
   /**
    * This method search if the list of indicators contains an indicator
@@ -543,9 +547,11 @@ public class Project {
     return linkedProjects;
   }
 
+
   public List<Location> getLocations() {
     return locations;
   }
+
 
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
@@ -584,7 +590,6 @@ public class Project {
     return null;
   }
 
-
   public List<IPElement> getOutputs() {
     return outputs;
   }
@@ -592,6 +597,7 @@ public class Project {
   public List<OutputBudget> getOutputsBudgets() {
     return outputsBudgets;
   }
+
 
   public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
@@ -637,6 +643,10 @@ public class Project {
       return ppaPartners;
     }
     return null;
+  }
+
+  public CrossCuttingContribution getProjectCrossCutting() {
+    return projectCrossCutting;
   }
 
   public List<ProjectPartner> getProjectPartners() {
@@ -935,10 +945,10 @@ public class Project {
     this.activities = activities;
   }
 
-
   public void setAnnualreportDonor(String annualreportDonor) {
     AnnualreportDonor = annualreportDonor;
   }
+
 
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
@@ -1045,6 +1055,10 @@ public class Project {
 
   public void setOwner(User owner) {
     this.owner = owner;
+  }
+
+  public void setProjectCrossCutting(CrossCuttingContribution projectCrossCutting) {
+    this.projectCrossCutting = projectCrossCutting;
   }
 
   public void setProjectPartners(List<ProjectPartner> projectPartners) {

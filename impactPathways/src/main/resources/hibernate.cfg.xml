@@ -15,6 +15,7 @@
         <mapping resource="xmls/ProjectHighligthsCountry.hbm.xml" />
         <mapping resource="xmls/ProjectHighligths.hbm.xml" />
         <mapping resource="xmls/ProjectHighligthsTypes.hbm.xml" />
-          <mapping resource="xmls/DeliverablesRanking.hbm.xml" />
+        <mapping resource="xmls/DeliverablesRanking.hbm.xml" />
+        <mapping resource="xmls/CrossCuttingContribution.hbm.xml" />
     </session-factory>
 </hibernate-configuration>
