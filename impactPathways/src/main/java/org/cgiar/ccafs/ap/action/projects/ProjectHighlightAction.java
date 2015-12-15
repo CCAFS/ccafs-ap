@@ -159,7 +159,7 @@ public class ProjectHighlightAction extends BaseAction {
 
 
   private String getHightlightImagePath() {
-    return config.getUploadsBaseFolder() + File.separator + this.getAnualReportRelativePath() + File.separator;
+    return config.getUploadsBaseFolder() + File.separator + this.getHighlightsImagesUrlPath() + File.separator;
   }
 
   public Project getProject() {
@@ -197,7 +197,6 @@ public class ProjectHighlightAction extends BaseAction {
     for (ProjectHighlightsType ProjectHighlightsType : list) {
       highlightsTypes.put(ProjectHighlightsType.getId(), ProjectHighlightsType.getDescription());
     }
-
 
     // Getting statuses
     statuses = new HashMap<>();
@@ -269,7 +268,6 @@ public class ProjectHighlightAction extends BaseAction {
     if (file != null) {
       FileManager.deleteFile(this.getHightlightImagePath() + highlight.getPhoto());
       FileManager.copyFile(file, this.getHightlightImagePath() + fileFileName);
-
       highlight.setPhoto(fileFileName);
     }
 

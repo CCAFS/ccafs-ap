@@ -1920,7 +1920,6 @@ h1.simpleTitle span {
 }
 
 .imageBlock .image img {
-  height: 160px;
   max-height: 160px;
   width: auto;
   max-width: 100%;
@@ -3458,6 +3457,12 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   margin-right: 12px;
 }
 
+/***  Project CCAFS Outcomes (Impact Pathway)  ***/
+
+.targetIndicator h6 {
+  margin-bottom: 3px;
+}
+
 /** Project Deliverables **/
 
 .projectNextUser textarea{
@@ -3685,7 +3690,8 @@ li.fileUploaded span {
 /*** Project next users  ***/
 
 #nextUsersBlock .nextUser {
-  padding-top: 38px;
+  
+padding-top: 38px;
 }
 
 /*** Activities ***/

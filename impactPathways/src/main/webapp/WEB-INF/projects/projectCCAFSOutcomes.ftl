@@ -141,7 +141,7 @@
                                   [#if reportingCycle && (year == cycleYear)]
                                     [#-- Reporting target --]
                                     <div class="thirdPartBlock">
-                                      <label><h6>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
+                                      <label><h6 title='[@s.text name="reporting.projectImpactPathways.achievedTarget.help" /]'>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                       
                                       [#if editable && (cycleYear lte year)]
                                       
