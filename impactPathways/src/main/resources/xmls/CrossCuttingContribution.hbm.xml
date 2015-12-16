@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 15, 2015 2:47:35 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="org.cgiar.ccafs.ap.data.model.CrossCuttingContribution" table="cross_cutting_contribution" catalog="ccafspr_ip">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="projectId" type="int">
+            <column name="project_id" not-null="true" />
+        </property>
+        <property name="genderSocial" type="string">
+            <column name="gender_social" length="65535" not-null="true" />
+        </property>
+        <property name="communicationEngagement" type="string">
+            <column name="communication_engagement" length="65535" not-null="true" />
+        </property>
+        <property name="category" type="string">
+            <column name="category" length="50" />
+        </property>
+        <property name="file" type="string">
+            <column name="file" length="200" />
+        </property>
+        <property name="isActive" type="boolean">
+            <column name="is_active" not-null="true" />
+        </property>
+        <property name="activeSince" type="timestamp">
+            <column name="active_since" length="19" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="created_by" not-null="true" />
+        </property>
+        <property name="modifiedBy" type="long">
+            <column name="modified_by" not-null="true" />
+        </property>
+        <property name="modificationJustification" type="string">
+            <column name="modification_justification" length="65535" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

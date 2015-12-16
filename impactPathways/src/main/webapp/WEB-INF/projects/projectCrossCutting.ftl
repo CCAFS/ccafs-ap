@@ -28,7 +28,7 @@
   [#-- Project subMenu --]
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
 
-  [@s.form action="outcomes" cssClass="pure-form"]  
+  [@s.form action="crossCutting" cssClass="pure-form"]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     [#include "/WEB-INF/projects/projectIP-sub-menu.ftl" /]
@@ -45,13 +45,13 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        [#if canEdit && !newProject]<div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>[/#if]
+        [#if canEdit]<div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>[/#if]
       [/#if] 
       <h1 class="contentTitle">[@s.text name="reporting.projectCrossCutting.genderSocialTitle" /] </h1>
       
       [#-- Gender and social inclusion contribution current reporting cycle --]
       <div class="fullBlock">
-        [@customForm.textArea name="project.crossCutting.genderSocialContribution" className="limitWords-100" i18nkey="reporting.projectCrossCutting.genderSocialContribution" required=true editable=editable/]
+        [@customForm.textArea name="project.crossCutting.genderSocial" className="limitWords-100" i18nkey="reporting.projectCrossCutting.genderSocialContribution" required=true editable=editable/]
       </div> 
        
       [#-- Reporting lessons --]
@@ -69,13 +69,13 @@
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
       [#else]
-        [#if canEdit && !newProject]<div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>[/#if]
+        [#if canEdit]<div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>[/#if]
       [/#if]
       <h1 class="contentTitle">[@s.text name="reporting.projectCrossCutting.comnEngagementTitle" /] </h1>
       
       [#-- Comunication and engagement activities --]
       <div class="fullBlock">
-        [@customForm.textArea name="project.crossCutting.genderSocialContribution" className="limitWords-100" i18nkey="reporting.projectCrossCutting.genderSocialContribution" required=true editable=editable/]
+        [@customForm.textArea name="project.crossCutting.communicationEngagement" className="limitWords-100" i18nkey="reporting.projectCrossCutting.genderSocialContribution" required=true editable=editable/]
       </div>
       
       [#-- Category of communication/engagement activity --]
@@ -106,8 +106,8 @@
     [#if editable] 
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
-      <div class="[#if !newProject]borderBox[/#if]" >
-        [#if !newProject][@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
+      <div class="borderBox >
+        [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
@@ -115,8 +115,7 @@
         </div>
       </div>
     [#else]
-      [#-- Display Log History --]
-      [#if history??][@log.logList list=history /][/#if]
+    
     [/#if]
     
   </article>

@@ -15,10 +15,14 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
+
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -32,35 +36,49 @@ public class ProjectCrossCuttingAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
+  private CrossCuttingContributionManager crossManager;
   private ProjectManager projectManager;
-  private HistoryManager historyManager;
 
-  private int midOutcomeYear;
+
   private int projectID;
+  private CrossCuttingContribution contribution;
   private Project project;
 
+
   @Inject
-  public ProjectCrossCuttingAction(APConfig config, ProjectManager projectManager, HistoryManager historyManager) {
+  public ProjectCrossCuttingAction(APConfig config, ProjectManager projectManager,
+    CrossCuttingContributionManager crossManager, HistoryManager historyManager) {
     super(config);
+    this.crossManager = crossManager;
     this.projectManager = projectManager;
-    this.historyManager = historyManager;
+
   }
 
-  public int getMidOutcomeYear() {
-    return midOutcomeYear;
+
+  public CrossCuttingContribution getContribution() {
+    return contribution;
   }
+
+
+  public CrossCuttingContributionManager getCrossManager() {
+    return crossManager;
+  }
+
 
   public Project getProject() {
     return project;
   }
 
+
   public int getProjectID() {
     return projectID;
   }
 
-  public boolean isNewProject() {
-    return project.isNew(config.getCurrentPlanningStartDate());
+
+  public ProjectManager getProjectManager() {
+    return projectManager;
   }
+
 
   @Override
   public String next() {
@@ -72,13 +90,18 @@ public class ProjectCrossCuttingAction extends BaseAction {
     }
   }
 
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    midOutcomeYear = this.config.getMidOutcomeYear();
+
 
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
+    List<CrossCuttingContribution> listCross = crossManager.getCrossCuttingContributionsByProject(projectID);
+    if (listCross.size() > 0) {
+      contribution = listCross.get(0);
+    }
 
     // Getting the Project lessons for this section.
     int evaluatingYear = 0;
@@ -93,22 +116,45 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
+    if (contribution == null) {
+      project.setProjectCrossCutting(new CrossCuttingContribution());
+    } else {
+      project.setProjectCrossCutting(contribution);
+    }
 
     // Getting the last history
-    super.setHistory(historyManager.getProjectOutcomeHistory(project.getId()));
+
   }
+
 
   @Override
   public String save() {
+    crossManager.saveCrossCuttingContribution(projectID, project.getProjectCrossCutting(), this.getCurrentUser(),
+      this.getJustification());
     return SUCCESS;
   }
 
-  public void setMidOutcomeYear(int midOutcomeYear) {
-    this.midOutcomeYear = midOutcomeYear;
+
+  public void setContribution(CrossCuttingContribution contribution) {
+    this.contribution = contribution;
+  }
+
+
+  public void setCrossManager(CrossCuttingContributionManager crossManager) {
+    this.crossManager = crossManager;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+
+  public void setProjectManager(ProjectManager projectManager) {
+    this.projectManager = projectManager;
   }
 
   @Override
