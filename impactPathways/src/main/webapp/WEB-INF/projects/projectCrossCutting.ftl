@@ -28,7 +28,7 @@
   [#-- Project subMenu --]
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
 
-  [@s.form action="crossCutting" cssClass="pure-form"]  
+  [@s.form action="crossCutting" cssClass="pure-form" enctype="multipart/form-data" ]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     [#include "/WEB-INF/projects/projectIP-sub-menu.ftl" /]
@@ -88,12 +88,12 @@
       <div class="fullBlock fileUpload uploadSummary">
         <h6>[@customForm.text name="reporting.projectCrossCutting.uploadSummary" readText=!editable /]:</h6>
         <div class="uploadContainer">
-          [#if project.annualreportDonor?has_content]
+          [#if project.crossCutting.file?has_content]
             [#if editable]<span id="remove-uploadSummary" class="remove"></span>[/#if] 
-            <p><a href="${AnualReportURL}${project.annualreportDonor}">${project.annualreportDonor}</a></p>
+            <p><a href="${AnualReportURL}${project.crossCutting.file}">${project.crossCutting.file}</a></p>
           [#else]
             [#if editable]
-              [@customForm.inputFile name="uploadSummary"  /]
+              [@customForm.inputFile name="file"  /]
             [#else]  
               <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
             [/#if] 
@@ -120,5 +120,8 @@
     
   </article>
   [/@s.form]  
+  [#-- File upload Template--] 
+  [@customForm.inputFile name="file" template=true /] 
+  
 </section> 
 [#include "/WEB-INF/global/pages/footer.ftl"]

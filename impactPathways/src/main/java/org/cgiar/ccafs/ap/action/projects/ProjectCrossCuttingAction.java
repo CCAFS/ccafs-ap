@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author Hernán David Carvajal B.
+ * @author Christian David Garcia Oviedo- CIAT/CCAFS
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 public class ProjectCrossCuttingAction extends BaseAction {
@@ -69,6 +70,19 @@ public class ProjectCrossCuttingAction extends BaseAction {
     return contribution;
   }
 
+
+  private String getCrossCuttingAbsolutePath() {
+    return config.getUploadsBaseFolder() + File.separator + this.getCrossCuttingRelativePath() + File.separator;
+  }
+
+  private String getCrossCuttingRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "crosscutting"
+      + File.separator;
+  }
+
+  public String getCrossCuttingURL() {
+    return config.getDownloadURL() + "/" + this.getCrossCuttingRelativePath().replace('\\', '/');
+  }
 
   public CrossCuttingContributionManager getCrossManager() {
     return crossManager;
