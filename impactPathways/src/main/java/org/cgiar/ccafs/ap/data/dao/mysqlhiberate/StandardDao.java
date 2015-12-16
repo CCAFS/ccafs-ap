@@ -117,7 +117,7 @@ public abstract class StandardDao {
       session.saveOrUpdate(obj);
       this.CommitTransaction();
     } catch (HibernateException e) {
-
+      e.printStackTrace();
     } finally {
       this.closeSession();
     }

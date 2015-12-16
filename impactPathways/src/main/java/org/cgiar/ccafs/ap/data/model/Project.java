@@ -38,7 +38,7 @@ public class Project {
   public static final int EMAIL_SUBJECT_IDENTIFIER = 4;
 
   private int id;
-  private CrossCuttingContribution projectCrossCutting;
+  private CrossCuttingContribution crossCutting;
 
   private String title;
 
@@ -378,6 +378,10 @@ public class Project {
     return new Date(created);
   }
 
+  public CrossCuttingContribution getCrossCutting() {
+    return crossCutting;
+  }
+
   public List<Deliverable> getDeliverables() {
     return deliverables;
   }
@@ -412,10 +416,10 @@ public class Project {
     return highlights;
   }
 
+
   public int getId() {
     return id;
   }
-
 
   /**
    * This method gets a specific indicator for the currentp toject taking into account the given the parameters.
@@ -465,6 +469,7 @@ public class Project {
     }
     return indicators;
   }
+
 
   /**
    * This method search if the list of indicators contains an indicator
@@ -552,7 +557,6 @@ public class Project {
     return locations;
   }
 
-
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
@@ -594,10 +598,10 @@ public class Project {
     return outputs;
   }
 
+
   public List<OutputBudget> getOutputsBudgets() {
     return outputsBudgets;
   }
-
 
   public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
@@ -643,10 +647,6 @@ public class Project {
       return ppaPartners;
     }
     return null;
-  }
-
-  public CrossCuttingContribution getProjectCrossCutting() {
-    return projectCrossCutting;
   }
 
   public List<ProjectPartner> getProjectPartners() {
@@ -985,6 +985,10 @@ public class Project {
     this.created = created;
   }
 
+  public void setCrossCutting(CrossCuttingContribution crossCutting) {
+    this.crossCutting = crossCutting;
+  }
+
   public void setDeliverables(List<Deliverable> deliverables) {
     this.deliverables = deliverables;
   }
@@ -1055,10 +1059,6 @@ public class Project {
 
   public void setOwner(User owner) {
     this.owner = owner;
-  }
-
-  public void setProjectCrossCutting(CrossCuttingContribution projectCrossCutting) {
-    this.projectCrossCutting = projectCrossCutting;
   }
 
   public void setProjectPartners(List<ProjectPartner> projectPartners) {

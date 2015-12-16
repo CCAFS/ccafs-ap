@@ -18,11 +18,15 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.CategoryCrossCutingEnum;
 import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +43,7 @@ public class ProjectCrossCuttingAction extends BaseAction {
   private CrossCuttingContributionManager crossManager;
   private ProjectManager projectManager;
 
+  private Map<String, String> commEngageCategories;
 
   private int projectID;
   private CrossCuttingContribution contribution;
@@ -52,6 +57,11 @@ public class ProjectCrossCuttingAction extends BaseAction {
     this.crossManager = crossManager;
     this.projectManager = projectManager;
 
+  }
+
+
+  public Map<String, String> getCommEngageCategories() {
+    return commEngageCategories;
   }
 
 
@@ -103,6 +113,13 @@ public class ProjectCrossCuttingAction extends BaseAction {
       contribution = listCross.get(0);
     }
 
+
+    commEngageCategories = new HashMap<>();
+    List<CategoryCrossCutingEnum> list = Arrays.asList(CategoryCrossCutingEnum.values());
+    for (CategoryCrossCutingEnum category : list) {
+      commEngageCategories.put(category.getId(), category.getDescription());
+    }
+
     // Getting the Project lessons for this section.
     int evaluatingYear = 0;
     if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
@@ -117,9 +134,9 @@ public class ProjectCrossCuttingAction extends BaseAction {
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
     if (contribution == null) {
-      project.setProjectCrossCutting(new CrossCuttingContribution());
+      project.setCrossCutting(new CrossCuttingContribution());
     } else {
-      project.setProjectCrossCutting(contribution);
+      project.setCrossCutting(contribution);
     }
 
     // Getting the last history
@@ -129,9 +146,14 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
   @Override
   public String save() {
-    crossManager.saveCrossCuttingContribution(projectID, project.getProjectCrossCutting(), this.getCurrentUser(),
+    crossManager.saveCrossCuttingContribution(projectID, project.getCrossCutting(), this.getCurrentUser(),
       this.getJustification());
     return SUCCESS;
+  }
+
+
+  public void setCommEngageCategories(Map<String, String> commEngageCategories) {
+    this.commEngageCategories = commEngageCategories;
   }
 
 

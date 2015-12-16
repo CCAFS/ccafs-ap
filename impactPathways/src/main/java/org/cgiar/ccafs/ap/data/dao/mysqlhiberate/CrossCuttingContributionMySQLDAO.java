@@ -87,7 +87,7 @@ public class CrossCuttingContributionMySQLDAO extends StandardDao implements Cro
 
       return projectHighlihts.getId();
     } catch (Exception e) {
-
+      e.printStackTrace();
       return 0;
     }
 

@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
 import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -97,6 +98,8 @@ public class CrossCuttingContributionManagerImpl implements CrossCuttingContribu
     crossCuttingContribution.setModifiedBy(Long.parseLong(user.getId() + ""));
     crossCuttingContribution.setModificationJustification(justification);
     crossCuttingContribution.setProjectId(projectID);
+    crossCuttingContribution.setActiveSince(new Date());
+    crossCuttingContribution.setIsActive(true);
     int result = crossCuttingContributionDAO.save(crossCuttingContribution);
 
     if (result > 0) {
