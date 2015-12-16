@@ -49,7 +49,7 @@
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes" /]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes" /]
         [@menu actionName="crossCutting" stageName="crossCutting" textName="menu.reporting.submenu.crossCutting" active=reportingCycle/]
-        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" disabled=reportingCycle/]
+        [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" /]
         [@menu actionName="caseStudy" stageName="caseStudy" textName="menu.reporting.submenu.caseStudy" active=reportingCycle disabled=reportingCycle/]
       </ul>
     </li>
