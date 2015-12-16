@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.CategoryCrossCutingEnum;
 import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
@@ -45,9 +46,16 @@ public class ProjectCrossCuttingAction extends BaseAction {
   private ProjectManager projectManager;
 
   private Map<String, String> commEngageCategories;
+  private File file;
+  private String fileFileName;
+
 
   private int projectID;
+
+
   private CrossCuttingContribution contribution;
+
+
   private Project project;
 
 
@@ -60,39 +68,46 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
   }
 
-
   public Map<String, String> getCommEngageCategories() {
     return commEngageCategories;
   }
-
 
   public CrossCuttingContribution getContribution() {
     return contribution;
   }
 
-
   private String getCrossCuttingAbsolutePath() {
     return config.getUploadsBaseFolder() + File.separator + this.getCrossCuttingRelativePath() + File.separator;
   }
+
 
   private String getCrossCuttingRelativePath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "crosscutting"
       + File.separator;
   }
 
+
   public String getCrossCuttingURL() {
     return config.getDownloadURL() + "/" + this.getCrossCuttingRelativePath().replace('\\', '/');
   }
+
 
   public CrossCuttingContributionManager getCrossManager() {
     return crossManager;
   }
 
 
+  public File getFile() {
+    return file;
+  }
+
+  public String getFileFileName() {
+    return fileFileName;
+  }
+
   public Project getProject() {
     return project;
   }
-
 
   public int getProjectID() {
     return projectID;
@@ -160,6 +175,12 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
   @Override
   public String save() {
+    if (file != null) {
+      FileManager.deleteFile(this.getCrossCuttingAbsolutePath() + contribution.getFile());
+      FileManager.copyFile(file, this.getCrossCuttingAbsolutePath() + fileFileName);
+      project.getCrossCutting().setFile(fileFileName);
+    }
+
     crossManager.saveCrossCuttingContribution(projectID, project.getCrossCutting(), this.getCurrentUser(),
       this.getJustification());
     return SUCCESS;
@@ -178,6 +199,16 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
   public void setCrossManager(CrossCuttingContributionManager crossManager) {
     this.crossManager = crossManager;
+  }
+
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+
+  public void setFileFileName(String fileFileName) {
+    this.fileFileName = fileFileName;
   }
 
   public void setProject(Project project) {

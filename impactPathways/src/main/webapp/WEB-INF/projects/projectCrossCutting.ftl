@@ -89,8 +89,8 @@
         <h6>[@customForm.text name="reporting.projectCrossCutting.uploadSummary" readText=!editable /]:</h6>
         <div class="uploadContainer">
           [#if project.crossCutting.file?has_content]
-            [#if editable]<span id="remove-uploadSummary" class="remove"></span>[/#if] 
-            <p><a href="${AnualReportURL}${project.crossCutting.file}">${project.crossCutting.file}</a></p>
+            [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
+            <p><a href="${CrossCuttingURL}${project.crossCutting.file}">${project.crossCutting.file}</a></p>
           [#else]
             [#if editable]
               [@customForm.inputFile name="file"  /]
