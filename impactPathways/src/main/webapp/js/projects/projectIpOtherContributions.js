@@ -1,19 +1,15 @@
 var crpContributionName;
 var $contributionsBlock;
-var textAreaLimitWords = 100;
-var lWordsLessons = 100;
-var lWordsCollaboration = 50;
 $(document).ready(init);
 
 function init() {
   $contributionsBlock = $('ul#contributionsBlock');
   crpContributionName = $('#crpsName').val();
   initGraph();
-  addChosen();
+  addSelect2();
   initItemListEvents();
-  applyWordCounter($("form textarea.contribution,form textarea.additionalContribution"), textAreaLimitWords);
-  applyWordCounter($("form textarea.crpCollaborationNature"), lWordsCollaboration);
-  applyWordCounter($("#lessons textarea"), lWordsLessons);
+  // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
+  setWordCounterToInputs('limitWords');
 }
 
 // Items list functions
@@ -62,7 +58,6 @@ function addItemList($option) {
   $li.find('.id').val($option.val());
   $li.find('.name').html($option.text());
   $li.appendTo($contributionsBlock).hide().show('slow');
-  applyWordCounter($li.find("textarea.crpCollaborationNature"), lWordsCollaboration);
   $option.remove();
   $select.trigger("liszt:updated");
   setIndexes();
@@ -80,9 +75,6 @@ function setIndexes() {
   });
 }
 
-// Activate the chosen plugin to the countries, partner types and partners lists.
-function addChosen() {
-  $("form select").chosen({
-    search_contains: true
-  });
+function addSelect2() {
+  $('form select').select2();
 }

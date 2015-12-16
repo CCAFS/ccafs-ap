@@ -3437,7 +3437,7 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   font-size: 0.9em;
 }
 
-/***************** PLANNING ******************/
+/***************** PROJECTS ******************/
 
 /** Project Outcomes **/
 #projectOutcomes .fullBlock {
@@ -3462,6 +3462,18 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 
 .targetIndicator h6 {
   margin-bottom: 3px;
+}
+
+/*** Project other contributions  ***/
+
+#otherContributionsBlock {
+  padding: 17px 0;
+}
+
+#contributionsBlock .crpName{
+  color: #0F7296;
+  font-size: 1.3em;
+  font-weight: normal;  
 }
 
 /** Project Deliverables **/
@@ -3958,8 +3970,7 @@ margin-bottom: 8px;
   /* border-left: 2px dotted #DEDEDE; */
 }
 
-
-/****** REPORTING **********/
+ 
 /********* Activity Reporting Sub Menu **********/
 #stageMenu {
   display: block;
