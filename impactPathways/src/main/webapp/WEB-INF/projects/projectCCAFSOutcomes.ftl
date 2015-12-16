@@ -131,22 +131,21 @@
                                     [/#if]
                                   </div>
                                   [#-- Cumulative target --]
+                                  [#if (cycleYear lte year)]
                                   <div class="thirdPartBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                    [#if editable && (cycleYear lte year)]
                                        <div class="select"><p>${project.calculateAcumulativeTarget(year)}</p></div>
-                                    [/#if]
                                   </div>
+                                  [/#if]
                                   [#-- -- -- REPORTING BLOCK -- -- --]
                                   [#if reportingCycle && (year == cycleYear)]
                                     [#-- Reporting target --]
                                     <div class="thirdPartBlock">
                                       <label><h6 title='[@s.text name="reporting.projectImpactPathways.achievedTarget.help" /]'>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                      
                                       [#if editable && (cycleYear lte year)]
-                                      
                                         <input type="text" class="projectIndicatorAchievedTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.archived" value="${(projectIndicator.archived)!}"/> 
                                       [/#if]
+                                      [#if !editable] <div class="select"><p>${(projectIndicator.archived)!}</p></div>[/#if]
                                     </div>
                                   [/#if]
                                 </div>
@@ -173,6 +172,13 @@
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                     [#if editable && (cycleYear lte year)]
                                       <textarea class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeTargets">${(projectIndicator.narrativeTargets)!}</textarea>
+                                    [#else]
+                                      [#if !projectIndicator.narrativeTargets?has_content]
+                                        [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
+                                      [#else]
+                                        <div class="select"><p>${(projectIndicator.narrativeTargets)!}</p></div>
+                                        <input type="hidden" class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeTargets" value="${(projectIndicator.narrativeTargets)!}"/>
+                                      [/#if] 
                                     [/#if]
                                   </div>
                                 [/#if]
@@ -199,6 +205,13 @@
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeGenderAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
                                     [#if editable && (cycleYear lte year)]
                                       <textarea class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGender" >${(projectIndicator.narrativeGender)!}</textarea>
+                                    [#else]
+                                      [#if !projectIndicator.narrativeGender?has_content]
+                                        [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>Not defined</p></div>[/#if]
+                                      [#else]
+                                        <div class="select"><p>${(projectIndicator.narrativeGender)!}</p></div>
+                                        <input type="hidden" class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGender" value="${(projectIndicator.narrativeGender)!}"/>
+                                      [/#if] 
                                     [/#if]
                                   </div>
                                 [/#if]
