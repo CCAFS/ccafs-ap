@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
+import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
@@ -20,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
@@ -32,6 +34,7 @@ import org.cgiar.ccafs.ap.validation.projects.ActivitiesListValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectBudgetByMOGValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectBudgetValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCCAFSOutcomesValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDescriptionValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
@@ -105,6 +108,11 @@ public class ValidateProjectSectionAction extends BaseAction {
   private BudgetManager budgetManager;
   @Inject
   private BudgetByMogManager budgetByMogManager;
+
+  @Inject
+  private CrossCuttingContributionManager crossCutingManager;
+
+
   // Validators
   @Inject
   private ProjectDescriptionValidator descriptionValidator;
@@ -126,6 +134,9 @@ public class ValidateProjectSectionAction extends BaseAction {
   private ProjectDeliverableValidator deliverableValidator;
   @Inject
   private ProjectBudgetValidator budgetValidator;
+
+  @Inject
+  private ProjectCrossCuttingValidator crossValidator;
 
   @Inject
   private ProjectBudgetByMOGValidator budgetbyMOGValidator;
@@ -161,6 +172,9 @@ public class ValidateProjectSectionAction extends BaseAction {
           break;
         case OUTPUTS:
           this.validateOverviewByMOGS();
+          break;
+        case CROSSCUTTING:
+          this.validateCrossCutting();
           break;
         case DELIVERABLESLIST:
           this.validateDeliverables();
@@ -253,6 +267,10 @@ public class ValidateProjectSectionAction extends BaseAction {
     sections.add("activities");
     sections.add("budget");
     sections.add("budgetByMog");
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      sections.add("crossCutting");
+    }
+
     validSection = sections.contains(sectionName);
 
   }
@@ -341,6 +359,26 @@ public class ValidateProjectSectionAction extends BaseAction {
   }
 
 
+  private void validateCrossCutting() {
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      // Getting basic project information.
+      Project project = projectManager.getProject(projectID);
+      List<CrossCuttingContribution> list = crossCutingManager.getCrossCuttingContributionsByProject(projectID);
+      if (list.size() > 0) {
+        project.setCrossCutting(list.get(0));
+
+        // Getting the Project lessons for this section.
+        this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "crossCutting",
+          this.getCurrentPlanningYear(), this.getCycleName()));
+
+        // Validate
+        crossValidator.validate(this, project, currentCycle);
+      }
+    }
+
+
+  }
+
   private void validateDeliverables() {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
@@ -368,6 +406,7 @@ public class ValidateProjectSectionAction extends BaseAction {
     }
     sectionStatus.setMissingFields(missingFieldsAllDeliverables.toString());
   }
+
 
   private void validateOverviewByMOGS() {
     // Getting basic project information.

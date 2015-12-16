@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.CategoryCrossCutingEnum;
 import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.util.FileManager;
+import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
@@ -48,6 +49,7 @@ public class ProjectCrossCuttingAction extends BaseAction {
   private Map<String, String> commEngageCategories;
   private File file;
   private String fileFileName;
+  private ProjectCrossCuttingValidator validator;
 
 
   private int projectID;
@@ -61,8 +63,10 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
   @Inject
   public ProjectCrossCuttingAction(APConfig config, ProjectManager projectManager,
-    CrossCuttingContributionManager crossManager, HistoryManager historyManager) {
+    CrossCuttingContributionManager crossManager, HistoryManager historyManager,
+    ProjectCrossCuttingValidator validator) {
     super(config);
+    this.validator = validator;
     this.crossManager = crossManager;
     this.projectManager = projectManager;
 
@@ -180,7 +184,7 @@ public class ProjectCrossCuttingAction extends BaseAction {
       FileManager.copyFile(file, this.getCrossCuttingAbsolutePath() + fileFileName);
       project.getCrossCutting().setFile(fileFileName);
     }
-
+    this.saveProjectLessons(project.getId());
     crossManager.saveCrossCuttingContribution(projectID, project.getCrossCutting(), this.getCurrentUser(),
       this.getJustification());
     return SUCCESS;
@@ -226,6 +230,8 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
   @Override
   public void validate() {
-
+    if (save) {
+      validator.validate(this, project, this.getCycleName());
+    }
   }
 }
