@@ -50,11 +50,21 @@
       <h1 class="contentTitle">[@s.text name="planning.impactPathways.otherContributions.title" /] </h1> 
       
       [#-- How are contributing to other CCAFS IP --]
-      <div class="fullPartBlock">
+      <div class="fullBlock">
         [@customForm.textArea name="project.ipOtherContribution.contribution" className="contribution" i18nkey="planning.impactPathways.otherContributions.contribution" editable=editable /]  
       </div>
+      
+      [#-- -- -- REPORTING BLOCK -- -- --]
+      [#-- Others impact pathways contributions --]
+      [#if reportingCycle]
+        <div id="otherContributionsBlock">
+          [@otherContribution /]
+          
+        </div>
+      [/#if]
+      
       [#-- Contribution to another center activity --]
-      <div class="fullPartBlock">
+      <div class="fullBlock">
         [@customForm.textArea name="project.ipOtherContribution.additionalContribution" className="additionalContribution" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable /]  
       </div>
       
@@ -68,7 +78,6 @@
             [#if project.ipOtherContribution.crpContributions?has_content]  
               [#list project.ipOtherContribution.crpContributions as crp]
                 <li class="clearfix [#if !crp_has_next]last[/#if]">
-                
                   <input class="id" type="hidden" name="project.ipOtherContribution.crpContributions[${crp_index}].crp.id" value="${crp.crp.id}" />
                   [#-- CRP Title --]
                   <div class="fullPartBlock clearfix">
@@ -135,20 +144,48 @@
   </article>
   [/@s.form]  
   
-  [#-- CRPs Template --]
-  <ul style="display:none">
-    <li id="crpTemplate" class="clearfix">
-      <input class="id" type="hidden" name="" value="" />
-      [#-- CRP Title --]
-      <div class="fullPartBlock clearfix">
-        <span class="name"></span>
-      </div>
-      [#-- CRP Collaboration nature --]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
-      </div>
-      [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
-    </li>
-  </ul>
 </section>
+
+[#-- CRPs Template --]
+<ul style="display:none">
+  <li id="crpTemplate" class="clearfix">
+    <input class="id" type="hidden" name="" value="" />
+    [#-- CRP Title --]
+    <div class="fullPartBlock clearfix">
+      <span class="name"></span>
+    </div>
+    [#-- CRP Collaboration nature --]
+    <div class="fullPartBlock">
+      [@customForm.textArea name="" className="crpCollaborationNature" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
+    </div>
+    [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+  </li>
+</ul>
+
+[#-- Other contribution block --]
+[#macro otherContribution index=0]
+[#assign customName = "project.otherContributions[${index}]"]
+<div class="simpleBox">
+  <div class="fullBlock">
+    <div class="halfPartBlock">
+      [@customForm.select name="${customName}.region" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+    </div>
+    <div class="halfPartBlock">
+      [@customForm.select name="${customName}.flagship" label="" i18nkey="reporting.projectOtherContributions.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+    </div>
+  </div>
+  <div class="fullBlock">
+    [@customForm.select name="${customName}.indicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+  </div>
+  <div class="fullBlock">
+    [@customForm.textArea name="${customName}.description" i18nkey="reporting.projectOtherContributions.description" editable=editable required=true/]
+  </div>
+  <div class="fullBlock">
+    <div class="halfPartBlock">
+      [@customForm.textArea name="${customName}.target" i18nkey="reporting.projectOtherContributions.target" editable=editable required=true/]
+    </div>
+  </div>
+</div> 
+[/#macro]
+
 [#include "/WEB-INF/global/pages/footer.ftl"]

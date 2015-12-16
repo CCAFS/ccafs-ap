@@ -81,7 +81,7 @@
       [#-- Category of communication/engagement activity --]
       <div class="fullBlock">
         <h6>[@customForm.text name="reporting.projectCrossCutting.category" param="${currentReportingYear}" readText=!editable /]:</h6>
-        [@customForm.select name="project.crossCutting.category" className="project.crossCutting.commEngageCategory" showTitle=false i18nkey="" listName="commEngageCategories" required=true editable=editable/]
+        [@customForm.select name="project.crossCutting.category"  value="project.crossCutting.category" className="project.crossCutting.commEngageCategory" showTitle=false i18nkey="" listName="commEngageCategories" required=true editable=editable stringKey=true/]
       </div>
       
       [#-- Upload summary--] 
