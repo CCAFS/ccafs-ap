@@ -44,10 +44,15 @@ public class Project {
 
 
   private String summary;
+  private List<OtherContributions> otherContributions;
 
 
   private Date startDate;
+
+
   private Date endDate;
+
+
   private long created; // Timestamp number when the project was created
   private User owner;
   private List<IPProgram> regions; // The list of regions in which this project works with.
@@ -63,15 +68,15 @@ public class Project {
   private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
   private List<IPIndicator> indicators;
   private OtherContribution ipOtherContribution;
-
   private String leaderResponsabilities;
-
-
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
 
-
   private List<Project> linkedProjects;
+
+
   private List<Location> locations; // Project locations.
+
+
   private Map<String, ProjectOutcome> outcomes;
   private List<IPElement> outputs;
   private List<OutputBudget> outputsBudgets;
@@ -160,7 +165,6 @@ public class Project {
     return false;
   }
 
-
   /**
    * this method validates if the current project contributes to a given output (MOG).
    * 
@@ -200,10 +204,10 @@ public class Project {
     return super.equals(obj);
   }
 
+
   public List<Activity> getActivities() {
     return activities;
   }
-
 
   /**
    * This method calculates all the years between the start date and the end date.
@@ -232,6 +236,7 @@ public class Project {
   public String getAnnualreportDonor() {
     return AnnualreportDonor;
   }
+
 
   public Budget getAnualContribution() {
     return anualContribution;
@@ -416,7 +421,6 @@ public class Project {
     return highlights;
   }
 
-
   public int getId() {
     return id;
   }
@@ -444,6 +448,7 @@ public class Project {
     return emptyIndicator;
   }
 
+
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
@@ -470,7 +475,6 @@ public class Project {
     return indicators;
   }
 
-
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
@@ -492,7 +496,6 @@ public class Project {
     }
     return emptyIndicator;
   }
-
 
   public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
@@ -557,6 +560,12 @@ public class Project {
     return locations;
   }
 
+
+  public List<OtherContributions> getOtherContributions() {
+    return otherContributions;
+  }
+
+
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
@@ -598,10 +607,10 @@ public class Project {
     return outputs;
   }
 
-
   public List<OutputBudget> getOutputsBudgets() {
     return outputsBudgets;
   }
+
 
   public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
@@ -949,10 +958,10 @@ public class Project {
     AnnualreportDonor = annualreportDonor;
   }
 
-
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
   }
+
 
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
@@ -1035,6 +1044,10 @@ public class Project {
 
   public void setLocations(List<Location> locations) {
     this.locations = locations;
+  }
+
+  public void setOtherContributions(List<OtherContributions> otherContributions) {
+    this.otherContributions = otherContributions;
   }
 
   public void setOutcomes(Map<String, ProjectOutcome> outcomes) {

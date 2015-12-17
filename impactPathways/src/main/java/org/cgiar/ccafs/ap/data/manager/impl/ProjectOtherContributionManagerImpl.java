@@ -13,13 +13,18 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.OtherContributionsDAO;
 import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
+import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.OtherContributionsMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
+import org.cgiar.ccafs.ap.data.model.OtherContributions;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -34,7 +39,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectOtherContributionManagerImpl.class);
-
+  private OtherContributionsDAO otherContributionsDAO;
   // DAO's
   private ProjectOtherContributionDAO ipOtherContributionDAO;
 
@@ -46,6 +51,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
     CRPManager crpManager) {
     this.ipOtherContributionDAO = ipOtherContributionDAO;
     this.crpManager = crpManager;
+    otherContributionsDAO = new OtherContributionsMySQLDAO();
   }
 
   @Override
@@ -81,6 +87,16 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   }
 
   @Override
+  public List<OtherContributions> getOtherContributionsByProjectId(int projectID) {
+    List<OtherContributions> otherContributionsList = otherContributionsDAO.getOtherContributionsByProject(projectID);
+
+
+    return otherContributionsList;
+
+  }
+
+
+  @Override
   public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution, User user,
     String justification) {
     boolean allSaved = true;
@@ -110,5 +126,36 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
 
     return allSaved;
 
+  }
+
+  @Override
+  public int saveOtherContributionsList(int projectID, List<OtherContributions> OtherContributionsList, User user,
+    String justification) {
+
+
+    for (OtherContributions otherContributions : OtherContributionsList) {
+      if (otherContributions.getId() == null) {
+        otherContributions.setCreatedBy(Long.parseLong(user.getId() + ""));
+      }
+      otherContributions.setModifiedBy(Long.parseLong(user.getId() + ""));
+      otherContributions.setModificationJustification(justification);
+      otherContributions.setProjectId(projectID);
+      otherContributions.setActiveSince(new Date());
+      otherContributions.setIsActive(true);
+      int result = otherContributionsDAO.save(otherContributions);
+
+      if (result > 0) {
+        LOG.debug("saveCrossCuttingContribution > New CrossCuttingContribution added with id {}", result);
+      } else if (result == 0) {
+        LOG.debug("saveCrossCuttingContribution > CrossCuttingContribution with id={} was updated",
+          otherContributions.getId());
+      } else {
+        LOG.error(
+          "saveCrossCuttingContribution > There was an error trying to save/update a CrossCuttingContribution from projectId={}",
+          projectID);
+      }
+    }
+
+    return 1;
   }
 }

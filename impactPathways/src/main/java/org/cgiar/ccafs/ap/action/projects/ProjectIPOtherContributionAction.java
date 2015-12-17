@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
+import org.cgiar.ccafs.ap.data.model.OtherContributions;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
@@ -50,7 +51,10 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   // private Map<String, String> flagships;
   private Map<String, String> otherIndicators;
   private List<IPProgram> regions;
+
   private List<IPProgram> flagships;
+
+
   private CRPManager crpManager;
 
 
@@ -58,8 +62,9 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
 
   private HistoryManager historyManager;
-  private IPProgramManager ipProgramManager;
 
+
+  private IPProgramManager ipProgramManager;
   // Manager
   private ProjectOtherContributionManager ipOtherContributionManager;
 
@@ -70,11 +75,14 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   // Model for the back-end
   private List<CRPContribution> previousCRPContributions;
-
   private Project project;
+
   // Model for the front-end
   private int projectID;
+
+
   private ProjectManager projectManager;
+
 
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
@@ -98,6 +106,9 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     return crps;
   }
 
+  public List<IPProgram> getFlagships() {
+    return flagships;
+  }
 
   public Map<String, String> getOtherIndicators() {
     return otherIndicators;
@@ -111,10 +122,14 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     return project;
   }
 
+
   public int getProjectID() {
     return projectID;
   }
 
+  public List<IPProgram> getRegions() {
+    return regions;
+  }
 
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
@@ -130,6 +145,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     }
   }
 
+
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -142,6 +158,8 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     // Getting the information for the IP Other Contribution
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+    List<OtherContributions> others = ipOtherContributionManager.getOtherContributionsByProjectId(projectID);
+    project.setOtherContributions(others);
     if (project.getIpOtherContribution() == null) {
 
       project.setIpOtherContribution(new OtherContribution());
@@ -196,7 +214,8 @@ public class ProjectIPOtherContributionAction extends BaseAction {
       // Saving Activity IP Other Contribution
       ipOtherContributionManager.saveIPOtherContribution(projectID, project.getIpOtherContribution(),
         this.getCurrentUser(), this.getJustification());
-
+      ipOtherContributionManager.saveOtherContributionsList(projectID, project.getOtherContributions(),
+        this.getCurrentUser(), this.getJustification());
       // Delete the CRPs that were un-selected
       for (CRPContribution crp : previousCRPContributions) {
         if (!project.getIpOtherContribution().getCrpContributions().contains(crp)) {
@@ -227,10 +246,14 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.crpContributions = crpContributions;
   }
 
+  public void setFlagships(List<IPProgram> flagships) {
+    this.flagships = flagships;
+  }
 
   public void setOtherIndicators(Map<String, String> otherIndicators) {
     this.otherIndicators = otherIndicators;
   }
+
 
   public void setPreviousCRPContributions(ArrayList<CRPContribution> previousCRPContributions) {
     this.previousCRPContributions = previousCRPContributions;
@@ -242,6 +265,10 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+  public void setRegions(List<IPProgram> regions) {
+    this.regions = regions;
   }
 
 

@@ -196,7 +196,7 @@
 [@otherContribution template=true /]
 
 [#macro otherContribution index="0" template=false]
-  [#assign customName = "${params.otherContributions.name}[${index}]."/]
+  [#assign customName = "${params.otherContributions.name}[${index}]"/]
   [#assign contributionId][@s.property value="${customName}.id" /][/#assign]
   <div id="otherContribution-${template?string('template',index)}" class="otherContribution simpleBox" style="display:${template?string('none','block')}">
     [#-- Edit/Back/remove buttons --]
