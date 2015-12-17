@@ -31,16 +31,6 @@ public class OtherContribution {
   private String contribution;
   private List<CRPContribution> crpContributions;
   private int id;
-  private String region;
-  private String flagship;
-
-  private String indicators;
-
-
-  private String description;
-
-
-  private String target;
 
 
   public OtherContribution() {
@@ -73,33 +63,10 @@ public class OtherContribution {
   }
 
 
-  public String getDescription() {
-    return description;
-  }
-
-
-  public String getFlagship() {
-    return flagship;
-  }
-
-
   public int getId() {
     return id;
   }
 
-
-  public String getIndicators() {
-    return indicators;
-  }
-
-
-  public String getRegion() {
-    return region;
-  }
-
-  public String getTarget() {
-    return target;
-  }
 
   @Override
   public int hashCode() {
@@ -127,30 +94,8 @@ public class OtherContribution {
   }
 
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-
-  public void setFlagship(String flagship) {
-    this.flagship = flagship;
-  }
-
-
   public void setId(int id) {
     this.id = id;
-  }
-
-  public void setIndicators(String indicators) {
-    this.indicators = indicators;
-  }
-
-  public void setRegion(String region) {
-    this.region = region;
-  }
-
-  public void setTarget(String target) {
-    this.target = target;
   }
 
 
