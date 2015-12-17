@@ -39,6 +39,14 @@
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
+    
+    
+        <action name="iPIndicatorsByIPPrograms" class="org.cgiar.ccafs.ap.action.json.projects.IPIndicatorsByIPPrograms">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
 
     <action name="institutionsByTypeAndCountry" class="org.cgiar.ccafs.ap.action.json.global.InstitutionsByFilterAction">
       <result type="json">        
