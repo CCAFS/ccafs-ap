@@ -1,19 +1,57 @@
-var crpContributionName;
+var crpContributionName, otherContributionsName;
 var $contributionsBlock;
 $(document).ready(init);
 
 function init() {
   $contributionsBlock = $('ul#contributionsBlock');
   crpContributionName = $('#crpsName').val();
+  otherContributionsName = $('#otherContributionsName').val();
   initGraph();
   addSelect2();
+  attachEvents();
   initItemListEvents();
   // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
   setWordCounterToInputs('limitWords');
 }
 
-// Items list functions
+function attachEvents() {
+  // Remove a next user event
+  $('.removeElement').on('click', removeOtherContribution);
+  // Add new next user event
+  $('#addOtherContribution .addLink').on('click', addOtherContribution);
+}
 
+function addOtherContribution(e) {
+  e.preventDefault();
+  var $clone = $("#otherContribution-template").clone(true).removeAttr("id");
+  $clone.find('select').select2();
+  $clone.appendTo($('#otherContributionsBlock')).hide().show('slow');
+  setOtherContributionsIndexes();
+}
+
+function removeOtherContribution(e) {
+  e.preventDefault();
+  $(e.target).parent().hide('slow', function() {
+    $(this).remove();
+    setOtherContributionsIndexes();
+  });
+}
+
+function setOtherContributionsIndexes() {
+  $('form .otherContribution').each(setOtherContributionIndex);
+}
+
+function setOtherContributionIndex(i,element) {
+  var name = otherContributionsName + '[' + i + '].';
+  $(element).find(".otherContributionId").attr("name", name + "id");
+  $(element).find(".otherContributionRegion").attr("name", name + "region");
+  $(element).find(".otherContributionFlagship").attr("name", name + "flagship");
+  $(element).find(".otherContributionIndicator").attr("name", name + "indicator");
+  $(element).find(".otherContributionDescription").attr("name", name + "description");
+  $(element).find(".otherContributionTarget").attr("name", name + "target");
+}
+
+// Items list functions
 function initItemListEvents() {
   $('select.crpsSelect').on('change', function(e) {
     addItemList($(this).find('option:selected'));
@@ -21,10 +59,6 @@ function initItemListEvents() {
   $('ul li .remove').on('click', function(e) {
     removeItemList($(this).parents('li'));
   });
-
-  validateEvent([
-    "#justification"
-  ]);
 
   setInitialList();
 }
@@ -69,8 +103,8 @@ function setIndexes() {
     var elementName = crpContributionName + '[' + i + ']';
     $(item).find('.id').attr('name', elementName + '.crp.id');
     $(item).find('.crpContributionId').attr('name', elementName + '.id');
-
     $(item).find('.crpCollaborationNature').attr('name', elementName + '.natureCollaboration');
+    $(item).find('.crpCollaborationAchieved').attr('name', elementName + '.natureAchieved');
 
   });
 }

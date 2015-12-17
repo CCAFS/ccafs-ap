@@ -865,13 +865,14 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 
 .panel.tertiary .panel-body ul.list li {
-    list-style: none; 
-    padding: 5px 10px; 
+    list-style: none;
+    padding: 5px 10px;
     background-color: #F7F7F7;
     border: 1px solid #E0E0E0 !important;
     box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     margin-bottom: 5px;
+    position: relative;
 }
 
 .panel.tertiary .panel-body ul li.last {
@@ -3466,8 +3467,14 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 
 /*** Project other contributions  ***/
 
+.crpContribution .remove{
+  position: absolute;
+  top: 0.5em;
+  right: .5em;
+}
+
 #otherContributionsBlock {
-  padding: 17px 0;
+  padding: 0px 0 0 0;
 }
 
 #contributionsBlock .crpName{
@@ -3475,6 +3482,8 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   font-size: 1.3em;
   font-weight: normal;  
 }
+
+#addOtherContribution {float: right;}
 
 /** Project Deliverables **/
 

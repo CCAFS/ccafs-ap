@@ -14,6 +14,11 @@
   {"label":"projectOtherContributions", "nameSpace":"${currentSection}/projects", "action":"otherContributions", "param":"projectID=${project.id}"}
 ]/]
 
+[#assign params = {
+  "otherContributions": {"id":"otherContributionsName", "name":"project.otherContributions"}
+  }
+/] 
+
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -60,6 +65,9 @@
         <div id="otherContributionsBlock">
           [@otherContribution /] 
         </div>
+        [#if editable]<div id="addOtherContribution"><a href="" class="addLink">[@s.text name="reporting.projectOtherContributions.addOtherContribution"/]</a></div>[/#if]
+        <div class="clearfix"></div>
+        <br />
       [/#if]
       
       [#-- Contribution to another center activity --]
@@ -181,32 +189,48 @@
   </li>
 </ul>
 
-[#-- Other contribution block --]
-[#macro otherContribution index=0]
-[#assign customName = "project.otherContributions[${index}]"]
-<div id="otherContribution-${index}" class="otherContribution simpleBox">
-  <div class="fullBlock">
-    <div class="halfPartBlock">
-      [@customForm.select name="${customName}.region" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+[#-- Internal parameters --]
+[#list params?keys as prop]<input id="${params[prop].id}" type="hidden" value="${params[prop].name}" />[/#list]
+
+[#-- Other contribution template --]
+[@otherContribution template=true /]
+
+[#macro otherContribution index="0" template=false]
+  [#assign customName = "${params.otherContributions.name}[${index}]."/]
+  [#assign contributionId][@s.property value="${customName}.id" /][/#assign]
+  <div id="otherContribution-${template?string('template',index)}" class="otherContribution simpleBox" style="display:${template?string('none','block')}">
+    [#-- Edit/Back/remove buttons --]
+    [#if (editable && canEdit)]<div class="removeElement" title="[@s.text name="reporting.projectOtherContributions.removeOtherContribution" /]"></div>[/#if]
+    [#-- Other Contribution ID --]
+    <input type="hidden" name="${customName}.id" class="otherContributionId" value="${(contributionId)!-1}"/>
+    <div class="fullBlock">
+      [#-- Region --]
+      <div class="halfPartBlock">
+        [@customForm.select name="${customName}.region" className="otherContributionRegion" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+      </div>
+      [#-- Flagship --]
+      <div class="halfPartBlock">
+        [@customForm.select name="${customName}.flagship" className="otherContributionFlagship" label="" i18nkey="reporting.projectOtherContributions.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+      </div>
     </div>
-    <div class="halfPartBlock">
-      [@customForm.select name="${customName}.flagship" label="" i18nkey="reporting.projectOtherContributions.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+    [#-- Indicator --]
+    <div class="fullBlock">
+      [@customForm.select name="${customName}.indicator" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
     </div>
-  </div>
-  <div class="fullBlock">
-    [@customForm.select name="${customName}.indicators" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
-  </div>
-  <div class="fullBlock">
-    <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:</h6>
-    [@customForm.textArea name="${customName}.description" className="limitWords-100"  i18nkey="" showTitle=false editable=editable required=true/]
-  </div>
-  <div class="fullBlock">
-    <h6>[@customForm.text name="reporting.projectOtherContributions.target" readText=!editable /]:</h6>
-    <div class="halfPartBlock">
-      [@customForm.input name="${customName}.target" i18nkey="" showTitle=false editable=editable required=true/]
+    [#-- Describe how you are contributing to the selected outcome --]
+    <div class="fullBlock">
+      <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:</h6>
+      [@customForm.textArea name="${customName}.description" className="otherContributionDescription limitWords-100"  i18nkey="" showTitle=false editable=editable required=true/]
     </div>
-  </div>
-</div> 
+    [#-- Target contribution --]
+    <div class="fullBlock">
+      <h6>[@customForm.text name="reporting.projectOtherContributions.target" readText=!editable /]:</h6>
+      <div class="halfPartBlock">
+        [@customForm.input name="${customName}.target" className="otherContributionTarget" i18nkey="" showTitle=false editable=editable /]
+      </div>
+    </div>
+  </div> 
 [/#macro]
+
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
