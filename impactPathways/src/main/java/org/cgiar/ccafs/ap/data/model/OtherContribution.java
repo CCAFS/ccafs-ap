@@ -31,10 +31,22 @@ public class OtherContribution {
   private String contribution;
   private List<CRPContribution> crpContributions;
   private int id;
+  private String region;
+  private String flagship;
+
+  private String indicators;
+
+
+  private String description;
+
+
+  private String target;
+
 
   public OtherContribution() {
-    crpContributions=new ArrayList<CRPContribution>();
+    crpContributions = new ArrayList<CRPContribution>();
   }
+
 
   @Override
   public boolean equals(Object obj) {
@@ -45,20 +57,48 @@ public class OtherContribution {
     return false;
   }
 
+
   public String getAdditionalContribution() {
     return additionalContribution;
   }
+
 
   public String getContribution() {
     return contribution;
   }
 
+
   public List<CRPContribution> getCrpContributions() {
     return crpContributions;
   }
 
+
+  public String getDescription() {
+    return description;
+  }
+
+
+  public String getFlagship() {
+    return flagship;
+  }
+
+
   public int getId() {
     return id;
+  }
+
+
+  public String getIndicators() {
+    return indicators;
+  }
+
+
+  public String getRegion() {
+    return region;
+  }
+
+  public String getTarget() {
+    return target;
   }
 
   @Override
@@ -66,21 +106,53 @@ public class OtherContribution {
     return this.id;
   }
 
+
   public void setAdditionalContribution(String additionalContribution) {
     this.additionalContribution = additionalContribution;
   }
+
 
   public void setContribution(String contribution) {
     this.contribution = contribution;
   }
 
+
   public void setCrpCollaborationNature(List<CRPContribution> crpContributions) {
     this.crpContributions = crpContributions;
   }
 
+
+  public void setCrpContributions(List<CRPContribution> crpContributions) {
+    this.crpContributions = crpContributions;
+  }
+
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+
+  public void setFlagship(String flagship) {
+    this.flagship = flagship;
+  }
+
+
   public void setId(int id) {
     this.id = id;
   }
+
+  public void setIndicators(String indicators) {
+    this.indicators = indicators;
+  }
+
+  public void setRegion(String region) {
+    this.region = region;
+  }
+
+  public void setTarget(String target) {
+    this.target = target;
+  }
+
 
   @Override
   public String toString() {

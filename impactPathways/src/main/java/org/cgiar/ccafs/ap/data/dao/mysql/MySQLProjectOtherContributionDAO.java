@@ -86,6 +86,11 @@ public class MySQLProjectOtherContributionDAO implements ProjectOtherContributio
         ipOtherContributionData.put("contribution", rs.getString("contribution"));
         ipOtherContributionData.put("additional_contribution", rs.getString("additional_contribution"));
         ipOtherContributionData.put("crp_contributions_nature", rs.getString("crp_contributions_nature"));
+        ipOtherContributionData.put("region", rs.getString("region"));
+        ipOtherContributionData.put("flashigp", rs.getString("flagship"));
+        ipOtherContributionData.put("indicators", rs.getString("indicators"));
+        ipOtherContributionData.put("description", rs.getString("description"));
+        ipOtherContributionData.put("target", rs.getString("target"));
 
       }
       con.close();
@@ -107,9 +112,10 @@ public class MySQLProjectOtherContributionDAO implements ProjectOtherContributio
     if (ipOtherContributionData.get("id") == null) {
       // Insert new IP Other Contribution record
       query.append("INSERT INTO project_other_contributions (project_id, contribution, additional_contribution, ");
-      query.append("crp_contributions_nature, created_by, modified_by, modification_justification)  ");
-      query.append("VALUES (?,?,?,?,?,?,?) ");
-      values = new Object[7];
+      query.append(
+        "crp_contributions_nature, created_by, modified_by, modification_justification,region,flagship,indicators,description,target)  ");
+      query.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ");
+      values = new Object[12];
       values[0] = projectID;
       values[1] = ipOtherContributionData.get("contribution");
       values[2] = ipOtherContributionData.get("additional_contribution");
@@ -117,6 +123,11 @@ public class MySQLProjectOtherContributionDAO implements ProjectOtherContributio
       values[4] = ipOtherContributionData.get("user_id");
       values[5] = ipOtherContributionData.get("user_id");
       values[6] = ipOtherContributionData.get("justification");
+      values[7] = ipOtherContributionData.get("region");
+      values[8] = ipOtherContributionData.get("flagship");
+      values[9] = ipOtherContributionData.get("indicators");
+      values[10] = ipOtherContributionData.get("description");
+      values[11] = ipOtherContributionData.get("target");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
         LOG.error("A problem happened trying to add a new IP Other Contribution  with project id={}", projectID);
@@ -126,15 +137,23 @@ public class MySQLProjectOtherContributionDAO implements ProjectOtherContributio
       // update IP Other Contribution record
       query.append("UPDATE project_other_contributions SET project_id = ?, contribution = ?, ");
       query.append("additional_contribution = ?, crp_contributions_nature = ?, modified_by = ?, ");
-      query.append("modification_justification = ? WHERE id = ? ");
-      values = new Object[7];
+      query
+        .append("modification_justification = ?,region=?,flagship=?,indicators=?,description=?,target=? WHERE id = ? ");
+      values = new Object[12];
       values[0] = projectID;
       values[1] = ipOtherContributionData.get("contribution");
       values[2] = ipOtherContributionData.get("additional_contribution");
       values[3] = ipOtherContributionData.get("crp_contributions_nature");
       values[4] = ipOtherContributionData.get("user_id");
       values[5] = ipOtherContributionData.get("justification");
-      values[6] = ipOtherContributionData.get("id");
+
+      values[6] = ipOtherContributionData.get("region");
+      values[7] = ipOtherContributionData.get("flagship");
+      values[8] = ipOtherContributionData.get("indicators");
+      values[9] = ipOtherContributionData.get("description");
+      values[10] = ipOtherContributionData.get("target");
+
+      values[11] = ipOtherContributionData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the IP Other Contribution identified with the id = {}",

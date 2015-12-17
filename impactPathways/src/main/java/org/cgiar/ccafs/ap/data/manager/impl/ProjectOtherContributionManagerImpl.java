@@ -42,7 +42,8 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   private CRPManager crpManager;
 
   @Inject
-  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO, CRPManager crpManager) {
+  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO,
+    CRPManager crpManager) {
     this.ipOtherContributionDAO = ipOtherContributionDAO;
     this.crpManager = crpManager;
   }
@@ -57,7 +58,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
       // ipOtherContribution.setCrpCollaborationNature(crpManager.getCrpContributionsNature()); // TODO JG modify method
-// to bring project ID
+      // to bring project ID
       return ipOtherContribution;
     }
     return null;
@@ -71,6 +72,13 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
+
+      ipOtherContribution.setRegion(ipOtherContributionData.get("region"));
+      ipOtherContribution.setFlagship(ipOtherContributionData.get("flagshipflagship"));
+      ipOtherContribution.setIndicators(ipOtherContributionData.get("indicators"));
+      ipOtherContribution.setDescription(ipOtherContributionData.get("description"));
+      ipOtherContribution.setTarget(ipOtherContributionData.get("target"));
+
       ipOtherContribution.setCrpCollaborationNature(crpManager.getCrpContributionsNature(projectID));
       return ipOtherContribution;
     }
@@ -90,6 +98,11 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
     // contributionData.put("crp_contributions_nature", ipOtherContribution.getCrpCollaborationNature());
     contributionData.put("user_id", user.getId());
     contributionData.put("justification", justification);
+    contributionData.put("region", ipOtherContribution.getIndicators());
+    contributionData.put("flagship", ipOtherContribution.getFlagship());
+    contributionData.put("indicators", ipOtherContribution.getIndicators());
+    contributionData.put("description", ipOtherContribution.getDescription());
+    contributionData.put("target", ipOtherContribution.getTarget());
 
     int result = ipOtherContributionDAO.saveIPOtherContribution(projectID, contributionData);
 
@@ -98,10 +111,9 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
     } else if (result == 0) {
       LOG.debug("saveIPOtherContribution > IP Other Contribution with id={} was updated", ipOtherContribution.getId());
     } else {
-      LOG
-        .error(
-          "saveIPOtherContribution > There was an error trying to save/update an IP Other Contribution from projectID={}",
-          projectID);
+      LOG.error(
+        "saveIPOtherContribution > There was an error trying to save/update an IP Other Contribution from projectID={}",
+        projectID);
       allSaved = false;
     }
 

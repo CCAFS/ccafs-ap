@@ -82,6 +82,7 @@ public class CRPManagerImpl implements CRPManager {
       crp.setId(Integer.parseInt(crpData.get("id")));
       crp.setCrp(this.getCRPById(Integer.parseInt(crpData.get("crp_id"))));
       crp.setNatureCollaboration(crpData.get("collaboration_nature"));
+
       crpContributions.add(crp);
     }
     return crpContributions;
@@ -120,22 +121,24 @@ public class CRPManagerImpl implements CRPManager {
   public boolean removeCrpContribution(int projectID, CRP crpID, int userID, String justification) {
     return crpDAO.removeCrpContribution(projectID, crpID.getId(), userID, justification);
   }
+
   /**
    */
   @Override
 
-  public boolean saveCrpContributions(int id_project,List<CRPContribution>crps, User user, String justification) {
+  public boolean saveCrpContributions(int id_project, List<CRPContribution> crps, User user, String justification) {
     boolean saved = true;
 
-    for (CRPContribution crp :crps) {
+    for (CRPContribution crp : crps) {
       Map<String, Object> data = new HashMap<>();
       data.put("projectID", id_project);
-      if (crp.getId()>0) {
+      if (crp.getId() > 0) {
         data.put("id", crp.getId());
       }
       data.put("crp_id", crp.getCrp().getId());
       data.put("collaboration_nature", crp.getNatureCollaboration());
       data.put("user_id", user.getId());
+
       data.put("justification", justification);
 
       saved = saved && crpDAO.saveCrpContributions(data);

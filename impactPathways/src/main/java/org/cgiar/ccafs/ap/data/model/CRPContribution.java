@@ -27,6 +27,7 @@ public class CRPContribution {
   private int id;
   private String natureCollaboration;
 
+
   public CRPContribution() {
 
   }
@@ -44,17 +45,21 @@ public class CRPContribution {
     return false;
   }
 
+
   public CRP getCrp() {
     return crp;
   }
+
 
   public int getId() {
     return id;
   }
 
+
   public String getNatureCollaboration() {
     return natureCollaboration;
   }
+
 
   @Override
   public int hashCode() {
@@ -65,13 +70,16 @@ public class CRPContribution {
     this.crp = crp;
   }
 
+
   public void setId(int id) {
     this.id = id;
   }
 
+
   public void setNatureCollaboration(String natureCollaboration) {
     this.natureCollaboration = natureCollaboration;
   }
+
 
   @Override
   public String toString() {

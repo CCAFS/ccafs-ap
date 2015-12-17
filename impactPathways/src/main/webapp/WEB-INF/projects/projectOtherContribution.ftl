@@ -194,7 +194,7 @@
     </div>
   </div>
   <div class="fullBlock">
-    [@customForm.select name="${customName}.indicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+    [@customForm.select name="${customName}.indicators" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
   </div>
   <div class="fullBlock">
     <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:</h6>

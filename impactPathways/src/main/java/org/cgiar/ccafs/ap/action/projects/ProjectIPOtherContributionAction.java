@@ -17,10 +17,12 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
@@ -29,6 +31,7 @@ import org.cgiar.ccafs.utils.APConfig;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -43,18 +46,31 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   private static final long serialVersionUID = 5866456304533553208L;
 
   private List<CRPContribution> crpContributions;
+  // private Map<String, String> regions;
+  // private Map<String, String> flagships;
+  private Map<String, String> otherIndicators;
+  private List<IPProgram> regions;
+  private List<IPProgram> flagships;
   private CRPManager crpManager;
+
+
   private List<CRP> crps;
+
+
   private HistoryManager historyManager;
+  private IPProgramManager ipProgramManager;
 
   // Manager
   private ProjectOtherContributionManager ipOtherContributionManager;
 
+
   // Validator
   private ProjectIPOtherContributionValidator otherContributionValidator;
 
+
   // Model for the back-end
   private List<CRPContribution> previousCRPContributions;
+
   private Project project;
   // Model for the front-end
   private int projectID;
@@ -63,10 +79,12 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   @Inject
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
     ProjectManager projectManager, CRPManager crpManager,
-    ProjectIPOtherContributionValidator otherContributionValidator, HistoryManager historyManager) {
+    ProjectIPOtherContributionValidator otherContributionValidator, HistoryManager historyManager,
+    IPProgramManager ipProgramManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.projectManager = projectManager;
+    this.ipProgramManager = ipProgramManager;
     this.crpManager = crpManager;
     this.otherContributionValidator = otherContributionValidator;
     this.historyManager = historyManager;
@@ -80,6 +98,11 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     return crps;
   }
 
+
+  public Map<String, String> getOtherIndicators() {
+    return otherIndicators;
+  }
+
   public List<CRPContribution> getPreviousCRPContributions() {
     return previousCRPContributions;
   }
@@ -91,6 +114,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   public int getProjectID() {
     return projectID;
   }
+
 
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
@@ -127,9 +151,29 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     previousCRPContributions = new ArrayList<>();
     previousCRPContributions.addAll(project.getIpOtherContribution().getCrpContributions());
 
+
+    // Getting the information of the Regions program for the View
+    regions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+
+    // Getting the information of the Flagships program for the View
+    flagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+
+
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    int evaluatingYear = 0;
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
+    // Getting the Project lessons for this section.
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      this.setProjectLessonsPreview(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
+        this.getCurrentReportingYear(), APConstants.PLANNING_SECTION));
+    }
+
 
     super.setHistory(historyManager.getProjectIPOtherContributionHistory(project.getId()));
 
@@ -183,6 +227,11 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.crpContributions = crpContributions;
   }
 
+
+  public void setOtherIndicators(Map<String, String> otherIndicators) {
+    this.otherIndicators = otherIndicators;
+  }
+
   public void setPreviousCRPContributions(ArrayList<CRPContribution> previousCRPContributions) {
     this.previousCRPContributions = previousCRPContributions;
   }
@@ -194,6 +243,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
+
 
   @Override
   public void validate() {

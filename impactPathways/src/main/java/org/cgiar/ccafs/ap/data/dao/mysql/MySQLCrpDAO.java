@@ -114,6 +114,8 @@ public class MySQLCrpDAO implements CrpDAO {
         Map<String, String> collaborationNature = new HashMap<>();
         collaborationNature.put("id", rs.getString("id"));
         collaborationNature.put("crp_id", rs.getString("crp_id"));
+
+
         collaborationNature.put("collaboration_nature", rs.getString("collaboration_nature"));
         crpCollaborationsNature.add(collaborationNature);
       }
@@ -193,7 +195,8 @@ public class MySQLCrpDAO implements CrpDAO {
     if (contributionData.get("id") == null) {
       // Insert new project_crp_contributions record
       query.append("INSERT INTO project_crp_contributions (project_id, crp_id, collaboration_nature, created_by, ");
-      query.append(" modified_by, modification_justification) VALUES (?,?,?,?,?,?) ");
+      query.append(
+        " modified_by, modification_justification,region,flagship,indicators,description,target) VALUES (?,?,?,?,?,?) ");
       Object[] values = new Object[6];
       values[0] = contributionData.get("projectID");
       values[1] = contributionData.get("crp_id");
@@ -201,6 +204,7 @@ public class MySQLCrpDAO implements CrpDAO {
       values[3] = contributionData.get("user_id");
       values[4] = contributionData.get("user_id");
       values[5] = contributionData.get("justification");
+
       result = daoManager.saveData(query.toString(), values);
       if (result < 0) {
         saved = false;
@@ -218,6 +222,7 @@ public class MySQLCrpDAO implements CrpDAO {
       values[3] = contributionData.get("user_id");
       values[4] = contributionData.get("user_id");
       values[5] = contributionData.get("justification");
+
       values[6] = contributionData.get("id");
       result = daoManager.saveData(query.toString(), values);
 
