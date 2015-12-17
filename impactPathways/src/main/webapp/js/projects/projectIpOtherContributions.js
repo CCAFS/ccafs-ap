@@ -46,7 +46,7 @@ function setOtherContributionIndex(i,element) {
   $(element).find(".otherContributionId").attr("name", name + "id");
   $(element).find(".otherContributionRegion").attr("name", name + "region");
   $(element).find(".otherContributionFlagship").attr("name", name + "flagship");
-  $(element).find(".otherContributionIndicator").attr("name", name + "indicator");
+  $(element).find(".otherContributionIndicator").attr("name", name + "indicators");
   $(element).find(".otherContributionDescription").attr("name", name + "description");
   $(element).find(".otherContributionTarget").attr("name", name + "target");
 }
