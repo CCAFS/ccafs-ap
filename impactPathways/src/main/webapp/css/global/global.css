@@ -3468,9 +3468,12 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 /*** Project other contributions  ***/
 
 .crpContribution .remove{
-  position: absolute;
-  top: 0.5em;
-  right: .5em;
+  
+position: absolute;
+  
+top: 0.5em;
+  
+right: .5em;
 }
 
 #otherContributionsBlock {
@@ -3484,6 +3487,12 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 }
 
 #addOtherContribution {float: right;}
+
+/***  Project case studies ***/
+
+#caseStudiesBlock .caseStudy {
+  padding-top: 35px;
+}
 
 /** Project Deliverables **/
 
