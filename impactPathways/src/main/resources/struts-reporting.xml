@@ -169,6 +169,18 @@
       </result>
     </action>
     
+    <action name="caseStudies" class="org.cgiar.ccafs.ap.action.projects.ProjectCaseStudiesAction">
+      <result name="input">/WEB-INF/projects/projectCaseStudies.ftl</result>   
+      <result name="success" type="redirectAction">   
+        <param name="actionName">"caseStudies"</param>    
+        <param name="projectID">${project.id}</param>   
+      </result> 
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">"caseStudies"</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+    
     <!-- Project Outputs  -->
     
     <action name="outputs" class="org.cgiar.ccafs.ap.action.projects.ProjectOutputsAction">

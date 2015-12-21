@@ -14,7 +14,6 @@
   {"label":"projectHighlights", "nameSpace":"${currentSection}/projects", "action":"highlights", "param":"projectID=${project.id}"}
 ]/]
 
-
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm/]
@@ -119,19 +118,11 @@
             [@s.fielderror cssClass="fieldError" fieldName="highlight.typesIds"/]
             [@s.checkboxlist name="highlight.typesids" list="highlightsTypes" value="highlight.typesids" itemKey="id"  cssClass="checkbox" /]
           [#else]
-          
-          
-            <div class="select"> <p>
-           [#if highlight.typesIds?has_content]
-                  [#list highlight.typesIds as element]
-                   <p class="checked">${element.description}</p>
-                  [/#list]
-                [#else]
-                 'Field is empty'
-                [/#if]
-                </p></div>
-                
-      
+            [#if highlight.typesIds?has_content]
+              [#list highlight.typesIds as element]<p class="checked">${element.description}</p>[/#list]
+            [#else]
+              <div class="select"><p>Field is empty</p></div>
+            [/#if]
           [/#if]
           </div>
         </div>

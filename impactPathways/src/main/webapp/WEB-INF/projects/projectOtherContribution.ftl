@@ -199,13 +199,13 @@
 [@otherContribution template=true /]
 
 [#macro otherContribution index="0" template=false]
-  [#assign customName = "${params.otherContributions.name}[${index}]"/]
-  [#assign contributionId][@s.property value="${customName}.id" /][/#assign]
+  [#assign customName = "${params.otherContributions.name}[${template?string('-1',index)}]" /]
+  [#assign contribution = (customName?eval)! /]
   <div id="otherContribution-${template?string('template',index)}" class="otherContribution simpleBox" style="display:${template?string('none','block')}">
     [#-- Edit/Back/remove buttons --]
     [#if (editable && canEdit)]<div class="removeElement" title="[@s.text name="reporting.projectOtherContributions.removeOtherContribution" /]"></div>[/#if]
     [#-- Other Contribution ID --]
-    <input type="hidden" name="${customName}.id" class="otherContributionId" value="${(contributionId)!-1}"/>
+    <input type="hidden" name="${customName}.id" class="otherContributionId" value="${(contribution.id)!-1}"/>
     <div class="fullBlock">
       [#-- Region --]
       <div class="halfPartBlock">
