@@ -82,7 +82,7 @@ public class CRPManagerImpl implements CRPManager {
       crp.setId(Integer.parseInt(crpData.get("id")));
       crp.setCrp(this.getCRPById(Integer.parseInt(crpData.get("crp_id"))));
       crp.setNatureCollaboration(crpData.get("collaboration_nature"));
-
+      crp.setExplainAchieved(crpData.get("explain_achieved"));
       crpContributions.add(crp);
     }
     return crpContributions;
@@ -136,7 +136,9 @@ public class CRPManagerImpl implements CRPManager {
         data.put("id", crp.getId());
       }
       data.put("crp_id", crp.getCrp().getId());
+
       data.put("collaboration_nature", crp.getNatureCollaboration());
+      data.put("explain_achieved", crp.getExplainAchieved());
       data.put("user_id", user.getId());
 
       data.put("justification", justification);

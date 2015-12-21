@@ -104,7 +104,7 @@ function setIndexes() {
     $(item).find('.id').attr('name', elementName + '.crp.id');
     $(item).find('.crpContributionId').attr('name', elementName + '.id');
     $(item).find('.crpCollaborationNature').attr('name', elementName + '.natureCollaboration');
-    $(item).find('.crpCollaborationAchieved').attr('name', elementName + '.natureAchieved');
+    $(item).find('.crpCollaborationAchieved').attr('name', elementName + '.explainAchieved');
 
   });
 }

@@ -114,7 +114,7 @@ public class MySQLCrpDAO implements CrpDAO {
         Map<String, String> collaborationNature = new HashMap<>();
         collaborationNature.put("id", rs.getString("id"));
         collaborationNature.put("crp_id", rs.getString("crp_id"));
-
+        collaborationNature.put("explain_achieved", rs.getString("explain_achieved"));
 
         collaborationNature.put("collaboration_nature", rs.getString("collaboration_nature"));
         crpCollaborationsNature.add(collaborationNature);
@@ -195,15 +195,15 @@ public class MySQLCrpDAO implements CrpDAO {
     if (contributionData.get("id") == null) {
       // Insert new project_crp_contributions record
       query.append("INSERT INTO project_crp_contributions (project_id, crp_id, collaboration_nature, created_by, ");
-      query.append(
-        " modified_by, modification_justification,region,flagship,indicators,description,target) VALUES (?,?,?,?,?,?) ");
-      Object[] values = new Object[6];
+      query.append(" modified_by, modification_justification,explain_achieved) VALUES (?,?,?,?,?,?,?) ");
+      Object[] values = new Object[7];
       values[0] = contributionData.get("projectID");
       values[1] = contributionData.get("crp_id");
       values[2] = contributionData.get("collaboration_nature");
       values[3] = contributionData.get("user_id");
       values[4] = contributionData.get("user_id");
       values[5] = contributionData.get("justification");
+      values[6] = contributionData.get("explain_achieved");
 
       result = daoManager.saveData(query.toString(), values);
       if (result < 0) {
@@ -212,18 +212,19 @@ public class MySQLCrpDAO implements CrpDAO {
     } else {
       // update project_crp_contributions record
       query.append("UPDATE project_crp_contributions SET project_id = ?, crp_id = ?, collaboration_nature = ?,  ");
-      query.append("created_by = ?, modified_by = ?, modification_justification = ?, is_active=TRUE ");
+      query
+        .append("created_by = ?, modified_by = ?, modification_justification = ?,explain_achieved=?, is_active=TRUE ");
       query.append("WHERE id = ? ");
 
-      Object[] values = new Object[7];
+      Object[] values = new Object[8];
       values[0] = contributionData.get("projectID");
       values[1] = contributionData.get("crp_id");
       values[2] = contributionData.get("collaboration_nature");
       values[3] = contributionData.get("user_id");
       values[4] = contributionData.get("user_id");
       values[5] = contributionData.get("justification");
-
-      values[6] = contributionData.get("id");
+      values[6] = contributionData.get("explain_achieved");
+      values[7] = contributionData.get("id");
       result = daoManager.saveData(query.toString(), values);
 
 

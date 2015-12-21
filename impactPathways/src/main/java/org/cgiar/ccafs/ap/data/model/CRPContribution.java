@@ -26,11 +26,13 @@ public class CRPContribution {
   private CRP crp;
   private int id;
   private String natureCollaboration;
+  private String explainAchieved;
 
 
   public CRPContribution() {
 
   }
+
 
   public CRPContribution(int id) {
     this.id = id;
@@ -45,9 +47,12 @@ public class CRPContribution {
     return false;
   }
 
-
   public CRP getCrp() {
     return crp;
+  }
+
+  public String getExplainAchieved() {
+    return explainAchieved;
   }
 
 
@@ -66,8 +71,13 @@ public class CRPContribution {
     return this.id;
   }
 
+
   public void setCrp(CRP crp) {
     this.crp = crp;
+  }
+
+  public void setExplainAchieved(String explainAchieved) {
+    this.explainAchieved = explainAchieved;
   }
 
 
