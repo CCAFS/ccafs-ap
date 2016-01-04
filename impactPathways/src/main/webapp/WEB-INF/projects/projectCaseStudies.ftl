@@ -52,14 +52,14 @@
     </div>
     
     [#if (editable && canEdit)]
-      <div id="addProjectPartner"><a href="" class="addButton" >[@s.text name="reporting.projectCaseStudies.addCaseStudy" /]</a></div> 
+      <div id="addCaseStudy"><a href="" class="addButton" >[@s.text name="reporting.projectCaseStudies.addCaseStudy" /]</a></div> 
     [/#if]
     
     
-    [#if editable] 
+    [#if (editable && canEdit)] 
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
-      <div class="borderBox >
+      <div class="borderBox" >
         [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
@@ -80,7 +80,7 @@
 [#list params?keys as prop]<input id="${params[prop].id}" type="hidden" value="${params[prop].name}" />[/#list]
 
 [#-- File upload Template--] 
-[@customForm.inputFile name="file" template=true /]
+[@customForm.inputFile name="annexesFile" template=true /]
 
 [#-- Case Study template --]
 [@caseStudy template=true /]
@@ -99,17 +99,16 @@
       [/#if] 
       <div class="removeElement" title="[@s.text name="reporting.projectCaseStudies.removeCaseStuty" /]"></div>
     [/#if]
-    [#-- Next user index --]
+    [#-- Index --]
     <div class="leftHead"><span class="index">${index?number+1}</span><span class="elementId">[@s.text name="reporting.projectCaseStudies.caseStudyTitle" /]</span></div>
     [#-- Region indicators --]
-    <div class="fullBlock">
-      [#-- Types --]
+    <div class="fullBlock"> 
       <div class="fullBlock caseStudyIndicators">
         <h6><label for="${customName}.caseStudyIndicators">[@customForm.text name="reporting.projectCaseStudies.caseStudyIndicators" readText=!editable /]:<span class="red">*</span></label></h6>
         <div class="checkboxGroup">
         [#if editable]
           [@s.fielderror cssClass="fieldError" fieldName="${customName}.caseStudyIndicatorsIds"/]
-          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${(study.caseStudyIndicatorsIds)!}" itemKey="id"  cssClass="checkbox" /]
+          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${(study.caseStudyIndicatorsIds)!}" itemKey="id"  cssClass="caseStudyIndicators checkbox" /]
         [#else]
           [#if (study.caseStudyIndicatorsIds?has_content)!false]
             [#list study.caseStudyIndicatorsIds as element]<p class="checked">${element.description}</p>[/#list]
@@ -166,11 +165,11 @@
       <h6>[@customForm.text name="reporting.projectCaseStudies.uploadAnnexes" readText=!editable /]:</h6>
       <div class="uploadContainer">
         [#if (study.file?has_content)!false]
-          [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
+          [#if editable]<span id="remove-annexesFile" class="remove"></span>[/#if] 
           <p><a href="${CrossCuttingURL}${study.file}">${study.file}</a></p>
         [#else]
           [#if editable]
-            [@customForm.inputFile name="file"  /]
+            [@customForm.inputFile name="${customName}.annexesFile" className="annexesFile"  /]
           [#else]  
             <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
           [/#if] 

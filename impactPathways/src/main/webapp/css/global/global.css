@@ -3494,6 +3494,11 @@ right: .5em;
   padding-top: 35px;
 }
 
+#addCaseStudy {
+  text-align: right;
+  margin-bottom: 40px;
+}
+
 /** Project Deliverables **/
 
 .projectNextUser textarea{

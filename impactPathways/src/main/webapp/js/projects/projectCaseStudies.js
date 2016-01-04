@@ -21,7 +21,21 @@ function attachEvents() {
   // Remove a next user event
   $('.removeElement').on('click', removeElement);
   // Add new next user event
-  $('#addProjectPartner .addButton').on('click', addElement);
+  $('#addCaseStudy .addButton').on('click', addElement);
+
+  /**
+   * Upload files functions
+   */
+
+  $('.fileUpload .remove').on('click', function(e) {
+    var context = $(this).attr('id').split('-')[1];
+    var $parent = $(this).parent();
+    var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
+    console.log($inputFile);
+    $parent.empty().append($inputFile);
+    $inputFile.hide().fadeIn('slow');
+    setElementsIndexes();
+  });
 }
 
 function removeElement(e) {
@@ -46,6 +60,19 @@ function setElementsIndexes() {
 function setElementIndex(i,element) {
   var name = caseStudiesName + "[" + i + "].";
   $(element).find("span.index").html(i + 1);
-  // $(element).find(".keyNextUser").attr("name", name + "keyNextUser");
+
+  $(element).find(".caseStudyIndicators").attr("name", name + "caseStudyIndicatorsIds");
+  $(element).find(".caseStudyExplainIndicatorRelation").attr("name", name + "explainIndicatorRelation");
+  $(element).find(".caseStudyTitle").attr("name", name + "title");
+  $(element).find(".caseStudyOutcomeStatement").attr("name", name + "outcomeStatement");
+  $(element).find(".caseStudyResearchOutput").attr("name", name + "researchOutput");
+  $(element).find(".caseStudyResearchPartners").attr("name", name + "researchPartners");
+  $(element).find(".caseStudyActivitiesContributed").attr("name", name + "activitiesContributed");
+  $(element).find(".caseStudyNonResearchPartners").attr("name", name + "nonResearchPartners");
+  $(element).find(".caseStudyOutputUsers").attr("name", name + "outputUsers");
+  $(element).find(".caseStudyOutputUsed").attr("name", name + "outputUsed");
+  $(element).find(".caseStudyEvidence").attr("name", name + "evidence");
+  $(element).find(".caseStudyReferences").attr("name", name + "references");
+  $(element).find(".annexesFile").attr("name", name + "annexesFile");
 
 }

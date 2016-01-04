@@ -198,10 +198,10 @@
   [/#if]
 [/#macro]
 
-[#macro inputFile name template=false ]
+[#macro inputFile name template=false className="" ]
   [#assign customId][#if template]${name}-template[#else]${name}[/#if][/#assign]
   <!-- Input File ${customId} -->
-  [@s.file name="${name}" id="${customId}" cssClass="upload" cssStyle="${template?string('display:none','')}"  /]
+  [@s.file name="${name}" id="${customId}" cssClass="${className} upload" cssStyle="${template?string('display:none','')}"  /]
 [/#macro] 
 
 [#macro req required=true ][#if required]<span class="red">*</span>[/#if][/#macro]
