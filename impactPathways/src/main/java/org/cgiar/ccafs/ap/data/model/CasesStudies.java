@@ -1,5 +1,5 @@
 package org.cgiar.ccafs.ap.data.model;
-// Generated Jan 4, 2016 1:32:35 PM by Hibernate Tools 3.5.0.Final
+// Generated Jan 4, 2016 2:23:42 PM by Hibernate Tools 3.5.0.Final
 
 
 import java.util.Date;
@@ -21,7 +21,7 @@ public class CasesStudies implements java.io.Serializable {
   private String nonResearchPartneres;
   private String outputUsers;
   private String evidenceOutcome;
-  private String references;
+  private String referencesCase;
   private String outputUsed;
   private String researchPartners;
   private String explainIndicatorRelation;
@@ -44,7 +44,7 @@ public class CasesStudies implements java.io.Serializable {
 
   public CasesStudies(int projectId, String comment, String title, String outcomeStatement, String researchOutputs,
     String researchPatern, String activities, String nonResearchPartneres, String outputUsers, String evidenceOutcome,
-    String references, String outputUsed, String researchPartners, String explainIndicatorRelation, Integer year,
+    String referencesCase, String outputUsed, String researchPartners, String explainIndicatorRelation, Integer year,
     String file, boolean isActive, Date activeSince, Long createdBy, Long modifiedBy,
     String modificationJustification) {
     this.projectId = projectId;
@@ -57,7 +57,7 @@ public class CasesStudies implements java.io.Serializable {
     this.nonResearchPartneres = nonResearchPartneres;
     this.outputUsers = outputUsers;
     this.evidenceOutcome = evidenceOutcome;
-    this.references = references;
+    this.referencesCase = referencesCase;
     this.outputUsed = outputUsed;
     this.researchPartners = researchPartners;
     this.explainIndicatorRelation = explainIndicatorRelation;
@@ -158,12 +158,12 @@ public class CasesStudies implements java.io.Serializable {
     this.evidenceOutcome = evidenceOutcome;
   }
 
-  public String getReferences() {
-    return this.references;
+  public String getReferencesCase() {
+    return this.referencesCase;
   }
 
-  public void setReferences(String references) {
-    this.references = references;
+  public void setReferencesCase(String referencesCase) {
+    this.referencesCase = referencesCase;
   }
 
   public String getOutputUsed() {

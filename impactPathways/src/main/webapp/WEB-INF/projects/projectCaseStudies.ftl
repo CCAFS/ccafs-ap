@@ -130,7 +130,7 @@
     </div>
     [#-- 3. Research Outputs --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.researchOutput" i18nkey="reporting.projectCaseStudies.researchOutput" className="caseStudyResearchOutput limitWords-150" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.researchOutputs" i18nkey="reporting.projectCaseStudies.researchOutput" className="caseStudyResearchOutput limitWords-150" required=true editable=editable /]
     </div> 
     [#-- 4.  Research partners --]
     <div class="fullBlock">
@@ -138,11 +138,11 @@
     </div>
     [#-- 5. Activities that contributed to the outcome --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.activitiesContributed" i18nkey="reporting.projectCaseStudies.activitiesContributed" className="caseStudyActivitiesContributed limitWords-150" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.activities" i18nkey="reporting.projectCaseStudies.activitiesContributed" className="caseStudyActivitiesContributed limitWords-150" required=true editable=editable /]
     </div>
     [#-- 6. Non-research partners --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.nonResearchPartners" i18nkey="reporting.projectCaseStudies.nonResearchPartners" className="caseStudyNonResearchPartners limitWords-80" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.nonResearchPartneres" i18nkey="reporting.projectCaseStudies.nonResearchPartners" className="caseStudyNonResearchPartners limitWords-80" required=true editable=editable /]
     </div>
     [#-- 7. Output Users --]
     <div class="fullBlock">
@@ -154,11 +154,11 @@
     </div>
     [#-- 9. Evidence of the outcome --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.evidence" i18nkey="reporting.projectCaseStudies.evidence" className="caseStudyEvidence limitWords-50" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.evidenceOutcome" i18nkey="reporting.projectCaseStudies.evidence" className="caseStudyEvidence limitWords-50" required=true editable=editable /]
     </div>
     [#-- 10. References --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.references" i18nkey="reporting.projectCaseStudies.references" className="caseStudyReferences" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.referencesCase" i18nkey="reporting.projectCaseStudies.references" className="caseStudyReferences" required=true editable=editable /]
     </div>
     [#-- Upload Annexes --]
     <div class="fullBlock fileUpload uploadAnnexes">

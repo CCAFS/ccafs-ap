@@ -129,7 +129,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
       evaluatingYear = this.getCurrentPlanningYear();
     }
 
-    project.setCaseStudies(caseStudieManager.getCaseStudysByProject(evaluatingYear));
+    project.setCaseStudies(caseStudieManager.getCaseStudysByProject(projectID));
     // Getting the Project lessons for this section.
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
@@ -154,6 +154,8 @@ public class ProjectCaseStudiesAction extends BaseAction {
      */
     this.saveProjectLessons(project.getId());
     for (CasesStudies caseStudie : project.getCaseStudies()) {
+      caseStudie.setIsActive(true);
+      caseStudie.setYear(this.getCurrentReportingYear());
       caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
     }
 
