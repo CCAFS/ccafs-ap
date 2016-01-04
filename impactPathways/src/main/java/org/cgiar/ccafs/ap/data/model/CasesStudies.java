@@ -1,5 +1,5 @@
 package org.cgiar.ccafs.ap.data.model;
-// Generated Jan 4, 2016 1:25:35 PM by Hibernate Tools 3.5.0.Final
+// Generated Jan 4, 2016 1:32:35 PM by Hibernate Tools 3.5.0.Final
 
 
 import java.util.Date;
