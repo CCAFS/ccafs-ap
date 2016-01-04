@@ -94,9 +94,10 @@ public class CaseStudiesManagerImpl implements CaseStudiesManager {
 
   @Override
   public int saveCaseStudy(int projectID, CasesStudies caseStudy, User user, String justification) {
-    if (caseStudy.getId() == null) {
+    if (caseStudy.getId() == null || caseStudy.getId() == -1) {
       caseStudy.setCreatedBy(Long.parseLong(user.getId() + ""));
       // caseStudy.setActiveSince(new Date());
+      caseStudy.setId(null);
     }
     caseStudy.setProjectId(projectID);
     caseStudy.setModifiedBy(Long.parseLong(user.getId() + ""));

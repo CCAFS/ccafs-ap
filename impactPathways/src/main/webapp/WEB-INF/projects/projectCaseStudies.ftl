@@ -87,7 +87,7 @@
 
 [#macro caseStudy index="0" template=false]
   [#assign customName = "${params.caseStudies.name}[${template?string('-1',index)}]"/]
-  [#--assign study = (customName?eval)! /--]
+  [#assign study = (customName?eval)! /]
   [#assign customId = "caseStudy-${template?string('template',index)}" /] 
   <div id="${customId}" class="caseStudy borderBox" style="display:${template?string('none','block')}">
     [#-- Edit/Back/remove buttons --]
@@ -125,7 +125,7 @@
     </div>
     [#-- 6. Non-research partners --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.nonResearchPartners" i18nkey="reporting.projectCaseStudies.nonResearchPartners" help="reporting.projectCaseStudies.nonResearchPartners.help" className="caseStudyNonResearchPartners limitWords-80" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.nonResearchPartneres" i18nkey="reporting.projectCaseStudies.nonResearchPartners" help="reporting.projectCaseStudies.nonResearchPartners.help" className="caseStudyNonResearchPartners limitWords-80" required=true editable=editable /]
     </div>
     [#-- 7. Output Users --]
     <div class="fullBlock">
