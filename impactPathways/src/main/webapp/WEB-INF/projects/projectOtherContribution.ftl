@@ -88,10 +88,9 @@
                   <input class="id" type="hidden" name="project.ipOtherContribution.crpContributions[${crp_index}].crp.id" value="${crp.crp.id}" />
                   [#-- CRP Title --]
                   <div class="fullPartBlock clearfix">
-           
                      [#if (project.ipOtherContribution.crpContributions[crp_index]?has_content)!false]
                       <span class="name crpName">${project.ipOtherContribution.crpContributions[crp_index].crp.name!}</span>
-                      [/#if]
+                     [/#if]
                   </div>
                   [#-- CRP Collaboration nature --]
                   [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" showTitle=false /]

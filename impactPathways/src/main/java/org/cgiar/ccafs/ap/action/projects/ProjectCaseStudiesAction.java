@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
+import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -47,10 +48,10 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
 
   private int projectID;
+  private List<Integer> allYears;
 
 
   private Project project;
-
 
   @Inject
   public ProjectCaseStudiesAction(APConfig config, ProjectManager projectManager, CaseStudiesManager crossManager,
@@ -60,6 +61,11 @@ public class ProjectCaseStudiesAction extends BaseAction {
     this.caseStudieManager = crossManager;
     this.projectManager = projectManager;
 
+  }
+
+
+  public List<Integer> getAllYears() {
+    return allYears;
   }
 
 
@@ -120,6 +126,8 @@ public class ProjectCaseStudiesAction extends BaseAction {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
 
+    // Getting all years from project
+    allYears = project.getAllYears();
 
     // Getting the Project lessons for this section.
     int evaluatingYear = 0;
