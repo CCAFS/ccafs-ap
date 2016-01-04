@@ -163,7 +163,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
     this.saveProjectLessons(project.getId());
     for (CasesStudies caseStudie : project.getCaseStudies()) {
       caseStudie.setIsActive(true);
-      caseStudie.setYear(this.getCurrentReportingYear());
+      // caseStudie.setYear(this.getCurrentReportingYear());
       caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
     }
 
