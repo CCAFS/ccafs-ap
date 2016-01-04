@@ -15,21 +15,16 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
+import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.CategoryCrossCutingEnum;
-import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
+import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -43,61 +38,50 @@ public class ProjectCaseStudiesAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-  private CrossCuttingContributionManager crossManager;
+  private CaseStudiesManager caseStudieManager;
   private ProjectManager projectManager;
 
-  private Map<String, String> commEngageCategories;
+
   private File file;
   private String fileFileName;
   private ProjectCrossCuttingValidator validator;
 
 
   private int projectID;
-
-
-  private CrossCuttingContribution contribution;
+  private List<Integer> allYears;
 
 
   private Project project;
 
-
   @Inject
-  public ProjectCaseStudiesAction(APConfig config, ProjectManager projectManager,
-    CrossCuttingContributionManager crossManager, HistoryManager historyManager,
-    ProjectCrossCuttingValidator validator) {
+  public ProjectCaseStudiesAction(APConfig config, ProjectManager projectManager, CaseStudiesManager crossManager,
+    HistoryManager historyManager, ProjectCrossCuttingValidator validator) {
     super(config);
     this.validator = validator;
-    this.crossManager = crossManager;
+    this.caseStudieManager = crossManager;
     this.projectManager = projectManager;
 
   }
 
-  public Map<String, String> getCommEngageCategories() {
-    return commEngageCategories;
-  }
 
-  public CrossCuttingContribution getContribution() {
-    return contribution;
-  }
-
-  private String getCrossCuttingAbsolutePath() {
-    return config.getUploadsBaseFolder() + File.separator + this.getCrossCuttingRelativePath() + File.separator;
+  public List<Integer> getAllYears() {
+    return allYears;
   }
 
 
-  private String getCrossCuttingRelativePath() {
-    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "crosscutting"
+  private String getCaseStudyPath() {
+    return config.getUploadsBaseFolder() + File.separator + this.getCaseStudyRelativePath() + File.separator;
+  }
+
+
+  private String getCaseStudyRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "caseStudy"
       + File.separator;
   }
 
 
-  public String getCrossCuttingURL() {
-    return config.getDownloadURL() + "/" + this.getCrossCuttingRelativePath().replace('\\', '/');
-  }
-
-
-  public CrossCuttingContributionManager getCrossManager() {
-    return crossManager;
+  public String getCaseStudyURL() {
+    return config.getDownloadURL() + "/" + this.getCaseStudyRelativePath().replace('\\', '/');
   }
 
 
@@ -141,17 +125,9 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
-    List<CrossCuttingContribution> listCross = crossManager.getCrossCuttingContributionsByProject(projectID);
-    if (listCross.size() > 0) {
-      contribution = listCross.get(0);
-    }
 
-
-    commEngageCategories = new HashMap<>();
-    List<CategoryCrossCutingEnum> list = Arrays.asList(CategoryCrossCutingEnum.values());
-    for (CategoryCrossCutingEnum category : list) {
-      commEngageCategories.put(category.getId(), category.getDescription());
-    }
+    // Getting all years from project
+    allYears = project.getAllYears();
 
     // Getting the Project lessons for this section.
     int evaluatingYear = 0;
@@ -160,17 +136,15 @@ public class ProjectCaseStudiesAction extends BaseAction {
     } else {
       evaluatingYear = this.getCurrentPlanningYear();
     }
+
+    project.setCaseStudies(caseStudieManager.getCaseStudysByProject(projectID));
     // Getting the Project lessons for this section.
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
-    if (contribution == null) {
-      project.setCrossCutting(new CrossCuttingContribution());
-    } else {
-      project.setCrossCutting(contribution);
-    }
+
 
     // Getting the last history
 
@@ -179,30 +153,21 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
   @Override
   public String save() {
-    if (file != null) {
-      FileManager.deleteFile(this.getCrossCuttingAbsolutePath() + contribution.getFile());
-      FileManager.copyFile(file, this.getCrossCuttingAbsolutePath() + fileFileName);
-      project.getCrossCutting().setFile(fileFileName);
-    }
+    /*
+     * if (file != null) {
+     * FileManager.deleteFile(this.getCaseStudyPath() + contribution.getFile());
+     * FileManager.copyFile(file, this.getCaseStudyPath() + fileFileName);
+     * project.getCrossCutting().setFile(fileFileName);
+     * }
+     */
     this.saveProjectLessons(project.getId());
-    crossManager.saveCrossCuttingContribution(projectID, project.getCrossCutting(), this.getCurrentUser(),
-      this.getJustification());
+    for (CasesStudies caseStudie : project.getCaseStudies()) {
+      caseStudie.setIsActive(true);
+      caseStudie.setYear(this.getCurrentReportingYear());
+      caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
+    }
+
     return SUCCESS;
-  }
-
-
-  public void setCommEngageCategories(Map<String, String> commEngageCategories) {
-    this.commEngageCategories = commEngageCategories;
-  }
-
-
-  public void setContribution(CrossCuttingContribution contribution) {
-    this.contribution = contribution;
-  }
-
-
-  public void setCrossManager(CrossCuttingContributionManager crossManager) {
-    this.crossManager = crossManager;
   }
 
 
@@ -231,7 +196,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      validator.validate(this, project, this.getCycleName());
+      // validator.validate(this, project, this.getCycleName());
     }
   }
 }

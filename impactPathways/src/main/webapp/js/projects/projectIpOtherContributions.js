@@ -19,6 +19,36 @@ function attachEvents() {
   $('.removeElement').on('click', removeOtherContribution);
   // Add new next user event
   $('#addOtherContribution .addLink').on('click', addOtherContribution);
+
+  // Change a region or flagship
+  $('.otherContributionFlagship, .otherContributionRegion').on('change', changeRegionFlagship)
+}
+
+function changeRegionFlagship(e) {
+  var $parent = $(e.target).parents('.otherContribution');
+  var $indicatorsSelect = $parent.find('select.otherContributionIndicator')
+  var data = {
+      flagshipID: $parent.find('select.otherContributionFlagship').val(),
+      regionID: $parent.find('select.otherContributionRegion').val(),
+      projectID: $('#projectID').val()
+  }
+  $.ajax({
+      url: baseURL + '/iPIndicatorsByIPPrograms.do',
+      data: data,
+      beforeSend: function() {
+        $parent.find('.loading').fadeIn('slow');
+        $indicatorsSelect.empty();
+      },
+      success: function(result) {
+        $.each(result.IPElementsList, function(i,element) {
+          $indicatorsSelect.addOption(element.id, element.description);
+        });
+      },
+      complete: function(info) {
+        console.log($indicatorsSelect.find('option').length);
+        $parent.find('.loading').fadeOut('slow');
+      }
+  });
 }
 
 function addOtherContribution(e) {

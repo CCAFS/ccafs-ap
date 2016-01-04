@@ -276,6 +276,10 @@ function setOption(val,name) {
   return "<option value='" + val + "'>" + name + "</option>";
 }
 
+jQuery.fn.addOption = function(val,name) {
+  $(this).append("<option value='" + val + "'>" + name + "</option>");
+};
+
 function removeOption(select,value) {
   $(select).find('option[value=' + value + ']').remove;
 }

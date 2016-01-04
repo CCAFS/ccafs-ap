@@ -15,6 +15,7 @@ function init() {
   validateEvent([
     "#justification"
   ]);
+  addSelect2();
 }
 
 function attachEvents() {
@@ -61,6 +62,7 @@ function setElementIndex(i,element) {
   var name = caseStudiesName + "[" + i + "].";
   $(element).find("span.index").html(i + 1);
 
+  $(element).find(".caseStudyID").attr("name", name + "id");
   $(element).find(".caseStudyIndicators").attr("name", name + "caseStudyIndicatorsIds");
   $(element).find(".caseStudyExplainIndicatorRelation").attr("name", name + "explainIndicatorRelation");
   $(element).find(".caseStudyTitle").attr("name", name + "title");
@@ -74,5 +76,9 @@ function setElementIndex(i,element) {
   $(element).find(".caseStudyEvidence").attr("name", name + "evidence");
   $(element).find(".caseStudyReferences").attr("name", name + "references");
   $(element).find(".annexesFile").attr("name", name + "annexesFile");
+  $(element).find(".caseStudyYear").attr("name", name + "year");
+}
 
+function addSelect2() {
+  $('form select').select2();
 }
