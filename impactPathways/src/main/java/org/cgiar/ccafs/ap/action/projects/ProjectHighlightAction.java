@@ -27,7 +27,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectHighligthsCountry;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.util.FileManager;
-import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectHighLightValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
@@ -63,7 +63,7 @@ public class ProjectHighlightAction extends BaseAction {
   private LocationManager locationManager;
   private String highlightsImagesUrl;
   private File file;
-  private ProjectDeliverableValidator validator;
+  private ProjectHighLightValidator validator;
   private String fileFileName;
 
 
@@ -90,7 +90,7 @@ public class ProjectHighlightAction extends BaseAction {
   @Inject
   public ProjectHighlightAction(APConfig config, ProjectManager projectManager, HighLightManager highLightManager,
     DeliverableTypeManager deliverableTypeManager, LocationManager locationManager,
-    ProjectDeliverableValidator validator) {
+    ProjectHighLightValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.highLightManager = highLightManager;
@@ -304,7 +304,7 @@ public class ProjectHighlightAction extends BaseAction {
   public void validate() {
 
     if (save) {
-      // validator.validate(this, project, highlight, this.getCycleName());
+      validator.validate(this, project, highlight, this.getCycleName());
 
     }
   }
