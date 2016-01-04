@@ -88,7 +88,10 @@
                   <input class="id" type="hidden" name="project.ipOtherContribution.crpContributions[${crp_index}].crp.id" value="${crp.crp.id}" />
                   [#-- CRP Title --]
                   <div class="fullPartBlock clearfix">
-                    <span class="name crpName">${crp.crp.name}</span>
+           
+                     [#if (project.ipOtherContribution.crpContributions[crp_index]?has_content)!false]
+                      <span class="name crpName">${project.ipOtherContribution.crpContributions[crp_index].crp.name!}</span>
+                      [/#if]
                   </div>
                   [#-- CRP Collaboration nature --]
                   [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" showTitle=false /]
@@ -98,7 +101,7 @@
                   [#-- The achieved outcome  --]
                   [#if reportingCycle]
                     <div class="fullPartBlock">
-                      [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureAchieved" className="crpCollaborationAchieved limitWords-100" i18nkey="reporting.projectOtherContributions.collaborationAchieved" editable=editable required=true/]  
+                      [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].explainAchieved" className="crpCollaborationAchieved limitWords-100" i18nkey="reporting.projectOtherContributions.collaborationAchieved" editable=editable required=true/]  
                     </div>
                   [/#if]
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]

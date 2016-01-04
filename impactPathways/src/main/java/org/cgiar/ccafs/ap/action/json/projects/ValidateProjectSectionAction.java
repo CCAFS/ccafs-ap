@@ -8,6 +8,7 @@ import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
+import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
@@ -27,6 +28,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.SectionStatusEnum;
@@ -37,6 +39,7 @@ import org.cgiar.ccafs.ap.validation.projects.ProjectCCAFSOutcomesValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDescriptionValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectHighLightValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectLocationsValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectOutcomeValidator;
@@ -98,6 +101,10 @@ public class ValidateProjectSectionAction extends BaseAction {
   private IPIndicatorManager indicatorManager;
   @Inject
   private ActivityManager activityManager;
+
+  @Inject
+  private HighLightManager hightLigthManager;
+
   @Inject
   private ProjectOtherContributionManager ipOtherContributionManager;
   @Inject
@@ -134,6 +141,11 @@ public class ValidateProjectSectionAction extends BaseAction {
   private ProjectDeliverableValidator deliverableValidator;
   @Inject
   private ProjectBudgetValidator budgetValidator;
+
+
+  @Inject
+  private ProjectHighLightValidator highLigthValidator;
+
 
   @Inject
   private ProjectCrossCuttingValidator crossValidator;
@@ -174,6 +186,10 @@ public class ValidateProjectSectionAction extends BaseAction {
           this.validateOverviewByMOGS();
           break;
         case CROSSCUTTING:
+          this.validateCrossCutting();
+          break;
+
+        case HIGHLIGHT:
           this.validateCrossCutting();
           break;
         case DELIVERABLESLIST:
@@ -379,6 +395,7 @@ public class ValidateProjectSectionAction extends BaseAction {
 
   }
 
+
   private void validateDeliverables() {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
@@ -405,6 +422,25 @@ public class ValidateProjectSectionAction extends BaseAction {
       }
     }
     sectionStatus.setMissingFields(missingFieldsAllDeliverables.toString());
+  }
+
+
+  private void validateHighLigth() {
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      // Getting basic project information.
+      Project project = projectManager.getProject(projectID);
+      List<ProjectHighligths> list = hightLigthManager.getHighLightsByProject(projectID);
+
+
+      // Getting the Project lessons for this section.
+      this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "crossCutting",
+        this.getCurrentPlanningYear(), this.getCycleName()));
+      for (ProjectHighligths projectHighligths : list) {
+        highLigthValidator.validate(this, project, projectHighligths, currentCycle);
+      }
+      // Validate
+
+    }
   }
 
 

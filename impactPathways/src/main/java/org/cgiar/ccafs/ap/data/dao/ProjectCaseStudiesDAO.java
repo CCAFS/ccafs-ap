@@ -13,27 +13,28 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafs.ap.data.model;
+package org.cgiar.ccafs.ap.data.dao;
+
+import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.ProjectCaseStudiesMySQLDAO;
+import org.cgiar.ccafs.ap.data.model.CasesStudies;
+
+import java.util.List;
+
+import com.google.inject.ImplementedBy;
+
+@ImplementedBy(ProjectCaseStudiesMySQLDAO.class)
+public interface ProjectCaseStudiesDAO {
+
+  public boolean deleteCaseStudie(int caseStudyId, int userID, String justification);
+
+  public boolean deleteCaseStudiesByProject(int projectID);
+
+  public boolean existCaseStudy(int caseStudyID);
+
+  public CasesStudies find(int id);
 
 
-public enum SectionStatusEnum {
+  public List<CasesStudies> getCaseStudiesByProject(int projectID);
 
-
-  DESCRIPTION("description"), PARTNERS("partners"), LOCATIONS("locations"), OUTCOMES("outcomes"),
-  CCAFSOUTCOMES("ccafsOutcomes"), OTHERCONTRIBUTIONS("otherContributions"), OUTPUTS("outputs"),
-  DELIVERABLESLIST("deliverablesList"), ACTIVITIES("activities"), CROSSCUTTING("crossCutting"), BUDGET("budget"),
-  BUDGETBYMOG("budgetByMog"), HIGHLIGHT("highlight");
-
-  private String status;
-
-  private SectionStatusEnum(String status) {
-    this.status = status;
-  }
-
-
-  public String getStatus() {
-    return status;
-  }
-
-
+  public int save(CasesStudies casesStudies);
 }

@@ -72,7 +72,7 @@
     [/#if]
     
   </article>
-  [/@s.form]  
+  [/@s.form]
   
 </section>
 
