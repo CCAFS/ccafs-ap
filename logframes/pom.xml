@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.cgiar.ccafs</groupId>
     <artifactId>pandr</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>logframes</artifactId>
