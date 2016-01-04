@@ -1,5 +1,5 @@
 package org.cgiar.ccafs.ap.data.model;
-// Generated Dec 21, 2015 2:42:19 PM by Hibernate Tools 3.5.0.Final
+// Generated Jan 4, 2016 1:25:35 PM by Hibernate Tools 3.5.0.Final
 
 
 import java.util.Date;
@@ -22,6 +22,10 @@ public class CasesStudies implements java.io.Serializable {
   private String outputUsers;
   private String evidenceOutcome;
   private String references;
+  private String outputUsed;
+  private String researchPartners;
+  private String explainIndicatorRelation;
+  private Integer year;
   private String file;
   private boolean isActive;
   private Date activeSince;
@@ -33,15 +37,15 @@ public class CasesStudies implements java.io.Serializable {
   }
 
 
-  public CasesStudies(int projectId, boolean isActive, Date activeSince) {
+  public CasesStudies(int projectId, boolean isActive) {
     this.projectId = projectId;
     this.isActive = isActive;
-    this.activeSince = activeSince;
   }
 
   public CasesStudies(int projectId, String comment, String title, String outcomeStatement, String researchOutputs,
     String researchPatern, String activities, String nonResearchPartneres, String outputUsers, String evidenceOutcome,
-    String references, String file, boolean isActive, Date activeSince, Long createdBy, Long modifiedBy,
+    String references, String outputUsed, String researchPartners, String explainIndicatorRelation, Integer year,
+    String file, boolean isActive, Date activeSince, Long createdBy, Long modifiedBy,
     String modificationJustification) {
     this.projectId = projectId;
     this.comment = comment;
@@ -54,6 +58,10 @@ public class CasesStudies implements java.io.Serializable {
     this.outputUsers = outputUsers;
     this.evidenceOutcome = evidenceOutcome;
     this.references = references;
+    this.outputUsed = outputUsed;
+    this.researchPartners = researchPartners;
+    this.explainIndicatorRelation = explainIndicatorRelation;
+    this.year = year;
     this.file = file;
     this.isActive = isActive;
     this.activeSince = activeSince;
@@ -156,6 +164,38 @@ public class CasesStudies implements java.io.Serializable {
 
   public void setReferences(String references) {
     this.references = references;
+  }
+
+  public String getOutputUsed() {
+    return this.outputUsed;
+  }
+
+  public void setOutputUsed(String outputUsed) {
+    this.outputUsed = outputUsed;
+  }
+
+  public String getResearchPartners() {
+    return this.researchPartners;
+  }
+
+  public void setResearchPartners(String researchPartners) {
+    this.researchPartners = researchPartners;
+  }
+
+  public String getExplainIndicatorRelation() {
+    return this.explainIndicatorRelation;
+  }
+
+  public void setExplainIndicatorRelation(String explainIndicatorRelation) {
+    this.explainIndicatorRelation = explainIndicatorRelation;
+  }
+
+  public Integer getYear() {
+    return this.year;
+  }
+
+  public void setYear(Integer year) {
+    this.year = year;
   }
 
   public String getFile() {

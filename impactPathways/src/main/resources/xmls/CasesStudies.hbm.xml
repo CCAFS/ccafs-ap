@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Dec 21, 2015 2:42:19 PM by Hibernate Tools 3.5.0.Final -->
+<!-- Generated Jan 4, 2016 1:25:36 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="org.cgiar.ccafs.ap.data.model.CasesStudies" table="cases_studies" catalog="ccafspr_ip">
         <id name="id" type="java.lang.Integer">
@@ -41,6 +41,18 @@
         <property name="references" type="string">
             <column name="references" length="65535" />
         </property>
+        <property name="outputUsed" type="string">
+            <column name="outputUsed" length="65535" />
+        </property>
+        <property name="researchPartners" type="string">
+            <column name="researchPartners" length="65535" />
+        </property>
+        <property name="explainIndicatorRelation" type="string">
+            <column name="explainIndicatorRelation" length="65535" />
+        </property>
+        <property name="year" type="java.lang.Integer">
+            <column name="year" />
+        </property>
         <property name="file" type="string">
             <column name="file" length="200" />
         </property>
@@ -48,7 +60,7 @@
             <column name="is_active" not-null="true" />
         </property>
         <property name="activeSince" type="timestamp">
-            <column name="active_since" length="19" not-null="true" />
+            <column name="active_since" length="19" />
         </property>
         <property name="createdBy" type="java.lang.Long">
             <column name="created_by" />

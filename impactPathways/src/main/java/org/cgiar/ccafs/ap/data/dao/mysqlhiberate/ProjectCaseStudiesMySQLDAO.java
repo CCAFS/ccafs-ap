@@ -109,7 +109,7 @@ public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCa
   public int save(CasesStudies casesStudies) {
     try {
 
-      if (casesStudies.getId() == -1) {
+      if (casesStudies.getId() == null) {
         casesStudies.setId(null);
       }
 

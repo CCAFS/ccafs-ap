@@ -96,7 +96,9 @@ public class CaseStudiesManagerImpl implements CaseStudiesManager {
   public int saveCaseStudy(int projectID, CasesStudies caseStudy, User user, String justification) {
     if (caseStudy.getId() == null) {
       caseStudy.setCreatedBy(Long.parseLong(user.getId() + ""));
+      // caseStudy.setActiveSince(new Date());
     }
+    caseStudy.setProjectId(projectID);
     caseStudy.setModifiedBy(Long.parseLong(user.getId() + ""));
     caseStudy.setModificationJustification(justification);
     int result = caseStudyDAO.save(caseStudy);
