@@ -66,19 +66,25 @@ public class Project {
   private ProjectPartner coordinator; // Project Coordinator.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
+  private List<CasesStudies> caseStudies;
+
   private List<IPIndicator> indicators;
+
+
   private OtherContribution ipOtherContribution;
+
+
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
-
   private List<Project> linkedProjects;
-
-
   private List<Location> locations; // Project locations.
 
-
   private Map<String, ProjectOutcome> outcomes;
+
+
   private List<IPElement> outputs;
+
+
   private List<OutputBudget> outputsBudgets;
   private List<OutputOverview> outputsOverview;
   private BudgetOverhead overhead;
@@ -204,7 +210,6 @@ public class Project {
     return super.equals(obj);
   }
 
-
   public List<Activity> getActivities() {
     return activities;
   }
@@ -233,10 +238,10 @@ public class Project {
     return allYears;
   }
 
+
   public String getAnnualreportDonor() {
     return AnnualreportDonor;
   }
-
 
   public Budget getAnualContribution() {
     return anualContribution;
@@ -250,6 +255,7 @@ public class Project {
   public String getBilateralContractProposalName() {
     return bilateralContractProposalName;
   }
+
 
   /**
    * This method returns a Budget object that contains the given parameters.
@@ -273,6 +279,10 @@ public class Project {
 
   public List<Budget> getBudgets() {
     return budgets;
+  }
+
+  public List<CasesStudies> getCaseStudies() {
+    return caseStudies;
   }
 
   /**
@@ -448,10 +458,10 @@ public class Project {
     return emptyIndicator;
   }
 
-
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
+
 
   /**
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
@@ -500,7 +510,6 @@ public class Project {
   public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
-
 
   /**
    * This method returns the project partner institution that is leading the project.
@@ -570,6 +579,7 @@ public class Project {
     return outcomes;
   }
 
+
   /**
    * This method returns the output (MOG) represented with the given identifier.
    * 
@@ -611,10 +621,10 @@ public class Project {
     return outputsBudgets;
   }
 
-
   public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
   }
+
 
   public BudgetOverhead getOverhead() {
     return overhead;
@@ -962,10 +972,10 @@ public class Project {
     this.anualContribution = anualContribution;
   }
 
-
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
+
 
   public void setBilateralContractRequired(boolean bilateralContractRequired) {
     this.bilateralContractRequired = bilateralContractRequired;
@@ -973,6 +983,10 @@ public class Project {
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
+  }
+
+  public void setCaseStudies(List<CasesStudies> caseStudies) {
+    this.caseStudies = caseStudies;
   }
 
   public void setCofinancing(boolean isCofinancing) {
