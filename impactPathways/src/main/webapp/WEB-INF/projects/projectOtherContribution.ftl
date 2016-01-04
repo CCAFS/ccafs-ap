@@ -151,7 +151,7 @@
     [#if editable] 
       <input type="hidden" id="crpsName" value="project.ipOtherContribution.crpContributions"/>
       [#-- Project identifier --]
-      <input name="projectID" type="hidden" value="${project.id?c}" />
+      <input id="projectID" name="projectID" type="hidden" value="${project.id?c}" />
       <div class="[#if !newProject]borderBox[/#if]" >
         [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
@@ -201,6 +201,7 @@
   [#assign customName = "${params.otherContributions.name}[${template?string('-1',index)}]" /]
   [#assign contribution = (customName?eval)! /]
   <div id="otherContribution-${template?string('template',index)}" class="otherContribution simpleBox" style="display:${template?string('none','block')}">
+    <div class="loading" style="display:none"></div>
     [#-- Edit/Back/remove buttons --]
     [#if (editable && canEdit)]<div class="removeElement" title="[@s.text name="reporting.projectOtherContributions.removeOtherContribution" /]"></div>[/#if]
     [#-- Other Contribution ID --]
