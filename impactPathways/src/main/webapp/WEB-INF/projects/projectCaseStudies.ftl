@@ -113,7 +113,7 @@
     </div>
     [#-- 3. Research Outputs --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.researchOutput" i18nkey="reporting.projectCaseStudies.researchOutput" help="reporting.projectCaseStudies.researchOutput.help" className="caseStudyResearchOutput limitWords-150" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.researchOutputs" i18nkey="reporting.projectCaseStudies.researchOutput" help="reporting.projectCaseStudies.researchOutput.help" className="caseStudyResearchOutput limitWords-150" required=true editable=editable /]
     </div> 
     [#-- 4.  Research partners --]
     <div class="fullBlock">
