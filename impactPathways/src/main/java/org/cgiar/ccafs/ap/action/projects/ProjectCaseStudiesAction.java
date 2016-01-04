@@ -53,10 +53,10 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
 
   private int projectID;
+  private List<Integer> allYears;
 
 
   private CrossCuttingContribution contribution;
-
 
   private Project project;
 
@@ -70,6 +70,11 @@ public class ProjectCaseStudiesAction extends BaseAction {
     this.crossManager = crossManager;
     this.projectManager = projectManager;
 
+  }
+
+
+  public List<Integer> getAllYears() {
+    return allYears;
   }
 
   public Map<String, String> getCommEngageCategories() {
@@ -146,6 +151,8 @@ public class ProjectCaseStudiesAction extends BaseAction {
       contribution = listCross.get(0);
     }
 
+    // Getting all years from project
+    allYears = project.getAllYears();
 
     commEngageCategories = new HashMap<>();
     List<CategoryCrossCutingEnum> list = Arrays.asList(CategoryCrossCutingEnum.values());
