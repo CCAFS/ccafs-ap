@@ -219,7 +219,7 @@
     [#-- Indicator --]
     <div class="fullBlock">
       [@customForm.select name="${customName}.indicators" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
-      <span class="indicatorsFound">(Please select a region and flagship)</span>
+      [#if editable]<span class="indicatorsFound">[#if !contribution.flagship?? || !contribution.region??](Please select a region and flagship)[/#if]</span>[/#if]
     </div>
     [#-- Describe how you are contributing to the selected outcome --]
     <div class="fullBlock">
