@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 7, 2015 8:15:11 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="org.cgiar.ccafs.ap.data.model.ProjectHighligths" table="project_highligths" catalog="ccafspr_ip">
+    <class name="org.cgiar.ccafs.ap.data.model.ProjectHighligths" table="project_highligths" >
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />

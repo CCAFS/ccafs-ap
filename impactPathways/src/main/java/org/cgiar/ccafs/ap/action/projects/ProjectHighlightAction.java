@@ -305,7 +305,6 @@ public class ProjectHighlightAction extends BaseAction {
 
     if (save) {
       validator.validate(this, project, highlight, this.getCycleName());
-
     }
   }
 }

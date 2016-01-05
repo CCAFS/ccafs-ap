@@ -109,6 +109,11 @@ public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCa
   public int save(CasesStudies casesStudies) {
     try {
 
+      CasesStudies casesStudiesPrev = null;
+      if (casesStudies.getId() != null) {
+        casesStudiesPrev = this.find(casesStudies.getId());
+
+      }
 
       super.saveOrUpdate(casesStudies);
 

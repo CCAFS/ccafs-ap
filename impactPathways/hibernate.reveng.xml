@@ -5,4 +5,7 @@
 	<table-filter match-name="cases_studies"
 		match-catalog="ccafspr_ip">
 	</table-filter>
+	<table-filter match-name="case_studie_indicators"
+		match-catalog="ccafspr_ip">
+	</table-filter>
 </hibernate-reverse-engineering>
