@@ -100,15 +100,4 @@ public interface HighLightManager {
    */
   public int saveHighLight(int projectID, ProjectHighligths highLight, User user, String justification);
 
-  /**
-   * This method saves the HighLight Contribution relation
-   * 
-   * @param highLightID - is the Id of the highLight
-   * @param outputID - is the Id of the output (MOG)
-   * @param user - is the user that is making the change.
-   * @param justification - is the justification statement.
-   * @return true if the relation HighLight Contribution is successfully saved,
-   *         false otherwise
-   */
-
 }

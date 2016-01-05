@@ -49,12 +49,9 @@ public class HibernateListener implements ServletContextListener {
 
     try {
 
-      System.out.println("entra al listner hibbernat");
-
+      // System.out.println("Entering Hibernate Listener");
       URL url = HibernateListener.class.getResource(path);
-
       config = new Configuration().configure(url);
-
       PropertiesManager manager = new PropertiesManager();
 
       config.setProperty("hibernate.connection.username", manager.getPropertiesAsString(APConfig.MYSQL_USER));
@@ -63,18 +60,18 @@ public class HibernateListener implements ServletContextListener {
         + manager.getPropertiesAsString(APConfig.MYSQL_PORT) + "/"
         + manager.getPropertiesAsString(APConfig.MYSQL_DATABASE);
       config.setProperty("hibernate.connection.url", url_mysql);
-      System.out.println("url_mysql " + url_mysql);
 
-      System.out.println(url.toString());
+      // System.out.println("url_mysql " + url_mysql);
+      // System.out.println(url.toString());
 
       factory = config.buildSessionFactory();
 
-      System.out.println("crea factory " + factory);
+      // System.out.println("Build factory " + factory);
 
       // save the Hibernate session factory into serlvet context
       event.getServletContext().setAttribute(KEY_NAME, factory);
-      System.out.println(KEY_NAME + "puso el dato e session");
-      System.out.println(event.getServletContext().getAttribute(KEY_NAME));
+      // System.out.println(KEY_NAME + "puso el dato e session");
+      // System.out.println(event.getServletContext().getAttribute(KEY_NAME));
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println(e.getMessage());

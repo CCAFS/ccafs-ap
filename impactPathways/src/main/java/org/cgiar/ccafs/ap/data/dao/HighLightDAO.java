@@ -81,7 +81,6 @@ public interface HighLightDAO {
    * @param userID - User identifier
    * @return a list of maps with the information or an empty list if no highLight is found.
    */
-
   public int saveHighLight(Map<String, Object> highLightData);
 
 
