@@ -16,11 +16,29 @@
       <name>Hernán D. Carvajal B.</name>
       <email>h.d.carvajal@cgiar.org</email>
     </developer>
+    <developer>
+      <name>Héctor F. Tobón R.</name>
+      <email>h.f.tobon@cgiar.org</email>
+    </developer>
   </developers>
 
   <issueManagement>
     <system>Github issue tracker</system>
     <url>https://github.com/CCAFS/ccafs-ap/issues</url>
   </issueManagement>
+  
+  <properties>
+    <javax-mail.version>1.5.5</javax-mail.version>
+  </properties>
+  
+  <dependencies>
+  
+    <!-- Java Mail API -->
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <version>${javax-mail.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>
