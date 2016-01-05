@@ -26,8 +26,8 @@
     <jetty.version>6.1.26</jetty.version>
     <janino.version>2.6.1</janino.version>    
     <itext.version>2.1.7</itext.version>
+    <poi.version>3.13</poi.version>
     <flyway.version>3.2.1</flyway.version>
-    <poi.version>3.12</poi.version>
   </properties>
 
   <developers>
