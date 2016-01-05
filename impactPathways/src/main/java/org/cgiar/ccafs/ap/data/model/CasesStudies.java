@@ -2,6 +2,7 @@ package org.cgiar.ccafs.ap.data.model;
 // Generated Jan 4, 2016 2:23:42 PM by Hibernate Tools 3.5.0.Final
 
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -32,6 +33,9 @@ public class CasesStudies implements java.io.Serializable {
   private Long createdBy;
   private Long modifiedBy;
   private String modificationJustification;
+  private File myFile;
+  private String myFileFileName;
+
 
   public CasesStudies() {
   }
@@ -41,6 +45,7 @@ public class CasesStudies implements java.io.Serializable {
     this.projectId = projectId;
     this.isActive = isActive;
   }
+
 
   public CasesStudies(int projectId, String comment, String title, String outcomeStatement, String researchOutputs,
     String researchPatern, String activities, String nonResearchPartneres, String outputUsers, String evidenceOutcome,
@@ -70,180 +75,199 @@ public class CasesStudies implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
-  public Integer getId() {
-    return this.id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public int getProjectId() {
-    return this.projectId;
-  }
-
-  public void setProjectId(int projectId) {
-    this.projectId = projectId;
-  }
-
-  public String getComment() {
-    return this.comment;
-  }
-
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
-
-  public String getTitle() {
-    return this.title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public String getOutcomeStatement() {
-    return this.outcomeStatement;
-  }
-
-  public void setOutcomeStatement(String outcomeStatement) {
-    this.outcomeStatement = outcomeStatement;
-  }
-
-  public String getResearchOutputs() {
-    return this.researchOutputs;
-  }
-
-  public void setResearchOutputs(String researchOutputs) {
-    this.researchOutputs = researchOutputs;
-  }
-
-  public String getResearchPatern() {
-    return this.researchPatern;
-  }
-
-  public void setResearchPatern(String researchPatern) {
-    this.researchPatern = researchPatern;
-  }
-
-  public String getActivities() {
-    return this.activities;
-  }
-
-  public void setActivities(String activities) {
-    this.activities = activities;
-  }
-
-  public String getNonResearchPartneres() {
-    return this.nonResearchPartneres;
-  }
-
-  public void setNonResearchPartneres(String nonResearchPartneres) {
-    this.nonResearchPartneres = nonResearchPartneres;
-  }
-
-  public String getOutputUsers() {
-    return this.outputUsers;
-  }
-
-  public void setOutputUsers(String outputUsers) {
-    this.outputUsers = outputUsers;
-  }
-
-  public String getEvidenceOutcome() {
-    return this.evidenceOutcome;
-  }
-
-  public void setEvidenceOutcome(String evidenceOutcome) {
-    this.evidenceOutcome = evidenceOutcome;
-  }
-
-  public String getReferencesCase() {
-    return this.referencesCase;
-  }
-
-  public void setReferencesCase(String referencesCase) {
-    this.referencesCase = referencesCase;
-  }
-
-  public String getOutputUsed() {
-    return this.outputUsed;
-  }
-
-  public void setOutputUsed(String outputUsed) {
-    this.outputUsed = outputUsed;
-  }
-
-  public String getResearchPartners() {
-    return this.researchPartners;
-  }
-
-  public void setResearchPartners(String researchPartners) {
-    this.researchPartners = researchPartners;
-  }
-
-  public String getExplainIndicatorRelation() {
-    return this.explainIndicatorRelation;
-  }
-
-  public void setExplainIndicatorRelation(String explainIndicatorRelation) {
-    this.explainIndicatorRelation = explainIndicatorRelation;
-  }
-
-  public Integer getYear() {
-    return this.year;
-  }
-
-  public void setYear(Integer year) {
-    this.year = year;
-  }
-
-  public String getFile() {
-    return this.file;
-  }
-
-  public void setFile(String file) {
-    this.file = file;
-  }
-
-  public boolean isIsActive() {
-    return this.isActive;
-  }
-
-  public void setIsActive(boolean isActive) {
-    this.isActive = isActive;
-  }
 
   public Date getActiveSince() {
     return this.activeSince;
   }
 
-  public void setActiveSince(Date activeSince) {
-    this.activeSince = activeSince;
+
+  public String getActivities() {
+    return this.activities;
+  }
+
+
+  public String getComment() {
+    return this.comment;
   }
 
   public Long getCreatedBy() {
     return this.createdBy;
   }
 
-  public void setCreatedBy(Long createdBy) {
-    this.createdBy = createdBy;
+  public String getEvidenceOutcome() {
+    return this.evidenceOutcome;
   }
 
-  public Long getModifiedBy() {
-    return this.modifiedBy;
+  public String getExplainIndicatorRelation() {
+    return this.explainIndicatorRelation;
   }
 
-  public void setModifiedBy(Long modifiedBy) {
-    this.modifiedBy = modifiedBy;
+  public String getFile() {
+    return this.file;
+  }
+
+  public Integer getId() {
+    return this.id;
   }
 
   public String getModificationJustification() {
     return this.modificationJustification;
   }
 
+  public Long getModifiedBy() {
+    return this.modifiedBy;
+  }
+
+  public File getMyFile() {
+    return myFile;
+  }
+
+  public String getMyFileFileName() {
+    return myFileFileName;
+  }
+
+  public String getNonResearchPartneres() {
+    return this.nonResearchPartneres;
+  }
+
+  public String getOutcomeStatement() {
+    return this.outcomeStatement;
+  }
+
+  public String getOutputUsed() {
+    return this.outputUsed;
+  }
+
+  public String getOutputUsers() {
+    return this.outputUsers;
+  }
+
+  public int getProjectId() {
+    return this.projectId;
+  }
+
+  public String getReferencesCase() {
+    return this.referencesCase;
+  }
+
+  public String getResearchOutputs() {
+    return this.researchOutputs;
+  }
+
+  public String getResearchPartners() {
+    return this.researchPartners;
+  }
+
+  public String getResearchPatern() {
+    return this.researchPatern;
+  }
+
+  public String getTitle() {
+    return this.title;
+  }
+
+  public Integer getYear() {
+    return this.year;
+  }
+
+  public boolean isIsActive() {
+    return this.isActive;
+  }
+
+  public void setActiveSince(Date activeSince) {
+    this.activeSince = activeSince;
+  }
+
+  public void setActivities(String activities) {
+    this.activities = activities;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
+  public void setCreatedBy(Long createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  public void setEvidenceOutcome(String evidenceOutcome) {
+    this.evidenceOutcome = evidenceOutcome;
+  }
+
+  public void setExplainIndicatorRelation(String explainIndicatorRelation) {
+    this.explainIndicatorRelation = explainIndicatorRelation;
+  }
+
+  public void setFile(String file) {
+    this.file = file;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public void setIsActive(boolean isActive) {
+    this.isActive = isActive;
+  }
+
   public void setModificationJustification(String modificationJustification) {
     this.modificationJustification = modificationJustification;
+  }
+
+  public void setModifiedBy(Long modifiedBy) {
+    this.modifiedBy = modifiedBy;
+  }
+
+  public void setMyFile(File myFile) {
+    this.myFile = myFile;
+  }
+
+  public void setMyFileFileName(String myFileFileName) {
+    this.myFileFileName = myFileFileName;
+  }
+
+  public void setNonResearchPartneres(String nonResearchPartneres) {
+    this.nonResearchPartneres = nonResearchPartneres;
+  }
+
+  public void setOutcomeStatement(String outcomeStatement) {
+    this.outcomeStatement = outcomeStatement;
+  }
+
+  public void setOutputUsed(String outputUsed) {
+    this.outputUsed = outputUsed;
+  }
+
+  public void setOutputUsers(String outputUsers) {
+    this.outputUsers = outputUsers;
+  }
+
+  public void setProjectId(int projectId) {
+    this.projectId = projectId;
+  }
+
+  public void setReferencesCase(String referencesCase) {
+    this.referencesCase = referencesCase;
+  }
+
+  public void setResearchOutputs(String researchOutputs) {
+    this.researchOutputs = researchOutputs;
+  }
+
+  public void setResearchPartners(String researchPartners) {
+    this.researchPartners = researchPartners;
+  }
+
+  public void setResearchPatern(String researchPatern) {
+    this.researchPatern = researchPatern;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setYear(Integer year) {
+    this.year = year;
   }
 
 

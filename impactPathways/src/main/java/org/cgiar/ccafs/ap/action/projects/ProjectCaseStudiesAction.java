@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -153,15 +154,15 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
   @Override
   public String save() {
-    /*
-     * if (file != null) {
-     * FileManager.deleteFile(this.getCaseStudyPath() + contribution.getFile());
-     * FileManager.copyFile(file, this.getCaseStudyPath() + fileFileName);
-     * project.getCrossCutting().setFile(fileFileName);
-     * }
-     */
+
     this.saveProjectLessons(project.getId());
     for (CasesStudies caseStudie : project.getCaseStudies()) {
+
+      if (caseStudie.getMyFile() != null) {
+        FileManager.deleteFile(this.getCaseStudyPath() + caseStudie.getFile());
+        FileManager.copyFile(caseStudie.getMyFile(), this.getCaseStudyPath() + caseStudie.getMyFileFileName());
+        caseStudie.setFile(caseStudie.getMyFileFileName());
+      }
       caseStudie.setIsActive(true);
       // caseStudie.setYear(this.getCurrentReportingYear());
       caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
