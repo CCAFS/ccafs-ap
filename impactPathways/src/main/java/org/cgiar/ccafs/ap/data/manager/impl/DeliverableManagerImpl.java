@@ -24,6 +24,8 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -147,6 +149,13 @@ public class DeliverableManagerImpl implements DeliverableManager {
     if (!deliverableOutputData.isEmpty()) {
       deliverableOutput.setId(Integer.parseInt(deliverableOutputData.get("id")));
       deliverableOutput.setDescription(deliverableOutputData.get("description"));
+      IPProgram program = new IPProgram(Integer.parseInt(deliverableOutputData.get("ip_program_id")));
+      deliverableOutput.setProgram(program);
+
+      IPElementType type = new IPElementType(Integer.parseInt(deliverableOutputData.get("element_type_id")));
+
+      deliverableOutput.setType(type);
+
       return deliverableOutput;
     }
     return null;
