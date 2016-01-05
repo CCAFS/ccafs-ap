@@ -304,39 +304,19 @@
     
     <!-- Project Budget  -->
     
-    <action name="budget" class="org.cgiar.ccafs.ap.action.projects.ProjectBudgetsAction">
-      <result name="input">/WEB-INF/projects/projectBudget.ftl</result>
+    <action name="leverages" class="org.cgiar.ccafs.ap.action.projects.ProjectLeveragesAction">
+      <result name="input">/WEB-INF/projects/projectLeverages.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="actionName">budget</param>
-        <param name="projectID">${project.id}</param>
-        <param name="year">${year}</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">budgetByMog</param>
-        <param name="projectID">${project.id}</param>
+        <param name="actionName">leverages</param>
+        <param name="projectID">${project.id}</param> 
       </result>
       <result name="cancel" type="redirectAction">
-        <param name="actionName">budget</param>
+        <param name="actionName">leverages</param>
         <param name="projectID">${project.id}</param>
       </result>
     </action>
     
-    <action name="budgetByMog" class="org.cgiar.ccafs.ap.action.projects.ProjectBudgetByMOGAction">
-      <result name="input">/WEB-INF/projects/projectBudgetByMog.ftl</result>
-      <result name="success" type="redirectAction">
-        <param name="actionName">budgetByMog</param>
-        <param name="projectID">${project.id}</param>
-        <param name="year">${targetYear}</param>
-      </result>
-      <result name="next" type="redirectAction">
-        <param name="actionName">projectsList</param>
-        <param name="namespace">/reporting</param>
-      </result>
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">budgetByMog</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-    </action>
+    
     
     <!-- Project Submission -->
     <action name="submit" class="org.cgiar.ccafs.ap.action.projects.ProjectSubmissionAction">
