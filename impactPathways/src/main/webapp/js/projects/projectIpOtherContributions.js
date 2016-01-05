@@ -45,7 +45,7 @@ function changeRegionFlagship(e) {
         });
       },
       complete: function(info) {
-        console.log($indicatorsSelect.find('option').length);
+        $parent.find('.indicatorsFound').html('(' + $indicatorsSelect.find('option').length + ' indicators found)')
         $parent.find('.loading').fadeOut('slow');
       }
   });
