@@ -28,6 +28,7 @@
     <itext.version>2.1.7</itext.version>
     <poi.version>3.13</poi.version>
     <flyway.version>3.2.1</flyway.version>
+    <org.json.version>20151123</org.json.version>
   </properties>
 
   <developers>
@@ -93,11 +94,18 @@
       <scope>test</scope>
     </dependency>
     
-    <!--  Struts - JSON library -->
+    <!--  Struts JSON library -->
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-json-plugin</artifactId>
       <version>${struts2-json.version}</version>
+    </dependency>
+    
+    <!-- Java JSON Library -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${org.json.version}</version>
     </dependency>
 
     <!-- Google Guice - connector to use Guice natively with struts2 -->
@@ -194,15 +202,6 @@
       <artifactId>flyway-core</artifactId>
       <version>${flyway.version}</version>
     </dependency>
-    
-    <!-- JSON Support -->
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20140107</version>
-    </dependency>
-    
-  
   
   <!-- Struts 2 Hibernate Plugins -->
   <dependency> 
