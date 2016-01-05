@@ -234,7 +234,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     StringBuilder query = new StringBuilder();
 
     query.append("select * from ip_indicators ii inner join ip_program_elements ip on ip.id=ii.program_element_id");
-    query.append("inner join ip_programs ipr on ipr.id=ip.program_id where ii.id not in (");
+    query.append(" inner join ip_programs ipr on ipr.id=ip.program_id where ii.id not in (");
     query.append("    SELECT i.id ");
     query.append("    FROM ip_indicators i ");
     query.append("    LEFT JOIN ip_indicators p ON i.parent_id = p.id ");
@@ -253,13 +253,13 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         indicatorData.put("description", rs.getString("description"));
         indicatorData.put("target", rs.getString("target"));
         indicatorData.put("parent_id", rs.getString("parent_id"));
-        indicatorData.put("parent_description", rs.getString("parent_description"));
-        indicatorData.put("outcome_id", rs.getString("outcome_id"));
-        indicatorData.put("outcome_description", rs.getString("outcome_description"));
+        // indicatorData.put("parent_description", rs.getString("parent_description"));
+        // indicatorData.put("outcome_id", rs.getString("outcome_id"));
+        // indicatorData.put("outcome_description", rs.getString("outcome_description"));
         indicatorsList.add(indicatorData);
       }
       rs.close();
-    } catch (SQLException e) {
+    } catch (Exception e) {
       String exceptionMessage = "-- getIndicatorsByProjectID() > Exception raised trying ";
       exceptionMessage += "to get the ip indicators corresponding to the project " + projectID;
 
