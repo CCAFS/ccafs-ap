@@ -31,9 +31,9 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.ap.validation.projects.ProjectPartnersValidator;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.SendMail;
 
 import java.util.ArrayList;
 import java.util.Collection;

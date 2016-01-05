@@ -11,9 +11,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
-package org.cgiar.ccafs.ap.util;
-
-import org.cgiar.ccafs.utils.APConfig;
+package org.cgiar.ccafs.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;

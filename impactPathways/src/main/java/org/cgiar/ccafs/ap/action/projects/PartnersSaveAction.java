@@ -9,8 +9,8 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.ActivityPartner;
 import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.InstitutionType;
-import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.SendMail;
 
 import java.util.List;
 

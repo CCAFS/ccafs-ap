@@ -23,8 +23,8 @@ import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.User;
-import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.SendMail;
 import org.cgiar.ccafs.utils.URLFileDownloader;
 
 import java.io.IOException;
@@ -157,9 +157,8 @@ public class ProjectSubmissionAction extends BaseAction {
     message.append(this.getText("planning.submit.email.message", values));
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("planning.manageUsers.email.bye"));
-    String subject =
-      this.getText("planning.submit.email.subject",
-        new String[] {String.valueOf(project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER))});
+    String subject = this.getText("planning.submit.email.subject",
+      new String[] {String.valueOf(project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER))});
 
     String toEmail = null;
     String ccEmail = null;
@@ -217,8 +216,8 @@ public class ProjectSubmissionAction extends BaseAction {
       LOG.error("There was an error trying to get the URL to download the PDF file: " + e.getMessage());
     } catch (IOException e) {
       // Do nothing
-      LOG.error("There was a problem trying to download the PDF file for the projectID=" + projectID + " : "
-        + e.getMessage());
+      LOG.error(
+        "There was a problem trying to download the PDF file for the projectID=" + projectID + " : " + e.getMessage());
     }
 
     if (buffer != null && fileName != null && contentType != null) {
