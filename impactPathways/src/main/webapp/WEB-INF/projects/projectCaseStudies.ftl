@@ -172,10 +172,10 @@
         <div class="uploadContainer">
           [#if (study.file?has_content)!false]
             [#if editable]<span id="remove-annexesFile" class="remove"></span>[/#if] 
-            <p><a href="${CrossCuttingURL}${study.file}">${study.file}</a></p>
+            <p><a href="${CaseStudyURL}${study.file}">${study.file}</a></p>
           [#else]
             [#if editable]
-              [@customForm.inputFile name="${customName}.annexesFile" className="annexesFile"  /]
+              [@customForm.inputFile name="${customName}.myFile" className="annexesFile"  /]
             [#else]  
               <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
             [/#if] 
