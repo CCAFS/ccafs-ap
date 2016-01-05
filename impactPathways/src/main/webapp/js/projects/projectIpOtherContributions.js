@@ -26,7 +26,7 @@ function attachEvents() {
 
 function changeRegionFlagship(e) {
   var $parent = $(e.target).parents('.otherContribution');
-  var $indicatorsSelect = $parent.find('select.otherContributionIndicator')
+  var $indicatorsSelect = $parent.find('select.otherContributionIndicator');
   var data = {
       flagshipID: $parent.find('select.otherContributionFlagship').val(),
       regionID: $parent.find('select.otherContributionRegion').val(),
@@ -38,14 +38,18 @@ function changeRegionFlagship(e) {
       beforeSend: function() {
         $parent.find('.loading').fadeIn('slow');
         $indicatorsSelect.empty();
+        $indicatorsSelect.addOption(-1, 'Select an indicator');
       },
       success: function(result) {
         $.each(result.IPElementsList, function(i,element) {
           $indicatorsSelect.addOption(element.id, element.description);
         });
+        $parent.find('.indicatorsFound').html('(' + result.IPElementsList.length + ' indicators found)');
+      },
+      error: function() {
+        $parent.find('.indicatorsFound').html('(0 indicators found)');
       },
       complete: function(info) {
-        $parent.find('.indicatorsFound').html('(' + $indicatorsSelect.find('option').length + ' indicators found)')
         $parent.find('.loading').fadeOut('slow');
       }
   });

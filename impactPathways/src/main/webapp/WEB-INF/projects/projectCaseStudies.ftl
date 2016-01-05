@@ -48,7 +48,13 @@
      
    <h1 class="contentTitle">[@s.text name="reporting.projectCaseStudies.caseStudiestitle" /]</h1>
     <div id="caseStudiesBlock" class="">
+    [#if project.caseStudies?has_content ]
+      [#list project.caseStudies as item] 
+        [@caseStudy index=item_index /]
+      [/#list]
+    [#else]
       [@caseStudy index=0 /]
+    [/#if]
     </div>
     
     [#if (editable && canEdit)]
