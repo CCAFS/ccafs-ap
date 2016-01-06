@@ -1,4 +1,5 @@
 /*****************************************************************
+
  * This file is part of CCAFS Planning and Reporting Platform.
  * CCAFS P&R is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +61,7 @@ public class HibernateListener implements ServletContextListener {
         + manager.getPropertiesAsString(APConfig.MYSQL_PORT) + "/"
         + manager.getPropertiesAsString(APConfig.MYSQL_DATABASE);
       config.setProperty("hibernate.connection.url", url_mysql);
-
+      config.setProperty("hibernate.c3p0.min_size", "2");
       // System.out.println("url_mysql " + url_mysql);
       // System.out.println(url.toString());
 

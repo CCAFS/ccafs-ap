@@ -4,28 +4,36 @@
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-    <session-factory>
-
-        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
-		    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		    <property name="hibernate.search.autoregister_listeners">false</property>
-		    <property name="hibernate.validator.apply_to_ddl">false</property>
-		    <property name="hibernate.c3p0.min_size">10</property>
-		    <property name="hibernate.validator.apply_to_ddl">false</property>
-		    
-        <mapping resource="xmls/ProjectHighligthsCountry.hbm.xml" />
-        <mapping resource="xmls/ProjectHighligths.hbm.xml" />
-        <mapping resource="xmls/ProjectHighligthsTypes.hbm.xml" />
-        <mapping resource="xmls/DeliverablesRanking.hbm.xml" />
-        <mapping resource="xmls/CrossCuttingContribution.hbm.xml" />
-        <mapping resource="xmls/OtherContributions.hbm.xml" />
-        <mapping resource="xmls/CasesStudies.hbm.xml" />
-        <mapping resource="xmls/CaseStudieIndicators.hbm.xml" />
-    </session-factory>
+  <session-factory>
+    
+    <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.search.autoregister_listeners">false</property>
+    <property name="hibernate.validator.apply_to_ddl">false</property>
+    
 
     
+    <!-- *** Hibernate C3P0 Connection Pool EXTRA Configuration *** -->
     
+    <!-- property name="hibernate.c3p0.max_size">20</property>
+    <property name="hibernate.c3p0.acquire_increment">1</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.timeout">1800</property -->
+    
+    <!-- *********************************************************** -->
+    
+    <!-- Model Mappings -->
+    <mapping resource="xmls/ProjectHighligthsCountry.hbm.xml" />
+    <mapping resource="xmls/ProjectHighligths.hbm.xml" />
+    <mapping resource="xmls/ProjectHighligthsTypes.hbm.xml" />
+    <mapping resource="xmls/DeliverablesRanking.hbm.xml" />
+    <mapping resource="xmls/CrossCuttingContribution.hbm.xml" />
+    <mapping resource="xmls/OtherContributions.hbm.xml" />
+    <mapping resource="xmls/CasesStudies.hbm.xml" />
+    <mapping resource="xmls/CaseStudieIndicators.hbm.xml" />
+  </session-factory>
 </hibernate-configuration>
+
+   
