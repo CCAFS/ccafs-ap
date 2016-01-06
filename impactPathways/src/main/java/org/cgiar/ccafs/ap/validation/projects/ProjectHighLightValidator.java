@@ -62,7 +62,7 @@ public class ProjectHighLightValidator extends BaseValidator {
 
   private void ValidateHightLigth(BaseAction action, ProjectHighligths higligth) {
 
-    if (higligth.getProjectHighligthsTypeses().size() == 0) {
+    if (higligth.getTypesids().size() == 0) {
       this.addMessage(action.getText("reporting.projectHighligth.types").toLowerCase());
       this.addMissingField("reporting.projectHighligth.types");
       fields = true;

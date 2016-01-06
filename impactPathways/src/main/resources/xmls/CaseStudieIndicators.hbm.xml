@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 5, 2016 2:07:58 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="org.cgiar.ccafs.ap.data.model.CaseStudieIndicators" table="case_studie_indicators" catalog="ccafspr_ip">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="casesStudies" class="org.cgiar.ccafs.ap.data.model.CasesStudies" fetch="select">
+            <column name="id_case_studie" not-null="true" />
+        </many-to-one>
+        <property name="idIndicator" type="int">
+            <column name="id_indicator" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

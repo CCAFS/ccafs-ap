@@ -3167,37 +3167,18 @@ span.partnerTag {
     color:#777;
 }
 
-#leveraged h6,#bilateral h6 { 
-   margin: 8px 0px;
+/*** Leverages ***/
+
+#leveragesBlock .leverage {
+  padding-top: 35px !important;
 }
 
-#leveraged { 
-  /* float: right; */ 
+#addLeverage {
+  text-align: right;
+  margin-bottom: 40px;
 }
 
-#leveraged .leveragedPartner {
-  position: relative;
-  height: 21px;
-  padding: 8px 10px;
-  margin: 2px 0;
-  border: 1px dotted #ccc;
-  border-radius: 4px;
-}
-
-#leveraged .leveragedPartner .amount {
-    float:left;
-    width: 24%;
-}
-#leveraged .leveragedPartner .name {
-    position: relative;
-    padding: 2px 0px;
-    float:left;
-    width: 74%;
-}
-
-#leveraged .leveragedPartner input {
-  width: 95%
-}
+/**/
 
 #bilateral { 
   float: left; 
@@ -3489,9 +3470,12 @@ right: .5em;
 #addOtherContribution {float: right;}
 
 span.indicatorsFound{
-  color: #8E8E8E;
-  padding-left: 2px;
-  font-style: italic;
+  
+color: #8E8E8E;
+  
+padding-left: 2px;
+  
+font-style: italic;
 }
 
 /***  Project case studies ***/
@@ -4308,7 +4292,7 @@ ul#deliverablesFilesMessages > li {
 
 /* Publications */
 
-.borderBox, .publication, .caseStudy, .outcome, .output, .midOutcome, .leverage, .deliverable, .activityPartner, .otherSite {
+.borderBox, .publication, .caseStudy, .outcome, .output, .midOutcome, .deliverable, .activityPartner, .otherSite {
   border: 1px solid #D1D1D1;
   padding: 20px 15px 19px 15px;
   border-radius: 4px;
