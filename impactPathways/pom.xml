@@ -16,7 +16,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <struts2.version>2.3.16.3</struts2.version>
+    <struts2.version>2.3.24.1</struts2.version>
     <struts2-json.version>2.3.16</struts2-json.version>
     <guice.version>3.0</guice.version>
     <mysql.version>5.1.38</mysql.version>
@@ -240,34 +240,6 @@
     <defaultGoal>tomcat7:run</defaultGoal>
 
     <plugins>
-      <!-- Jetty server used only during the developer process -->
-      <!-- (it loads faster than Tomcat) -->
-      <!-- plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>${jetty.version}</version>
-        <configuration>
-          <scanIntervalSeconds>5</scanIntervalSeconds>
-          <scanTargets>
-            <scanTarget>src/main/webapp/WEB-INF/ccafsap.properties</scanTarget>
-            <scanTarget>src/main/webapp/WEB-INF/web.xml</scanTarget>
-            <scanTarget>src/main/resources/struts.xml</scanTarget>
-          </scanTargets>
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>8080</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-            <connector implementation="org.mortbay.jetty.security.SslSocketConnector">
-              <port>8443</port>
-              <maxIdleTime>60000</maxIdleTime>
-              <keystore>${basedir}/.keystore</keystore>
-              <password>d5jtY68oBqWj</password>
-              <keyPassword>d5jtY68oBqWj</keyPassword>
-            </connector>
-          </connectors>
-        </configuration>
-      </plugin -->
       <!-- Tomcat plugin just to test compatibilities with Tomcat. -->
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
