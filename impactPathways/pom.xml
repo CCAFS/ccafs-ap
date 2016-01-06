@@ -338,4 +338,12 @@
       <url>file://${basedir}/src/main/resources/libs/</url>
     </repository>
   </repositories>
+  
+  <licenses>
+    <license>
+      <name>GNU General Public License (GPL)</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+      <distribution>manual</distribution>
+    </license>
+  </licenses>
 </project>
