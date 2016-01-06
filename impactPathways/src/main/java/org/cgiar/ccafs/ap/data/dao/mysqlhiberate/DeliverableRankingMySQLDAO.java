@@ -26,7 +26,7 @@ import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DeliverableRankingMySQLDAO extends StandardDao implements DeliverableRankingDAO {
+public class DeliverableRankingMySQLDAO extends StandardDAO implements DeliverableRankingDAO {
 
   private static Logger LOG = LoggerFactory.getLogger(DeliverableRankingMySQLDAO.class);
 
@@ -36,8 +36,8 @@ public class DeliverableRankingMySQLDAO extends StandardDao implements Deliverab
 
     try {
       this.getSession();
-      this.InitTransaction();
-      this.CommitTransaction();
+      this.initTransaction();
+      this.commitTransaction();
       Query query = this.getSession()
         .createQuery("from " + DeliverablesRanking.class.getName() + " where deliverable_id=" + deliverableId);
       listRanking.addAll(query.list());
@@ -50,7 +50,7 @@ public class DeliverableRankingMySQLDAO extends StandardDao implements Deliverab
     } catch (HibernateException e) {
       e.printStackTrace();
       LOG.error("Exception DeliverablesRanking", e);
-      this.RollBackTransaction();
+      this.rollBackTransaction();
     } finally
 
     {

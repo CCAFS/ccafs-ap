@@ -24,7 +24,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
-public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCaseStudiesDAO {
+public class ProjectCaseStudiesMySQLDAO extends StandardDAO implements ProjectCaseStudiesDAO {
 
   @Override
   public boolean deleteCaseStudie(int caseStudyId, int userID, String justification) {
@@ -43,7 +43,7 @@ public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCa
 
     try {
       this.getSession();
-      this.InitTransaction();
+      this.initTransaction();
       Query query = this.getSession()
         .createQuery("from " + CasesStudies.class.getName() + " where project_id=" + projectID + " and is_active=1");
       list.addAll(query.list());
@@ -52,12 +52,12 @@ public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCa
         projectHighligths.setIsActive(false);
         this.save(projectHighligths);
       }
-      this.CommitTransaction();
+      this.commitTransaction();
       return true;
     } catch (HibernateException e)
 
     {
-      this.RollBackTransaction();
+      this.rollBackTransaction();
     } finally
 
     {
@@ -87,8 +87,8 @@ public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCa
 
     try {
       this.getSession();
-      this.InitTransaction();
-      this.CommitTransaction();
+      this.initTransaction();
+      this.commitTransaction();
       Query query = this.getSession()
         .createQuery("from " + CasesStudies.class.getName() + " where project_id=" + projectID + " and is_active=1");
       list.addAll(query.list());
@@ -96,7 +96,7 @@ public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCa
 
       return list;
     } catch (HibernateException e) {
-      this.RollBackTransaction();
+      this.rollBackTransaction();
     } finally
 
     {
