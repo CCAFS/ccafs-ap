@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <description>CCAFS Planning and Reporting platform</description>
+  <organization>
+    <name>CCAFS</name>
+    <url>http://ccafs.cgiar.org</url>
+  </organization>
 
   <parent>
     <groupId>org.cgiar.ccafs</groupId>
@@ -92,6 +98,17 @@
       <artifactId>struts2-junit-plugin</artifactId>
       <version>${struts2.version}</version>
       <scope>test</scope>
+    </dependency>
+    <!-- 
+      Although struts2-core has its own freemarker dependency, it seems there is an error with its version.
+      Thus, we had to use this version (which is higher than the struts2-core).
+      They said they fixed the problem in the struts version 2.3.24. But are still experiencing it:
+      https://issues.apache.org/jira/browse/WW-4437
+     -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.23</version>
     </dependency>
     
     <!--  Struts JSON library -->
@@ -302,7 +319,6 @@
             </goals>
             <configuration>
               <outputDirectory>target/classes</outputDirectory>
-              <!--  outputDirectory>D:/TEST</outputDirectory -->
               <overwrite>true</overwrite>
               <resources>
                 <resource>
@@ -315,13 +331,6 @@
       </plugin> 
     </plugins>
   </build>
-  
-  
-  <description>CCAFS Activity Planning and Reporting platform</description>
-  <organization>
-    <name>CCAFS</name>
-    <url>http://ccafs.cgiar.org</url>
-  </organization>
   
   <repositories>
     <repository>
