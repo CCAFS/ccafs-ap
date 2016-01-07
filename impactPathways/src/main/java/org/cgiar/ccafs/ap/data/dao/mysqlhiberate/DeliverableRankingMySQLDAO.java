@@ -26,8 +26,7 @@ import org.slf4j.LoggerFactory;
 
 public class DeliverableRankingMySQLDAO implements DeliverableRankingDAO {
 
-  private static Logger LOG = LoggerFactory.getLogger(DeliverableRankingMySQLDAO.class);
-
+  private static Logger LOG = LoggerFactory.getLogger(DeliverableRankingMySQLDAO.class); // TODO To review
 
   private StandardDAO dao;
 
@@ -38,21 +37,17 @@ public class DeliverableRankingMySQLDAO implements DeliverableRankingDAO {
 
   @Override
   public DeliverablesRanking findDeliverableRanking(int deliverableId) {
-
-
     String sql = "from " + DeliverablesRanking.class.getName() + " where deliverable_id=" + deliverableId;
     List<DeliverablesRanking> listRanking = dao.customFindAll(sql);
-
     if (listRanking.size() > 0) {
       return listRanking.get(0);
     }
     return null;
   }
 
-
   @Override
   public int save(DeliverablesRanking ranking) {
     dao.saveOrUpdate(ranking);
-    return ranking.getId();
+    return ranking.getId(); // TODO To review
   }
 }

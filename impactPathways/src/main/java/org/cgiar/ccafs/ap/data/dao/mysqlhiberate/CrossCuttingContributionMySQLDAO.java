@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 
 public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributionDAO {
 
-
   private StandardDAO dao;
 
   @Inject
@@ -34,13 +33,11 @@ public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributio
 
   @Override
   public boolean deleteCrossCuttingContribution(int crossCuttingContributionID, int userID, String justification) {
-
     CrossCuttingContribution project = this.find(crossCuttingContributionID);
     project.setIsActive(false);
     project.setModifiedBy(new Long(userID));
     project.setModificationJustification(justification);
-    return this.save(project) == 1;
-
+    return this.save(project) == 1; // TODO To review
   }
 
 
@@ -55,7 +52,7 @@ public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributio
 
   @Override
   public CrossCuttingContribution find(int id) {
-    return dao.find(CrossCuttingContribution.class, new Integer(id));
+    return dao.find(CrossCuttingContribution.class, id);
   }
 
 
@@ -71,10 +68,10 @@ public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributio
   public int save(CrossCuttingContribution projectHighlihts) {
     try {
       dao.saveOrUpdate(projectHighlihts);
-      return projectHighlihts.getId();
-    } catch (Exception e) {
+      return projectHighlihts.getId(); // TODO To review
+    } catch (Exception e) { // TODO To review
       e.printStackTrace();
-      return 0;
+      return -1;
     }
 
   }
