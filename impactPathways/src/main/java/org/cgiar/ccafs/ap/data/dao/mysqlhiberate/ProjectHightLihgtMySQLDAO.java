@@ -119,51 +119,54 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
       }
 
       dao.saveOrUpdate(projectHighlihts);
-
-      Iterator<ProjectHighligthsTypes> typeIterator = projectHighlihts.getProjectHighligthsTypeses().iterator();
-      while (typeIterator.hasNext()) {
-        ProjectHighligthsTypes projectHighligthsTypes = typeIterator.next();
-        ProjectHighligthsTypes existing = this.findProjectHighligthsTypes(
-          projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdType());
-        if (existing == null) {
-          projectHighligthsTypes.setId(null);
-          dao.saveOrUpdate(projectHighligthsTypes);
-        }
-      }
-
-      Iterator<ProjectHighligthsCountry> countriesIterator =
-        projectHighlihts.getProjectHighligthsCountries().iterator();
-      while (countriesIterator.hasNext()) {
-        ProjectHighligthsCountry projectHighligthsTypes = countriesIterator.next();
-
-        ProjectHighligthsCountry existing = this.findProjectHighligthsCountries(
-          projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdCountry());
-        if (existing == null) {
-          projectHighligthsTypes.setId(null);
-          dao.saveOrUpdate(projectHighligthsTypes);
-        }
-      }
-
-      if (projectHighlihtsPrev != null) {
-        Iterator<ProjectHighligthsTypes> previousTypeIterator =
-          projectHighlihtsPrev.getProjectHighligthsTypeses().iterator();
-        while (previousTypeIterator.hasNext()) {
-          ProjectHighligthsTypes projectHighligthsTypes = previousTypeIterator.next();
-          if (!projectHighlihts.getProjectHighligthsTypeses().contains(projectHighligthsTypes)) {
-            dao.delete(projectHighligthsTypes);
+      if (projectHighlihts.isIsActive()) {
+        // Adding new ProjectHighligthsTypes
+        Iterator<ProjectHighligthsTypes> typeIterator = projectHighlihts.getProjectHighligthsTypeses().iterator();
+        while (typeIterator.hasNext()) {
+          ProjectHighligthsTypes projectHighligthsTypes = typeIterator.next();
+          ProjectHighligthsTypes existing = this.findProjectHighligthsTypes(
+            projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdType());
+          if (existing == null) {
+            projectHighligthsTypes.setId(null);
+            dao.saveOrUpdate(projectHighligthsTypes);
           }
         }
+        // Adding new ProjectHighligthsCountry
+        Iterator<ProjectHighligthsCountry> countriesIterator =
+          projectHighlihts.getProjectHighligthsCountries().iterator();
+        while (countriesIterator.hasNext()) {
+          ProjectHighligthsCountry projectHighligthsTypes = countriesIterator.next();
 
-        Iterator<ProjectHighligthsCountry> previousCountriesIterator =
-          projectHighlihtsPrev.getProjectHighligthsCountries().iterator();
-        while (previousCountriesIterator.hasNext()) {
-          ProjectHighligthsCountry projectHighligthsTypes = previousCountriesIterator.next();
+          ProjectHighligthsCountry existing = this.findProjectHighligthsCountries(
+            projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdCountry());
+          if (existing == null) {
+            projectHighligthsTypes.setId(null);
+            dao.saveOrUpdate(projectHighligthsTypes);
+          }
+        }
+        // Deleting ProjectHighligthsTypes no selected
+        if (projectHighlihtsPrev != null) {
+          Iterator<ProjectHighligthsTypes> previousTypeIterator =
+            projectHighlihtsPrev.getProjectHighligthsTypeses().iterator();
+          while (previousTypeIterator.hasNext()) {
+            ProjectHighligthsTypes projectHighligthsTypes = previousTypeIterator.next();
+            if (!projectHighlihts.getProjectHighligthsTypeses().contains(projectHighligthsTypes)) {
+              dao.delete(projectHighligthsTypes);
+            }
+          }
+          // Deleting ProjectHighligthsCountry no selected
+          Iterator<ProjectHighligthsCountry> previousCountriesIterator =
+            projectHighlihtsPrev.getProjectHighligthsCountries().iterator();
+          while (previousCountriesIterator.hasNext()) {
+            ProjectHighligthsCountry projectHighligthsTypes = previousCountriesIterator.next();
 
-          if (!projectHighlihts.getProjectHighligthsCountries().contains(projectHighligthsTypes)) {
-            dao.delete(projectHighligthsTypes);
+            if (!projectHighlihts.getProjectHighligthsCountries().contains(projectHighligthsTypes)) {
+              dao.delete(projectHighligthsTypes);
+            }
           }
         }
       }
+
       return projectHighlihts.getId();
     } catch (Exception e) {
       return -1;

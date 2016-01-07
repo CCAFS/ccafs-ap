@@ -16,8 +16,11 @@
 package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectCaseStudiesDAO;
+import org.cgiar.ccafs.ap.data.model.CaseStudieIndicators;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -69,6 +72,18 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
   }
 
 
+  public CaseStudieIndicators findCaseStudieIndicador(int caseStudieId, int indicator) {
+    String query = "from " + CaseStudieIndicators.class.getName() + " where id_case_studie=" + caseStudieId
+      + " and id_indicator=" + indicator;
+
+    List<CaseStudieIndicators> list = dao.customFindAll(query);
+    if (list.size() > 0) {
+      return list.get(0);
+    }
+    return null;
+  }
+
+
   @Override
   public List<CasesStudies> getCaseStudiesByProject(int projectID) {
     String query = "from " + CasesStudies.class.getName() + " where project_id=" + projectID + " and is_active=1";
@@ -83,6 +98,20 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
         casesStudiesPrev = this.find(casesStudies.getId());
       }
       dao.saveOrUpdate(casesStudies);
+      if (casesStudies.isIsActive()) {
+
+        // Adding new CaseStudieIndicators
+        Iterator<CaseStudieIndicators> indicatorIndicator = casesStudies.getCaseStudieIndicatorses().iterator();
+        while (indicatorIndicator.hasNext()) {
+          ProjectHighligthsTypes projectHighligthsTypes = typeIterator.next();
+          ProjectHighligthsTypes existing = this.findProjectHighligthsTypes(
+            projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdType());
+          if (existing == null) {
+            projectHighligthsTypes.setId(null);
+            dao.saveOrUpdate(projectHighligthsTypes);
+          }
+        }
+      }
       return casesStudies.getId(); // TODO To review
     } catch (Exception e) {
       return -1;

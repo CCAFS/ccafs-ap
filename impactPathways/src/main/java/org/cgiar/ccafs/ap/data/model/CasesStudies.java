@@ -3,7 +3,6 @@ package org.cgiar.ccafs.ap.data.model;
 
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -42,13 +41,13 @@ public class CasesStudies implements java.io.Serializable {
   private Long modifiedBy;
   private String modificationJustification;
   private File myFile;
-  private List<String> caseStudyIndicatorsIds = new ArrayList<>();
+  private List<String> caseStudyIndicatorsIds;
+
 
   private String myFileFileName;
 
 
   private Set<CaseStudieIndicators> caseStudieIndicatorses = new HashSet<CaseStudieIndicators>(0);
-
 
   public CasesStudies() {
   }
@@ -58,6 +57,7 @@ public class CasesStudies implements java.io.Serializable {
     this.projectId = projectId;
     this.isActive = isActive;
   }
+
 
   public CasesStudies(int projectId, String comment, String title, String outcomeStatement, String researchOutputs,
     String researchPatern, String activities, String nonResearchPartneres, String outputUsers, String evidenceOutcome,
@@ -88,6 +88,7 @@ public class CasesStudies implements java.io.Serializable {
     this.caseStudieIndicatorses = caseStudieIndicatorses;
   }
 
+
   public Date getActiveSince() {
     return this.activeSince;
   }
@@ -96,10 +97,14 @@ public class CasesStudies implements java.io.Serializable {
     return this.activities;
   }
 
-
   public Set<CaseStudieIndicators> getCaseStudieIndicatorses() {
     return this.caseStudieIndicatorses;
   }
+
+  public List<String> getCaseStudyIndicatorsIds() {
+    return caseStudyIndicatorsIds;
+  }
+
 
   public String getComment() {
     return this.comment;
@@ -199,6 +204,10 @@ public class CasesStudies implements java.io.Serializable {
 
   public void setCaseStudieIndicatorses(Set<CaseStudieIndicators> caseStudieIndicatorses) {
     this.caseStudieIndicatorses = caseStudieIndicatorses;
+  }
+
+  public void setCaseStudyIndicatorsIds(List<String> caseStudyIndicatorsIds) {
+    this.caseStudyIndicatorsIds = caseStudyIndicatorsIds;
   }
 
   public void setComment(String comment) {

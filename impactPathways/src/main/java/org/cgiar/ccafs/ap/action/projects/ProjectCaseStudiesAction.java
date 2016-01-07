@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.CaseStudieIndicators;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -27,6 +28,9 @@ import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -146,6 +150,19 @@ public class ProjectCaseStudiesAction extends BaseAction {
     }
 
     project.setCaseStudies(caseStudieManager.getCaseStudysByProject(projectID));
+    List<String> idsIndicators;
+    Iterator<CaseStudieIndicators> iteratorIndicators;
+    CaseStudieIndicators caseStudyIndicator;
+    for (CasesStudies caseStudy : project.getCaseStudies()) {
+      idsIndicators = new ArrayList<>();
+      iteratorIndicators = caseStudy.getCaseStudieIndicatorses().iterator();
+      while (iteratorIndicators.hasNext()) {
+        caseStudyIndicator = iteratorIndicators.next();
+        idsIndicators.add(String.valueOf(caseStudyIndicator.getId()));
+      }
+      caseStudy.setCaseStudyIndicatorsIds(idsIndicators);
+    }
+
     // Getting the Project lessons for this section.
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
@@ -162,7 +179,8 @@ public class ProjectCaseStudiesAction extends BaseAction {
   @Override
   public String save() {
 
-
+    List<CaseStudieIndicators> indicators;
+    CaseStudieIndicators caseStudieIndicator;
     for (CasesStudies caseStudie : project.getCaseStudies()) {
 
       if (caseStudie.getMyFile() != null) {
@@ -171,9 +189,16 @@ public class ProjectCaseStudiesAction extends BaseAction {
         FileManager.copyFile(caseStudie.getMyFile(), this.getCaseStudyPath() + caseStudie.getMyFileFileName());
         caseStudie.setFile(caseStudie.getMyFileFileName());
       }
+      indicators = new ArrayList<>();
 
+      for (String indicator : caseStudie.getCaseStudyIndicatorsIds()) {
+        caseStudieIndicator = new CaseStudieIndicators();
+        caseStudieIndicator.setCasesStudies(caseStudie);
+        caseStudieIndicator.setIdIndicator(Integer.parseInt(indicator));
+        indicators.add(caseStudieIndicator);
+      }
       caseStudie.setIsActive(true);
-      // caseStudie.setYear(this.getCurrentReportingYear());
+      caseStudie.setCaseStudieIndicatorses(new HashSet<>(indicators));
       caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
     }
 
