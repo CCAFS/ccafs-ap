@@ -18,23 +18,26 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 import org.cgiar.ccafs.ap.data.dao.OtherContributionsDAO;
 import org.cgiar.ccafs.ap.data.model.OtherContributions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import com.google.inject.Inject;
 
-public class OtherContributionsMySQLDAO extends StandardDAO implements OtherContributionsDAO {
+public class OtherContributionsMySQLDAO implements OtherContributionsDAO {
+
+  private StandardDAO dao;
+
+  @Inject
+  public OtherContributionsMySQLDAO(StandardDAO dao) {
+    this.dao = dao;
+  }
 
   @Override
   public boolean deleteOtherContributions(int crossCuttingContributionID, int userID, String justification) {
-
     OtherContributions project = this.find(crossCuttingContributionID);
     project.setIsActive(false);
     project.setModifiedBy(new Long(userID));
     project.setModificationJustification(justification);
-    return this.save(project) == 1;
-
+    return this.save(project) == 1; // TODO To review
   }
 
 
@@ -49,47 +52,19 @@ public class OtherContributionsMySQLDAO extends StandardDAO implements OtherCont
 
   @Override
   public OtherContributions find(int id) {
-    return (OtherContributions) this.find(OtherContributions.class, new Integer(id));
+    return dao.find(OtherContributions.class, id);
   }
 
 
   @Override
   public List<OtherContributions> getOtherContributionsByProject(int projectID) {
-    List<OtherContributions> list = new ArrayList<>();
-
-    try {
-      this.getSession();
-      this.initTransaction();
-      this.commitTransaction();
-      Query query = this.getSession().createQuery(
-        "from " + OtherContributions.class.getName() + " where project_id=" + projectID + " and is_active=1");
-      list.addAll(query.list());
-
-
-      return list;
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
-    } finally
-
-    {
-      this.closeSession();
-    }
-    return null;
+    String query = "from " + OtherContributions.class.getName() + " where project_id=" + projectID + " and is_active=1";
+    return dao.customFindAll(query);
   }
 
   @Override
   public int save(OtherContributions projectHighlihts) {
-    try {
-
-
-      super.saveOrUpdate(projectHighlihts);
-
-
-      return projectHighlihts.getId();
-    } catch (Exception e) {
-      e.printStackTrace();
-      return 0;
-    }
-
+    dao.saveOrUpdate(projectHighlihts); // TODO review
+    return projectHighlihts.getId(); // TODO To review
   }
 }
