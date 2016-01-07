@@ -96,6 +96,7 @@ public class ProjectCaseStudiesMySQLDAO extends StandardDao implements ProjectCa
 
       return list;
     } catch (HibernateException e) {
+      e.printStackTrace();
       this.RollBackTransaction();
     } finally
 

@@ -3,8 +3,10 @@ package org.cgiar.ccafs.ap.data.model;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,6 +15,10 @@ import java.util.Set;
 public class CasesStudies implements java.io.Serializable {
 
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 6386030099091356371L;
   private Integer id;
   private int projectId;
   private String comment;
@@ -36,6 +42,7 @@ public class CasesStudies implements java.io.Serializable {
   private Long modifiedBy;
   private String modificationJustification;
   private File myFile;
+  private List<String> caseStudyIndicatorsIds = new ArrayList<>();
 
   private String myFileFileName;
 

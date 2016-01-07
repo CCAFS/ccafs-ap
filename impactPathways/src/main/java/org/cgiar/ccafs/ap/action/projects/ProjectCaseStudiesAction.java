@@ -17,8 +17,10 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
@@ -41,32 +43,37 @@ public class ProjectCaseStudiesAction extends BaseAction {
   // Manager
   private CaseStudiesManager caseStudieManager;
   private ProjectManager projectManager;
-
+  private IPIndicatorManager ipIndicatorMamager;
 
   private File file;
   private String fileFileName;
   private ProjectCrossCuttingValidator validator;
 
-
+  private List<IPIndicator> caseStudyIndicators;
   private int projectID;
   private List<Integer> allYears;
 
 
   private Project project;
 
+
   @Inject
-  public ProjectCaseStudiesAction(APConfig config, ProjectManager projectManager, CaseStudiesManager crossManager,
-    HistoryManager historyManager, ProjectCrossCuttingValidator validator) {
+  public ProjectCaseStudiesAction(APConfig config, ProjectManager projectManager, IPIndicatorManager ipIndicatorMamager,
+    CaseStudiesManager crossManager, HistoryManager historyManager, ProjectCrossCuttingValidator validator) {
     super(config);
     this.validator = validator;
     this.caseStudieManager = crossManager;
     this.projectManager = projectManager;
+    this.ipIndicatorMamager = ipIndicatorMamager;
 
   }
 
-
   public List<Integer> getAllYears() {
     return allYears;
+  }
+
+  public List<IPIndicator> getCaseStudyIndicators() {
+    return caseStudyIndicators;
   }
 
 
@@ -90,6 +97,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
     return file;
   }
 
+
   public String getFileFileName() {
     return fileFileName;
   }
@@ -101,7 +109,6 @@ public class ProjectCaseStudiesAction extends BaseAction {
   public int getProjectID() {
     return projectID;
   }
-
 
   public ProjectManager getProjectManager() {
     return projectManager;
@@ -145,7 +152,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
-
+    caseStudyIndicators = ipIndicatorMamager.getProjectIndicators(projectID);
 
     // Getting the last history
 
@@ -155,20 +162,27 @@ public class ProjectCaseStudiesAction extends BaseAction {
   @Override
   public String save() {
 
-    this.saveProjectLessons(project.getId());
+
     for (CasesStudies caseStudie : project.getCaseStudies()) {
 
       if (caseStudie.getMyFile() != null) {
+
         FileManager.deleteFile(this.getCaseStudyPath() + caseStudie.getFile());
         FileManager.copyFile(caseStudie.getMyFile(), this.getCaseStudyPath() + caseStudie.getMyFileFileName());
         caseStudie.setFile(caseStudie.getMyFileFileName());
       }
+
       caseStudie.setIsActive(true);
       // caseStudie.setYear(this.getCurrentReportingYear());
       caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
     }
 
     return SUCCESS;
+  }
+
+
+  public void setCaseStudyIndicators(List<IPIndicator> caseStudyIndicators) {
+    this.caseStudyIndicators = caseStudyIndicators;
   }
 
 

@@ -75,7 +75,8 @@ function setElementIndex(i,element) {
   $(element).find(".caseStudyOutputUsed").attr("name", name + "outputUsed");
   $(element).find(".caseStudyEvidence").attr("name", name + "evidence");
   $(element).find(".caseStudyReferences").attr("name", name + "references");
-  $(element).find(".annexesFile").attr("name", name + "annexesFile");
+  $(element).find(".annexesFile").attr("name", name + "myFile");
+
   $(element).find(".caseStudyYear").attr("name", name + "year");
 }
 

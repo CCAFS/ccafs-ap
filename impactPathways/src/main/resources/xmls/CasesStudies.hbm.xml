@@ -71,7 +71,7 @@
         <property name="modificationJustification" type="string">
             <column name="modification_justification" length="65535" />
         </property>
-        <set name="caseStudieIndicatorses" table="case_studie_indicators" inverse="true" lazy="true" fetch="select">
+        <set name="caseStudieIndicatorses" table="case_studie_indicators" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_case_studie" not-null="true" />
             </key>
