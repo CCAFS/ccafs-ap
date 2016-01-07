@@ -87,7 +87,7 @@
 [#list params?keys as prop]<input id="${params[prop].id}" type="hidden" value="${params[prop].name}" />[/#list]
 
 [#-- File upload Template--] 
-[@customForm.inputFile name="annexesFile" template=true /]
+[@customForm.inputFile name="annexesFile" className="annexesFile"  template=true /]
 
 [#-- Case Study template --]
 [@caseStudy template=true /]
@@ -157,7 +157,7 @@
         <div class="checkboxGroup">
         [#if editable]
           [@s.fielderror cssClass="fieldError" fieldName="${customName}.caseStudyIndicatorsIds"/]
-          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${(study.caseStudyIndicatorsIds)!}" itemKey="id"  cssClass="caseStudyIndicators checkbox" /]
+          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${(study.caseStudyIndicatorsIds)!}" listKey="id" listValue="description"   cssClass="caseStudyIndicators checkbox" /]
         [#else]
           [#if (study.caseStudyIndicatorsIds?has_content)!false]
             [#list study.caseStudyIndicatorsIds as element]<p class="checked">${element.description}</p>[/#list]
@@ -169,6 +169,7 @@
       </div>
       [@customForm.textArea name="${customName}.explainIndicatorRelation" i18nkey="reporting.projectCaseStudies.explainIndicatorRelation" className="caseStudyExplainIndicatorRelation limitWords-50" editable=editable /]
     </div>
+
     <div class="fullBlock">
       <div class="halfPartBlock">
         [@customForm.select name="${customName}.year" label="" disabled=!canEdit i18nkey="reporting.projectCaseStudies.caseStudyYear" listName="allYears"  className="caseStudyYear" value="" editable=editable/]
@@ -179,12 +180,15 @@
         <div class="uploadContainer">
           [#if (study.file?has_content)!false]
             [#if editable]<span id="remove-annexesFile" class="remove"></span>[/#if] 
-            <p><a href="${CaseStudyURL}${study.file}">${study.file}</a></p>
+            <p><a href="${CaseStudyURL}${study.file}">${study.file}</a><input type="hidden" name="${customName}.file" value="${study.file}" /> </p>
           [#else]
             [#if editable]
               [@customForm.inputFile name="${customName}.myFile" className="annexesFile"  /]
+              
+             
             [#else]  
               <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
+              
             [/#if] 
           [/#if]
         </div>  

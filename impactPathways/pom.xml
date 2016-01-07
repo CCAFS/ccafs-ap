@@ -242,11 +242,7 @@
       <artifactId>hibernate-c3p0</artifactId>
       <version>5.0.6.Final</version>
     </dependency>
-    <dependency>
-      <groupId>com.mchange</groupId>
-      <artifactId>c3p0</artifactId>
-      <version>0.9.5.2</version>
-    </dependency>   
+    
     
     <!-- END Hibernate -->
 
