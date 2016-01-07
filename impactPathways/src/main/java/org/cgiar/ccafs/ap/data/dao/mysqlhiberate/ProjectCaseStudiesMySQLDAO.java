@@ -103,7 +103,7 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
         // Adding new CaseStudieIndicators
         Iterator<CaseStudieIndicators> indicatorIndicator = casesStudies.getCaseStudieIndicatorses().iterator();
         while (indicatorIndicator.hasNext()) {
-          ProjectHighligthsTypes projectHighligthsTypes = typeIterator.next();
+          ProjectHighligthsTypes projectHighligthsTypes = indicatorIndicator.next();
           ProjectHighligthsTypes existing = this.findProjectHighligthsTypes(
             projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdType());
           if (existing == null) {
