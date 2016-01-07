@@ -43,17 +43,17 @@
     [#elseif !canEdit ]
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
     [/#if]
-    
      
-   <h1 class="contentTitle">[@s.text name="reporting.projectLeverages.leveragestitle" /]</h1>
+    <h1 class="contentTitle">[@s.text name="reporting.projectLeverages.leveragestitle" /]</h1>
+    [#-- Leverages List --]
     <div id="leveragesBlock" class="">
-    [#if project.leverages?has_content ]
-      [#list project.leverages as item] 
-        [@leverage index=item_index /]
-      [/#list]
-    [#else]
-      [@leverage index=0 /]
-    [/#if]
+      [#if project.leverages?has_content ]
+        [#list project.leverages as item] 
+          [@leverage index=item_index /]
+        [/#list]
+      [#else]
+        [@leverage index=0 /]
+      [/#if]
     </div>
     
     [#if (editable && canEdit)]
@@ -83,9 +83,6 @@
 
 [#-- Internal parameters --]
 [#list params?keys as prop]<input id="${params[prop].id}" type="hidden" value="${params[prop].name}" />[/#list]
-
-[#-- File upload Template--] 
-[@customForm.inputFile name="annexesFile" template=true /]
 
 [#-- Leverage template --]
 [@leverage template=true /]
@@ -140,7 +137,7 @@
         [@customForm.select name="${customName}.flagship" className="flagship" label="" i18nkey="reporting.projectLeverages.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
       </div>   
       <div class="halfPartBlock">
-        [@customForm.input name="${customName}.budget" className="budget"  type="text" i18nkey="reporting.projectLeverages.budget" required=true editable=editable /]
+        [@customForm.input name="${customName}.budget" className="budget budgetInput" value="${(element.budget)!0}"  type="text" i18nkey="reporting.projectLeverages.budget" required=true editable=editable /]
       </div>
     </div>
     
