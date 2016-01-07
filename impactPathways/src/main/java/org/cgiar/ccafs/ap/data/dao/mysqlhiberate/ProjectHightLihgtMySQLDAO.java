@@ -49,12 +49,14 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
   public boolean deleteHighLightsByProject(int projectID) {
     String query = "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1";
     List<ProjectHighligths> list = dao.customFindAll(query);
-
+    boolean saved = true;
     for (ProjectHighligths projectHighligths : list) {
       projectHighligths.setIsActive(false);
-      this.save(projectHighligths);
+      if (this.save(projectHighligths) == -1) {
+        saved = false;
+      }
     }
-    return true;
+    return saved;
   }
 
   @Override
@@ -164,7 +166,7 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
       }
       return projectHighlihts.getId();
     } catch (Exception e) {
-      return 0;
+      return -1;
     }
 
   }

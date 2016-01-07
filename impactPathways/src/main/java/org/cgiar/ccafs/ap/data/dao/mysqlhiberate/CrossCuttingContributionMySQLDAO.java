@@ -33,11 +33,11 @@ public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributio
 
   @Override
   public boolean deleteCrossCuttingContribution(int crossCuttingContributionID, int userID, String justification) {
-    CrossCuttingContribution project = this.find(crossCuttingContributionID);
-    project.setIsActive(false);
-    project.setModifiedBy(new Long(userID));
-    project.setModificationJustification(justification);
-    return this.save(project) == 1; // TODO To review
+    CrossCuttingContribution crossCutting = this.find(crossCuttingContributionID);
+    crossCutting.setIsActive(false);
+    crossCutting.setModifiedBy(new Long(userID));
+    crossCutting.setModificationJustification(justification);
+    return this.save(crossCutting) > 0; // TODO To review
   }
 
 
@@ -66,13 +66,7 @@ public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributio
 
   @Override
   public int save(CrossCuttingContribution projectHighlihts) {
-    try {
-      dao.saveOrUpdate(projectHighlihts);
-      return projectHighlihts.getId(); // TODO To review
-    } catch (Exception e) { // TODO To review
-      e.printStackTrace();
-      return -1;
-    }
-
+    dao.saveOrUpdate(projectHighlihts);
+    return projectHighlihts.getId();
   }
 }
