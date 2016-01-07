@@ -20,14 +20,19 @@ import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligthsCountry;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import com.google.inject.Inject;
 
-public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHighlightDAO {
+public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
+
+  private StandardDAO dao;
+
+  @Inject
+  public ProjectHightLihgtMySQLDAO(StandardDAO dao) {
+    this.dao = dao;
+  }
 
   @Override
   public boolean deleteHighLight(int highLightId, int userID, String justification) {
@@ -42,31 +47,14 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
 
   @Override
   public boolean deleteHighLightsByProject(int projectID) {
-    List<ProjectHighligths> list = new ArrayList<>();
+    String query = "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1";
+    List<ProjectHighligths> list = dao.customFindAll(query);
 
-    try {
-      this.getSession();
-      this.InitTransaction();
-      Query query = this.getSession().createQuery(
-        "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1");
-      list.addAll(query.list());
-
-      for (ProjectHighligths projectHighligths : list) {
-        projectHighligths.setIsActive(false);
-        this.save(projectHighligths);
-      }
-      this.CommitTransaction();
-      return true;
-    } catch (HibernateException e)
-
-    {
-      this.RollBackTransaction();
-    } finally
-
-    {
-      this.closeSession();
+    for (ProjectHighligths projectHighligths : list) {
+      projectHighligths.setIsActive(false);
+      this.save(projectHighligths);
     }
-    return false;
+    return true;
   }
 
   @Override
@@ -80,33 +68,18 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
 
   @Override
   public ProjectHighligths find(int id) {
-    return (ProjectHighligths) this.find(ProjectHighligths.class, new Integer(id));
+    return dao.<ProjectHighligths>find(ProjectHighligths.class, new Integer(id));
   }
 
 
   @Override
   public ProjectHighligthsCountry findProjectHighligthsCountries(int highlighid, int country) {
-    List<ProjectHighligthsCountry> list = new ArrayList<>();
+    String query = "from " + ProjectHighligthsCountry.class.getName() + " where project_highlights_id=" + highlighid
+      + " and id_country=" + country;
 
-    try {
-      this.getSession();
-      this.InitTransaction();
-      this.CommitTransaction();
-      Query query = this.getSession().createQuery("from " + ProjectHighligthsCountry.class.getName()
-        + " where project_highlights_id=" + highlighid + " and id_country=" + country);
-      list.addAll(query.list());
-
-
-      if (list.size() > 0) {
-        return list.get(0);
-      }
-      return null;
-    } catch (HibernateException e) {
-      this.RollBackTransaction();
-    } finally
-
-    {
-      this.closeSession();
+    List<ProjectHighligthsCountry> list = dao.customFindAll(query);
+    if (list.size() > 0) {
+      return list.get(0);
     }
     return null;
   }
@@ -114,27 +87,13 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
 
   @Override
   public ProjectHighligthsTypes findProjectHighligthsTypes(int highlighid, int type) {
-    List<ProjectHighligthsTypes> list = new ArrayList<>();
+    String query = "from " + ProjectHighligthsTypes.class.getName() + " where project_highlights_id=" + highlighid
+      + " and id_type=" + type;
 
-    try {
-      this.getSession();
-      this.InitTransaction();
-      this.CommitTransaction();
-      Query query = this.getSession().createQuery("from " + ProjectHighligthsTypes.class.getName()
-        + " where project_highlights_id=" + highlighid + " and id_type=" + type);
-      list.addAll(query.list());
+    List<ProjectHighligthsTypes> list = dao.customFindAll(query);
 
-
-      if (list.size() > 0) {
-        return list.get(0);
-      }
-      return null;
-    } catch (HibernateException e) {
-      this.RollBackTransaction();
-    } finally
-
-    {
-      this.closeSession();
+    if (list.size() > 0) {
+      return list.get(0);
     }
     return null;
   }
@@ -142,26 +101,11 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
 
   @Override
   public List<ProjectHighligths> getHighLightsByProject(int projectID) {
-    List<ProjectHighligths> list = new ArrayList<>();
+    String query = "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1";
+    List<ProjectHighligths> list = dao.customFindAll(query);
 
-    try {
-      this.getSession();
-      this.InitTransaction();
-      this.CommitTransaction();
-      Query query = this.getSession().createQuery(
-        "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1");
-      list.addAll(query.list());
+    return list;
 
-
-      return list;
-    } catch (HibernateException e) {
-      this.RollBackTransaction();
-    } finally
-
-    {
-      this.closeSession();
-    }
-    return null;
   }
 
   @Override
@@ -172,60 +116,54 @@ public class ProjectHightLihgtMySQLDAO extends StandardDao implements ProjectHig
         projectHighlihts.setId(null);
       }
 
-      super.saveOrUpdate(projectHighlihts);
+      dao.saveOrUpdate(projectHighlihts);
 
-      Iterator<ProjectHighligthsTypes> iter = projectHighlihts.getProjectHighligthsTypeses().iterator();
-      while (iter.hasNext()) {
-        ProjectHighligthsTypes projectHighligthsTypes = iter.next();
+      Iterator<ProjectHighligthsTypes> typeIterator = projectHighlihts.getProjectHighligthsTypeses().iterator();
+      while (typeIterator.hasNext()) {
+        ProjectHighligthsTypes projectHighligthsTypes = typeIterator.next();
         ProjectHighligthsTypes existing = this.findProjectHighligthsTypes(
           projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdType());
         if (existing == null) {
           projectHighligthsTypes.setId(null);
-          super.saveOrUpdate(projectHighligthsTypes);
-
+          dao.saveOrUpdate(projectHighligthsTypes);
         }
-
       }
 
-
-      Iterator<ProjectHighligthsCountry> iter_con = projectHighlihts.getProjectHighligthsCountries().iterator();
-      while (iter_con.hasNext()) {
-        ProjectHighligthsCountry projectHighligthsTypes = iter_con.next();
+      Iterator<ProjectHighligthsCountry> countriesIterator =
+        projectHighlihts.getProjectHighligthsCountries().iterator();
+      while (countriesIterator.hasNext()) {
+        ProjectHighligthsCountry projectHighligthsTypes = countriesIterator.next();
 
         ProjectHighligthsCountry existing = this.findProjectHighligthsCountries(
           projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdCountry());
         if (existing == null) {
           projectHighligthsTypes.setId(null);
-          super.saveOrUpdate(projectHighligthsTypes);
-
+          dao.saveOrUpdate(projectHighligthsTypes);
         }
       }
-
 
       if (projectHighlihtsPrev != null) {
-        Iterator<ProjectHighligthsTypes> iter_prev = projectHighlihtsPrev.getProjectHighligthsTypeses().iterator();
-        while (iter_prev.hasNext()) {
-          ProjectHighligthsTypes projectHighligthsTypes = iter_prev.next();
-
+        Iterator<ProjectHighligthsTypes> previousTypeIterator =
+          projectHighlihtsPrev.getProjectHighligthsTypeses().iterator();
+        while (previousTypeIterator.hasNext()) {
+          ProjectHighligthsTypes projectHighligthsTypes = previousTypeIterator.next();
           if (!projectHighlihts.getProjectHighligthsTypeses().contains(projectHighligthsTypes)) {
-            this.delete(projectHighligthsTypes);
+            dao.delete(projectHighligthsTypes);
           }
         }
 
-        Iterator<ProjectHighligthsCountry> iter_con_2 = projectHighlihtsPrev.getProjectHighligthsCountries().iterator();
-        while (iter_con_2.hasNext()) {
-          ProjectHighligthsCountry projectHighligthsTypes = iter_con_2.next();
+        Iterator<ProjectHighligthsCountry> previousCountriesIterator =
+          projectHighlihtsPrev.getProjectHighligthsCountries().iterator();
+        while (previousCountriesIterator.hasNext()) {
+          ProjectHighligthsCountry projectHighligthsTypes = previousCountriesIterator.next();
 
           if (!projectHighlihts.getProjectHighligthsCountries().contains(projectHighligthsTypes)) {
-            this.delete(projectHighligthsTypes);
+            dao.delete(projectHighligthsTypes);
           }
         }
       }
-
-
       return projectHighlihts.getId();
     } catch (Exception e) {
-
       return 0;
     }
 

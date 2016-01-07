@@ -18,6 +18,7 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 import org.cgiar.ccafs.ap.config.HibernateListener;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
@@ -27,96 +28,103 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-public abstract class StandardDao {
+/**
+ * @author Christian David García O. - CIAT/CCAFS
+ * @author Héctor F. Tobón R. - CIAT/CCAFS
+ */
+public class StandardDAO {
 
 
   private Session session;
   private Transaction tx;
 
-  private SessionFactory sessionFactory;
-
-  public void closeSession() {
+  private void closeSession() {
     // Close caches and connection pools
     session.close();
   }
 
-
-  public void CommitTransaction() {
+  protected void commitTransaction() {
     tx.commit();
+  }
+
+  protected <T> List<T> customFindAll(String hibernateQuery) {
+
+    List<T> list = new ArrayList<T>();
+    try {
+      this.getSession();
+      this.initTransaction();
+      Query query = session.createQuery(hibernateQuery);
+      // query.l
+      list.addAll(query.list());
+      session.flush();
+      this.commitTransaction();
+    } catch (HibernateException e) {
+      this.rollBackTransaction();
+      e.printStackTrace();
+    } finally {
+      this.closeSession();
+    }
+    return list;
   }
 
   protected void delete(Object obj) {
     try {
       this.getSession();
-      this.InitTransaction();
+      this.initTransaction();
       session.delete(obj);
-      tx.commit();
+      this.commitTransaction();
     } catch (HibernateException e) {
-      this.RollBackTransaction();
+      this.rollBackTransaction();
+      e.printStackTrace();
     } finally {
       this.closeSession();
     }
   }
 
-  protected Object find(Class clazz, Object id) {
-    Object obj = null;
+  protected <T> T find(Class clazz, Object id) {
+    T obj = null;
     try {
       this.getSession();
-      this.InitTransaction();
-      obj = session.get(clazz, (Serializable) id);
-      tx.commit();
+      this.initTransaction();
+      obj = (T) session.get(clazz, (Serializable) id);
+      session.flush();
+      this.commitTransaction();
     } catch (HibernateException e) {
-      this.RollBackTransaction();
+      this.rollBackTransaction();
+      e.printStackTrace();
     } finally {
       this.closeSession();
     }
     return obj;
   }
 
-  protected List findAll(Class clazz) {
-    List objects = null;
-    try {
-      this.getSession();
-      this.InitTransaction();
-      Query query = session.createQuery("from " + clazz.getName());
-      objects = query.list();
-      tx.commit();
-    } catch (HibernateException e) {
-      this.RollBackTransaction();
-    } finally {
-      this.closeSession();
-    }
-    return objects;
-  }
-
-  public Session getSession() {
-
-
+  private Session getSession() {
     SessionFactory sessionFactory =
       (SessionFactory) ServletActionContext.getServletContext().getAttribute(HibernateListener.KEY_NAME);
-
-    session = sessionFactory.openSession();
-
+    if (session == null || !session.isOpen()) {
+      session = sessionFactory.openSession();
+    }
     return session;
   }
 
 
-  public Transaction InitTransaction() {
+  private void initTransaction() {
     tx = session.beginTransaction();
-    return tx;
   }
 
-  public void RollBackTransaction() {
+  private void rollBackTransaction() {
     tx.rollback();
   }
 
   protected void saveOrUpdate(Object obj) {
     try {
       this.getSession();
-      this.InitTransaction();
+      this.initTransaction();
       session.saveOrUpdate(obj);
-      this.CommitTransaction();
+      session.flush();
+      this.commitTransaction();
     } catch (HibernateException e) {
+      this.rollBackTransaction();
       e.printStackTrace();
     } finally {
       this.closeSession();

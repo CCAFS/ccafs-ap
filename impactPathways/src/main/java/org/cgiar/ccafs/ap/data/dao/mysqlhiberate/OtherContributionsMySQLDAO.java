@@ -24,7 +24,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
-public class OtherContributionsMySQLDAO extends StandardDao implements OtherContributionsDAO {
+public class OtherContributionsMySQLDAO extends StandardDAO implements OtherContributionsDAO {
 
   @Override
   public boolean deleteOtherContributions(int crossCuttingContributionID, int userID, String justification) {
@@ -59,8 +59,8 @@ public class OtherContributionsMySQLDAO extends StandardDao implements OtherCont
 
     try {
       this.getSession();
-      this.InitTransaction();
-      this.CommitTransaction();
+      this.initTransaction();
+      this.commitTransaction();
       Query query = this.getSession().createQuery(
         "from " + OtherContributions.class.getName() + " where project_id=" + projectID + " and is_active=1");
       list.addAll(query.list());
@@ -68,7 +68,7 @@ public class OtherContributionsMySQLDAO extends StandardDao implements OtherCont
 
       return list;
     } catch (HibernateException e) {
-      this.RollBackTransaction();
+      this.rollBackTransaction();
     } finally
 
     {

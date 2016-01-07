@@ -267,4 +267,12 @@
     <name>CCAFS</name>
     <url>http://ccafs.cgiar.org</url>
   </organization>
+  
+  <licenses>
+    <license>
+      <name>GNU General Public License (GPL)</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+      <distribution>manual</distribution>
+    </license>
+  </licenses>
 </project>

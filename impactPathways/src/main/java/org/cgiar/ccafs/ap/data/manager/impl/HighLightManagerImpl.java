@@ -16,7 +16,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectHighlightDAO;
-import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.ProjectHightLihgtMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
@@ -39,14 +38,11 @@ public class HighLightManagerImpl implements HighLightManager {
 
   // DAO's
   private ProjectHighlightDAO highLightDAO;
-  // Managers
 
 
   @Inject
-  public HighLightManagerImpl() {
-    highLightDAO = new ProjectHightLihgtMySQLDAO();
-
-
+  public HighLightManagerImpl(ProjectHighlightDAO highLightDAO) {
+    this.highLightDAO = highLightDAO;
   }
 
   @Override

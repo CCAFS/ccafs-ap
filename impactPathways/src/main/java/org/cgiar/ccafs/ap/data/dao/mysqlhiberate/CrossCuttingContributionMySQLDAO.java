@@ -24,7 +24,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
-public class CrossCuttingContributionMySQLDAO extends StandardDao implements CrossCuttingContributionDAO {
+public class CrossCuttingContributionMySQLDAO extends StandardDAO implements CrossCuttingContributionDAO {
 
   @Override
   public boolean deleteCrossCuttingContribution(int crossCuttingContributionID, int userID, String justification) {
@@ -59,8 +59,8 @@ public class CrossCuttingContributionMySQLDAO extends StandardDao implements Cro
 
     try {
       this.getSession();
-      this.InitTransaction();
-      this.CommitTransaction();
+      this.initTransaction();
+      this.commitTransaction();
       Query query = this.getSession().createQuery(
         "from " + CrossCuttingContribution.class.getName() + " where project_id=" + projectID + " and is_active=1");
       list.addAll(query.list());
@@ -68,7 +68,7 @@ public class CrossCuttingContributionMySQLDAO extends StandardDao implements Cro
 
       return list;
     } catch (HibernateException e) {
-      this.RollBackTransaction();
+      this.rollBackTransaction();
     } finally
 
     {
