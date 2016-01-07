@@ -61,24 +61,16 @@ public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributio
 
   @Override
   public List<CrossCuttingContribution> getCrossCuttingContributionByProject(int projectID) {
-
     String sql =
       "from " + CrossCuttingContribution.class.getName() + " where project_id=" + projectID + " and is_active=1";
-
-    List<CrossCuttingContribution> list = dao.customFindAll(sql);
-
-    return list;
+    return dao.customFindAll(sql);
 
   }
 
   @Override
   public int save(CrossCuttingContribution projectHighlihts) {
     try {
-
-
       dao.saveOrUpdate(projectHighlihts);
-
-
       return projectHighlihts.getId();
     } catch (Exception e) {
       e.printStackTrace();
