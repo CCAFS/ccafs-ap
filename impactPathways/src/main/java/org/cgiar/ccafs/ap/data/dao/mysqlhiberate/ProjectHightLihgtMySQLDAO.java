@@ -48,7 +48,7 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
   @Override
   public boolean deleteHighLightsByProject(int projectID) {
     String query = "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1";
-    List<ProjectHighligths> list = dao.customFindAll(query);
+    List<ProjectHighligths> list = dao.findAll(query);
     boolean saved = true;
     for (ProjectHighligths projectHighligths : list) {
       projectHighligths.setIsActive(false);
@@ -79,7 +79,7 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
     String query = "from " + ProjectHighligthsCountry.class.getName() + " where project_highlights_id=" + highlighid
       + " and id_country=" + country;
 
-    List<ProjectHighligthsCountry> list = dao.customFindAll(query);
+    List<ProjectHighligthsCountry> list = dao.findAll(query);
     if (list.size() > 0) {
       return list.get(0);
     }
@@ -92,7 +92,7 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
     String query = "from " + ProjectHighligthsTypes.class.getName() + " where project_highlights_id=" + highlighid
       + " and id_type=" + type;
 
-    List<ProjectHighligthsTypes> list = dao.customFindAll(query);
+    List<ProjectHighligthsTypes> list = dao.findAll(query);
 
     if (list.size() > 0) {
       return list.get(0);
@@ -104,7 +104,7 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
   @Override
   public List<ProjectHighligths> getHighLightsByProject(int projectID) {
     String query = "from " + ProjectHighligths.class.getName() + " where project_id=" + projectID + " and is_active=1";
-    List<ProjectHighligths> list = dao.customFindAll(query);
+    List<ProjectHighligths> list = dao.findAll(query);
 
     return list;
 

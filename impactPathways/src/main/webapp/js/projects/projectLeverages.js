@@ -6,11 +6,14 @@ $(document).ready(init);
 function init() {
   // Set initial variables
   $elementsBlock = $('#leveragesBlock');
+  $budgetInputs = $('.budgetInput');
   leveragesName = $('#leveragesName').val();
   // Add events
   attachEvents();
   // Add JQuery Calendar widget to start dates and end dates
   setDatadatePicker();
+  // Active initial currency format to all inputs
+  $budgetInputs.attr("autocomplete", "off").trigger("focusout");
   // Validate justification event
   validateEvent([
     "#justification"
@@ -23,6 +26,19 @@ function attachEvents() {
   $('.removeElement').on('click', removeElement);
   // Add new next user event
   $('#addLeverage .addButton').on('click', addElement);
+
+  $budgetInputs.on("keydown", isNumber).on("focusout", setCurrency).on("focus", removeCurrency).on("click", function() {
+    $(this).select();
+  }).on("keyup", function(e) {
+    // any special calculation here
+  });
+
+  $("form").submit(function(event) {
+    $budgetInputs.each(function() {
+      $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
+    });
+    return;
+  });
 
 }
 
@@ -38,8 +54,9 @@ function addElement(e) {
   e.preventDefault();
   var $newElement = $('#leverage-template').clone(true).removeAttr("id");
   $elementsBlock.append($newElement.fadeIn("slow"));
-  $newElement.find('select').select2();
   setElementsIndexes();
+  $newElement.find('select').select2();
+  datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));
 }
 
 function setElementsIndexes() {
@@ -51,6 +68,12 @@ function setElementIndex(i,element) {
   $(element).find("span.index").html(i + 1);
 
   $(element).find(".leverageID").attr("name", name + "id");
+  $(element).find(".leverageTitle").attr("name", name + "title");
+  $(element).find(".institutionsList").attr("name", name + "institution");
+  $(element).find(".startDate").attr("name", name + "startDate").attr("id", name + "startDate");
+  $(element).find(".endDate").attr("name", name + "endDate").attr("id", name + "endDate");
+  $(element).find(".flagship").attr("name", name + "flagship");
+  $(element).find(".budget").attr("name", name + "budget");
 }
 
 function addSelect2() {
@@ -112,4 +135,24 @@ function datePickerConfig($startDate,$endDate) {
         }
       }
   });
+}
+
+/**
+ * Currency functions
+ */
+
+function setCurrency(event) {
+  var $input = $(event.target);
+  if($input.val().length == 0) {
+    $input.val("0");
+  }
+  $input.val(setCurrencyFormat($input.val()));
+}
+
+function removeCurrency(event) {
+  var $input = $(event.target);
+  $input.val(removeCurrencyFormat($input.val()));
+  if($input.val() == "0") {
+    $input.val("");
+  }
 }
