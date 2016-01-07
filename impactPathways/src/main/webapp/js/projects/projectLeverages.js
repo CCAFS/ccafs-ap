@@ -34,6 +34,7 @@ function attachEvents() {
   });
 
   $("form").submit(function(event) {
+    $budgetInputs = $('.budgetInput');
     $budgetInputs.each(function() {
       $(this).val(removeCurrencyFormat($(this).val())).attr("readonly", true);
     });
