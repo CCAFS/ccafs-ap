@@ -164,12 +164,12 @@
             [#assign key][@s.property value="${name}"/][/#assign]
             [#assign customValue][#if !stringKey][@s.property value="${listName}[${key}]"/][#else][@s.property value="${listName}['${key}']"/][/#if][/#assign]
             [#if customValue?has_content]
-                ${customValue}
-              [#else]
-                [#if !(key?has_content)]
-                  ${requiredText}   [@s.text name="form.values.fieldEmpty" /]
-                [/#if]
+              ${customValue}
+            [#else]
+              [#if !(key?has_content)]
+                ${requiredText}   [@s.text name="form.values.fieldEmpty" /]
               [/#if]
+            [/#if] 
           [#else]
             [#if name == ""]
               [#--@s.property value="${listName}[${value}].${displayFieldName}"/--]

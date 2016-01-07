@@ -172,7 +172,8 @@
 
     <div class="fullBlock">
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.year" label="" disabled=!canEdit i18nkey="reporting.projectCaseStudies.caseStudyYear" listName="allYears"  className="caseStudyYear" value="" editable=editable/]
+        [@customForm.select name="${customName}.year" label="" disabled=!canEdit i18nkey="reporting.projectCaseStudies.caseStudyYear" listName="allYears"  className="caseStudyYear" required=true editable=editable/]
+        [#if !editable]${(study.year)!}[/#if]
       </div>
       [#-- Upload Annexes --]
       <div class="halfPartBlock fileUpload uploadAnnexes">
@@ -184,11 +185,8 @@
           [#else]
             [#if editable]
               [@customForm.inputFile name="${customName}.myFile" className="annexesFile"  /]
-              
-             
             [#else]  
               <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
-              
             [/#if] 
           [/#if]
         </div>  
