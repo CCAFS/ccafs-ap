@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.OtherContributionsDAO;
 import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
-import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.OtherContributionsMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
@@ -47,11 +46,11 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   private CRPManager crpManager;
 
   @Inject
-  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO,
-    CRPManager crpManager) {
+  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO, CRPManager crpManager,
+    OtherContributionsDAO otherContributionsDAO) {
     this.ipOtherContributionDAO = ipOtherContributionDAO;
     this.crpManager = crpManager;
-    otherContributionsDAO = new OtherContributionsMySQLDAO();
+    this.otherContributionsDAO = otherContributionsDAO;
   }
 
   @Override

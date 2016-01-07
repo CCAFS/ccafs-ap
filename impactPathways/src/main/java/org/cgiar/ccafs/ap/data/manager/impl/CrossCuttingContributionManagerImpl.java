@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 
 import org.cgiar.ccafs.ap.data.dao.CrossCuttingContributionDAO;
-import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.CrossCuttingContributionMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
 import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -41,8 +40,8 @@ public class CrossCuttingContributionManagerImpl implements CrossCuttingContribu
 
 
   @Inject
-  public CrossCuttingContributionManagerImpl() {
-    crossCuttingContributionDAO = new CrossCuttingContributionMySQLDAO();
+  public CrossCuttingContributionManagerImpl(CrossCuttingContributionDAO crossCuttingContributionDAO) {
+    this.crossCuttingContributionDAO = crossCuttingContributionDAO;
 
 
   }
