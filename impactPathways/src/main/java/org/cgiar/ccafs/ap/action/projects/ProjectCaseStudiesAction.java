@@ -29,9 +29,11 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +55,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
   private String fileFileName;
   private ProjectCrossCuttingValidator validator;
 
-  private List<IPIndicator> caseStudyIndicators;
+  private Map<String, String> caseStudyIndicators;
   private int projectID;
   private List<Integer> allYears;
 
@@ -76,7 +78,8 @@ public class ProjectCaseStudiesAction extends BaseAction {
     return allYears;
   }
 
-  public List<IPIndicator> getCaseStudyIndicators() {
+
+  public Map<String, String> getCaseStudyIndicators() {
     return caseStudyIndicators;
   }
 
@@ -84,7 +87,6 @@ public class ProjectCaseStudiesAction extends BaseAction {
   private String getCaseStudyPath() {
     return config.getUploadsBaseFolder() + File.separator + this.getCaseStudyRelativePath() + File.separator;
   }
-
 
   private String getCaseStudyRelativePath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "caseStudy"
@@ -106,6 +108,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
     return fileFileName;
   }
 
+
   public Project getProject() {
     return project;
   }
@@ -117,7 +120,6 @@ public class ProjectCaseStudiesAction extends BaseAction {
   public ProjectManager getProjectManager() {
     return projectManager;
   }
-
 
   @Override
   public String next() {
@@ -153,14 +155,20 @@ public class ProjectCaseStudiesAction extends BaseAction {
     List<String> idsIndicators;
     Iterator<CaseStudieIndicators> iteratorIndicators;
     CaseStudieIndicators caseStudyIndicator;
+    List<IPIndicator> indicators;
     for (CasesStudies caseStudy : project.getCaseStudies()) {
       idsIndicators = new ArrayList<>();
+      indicators = new ArrayList<>();
+
       iteratorIndicators = caseStudy.getCaseStudieIndicatorses().iterator();
       while (iteratorIndicators.hasNext()) {
         caseStudyIndicator = iteratorIndicators.next();
-        idsIndicators.add(String.valueOf(caseStudyIndicator.getId()));
+        idsIndicators.add(String.valueOf(caseStudyIndicator.getIdIndicator()));
+        indicators.add(ipIndicatorMamager.getIndicator(caseStudyIndicator.getIdIndicator()));
+
       }
       caseStudy.setCaseStudyIndicatorsIds(idsIndicators);
+      caseStudy.setCaseStudyIndicators(indicators);
     }
 
     // Getting the Project lessons for this section.
@@ -169,7 +177,12 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
-    caseStudyIndicators = ipIndicatorMamager.getProjectIndicators(projectID);
+    List<IPIndicator> listIndicators = ipIndicatorMamager.getProjectIndicators(projectID);
+    caseStudyIndicators = new HashMap();
+    for (IPIndicator ipIndicator : listIndicators) {
+      caseStudyIndicators.put(String.valueOf(ipIndicator.getParent().getId()),
+        ipIndicator.getParent().getDescription());
+    }
 
     // Getting the last history
 
@@ -206,7 +219,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
   }
 
 
-  public void setCaseStudyIndicators(List<IPIndicator> caseStudyIndicators) {
+  public void setCaseStudyIndicators(Map<String, String> caseStudyIndicators) {
     this.caseStudyIndicators = caseStudyIndicators;
   }
 

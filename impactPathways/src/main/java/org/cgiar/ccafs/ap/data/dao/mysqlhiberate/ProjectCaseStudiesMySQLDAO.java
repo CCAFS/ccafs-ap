@@ -18,7 +18,6 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 import org.cgiar.ccafs.ap.data.dao.ProjectCaseStudiesDAO;
 import org.cgiar.ccafs.ap.data.model.CaseStudieIndicators;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
-import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 
 import java.util.Iterator;
 import java.util.List;
@@ -76,7 +75,7 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
     String query = "from " + CaseStudieIndicators.class.getName() + " where id_case_studie=" + caseStudieId
       + " and id_indicator=" + indicator;
 
-    List<CaseStudieIndicators> list = dao.customFindAll(query);
+    List<CaseStudieIndicators> list = dao.findAll(query);
     if (list.size() > 0) {
       return list.get(0);
     }
@@ -101,14 +100,31 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
       if (casesStudies.isIsActive()) {
 
         // Adding new CaseStudieIndicators
+        CaseStudieIndicators caseStudieIndicators;
+        CaseStudieIndicators existing;
         Iterator<CaseStudieIndicators> indicatorIndicator = casesStudies.getCaseStudieIndicatorses().iterator();
         while (indicatorIndicator.hasNext()) {
-          ProjectHighligthsTypes projectHighligthsTypes = indicatorIndicator.next();
-          ProjectHighligthsTypes existing = this.findProjectHighligthsTypes(
-            projectHighligthsTypes.getProjectHighligths().getId(), projectHighligthsTypes.getIdType());
+          caseStudieIndicators = indicatorIndicator.next();
+          existing = this.findCaseStudieIndicador(casesStudies.getId(), caseStudieIndicators.getIdIndicator());
+
           if (existing == null) {
-            projectHighligthsTypes.setId(null);
-            dao.saveOrUpdate(projectHighligthsTypes);
+            caseStudieIndicators.setId(null);
+            dao.saveOrUpdate(caseStudieIndicators);
+          }
+
+
+          // Removing CaseStudieIndicators do not select
+
+          // Deleting ProjectHighligthsTypes no selected
+          if (casesStudiesPrev != null) {
+            Iterator<CaseStudieIndicators> previousCaseStudieIndicatorsIterator =
+              casesStudiesPrev.getCaseStudieIndicatorses().iterator();
+            while (previousCaseStudieIndicatorsIterator.hasNext()) {
+              caseStudieIndicators = previousCaseStudieIndicatorsIterator.next();
+              if (!casesStudies.getCaseStudieIndicatorses().contains(caseStudieIndicators)) {
+                dao.delete(caseStudieIndicators);
+              }
+            }
           }
         }
       }

@@ -157,10 +157,10 @@
         <div class="checkboxGroup">
         [#if editable]
           [@s.fielderror cssClass="fieldError" fieldName="${customName}.caseStudyIndicatorsIds"/]
-          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${(study.caseStudyIndicatorsIds)!}" listKey="id" listValue="description"   cssClass="caseStudyIndicators checkbox" /]
+          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${(study.caseStudyIndicatorsIds)!}" itemKey="id"    cssClass="caseStudyIndicators checkbox" /]
         [#else]
-          [#if (study.caseStudyIndicatorsIds?has_content)!false]
-            [#list study.caseStudyIndicatorsIds as element]<p class="checked">${element.description}</p>[/#list]
+          [#if (study.caseStudyIndicators?has_content)!false]
+            [#list study.caseStudyIndicators as element]<p class="checked">${element.description}</p>[/#list]
           [#else]
             <div class="select"><p>Field is empty</p></div>
           [/#if]

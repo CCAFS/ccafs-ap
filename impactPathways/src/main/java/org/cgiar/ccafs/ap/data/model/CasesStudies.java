@@ -42,6 +42,7 @@ public class CasesStudies implements java.io.Serializable {
   private String modificationJustification;
   private File myFile;
   private List<String> caseStudyIndicatorsIds;
+  private List<IPIndicator> caseStudyIndicators;
 
 
   private String myFileFileName;
@@ -57,7 +58,6 @@ public class CasesStudies implements java.io.Serializable {
     this.projectId = projectId;
     this.isActive = isActive;
   }
-
 
   public CasesStudies(int projectId, String comment, String title, String outcomeStatement, String researchOutputs,
     String researchPatern, String activities, String nonResearchPartneres, String outputUsers, String evidenceOutcome,
@@ -93,22 +93,28 @@ public class CasesStudies implements java.io.Serializable {
     return this.activeSince;
   }
 
+
   public String getActivities() {
     return this.activities;
   }
 
+
   public Set<CaseStudieIndicators> getCaseStudieIndicatorses() {
     return this.caseStudieIndicatorses;
+  }
+
+  public List<IPIndicator> getCaseStudyIndicators() {
+    return caseStudyIndicators;
   }
 
   public List<String> getCaseStudyIndicatorsIds() {
     return caseStudyIndicatorsIds;
   }
 
-
   public String getComment() {
     return this.comment;
   }
+
 
   public Long getCreatedBy() {
     return this.createdBy;
@@ -204,6 +210,10 @@ public class CasesStudies implements java.io.Serializable {
 
   public void setCaseStudieIndicatorses(Set<CaseStudieIndicators> caseStudieIndicatorses) {
     this.caseStudieIndicatorses = caseStudieIndicatorses;
+  }
+
+  public void setCaseStudyIndicators(List<IPIndicator> caseStudyIndicators) {
+    this.caseStudyIndicators = caseStudyIndicators;
   }
 
   public void setCaseStudyIndicatorsIds(List<String> caseStudyIndicatorsIds) {
