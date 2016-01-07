@@ -18,13 +18,19 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 import org.cgiar.ccafs.ap.data.dao.CrossCuttingContributionDAO;
 import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import com.google.inject.Inject;
 
-public class CrossCuttingContributionMySQLDAO extends StandardDAO implements CrossCuttingContributionDAO {
+public class CrossCuttingContributionMySQLDAO implements CrossCuttingContributionDAO {
+
+
+  private StandardDAO dao;
+
+  @Inject
+  public CrossCuttingContributionMySQLDAO(StandardDAO dao) {
+    this.dao = dao;
+  }
 
   @Override
   public boolean deleteCrossCuttingContribution(int crossCuttingContributionID, int userID, String justification) {
@@ -49,42 +55,22 @@ public class CrossCuttingContributionMySQLDAO extends StandardDAO implements Cro
 
   @Override
   public CrossCuttingContribution find(int id) {
-    return (CrossCuttingContribution) this.find(CrossCuttingContribution.class, new Integer(id));
+    return dao.find(CrossCuttingContribution.class, new Integer(id));
   }
 
 
   @Override
   public List<CrossCuttingContribution> getCrossCuttingContributionByProject(int projectID) {
-    List<CrossCuttingContribution> list = new ArrayList<>();
+    String sql =
+      "from " + CrossCuttingContribution.class.getName() + " where project_id=" + projectID + " and is_active=1";
+    return dao.customFindAll(sql);
 
-    try {
-      this.getSession();
-      this.initTransaction();
-      this.commitTransaction();
-      Query query = this.getSession().createQuery(
-        "from " + CrossCuttingContribution.class.getName() + " where project_id=" + projectID + " and is_active=1");
-      list.addAll(query.list());
-
-
-      return list;
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
-    } finally
-
-    {
-      this.closeSession();
-    }
-    return null;
   }
 
   @Override
   public int save(CrossCuttingContribution projectHighlihts) {
     try {
-
-
-      super.saveOrUpdate(projectHighlihts);
-
-
+      dao.saveOrUpdate(projectHighlihts);
       return projectHighlihts.getId();
     } catch (Exception e) {
       e.printStackTrace();

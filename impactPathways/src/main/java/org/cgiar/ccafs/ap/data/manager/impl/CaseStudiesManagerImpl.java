@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 
 import org.cgiar.ccafs.ap.data.dao.ProjectCaseStudiesDAO;
-import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.ProjectCaseStudiesMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.User;
@@ -40,8 +39,8 @@ public class CaseStudiesManagerImpl implements CaseStudiesManager {
 
 
   @Inject
-  public CaseStudiesManagerImpl() {
-    caseStudyDAO = new ProjectCaseStudiesMySQLDAO();
+  public CaseStudiesManagerImpl(ProjectCaseStudiesDAO caseStudyDAO) {
+    this.caseStudyDAO = caseStudyDAO;
 
 
   }
