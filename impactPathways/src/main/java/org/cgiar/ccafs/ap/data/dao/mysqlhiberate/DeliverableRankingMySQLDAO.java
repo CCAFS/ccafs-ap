@@ -18,43 +18,33 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 import org.cgiar.ccafs.ap.data.dao.DeliverableRankingDAO;
 import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DeliverableRankingMySQLDAO extends StandardDAO implements DeliverableRankingDAO {
+public class DeliverableRankingMySQLDAO implements DeliverableRankingDAO {
 
   private static Logger LOG = LoggerFactory.getLogger(DeliverableRankingMySQLDAO.class);
 
+
+  private StandardDAO dao;
+
+  @Inject
+  public DeliverableRankingMySQLDAO(StandardDAO dao) {
+    this.dao = dao;
+  }
+
   @Override
   public DeliverablesRanking findDeliverableRanking(int deliverableId) {
-    List<DeliverablesRanking> listRanking = new ArrayList<>();
-
-    try {
-      this.getSession();
-      this.initTransaction();
-      this.commitTransaction();
-      Query query = this.getSession()
-        .createQuery("from " + DeliverablesRanking.class.getName() + " where deliverable_id=" + deliverableId);
-      listRanking.addAll(query.list());
 
 
-      if (listRanking.size() > 0) {
-        return listRanking.get(0);
-      }
-      return null;
-    } catch (HibernateException e) {
-      e.printStackTrace();
-      LOG.error("Exception DeliverablesRanking", e);
-      this.rollBackTransaction();
-    } finally
+    String sql = "from " + DeliverablesRanking.class.getName() + " where deliverable_id=" + deliverableId;
+    List<DeliverablesRanking> listRanking = dao.customFindAll(sql);
 
-    {
-      this.closeSession();
+    if (listRanking.size() > 0) {
+      return listRanking.get(0);
     }
     return null;
   }
@@ -62,7 +52,7 @@ public class DeliverableRankingMySQLDAO extends StandardDAO implements Deliverab
 
   @Override
   public int save(DeliverablesRanking ranking) {
-    this.saveOrUpdate(ranking);
+    dao.saveOrUpdate(ranking);
     return ranking.getId();
   }
 }
