@@ -18,10 +18,10 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 import org.cgiar.ccafs.ap.config.HibernateListener;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -37,56 +37,73 @@ public class StandardDAO {
 
   private Session session;
   private Transaction tx;
+  private SessionFactory sessionFactory;
 
+  public StandardDAO() {
+    this.sessionFactory =
+      (SessionFactory) ServletActionContext.getServletContext().getAttribute(HibernateListener.KEY_NAME);
+  }
+
+  /**
+   * This method closes the session to the database.
+   */
   private void closeSession() {
     // Close caches and connection pools
     session.close();
   }
 
-  protected void commitTransaction() {
+  /**
+   * This method commit the changes to hibernate table (in memory) but does not synchronize the changes to the database
+   * engine.
+   */
+  private void commitTransaction() {
     tx.commit();
   }
 
-  protected <T> List<T> customFindAll(String hibernateQuery) {
-
-    List<T> list = new ArrayList<T>();
+  /**
+   * @param hibernateQuery
+   * @return
+   */
+  protected <T> List<T> findAll(String hibernateQuery) {
     try {
       this.getSession();
       this.initTransaction();
       Query query = session.createQuery(hibernateQuery);
-      // query.l
-      list.addAll(query.list());
-      session.flush();
+      @SuppressWarnings("unchecked")
+      List<T> list = query.list();
       this.commitTransaction();
+      return list;
     } catch (HibernateException e) {
       this.rollBackTransaction();
       e.printStackTrace();
+      return null;
     } finally {
       this.closeSession();
     }
-    return list;
   }
 
-  protected void delete(Object obj) {
+  protected boolean delete(Object obj) {
     try {
       this.getSession();
       this.initTransaction();
       session.delete(obj);
       this.commitTransaction();
+      return true;
     } catch (HibernateException e) {
       this.rollBackTransaction();
       e.printStackTrace();
+      return false;
     } finally {
       this.closeSession();
     }
   }
 
-  protected <T> T find(Class clazz, Object id) {
+  protected <T> T find(Class<T> clazz, Object id) {
     T obj = null;
     try {
       this.getSession();
       this.initTransaction();
-      obj = (T) session.get(clazz, (Serializable) id);
+      obj = session.get(clazz, (Serializable) id);
       session.flush();
       this.commitTransaction();
     } catch (HibernateException e) {
@@ -99,10 +116,10 @@ public class StandardDAO {
   }
 
   private Session getSession() {
-    SessionFactory sessionFactory =
-      (SessionFactory) ServletActionContext.getServletContext().getAttribute(HibernateListener.KEY_NAME);
     if (session == null || !session.isOpen()) {
       session = sessionFactory.openSession();
+      // Calling flush when committing change.
+      session.setFlushMode(FlushMode.COMMIT);
     }
     return session;
   }

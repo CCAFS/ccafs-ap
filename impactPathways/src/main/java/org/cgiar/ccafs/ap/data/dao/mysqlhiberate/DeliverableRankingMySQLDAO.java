@@ -38,7 +38,7 @@ public class DeliverableRankingMySQLDAO implements DeliverableRankingDAO {
   @Override
   public DeliverablesRanking findDeliverableRanking(int deliverableId) {
     String sql = "from " + DeliverablesRanking.class.getName() + " where deliverable_id=" + deliverableId;
-    List<DeliverablesRanking> listRanking = dao.customFindAll(sql);
+    List<DeliverablesRanking> listRanking = dao.findAll(sql);
     if (listRanking.size() > 0) {
       return listRanking.get(0);
     }

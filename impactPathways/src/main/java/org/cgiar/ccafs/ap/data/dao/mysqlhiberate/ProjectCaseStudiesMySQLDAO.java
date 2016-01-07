@@ -43,7 +43,7 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
   @Override
   public boolean deleteCaseStudiesByProject(int projectID) {
     String query = "from " + CasesStudies.class.getName() + " where project_id=" + projectID + " and is_active=1";
-    List<CasesStudies> list = dao.customFindAll(query);
+    List<CasesStudies> list = dao.findAll(query);
     boolean save = true;
     for (CasesStudies projectHighligths : list) {
       projectHighligths.setIsActive(false);
@@ -72,7 +72,7 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
   @Override
   public List<CasesStudies> getCaseStudiesByProject(int projectID) {
     String query = "from " + CasesStudies.class.getName() + " where project_id=" + projectID + " and is_active=1";
-    return dao.customFindAll(query);
+    return dao.findAll(query);
   }
 
   @Override

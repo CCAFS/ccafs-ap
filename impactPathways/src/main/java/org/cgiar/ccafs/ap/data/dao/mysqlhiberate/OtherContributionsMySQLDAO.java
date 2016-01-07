@@ -59,7 +59,7 @@ public class OtherContributionsMySQLDAO implements OtherContributionsDAO {
   @Override
   public List<OtherContributions> getOtherContributionsByProject(int projectID) {
     String query = "from " + OtherContributions.class.getName() + " where project_id=" + projectID + " and is_active=1";
-    return dao.customFindAll(query);
+    return dao.findAll(query);
   }
 
   @Override
