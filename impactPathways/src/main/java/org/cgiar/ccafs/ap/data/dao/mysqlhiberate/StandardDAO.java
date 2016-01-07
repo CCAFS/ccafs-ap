@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.config.HibernateListener;
 import java.io.Serializable;
 import java.util.List;
 
+import com.google.inject.Singleton;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
@@ -32,8 +33,8 @@ import org.hibernate.Transaction;
  * @author Christian David García O. - CIAT/CCAFS
  * @author Héctor F. Tobón R. - CIAT/CCAFS
  */
+@Singleton
 public class StandardDAO {
-
 
   private Session session;
   private Transaction tx;
@@ -61,12 +62,67 @@ public class StandardDAO {
   }
 
   /**
-   * @param hibernateQuery
-   * @return
+   * This method deletes a record from the database.
+   * 
+   * @param obj is a persistence instance from the database model.
+   * @return true if the record was successfully deleted, false otherwhise.
+   */
+  protected boolean delete(Object obj) {
+    try {
+      this.openSession();
+      this.initTransaction();
+      session.delete(obj);
+      this.commitTransaction();
+      return true;
+    } catch (HibernateException e) {
+      this.rollBackTransaction();
+      e.printStackTrace();
+      return false;
+    } finally {
+      session.flush(); // Flushing the changes always.
+      this.closeSession();
+    }
+  }
+
+  /**
+   * This method finds a specific record from the database and transform it to a database model object.
+   * 
+   * @param clazz represents the class of the database model object.
+   * @param id is the record identifier.
+   * @return the object populated.
+   */
+  protected <T> T find(Class<T> clazz, Object id) {
+    T obj = null;
+    try {
+      this.openSession();
+      this.initTransaction();
+      obj = session.get(clazz, (Serializable) id);
+      this.commitTransaction();
+    } catch (HibernateException e) {
+      this.rollBackTransaction();
+      e.printStackTrace();
+    } finally {
+      session.flush(); // Flushing the changes always.
+      this.closeSession();
+    }
+    return obj;
+  }
+
+  /**
+   * This method make a query that returns a list of objects from the model.
+   * This method was implemented in a generic way, so, the list of objects to be returned will depend on how the method
+   * is being called.
+   * e.g:
+   * List<SomeObject> list = this.findAll("some hibernate query");
+   * or
+   * this.<SomeObject>findAll("some hibernate query");
+   * 
+   * @param hibernateQuery is a string representing an HQL query.
+   * @return a list of <T> objects.
    */
   protected <T> List<T> findAll(String hibernateQuery) {
     try {
-      this.getSession();
+      this.openSession();
       this.initTransaction();
       Query query = session.createQuery(hibernateQuery);
       @SuppressWarnings("unchecked")
@@ -78,44 +134,25 @@ public class StandardDAO {
       e.printStackTrace();
       return null;
     } finally {
+      session.flush(); // Flushing the changes always.
       this.closeSession();
     }
   }
 
-  protected boolean delete(Object obj) {
-    try {
-      this.getSession();
-      this.initTransaction();
-      session.delete(obj);
-      this.commitTransaction();
-      return true;
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
-      e.printStackTrace();
-      return false;
-    } finally {
-      this.closeSession();
-    }
+  /**
+   * This method initializes a transaction.
+   */
+  private void initTransaction() {
+    tx = session.beginTransaction();
   }
 
-  protected <T> T find(Class<T> clazz, Object id) {
-    T obj = null;
-    try {
-      this.getSession();
-      this.initTransaction();
-      obj = session.get(clazz, (Serializable) id);
-      session.flush();
-      this.commitTransaction();
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
-      e.printStackTrace();
-    } finally {
-      this.closeSession();
-    }
-    return obj;
-  }
 
-  private Session getSession() {
+  /**
+   * This method opens a session to the database.
+   * 
+   * @return a Session object.
+   */
+  private Session openSession() {
     if (session == null || !session.isOpen()) {
       session = sessionFactory.openSession();
       // Calling flush when committing change.
@@ -124,26 +161,32 @@ public class StandardDAO {
     return session;
   }
 
-
-  private void initTransaction() {
-    tx = session.beginTransaction();
-  }
-
+  /**
+   * This method tries to roll back the changes in case they were not flushed.
+   */
   private void rollBackTransaction() {
     tx.rollback();
   }
 
-  protected void saveOrUpdate(Object obj) {
+  /**
+   * This method saves or update a record into the database.
+   * 
+   * @param obj is the Object to be saved/updated.
+   * @return true if the the save/updated was successfully made, false otherwhise.
+   */
+  protected boolean saveOrUpdate(Object obj) {
     try {
-      this.getSession();
+      this.openSession();
       this.initTransaction();
       session.saveOrUpdate(obj);
-      session.flush();
       this.commitTransaction();
+      return true;
     } catch (HibernateException e) {
       this.rollBackTransaction();
       e.printStackTrace();
+      return false;
     } finally {
+      session.flush();
       this.closeSession();
     }
   }

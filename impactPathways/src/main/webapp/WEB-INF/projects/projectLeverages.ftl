@@ -137,7 +137,12 @@
         [@customForm.select name="${customName}.flagship" className="flagship" label="" i18nkey="reporting.projectLeverages.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
       </div>   
       <div class="halfPartBlock">
-        [@customForm.input name="${customName}.budget" className="budget budgetInput" value="${(element.budget)!0}"  type="text" i18nkey="reporting.projectLeverages.budget" required=true editable=editable /]
+        <h6> [@s.text name="reporting.projectLeverages.budget" /]: [@customForm.req required=true /]</h6>
+        [#if editable]
+          [@customForm.input name="${customName}.budget" className="budget budgetInput" showTitle=false value="${(element.budget)!0}"  type="text" i18nkey="" required=true editable=editable /]
+        [#else]
+          <div class="input"><p>US$ ${((element.budget)!0)?number?string(",##0.00")}</p></div>
+        [/#if]
       </div>
     </div>
     

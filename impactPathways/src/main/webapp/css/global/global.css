@@ -3484,6 +3484,16 @@ font-style: italic;
   padding-top: 35px;
 }
 
+.caseStudyIndicators {}
+.caseStudyIndicators input{
+  width: 2%;
+  margin-top: 7px;
+}
+.caseStudyIndicators label{
+  width: 96% !important;
+  padding-bottom: 4px;
+}
+
 #addCaseStudy {
   text-align: right;
   margin-bottom: 40px;
