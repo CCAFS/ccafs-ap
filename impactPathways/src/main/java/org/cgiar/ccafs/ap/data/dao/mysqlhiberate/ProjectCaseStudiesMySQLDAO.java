@@ -37,7 +37,7 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
     project.setIsActive(false);
     project.setModifiedBy(new Long(userID));
     project.setModificationJustification(justification);
-    return this.save(project) == 1;
+    return this.save(project) == 1; // TODO To Review
   }
 
   @Override
@@ -47,7 +47,7 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
     boolean save = true;
     for (CasesStudies projectHighligths : list) {
       projectHighligths.setIsActive(false);
-      if (this.save(projectHighligths) == -1) {
+      if (this.save(projectHighligths) == -1) { // TODO To review
         save = false;
       }
     }
@@ -78,12 +78,12 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
   @Override
   public int save(CasesStudies casesStudies) {
     try {
-      CasesStudies casesStudiesPrev = null;
+      CasesStudies casesStudiesPrev = null; // TODO To review
       if (casesStudies.getId() != null) {
         casesStudiesPrev = this.find(casesStudies.getId());
       }
       dao.saveOrUpdate(casesStudies);
-      return casesStudies.getId();
+      return casesStudies.getId(); // TODO To review
     } catch (Exception e) {
       return -1;
     }
