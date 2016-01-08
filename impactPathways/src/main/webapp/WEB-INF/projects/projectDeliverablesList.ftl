@@ -4,7 +4,7 @@
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectDeliverablesList.js"] /]
 [#assign currentSection = "planning" /]
-[#assign currentPlanningSection = "projects" /]
+[#assign currentCycleSection = "projects" /]
 [#assign currentStage = "outputs" /]
 [#assign currentSubStage = "deliverables" /]
 

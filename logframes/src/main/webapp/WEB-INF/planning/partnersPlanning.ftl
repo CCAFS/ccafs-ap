@@ -4,7 +4,7 @@
 [#assign customJS = ["${baseUrl}/js/planning/partnersPlanning.js", "${baseUrl}/js/global/utils.js"] /]
 [#assign customCSS = [""] /]
 [#assign currentSection = "planning" /]
-[#assign currentPlanningSection = "partners" /]
+[#assign currentCycleSection = "partners" /]
 [#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

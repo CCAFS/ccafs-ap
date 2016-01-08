@@ -3,7 +3,7 @@
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
 [#assign currentSection = "planning" /]
-[#assign currentPlanningSection = "projects" /]
+[#assign currentCycleSection = "projects" /]
 [#assign currentStage = "submit" /]
 
 [#assign breadCrumb = [

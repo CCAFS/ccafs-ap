@@ -3,7 +3,7 @@
 [#assign globalLibs =["jquery", "noty","googleMaps"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectLocations.js"] /]
 [#assign currentSection = cycleName?lower_case /]
-[#assign currentPlanningSection = "projects" /]
+[#assign currentCycleSection = "projects" /]
 [#assign currentStage = "description" /]
 [#assign currentSubStage = "locations" /]
 

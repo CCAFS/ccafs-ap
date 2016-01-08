@@ -3,7 +3,7 @@
 [#assign globalLibs = ["jquery", "noty"] /]
 [#assign customJS = ["${baseUrl}/js/planning/deliverablesPlanning.js"] /]
 [#assign currentSection = "planning" /]
-[#assign currentPlanningSection = "deliverables" /]
+[#assign currentCycleSection = "deliverables" /]
 [#assign userRole = "${currentUser.role}"]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

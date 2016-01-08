@@ -3,7 +3,7 @@
 [#assign globalLibs = ["jquery", "noty", "select2", "cytoscape", "qtip","cytoscapePanzoom"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/ipGraph.js", "${baseUrl}/js/projects/projectCrossCutting.js"] /]
 [#assign currentSection = cycleName?lower_case /]
-[#assign currentPlanningSection = "projects" /]
+[#assign currentCycleSection = "projects" /]
 [#assign currentStage = "outcomes" /] 
 [#assign currentSubStage = "crossCutting" /]
 

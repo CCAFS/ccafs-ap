@@ -4,66 +4,65 @@
 	  <ul>
 	    [#if logged]
 	      [#-- Home element --]
-	      <a href="${baseUrl}/">
-	        <li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>
+        <li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>
+  	      <a href="${baseUrl}/">
 	         <span class="icon"><img class="icon-15" src="${baseUrl}/images/global/icon-home-menu-selected.png" /></span>
 	         <span class="text">[@s.text name="menu.home" /]</span>
-	        </li>
-	      </a>
+  	      </a>
+        </li>
 	      
-	      [#-- P&R Overview --]
-        <a href="${baseUrl}/overview.do">
-          <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
+        [#-- P&R Overview --]
+        <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
+          <a href="${baseUrl}/overview.do">
             <span class="text">[@s.text name="menu.overview" /]</span>
-          </li>
-        </a>
-	      
-	      [#-- PRE-Planning section --]
-	      [#if securityContext.FPL || securityContext.RPL || securityContext.ML || securityContext.CU || securityContext.admin ]
-	        [#if preplanningActive ]
-  	          <a  href="[@s.url namespace="/pre-planning" action='intro'/]">
-	        [#else]
-	          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
-	        [/#if]
-	          <li [#if currentSection?? && currentSection == "preplanning"] class="currentSection" [/#if]>[@s.text name="menu.preplanning" /]</li>
-	        </a>
-	      [/#if]
-	      
-	      [#-- Planning section --]
-        [#if planningActive ]               
-          <a  href="[@s.url namespace="/planning" action='projectsList'/]">
-        [#else]
-          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
+          </a>
+        </li>
+       
+        [#-- PRE-Planning section --]
+        [#if securityContext.FPL || securityContext.RPL || securityContext.ML || securityContext.CU || securityContext.admin ]
+        <li [#if currentSection?? && currentSection == "preplanning"] class="currentSection" [/#if]>
+          <a [#if preplanningActive ]href="[@s.url namespace="/pre-planning" action='intro'/]">[#else]href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">[/#if]
+            [@s.text name="menu.preplanning" /]
+          </a>
+        </li>
         [/#if]
-          <li [#if currentSection?? && currentSection == "planning"] class="currentSection" [/#if]>[@s.text name="menu.planning" /]</li>
-        </a>
+       
+        [#-- Planning section --]
+        <li [#if currentSection?? && currentSection == "planning"] class="currentSection" [/#if]>
+          <a [#if planningActive ]href="[@s.url namespace="/planning" action='projectsList'/]">[#else]href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">[/#if]
+          [@s.text name="menu.planning" /]</a>
+        </li>
 	      
 	      [#-- Reporting section --]
-        [#if reportingActive ]               
-          <a href="${baseUrl}/reporting/projectsList.do" >
-        [#else]
-          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
-        [/#if]
-          <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>[@s.text name="menu.reporting" /]</li>
-        </a>      
-	     
+	      <li [#if currentSection?? && currentSection == "reporting"] class="currentSection" [/#if]>
+          <a [#if reportingActive ]href="${baseUrl}/reporting/projectsList.do"[#else]]href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled"[/#if]>
+            [@s.text name="menu.reporting" /]
+          </a>
+          <ul class="subMenu">
+            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "projects"] class="currentSection" [/#if] >
+              <a href="[#if reportingActive ]${baseUrl}/reporting/projectsList.do[/#if]">Projects</a>
+            </li>
+            <li><a href="">CRP Indicators</a></li>
+            <li><a href="">Outcome Synthesis</a></li>
+            <li><a href="">Synthesis by MOG</a></li>
+            <li><a href="">Project Evaluation</a></li>
+          </ul>
+        </li>
+              
 	      [#-- Summaries section --]
-        [#if summariesActive ]
-          <a href="${baseUrl}/summaries/board.do" /]" >
-              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
+        <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>
+          <a [#if summariesActive ]href="${baseUrl}/summaries/board.do" /]"[#else]href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled"[/#if]>
+            [@s.text name="menu.summaries" /]
           </a>
-        [#else]
-          <a href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled">
-              <li [#if currentSection?? && currentSection == "summaries"]class="currentSection"[/#if]>[@s.text name="menu.summaries" /]</li>
-          </a>
-        [/#if]
+        </li>
 	      
 	      [#-- P&R Help --]
-        <a href="${baseUrl}/help.do">
-          <li [#if currentSection?? && currentSection == "help"] class="currentSection" [/#if]>
+        <li [#if currentSection?? && currentSection == "help"] class="currentSection" [/#if]>
+          <a href="${baseUrl}/help.do">
             <span class="text">[@s.text name="menu.help" /]</span>
-          </li>
-        </a>
+          </a>
+        </li>
+        
 	      [#-- Admin section --]
 	      [#--
 	      [#if securityContext.admin ]
@@ -74,20 +73,19 @@
 	      --]
 	    [#else]
 	      [#-- If the user is not logged show the login element in menu --]
-	      <a href="${baseUrl}/"><li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>[@s.text name="menu.login" /]</li></a>
+	      <li [#if currentSection?? && currentSection == "home"] class="currentSection" [/#if]>
+  	      <a href="${baseUrl}/">[@s.text name="menu.login" /]</a>
+	      </li>
 
 	      [#-- P&R Overview --]
-        <a href="${baseUrl}/overview.do">
-          <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
-            <span class="text">[@s.text name="menu.overview" /]</span>
-          </li>
-        </a>
+        <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
+          <a href="${baseUrl}/overview.do"><span class="text">[@s.text name="menu.overview" /]</span></a>
+        </li>
+        
         [#-- P&R Help --]
-        <a href="${baseUrl}/help.do">
-          <li [#if currentSection?? && currentSection == "help"] class="currentSection" [/#if]>
-            <span class="text">[@s.text name="menu.help" /]</span>
-          </li>
-        </a>
+        <li [#if currentSection?? && currentSection == "help"] class="currentSection" [/#if]>
+          <a href="${baseUrl}/help.do"><span class="text">[@s.text name="menu.help" /]</span></a>
+        </li>
 	      
 	    [/#if]
 	  </ul>

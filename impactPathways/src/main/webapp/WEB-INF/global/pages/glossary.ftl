@@ -3,7 +3,7 @@
 [#assign title = "Glossary" /]
 [#assign globalLibs = ["jquery", "noty"] /]
 [#assign currentSection = "home" /]
-[#assign currentPlanningSection = "glossary" /]
+[#assign currentCycleSection = "glossary" /]
 [#assign currentStage = "glossary" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

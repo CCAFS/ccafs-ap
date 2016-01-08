@@ -1226,23 +1226,31 @@ nav#mainMenu.positionFixedTop ul{
 } 
 
 nav#mainMenu.positionFixedTop ul li {
-  padding: 16px 24px 010px 23px; 
+  padding: 16px 0 10px 0;
+}
+
+nav#mainMenu.positionFixedTop ul li ul.subMenu {
+  top:43px !important;
 }
 
 
 nav#mainMenu ul{
   list-style-type: none;
   padding: 19px 0px;
-} 
-nav#mainMenu ul a{
+}
+
+nav#mainMenu ul a{ 
  text-decoration: none;
+ padding: 0px 24px;
+ color: #fff;
 } 
 
-nav#mainMenu ul li {
-  display: inline; 
-  padding: 16px 24px 19px 23px; 
+nav#mainMenu ul li{
+  display: inline;
+  padding: 16px 0px 19px 0px; 
   margin: -1px;
   color: #FFFFFF;
+  position: relative;
 }
 
 nav#mainMenu ul li:hover {
@@ -1257,7 +1265,41 @@ nav#mainMenu ul li.currentSection {
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-nav#mainMenu ul a.disabled li{
+nav#mainMenu ul li ul.subMenu {
+  display:none; 
+}
+nav#mainMenu ul li ul.subMenu:hover {
+  display:block; 
+}
+
+nav#mainMenu ul li ul.subMenu li {
+   display:block;
+   padding: 6px 5px;
+   margin: 0 5px;
+   font-weight: normal;
+   font-size: 0.86em;
+   border-top: 1px solid #267898;
+}
+
+nav#mainMenu ul li ul.subMenu li a{
+  
+padding: 0 5px;
+}
+
+nav#mainMenu ul li:hover ul.subMenu{
+ z-index: 10;
+ display:block;
+ width: 200px;
+ background: #23718F;
+ position: absolute;
+ top: 57px;
+ left: 0;
+ padding: 6px 0px;
+ box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+ opacity: 0.95;
+}
+
+nav#mainMenu ul li a.disabled{
   color: #5FAAC7;
 }
 /*************** BREADCRUMB NAVIGATION ***********/

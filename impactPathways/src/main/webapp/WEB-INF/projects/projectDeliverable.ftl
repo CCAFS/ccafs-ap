@@ -3,7 +3,7 @@
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen", "star-rating", "dropzone"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/usersManagement.js", "${baseUrl}/js/projects/projectDeliverables.js"] /]
 [#assign currentSection = cycleName?lower_case /]
-[#assign currentPlanningSection = "projects" /]
+[#assign currentCycleSection = "projects" /]
 [#assign currentStage = "outputs" /]
 [#assign currentSubStage = "deliverables" /]
 
