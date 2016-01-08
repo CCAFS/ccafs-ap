@@ -40,12 +40,20 @@
           </a>
           <ul class="subMenu">
             <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "projects"] class="currentSection" [/#if] >
-              <a href="[#if reportingActive ]${baseUrl}/reporting/projectsList.do[/#if]">Projects</a>
+              <a href="[#if reportingActive]${baseUrl}/reporting/projectsList.do[/#if]" class="[#if !reportingActive]disabled[/#if]">Projects</a>
             </li>
-            <li><a href="">CRP Indicators</a></li>
-            <li><a href="">Outcome Synthesis</a></li>
-            <li><a href="">Synthesis by MOG</a></li>
-            <li><a href="">Project Evaluation</a></li>
+            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "crpIndicators"] class="currentSection" [/#if] >
+              <a href="" class="[#if !reportingActive]disabled[/#if]">CRP Indicators</a>
+            </li>
+            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "outcomeSynthesis"] class="currentSection" [/#if] >
+              <a href="" class="disabled">Outcome Synthesis</a>
+            </li>
+            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "synthesisByMog"] class="currentSection" [/#if] >
+              <a href="" class="disabled">Synthesis by MOG</a>
+            </li>
+            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "projectEvaluation"] class="currentSection" [/#if] >
+              <a href="" class="disabled">Project Evaluation</a>
+            </li> 
           </ul>
         </li>
               
