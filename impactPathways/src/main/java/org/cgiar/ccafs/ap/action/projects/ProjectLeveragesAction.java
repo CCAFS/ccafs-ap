@@ -15,16 +15,16 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.CasesStudies;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.io.File;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -39,59 +39,46 @@ public class ProjectLeveragesAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-  private CaseStudiesManager caseStudieManager;
   private ProjectManager projectManager;
-
-
-  private File file;
-  private String fileFileName;
-  private ProjectCrossCuttingValidator validator;
-
+  private InstitutionManager institutionManager;
+  private IPProgramManager ipProgramManager;
 
   private int projectID;
-  private List<Integer> allYears;
-
-
   private Project project;
+  private List<Institution> allInstitutions;
+  private List<IPProgram> ipProgramFlagships;
 
   @Inject
-  public ProjectLeveragesAction(APConfig config, ProjectManager projectManager, CaseStudiesManager crossManager,
-    HistoryManager historyManager, ProjectCrossCuttingValidator validator) {
+  public ProjectLeveragesAction(APConfig config, ProjectManager projectManager, HistoryManager historyManager,
+    ProjectCrossCuttingValidator validator, InstitutionManager institutionManager, IPProgramManager ipProgramManager) {
     super(config);
-    this.validator = validator;
-    this.caseStudieManager = crossManager;
     this.projectManager = projectManager;
-
+    this.institutionManager = institutionManager;
+    this.ipProgramManager = ipProgramManager;
   }
 
-
-  public List<Integer> getAllYears() {
-    return allYears;
+  public List<Institution> getAllInstitutions() {
+    return allInstitutions;
   }
 
-
-  private String getCaseStudyPath() {
-    return config.getUploadsBaseFolder() + File.separator + this.getCaseStudyRelativePath() + File.separator;
+  /**
+   * This method returns a composed name with the Acronym and Name.
+   * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
+   * 
+   * @param ipProgramId is the program identifier.
+   * @return the composed name described above.
+   */
+  public String getComposedName(int ipProgramId) {
+    for (IPProgram p : ipProgramFlagships) {
+      if (p.getId() == ipProgramId) {
+        return p.getAcronym() + ": " + p.getName();
+      }
+    }
+    return null;
   }
 
-
-  private String getCaseStudyRelativePath() {
-    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "caseStudy"
-      + File.separator;
-  }
-
-
-  public String getCaseStudyURL() {
-    return config.getDownloadURL() + "/" + this.getCaseStudyRelativePath().replace('\\', '/');
-  }
-
-
-  public File getFile() {
-    return file;
-  }
-
-  public String getFileFileName() {
-    return fileFileName;
+  public List<IPProgram> getIpProgramFlagships() {
+    return ipProgramFlagships;
   }
 
   public Project getProject() {
@@ -102,11 +89,13 @@ public class ProjectLeveragesAction extends BaseAction {
     return projectID;
   }
 
-
   public ProjectManager getProjectManager() {
     return projectManager;
   }
 
+  public String getProjectRequest() {
+    return APConstants.PROJECT_REQUEST_ID;
+  }
 
   @Override
   public String next() {
@@ -123,62 +112,23 @@ public class ProjectLeveragesAction extends BaseAction {
   public void prepare() throws Exception {
     super.prepare();
 
-
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
 
-    // Getting all years from project
-    allYears = project.getAllYears();
+    // Getting the list of all institutions
+    allInstitutions = institutionManager.getAllInstitutions();
 
-    // Getting the Project lessons for this section.
-    int evaluatingYear = 0;
-    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
-      evaluatingYear = this.getCurrentReportingYear();
-    } else {
-      evaluatingYear = this.getCurrentPlanningYear();
-    }
-
-    project.setCaseStudies(caseStudieManager.getCaseStudysByProject(projectID));
-    // Getting the Project lessons for this section.
-    this.setProjectLessons(
-      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
+    // Getting the information of the Flagships program for the View
+    ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
-
-
-    // Getting the last history
-
   }
 
 
   @Override
   public String save() {
-
-    this.saveProjectLessons(project.getId());
-    for (CasesStudies caseStudie : project.getCaseStudies()) {
-
-      if (caseStudie.getMyFile() != null) {
-        FileManager.deleteFile(this.getCaseStudyPath() + caseStudie.getFile());
-        FileManager.copyFile(caseStudie.getMyFile(), this.getCaseStudyPath() + caseStudie.getMyFileFileName());
-        caseStudie.setFile(caseStudie.getMyFileFileName());
-      }
-      caseStudie.setIsActive(true);
-      // caseStudie.setYear(this.getCurrentReportingYear());
-      caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
-    }
-
     return SUCCESS;
-  }
-
-
-  public void setFile(File file) {
-    this.file = file;
-  }
-
-
-  public void setFileFileName(String fileFileName) {
-    this.fileFileName = fileFileName;
   }
 
   public void setProject(Project project) {
@@ -188,7 +138,6 @@ public class ProjectLeveragesAction extends BaseAction {
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
-
 
   public void setProjectManager(ProjectManager projectManager) {
     this.projectManager = projectManager;

@@ -171,6 +171,7 @@
     </div>
 
     <div class="fullBlock">
+      [#-- Year --]
       <div class="halfPartBlock">
         [@customForm.select name="${customName}.year" label="" disabled=!canEdit i18nkey="reporting.projectCaseStudies.caseStudyYear" listName="allYears"  className="caseStudyYear" required=true editable=editable/]
         [#if !editable]${(study.year)!}[/#if]
@@ -189,7 +190,7 @@
               <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
             [/#if] 
           [/#if]
-        </div>  
+        </div>
       </div>
     </div>
     

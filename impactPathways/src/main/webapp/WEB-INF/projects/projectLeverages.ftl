@@ -60,6 +60,13 @@
       <div id="addLeverage"><a href="" class="addButton" >[@s.text name="reporting.projectLeverages.addLeverage" /]</a></div> 
     [/#if]
     
+    <p id="addPartnerText" class="helpMessage">
+      [@s.text name="preplanning.projectPartners.addPartnerMessage.first" /]
+      <a class="popup" href="[@s.url action='partnerSave'][@s.param name='${projectRequest}']${project.id?c}[/@s.param][/@s.url]">
+        [@s.text name="preplanning.projectPartners.addPartnerMessage.second" /]
+      </a>
+    </p>
+    
     [#if (editable && canEdit)] 
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
@@ -134,7 +141,7 @@
     [#-- Flagship and Budget --]
     <div class="fullPartBlock clearfix"> 
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.flagship" className="flagship" label="" i18nkey="reporting.projectLeverages.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+        [@customForm.select name="${customName}.flagship" className="flagship" label="" i18nkey="reporting.projectLeverages.flagship" listName="ipProgramFlagships" keyFieldName="id"  displayFieldName="getComposedName()" required=true editable=editable /]
       </div>   
       <div class="halfPartBlock">
         <h6> [@s.text name="reporting.projectLeverages.budget" /]: [@customForm.req required=true /]</h6>

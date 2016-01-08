@@ -12,6 +12,8 @@ function init() {
   attachEvents();
   // Add JQuery Calendar widget to start dates and end dates
   setDatadatePicker();
+  // Popup for partners
+  popups();
   // Active initial currency format to all inputs
   $budgetInputs.attr("autocomplete", "off").trigger("focusout");
   // Validate justification event
