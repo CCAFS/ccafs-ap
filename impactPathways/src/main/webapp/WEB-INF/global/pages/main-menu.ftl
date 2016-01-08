@@ -43,7 +43,7 @@
               <a href="[#if reportingActive]${baseUrl}/reporting/projectsList.do[/#if]" class="[#if !reportingActive]disabled[/#if]">Projects</a>
             </li>
             <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "crpIndicators"] class="currentSection" [/#if] >
-              <a href="" class="[#if !reportingActive]disabled[/#if]">CRP Indicators</a>
+              <a href="[#if reportingActive]${baseUrl}/reporting/crpIndicators.do[/#if]" class="[#if !reportingActive]disabled[/#if]">CRP Indicators</a>
             </li>
             <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "outcomeSynthesis"] class="currentSection" [/#if] >
               <a href="" class="disabled">Outcome Synthesis</a>

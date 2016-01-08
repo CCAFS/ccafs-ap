@@ -42,15 +42,6 @@ public class EditProjectInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = -2202897612842611068L;
 
-  private SecurityContext securityContext;
-  private ProjectManager projectManager;
-
-  @Inject
-  public EditProjectInterceptor(SecurityContext securityContext, ProjectManager projectManager) {
-    this.securityContext = securityContext;
-    this.projectManager = projectManager;
-  }
-
   public static void setPermissionParameters(ActionInvocation invocation, SecurityContext securityContext,
     ProjectManager projectManager) {
     BaseAction baseAction = (BaseAction) invocation.getAction();
@@ -63,7 +54,8 @@ public class EditProjectInterceptor extends AbstractInterceptor {
     boolean canEditProject = false, hasPermissionToEdit = false;
 
     if (!actionName.equals("projectsList") && !actionName.equals("addNewCoreProject")
-      && !actionName.equals("addNewBilateralProject") && !actionName.equals("addCoFundedProject")) {
+      && !actionName.equals("addNewBilateralProject") && !actionName.equals("addCoFundedProject")
+      && !actionName.equals("crpIndicators")) {
       // First, check if the user can edit the project
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
@@ -77,8 +69,8 @@ public class EditProjectInterceptor extends AbstractInterceptor {
         // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
         List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
         // Projects wont be able to edit the project if the project has been already submitted.
-        if ((projectsEditable.contains(new Integer(projectID)) && securityContext.canEditProjectPlanningSection(
-          actionName, projectID))) {
+        if ((projectsEditable.contains(new Integer(projectID))
+          && securityContext.canEditProjectPlanningSection(actionName, projectID))) {
           if (submission == null) {
             canEditProject = true;
           }
@@ -115,6 +107,16 @@ public class EditProjectInterceptor extends AbstractInterceptor {
     // Set the variable that indicates if the user can edit the section
     baseAction.setEditableParameter(hasPermissionToEdit && canEditProject);
     baseAction.setCanEdit(canEditProject);
+  }
+
+  private SecurityContext securityContext;
+
+  private ProjectManager projectManager;
+
+  @Inject
+  public EditProjectInterceptor(SecurityContext securityContext, ProjectManager projectManager) {
+    this.securityContext = securityContext;
+    this.projectManager = projectManager;
   }
 
   @Override

@@ -10,6 +10,10 @@
       <result name="input">/WEB-INF/projects/projectsList.ftl</result>
     </action>
     
+    <action name="crpIndicators" class="org.cgiar.ccafs.ap.action.BaseAction">
+      <result name="input">/WEB-INF/crpIndicators.ftl</result>
+    </action>
+    
     <action name="deleteProject" method="delete" class="org.cgiar.ccafs.ap.action.projects.ProjectsListAction">
       <result name="success" type="redirectAction">
         <param name="actionName">projectsList</param>
