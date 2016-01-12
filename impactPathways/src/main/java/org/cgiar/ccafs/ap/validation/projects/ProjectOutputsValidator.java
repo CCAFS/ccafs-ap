@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
@@ -95,40 +96,103 @@ public class ProjectOutputsValidator extends BaseValidator {
     }
   }
 
+
+  public void validateBriefSummary(BaseAction action, Project project, OutputOverview overview, int counter) {
+    StringBuilder msg = new StringBuilder();
+    StringBuilder msgMOG = new StringBuilder();
+    if (!overviewValidator.isValidBriefSummary(overview.getBriefSummary())) {
+      IPElement output = project.getOutput(overview.getOutput().getId());
+      int index = ipElementManager.getMOGIndex(output);
+      msg.setLength(0);
+      msgMOG.setLength(0);
+
+      msgMOG.append("( ");
+      msgMOG.append(output.getProgram().getAcronym());
+      msgMOG.append(" - MOG #");
+      msgMOG.append(index);
+      msgMOG.append(")");
+      msg.append(action.getText("planning.projectOutputs.summaryAnnualContribution",
+        new String[] {String.valueOf(overview.getYear()), msgMOG.toString()}));
+
+
+      this.addMessage(msg.toString());
+      this.addMissingField("project.outputsOverview[" + counter + "].summaryAnnualContribution");
+    }
+  }
+
+  public void validateGenderSummary(BaseAction action, Project project, OutputOverview overview, int counter) {
+    StringBuilder msg = new StringBuilder();
+    StringBuilder msgMOG = new StringBuilder();
+    if (!overviewValidator.isValidGenderSummary(overview.getSummaryGender())) {
+      IPElement output = project.getOutput(overview.getOutput().getId());
+      int index = ipElementManager.getMOGIndex(output);
+      msg.setLength(0);
+      msgMOG.setLength(0);
+
+      msgMOG.append("( ");
+      msgMOG.append(output.getProgram().getAcronym());
+      msgMOG.append(" - MOG #");
+      msgMOG.append(index);
+      msgMOG.append(")");
+      msg.append(action.getText("planning.projectOutputs.summarySocialInclusionDimmension",
+        new String[] {String.valueOf(overview.getYear()), msgMOG.toString()}));
+
+
+      this.addMessage(msg.toString());
+      this.addMissingField("project.outputsOverview[" + counter + "].summarySocialInclusionDimmension");
+    }
+  }
+
   public void validateOutputOverviews(BaseAction action, Project project) {
     if (projectValidator.hasOutputOverviews(project.getOutputsOverview())) {
 
 
       int c = 0;
-      for (OutputOverview overview : project.getOutputsOverview()) {
-        // Validate only current planning year which is 2016 at this moment.
-        if (overview.getYear() == this.config.getPlanningCurrentYear()) {
-          this.validateAnnualContribution(action, project, overview, c);
-          this.validateSocialDimmension(action, project, overview, c);
-          c++;
+
+
+      if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+
+        for (OutputOverview overview : project.getOutputsOverview()) {
+          // Validate only current planning year which is 2016 at this moment.
+          if (overview.getYear() == this.config.getReportingCurrentYear()) {
+            this.validateBriefSummary(action, project, overview, c);
+            this.validateGenderSummary(action, project, overview, c);
+            c++;
+          }
         }
       }
-
-      for (IPElement ipElement : project.getOutputs()) {
-        boolean isContain = false;
+      if (action.getCycleName().equals(APConstants.PLANNING_SECTION)) {
         for (OutputOverview overview : project.getOutputsOverview()) {
-
+          // Validate only current planning year which is 2016 at this moment.
           if (overview.getYear() == this.config.getPlanningCurrentYear()) {
+            this.validateAnnualContribution(action, project, overview, c);
+            this.validateSocialDimmension(action, project, overview, c);
+            c++;
+          }
+        }
 
-            if (overview.getOutput().equals(ipElement)) {
-              isContain = true;
-              break;
+        for (IPElement ipElement : project.getOutputs()) {
+          boolean isContain = false;
+          for (OutputOverview overview : project.getOutputsOverview()) {
+
+            if (overview.getYear() == this.config.getPlanningCurrentYear()) {
+
+              if (overview.getOutput().equals(ipElement)) {
+                isContain = true;
+                break;
+              }
+
             }
 
           }
-
-        }
-        if (!isContain) {
-          this.addMessage("For" + ipElement.getProgram().getAcronym() + "- MOG #"
-            + ipElementManager.getMOGIndex(ipElement) + " Incomplete Information");
-          this.addMissingField("project.outputsOverview.nocomplete");
+          if (!isContain) {
+            this.addMessage("For" + ipElement.getProgram().getAcronym() + "- MOG #"
+              + ipElementManager.getMOGIndex(ipElement) + " Incomplete Information");
+            this.addMissingField("project.outputsOverview.nocomplete");
+          }
         }
       }
+
 
     } else {
       action.addActionMessage(action.getText("planning.projectOutputs.validation.empty"));

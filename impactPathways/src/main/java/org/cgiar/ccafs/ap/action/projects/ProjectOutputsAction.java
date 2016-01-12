@@ -129,10 +129,15 @@ public class ProjectOutputsAction extends BaseAction {
 
     // save previous output overviews
 
-
+    int evaluatingYear = 0;
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
@@ -146,6 +151,7 @@ public class ProjectOutputsAction extends BaseAction {
     if (securityContext.canUpdateProjectOverviewMOGs(projectID)) {
 
       if (!this.isNewProject()) {
+
         super.saveProjectLessons(projectID);
       }
 
@@ -156,6 +162,7 @@ public class ProjectOutputsAction extends BaseAction {
             this.getJustification());
         }
       }
+
 
       success =
         success && overviewManager.saveProjectContribution(project, this.getCurrentUser(), this.getJustification());

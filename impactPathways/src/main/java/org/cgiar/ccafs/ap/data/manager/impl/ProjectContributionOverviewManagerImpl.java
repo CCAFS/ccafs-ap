@@ -57,7 +57,8 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
       overview.setId(Integer.parseInt(overviewData.get("id")));
       overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
       overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
-
+      overview.setBriefSummary(overviewData.get("brief_summary"));
+      overview.setSummaryGender(overviewData.get("summary_gender"));
       IPElement output = new IPElement();
       output.setId(Integer.parseInt(overviewData.get("output_id")));
       output.setDescription(overviewData.get("output_description"));
@@ -81,6 +82,8 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
       overview.setId(Integer.parseInt(overviewData.get("id")));
       overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
       overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
+      overview.setBriefSummary(overviewData.get("brief_summary"));
+      overview.setSummaryGender(overviewData.get("summary_gender"));
 
       IPElement output = new IPElement();
       output.setId(Integer.parseInt(overviewData.get("output_id")));
@@ -110,6 +113,8 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
       values.put("year", overview.getYear());
       values.put("annual_contribution", overview.getExpectedAnnualContribution());
       values.put("gender_contribution", overview.getSocialInclusionDimmension());
+      values.put("brief_summary", overview.getBriefSummary());
+      values.put("summary_gender", overview.getSummaryGender());
 
       saved = saved && overviewDAO.saveProjectContribution(project.getId(), values, user.getId(), justification);
     }

@@ -76,7 +76,7 @@
                   [#if reportingCycle && (year == currentReportingYear)]
                   <div class="fullBlock">
                     <h6>[@customForm.text name="reporting.projectOutputs.summaryAnnualContribution" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
-                    [@customForm.textArea name="project.outputsOverview[${index}].summaryAnnualContribution" value=""  required=isYearRequired(year) showTitle=false editable=editable /]
+                    [@customForm.textArea name="project.outputsOverview[${index}].briefSummary" value=outputOverview.briefSummary!""  required=isYearRequired(year) showTitle=false editable=editable /]
                   </div>
                   [/#if]
                   [#-- Brief plan of the gender and social inclusion dimension of the expected annual output --]
@@ -89,7 +89,7 @@
                   [#if reportingCycle && (year == currentReportingYear)]
                   <div class="fullBlock">
                     <h6>[@customForm.text name="reporting.projectOutputs.summarySocialInclusionDimmension" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6> 
-                    [@customForm.textArea name="project.outputsOverview[${index}].summarySocialInclusionDimmension" value="" required=isYearRequired(year) showTitle=false editable=editable /]
+                    [@customForm.textArea name="project.outputsOverview[${index}].summaryGender" value=outputOverview.summaryGender!"" required=isYearRequired(year) showTitle=false editable=editable /]
                   </div>
                   [/#if]
                 </div>

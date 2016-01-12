@@ -6,6 +6,7 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetByMogManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
+import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.manager.CrossCuttingContributionManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
@@ -36,6 +37,7 @@ import org.cgiar.ccafs.ap.validation.projects.ActivitiesListValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectBudgetByMOGValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectBudgetValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCCAFSOutcomesValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectCaseStudiesValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDescriptionValidator;
@@ -116,6 +118,9 @@ public class ValidateProjectSectionAction extends BaseAction {
   @Inject
   private BudgetByMogManager budgetByMogManager;
 
+
+  @Inject
+  private CaseStudiesManager caseStudyManager;
   @Inject
   private CrossCuttingContributionManager crossCutingManager;
 
@@ -145,6 +150,9 @@ public class ValidateProjectSectionAction extends BaseAction {
 
   @Inject
   private ProjectHighLightValidator highLigthValidator;
+
+  @Inject
+  private ProjectCaseStudiesValidator caseStudieValidator;
 
 
   @Inject
@@ -189,8 +197,12 @@ public class ValidateProjectSectionAction extends BaseAction {
           this.validateCrossCutting();
           break;
 
+        case CASESTUDIES:
+          this.validateCaseStudies();
+          break;
+
         case HIGHLIGHT:
-          this.validateCrossCutting();
+          this.validateHighLigth();
           break;
         case DELIVERABLESLIST:
           this.validateDeliverables();
@@ -354,6 +366,19 @@ public class ValidateProjectSectionAction extends BaseAction {
 
   }
 
+  private void validateCaseStudies() {
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      Project project = projectManager.getProject(projectID);
+      project.setCaseStudies(caseStudyManager.getCaseStudysByProject(projectID));
+      this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "caseStudies",
+        this.getCurrentPlanningYear(), this.getCycleName()));
+
+      // Validating
+      projectCCAFSOutcomesValidator.validate(this, project, currentCycle);
+    }
+  }
+
+
   private void validateCCAFSOutcomes() {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
@@ -395,7 +420,6 @@ public class ValidateProjectSectionAction extends BaseAction {
 
   }
 
-
   private void validateDeliverables() {
     // Getting basic project information.
     Project project = projectManager.getProject(projectID);
@@ -423,7 +447,6 @@ public class ValidateProjectSectionAction extends BaseAction {
     }
     sectionStatus.setMissingFields(missingFieldsAllDeliverables.toString());
   }
-
 
   private void validateHighLigth() {
     if (currentCycle.equals(APConstants.REPORTING_SECTION)) {

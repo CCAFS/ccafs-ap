@@ -24,7 +24,7 @@ import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.util.FileManager;
-import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectCaseStudiesValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
@@ -53,7 +53,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
   private File file;
   private String fileFileName;
-  private ProjectCrossCuttingValidator validator;
+  private ProjectCaseStudiesValidator validator;
 
   private Map<String, String> caseStudyIndicators;
   private int projectID;
@@ -65,7 +65,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
   @Inject
   public ProjectCaseStudiesAction(APConfig config, ProjectManager projectManager, IPIndicatorManager ipIndicatorMamager,
-    CaseStudiesManager crossManager, HistoryManager historyManager, ProjectCrossCuttingValidator validator) {
+    CaseStudiesManager crossManager, HistoryManager historyManager, ProjectCaseStudiesValidator validator) {
     super(config);
     this.validator = validator;
     this.caseStudieManager = crossManager;
@@ -249,7 +249,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      // validator.validate(this, project, this.getCycleName());
+      validator.validate(this, project, this.getCycleName());
     }
   }
 }
