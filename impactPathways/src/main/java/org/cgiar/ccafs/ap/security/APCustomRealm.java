@@ -152,14 +152,9 @@ public class APCustomRealm extends AuthorizingRealm {
     if (roles.size() == 0) {
       roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
     }
-
-
     // Get the roles general to the platform
     for (UserRole role : roles) {
-
-
       if (config.isClosed() && !role.getId().equals(APConstants.ROLE_ADMIN)) {
-
         roles.clear();
         roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
         authorizationInfo.addRole(userRoleManager.getUserRole(8).getAcronym());
@@ -167,33 +162,23 @@ public class APCustomRealm extends AuthorizingRealm {
       }
       authorizationInfo.addRole(role.getAcronym());
 
-
       switch (role.getId()) {
         case APConstants.ROLE_ADMIN:
           for (String permission : role.getPermissions()) {
-
             authorizationInfo.addStringPermission(permission);
           }
           break;
 
-
         case APConstants.ROLE_FINANCING_PROJECT:
-
-
           for (String permission : role.getPermissions()) {
             permission = permission.replace("projects:", "projects:*:");
             authorizationInfo.addStringPermission(permission);
-
           }
-
           break;
         case APConstants.ROLE_MANAGEMENT_LIAISON:
         case APConstants.ROLE_COORDINATING_UNIT:
-
           projectRoles.add(userRoleManager.getManagementLiaisonProjects(userID));
-
           break;
-
         case APConstants.ROLE_PROJECT_LEADER:
         case APConstants.ROLE_PROJECT_COORDINATOR:
 
