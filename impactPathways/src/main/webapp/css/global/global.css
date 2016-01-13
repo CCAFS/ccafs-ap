@@ -1275,7 +1275,7 @@ nav#mainMenu ul li ul.subMenu:hover {
 nav#mainMenu ul li ul.subMenu li {
    display:block;
    padding: 6px 5px;
-   margin: 0 5px;
+   margin: 0 2px;
    font-weight: normal;
    font-size: 0.86em;
    border-top: 1px solid #267898;
@@ -1296,7 +1296,8 @@ nav#mainMenu ul li:hover ul.subMenu{
  left: 0;
  padding: 6px 0px;
  box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
- opacity: 0.95;
+ opacity: 0.98;
+ border-radius: 0px 0px 3px 3px;
 }
 
 nav#mainMenu ul li a.disabled{
