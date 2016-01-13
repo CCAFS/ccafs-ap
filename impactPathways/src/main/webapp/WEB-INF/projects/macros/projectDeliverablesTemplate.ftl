@@ -111,7 +111,7 @@
           <span class="onoffswitch-inner"></span>
           <span class="onoffswitch-switch"></span>
       </label>
-      [#if !disabled] <input type="hidden" name="${name}" value="true" />[/#if]
+      [#if disabled] <input type="hidden" name="${name}" value="true" />[/#if]
     [#else]
       <p style="text-align:center;">[#if value=="true"]Yes[#else]No[/#if]</p>
     [/#if]
