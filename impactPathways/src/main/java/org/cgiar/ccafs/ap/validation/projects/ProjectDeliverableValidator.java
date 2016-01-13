@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -193,6 +194,15 @@ public class ProjectDeliverableValidator extends BaseValidator {
       this.addMissingField("projects.deliverable(" + deliverable.getId() + ").responsible");
     }
 
+
+    // Validating that deliverable status if is reporting section
+    if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
+        // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
+        this.addMessage("projects.deliverable(" + deliverable.getId() + ").status");
+        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
+      }
+    }
 
   }
 

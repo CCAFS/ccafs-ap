@@ -151,6 +151,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("type_other", rs.getString("type_other"));
         deliverableData.put("year", rs.getString("year"));
+        deliverableData.put("status", rs.getString("status"));
+        deliverableData.put("status_description", rs.getString("status_description"));
         deliverableData.put("active_since", String.valueOf(rs.getTimestamp("active_since").getTime()));
 
         deliverablesList.add(deliverableData);
@@ -183,6 +185,8 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       if (rs.next()) {
         deliverableData.put("id", rs.getString("id"));
         deliverableData.put("project_id", rs.getString("project_id"));
+        deliverableData.put("status", rs.getString("status"));
+        deliverableData.put("status_description", rs.getString("status_description"));
         deliverableData.put("title", rs.getString("title"));
         deliverableData.put("type_id", rs.getString("type_id"));
         deliverableData.put("type_other", rs.getString("type_other"));
@@ -314,10 +318,9 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
         expectedDeliverables.add(expectedDeliverable);
       }
     } catch (SQLException e) {
-      LOG
-        .error(
-          "getExpectedDeliverablesByYear()>Exception raised trying to get the list of the account of Expected Deliverable by Year.",
-          e);
+      LOG.error(
+        "getExpectedDeliverablesByYear()>Exception raised trying to get the list of the account of Expected Deliverable by Year.",
+        e);
     }
 
     return expectedDeliverables;
@@ -363,12 +366,11 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
     if (deliverableData.get("id") == null) {
       // Insert new deliverable record
       query.append("INSERT INTO deliverables (id, project_id,  title, type_id, type_other, year, created_by, ");
-      query.append("modified_by, modification_justification) ");
-      query.append("VALUES (?,?,?,?,?,?,?,?,?) ");
-      values = new Object[9];
+      query.append("modified_by, modification_justification,status,status_description) ");
+      query.append("VALUES (?,?,?,?,?,?,?,?,?,?,?) ");
+      values = new Object[11];
       values[0] = deliverableData.get("id");
-      values[1] = deliverableData.get("project_id");
-      ;
+      values[1] = deliverableData.get("project_id");;
       values[2] = deliverableData.get("title");
       values[3] = deliverableData.get("type_id");
       values[4] = deliverableData.get("type_other");
@@ -377,19 +379,23 @@ public class MySQLDeliverableDAO implements DeliverableDAO {
       values[6] = deliverableData.get("created_by");
       values[7] = deliverableData.get("modified_by");
       values[8] = deliverableData.get("modification_justification");
+      values[9] = deliverableData.get("status");
+      values[10] = deliverableData.get("status_description");
     } else {
       // Updating existing deliverable record
-      query
-        .append("UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ");
+      query.append(
+        "UPDATE deliverables SET title = ?, type_id = ?, type_other = ?, year = ?, modified_by = ?, modification_justification = ? ,status=?,status_description=?");
       query.append("WHERE id = ? ");
-      values = new Object[7];
+      values = new Object[9];
       values[0] = deliverableData.get("title");
       values[1] = deliverableData.get("type_id");
       values[2] = deliverableData.get("type_other");
       values[3] = deliverableData.get("year");
       values[4] = deliverableData.get("modified_by");
       values[5] = deliverableData.get("modification_justification");
-      values[6] = deliverableData.get("id");
+      values[6] = deliverableData.get("status");
+      values[7] = deliverableData.get("status_description");
+      values[8] = deliverableData.get("id");
     }
     result = databaseManager.saveData(query.toString(), values);
 

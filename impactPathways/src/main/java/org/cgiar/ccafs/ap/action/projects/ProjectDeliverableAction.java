@@ -33,12 +33,14 @@ import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +94,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private Map<Integer, String> projectPartnerPersons;
   private Map<String, String> openAccessStatuses;
   private Map<String, String> disseminationChannels;
+  private Map<String, String> statuses;
 
   @Inject
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
@@ -219,6 +222,10 @@ public class ProjectDeliverableAction extends BaseAction {
       + File.separator;
   }
 
+  public Map<String, String> getStatuses() {
+    return statuses;
+  }
+
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
@@ -227,6 +234,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public String next() {
     return SUCCESS;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -252,7 +260,11 @@ public class ProjectDeliverableAction extends BaseAction {
     disseminationChannels.put("cgspace", "CGSpace");
     disseminationChannels.put("agtrials", "AgTrials");
     disseminationChannels.put("other", "Other");
-
+    statuses = new HashMap<>();
+    List<ProjectStatusEnum> list = Arrays.asList(ProjectStatusEnum.values());
+    for (ProjectStatusEnum projectStatusEnum : list) {
+      statuses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
+    }
     projectPartners = projectPartnerManager.getProjectPartners(project);
 
     // Getting the partner persons in a single HashMap to be displayed in the view.
@@ -298,6 +310,7 @@ public class ProjectDeliverableAction extends BaseAction {
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
+
 
   @Override
   public String save() {
@@ -385,7 +398,6 @@ public class ProjectDeliverableAction extends BaseAction {
     this.deliverable = deliverable;
   }
 
-
   public void setFile(File file) {
     this.file = file;
   }
@@ -395,8 +407,13 @@ public class ProjectDeliverableAction extends BaseAction {
     this.ipProgramFlagships = ipProgramFlagships;
   }
 
+
   public void setProjectPartnerPersons(Map<Integer, String> projectPartnerPersons) {
     this.projectPartnerPersons = projectPartnerPersons;
+  }
+
+  public void setStatuses(Map<String, String> statuses) {
+    this.statuses = statuses;
   }
 
   @Override

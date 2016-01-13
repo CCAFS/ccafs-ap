@@ -115,6 +115,12 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setId(deliverableID);
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
+      if (deliverableData.get("status") != null) {
+        deliverable.setStatus(Integer.parseInt(deliverableData.get("status")));
+      }
+
+      deliverable.setStatusDescription(deliverableData.get("status_description"));
+
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
       if (deliverableData.get("type_id") != null) {
         deliverable
@@ -149,6 +155,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     if (!deliverableOutputData.isEmpty()) {
       deliverableOutput.setId(Integer.parseInt(deliverableOutputData.get("id")));
       deliverableOutput.setDescription(deliverableOutputData.get("description"));
+
       IPProgram program = new IPProgram(Integer.parseInt(deliverableOutputData.get("ip_program_id")));
       deliverableOutput.setProgram(program);
 
@@ -172,6 +179,11 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
+      if (deliverableData.get("status") != null) {
+        deliverable.setStatus(Integer.parseInt(deliverableData.get("status")));
+      }
+
+      deliverable.setStatusDescription(deliverableData.get("status_description"));
       // Type
       if (deliverableData.get("type_id") != null) {
         deliverable
@@ -209,6 +221,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setTitle(deliverableData.get("title"));
       deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
       deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
+      deliverable.setStatus(Integer.parseInt(deliverableData.get("status")));
+      deliverable.setStatusDescription(deliverableData.get("status_description"));
       // Type
       if (deliverableData.get("type_id") != null) {
         deliverable
@@ -279,6 +293,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("type_id", deliverable.getType() != null ? deliverable.getType().getId() : null);
     deliverableData.put("type_other", deliverable.getTypeOther());
     deliverableData.put("year", deliverable.getYear());
+
+    deliverableData.put("status", deliverable.getStatus());
+    deliverableData.put("status_description", deliverable.getStatusDescription());
     // Logs
     deliverableData.put("modified_by", user.getId());
     deliverableData.put("modification_justification", justification);

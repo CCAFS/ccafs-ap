@@ -39,6 +39,8 @@ public class Deliverable {
   private List<DeliverablePartner> otherPartners;
   private long created;
   private DeliverablesRanking ranking;
+  private String statusDescription;
+  private int status;
 
 
   public Deliverable() {
@@ -50,6 +52,7 @@ public class Deliverable {
     this.id = id;
   }
 
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Deliverable) {
@@ -59,13 +62,16 @@ public class Deliverable {
     return false;
   }
 
+
   public long getCreated() {
     return created;
   }
 
+
   public int getId() {
     return id;
   }
+
 
   public List<NextUser> getNextUsers() {
     return nextUsers;
@@ -85,6 +91,14 @@ public class Deliverable {
 
   public DeliverablePartner getResponsiblePartner() {
     return responsiblePartner;
+  }
+
+  public int getStatus() {
+    return status;
+  }
+
+  public String getStatusDescription() {
+    return statusDescription;
   }
 
   public String getTitle() {
@@ -145,6 +159,14 @@ public class Deliverable {
 
   public void setResponsiblePartner(DeliverablePartner responsiblePartner) {
     this.responsiblePartner = responsiblePartner;
+  }
+
+  public void setStatus(int status) {
+    this.status = status;
+  }
+
+  public void setStatusDescription(String statusDescription) {
+    this.statusDescription = statusDescription;
   }
 
   public void setTitle(String title) {

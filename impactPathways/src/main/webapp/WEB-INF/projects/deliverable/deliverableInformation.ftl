@@ -46,12 +46,12 @@
     [#-- Deliverable Status  --]
     <div class="fullBlock">
       <div class="halfPartBlock"> 
-        [@customForm.select name="${params.deliverable.name}.status" label=""  disabled=false i18nkey="reporting.projectDeliverable.status" listName="statuses" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
+        [@customForm.select name="${params.deliverable.name}.status" label=""  disabled=false i18nkey="reporting.projectDeliverable.status" listName="statuses"  required=true editable=editable /]
       </div>
     </div>
     [#-- Status justification  --]
     <div class="fullBlock">
-      [@customForm.textArea name="${params.deliverable.name}.statusJustification" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
+      [@customForm.textArea name="${params.deliverable.name}.statusDescription" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
     </div>
   [/#if]
   
