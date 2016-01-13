@@ -18,12 +18,13 @@
 <section class="content">
   [#-- Help Message --]
   <div class="helpMessage"><img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="reporting.crpIndicators.help" /]</p></div>
-  
   <br> 
-   
   <article class="fullBlock" id="mainInformation">
     <h3 class="projectSubTitle">[@s.text name="reporting.crpIndicators.title"/]</h3>
-    <div class="clearfix"></div>
+    <div class="halfContent">
+      <div class="borderBox"> 
+      </div>
+    </div>
   </article>
   
 </section> 

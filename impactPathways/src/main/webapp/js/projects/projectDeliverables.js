@@ -93,7 +93,8 @@ function changeOARestriction() {
 
 function yesnoEvent() {
   var isChecked = $(this).is(':checked');
-  var $aditional = $('#aditional-' + (this.name).split('.')[1]);
+  var array = (this.name).split('.');
+  var $aditional = $('#aditional-' + array[array.length - 1]);
   if($(this).hasClass('inverse')) {
     isChecked = !isChecked;
   }

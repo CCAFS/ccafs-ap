@@ -39,14 +39,8 @@
       <tbody>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.compliance.dataQualityAssurance" /]
-            <div id="aditional-file" class="aditional fileUpload" style="display:none">
-             
-             
-               [#if editable]
-                  [@customForm.inputFile name="file"  /]
-                [/#if]  
-             
-             
+            <div id="aditional-processData" class="aditional fileUpload" style="display:none">
+               [#if editable][@customForm.inputFile name="file"  /][/#if]  
             </div>
           </td> 
           <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.ranking.processData" editable=editable/]</td>
@@ -57,7 +51,7 @@
         </tr>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.compliance.toolsUsedDataCollection" /]
-            <div id="aditional-tooldataComment" class="aditional" style="display:none">
+            <div id="aditional-tooldata" class="aditional" style="display:none">
               [@customForm.textArea name="${params.deliverable.name}.ranking.tooldataComment" i18nkey="reporting.projectDeliverable.compliance.toolsUsedDataCollection.links" editable=editable/]
             </div>
           </td> 
