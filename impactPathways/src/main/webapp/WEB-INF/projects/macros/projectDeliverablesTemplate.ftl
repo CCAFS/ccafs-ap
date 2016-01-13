@@ -106,6 +106,7 @@
   [#assign value][@s.property value="${name}"/][/#assign]
   <div class="onoffswitch">
     [#if editable]
+      <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="true">
       <input id="myonoffswitch-${name}" class="onoffswitch-checkbox [#if inverse]inverse[/#if]"  [#if value=="true"]checked[/#if] type="checkbox" name="${name}" value="true" [#if disabled]disabled[/#if] />
       <label class="onoffswitch-label" for="myonoffswitch-${name}">
           <span class="onoffswitch-inner"></span>
