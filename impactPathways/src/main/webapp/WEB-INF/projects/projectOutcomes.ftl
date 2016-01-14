@@ -73,6 +73,29 @@
             <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /] [@customForm.req required=true /]</h6>
             [@customForm.textArea name="project.outcomes[${year?string}].anualProgress" required=true className="limitWords-300" showTitle=false editable=editable /]
           </div>
+          
+          [#-- Comunication and engagement activities --]
+          <div class="fullBlock">
+            [@customForm.textArea name="" className="limitWords-100" i18nkey="reporting.projectOutcomes.commEngagementOutcomes" required=true editable=editable/]
+          </div>
+          
+          [#-- Upload summary--] 
+          <div class="fullBlock fileUpload uploadSummary">
+            <h6>[@customForm.text name="reporting.projectOutcomes.uploadSummary" readText=!editable /]:</h6>
+            <div class="uploadContainer" title="[@s.text name="reporting.projectOutcomes.uploadSummary.help" /]">
+              [#if (project.crossCutting.file?has_content)!false]
+                [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
+                <p><a href="${CrossCuttingURL}${(project.crossCutting.file)!}">${(project.crossCutting.file)!}</a></p>
+              [#else]
+                [#if editable]
+                  [@customForm.inputFile name="file"  /]
+                [#else]  
+                  <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
+                [/#if] 
+              [/#if]
+            </div>  
+          </div>
+          
           [/#if]
         [/#list]
         <input name="project.outcome[midOutcomeYear].id" type="hidden" value="${project.outcomes[midOutcomeYear+""].id?c}" />
