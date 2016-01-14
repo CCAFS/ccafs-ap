@@ -1,0 +1,31 @@
+CREATE TABLE `deliverable_dissemination` (
+`id`  int NOT NULL AUTO_INCREMENT ,
+`deliverable_id`  int NOT NULL ,
+`is_open_access`  bit NULL ,
+`intellectual_property`  bit NULL ,
+`limited_exclusivity`  bit NULL ,
+`restricted_use_agreement`  bit NULL ,
+`restricted_access_until`  date NULL ,
+`effective_date_restriction`  bit NULL ,
+`restricted_embargoed`  date NULL ,
+`already_disseminated`  bit NULL ,
+`dissemination_channel`  varchar(50) NULL ,
+`dissemination_URL`  varchar(500) NULL ,
+`dissemination_channel_name`  varchar(50) NULL ,
+`description_metadata`  text NULL ,
+`authors_metadata`  text NULL ,
+`identifier_metadata`  text NULL ,
+`publishier_metadata`  text NULL ,
+`relation_metadata`  text NULL ,
+`contributor_metadata`  text NULL ,
+`subject_metadata`  text NULL ,
+`source_metadata`  text NULL ,
+`publication_metada`  text NULL ,
+`language_metadata`  text NULL ,
+`coverage_metadata`  text NULL ,
+`format_metadata`  text NULL ,
+`rigths_metadata`  text NULL ,
+PRIMARY KEY (`id`)
+)
+;
+
