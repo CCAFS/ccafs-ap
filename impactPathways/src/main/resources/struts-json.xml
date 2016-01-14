@@ -48,6 +48,14 @@
       </result>
     </action>
 
+
+
+   <action name="metadataByLink" class="org.cgiar.ccafs.ap.action.json.projects.MetadataByLink">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
     <action name="institutionsByTypeAndCountry" class="org.cgiar.ccafs.ap.action.json.global.InstitutionsByFilterAction">
       <result type="json">        
         <param name="noCache">true</param>

@@ -36,6 +36,8 @@ public final class APConstants {
 
 
   public static final String FLAGSHIP_REQUEST_ID = "flagshipID";
+  public static final String METADATA_REQUEST_ID = "metadataID";
+  public static final String PAGE_ID = "pageID";
   public static final String IP_ELEMENT_TYPE_REQUEST_ID = "elementTypeId";
   public static final String IP_ELEMENT_REQUEST_ID = "elementID";
   public static final String PROJECT_REQUEST_ID = "projectID";
