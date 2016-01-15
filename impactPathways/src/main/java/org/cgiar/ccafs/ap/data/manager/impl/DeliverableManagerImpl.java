@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
+import org.cgiar.ccafs.ap.data.dao.DeliverableDisseminationDAO;
 import org.cgiar.ccafs.ap.data.dao.DeliverableRankingDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
@@ -54,15 +55,18 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private NextUserManager nextUserManager;
   private DeliverablePartnerManager deliverablePartnerManager;
   private DeliverableRankingDAO rankingDao;
+  private DeliverableDisseminationDAO disseminationDao;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
-    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager, DeliverableRankingDAO rankingDao) {
+    NextUserManager nextUserManager, DeliverablePartnerManager partnerManager, DeliverableRankingDAO rankingDao,
+    DeliverableDisseminationDAO disseminationDao) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = partnerManager;
     this.rankingDao = rankingDao;
+    this.disseminationDao = disseminationDao;
   }
 
   @Override
@@ -143,6 +147,9 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
 
       deliverable.setRanking(rankingDao.findDeliverableRanking(deliverableID));
+      deliverable.setDissemination(disseminationDao.findDeliverableDissemination(deliverableID));
+
+
       return deliverable;
     }
     return null;
@@ -304,13 +311,17 @@ public class DeliverableManagerImpl implements DeliverableManager {
     if (deliverable.getRanking().getDeliverableId() == null) {
       if (result == 0) {
         deliverable.getRanking().setDeliverableId(new Long(deliverable.getId()));
+        deliverable.getDissemination().setDeliverableId((deliverable.getId()));
       } else {
+        deliverable.getDissemination().setDeliverableId((result));
         deliverable.getRanking().setDeliverableId(new Long(result));
       }
+
 
     }
 
     rankingDao.save(deliverable.getRanking());
+    disseminationDao.save(deliverable.getDissemination());
     if (result > 0) {
       LOG.debug("saveDeliverable > New Deliverable added with id {}", result);
     } else if (result == 0) {

@@ -55,6 +55,8 @@ public class ClientRepository {
             }
             break;
           case "subject":
+          case "subject.agrovoc":
+          case "subject.domain-specific":
             if (metadataObject.getSubject() == null) {
               metadataObject.setSubject(element.getStringValue());
             } else {
@@ -68,6 +70,52 @@ public class ClientRepository {
               metadataObject.setDescription(metadataObject.getDescription() + ", " + element.getStringValue());
             }
             break;
+
+          case "publisher":
+            if (metadataObject.getPublisher() == null) {
+              metadataObject.setPublisher(element.getStringValue());
+            } else {
+              metadataObject.setPublisher(metadataObject.getPublisher() + ", " + element.getStringValue());
+            }
+            break;
+
+
+          case "relation":
+            if (metadataObject.getRelation() == null) {
+              metadataObject.setRelation(element.getStringValue());
+            } else {
+              metadataObject.setRelation(metadataObject.getRelation() + ", " + element.getStringValue());
+            }
+            break;
+
+          case "contributorcg.contributor.center":
+          case "contributor.crp":
+          case "contributor.funder":
+          case "contributor.partnerId":
+          case "contributor.project":
+          case "contributor.project-lead-institute":
+
+            if (metadataObject.getContributor() == null) {
+              metadataObject.setContributor(element.getStringValue());
+            } else {
+              metadataObject.setContributor(metadataObject.getContributor() + ", " + element.getStringValue());
+            }
+            break;
+
+
+          case "coverage":
+          case "coverage.region":
+          case "coverage.country":
+          case "coverage.admin-unit":
+          case "coverage.geolocation":
+
+            if (metadataObject.getCoverage() == null) {
+              metadataObject.setCoverage(element.getStringValue());
+            } else {
+              metadataObject.setCoverage(metadataObject.getCoverage() + ", " + element.getStringValue());
+            }
+            break;
+
           case "date":
             if (metadataObject.getPublication() == null) {
               metadataObject.setPublication(element.getStringValue());
@@ -76,6 +124,18 @@ public class ClientRepository {
           case "identifier":
             if (metadataObject.getIdentifier() == null) {
               metadataObject.setIdentifier(element.getStringValue());
+            }
+
+          case "format":
+            if (metadataObject.getFormat() == null) {
+              metadataObject.setFormat(element.getStringValue());
+            }
+            break;
+
+
+          case "rights":
+            if (metadataObject.getRigths() == null) {
+              metadataObject.setRigths(element.getStringValue());
             }
             break;
           case "language":

@@ -15,7 +15,7 @@
       <tbody>
         <tr>
           <td class="key""><p>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction" /]</p></td> 
-          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.openAccessRestriction" editable=editable inverse=true/]</td>
+          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.isOpenAccess" editable=editable inverse=true/]</td>
         </tr>
       </tbody>
     </table>
@@ -25,22 +25,22 @@
         [#if editable]
         [#-- Intellectual Property Rights --]
         <div class="openAccessRestrictionOption">
-          <input id="intellectualProperty" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="intellectualProperty" />
+          <input id="intellectualProperty" type="radio" name="${params.deliverable.name}.dissemination.intellectualProperty" value="intellectualProperty" />
           <label for="intellectualProperty">[@s.text name="reporting.projectDeliverable.dissemination.intellectualProperty" /]</label>
         </div>
         [#-- Limited Exclusivity Agreements --]
         <div class="openAccessRestrictionOption">
-          <input id="limitedExclusivity" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="limitedExclusivity" /> 
+          <input id="limitedExclusivity" type="radio" name="${params.deliverable.name}.dissemination.limitedExclusivity" value="limitedExclusivity" /> 
           <label for="limitedExclusivity">[@s.text name="reporting.projectDeliverable.dissemination.limitedExclusivity" /]</label>
         </div>
         [#-- Restricted Use Agreement - Restricted access --]
         <div class="openAccessRestrictionOption">
-          <input id="restrictedAccess" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="restrictedAccess" />
+          <input id="restrictedAccess" type="radio" name="${params.deliverable.name}.dissemination.restrictedUseAgreement" value="restrictedAccess" />
           <label for="restrictedAccess">[@s.text name="reporting.projectDeliverable.dissemination.restrictedAccess" /]</label>
         </div>
         [#-- Effective Date Restriction - embargoed periods --]
         <div class="openAccessRestrictionOption">
-          <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.openAccessRestrictionOption" value="embargoedPeriods" />
+          <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.dissemination.effectiveDateRestriction" value="embargoedPeriods" />
           <label for="embargoedPeriods">[@s.text name="reporting.projectDeliverable.dissemination.embargoedPeriod" /]</label>
         </div>
         [#else]
@@ -50,10 +50,10 @@
       [#-- Periods --]
       <div class="fullBlock">
         <div id="period-restrictedAccess" class="halfPartBlock openAccessPeriods" style="display:none">
-          [@customForm.input name="${params.deliverable.name}.restrictedAccessDate" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.restrictedAccessDate" editable=editable/]
+          [@customForm.input name="${params.deliverable.name}.dissemination.restrictedAccessUntil" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.restrictedAccessDate" editable=editable/]
         </div>
         <div id="period-embargoedPeriods" class="halfPartBlock openAccessPeriods" style="display:none">
-          [@customForm.input name="${params.deliverable.name}.embargoedPeriodDate" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.embargoedPeriodDate" editable=editable/]
+          [@customForm.input name="${params.deliverable.name}.dissemination.restrictedEmbargoed" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.embargoedPeriodDate" editable=editable/]
         </div>
       </div>
     </div><!-- End aditional-openAccessRestriction -->
@@ -65,7 +65,7 @@
       <tbody>
         <tr>
           <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated" /]</p></td> 
-          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.alreadyDisseminated" editable=editable/]</td>
+          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.alreadyDisseminated" editable=editable/]</td>
         </tr>
       </tbody>
     </table>
@@ -74,16 +74,16 @@
       [#-- Dissemination channel list --]
       <div class="fullBlock">
         <div class="halfPartBlock">
-          [@customForm.select name="${params.deliverable.name}.disseminationChannel" label=""  disabled=false i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels" required=true editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label=""  disabled=false i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels" required=true editable=editable /]
         </div>
       </div>
       [#-- Dissemination name --]
       <div id="disseminationName" class="fullBlock" style="display:none">
-        [@customForm.input name="${params.deliverable.name}.disseminationName" className="" i18nkey="reporting.projectDeliverable.disseminationName" required=true editable=editable /]
+        [@customForm.input name="${params.deliverable.name}.dissemination.disseminationChannelName" className="" i18nkey="reporting.projectDeliverable.disseminationName" required=true editable=editable /]
       </div>
       [#-- Dissemination channel URL / URI --]
       <div id="disseminationUrl" class="fullBlock" style="display:none">
-        [@customForm.input name="${params.deliverable.name}.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
+        [@customForm.input name="${params.deliverable.name}.dissemination.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
       </div>
     </div><!-- End aditional-alreadyDisseminated -->
   </div>

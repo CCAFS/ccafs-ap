@@ -39,14 +39,15 @@ public class Deliverable {
   private List<DeliverablePartner> otherPartners;
   private long created;
   private DeliverablesRanking ranking;
+  private DeliverableDissemination dissemination;
   private String statusDescription;
+
   private int status;
 
 
   public Deliverable() {
     super();
   }
-
 
   public Deliverable(int id) {
     this.id = id;
@@ -68,6 +69,11 @@ public class Deliverable {
   }
 
 
+  public DeliverableDissemination getDissemination() {
+    return dissemination;
+  }
+
+
   public int getId() {
     return id;
   }
@@ -76,6 +82,7 @@ public class Deliverable {
   public List<NextUser> getNextUsers() {
     return nextUsers;
   }
+
 
   public List<DeliverablePartner> getOtherPartners() {
     return otherPartners;
@@ -135,6 +142,10 @@ public class Deliverable {
 
   public void setCreated(long created) {
     this.created = created;
+  }
+
+  public void setDissemination(DeliverableDissemination dissemination) {
+    this.dissemination = dissemination;
   }
 
   public void setId(int id) {
