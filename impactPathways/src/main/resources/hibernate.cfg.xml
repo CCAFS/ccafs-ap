@@ -34,7 +34,9 @@
     <mapping resource="xmls/OtherContributions.hbm.xml" />
     <mapping resource="xmls/CasesStudies.hbm.xml" />
     <mapping resource="xmls/CaseStudieIndicators.hbm.xml" />
-     <mapping resource="xmls/DeliverableDissemination.hbm.xml" />
+    <mapping resource="xmls/DeliverableDissemination.hbm.xml" />
+    <mapping resource="xmls/DeliverableDataSharing.hbm.xml" />
+    <mapping resource="xmls/DeliverableDataSharingFile.hbm.xml" />
   </session-factory>
 </hibernate-configuration>
 
