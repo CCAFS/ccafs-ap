@@ -13,6 +13,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -40,14 +41,20 @@ public class Deliverable {
   private long created;
   private DeliverablesRanking ranking;
   private DeliverableDissemination dissemination;
+  private DeliverableDataSharing dataSharing;
+  private List<DeliverableDataSharingFile> dataSharingFile;
+  private List<File> files;
+
+
   private String statusDescription;
 
-  private int status;
 
+  private int status;
 
   public Deliverable() {
     super();
   }
+
 
   public Deliverable(int id) {
     this.id = id;
@@ -68,9 +75,21 @@ public class Deliverable {
     return created;
   }
 
+  public DeliverableDataSharing getDataSharing() {
+    return dataSharing;
+  }
+
+  public List<DeliverableDataSharingFile> getDataSharingFile() {
+    return dataSharingFile;
+  }
+
 
   public DeliverableDissemination getDissemination() {
     return dissemination;
+  }
+
+  public List<File> getFiles() {
+    return files;
   }
 
 
@@ -88,13 +107,16 @@ public class Deliverable {
     return otherPartners;
   }
 
+
   public IPElement getOutput() {
     return output;
   }
 
+
   public DeliverablesRanking getRanking() {
     return ranking;
   }
+
 
   public DeliverablePartner getResponsiblePartner() {
     return responsiblePartner;
@@ -144,8 +166,20 @@ public class Deliverable {
     this.created = created;
   }
 
+  public void setDataSharing(DeliverableDataSharing dataSharing) {
+    this.dataSharing = dataSharing;
+  }
+
+  public void setDataSharingFile(List<DeliverableDataSharingFile> dataSharingFile) {
+    this.dataSharingFile = dataSharingFile;
+  }
+
   public void setDissemination(DeliverableDissemination dissemination) {
     this.dissemination = dissemination;
+  }
+
+  public void setFiles(List<File> files) {
+    this.files = files;
   }
 
   public void setId(int id) {

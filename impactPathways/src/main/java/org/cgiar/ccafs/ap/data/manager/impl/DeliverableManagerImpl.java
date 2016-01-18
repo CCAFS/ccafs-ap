@@ -18,11 +18,14 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDisseminationDAO;
 import org.cgiar.ccafs.ap.data.dao.DeliverableRankingDAO;
+import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableSharingFileMySQLDAO;
+import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableSharingMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
@@ -56,17 +59,22 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private DeliverablePartnerManager deliverablePartnerManager;
   private DeliverableRankingDAO rankingDao;
   private DeliverableDisseminationDAO disseminationDao;
+  private DeliverableSharingMySQLDAO sharingDao;
+  private DeliverableSharingFileMySQLDAO sharingFileDao;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
     NextUserManager nextUserManager, DeliverablePartnerManager partnerManager, DeliverableRankingDAO rankingDao,
-    DeliverableDisseminationDAO disseminationDao) {
+    DeliverableDisseminationDAO disseminationDao, DeliverableSharingMySQLDAO sharingDao,
+    DeliverableSharingFileMySQLDAO sharingFileDao) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
     this.deliverablePartnerManager = partnerManager;
     this.rankingDao = rankingDao;
     this.disseminationDao = disseminationDao;
+    this.sharingDao = sharingDao;
+    this.sharingFileDao = sharingFileDao;
   }
 
   @Override
@@ -148,6 +156,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
       deliverable.setRanking(rankingDao.findDeliverableRanking(deliverableID));
       deliverable.setDissemination(disseminationDao.findDeliverableDissemination(deliverableID));
+      deliverable.setDataSharing(sharingDao.findDeliverableDataSharing(deliverableID));
+      deliverable.setDataSharingFile(sharingFileDao.findDeliverableDataSharingFile(deliverableID));
 
 
       return deliverable;
@@ -312,9 +322,13 @@ public class DeliverableManagerImpl implements DeliverableManager {
       if (result == 0) {
         deliverable.getRanking().setDeliverableId(new Long(deliverable.getId()));
         deliverable.getDissemination().setDeliverableId((deliverable.getId()));
+        deliverable.getDataSharing().setDeliverableId((deliverable.getId()));
+
       } else {
         deliverable.getDissemination().setDeliverableId((result));
         deliverable.getRanking().setDeliverableId(new Long(result));
+        deliverable.getDataSharing().setDeliverableId((result));
+
       }
 
 
@@ -322,6 +336,19 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
     rankingDao.save(deliverable.getRanking());
     disseminationDao.save(deliverable.getDissemination());
+    sharingDao.save(deliverable.getDataSharing());
+
+    if (deliverable.getDataSharingFile() != null) {
+
+      for (DeliverableDataSharingFile dataFile : deliverable.getDataSharingFile()) {
+        if (result == 0) {
+          dataFile.setDeliverableId(deliverable.getId());
+        } else {
+          dataFile.setDeliverableId(result);
+        }
+        sharingFileDao.save(dataFile);
+      }
+    }
     if (result > 0) {
       LOG.debug("saveDeliverable > New Deliverable added with id {}", result);
     } else if (result == 0) {

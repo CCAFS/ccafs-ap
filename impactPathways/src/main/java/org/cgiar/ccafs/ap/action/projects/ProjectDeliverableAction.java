@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Javier Andrés Gallego B.
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Christian David Garcia O. - CIAT/CCAFS
  */
 public class ProjectDeliverableAction extends BaseAction {
 
