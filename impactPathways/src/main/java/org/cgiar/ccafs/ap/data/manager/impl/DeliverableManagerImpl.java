@@ -175,7 +175,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
       }
 
-      deliverable.setDataSharing(sharingDao.findDeliverableDataSharing(deliverableID));
+      // deliverable.setDataSharing(sharingDao.findDeliverableDataSharing(deliverableID));
       deliverable.setDataSharingFile(sharingFileDao.findDeliverableDataSharingFile(deliverableID));
 
 
