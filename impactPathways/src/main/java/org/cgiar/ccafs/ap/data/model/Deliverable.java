@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -151,6 +153,21 @@ public class Deliverable {
     return this.id;
   }
 
+  public boolean isData() {
+    if (type == null) {
+      return false;
+    }
+    return type.getId() == APConstants.DELIVERABLE_TYPE_DATA;
+  }
+
+  public boolean isJournalArticle() {
+    if (type == null) {
+      return false;
+    }
+    return type.getId() == APConstants.DELIVERABLE_SUBTYPE_JOURNAL;
+  }
+
+
   /**
    * Validate if the deliverable is new.
    * A deliverable is new when it was created in the planning phase for the current year
@@ -161,6 +178,21 @@ public class Deliverable {
   public boolean isNew(Date planningStartDate) {
     return new Date(this.getCreated()).after(planningStartDate);
   }
+
+  public boolean isPublication() {
+    if (type == null) {
+      return false;
+    }
+    return type.getId() == APConstants.DELIVERABLE_TYPE_PUBLICATION;
+  }
+
+  public boolean isTool() {
+    if (type == null) {
+      return false;
+    }
+    return type.getId() == APConstants.DELIVERABLE_TYPE_TOOLS;
+  }
+
 
   public void setCreated(long created) {
     this.created = created;

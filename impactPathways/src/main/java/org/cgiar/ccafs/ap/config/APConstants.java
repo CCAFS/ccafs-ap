@@ -124,6 +124,14 @@ public final class APConstants {
   // Deliverable Sub-type Other
   public static final int DELIVERABLE_SUBTYPE_OTHER_ID = 38;
 
+  // Constants for the deliverables types
+  public static final int DELIVERABLE_TYPE_DATA = 1;
+  public static final int DELIVERABLE_TYPE_TOOLS = 7;
+  public static final int DELIVERABLE_TYPE_PUBLICATION = 3;
+  public static final int DELIVERABLE_TYPE_CASE_STUDIES = 5;
+  public static final int DELIVERABLE_SUBTYPE_JOURNAL = 21;
+  public static final int DELIVERABLE_SUBTYPE_DATA = 10;
+
   // Deliverable open access statuses
   public static final String OA_OPEN = "OPEN";
   public static final String OA_LIMITED = "LIMITED";
