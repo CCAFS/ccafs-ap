@@ -156,6 +156,25 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
       deliverable.setRanking(rankingDao.findDeliverableRanking(deliverableID));
       deliverable.setDissemination(disseminationDao.findDeliverableDissemination(deliverableID));
+      if (deliverable.getDissemination() != null) {
+        if (deliverable.getDissemination().getIntellectualProperty() != null
+          && deliverable.getDissemination().getIntellectualProperty()) {
+          deliverable.getDissemination().setType("intellectualProperty");
+        }
+        if (deliverable.getDissemination().getLimitedExclusivity() != null
+          && deliverable.getDissemination().getLimitedExclusivity()) {
+          deliverable.getDissemination().setType("limitedExclusivity");
+        }
+        if (deliverable.getDissemination().getRestrictedUseAgreement() != null
+          && deliverable.getDissemination().getRestrictedUseAgreement()) {
+          deliverable.getDissemination().setType("restrictedAccess");
+        }
+        if (deliverable.getDissemination().getEffectiveDateRestriction() != null
+          && deliverable.getDissemination().getEffectiveDateRestriction()) {
+          deliverable.getDissemination().setType("embargoedPeriods");
+        }
+      }
+
       deliverable.setDataSharing(sharingDao.findDeliverableDataSharing(deliverableID));
       deliverable.setDataSharingFile(sharingFileDao.findDeliverableDataSharingFile(deliverableID));
 
@@ -335,6 +354,40 @@ public class DeliverableManagerImpl implements DeliverableManager {
     }
 
     rankingDao.save(deliverable.getRanking());
+
+
+    switch (deliverable.getDissemination().getType()) {
+      case "intellectualProperty":
+        deliverable.getDissemination().setIntellectualProperty(true);
+        deliverable.getDissemination().setLimitedExclusivity(false);
+        deliverable.getDissemination().setRestrictedUseAgreement(false);
+        deliverable.getDissemination().setEffectiveDateRestriction(false);
+
+        break;
+      case "limitedExclusivity":
+        deliverable.getDissemination().setIntellectualProperty(false);
+        deliverable.getDissemination().setLimitedExclusivity(true);
+        deliverable.getDissemination().setRestrictedUseAgreement(false);
+        deliverable.getDissemination().setEffectiveDateRestriction(false);
+
+        break;
+      case "restrictedAccess":
+        deliverable.getDissemination().setIntellectualProperty(false);
+        deliverable.getDissemination().setLimitedExclusivity(false);
+        deliverable.getDissemination().setRestrictedUseAgreement(false);
+        deliverable.getDissemination().setEffectiveDateRestriction(true);
+
+        break;
+      case "embargoedPeriods":
+        deliverable.getDissemination().setIntellectualProperty(false);
+        deliverable.getDissemination().setLimitedExclusivity(false);
+        deliverable.getDissemination().setRestrictedUseAgreement(true);
+        deliverable.getDissemination().setEffectiveDateRestriction(false);
+
+        break;
+
+
+    }
     disseminationDao.save(deliverable.getDissemination());
     sharingDao.save(deliverable.getDataSharing());
 

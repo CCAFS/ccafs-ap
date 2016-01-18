@@ -40,9 +40,11 @@
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.compliance.dataQualityAssurance" /]
             <div id="aditional-processData" class="aditional fileUpload" style="display:${(deliverable.ranking.processData?string('block','none'))!'none'}">
-              [#if (deliverable.processDataFile?has_content)!false]
+              [#if (deliverable.ranking.processDataFile?has_content)!false]
                 [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
-                <p><a href="${(deliverablesURL)!}${project.processDataFile}">${project.processDataFile}</a></p>
+               
+                <p><a href="${RankingUrl}${deliverable.ranking.processDataFile}">${deliverable.ranking.processDataFile}</a></p>
+                 
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="file"  /]

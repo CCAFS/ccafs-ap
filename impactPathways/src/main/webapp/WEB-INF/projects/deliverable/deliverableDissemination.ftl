@@ -25,22 +25,22 @@
         [#if editable]
         [#-- Intellectual Property Rights --]
         <div class="openAccessRestrictionOption">
-          <input id="intellectualProperty" type="radio" name="${params.deliverable.name}.dissemination.intellectualProperty" value="intellectualProperty" />
+          <input id="intellectualProperty" type="radio" name="${params.deliverable.name}.dissemination.type" value="intellectualProperty" />
           <label for="intellectualProperty">[@s.text name="reporting.projectDeliverable.dissemination.intellectualProperty" /]</label>
         </div>
         [#-- Limited Exclusivity Agreements --]
         <div class="openAccessRestrictionOption">
-          <input id="limitedExclusivity" type="radio" name="${params.deliverable.name}.dissemination.limitedExclusivity" value="limitedExclusivity" /> 
+          <input id="limitedExclusivity" type="radio" name="${params.deliverable.name}.dissemination.type" value="limitedExclusivity" /> 
           <label for="limitedExclusivity">[@s.text name="reporting.projectDeliverable.dissemination.limitedExclusivity" /]</label>
         </div>
         [#-- Restricted Use Agreement - Restricted access --]
         <div class="openAccessRestrictionOption">
-          <input id="restrictedAccess" type="radio" name="${params.deliverable.name}.dissemination.restrictedUseAgreement" value="restrictedAccess" />
+          <input id="restrictedAccess" type="radio" name="${params.deliverable.name}.dissemination.type" value="restrictedAccess" />
           <label for="restrictedAccess">[@s.text name="reporting.projectDeliverable.dissemination.restrictedAccess" /]</label>
         </div>
         [#-- Effective Date Restriction - embargoed periods --]
         <div class="openAccessRestrictionOption">
-          <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.dissemination.effectiveDateRestriction" value="embargoedPeriods" />
+          <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.dissemination.type" value="embargoedPeriods" />
           <label for="embargoedPeriods">[@s.text name="reporting.projectDeliverable.dissemination.embargoedPeriod" /]</label>
         </div>
         [#else]

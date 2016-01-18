@@ -82,12 +82,15 @@ public class ProjectDeliverableAction extends BaseAction {
 
   private Project project;
 
+
   // Model for the front-end
   private int deliverableID;
+
   private List<DeliverableType> deliverableTypes;
 
   private List<DeliverableType> deliverableSubTypes;
   private List<Integer> allYears;
+
   private List<IPElement> outputs;
   private List<ProjectPartner> projectPartners;
   private List<DeliverablePartner> deliverablePartners;
@@ -136,11 +139,9 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverable;
   }
 
-
   public List<DeliverablePartner> getDeliverablePartners() {
     return deliverablePartners;
   }
-
 
   public List<DeliverableType> getDeliverableSubTypes() {
     return deliverableSubTypes;
@@ -179,6 +180,12 @@ public class ProjectDeliverableAction extends BaseAction {
     return file;
   }
 
+
+  public String getFileFileName() {
+    return fileFileName;
+  }
+
+
   public List<IPProgram> getIpProgramFlagships() {
     return ipProgramFlagships;
   }
@@ -212,7 +219,6 @@ public class ProjectDeliverableAction extends BaseAction {
     return config.getUploadsBaseFolder() + File.separator + this.getRankingAbsoloutUrlPath() + File.separator;
   }
 
-
   public String getRankingUrl() {
     return config.getDownloadURL() + "/" + this.getRankingUrlPath().replace('\\', '/');
   }
@@ -222,6 +228,7 @@ public class ProjectDeliverableAction extends BaseAction {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "rankingsImage"
       + File.separator;
   }
+
 
   public Map<String, String> getStatuses() {
     return statuses;
@@ -235,7 +242,6 @@ public class ProjectDeliverableAction extends BaseAction {
   public String next() {
     return SUCCESS;
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -395,12 +401,17 @@ public class ProjectDeliverableAction extends BaseAction {
     return NOT_AUTHORIZED;
   }
 
+
   public void setDeliverable(Deliverable deliverable) {
     this.deliverable = deliverable;
   }
 
   public void setFile(File file) {
     this.file = file;
+  }
+
+  public void setFileFileName(String fileFileName) {
+    this.fileFileName = fileFileName;
   }
 
 
