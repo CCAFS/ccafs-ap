@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 
 /**
  * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class SecurityContext extends BaseSecurityContext {
@@ -388,11 +389,11 @@ public class SecurityContext extends BaseSecurityContext {
    * This method will check permissions in general at project level.
    * 
    * @param permission is some permission string coming from Permission class.
-   * @param projectID is some project identifier.
    * @return true if the user has permissions on it, false otherwise.
    */
-  public boolean hasProjectPermission(String permission, int projectID) {
-    return this.hasPermission(permission.replace("projects:", "projects:" + projectID + ":"));
+  @Override
+  public boolean hasPermission(String permission) {
+    return this.hasPermission(permission);
   }
 
   /**

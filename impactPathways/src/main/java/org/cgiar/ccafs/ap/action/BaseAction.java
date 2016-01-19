@@ -73,7 +73,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected boolean add;
   // User actions
   private boolean isEditable; // If user is able to edit the form.
-
   private boolean canEdit; // If user is able to edit the form.
   private boolean saveable; // If user is able to see the save, cancel, delete buttons
   private boolean fullEditable; // If user is able to edit all the form.
@@ -83,26 +82,22 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // Justification of the changes
   private String justification;
-
   private ComponentLesson projectLessons;
   private ComponentLesson projectLessonsPreview;
-
   private Map<String, Object> session;
-
-
   private HttpServletRequest request;
-
   private List<SectionStatus> sectionStatuses;
+
   // Config
   protected APConfig config;
+
+  // Managers
   @Inject
   protected SecurityContext securityContext;
   @Inject
   private BoardMessageManager boardMessageManager;
-
   @Inject
   protected ProjectLessonsManager lessonManager;
-
   @Inject
   private SectionStatusManager sectionStatusManager;
 
@@ -142,7 +137,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       sectionStatuses.clear();
     }
   }
-
 
   /**
    * This method clears the cache and re-load the user permissions in the next iteration.
@@ -226,7 +220,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     }
   }
 
-
   /**
    * This method gets the specific section status from the sectionStatuses array for a Deliverable.
    * 
@@ -245,6 +238,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return null;
   }
 
+
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
@@ -253,7 +247,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String getJustification() {
     return justification;
   }
-
 
   /**
    * Define default locale while we decide to support other languages in the future.
@@ -320,6 +313,31 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public Map<String, Object> getSession() {
     return session;
+  }
+
+  /**
+   * This method validates if current user has permissions to edit a specified field name in the platform.
+   * As this method is called in some action, it will automatically validate if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @param projectID is some project identifier.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasProjectPermission(String fieldName, int projectID) {
+    StringBuffer permissionString = new StringBuffer();
+    if (this.isReportingCycle()) {
+      permissionString.append("reporting:projects:");
+    } else {
+      permissionString.append("planning:projects:");
+    }
+    permissionString.append(projectID);
+    permissionString.append(":");
+    permissionString.append(this.getActionName());
+    permissionString.append(":");
+    permissionString.append(fieldName);
+
+    return securityContext.hasPermission(permissionString.toString());
   }
 
   /**
