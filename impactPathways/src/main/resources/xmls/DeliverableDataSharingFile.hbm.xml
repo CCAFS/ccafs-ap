@@ -14,5 +14,9 @@
         <property name="file" type="string">
             <column name="file" length="500" />
         </property>
+        
+         <property name="type" type="string">
+            <column name="type" length="50" />
+        </property>
     </class>
 </hibernate-mapping>

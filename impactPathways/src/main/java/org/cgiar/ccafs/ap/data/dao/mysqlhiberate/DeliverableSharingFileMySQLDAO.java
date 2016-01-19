@@ -37,6 +37,12 @@ public class DeliverableSharingFileMySQLDAO implements DeliverableDataSharingFil
   }
 
   @Override
+  public boolean delete(DeliverableDataSharingFile dataSharingFile) {
+    dao.delete(dataSharingFile);
+    return true; // TODO To review
+  }
+
+  @Override
   public List<DeliverableDataSharingFile> findDeliverableDataSharingFile(int deliverableId) {
     String sql = "from " + DeliverableDataSharingFile.class.getName() + " where deliverable_id=" + deliverableId;
     List<DeliverableDataSharingFile> listDissemination = dao.findAll(sql);
@@ -45,6 +51,7 @@ public class DeliverableSharingFileMySQLDAO implements DeliverableDataSharingFil
     }
     return null;
   }
+
 
   @Override
   public int save(DeliverableDataSharingFile dataSharingFile) {

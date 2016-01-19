@@ -25,6 +25,8 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(DeliverableDisseminationMySQLDAO.class)
 public interface DeliverableDataSharingFileDAO {
 
+  public boolean delete(DeliverableDataSharingFile dataSharingFile);
+
   public List<DeliverableDataSharingFile> findDeliverableDataSharingFile(int deliverableId);
 
   public int save(DeliverableDataSharingFile dataSharingFile);
