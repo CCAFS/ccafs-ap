@@ -8,7 +8,7 @@ $(document).ready(init);
 function init() {
   $deliverablesTypes = $("#deliverable_mainType");
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
-  $disseminationChannels = $('#deliverable_deliverable_disseminationChannel');
+  $disseminationChannels = $('#deliverable_deliverable_dissemination_disseminationChannel');
 
   attachEvents();
 

@@ -112,7 +112,7 @@
           [@s.fielderror cssClass="fieldError" fieldName="${params.deliverable.name}.relatedFlagships"/]
           [@s.checkboxlist name="${params.deliverable.name}.relatedFlagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName()" value="${params.deliverable.name}.relatedFlagshipsIds" cssClass="checkbox" /]
         [#else]
-          TODO: Options checked [@s.property value="${params.deliverable.name}.relatedFlagshipsIds"/]
+          [@s.property value="${params.deliverable.name}.relatedFlagshipsIds"/]
         [/#if]
       </div>
     </div> 
