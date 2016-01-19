@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverableFile;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -332,6 +333,12 @@ public class ProjectDeliverableAction extends BaseAction {
 
         deliverable.getRanking().setProcessDataFile(fileFileName);
       }
+
+      for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
+        /**
+         * TODO
+         */
+      }
       // -------- Saving main information
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
 
@@ -342,6 +349,7 @@ public class ProjectDeliverableAction extends BaseAction {
 
       }
       // Saving MOG
+
 
       // -------- Saving next users.
 

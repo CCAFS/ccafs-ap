@@ -13,7 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class Deliverable {
   private DeliverableDissemination dissemination;
   private DeliverableDataSharing dataSharing;
   private List<DeliverableDataSharingFile> dataSharingFile;
-  private List<File> files;
+  private List<DeliverableFile> files;
 
 
   private String statusDescription;
@@ -88,7 +87,7 @@ public class Deliverable {
     return dissemination;
   }
 
-  public List<File> getFiles() {
+  public List<DeliverableFile> getFiles() {
     return files;
   }
 
@@ -178,7 +177,7 @@ public class Deliverable {
     this.dissemination = dissemination;
   }
 
-  public void setFiles(List<File> files) {
+  public void setFiles(List<DeliverableFile> files) {
     this.files = files;
   }
 

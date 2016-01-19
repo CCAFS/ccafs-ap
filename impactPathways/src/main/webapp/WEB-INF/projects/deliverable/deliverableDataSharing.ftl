@@ -39,27 +39,27 @@
       <div id="dataSharingOptions">
         [#-- Option #1--]
         <label for="option-1">
-          <input id="option-1" type="radio" name="${params.deliverable.name}.dataSharing.institutionalRepository" value="true" >
+          <input id="option-1" type="radio" name="sharingOption" value="Externally" >
           [@s.text name="reporting.projectDeliverable.dataSharing.hostedInstitutional" /]
           <span class="quote">[@s.text name="reporting.projectDeliverable.dataSharing.hostedInstitutional.help" /]</span>
         </label> 
         <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
-          [@customForm.input name="${params.deliverable.name}.dataSharing.linkInstitutionalRepository" type="text" i18nkey="reporting.projectDeliverable.filename" value="http://"/]
+          [@customForm.input name="linkExternally" type="text" i18nkey="reporting.projectDeliverable.filename" value="http://"/]
           <div id="addFileURL-external" class="addButton addFileURL">[@s.text name="reporting.projectDeliverable.dataSharing.addURL" /]</div>
         </div> 
         [#-- Option #2--]
         <label for="option-2">
-          <input id="option-2" type="radio" name="${params.deliverable.name}.dataSharing.ccfasHostGreater" value="true" >
+          <input id="option-2" type="radio" name="sharingOption" value="To download" >
           [@s.text name="reporting.projectDeliverable.dataSharing.fileGreater" /]
           <span class="quote">[@s.text name="reporting.projectDeliverable.dataSharing.fileGreater.help" /]</span>
         </label>
         <div id="fileURL" class="fullBlock uploadBlock" style="display:none">
-          [@customForm.input name="${params.deliverable.name}.dataSharing.linkCcfasHostGreater" type="text" i18nkey="reporting.projectDeliverable.filename" value="http://" /]
+          [@customForm.input name="linkLocally" type="text" i18nkey="reporting.projectDeliverable.filename" value="http://" /]
           <div id="addFileURL-ccafs" class="addButton addFileURL">[@s.text name="reporting.projectDeliverable.dataSharing.addURL" /]</div>
         </div>
         [#-- Option #3--]
         <label for="option-3">
-          <input id="option-3" type="radio" name="${params.deliverable.name}.dataSharing.ccfasHostSmaller" value="Locally" >
+          <input id="option-3" type="radio" name="sharingOption" value="Locally" >
           [@s.text name="reporting.projectDeliverable.dataSharing.fileSmaller" /]
           <span class="quote">[@s.text name="reporting.projectDeliverable.dataSharing.fileSmaller.help" /]</span>
         </label> 

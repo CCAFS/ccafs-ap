@@ -389,7 +389,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
     }
     disseminationDao.save(deliverable.getDissemination());
-    sharingDao.save(deliverable.getDataSharing());
+    // sharingDao.save(deliverable.getDataSharing());
 
     if (deliverable.getDataSharingFile() != null) {
 
