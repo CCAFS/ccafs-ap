@@ -7,8 +7,7 @@
       <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-disseminationMetadata">[@s.text name="form.buttons.unedit" /]</a></div>
     [/#if]
   [/#if]
-  <h1 class="contentTitle">[@s.text name="reporting.projectDeliverable.disseminationTitle" /] </h1>
-  
+  <h1 class="contentTitle">[@s.text name="reporting.projectDeliverable.disseminationTitle" /] </h1> 
   [#-- Is there an Open Access restriction --]
   <div class="fullBlock">
     <table id="openAccessRestriction" class="default">
@@ -19,7 +18,7 @@
         </tr>
       </tbody>
     </table>
-    <div id="aditional-openAccessRestriction" class="aditional" style="display:block">
+    <div id="aditional-isOpenAccess" class="aditional" style="display:${deliverable.dissemination.isOpenAccess?string('none','block')}">
       <h6>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction.title" /]</h6>
       <div class="fullBlock">
         [#if editable]
@@ -43,8 +42,8 @@
           <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.dissemination.type" value="embargoedPeriods" />
           <label for="embargoedPeriods">[@s.text name="reporting.projectDeliverable.dissemination.embargoedPeriod" /]</label>
         </div>
-        [#else]
-          TODO: Option selected [@s.property value="${params.deliverable.name}.openAccessRestrictionOption"/]
+        [#else] 
+          ${(deliverable.dissemination.type)!'Open restriction is not selected'}
         [/#if]
       </div>
       [#-- Periods --]
@@ -69,12 +68,12 @@
         </tr>
       </tbody>
     </table>
-    <div id="aditional-alreadyDisseminated"class="aditional" style="display:none">
+    <div id="aditional-alreadyDisseminated"class="aditional" style="display:${deliverable.dissemination.alreadyDisseminated?string('block','none')}">
       <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.description" /]</p><br />
       [#-- Dissemination channel list --]
       <div class="fullBlock">
-        <div class="halfPartBlock">
-          [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label=""  disabled=false i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels" required=true editable=editable /]
+        <div class="halfPartBlock"> 
+          [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label="" i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels"  stringKey=true value="'${deliverable.dissemination.disseminationChannel}'" required=true editable=editable /]
         </div>
       </div>
       [#-- Dissemination name --]
@@ -82,7 +81,7 @@
         [@customForm.input name="${params.deliverable.name}.dissemination.disseminationChannelName" className="" i18nkey="reporting.projectDeliverable.disseminationName" required=true editable=editable /]
       </div>
       [#-- Dissemination channel URL / URI --]
-      <div id="disseminationUrl" class="fullBlock" style="display:none">
+      <div id="disseminationUrl" class="fullBlock" style="display:${(deliverable.dissemination.disseminationChannel?has_content)?string('block','none')}">
         [@customForm.input name="${params.deliverable.name}.dissemination.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
       </div>
     </div><!-- End aditional-alreadyDisseminated -->

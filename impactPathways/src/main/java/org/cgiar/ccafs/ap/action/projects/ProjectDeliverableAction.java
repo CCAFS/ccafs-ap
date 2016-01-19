@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
@@ -333,10 +334,26 @@ public class ProjectDeliverableAction extends BaseAction {
 
         deliverable.getRanking().setProcessDataFile(fileFileName);
       }
-
+      List<DeliverableDataSharingFile> files = new ArrayList<>();
       for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
+        if (deliverabelFile.getName() != null) {
+          DeliverableDataSharingFile file = new DeliverableDataSharingFile();
+          file.setDeliverableId(deliverableID);
+          if (!deliverabelFile.getLink().equals("")) {
+            file.setFile(deliverabelFile.getLink());
+          } else {
+            file.setFile(deliverabelFile.getName());
+          }
+
+          file.setType(deliverabelFile.getHosted());
+          if (deliverabelFile.getId() != -1) {
+            file.setId((deliverabelFile.getId()));
+          }
+          files.add(file);
+        }
 
       }
+      deliverable.setDataSharingFile(files);
       // -------- Saving main information
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
 
