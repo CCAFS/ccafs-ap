@@ -13,6 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
+import org.cgiar.ccafs.ap.config.APConstants;
+
 import java.util.Date;
 import java.util.List;
 

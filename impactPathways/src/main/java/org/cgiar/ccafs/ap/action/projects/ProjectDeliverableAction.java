@@ -335,9 +335,7 @@ public class ProjectDeliverableAction extends BaseAction {
       }
 
       for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
-        /**
-         * TODO
-         */
+
       }
       // -------- Saving main information
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
