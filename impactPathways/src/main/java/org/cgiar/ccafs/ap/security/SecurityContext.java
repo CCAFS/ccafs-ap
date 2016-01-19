@@ -385,16 +385,6 @@ public class SecurityContext extends BaseSecurityContext {
       Permission.PLANNING_PROJECT_BILATERAL_CONTRACT_UPDATE.replace("projects:", "projects:" + projectID + ":"));
   }
 
-  /**
-   * This method will check permissions in general at project level.
-   * 
-   * @param permission is some permission string coming from Permission class.
-   * @return true if the user has permissions on it, false otherwise.
-   */
-  @Override
-  public boolean hasPermission(String permission) {
-    return this.hasPermission(permission);
-  }
 
   /**
    * Verify if the user has the administrator role
