@@ -256,13 +256,13 @@
 
 
     
-
+ <!-- PROTOCOL get Metadata -->
     <dependency>
        <groupId>se.kb</groupId>
       <artifactId>oai4j</artifactId>
       <version>0.6b1</version>
     </dependency>
-    
+     <!-- END PROTOCOL Metadata -->
   </dependencies>
   
   <build>

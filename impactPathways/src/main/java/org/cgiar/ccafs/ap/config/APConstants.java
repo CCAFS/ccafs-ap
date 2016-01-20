@@ -34,7 +34,7 @@ public final class APConstants {
   public static final String REPORTING_SECTION = "Reporting";
   public static final String PROGRAM_REQUEST_ID = "programID";
 
-
+  public static final String DELIVERABLE_FILE_LOCALLY_HOSTED = "Locally";
   public static final String FLAGSHIP_REQUEST_ID = "flagshipID";
   public static final String METADATA_REQUEST_ID = "metadataID";
   public static final String PAGE_ID = "pageID";

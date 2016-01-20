@@ -263,7 +263,9 @@ public class ProjectDeliverableAction extends BaseAction {
     openAccessStatuses = new HashMap<>();
     openAccessStatuses.put(APConstants.OA_OPEN, this.getText("reporting.projectDeliverable.openAccess.open"));
     openAccessStatuses.put(APConstants.OA_LIMITED, this.getText("reporting.projectDeliverable.openAccess.limited"));
-
+    /**
+     * TODO CAMBIAR
+     */
     disseminationChannels = new HashMap<>();
     disseminationChannels.put("amkn", "AMKN");
     disseminationChannels.put("cgspace", "CGSpace");
