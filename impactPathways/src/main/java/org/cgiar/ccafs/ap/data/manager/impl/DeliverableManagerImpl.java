@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDAO;
 import org.cgiar.ccafs.ap.data.dao.DeliverableDisseminationDAO;
+import org.cgiar.ccafs.ap.data.dao.DeliverablePublicationMetadataDAO;
 import org.cgiar.ccafs.ap.data.dao.DeliverableRankingDAO;
 import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableSharingFileMySQLDAO;
 import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableSharingMySQLDAO;
@@ -62,12 +63,13 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private DeliverableDisseminationDAO disseminationDao;
   private DeliverableSharingMySQLDAO sharingDao;
   private DeliverableSharingFileMySQLDAO sharingFileDao;
+  private DeliverablePublicationMetadataDAO publicationMetadataDao;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
     NextUserManager nextUserManager, DeliverablePartnerManager partnerManager, DeliverableRankingDAO rankingDao,
     DeliverableDisseminationDAO disseminationDao, DeliverableSharingMySQLDAO sharingDao,
-    DeliverableSharingFileMySQLDAO sharingFileDao) {
+    DeliverableSharingFileMySQLDAO sharingFileDao, DeliverablePublicationMetadataDAO publicationMetadataDao) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
@@ -76,6 +78,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     this.disseminationDao = disseminationDao;
     this.sharingDao = sharingDao;
     this.sharingFileDao = sharingFileDao;
+    this.publicationMetadataDao = publicationMetadataDao;
   }
 
   @Override
@@ -191,7 +194,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
         deliverable.setFiles(deliverableFile);
       }
-
+      deliverable.setPublicationMetadata(publicationMetadataDao.findDeliverablePublicationMetadata(deliverableID));
 
       return deliverable;
     }
@@ -405,7 +408,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
     }
     // Save Dissemination
     disseminationDao.save(deliverable.getDissemination());
-
+    /// save publication metadata
+    publicationMetadataDao.save(deliverable.getPublicationMetadata());
 
     /// Preview Files to remove
     if (deliverable.getDataSharingFile() != null) {

@@ -13,8 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import org.cgiar.ccafs.ap.config.APConstants;
-
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +43,7 @@ public class Deliverable {
   private DeliverableDataSharing dataSharing;
   private List<DeliverableDataSharingFile> dataSharingFile;
   private List<DeliverableFile> files;
+  private DeliverablePublicationMetadata publicationMetadata;
 
 
   private String statusDescription;
@@ -61,7 +60,6 @@ public class Deliverable {
     this.id = id;
   }
 
-
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Deliverable) {
@@ -76,14 +74,15 @@ public class Deliverable {
     return created;
   }
 
+
   public DeliverableDataSharing getDataSharing() {
     return dataSharing;
   }
 
+
   public List<DeliverableDataSharingFile> getDataSharingFile() {
     return dataSharingFile;
   }
-
 
   public DeliverableDissemination getDissemination() {
     return dissemination;
@@ -97,7 +96,6 @@ public class Deliverable {
   public int getId() {
     return id;
   }
-
 
   public List<NextUser> getNextUsers() {
     return nextUsers;
@@ -114,6 +112,11 @@ public class Deliverable {
   }
 
 
+  public DeliverablePublicationMetadata getPublicationMetadata() {
+    return publicationMetadata;
+  }
+
+
   public DeliverablesRanking getRanking() {
     return ranking;
   }
@@ -122,6 +125,7 @@ public class Deliverable {
   public DeliverablePartner getResponsiblePartner() {
     return responsiblePartner;
   }
+
 
   public int getStatus() {
     return status;
@@ -197,6 +201,10 @@ public class Deliverable {
 
   public void setOutput(IPElement output) {
     this.output = output;
+  }
+
+  public void setPublicationMetadata(DeliverablePublicationMetadata publicationMetadata) {
+    this.publicationMetadata = publicationMetadata;
   }
 
   public void setRanking(DeliverablesRanking ranking) {
