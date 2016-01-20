@@ -352,23 +352,29 @@ public class DeliverableManagerImpl implements DeliverableManager {
     // Logs
     deliverableData.put("modified_by", user.getId());
     deliverableData.put("modification_justification", justification);
+    // for (iterable_type iterable_element : iterable) {
 
+    // }
     int result = deliverableDAO.saveDeliverable(deliverableData);
-    if (deliverable.getRanking().getDeliverableId() == null) {
-      if (result == 0) {
-        deliverable.getRanking().setDeliverableId(new Long(deliverable.getId()));
-        deliverable.getDissemination().setDeliverableId((deliverable.getId()));
-        deliverable.getDataSharing().setDeliverableId((deliverable.getId()));
+    // if (deliverable.getRanking().getDeliverableId() == null) {
+    if (result == 0) {
+      deliverable.getRanking().setDeliverableId(new Long(deliverable.getId()));
+      deliverable.getDissemination().setDeliverableId((deliverable.getId()));
+      // deliverable.getDataSharing().setDeliverableId((deliverable.getId()));
+      deliverable.getPublicationMetadata().setDeliverableId((deliverable.getId()));
 
-      } else {
-        deliverable.getDissemination().setDeliverableId((result));
-        deliverable.getRanking().setDeliverableId(new Long(result));
-        deliverable.getDataSharing().setDeliverableId((result));
+    } else {
+      deliverable.getDissemination().setDeliverableId((result));
+      deliverable.getRanking().setDeliverableId(new Long(result));
+      // deliverable.getDataSharing().setDeliverableId((result));
+      deliverable.getPublicationMetadata().setDeliverableId((result));
 
-      }
+
+      // }
 
 
     }
+    int i = 0;
     // Save Deliverable Ranking
     rankingDao.save(deliverable.getRanking());
     // Stablish the type of Dissemination

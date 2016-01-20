@@ -292,7 +292,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
       project.setWorkplanName(projectData.get("workplan_name"));
       project.setBilateralContractProposalName(projectData.get("bilateral_contract_name"));
-      project.setAnnualreportDonor(projectData.get("annual_report_to_dornor"));
+      project.setAnnualReportDonor(projectData.get("annual_report_to_dornor"));
       project.setStatus(projectData.get("status"));
       project.setStatusDescription(projectData.get("status_description"));
 
@@ -441,10 +441,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getBudgetsByProject(project));
 
@@ -497,7 +497,7 @@ public class ProjectManagerImpl implements ProjectManager {
       }
       projectData.put("requires_workplan_upload", project.isWorkplanRequired());
       projectData.put("workplan_name", project.getWorkplanName());
-      projectData.put("annual_report_to_dornor", project.getAnnualreportDonor());
+      projectData.put("annual_report_to_dornor", project.getAnnualReportDonor());
       projectData.put("status", project.getStatus());
       projectData.put("status_description", project.getStatusDescription());
       projectData.put("bilateral_contract_name", project.getBilateralContractProposalName());
@@ -513,8 +513,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

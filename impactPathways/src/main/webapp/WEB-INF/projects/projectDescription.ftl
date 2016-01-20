@@ -137,9 +137,9 @@
           <div class="fullBlock fileUpload annualreportDonor">
             <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
             <div class="uploadContainer">
-              [#if project.annualreportDonor?has_content]
+              [#if project.annualReportDonor?has_content]
                 [#if editable]<span id="remove-fileReporting" class="remove"></span>[/#if] 
-                <p> <a href="${AnualReportURL}${project.annualreportDonor}">${project.annualreportDonor}</a> 
+                <p> <a href="${AnualReportURL}${project.annualReportDonor}">${project.annualReportDonor}</a> 
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="fileReporting"  /]

@@ -355,7 +355,7 @@ public class ProjectDescriptionAction extends BaseAction {
     previousProject.setBilateralContractRequired(project.isBilateralContractRequired());
     previousProject.setWorkplanName(project.getWorkplanName());
     previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
-    previousProject.setAnnualreportDonor(project.getAnnualreportDonor());
+    previousProject.setAnnualReportDonor(project.getAnnualReportDonor());
     previousProject.setStatus(project.getStatus());
     previousProject.setStatusDescription(project.getStatusDescription());
 
@@ -491,15 +491,15 @@ public class ProjectDescriptionAction extends BaseAction {
         }
         if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
           if (fileReporting != null) {
-            FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
+            FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualReportDonor());
             FileManager.copyFile(fileReporting, this.getAnnualReportAbsolutePath() + fileReportingFileName);
-            previousProject.setAnnualreportDonor(fileReportingFileName);
+            previousProject.setAnnualReportDonor(fileReportingFileName);
           } else {
-            previousProject.setAnnualreportDonor(project.getAnnualreportDonor());
-            if (project.getAnnualreportDonor() != null && !project.getAnnualreportDonor().isEmpty()) {
+            previousProject.setAnnualReportDonor(project.getAnnualReportDonor());
+            if (project.getAnnualReportDonor() != null && !project.getAnnualReportDonor().isEmpty()) {
 
-              FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualreportDonor());
-              previousProject.setAnnualreportDonor("");
+              FileManager.deleteFile(this.getAnnualReportAbsolutePath() + previousProject.getAnnualReportDonor());
+              previousProject.setAnnualReportDonor("");
             }
           }
         }
