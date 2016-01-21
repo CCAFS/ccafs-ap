@@ -59,15 +59,15 @@ public class MetadataByLink extends BaseAction {
 
     String linkRequest = "";
     switch (page) {
-      case "1":
+      case "cgspace":
         linkRequest = CGSPACE;
         break;
 
-      case "2":
+      case "agtrials":
         linkRequest = AGTRIALS;
         break;
 
-      case "3":
+      case "amkn":
         linkRequest = AMKN;
         break;
 

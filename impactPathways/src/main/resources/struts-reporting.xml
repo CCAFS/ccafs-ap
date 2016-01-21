@@ -13,13 +13,13 @@
     <action name="crpIndicators" class="org.cgiar.ccafs.ap.action.BaseAction">
       <result name="input">/WEB-INF/crpIndicators.ftl</result>
     </action>
-     <action name="uploadDeliverable" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.UploadDeliverableAction">
     
+    <action name="uploadDeliverable" class="org.cgiar.ccafs.ap.action.reporting.activities.deliverables.UploadDeliverableAction">
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">314572900</param>
       </interceptor-ref> 
-    
     </action>
+    
     <action name="deleteProject" method="delete" class="org.cgiar.ccafs.ap.action.projects.ProjectsListAction">
       <result name="success" type="redirectAction">
         <param name="actionName">projectsList</param>
