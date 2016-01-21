@@ -74,18 +74,31 @@ public class DeliverablePublicationMetadata implements java.io.Serializable {
   }
 
   public Boolean getFp1() {
+
+    if (fp1 == null) {
+      return false;
+    }
     return this.fp1;
   }
 
   public Boolean getFp2() {
+    if (fp2 == null) {
+      return false;
+    }
     return this.fp2;
   }
 
   public Boolean getFp3() {
+    if (fp3 == null) {
+      return false;
+    }
     return this.fp3;
   }
 
   public Boolean getFp4() {
+    if (fp4 == null) {
+      return false;
+    }
     return this.fp4;
   }
 

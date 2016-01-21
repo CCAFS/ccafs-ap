@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableSharingMySQLDAO;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
@@ -63,13 +64,15 @@ public class DeliverableManagerImpl implements DeliverableManager {
   private DeliverableDisseminationDAO disseminationDao;
   private DeliverableSharingMySQLDAO sharingDao;
   private DeliverableSharingFileMySQLDAO sharingFileDao;
+  private IPProgramManager ipProgramManager;
   private DeliverablePublicationMetadataDAO publicationMetadataDao;
 
   @Inject
   public DeliverableManagerImpl(DeliverableDAO deliverableDAO, DeliverableTypeManager deliverableTypeManager,
     NextUserManager nextUserManager, DeliverablePartnerManager partnerManager, DeliverableRankingDAO rankingDao,
     DeliverableDisseminationDAO disseminationDao, DeliverableSharingMySQLDAO sharingDao,
-    DeliverableSharingFileMySQLDAO sharingFileDao, DeliverablePublicationMetadataDAO publicationMetadataDao) {
+    DeliverableSharingFileMySQLDAO sharingFileDao, DeliverablePublicationMetadataDAO publicationMetadataDao,
+    IPProgramManager ipProgramManager) {
     this.deliverableDAO = deliverableDAO;
     this.deliverableTypeManager = deliverableTypeManager;
     this.nextUserManager = nextUserManager;
@@ -79,6 +82,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     this.sharingDao = sharingDao;
     this.sharingFileDao = sharingFileDao;
     this.publicationMetadataDao = publicationMetadataDao;
+    this.ipProgramManager = ipProgramManager;
   }
 
   @Override
@@ -194,7 +198,33 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
         deliverable.setFiles(deliverableFile);
       }
+
+
       deliverable.setPublicationMetadata(publicationMetadataDao.findDeliverablePublicationMetadata(deliverableID));
+      List<IPProgram> ipFlashigps = new ArrayList<>();
+      List<String> ipFlashigpsIds = new ArrayList<>();
+
+      if (deliverable.getPublicationMetadata() != null) {
+        if (deliverable.getPublicationMetadata().getFp1()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(1));
+          ipFlashigpsIds.add("1");
+        }
+        if (deliverable.getPublicationMetadata().getFp2()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(2));
+          ipFlashigpsIds.add("2");
+        }
+        if (deliverable.getPublicationMetadata().getFp3()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(3));
+          ipFlashigpsIds.add("3");
+        }
+        if (deliverable.getPublicationMetadata().getFp4()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(4));
+          ipFlashigpsIds.add("4");
+        }
+        deliverable.getPublicationMetadata().setRelatedFlagships(ipFlashigps);
+        deliverable.getPublicationMetadata().setRelatedFlagshipsIds(ipFlashigpsIds);
+      }
+
 
       return deliverable;
     }
@@ -374,7 +404,27 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
 
     }
-    int i = 0;
+    if (deliverable.getPublicationMetadata() != null
+      && deliverable.getPublicationMetadata().getRelatedFlagshipsIds() != null) {
+      for (String flashipId : deliverable.getPublicationMetadata().getRelatedFlagshipsIds()) {
+        switch (flashipId) {
+          case "1":
+            deliverable.getPublicationMetadata().setFp1(true);
+            break;
+          case "2":
+            deliverable.getPublicationMetadata().setFp2(true);
+            break;
+          case "3":
+            deliverable.getPublicationMetadata().setFp3(true);
+            break;
+          case "4":
+            deliverable.getPublicationMetadata().setFp4(true);
+            break;
+
+        }
+      }
+    }
+
     // Save Deliverable Ranking
     rankingDao.save(deliverable.getRanking());
     // Stablish the type of Dissemination
