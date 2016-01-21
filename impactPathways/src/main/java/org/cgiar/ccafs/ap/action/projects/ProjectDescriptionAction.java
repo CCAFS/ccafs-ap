@@ -383,16 +383,10 @@ public class ProjectDescriptionAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectDescription(projectID)) {
-
-      // There is no lessons learn on this section.
-      // if (!this.isNewProject()) {
-      // super.saveProjectLessons(projectID);
-      // }
-
+    if (this.hasProjectPermission("update", projectID)) {
       // If the user can edit the dates, delete the budgets that correspond to years that are not linked to the
       // project anymore to prevent errors in the project budget section.
-      if (securityContext.canEditStartDate(projectID) || securityContext.canEditEndDate(projectID)) {
+      if (this.hasProjectPermission("startDate", projectID) || this.hasProjectPermission("endDate", projectID)) {
         List<Integer> currentYears = project.getAllYears();
         List<Integer> previousYears = previousProject.getAllYears();
         for (Integer previousYear : previousYears) {
@@ -401,31 +395,28 @@ public class ProjectDescriptionAction extends BaseAction {
               this.getJustification());
           }
         }
-
         budgetManager.deleteBudgetsFromUnexistentYears(projectID);
       }
 
       // Update only the values to which the user is authorized to modify
-
-      previousProject.setTitle(project.getTitle());
-
-      if (securityContext.canEditManagementLiaison(projectID)) {
-        previousProject.setLiaisonInstitution(project.getLiaisonInstitution());
+      if (this.hasProjectPermission("title", projectID)) {
+        previousProject.setTitle(project.getTitle());
       }
 
-      if (securityContext.canEditManagementLiaison(projectID)) {
+      if (this.hasProjectPermission("managementLiaison", projectID)) {
+        previousProject.setLiaisonInstitution(project.getLiaisonInstitution());
         previousProject.setOwner(project.getOwner());
       }
 
-      if (securityContext.canEditStartDate(projectID)) {
+      if (this.hasProjectPermission("startDate", projectID)) {
         previousProject.setStartDate(project.getStartDate());
       }
 
-      if (securityContext.canEditEndDate(projectID)) {
+      if (this.hasProjectPermission("endDate", projectID)) {
         previousProject.setEndDate(project.getEndDate());
       }
 
-      if (securityContext.canAllowProjectWorkplanUpload(projectID)) {
+      if (this.hasProjectPermission("workplan", projectID)) {
         previousProject.setWorkplanRequired(project.isWorkplanRequired());
         // previousProject.setBilateralContractRequired(project.isBilateralContractRequired());
       }
@@ -472,7 +463,7 @@ public class ProjectDescriptionAction extends BaseAction {
       // previousProject.setType(project.getType());
 
       if (project.isBilateralProject()) {
-        if (securityContext.canUploadBilateralContract(projectID)) {
+        if (this.hasProjectPermission("bilateralContract", projectID)) {
           if (file != null) {
             FileManager
               .deleteFile(this.getBilateralContractAbsolutePath() + previousProject.getBilateralContractProposalName());
@@ -503,13 +494,17 @@ public class ProjectDescriptionAction extends BaseAction {
             }
           }
         }
-
-
       }
 
-      previousProject.setSummary(project.getSummary());
-      previousProject.setStatus(project.getStatus());
-      previousProject.setStatusDescription(project.getStatusDescription());
+      if (this.hasProjectPermission("summary", projectID)) {
+        previousProject.setSummary(project.getSummary());
+      }
+      if (this.hasProjectPermission("status", projectID)) {
+        previousProject.setStatus(project.getStatus());
+      }
+      if (this.hasProjectPermission("statusDescription", projectID)) {
+        previousProject.setStatusDescription(project.getStatusDescription());
+      }
 
       // Save the information
       int result =
@@ -528,7 +523,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
       // Save the regions and flagships
 
-      if (securityContext.canEditProjectFlagships(projectID)) {
+      if (this.hasProjectPermission("flagships", projectID)) {
         List<IPProgram> previousFlagships = previousProject.getFlagships();
         List<IPProgram> flagships = project.getFlagships();
         boolean saved = true;
@@ -551,7 +546,7 @@ public class ProjectDescriptionAction extends BaseAction {
         }
       }
 
-      if (securityContext.canEditProjectRegions(projectID)) {
+      if (this.hasProjectPermission("regions", projectID)) {
         List<IPProgram> previousRegions = previousProject.getRegions();
         boolean saved = true;
 
