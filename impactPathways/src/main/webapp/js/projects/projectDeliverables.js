@@ -15,6 +15,9 @@ function init() {
   // Initialize the tabs
   initDeliverableTabs();
 
+  // Initialize metadata functions
+  initMetadataFunctions();
+
   // Execute a change in deliverables types once
   $deliverablesTypes.trigger('change');
 
@@ -286,10 +289,10 @@ function addDropzone() {
       paramName: "file", // The name that will be used to transfer the file
       addRemoveLinks: true,
       params: {
-          activityID: $("input[name^='projectID']").val(),
+          projectID: $("input[name^='projectID']").val(),
           deliverableID: $("input[name^='deliverableID']").val()
       },
-      url: "uploadDeliverable.do",
+      url: baseURL + '/reporting/uploadDeliverable.do',
       maxFilesize: 30,
       accept: function(file,done) {
         canAddFile = true;
@@ -440,4 +443,97 @@ function checkDuplicateFile(fileName) {
     }
   });
   return alreadyExist;
+}
+
+/*
+ * Metadata functions
+ */
+var $disseminationUrl;
+var timeoutID;
+
+function initMetadataFunctions() {
+  // Setting vars
+  $disseminationUrl = $('#disseminationUrl input');
+
+  // Events
+  $disseminationUrl.on("keyup", urlCheck);
+  $('#check-button').on("click", getMetadata);
+
+  $disseminationChannels.change(function(e) {
+    e.preventDefault();
+    var optionSelected = $disseminationChannels.val();
+    if(optionSelected == -1) {
+      $('.example').fadeOut();
+      $disseminationUrl.fadeOut(500);
+      return;
+    }
+    $disseminationUrl.val('');
+    $disseminationUrl.fadeIn(500);
+    $('#info-' + optionSelected).siblings().hide();
+    $('#info-' + optionSelected).fadeIn(500);
+  });
+}
+
+function urlCheck(e) {
+  if(($(this).val()).length > 1) {
+    if(timeoutID) {
+      clearTimeout(timeoutID);
+    }
+    // Start a timer that will search when finished
+    timeoutID = setTimeout(getMetadata, 1000);
+  }
+}
+
+function getMetadata() {
+  var optionSelected = $disseminationChannels.val();
+  var channelUrl = $disseminationUrl.val();
+  if(channelUrl.length > 1) {
+    var uri = new Uri(channelUrl);
+    var uriPath = uri.path();
+    var uriHost = uri.host();
+
+    var ajaxData = {
+      pageID: optionSelected
+    };
+    if(optionSelected == 'cgspace') {
+      ajaxData.metadataID = "oai:" + uriHost + ":" + uriPath.slice(8, uriPath.length);
+    } else {
+      ajaxData.metadataID = channelUrl;
+    }
+    $.ajax({
+        'url': baseURL + '/metadataByLink.do',
+        'type': "GET",
+        'data': ajaxData,
+        'dataType': "json",
+        beforeSend: function() {
+          $("#output").html("Searching ... " + ajaxData.metadataID);
+        },
+        success: function(data) {
+          if(data.errorMessage) {
+            $("#output").html(data.errorMessage);
+            console.log(data.errorMessage);
+          } else {
+            $('#title').val(data.title);
+            $('#creator').val(data.creator);
+            $('#subject').val(data.subject);
+            $('#description').val(data.description);
+            $('#publisher').val(data.publisher);
+            $('#contributor').val(data.contributor);
+            $('#date').val(data.date);
+            $('#type').val(data.type);
+            $('#format').val(data.format);
+            $('#identifier').val(data.identifier);
+            $('#source').val(data.source);
+            $('#language').val(data.language);
+            $('#relation').val(data.relation);
+            $('#coverage').val(data.coverage);
+            $('#rights').val(data.rights);
+
+            $("#output").html("Found metadata for " + ajaxData.metadataID);
+          }
+        },
+        complete: function() {
+        }
+    });
+  }
 }

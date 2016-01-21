@@ -85,6 +85,9 @@
       [#if libraryName="dropzone"]          
         <script src="${baseUrl}/js/libs/dropzone/dropzone-3.12.0.js"></script>
       [/#if]
+      [#if libraryName="jsUri"]          
+        <script src="${baseUrl}/js/libs/jsUri/Uri.js"></script>
+      [/#if]
    [/#list]
   [/#if]
 

@@ -18,7 +18,7 @@
         </tr>
       </tbody>
     </table>
-    <div id="aditional-isOpenAccess" class="aditional" style="display:${deliverable.dissemination.isOpenAccess?string('none','block')}">
+    <div id="aditional-isOpenAccess" class="aditional" style="display:${(deliverable.dissemination.isOpenAccess?string('none','block'))!'block'}">
       <h6>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction.title" /]</h6>
       <div class="fullBlock">
         [#if editable]
@@ -68,12 +68,20 @@
         </tr>
       </tbody>
     </table>
-    <div id="aditional-alreadyDisseminated"class="aditional" style="display:${deliverable.dissemination.alreadyDisseminated?string('block','none')}">
+    <div id="aditional-alreadyDisseminated"class="aditional" style="display:${(deliverable.dissemination.alreadyDisseminated?string('block','none'))!'none'}">
       <p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated.description" /]</p><br />
       [#-- Dissemination channel list --]
       <div class="fullBlock">
         <div class="halfPartBlock"> 
-          [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label="" i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels"  stringKey=true value="'${deliverable.dissemination.disseminationChannel}'" required=true editable=editable /]
+          [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label="" i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels"  stringKey=true value="'${(deliverable.dissemination.disseminationChannel)!}'" required=true editable=editable /]
+        </div>
+        <div class="halfPartBlock">
+          <!-- Information Section --> 
+          <div id="examples">
+            <p class="example" id="info-cgspace" style="display:none"><strong>Example of URL :</strong> <code>https://cgspace.cgiar.org/handle/10568/52163</code></p> 
+            <p class="example" id="info-agtrials" style="display:none"><strong>Example of URL :</strong> <code>oai:agtrials.org:60</code></p>
+            <p class="example" id="info-amkn" style="display:none"><strong>Example of URL :</strong> <code>oai:amkn.org:4260</code></p>
+          </div>
         </div>
       </div>
       [#-- Dissemination name --]
@@ -81,8 +89,9 @@
         [@customForm.input name="${params.deliverable.name}.dissemination.disseminationChannelName" className="" i18nkey="reporting.projectDeliverable.disseminationName" required=true editable=editable /]
       </div>
       [#-- Dissemination channel URL / URI --]
-      <div id="disseminationUrl" class="fullBlock" style="display:${(deliverable.dissemination.disseminationChannel?has_content)?string('block','none')}">
+      <div id="disseminationUrl" class="fullBlock" style="display:${((deliverable.dissemination.disseminationChannel?has_content)?string('block','none'))!'none'}">
         [@customForm.input name="${params.deliverable.name}.dissemination.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
+        <span id="output" class="label label-default" style="float:right"></span>
       </div>
     </div><!-- End aditional-alreadyDisseminated -->
   </div>
