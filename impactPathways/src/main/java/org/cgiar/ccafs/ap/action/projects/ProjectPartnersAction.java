@@ -429,11 +429,11 @@ public class ProjectPartnersAction extends BaseAction {
     partnerPersonTypes = new HashMap<>();
     partnerPersonTypes.put(APConstants.PROJECT_PARTNER_CP, this.getText("planning.projectPartners.types.CP"));
 
-    if (securityContext.canUpdatePartnerLeader(project.getId())) {
+    if (this.hasProjectPermission("leader", projectID)) {
       partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PL, this.getText("planning.projectPartners.types.PL"));
     }
 
-    if (securityContext.canUpdatePartnerCordinator(project.getId())) {
+    if (this.hasProjectPermission("coordinator", projectID)) {
       partnerPersonTypes.put(APConstants.PROJECT_PARTNER_PC, this.getText("planning.projectPartners.types.PC"));
     }
 
@@ -482,8 +482,7 @@ public class ProjectPartnersAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectPartners(project.getId())) {
-
+    if (this.hasProjectPermission("update", projectID)) {
       // Saving Lessons
       if (!this.isNewProject()) {
         this.saveProjectLessons(project.getId());
