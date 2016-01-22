@@ -678,6 +678,10 @@ img.icon {
     background: url(../../images/global/loading.gif) #FFF no-repeat 50%;        z-index: 99;    opacity: 0.3;
 }
 
+input.input-loading {
+  background: url(../../images/global/loading_3.gif) #FFF no-repeat right;        
+}
+
 /* Lessons and Implications */
 #lessons {
   padding-top: 31px;
@@ -3651,6 +3655,43 @@ margin: 0;}
 
 #metadata-block .halfPartBlock{
   margin-bottom:10px;
+}
+
+/* Metadata */
+#disseminationUrl {
+  position:relative;
+}
+
+#disseminationUrl div.input{
+  float:left;
+  width: 80%;
+}
+#disseminationUrl div#fillMetadata{
+  float: right;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.checkButton{
+  background-color: #7FB06F;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.checkButton:hover{
+  background-color: #749E66;
+}
+
+#metadata-output{
+  color: #777;
+  padding: 7px 4px;
+  font-style: italic;
+}
+
+#metadata-flagships{
+  width: 84%;
 }
 
 /* Data sharing */

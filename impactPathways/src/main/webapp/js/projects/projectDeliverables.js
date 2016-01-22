@@ -448,24 +448,31 @@ function checkDuplicateFile(fileName) {
 /*
  * Metadata functions
  */
-var $disseminationUrl;
+var $disseminationUrl, $metadataOutput, $checkButton;
 var timeoutID;
 
 function initMetadataFunctions() {
   // Setting vars
   $disseminationUrl = $('#disseminationUrl input');
+  $metadataOutput = $('#metadata-output');
+  $checkButton = $('#fillMetadata');
 
   // Events
-  $disseminationUrl.on("keyup", urlCheck);
-  $('#check-button').on("click", getMetadata);
+  $disseminationUrl.on('keyup', urlCheck);
+  $checkButton.on("click", function(){
+    getMetadata(true);
+  });
 
-  $disseminationChannels.change(function(e) {
+  $disseminationChannels.on('change',function(e) {
     e.preventDefault();
     var optionSelected = $disseminationChannels.val();
     if(optionSelected == -1) {
       $('.example').fadeOut();
       $disseminationUrl.fadeOut(500);
       return;
+    }else if(optionSelected == "other"){
+      $('.example').fadeOut();
+      $metadataOutput.html("");
     }
     $disseminationUrl.val('');
     $disseminationUrl.fadeIn(500);
@@ -480,11 +487,11 @@ function urlCheck(e) {
       clearTimeout(timeoutID);
     }
     // Start a timer that will search when finished
-    timeoutID = setTimeout(getMetadata, 1000);
+    timeoutID = setTimeout(getMetadata(false), 1000);
   }
 }
 
-function getMetadata() {
+function getMetadata(fillData) {
   var optionSelected = $disseminationChannels.val();
   var channelUrl = $disseminationUrl.val();
   if(channelUrl.length > 1) {
@@ -497,6 +504,8 @@ function getMetadata() {
     };
     if(optionSelected == 'cgspace') {
       ajaxData.metadataID = "oai:" + uriHost + ":" + uriPath.slice(8, uriPath.length);
+    }else if(optionSelected == 'other'){
+      return
     } else {
       ajaxData.metadataID = channelUrl;
     }
@@ -506,34 +515,44 @@ function getMetadata() {
         'data': ajaxData,
         'dataType': "json",
         beforeSend: function() {
-          $("#output").html("Searching ... " + ajaxData.metadataID);
+          $disseminationUrl.addClass('input-loading');
+          $metadataOutput.html("Searching ... " + ajaxData.metadataID);
         },
         success: function(data) {
           if(data.errorMessage) {
-            $("#output").html(data.errorMessage);
-            console.log(data.errorMessage);
+            $metadataOutput.html(data.errorMessage);
           } else {
-            $('#title').val(data.title);
-            $('#creator').val(data.creator);
-            $('#subject').val(data.subject);
-            $('#description').val(data.description);
-            $('#publisher').val(data.publisher);
-            $('#contributor').val(data.contributor);
-            $('#date').val(data.date);
-            $('#type').val(data.type);
-            $('#format').val(data.format);
-            $('#identifier').val(data.identifier);
-            $('#source').val(data.source);
-            $('#language').val(data.language);
-            $('#relation').val(data.relation);
-            $('#coverage').val(data.coverage);
-            $('#rights').val(data.rights);
-
-            $("#output").html("Found metadata for " + ajaxData.metadataID);
+            if (jQuery.isEmptyObject(data.metadata)){
+              $metadataOutput.html("Metdata empty");
+            }else{
+              var fields = [];
+              $.each( data.metadata, function( key, value ) {
+                fields.push(key.charAt(0).toUpperCase() + key.slice(1));
+              });
+              $metadataOutput.empty().append("Found metadata for " + ajaxData.metadataID +" <br /> " + fields.reverse().join(', '));
+              if(fillData){setMetadata(data.metadata);}
+            }
           }
         },
         complete: function() {
+          $disseminationUrl.removeClass('input-loading');
         }
     });
   }
+}
+
+function setMetadata(data) {
+  $("[name$='descriptionMetadata']").val(data.description).autoGrow();
+  $("[name$='authorsMetadata']").val(data.authors);
+  $("[name$='identifierMetadata']").val(data.identifier);
+  $("[name$='publishierMetadata']").val(data.publishier);
+  $("[name$='relationMetadata']").val(data.relation);
+  $("[name$='contributorMetadata']").val(data.contributor);
+  $("[name$='subjectMetadata']").val(data.subject);
+  $("[name$='sourceMetadata']").val(data.source);
+  $("[name$='publicationMetada']").val(data.publication);
+  $("[name$='languageMetadata']").val(data.language);
+  $("[name$='coverageMetadata']").val(data.coverage);
+  $("[name$='formatMetadata']").val(data.format);
+  $("[name$='rigthsMetadata']").val(data.rigths);
 }

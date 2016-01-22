@@ -107,7 +107,7 @@
     [#-- Publication is an output of which flagships --]
     <div class="fullBlock">
       <h6>[@s.text name="reporting.projectDeliverable.outputPublication" help="reporting.projectDeliverable.outputPublication.help" required=true /]</h6>
-      <div class="checkboxGroup">
+      <div id="metadata-flagships" class="checkboxGroup">
         [#if editable]
           [@s.fielderror cssClass="fieldError" fieldName="${params.deliverable.name}.relatedFlagships"/]
           [@s.checkboxlist name="${params.deliverable.name}.publicationMetadata.relatedFlagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName()" value="${params.deliverable.name}.publicationMetadata.relatedFlagshipsIds" cssClass="checkbox" /]

@@ -75,8 +75,7 @@
         <div class="halfPartBlock"> 
           [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label="" i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels"  stringKey=true value="'${(deliverable.dissemination.disseminationChannel)!}'" required=true editable=editable /]
         </div>
-        <div class="halfPartBlock">
-          <!-- Information Section --> 
+        <div class="halfPartBlock"> 
           <div id="examples">
             <p class="example" id="info-cgspace" style="display:none"><strong>Example of URL :</strong> <code>https://cgspace.cgiar.org/handle/10568/52163</code></p> 
             <p class="example" id="info-agtrials" style="display:none"><strong>Example of URL :</strong> <code>oai:agtrials.org:60</code></p>
@@ -91,7 +90,10 @@
       [#-- Dissemination channel URL / URI --]
       <div id="disseminationUrl" class="fullBlock" style="display:${((deliverable.dissemination.disseminationChannel?has_content)?string('block','none'))!'none'}">
         [@customForm.input name="${params.deliverable.name}.dissemination.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
-        <span id="output" class="label label-default" style="float:right"></span>
+        [#if editable]<div id="fillMetadata" class="checkButton">Search & Fill Metadata</div>[/#if]
+        <div class="clearfix"></div>
+      </div>
+      <div id="metadata-output" class="fullBlock">
       </div>
     </div><!-- End aditional-alreadyDisseminated -->
   </div>

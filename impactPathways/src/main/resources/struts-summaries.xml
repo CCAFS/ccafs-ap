@@ -106,7 +106,7 @@
       </result>
     </action> 
     
-         <action name="submmitedProjects" class="org.cgiar.ccafs.ap.action.summaries.planning.SubmissionProjectSummaryAction">
+    <action name="submmitedProjects" class="org.cgiar.ccafs.ap.action.summaries.planning.SubmissionProjectSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -114,7 +114,7 @@
       </result>
     </action>
     
-          <action name="projectsNotModified" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectsNotModifiedSummaryAction">
+    <action name="projectsNotModified" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectsNotModifiedSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>

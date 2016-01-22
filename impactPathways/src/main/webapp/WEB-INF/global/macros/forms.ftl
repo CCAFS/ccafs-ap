@@ -119,7 +119,8 @@
           [@s.radio name="${name}" cssClass="${className}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" title="${helpTitle}" /]
         [/#if]
       [#else]
-        TODO: Option selected [@s.property value="${name}"/]
+        [#assign customValue][@s.property value="${name}" /][/#assign]
+        [#if customValue?trim?has_content]${customValue}[#else]<p>There is not an option selected yet</p>[/#if]
       [/#if]
     </div>
   </div>
