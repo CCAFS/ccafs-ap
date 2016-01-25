@@ -74,6 +74,8 @@
   </div>
 </div>
 
+
+
 [#-- File Input template --]
 <div id="fileInputTemplate" class="fileInput" style="display:none">
   <img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"> 

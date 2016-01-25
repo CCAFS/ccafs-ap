@@ -50,11 +50,11 @@ public class UploadDeliverableAction extends BaseAction {
   // Model
   private File file;
   private String fileContentType;
-  private String fileFileName;
+  private String filename;
   private int deliverableID;
+  private int projectID;
   private Deliverable deliverable;
   private boolean saved;
-
   private int fileID;
 
   @Inject
@@ -69,6 +69,9 @@ public class UploadDeliverableAction extends BaseAction {
   @Override
   public String execute() throws Exception {
     boolean fileCopied = false;
+
+    // Validate if project parameter exists in the URL.
+
     deliverable = deliverableManager.getDeliverableById(deliverableID);
 
 
@@ -84,12 +87,12 @@ public class UploadDeliverableAction extends BaseAction {
     finalPath.append(deliverableID);
     finalPath.append("/");
 
-    fileCopied = FileManager.copyFile(file, finalPath.toString() + fileFileName);
+    fileCopied = FileManager.copyFile(file, finalPath.toString() + filename);
 
     DeliverableFile delFile = new DeliverableFile();
     delFile.setHosted(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED);
     delFile.setSize(this.file.length());
-    delFile.setName(fileFileName);
+    delFile.setName(filename);
 
     // int deliverableFileID = deliverableFileManager.existsDeliverableFile(file.getName(), deliverableID);
     // file.setId(deliverableFileID);
@@ -107,29 +110,55 @@ public class UploadDeliverableAction extends BaseAction {
   }
 
 
+  public Deliverable getDeliverable() {
+    return deliverable;
+  }
+
+
+  public DeliverableDataSharingFileDAO getDeliverableFileManager() {
+    return deliverableFileManager;
+  }
+
+
   public int getDeliverableID() {
     return deliverableID;
   }
+
+
+  public DeliverableManager getDeliverableManager() {
+    return deliverableManager;
+  }
+
 
   public File getFile() {
     return file;
   }
 
+
   public String getFileContentType() {
     return fileContentType;
   }
 
-  public String getFileFileName() {
-    return fileFileName;
-  }
 
   public int getFileID() {
     return fileID;
   }
 
+
+  public String getFilename() {
+    return filename;
+  }
+
+
+  public int getProjectID() {
+    return projectID;
+  }
+
+
   public boolean isSaved() {
     return saved;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -137,21 +166,54 @@ public class UploadDeliverableAction extends BaseAction {
   }
 
 
+  public void setDeliverable(Deliverable deliverable) {
+    this.deliverable = deliverable;
+  }
+
+
+  public void setDeliverableFileManager(DeliverableDataSharingFileDAO deliverableFileManager) {
+    this.deliverableFileManager = deliverableFileManager;
+  }
+
+
   public void setDeliverableID(int deliverableID) {
     this.deliverableID = deliverableID;
   }
+
+
+  public void setDeliverableManager(DeliverableManager deliverableManager) {
+    this.deliverableManager = deliverableManager;
+  }
+
 
   public void setFile(File file) {
     this.file = file;
   }
 
+
   public void setFileContentType(String fileContentType) {
     this.fileContentType = fileContentType;
   }
 
-  public void setFileFileName(String fileFileName) {
-    this.fileFileName = fileFileName;
+
+  public void setFileID(int fileID) {
+    this.fileID = fileID;
   }
+
+
+  public void setFilename(String filename) {
+    this.filename = filename;
+  }
+
+
+  public void setProjectID(int projectID) {
+    this.projectID = projectID;
+  }
+
+  public void setSaved(boolean saved) {
+    this.saved = saved;
+  }
+
 
 }
 

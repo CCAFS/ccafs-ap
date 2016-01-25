@@ -15,14 +15,14 @@
 
 package org.cgiar.ccafs.ap.data.dao;
 
-import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableDisseminationMySQLDAO;
+import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableSharingFileMySQLDAO;
 import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
 
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(DeliverableDisseminationMySQLDAO.class)
+@ImplementedBy(DeliverableSharingFileMySQLDAO.class)
 public interface DeliverableDataSharingFileDAO {
 
   public boolean delete(DeliverableDataSharingFile dataSharingFile);
