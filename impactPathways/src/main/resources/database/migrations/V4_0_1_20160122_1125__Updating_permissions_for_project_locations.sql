@@ -4,9 +4,9 @@ INNER JOIN permissions p ON rp.permission_id = p.id
 WHERE p.permission like "%projects:locations%";
 
 -- Updating permissions
-UPDATE `ccafs_pr`.`permissions` SET `permission`='planning:projects:locations:*', `description`='Can update everything in project locations in planning round.' WHERE `id`='20';
+UPDATE `permissions` SET `permission`='planning:projects:locations:*', `description`='Can update everything in project locations in planning round.' WHERE `id`='20';
 
-INSERT INTO `ccafs_pr`.`permissions` (`permission`, `description`) VALUES ('reporting:projects:locations:*', 'Can update everything in project locations in reporting round.');
+INSERT INTO `permissions` (`permission`, `description`) VALUES ('reporting:projects:locations:*', 'Can update everything in project locations in reporting round.');
 
 -- Assingning roles to the lcoation permissions.
 INSERT INTO role_permissions SET role_id = (SELECT id FROM roles WHERE acronym = 'ML'), permission_id = (SELECT id FROM permissions WHERE permission = 'planning:projects:locations:*');
