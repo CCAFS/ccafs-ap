@@ -97,7 +97,7 @@ public class ProjectDeliverableAction extends BaseAction {
   private List<IPElement> outputs;
   private List<ProjectPartner> projectPartners;
   private List<DeliverablePartner> deliverablePartners;
-  private List<IPProgram> ipProgramFlagships;
+  private Map<String, String> ipProgramFlagships;
   private Map<Integer, String> projectPartnerPersons;
   private Map<String, String> openAccessStatuses;
   private Map<String, String> disseminationChannels;
@@ -189,7 +189,7 @@ public class ProjectDeliverableAction extends BaseAction {
   }
 
 
-  public List<IPProgram> getIpProgramFlagships() {
+  public Map<String, String> getIpProgramFlagships() {
     return ipProgramFlagships;
   }
 
@@ -259,8 +259,11 @@ public class ProjectDeliverableAction extends BaseAction {
     deliverableSubTypes = deliverableTypeManager.getDeliverableSubTypes();
     allYears = project.getAllYears();
     outputs = ipElementManager.getProjectOutputs(project.getId());
-    ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
-
+    List<IPProgram> ipPrograms = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    ipProgramFlagships = new HashMap<>();
+    for (IPProgram ipProgram : ipPrograms) {
+      ipProgramFlagships.put(String.valueOf(ipProgram.getId()), ipProgram.getComposedName());
+    }
     openAccessStatuses = new HashMap<>();
     openAccessStatuses.put(APConstants.OA_OPEN, this.getText("reporting.projectDeliverable.openAccess.open"));
     openAccessStatuses.put(APConstants.OA_LIMITED, this.getText("reporting.projectDeliverable.openAccess.limited"));
@@ -443,7 +446,7 @@ public class ProjectDeliverableAction extends BaseAction {
   }
 
 
-  public void setIpProgramFlagships(List<IPProgram> ipProgramFlagships) {
+  public void setIpProgramFlagships(Map<String, String> ipProgramFlagships) {
     this.ipProgramFlagships = ipProgramFlagships;
   }
 
