@@ -555,4 +555,5 @@ function setMetadata(data) {
   $("[name$='coverageMetadata']").val(data.coverage);
   $("[name$='formatMetadata']").val(data.format);
   $("[name$='rigthsMetadata']").val(data.rigths);
+  $("[name$='citation']").val(data.citation);
 }

@@ -74,7 +74,6 @@
     [#else]
       [#if checked]<h6 class="checked-${checked?string}">[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}.readText" /][/#if]</h6>[/#if]
     [/#if]
-    
   </div>
 [/#macro]
 
@@ -120,7 +119,7 @@
         [/#if]
       [#else]
         [#assign customValue][@s.property value="${name}" /][/#assign]
-        [#if customValue?trim?has_content]${customValue}[#else]<p>There is not an option selected yet</p>[/#if]
+        [#if customValue?trim?has_content]${customValue}[#else]<div class="select"><p>There is not an option selected yet</p></div>[/#if]
       [/#if]
     </div>
   </div>

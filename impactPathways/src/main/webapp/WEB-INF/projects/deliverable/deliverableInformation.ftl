@@ -36,21 +36,22 @@
   </div>
   
   [#-- Year  --]
-  <div class="halfPartBlock chosen">
-    [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable /]
-    [#if !editable] <div class="select"><p>${deliverable.year}</p></div> [/#if]
+  <div class="fullPartBlock">
+    <div class="halfPartBlock chosen">
+      [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable /]
+      [#if !editable] <div class="select"><p>${deliverable.year}</p></div> [/#if]
+    </div>
   </div>
-  
   [#-- -- -- REPORTING BLOCK -- -- --]
   [#if reportingCycle]
     [#-- Deliverable Status  --]
-    <div class="fullBlock">
+    <div class="fullPartBlock">
       <div class="halfPartBlock"> 
         [@customForm.select name="${params.deliverable.name}.status" label=""  disabled=false i18nkey="reporting.projectDeliverable.status" listName="statuses"  required=true editable=editable /]
       </div>
     </div>
     [#-- Status justification  --]
-    <div class="fullBlock">
+    <div class="fullPartBlock">
       [@customForm.textArea name="${params.deliverable.name}.statusDescription" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
     </div>
   [/#if]
