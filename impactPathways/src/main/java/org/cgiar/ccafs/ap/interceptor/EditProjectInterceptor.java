@@ -70,7 +70,7 @@ public class EditProjectInterceptor extends AbstractInterceptor {
         List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
         // Projects wont be able to edit the project if the project has been already submitted.
         if ((projectsEditable.contains(new Integer(projectID))
-          && securityContext.canEditProjectPlanningSection(actionName, projectID))) {
+          && baseAction.hasProjectPermission("update", projectID))) {
           if (submission == null) {
             canEditProject = true;
           }
@@ -99,8 +99,7 @@ public class EditProjectInterceptor extends AbstractInterceptor {
 
       // Check the permission if user want to edit or save the form
       if (editParameter || parameters.get("save") != null) {
-        hasPermissionToEdit =
-          (securityContext.isAdmin()) ? true : securityContext.canEditProjectPlanningSection(actionName, projectID);
+        hasPermissionToEdit = (securityContext.isAdmin()) ? true : baseAction.hasProjectPermission("update", projectID);
       }
     }
 

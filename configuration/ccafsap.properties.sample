@@ -39,9 +39,11 @@ ccafsap.preplanning.active=true
 
 # Is planning section active?
 ccafsap.planning.active=true
+ccafsap.planning.closed=true
 
 # Is reporting section active?
 ccafsap.reporting.active=true
+ccafsap.reporting.closed=false
 
 # Is summaries section active?
 ccafsap.summaries.active=true

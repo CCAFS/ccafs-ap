@@ -47,8 +47,10 @@ public class APConfig {
   private static final String PLANNING_FUTURE_YEARS = "ccafsap.planning.future.years";
   private static final String PREPLANNING_ACTIVE = "ccafsap.preplanning.active";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
-  private static final String IS_CLOSED = "ccafsap.isClosed";
+  private static final String PLANNING_CLOSED = "ccafsap.planning.closed";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
+  private static final String REPORTING_CLOSED = "ccafsap.reporting.closed";
+  private static final String IS_CLOSED = "ccafsap.isClosed";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String EMAIL_USER = "email.user";
   private static final String EMAIL_NOTIFICATION = "email.notification";
@@ -429,20 +431,18 @@ public class APConfig {
   }
 
   /**
-   * Get the flag that indicate is planing stage is close that is in the configuration file.
+   * Get the flag that indicate if P&R System is closed.
    * 
-   * @return a boolean indicating if it is active.
+   * @return a boolean indicating if is closed.
    */
   public boolean isClosed() {
-    String planningActive = properties.getPropertiesAsString(IS_CLOSED);
-    if (planningActive == null) {
-      LOG.error("There is not a planning active configured");
+    String param = properties.getPropertiesAsString(IS_CLOSED);
+    if (param == null) {
+      LOG.error("There is not a system closed configured");
       return false;
     }
-
-    return planningActive.equals("true");
+    return param.equals("true");
   }
-
 
   /**
    * Get the flag that indicate is planing stage is active that is in the configuration file.
@@ -458,6 +458,22 @@ public class APConfig {
 
     return planningActive.equals("true");
   }
+
+
+  /**
+   * Get the flag that indicate if planning cycle is closed in the configuration file.
+   * 
+   * @return a boolean indicating if is closed.
+   */
+  public boolean isPlanningClosed() {
+    String param = properties.getPropertiesAsString(PLANNING_CLOSED);
+    if (param == null) {
+      LOG.error("There is not a planning closed configured");
+      return false;
+    }
+    return param.equals("true");
+  }
+
 
   /**
    * Get the flag that indicate if planing for future years is active, that value is in the configuration file.
@@ -517,6 +533,20 @@ public class APConfig {
     }
 
     return reportingActive.equals("true");
+  }
+
+  /**
+   * Get the flag that indicate if reporting cycle is closed in the configuration file.
+   * 
+   * @return a boolean indicating if is closed.
+   */
+  public boolean isReportingClosed() {
+    String param = properties.getPropertiesAsString(REPORTING_CLOSED);
+    if (param == null) {
+      LOG.error("There is not a reporting closed configured");
+      return false;
+    }
+    return param.equals("true");
   }
 
   /**

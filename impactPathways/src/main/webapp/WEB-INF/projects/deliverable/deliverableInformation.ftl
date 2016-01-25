@@ -7,7 +7,7 @@
       <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
     [/#if]
   [/#if]
-  <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1>  
+  <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1> 
   <div class="fullBlock">
     [#-- Title --] 
     [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable /]
