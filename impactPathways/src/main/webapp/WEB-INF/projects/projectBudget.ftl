@@ -249,7 +249,7 @@
       </div>
       <div class="content">
         [#if editable] 
-          [@customForm.input name="project.budgets[${counter}].amount" required=true className="partnerBudget plBudget ${projectType}" showTitle=false value="${(budget.amount)!0}" disabled=(!securityContext.canUpdateAnnualW1W2Budget(project.id) &&!project.bilateralProject )/] 
+          [@customForm.input name="project.budgets[${counter}].amount" required=true className="partnerBudget plBudget ${projectType}" showTitle=false value="${(budget.amount)!0}" disabled=(!action.hasProjectPermission("annualW1W2",project.id) &&!project.bilateralProject )/] 
         [/#if]
       </div>
     </div>

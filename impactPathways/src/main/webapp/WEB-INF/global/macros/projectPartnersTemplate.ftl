@@ -108,7 +108,7 @@
     </div>
     <input id="id" class="partnerPersonId" type="hidden" name="${contactName}[${contactIndex}].id" value="${(contact.id)!-1}" />
     
-    [#assign canEditLeader=(editable && securityContext.canUpdatePartnerLeader(project.id))!false /]
+    [#assign canEditLeader=(editable && action.hasProjectPermission("ppa",project.id))!false /]
     
     [#if (contact.leader)!false]
     [#-- Partner Person type and email--]
@@ -118,7 +118,7 @@
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
         [#if !canEditLeader]
           <div class="select"> 
-            [#if (!securityContext.canUpdatePartnerLeader(project.id))]
+            [#if (!action.hasProjectPermission("leader",project.id))]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
             [/#if]
             <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
@@ -141,7 +141,7 @@
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=editable required=true /]
         [#if !editable]
           <div class="select">
-            [#if (!securityContext.canUpdatePPAPartners(project.id)) && (contact.leader)!false]
+            [#if (!action.hasProjectPermission("ppa",project.id)) && (contact.leader)!false]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
             [/#if]
             <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />

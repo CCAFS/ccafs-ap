@@ -42,12 +42,11 @@
         [#if canEdit && !newProject]
           <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
-      [/#if]
-      ${action.hasProjectPermission("update",project.id)?string}
+      [/#if] 
       <fieldset class="fullBlock">
         [#-- Project Title --]
         <div class="fullBlock">
-          [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable/]
+          [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable && action.hasProjectPermission("title",project.id)/]
         </div>
         <div class="fullBlock">
           [#-- Project Program Creator --]
@@ -126,7 +125,7 @@
         
         [#-- Project Summary --]
         <div class="fullBlock">
-          [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=!project.bilateralProject className="project-description" editable=editable /]
+          [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=!project.bilateralProject className="project-description" editable=editable && action.hasProjectPermission("summary",project.id) /]
         </div>
         
         [#-- -- -- REPORTING BLOCK -- -- --]
