@@ -341,7 +341,7 @@ public class ProjectDeliverableAction extends BaseAction {
       }
       List<DeliverableDataSharingFile> files = new ArrayList<>();
       for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
-        if (deliverabelFile.getName() != null) {
+        if (deliverabelFile.getName() != null || deliverabelFile.getLink() != null) {
           DeliverableDataSharingFile file = new DeliverableDataSharingFile();
           file.setDeliverableId(deliverableID);
           if (!deliverabelFile.getLink().equals("")) {
