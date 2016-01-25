@@ -157,6 +157,19 @@ public class Deliverable {
   }
 
   /**
+   * Check if it's a data deliverable type
+   * 
+   * @return true if deliverable type is Data else false
+   */
+  public boolean isDataType() {
+    try {
+      return this.getType().getId() == 1;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /**
    * Validate if the deliverable is new.
    * A deliverable is new when it was created in the planning phase for the current year
    * 
@@ -167,6 +180,50 @@ public class Deliverable {
     return new Date(this.getCreated()).after(planningStartDate);
   }
 
+  /**
+   * Check if it's a other channel dissmination
+   * 
+   * @return true if dissmination channel is other else false
+   */
+  public boolean isOtherChannel() {
+
+    try {
+      return this.getDissemination().getDisseminationChannel().equals(ChannelEnum.OTHER.getId());
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+
+  /**
+   * Check if it's a publication Peer-reviewed journal articles deliverable type and category
+   * 
+   * @return true if deliverable type is publication and Peer-reviewed journal articles category else false
+   */
+  public boolean isPublicationPeerReviewType() {
+    try {
+      return this.getType().getId() == 3 && this.getType().getCategory().getId() == 21;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+
+  /**
+   * Check if it's a publication deliverable type
+   * 
+   * @return true if deliverable type is publication else false
+   */
+  public boolean isPublicationType() {
+
+    try {
+      return this.getType().getId() == 3;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+
   public void setCreated(long created) {
     this.created = created;
   }
@@ -174,6 +231,7 @@ public class Deliverable {
   public void setDataSharing(DeliverableDataSharing dataSharing) {
     this.dataSharing = dataSharing;
   }
+
 
   public void setDataSharingFile(List<DeliverableDataSharingFile> dataSharingFile) {
     this.dataSharingFile = dataSharingFile;
@@ -239,9 +297,9 @@ public class Deliverable {
     this.year = year;
   }
 
+
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
 }

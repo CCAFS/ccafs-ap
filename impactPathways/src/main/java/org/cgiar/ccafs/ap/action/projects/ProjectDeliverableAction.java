@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.ChannelEnum;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
@@ -267,10 +268,12 @@ public class ProjectDeliverableAction extends BaseAction {
      * TODO CAMBIAR
      */
     disseminationChannels = new HashMap<>();
-    disseminationChannels.put("amkn", "AMKN");
-    disseminationChannels.put("cgspace", "CGSpace");
-    disseminationChannels.put("agtrials", "AgTrials");
-    disseminationChannels.put("other", "Other");
+
+    for (ChannelEnum channel : ChannelEnum.values()) {
+      disseminationChannels.put(channel.getId(), channel.getDesc());
+    }
+
+
     statuses = new HashMap<>();
     List<ProjectStatusEnum> list = Arrays.asList(ProjectStatusEnum.values());
     for (ProjectStatusEnum projectStatusEnum : list) {
