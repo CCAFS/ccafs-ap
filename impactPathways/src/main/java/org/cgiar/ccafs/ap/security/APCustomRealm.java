@@ -154,14 +154,8 @@ public class APCustomRealm extends AuthorizingRealm {
     }
     // Get the roles general to the platform
     for (UserRole role : roles) {
-      /*
-       * if (config.isClosed() && !role.getId().equals(APConstants.ROLE_ADMIN)) {
-       * roles.clear();
-       * roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
-       * authorizationInfo.addRole(userRoleManager.getUserRole(8).getAcronym());
-       * break;
-       * }
-       */
+
+
       authorizationInfo.addRole(role.getAcronym());
 
       switch (role.getId()) {
@@ -189,13 +183,37 @@ public class APCustomRealm extends AuthorizingRealm {
           break;
       }
     }
-
+    boolean addPermission = true;
     // Adding the permissions for each role exactly as they come from the database:
     for (UserRole role : roles) {
-      authorizationInfo.addStringPermissions(role.getPermissions());
+
+      for (String myPermission : role.getPermissions()) {
+        addPermission = true;
+        if (myPermission.contains("planning")) {
+          if ((config.isPlanningClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+            addPermission = false;
+          }
+        }
+
+        if (myPermission.contains("reporting")) {
+          if ((config.isReportingClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+            addPermission = false;
+          }
+        }
+        if (addPermission) {
+          authorizationInfo.addStringPermission(myPermission);
+        }
+
+
+      }
+
     }
     // Converting those general roles into specific for the projects where they are able to edit.
-    for (Map<String, UserRole> mapRoles : projectRoles) {
+    for (
+
+    Map<String, UserRole> mapRoles : projectRoles)
+
+    {
       for (Map.Entry<String, UserRole> entry : mapRoles.entrySet()) {
         String projectID = entry.getKey();
         UserRole role = entry.getValue();
@@ -207,13 +225,30 @@ public class APCustomRealm extends AuthorizingRealm {
           if (permission.contains(":projects:")) {
             permission = permission.replace("projects:", "projects:" + projectID + ":");
           }
-          authorizationInfo.addStringPermission(permission);
+
+          addPermission = true;
+          if (permission.contains("planning")) {
+            if ((config.isPlanningClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+              addPermission = false;
+            }
+          }
+
+          if (permission.contains("reporting")) {
+            if ((config.isReportingClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+              addPermission = false;
+            }
+          }
+          if (addPermission) {
+            authorizationInfo.addStringPermission(permission);
+          }
           // }
         }
       }
     }
 
-    if (!config.isClosed()) {
+    if (!config.isClosed())
+
+    {
       // Getting the specific roles based on the table project_roles.
       List<ProjectUserRole> projectSpecificUserRoles =
         projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
