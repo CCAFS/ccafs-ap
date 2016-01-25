@@ -74,16 +74,16 @@
     
     [#-- Open access status --]
     <div class="fullBlock requiredForType-21">
-      [@customForm.radioButtonGroup name="${params.deliverable.name}.publicationMetadata.openAcessStatus" label="" i18nkey="reporting.projectDeliverable.publicationAccessStatus" listName="openAccessStatuses" required=true editable=editable /]
+      [@customForm.radioButtonGroup name="${params.deliverable.name}.publicationMetadata.openAcessStatus" value="${(deliverable.publicationMetadata.openAcessStatus)!}" label="" i18nkey="reporting.projectDeliverable.publicationAccessStatus" listName="openAccessStatuses" required=true editable=editable /]
     </div>
     
     [#-- Indicators for journal articles --]
     <div class="fullBlock requiredForType-21">
       <h6>[@s.text name="reporting.projectDeliverable.journalIndicators" /]:</h6>
       <div class="fullBlock verticallyCheckBox">
-        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.isiPublication" i18nkey="reporting.projectDeliverable.isiPublication"  value="true" editable=editable /]
-        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.narsCoAuthor" i18nkey="reporting.projectDeliverable.narsCoauthor"  value="true" editable=editable /]
-        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.academicCoAuthor" i18nkey="reporting.projectDeliverable.earthSystemCoauthor" value="true" editable=editable /]
+        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.isiPublication"   i18nkey="reporting.projectDeliverable.isiPublication" value="true"       checked=(deliverable.publicationMetadata.isiPublication)!false        editable=editable /]
+        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.narsCoAuthor"     i18nkey="reporting.projectDeliverable.narsCoauthor" value="true"         checked=(deliverable.publicationMetadata.narsCoauthor)!false          editable=editable /]
+        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.academicCoAuthor" i18nkey="reporting.projectDeliverable.earthSystemCoauthor" value="true"  checked=(deliverable.publicationMetadata.earthSystemCoauthor)!false   editable=editable /]
         <div class="clearfix"></div>
       </div>
     </div>
@@ -106,13 +106,18 @@
     
     [#-- Publication is an output of which flagships --]
     <div class="fullBlock">
-      <h6>[@s.text name="reporting.projectDeliverable.outputPublication" help="reporting.projectDeliverable.outputPublication.help" required=true /]</h6>
+      <h6>[@s.text name="reporting.projectDeliverable.outputPublication" help="reporting.projectDeliverable.outputPublication.help" required=true /]:</h6>
       <div id="metadata-flagships" class="checkboxGroup">
-        [#if editable]
+        [#if editable] 
           [@s.fielderror cssClass="fieldError" fieldName="${params.deliverable.name}.relatedFlagships"/]
-          [@s.checkboxlist name="${params.deliverable.name}.publicationMetadata.relatedFlagships" list="ipProgramFlagships" listKey="id" listValue="getComposedName()" value="${params.deliverable.name}.publicationMetadata.relatedFlagshipsIds" cssClass="checkbox" /]
+          [@s.checkboxlist name="${params.deliverable.name}.publicationMetadata.relatedFlagships" list="ipProgramFlagships" value="${params.deliverable.name}.publicationMetadata.relatedFlagships" listKey="id" listValue="getComposedName()"  cssClass="checkbox" /]
         [#else]
           [@s.property value="${params.deliverable.name}.relatedFlagshipsIds"/]
+          [#if deliverable.relatedFlagshipsIds?has_content]
+            [#list deliverable.relatedFlagshipsIds as element]<p class="checked">${element.getComposedName()}</p>[/#list]
+          [#else]
+            <div class="select"><p>There is not a Flagship selected.</p></div>
+          [/#if]
         [/#if]
       </div>
     </div> 
