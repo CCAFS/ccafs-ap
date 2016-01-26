@@ -69,45 +69,16 @@
       </div>
 
       <div class="fullPartBlock">
-        [#-- Contributor --]
-        <div class="halfPartBlock" > 
-          [@customForm.input name="highlight.contributor"  type="text" i18nkey="reporting.projectHighlight.contributor" help="reporting.projectHighlight.contributor.help" editable=editable /] 
-        </div> 
-      
         [#-- Publisher --]
         <div class="halfPartBlock" >
           [@customForm.input name="highlight.publisher" type="text" i18nkey="reporting.projectHighlight.publisher" help="reporting.projectHighlight.publisher.help" editable=editable /]   
         </div>
-      </div>
-      
-      <div class="fullPartBlock">
-        [#-- Relation --]
-        <div class="halfPartBlock" >
-          [@customForm.input name="highlight.relation" type="text" i18nkey="reporting.projectHighlight.relation" help="reporting.projectHighlight.relation.help" editable=editable /]
-        </div>
-      
-        [#-- Coverage --]
-        <div class="halfPartBlock" >
-          [@customForm.input name="highlight.coverage" type="text" i18nkey="reporting.projectHighlight.coverage" help="reporting.projectHighlight.coverage.help" editable=editable /]
-        </div>
-      </div>
-
-      [#-- Rights --]
-      <div class="fullBlock">
-        [@customForm.textArea name="highlight.rights" i18nkey="reporting.projectHighlight.rights" help="reporting.projectHighlight.rights.help" editable=editable/]
-      </div>
-      
-      <div class="fullPartBlock">
         [#-- Year --]
         <div class="halfPartBlock">
           [@customForm.select name="highlight.year" value="highlight.year" i18nkey="reporting.projectHighlight.year" listName="allYears" editable=editable stringKey=true /]
         </div>
-  
-        [#-- Status --]
-        <div class="halfPartBlock">
-          [@customForm.select name="highlight.status" value="highlight.status" i18nkey="reporting.projectHighlight.status" listName="statuses" editable=editable stringKey=true /]
-        </div>
       </div>
+     
       <br />
       <div class="fullBlock">
         [#-- Types --]
@@ -169,16 +140,13 @@
         [#else]
           <h6>[@s.text name="reporting.projectHighlight.countries" /]</h6>
           <div class="select">
-          
-                     [#if highlight.countries?has_content]
-                  [#list highlight.countries as element]
-                   <p class="checked">${element.name}</p>
-                  [/#list]
-                [#else]
-                 'Field is empty'
-                [/#if]
-                
-       
+          [#if highlight.countries?has_content]
+            [#list highlight.countries as element]
+             <p class="checked">${element.name}</p>
+            [/#list]
+          [#else]
+           Field is empty
+          [/#if]
         [/#if]
       </div>
 
