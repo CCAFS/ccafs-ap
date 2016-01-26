@@ -163,7 +163,7 @@ public class Deliverable {
    */
   public boolean isDataType() {
     try {
-      return this.getType().getId() == 1;
+      return this.getType().getCategory().getId() == 1;
     } catch (Exception e) {
       return false;
     }
@@ -201,7 +201,7 @@ public class Deliverable {
    */
   public boolean isPublicationPeerReviewType() {
     try {
-      return this.getType().getId() == 3 && this.getType().getCategory().getId() == 21;
+      return this.getType().getId() == 21 && this.getType().getCategory().getId() == 3;
     } catch (Exception e) {
       return false;
     }
@@ -216,7 +216,7 @@ public class Deliverable {
   public boolean isPublicationType() {
 
     try {
-      return this.getType().getId() == 3;
+      return this.getType().getCategory().getId() == 3;
     } catch (Exception e) {
       return false;
     }

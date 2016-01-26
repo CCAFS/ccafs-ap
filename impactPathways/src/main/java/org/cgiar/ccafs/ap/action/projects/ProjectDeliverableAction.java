@@ -294,7 +294,8 @@ public class ProjectDeliverableAction extends BaseAction {
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
-
+  
+    
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
