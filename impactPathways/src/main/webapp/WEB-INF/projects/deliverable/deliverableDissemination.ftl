@@ -84,13 +84,13 @@
         </div>
       </div>
       [#-- Dissemination name --]
-      <div id="disseminationName" class="fullBlock" style="display:none">
+      <div id="disseminationName" class="fullBlock" style="display:${deliverable.otherChannel?string('block','none')}">
         [@customForm.input name="${params.deliverable.name}.dissemination.disseminationChannelName" className="" i18nkey="reporting.projectDeliverable.disseminationName" required=true editable=editable /]
       </div>
       [#-- Dissemination channel URL / URI --]
       <div id="disseminationUrl" class="fullBlock" style="display:${((deliverable.dissemination.disseminationChannel?has_content)?string('block','none'))!'none'}">
         [@customForm.input name="${params.deliverable.name}.dissemination.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
-        [#if editable]<div id="fillMetadata" class="checkButton">Search & Fill Metadata</div>[/#if]
+        [#if editable]<div id="fillMetadata" class="checkButton" style="display:${deliverable.otherChannel?string('none','block')}">Search & Fill Metadata</div>[/#if]
         <div class="clearfix"></div>
       </div>
       <div id="metadata-output" class="fullBlock">

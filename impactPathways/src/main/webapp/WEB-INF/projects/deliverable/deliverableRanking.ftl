@@ -33,7 +33,7 @@
     </table>
   </div>
   [#-- Compliance check (Data products only) --]
-  <div class="fullBlock requiredForType-10 requiredForType-11 requiredForType-10 requiredForType-12 requiredForType-13 requiredForType-37">
+  <div class="fullBlock requiredForType-10 requiredForType-11 requiredForType-10 requiredForType-12 requiredForType-13 requiredForType-37" style="display:${deliverable.dataType?string('block','none')}"> 
   <h6>[@s.text name="reporting.projectDeliverable.complianceTitle" /]</h6>
     <table id="dataCompliance" class="default">
       <tbody>
@@ -42,9 +42,7 @@
             <div id="aditional-processData" class="aditional fileUpload" style="display:${(deliverable.ranking.processData?string('block','none'))!'none'}">
               [#if (deliverable.ranking.processDataFile?has_content)!false]
                 [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
-               
                 <p><a href="${RankingUrl}${deliverable.ranking.processDataFile}">${deliverable.ranking.processDataFile}</a></p>
-                 
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="file"  /]

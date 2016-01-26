@@ -186,7 +186,6 @@ public class Deliverable {
    * @return true if dissmination channel is other else false
    */
   public boolean isOtherChannel() {
-
     try {
       return this.getDissemination().getDisseminationChannel().equals(ChannelEnum.OTHER.getId());
     } catch (Exception e) {

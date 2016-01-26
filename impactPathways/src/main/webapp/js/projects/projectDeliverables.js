@@ -340,6 +340,7 @@ function addfileURL(e) {
   var $parent = $target.parent();
   var urlString = $target.find("input").val();
   if(checkUrl(urlString)) {
+    console.log($parent.attr('id'));
     var file = {
         "name": urlString,
         "hosted": $parent.find("input[type=radio]").val(),
@@ -466,12 +467,14 @@ function initMetadataFunctions() {
   $disseminationChannels.on('change',function(e) {
     e.preventDefault();
     var optionSelected = $disseminationChannels.val();
+    $checkButton.show();
     if(optionSelected == -1) {
       $('.example').fadeOut();
       $disseminationUrl.fadeOut(500);
       return;
     }else if(optionSelected == "other"){
       $('.example').fadeOut();
+      $checkButton.fadeOut();
       $metadataOutput.html("");
     }
     $disseminationUrl.val('');

@@ -68,17 +68,17 @@
     </div>  
   </div>
   
-  [#-- Deliverable Publications Metadata --]  
-  <div id="publicationQuestions" class="fullBlock publicationQuestions requiredForType-3 requiredForType-21 requiredForType-23 requiredForType-24" style="display:block"> 
-    <h1 class="contentTitle publicationQuestions" style="display:block">[@s.text name="reporting.projectDeliverable.deliverablePublications" /] </h1> 
+  [#-- Deliverable Publications Metadata --]
+  <div id="publicationQuestions" class="fullBlock publicationQuestions requiredForType-3 requiredForType-21 requiredForType-23 requiredForType-24" style="display:${deliverable.publicationType?string('block','none')}"> 
+    <h1 class="contentTitle publicationQuestions">[@s.text name="reporting.projectDeliverable.deliverablePublications" /] </h1> 
     
     [#-- Open access status --]
-    <div class="fullBlock requiredForType-21">
+    <div class="fullBlock requiredForType-21" style="display:${deliverable.publicationPeerReviewType?string('block','none')}">
       [@customForm.radioButtonGroup name="${params.deliverable.name}.publicationMetadata.openAcessStatus" label="" i18nkey="reporting.projectDeliverable.publicationAccessStatus"  listName="openAccessStatuses" required=true editable=editable /]
     </div>
     
     [#-- Indicators for journal articles --]
-    <div class="fullBlock requiredForType-21">
+    <div class="fullBlock requiredForType-21" style="display:${deliverable.publicationPeerReviewType?string('block','none')}">
       <h6>[@s.text name="reporting.projectDeliverable.journalIndicators" /]:</h6>
       <div class="fullBlock verticallyCheckBox">
         [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.isiPublication"   i18nkey="reporting.projectDeliverable.isiPublication" value="true"       checked=(deliverable.publicationMetadata.isiPublication)!false        editable=editable /]
@@ -113,7 +113,7 @@
           [@s.checkboxlist name="${params.deliverable.name}.publicationMetadata.relatedFlagshipsIds" list="ipProgramFlagships" value="${params.deliverable.name}.publicationMetadata.relatedFlagshipsIds" itemKey="id"   cssClass="checkbox" /]
         [#else]
           [@s.property value="${params.deliverable.name}.ipFlashigps"/]
-          [#if deliverable.publicationMetadata.relatedFlagships?has_content]
+          [#if (deliverable.publicationMetadata.relatedFlagships?has_content)!false]
             [#list deliverable.publicationMetadata.relatedFlagships as element]<p class="checked">${element.getComposedName()}</p>[/#list]
           [#else]
             <div class="select"><p>There is not a Flagship selected.</p></div>
