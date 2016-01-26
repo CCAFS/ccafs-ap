@@ -340,7 +340,6 @@ function addfileURL(e) {
   var $parent = $target.parent();
   var urlString = $target.find("input").val();
   if(checkUrl(urlString)) {
-    console.log($parent.attr('id'));
     var file = {
         "name": urlString,
         "hosted": $parent.find("input[type=radio]").val(),
