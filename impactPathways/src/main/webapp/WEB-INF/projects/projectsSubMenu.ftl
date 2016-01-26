@@ -88,10 +88,20 @@
     <div id="validateProject-${projectId}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
     <div id="progressbar-${projectId}" class="progressbar" style="display:none"></div>
   [/#if]
+  
   [#-- Submit button --]
   [#if canEdit]
   [#assign showSubmit=(securityContext.canSubmitProject(project.id) && !submission?has_content && complete)]
-    <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >[@s.text name="form.buttons.submit" /]</a>
+    <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >
+      [@s.text name="form.buttons.submit" /]
+    </a>
+  [/#if]
+  
+  [#-- Report button --]
+  [#if !reportingCycle && submission?has_content && !(config.reportingClosed)]
+    <a id="reportProject-${projectId}" class="projectReportButton" href="[@s.url action="description" namespace="/reporting/projects"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >
+      [@s.text name="form.buttons.reportProject" /]
+    </a>
   [/#if]
   
 </nav>
