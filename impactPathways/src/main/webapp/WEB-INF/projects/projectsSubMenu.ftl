@@ -98,7 +98,7 @@
   [/#if]
   
   [#-- Report button --]
-  [#if !reportingCycle && submission?has_content && !(config.reportingClosed)]
+  [#if !reportingCycle && submission?has_content && !(config.reportingClosed) ]
     <a id="reportProject-${projectId}" class="projectReportButton" href="[@s.url action="description" namespace="/reporting/projects"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >
       [@s.text name="form.buttons.reportProject" /]
     </a>
@@ -110,7 +110,7 @@
 [#-- Menu element --]
 [#macro menu actionName stageName textName disabled=false active=true]
   [#if active]
-    <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss} [/#if] [#if canEdit]${sectionCompleted(actionName)?string('submitted','toSubmit')}[/#if]">
+    <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss}[/#if] [#if canEdit]${sectionCompleted(actionName)?string('submitted','toSubmit')}[/#if]">
       [#if disabled]
         <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
       [#else]

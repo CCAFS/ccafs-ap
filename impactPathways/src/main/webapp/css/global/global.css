@@ -1915,7 +1915,7 @@ h1.simpleTitle span {
 }
 
 .verticallyCheckBox{
-  padding: 5px;
+  padding: 5px 0;
   margin-bottom:10px;
 }
 .verticallyCheckBox input{

@@ -87,10 +87,10 @@
   [#if (!editable && canEdit)]
     <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.edit" /]</a></div>
   [#else]
-    [#if canEdit && !newProject]
+    [#if canEdit]
       <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.unedit" /]</a></div>
+      <div class="removeElement" title="[@s.text name="reporting.projectNextUsers.removeNextUser" /]"></div>
     [/#if] 
-    <div class="removeElement" title="[@s.text name="reporting.projectNextUsers.removeNextUser" /]"></div>
   [/#if]
   [#-- Next user index --]
   <div class="leftHead"><span class="index">${index?number+1}</span><span class="elementId">Next user </span></div>

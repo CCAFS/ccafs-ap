@@ -72,7 +72,7 @@
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </label>
     [#else]
-      [#if checked]<h6 class="checked-${checked?string}">[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}.readText" /][/#if]</h6>[/#if]
+      [#if checked]<p class="checked">[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}.readText" /][/#if]</p>[/#if]
     [/#if]
   </div>
 [/#macro]

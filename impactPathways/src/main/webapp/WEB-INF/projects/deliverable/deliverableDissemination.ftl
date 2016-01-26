@@ -24,34 +24,34 @@
         [#if editable]
         [#-- Intellectual Property Rights --]
         <div class="openAccessRestrictionOption">
-          <input id="intellectualProperty" type="radio" name="${params.deliverable.name}.dissemination.type" value="intellectualProperty" />
+          <input id="intellectualProperty" type="radio" name="${params.deliverable.name}.dissemination.type" value="intellectualProperty" [#if (deliverable.dissemination.type == "intellectualProperty")!false]checked="checked"[/#if] />
           <label for="intellectualProperty">[@s.text name="reporting.projectDeliverable.dissemination.intellectualProperty" /]</label>
         </div>
         [#-- Limited Exclusivity Agreements --]
         <div class="openAccessRestrictionOption">
-          <input id="limitedExclusivity" type="radio" name="${params.deliverable.name}.dissemination.type" value="limitedExclusivity" /> 
+          <input id="limitedExclusivity" type="radio" name="${params.deliverable.name}.dissemination.type" value="limitedExclusivity" [#if (deliverable.dissemination.type == "limitedExclusivity")!false]checked="checked"[/#if] />
           <label for="limitedExclusivity">[@s.text name="reporting.projectDeliverable.dissemination.limitedExclusivity" /]</label>
         </div>
         [#-- Restricted Use Agreement - Restricted access --]
         <div class="openAccessRestrictionOption">
-          <input id="restrictedAccess" type="radio" name="${params.deliverable.name}.dissemination.type" value="restrictedAccess" />
+          <input id="restrictedAccess" type="radio" name="${params.deliverable.name}.dissemination.type" value="restrictedAccess" [#if (deliverable.dissemination.type == "restrictedAccess")!false]checked="checked"[/#if] />
           <label for="restrictedAccess">[@s.text name="reporting.projectDeliverable.dissemination.restrictedAccess" /]</label>
         </div>
         [#-- Effective Date Restriction - embargoed periods --]
         <div class="openAccessRestrictionOption">
-          <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.dissemination.type" value="embargoedPeriods" />
-          <label for="embargoedPeriods">[@s.text name="reporting.projectDeliverable.dissemination.embargoedPeriod" /]</label>
+          <input id="embargoedPeriods" type="radio" name="${params.deliverable.name}.dissemination.type" value="embargoedPeriods" [#if (deliverable.dissemination.type == "embargoedPeriods")!false]checked="checked"[/#if] />
+          <label for="embargoedPeriods">[@s.text name="reporting.projectDeliverable.dissemination.embargoedPeriods" /]</label>
         </div>
-        [#else] 
-          ${(deliverable.dissemination.type)!'Open restriction is not selected'}
+        [#else]
+          <div class="input"><p>[#if (deliverable.dissemination.type??)!false][@s.text name="reporting.projectDeliverable.dissemination.${deliverable.dissemination.type}" /][#else]Open restriction is not selected[/#if]</p></div>
         [/#if]
       </div>
       [#-- Periods --]
-      <div class="fullBlock">
-        <div id="period-restrictedAccess" class="halfPartBlock openAccessPeriods" style="display:none">
+      <div class="fullBlock"> 
+        <div id="period-restrictedAccess" class="halfPartBlock openAccessPeriods" style="display:${((deliverable.dissemination.type == "restrictedAccess")!false)?string('block','none')}">
           [@customForm.input name="${params.deliverable.name}.dissemination.restrictedAccessUntil" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.restrictedAccessDate" editable=editable/]
         </div>
-        <div id="period-embargoedPeriods" class="halfPartBlock openAccessPeriods" style="display:none">
+        <div id="period-embargoedPeriods" class="halfPartBlock openAccessPeriods" style="display:${((deliverable.dissemination.type == "embargoedPeriods")!false)?string('block','none')}">
           [@customForm.input name="${params.deliverable.name}.dissemination.restrictedEmbargoed" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.embargoedPeriodDate" editable=editable/]
         </div>
       </div>

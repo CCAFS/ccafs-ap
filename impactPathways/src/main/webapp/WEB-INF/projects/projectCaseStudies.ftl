@@ -102,8 +102,8 @@
     [#else]
       [#if canEdit]
         <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.unedit" /]</a></div>
+        <div class="removeElement" title="[@s.text name="reporting.projectCaseStudies.removeCaseStuty" /]"></div>
       [/#if] 
-      <div class="removeElement" title="[@s.text name="reporting.projectCaseStudies.removeCaseStuty" /]"></div>
     [/#if]
     [#-- Index --]
     <div class="leftHead"><span class="index">${index?number+1}</span><span class="elementId">[@s.text name="reporting.projectCaseStudies.caseStudyTitle" /]</span></div>

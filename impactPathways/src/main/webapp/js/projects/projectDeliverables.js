@@ -17,6 +17,10 @@ function init() {
 
   // Initialize metadata functions
   initMetadataFunctions();
+  
+  // Initialize datepicker for period inputs
+  $('input.period').datepicker();
+  $('input.period').datepicker( "option", "dateFormat", "yy-mm-dd" );
 
   // Execute a change in deliverables types once
   $deliverablesTypes.trigger('change');
