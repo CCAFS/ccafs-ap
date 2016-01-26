@@ -3,15 +3,15 @@
 [#assign globalLibs = ["jquery", "noty", "dataTable", "autoSave", "chosen"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectDeliverablesList.js"] /]
-[#assign currentSection = "planning" /]
+[#assign currentSection = cycleName?lower_case /]
 [#assign currentCycleSection = "projects" /]
 [#assign currentStage = "outputs" /]
 [#assign currentSubStage = "deliverables" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projectDeliverables", "nameSpace":"planning/projects", "action":"deliverablesList", "param":"projectID=${project.id}"}
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projectDeliverables", "nameSpace":"${currentSection}/projects", "action":"deliverablesList", "param":"projectID=${project.id}"}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -43,7 +43,7 @@
           [/#if]   
           [#if canEdit]
           <div class="buttons"> 
-            <a class="addButton" href="[@s.url namespace="/planning/projects" action='addNewDeliverable'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
+            <a class="addButton" href="[@s.url namespace="/${currentSection}/projects" action='addNewDeliverable'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
               [@s.text name="planning.projectDeliverables.addNewDeliverable" /]
             </a>
           </div>
@@ -57,6 +57,6 @@
   </article>
   
 </section>
-[@customForm.confirmJustification action="deleteDeliverable" namespace="/planning/projects" nameId="deliverableID" projectID="${projectID}" title="Remove Deliverable" /]
+[@customForm.confirmJustification action="deleteDeliverable" namespace="/${currentSection}/projects" nameId="deliverableID" projectID="${projectID}" title="Remove Deliverable" /]
  
 [#include "/WEB-INF/global/pages/footer.ftl"]
