@@ -317,7 +317,29 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   /**
    * This method validates if current user has permissions to edit a specified field name in the platform.
-   * As this method is called in some action, it will automatically validate if the user is working in reporting or in
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasPermission(String fieldName) {
+    StringBuffer permissionString = new StringBuffer();
+    if (this.isReportingCycle()) {
+      permissionString.append("reporting:");
+    } else {
+      permissionString.append("planning:");
+    }
+    permissionString.append(this.getActionName());
+    permissionString.append(":");
+    permissionString.append(fieldName);
+
+    return securityContext.hasPermission(permissionString.toString());
+  }
+
+  /**
+   * This method validates if current user has permissions to edit a specified field name in the platform.
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
    * planning.
    * 
    * @param fieldName is the name of a field.

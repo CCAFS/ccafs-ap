@@ -58,7 +58,7 @@ public class ProjectsListAction extends BaseAction {
   }
 
   public String addBilateralProject() {
-    if (!securityContext.canAddBilateralProject()) {
+    if (!this.hasPermission("addBilateralProject")) {
       return NOT_AUTHORIZED;
     }
 
@@ -68,10 +68,9 @@ public class ProjectsListAction extends BaseAction {
   }
 
   public String addCoreProject() {
-    if (!securityContext.canAddCoreProject()) {
+    if (!this.hasPermission("addCoreProject")) {
       return NOT_AUTHORIZED;
     }
-
     // Create new project and redirect to project description using the new projectId assigned by the database.
     projectID = this.createNewProject(true);
     return (projectID > 0) ? SUCCESS : ERROR;
@@ -121,8 +120,8 @@ public class ProjectsListAction extends BaseAction {
     if (liaisonInstitution != null) {
       newProject.setLiaisonInstitution(liaisonInstitution);
     } else {
-      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!", this
-        .getCurrentUser().getId());
+      LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!",
+        this.getCurrentUser().getId());
       return -1;
     }
 
@@ -138,15 +137,14 @@ public class ProjectsListAction extends BaseAction {
   public String delete() {
     // Deleting project.
     if (this.canDelete(projectID)) {
-      boolean deleted =
-        projectManager.deleteProject(projectID, this.getCurrentUser(), this.getJustification() == null
-          ? "Project deleted" : this.getJustification());
+      boolean deleted = projectManager.deleteProject(projectID, this.getCurrentUser(),
+        this.getJustification() == null ? "Project deleted" : this.getJustification());
       if (deleted) {
-        this.addActionMessage(this.getText("deleting.success", new String[] {this.getText("planning.project")
-          .toLowerCase()}));
+        this.addActionMessage(
+          this.getText("deleting.success", new String[] {this.getText("planning.project").toLowerCase()}));
       } else {
-        this.addActionError(this.getText("deleting.problem", new String[] {this.getText("planning.project")
-          .toLowerCase()}));
+        this.addActionError(
+          this.getText("deleting.problem", new String[] {this.getText("planning.project").toLowerCase()}));
       }
     } else {
       this.addActionError(this.getText("planning.projects.cannotDelete"));
