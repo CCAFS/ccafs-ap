@@ -55,14 +55,33 @@ public class ClientRepository {
             }
             break;
           case "subject":
-          case "subject.agrovoc":
-          case "subject.domain-specific":
+
             if (metadataObject.getSubject() == null) {
               metadataObject.setSubject(element.getStringValue());
             } else {
               metadataObject.setSubject(metadataObject.getSubject() + ", " + element.getStringValue());
             }
             break;
+
+
+          case "subject.agrovoc":
+
+            if (metadataObject.getSubject() == null) {
+              metadataObject.setSubjectAgrovoc(element.getStringValue());
+            } else {
+              metadataObject.setSubjectAgrovoc(metadataObject.getSubject() + ", " + element.getStringValue());
+            }
+            break;
+
+
+          case "subject.domain-specific":
+            if (metadataObject.getSubject() == null) {
+              metadataObject.setSubjectDomainSpecific(element.getStringValue());
+            } else {
+              metadataObject.setSubjectDomainSpecific(metadataObject.getSubject() + ", " + element.getStringValue());
+            }
+            break;
+
           case "description":
             if (metadataObject.getDescription() == null) {
               metadataObject.setDescription(element.getStringValue());
@@ -89,30 +108,114 @@ public class ClientRepository {
             break;
 
           case "contributorcg.contributor.center":
-          case "contributor.crp":
-          case "contributor.funder":
-          case "contributor.partnerId":
-          case "contributor.project":
-          case "contributor.project-lead-institute":
 
-            if (metadataObject.getContributor() == null) {
-              metadataObject.setContributor(element.getStringValue());
+
+            if (metadataObject.getContributorcgContributorCenter() == null) {
+              metadataObject.setContributorcgContributorCenter(element.getStringValue());
             } else {
-              metadataObject.setContributor(metadataObject.getContributor() + ", " + element.getStringValue());
+              metadataObject.setContributorcgContributorCenter(
+                metadataObject.getContributorcgContributorCenter() + ", " + element.getStringValue());
             }
             break;
 
 
+          case "contributor.crp":
+
+
+            if (metadataObject.getContributorCrp() == null) {
+              metadataObject.setContributorCrp(element.getStringValue());
+            } else {
+              metadataObject.setContributorCrp(metadataObject.getContributorCrp() + ", " + element.getStringValue());
+            }
+            break;
+
+
+          case "contributor.funder":
+
+
+            if (metadataObject.getContributorFunder() == null) {
+              metadataObject.setContributorFunder(element.getStringValue());
+            } else {
+              metadataObject
+                .setContributorFunder(metadataObject.getContributorFunder() + ", " + element.getStringValue());
+            }
+            break;
+
+          case "contributor.partnerId":
+
+
+            if (metadataObject.getContributorPartnerId() == null) {
+              metadataObject.setContributorPartnerId(element.getStringValue());
+            } else {
+              metadataObject
+                .setContributorPartnerId(metadataObject.getContributorPartnerId() + ", " + element.getStringValue());
+            }
+            break;
+
+          case "contributor.project":
+
+
+            if (metadataObject.getContributorProject() == null) {
+              metadataObject.setContributorProject(element.getStringValue());
+            } else {
+              metadataObject
+                .setContributorProject(metadataObject.getContributorProject() + ", " + element.getStringValue());
+            }
+            break;
+
+
+          case "contributor.project-lead-institute":
+
+            if (metadataObject.getContributorProjectLeadinstitute() == null) {
+              metadataObject.setContributorProjectLeadinstitute(element.getStringValue());
+            } else {
+              metadataObject.setContributorProjectLeadinstitute(
+                metadataObject.getContributorProjectLeadinstitute() + ", " + element.getStringValue());
+            }
+            break;
           case "coverage":
-          case "coverage.region":
-          case "coverage.country":
-          case "coverage.admin-unit":
-          case "coverage.geolocation":
 
             if (metadataObject.getCoverage() == null) {
               metadataObject.setCoverage(element.getStringValue());
             } else {
               metadataObject.setCoverage(metadataObject.getCoverage() + ", " + element.getStringValue());
+            }
+            break;
+
+
+          case "coverage.region":
+            if (metadataObject.getCoverageRregion() == null) {
+              metadataObject.setCoverageRregion(element.getStringValue());
+            } else {
+              metadataObject.setCoverageRregion(metadataObject.getCoverageRregion() + ", " + element.getStringValue());
+            }
+            break;
+
+
+          case "coverage.country":
+            if (metadataObject.getCoverageCountry() == null) {
+              metadataObject.setCoverageCountry(element.getStringValue());
+            } else {
+              metadataObject.setCoverageCountry(metadataObject.getCoverageCountry() + ", " + element.getStringValue());
+            }
+            break;
+
+          case "coverage.admin-unit":
+
+            if (metadataObject.getCoverageAdminUnit() == null) {
+              metadataObject.setCoverageAdminUnit(element.getStringValue());
+            } else {
+              metadataObject
+                .setCoverageAdminUnit(metadataObject.getCoverageAdminUnit() + ", " + element.getStringValue());
+            }
+            break;
+
+          case "coverage.geolocation":
+
+            if (metadataObject.getCoverageGeolocation() == null) {
+              metadataObject.setCoverageGeolocation(element.getStringValue());
+            } else {
+              metadataObject.setCoverageGeolocation(metadataObject.getCoverage() + ", " + element.getStringValue());
             }
             break;
 

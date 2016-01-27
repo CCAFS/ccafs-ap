@@ -32,42 +32,114 @@ public class Metadata {
   private String identifier;
   private String publisher;
   private String relation;
-  private String contributor;
   private String subject;
   private String source;
   private String publication;
   private String language;
-  private String coverage;
   private String format;
   private String rigths;
+  private String subjectAgrovoc;
+  private String subjectDomainSpecific;
+
+  private String contributorcgContributorCenter;
+  private String contributorCrp;
+  private String contributorFunder;
+  private String contributorPartnerId;
+  private String contributorProject;
+  private String contributorProjectLeadinstitute;
+
+
+  private String coverage;
+  private String coverageRregion;
+
+  private String coverageCountry;
+
+
+  private String coverageAdminUnit;
+
+
+  private String coverageGeolocation;
+
 
   public String getAuthors() {
     return authors;
   }
 
-  public String getContributor() {
-    return contributor;
+
+  public String getContributorcgContributorCenter() {
+    return contributorcgContributorCenter;
   }
+
+
+  public String getContributorCrp() {
+    return contributorCrp;
+  }
+
+
+  public String getContributorFunder() {
+    return contributorFunder;
+  }
+
+
+  public String getContributorPartnerId() {
+    return contributorPartnerId;
+  }
+
+
+  public String getContributorProject() {
+    return contributorProject;
+  }
+
+
+  public String getContributorProjectLeadinstitute() {
+    return contributorProjectLeadinstitute;
+  }
+
 
   public String getCoverage() {
     return coverage;
   }
 
+
+  public String getCoverageAdminUnit() {
+    return coverageAdminUnit;
+  }
+
+
+  public String getCoverageCountry() {
+    return coverageCountry;
+  }
+
+
+  public String getCoverageGeolocation() {
+    return coverageGeolocation;
+  }
+
+
+  public String getCoverageRregion() {
+    return coverageRregion;
+  }
+
+
   public String getDescription() {
     return description;
   }
+
 
   public String getFormat() {
     return format;
   }
 
+
   public String getIdentifier() {
     return identifier;
   }
 
+
   public String getLanguage() {
     return language;
   }
+
 
   public String getPublication() {
     return publication;
@@ -89,8 +161,18 @@ public class Metadata {
     return source;
   }
 
+
   public String getSubject() {
     return subject;
+  }
+
+
+  public String getSubjectAgrovoc() {
+    return subjectAgrovoc;
+  }
+
+  public String getSubjectDomainSpecific() {
+    return subjectDomainSpecific;
   }
 
   public String getTitle() {
@@ -101,12 +183,49 @@ public class Metadata {
     this.authors = authors;
   }
 
-  public void setContributor(String contributor) {
-    this.contributor = contributor;
+  public void setContributorcgContributorCenter(String contributorcgContributorCenter) {
+    this.contributorcgContributorCenter = contributorcgContributorCenter;
+  }
+
+  public void setContributorCrp(String contributorCrp) {
+    this.contributorCrp = contributorCrp;
+  }
+
+  public void setContributorFunder(String contributorFunder) {
+    this.contributorFunder = contributorFunder;
+  }
+
+  public void setContributorPartnerId(String contributorPartnerId) {
+    this.contributorPartnerId = contributorPartnerId;
+  }
+
+  public void setContributorProject(String contributorProject) {
+    this.contributorProject = contributorProject;
+  }
+
+  public void setContributorProjectLeadinstitute(String contributorProjectLeadinstitute) {
+    this.contributorProjectLeadinstitute = contributorProjectLeadinstitute;
   }
 
   public void setCoverage(String coverage) {
     this.coverage = coverage;
+  }
+
+  public void setCoverageAdminUnit(String coverageAdminUnit) {
+    this.coverageAdminUnit = coverageAdminUnit;
+  }
+
+  public void setCoverageCountry(String coverageCountry) {
+    this.coverageCountry = coverageCountry;
+  }
+
+  public void setCoverageGeolocation(String coverageGeolocation) {
+    this.coverageGeolocation = coverageGeolocation;
+  }
+
+
+  public void setCoverageRregion(String coverageRregion) {
+    this.coverageRregion = coverageRregion;
   }
 
   public void setDescription(String description) {
@@ -147,6 +266,14 @@ public class Metadata {
 
   public void setSubject(String subject) {
     this.subject = subject;
+  }
+
+  public void setSubjectAgrovoc(String subjectAgrovoc) {
+    this.subjectAgrovoc = subjectAgrovoc;
+  }
+
+  public void setSubjectDomainSpecific(String subjectDomainSpecific) {
+    this.subjectDomainSpecific = subjectDomainSpecific;
   }
 
   public void setTitle(String title) {
