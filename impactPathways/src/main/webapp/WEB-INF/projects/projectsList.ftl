@@ -47,13 +47,14 @@
         [/#if]
       </div>
     [/#if]
+     
 
-    [#if securityContext.canAddCoreProject() || securityContext.canAddBilateralProject()]
+    [#if action.hasPermission("addCoreProject", true) || action.hasPermission("addBilateralProject", true)]
       <div class="buttons">
-        [#if securityContext.canAddCoreProject()]
+        [#if action.hasPermission("addCoreProject", true)]
           <a class="addButton" href="[@s.url namespace="/${currentSection}" action='addNewCoreProject'/]">[@s.text name="preplanning.projects.addCoreProject" /]</a>
         [/#if]
-        [#if securityContext.canAddBilateralProject()]
+        [#if action.hasPermission("addBilateralProject", true)]
           <a class="addButton" href="[@s.url namespace="/${currentSection}" action='addNewBilateralProject'/]">[@s.text name="preplanning.projects.addBilateralProject" /]</a>
         [/#if]
       </div>

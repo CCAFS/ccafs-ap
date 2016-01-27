@@ -366,6 +366,32 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
   /**
+   * This method validates if current user has permissions to edit a specified field name in the platform.
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @param projectID is some project identifier.
+   * @param actionName is a specific action name.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasProjectPermission(String fieldName, int projectID, String actionName) {
+    StringBuffer permissionString = new StringBuffer();
+    if (this.isReportingCycle()) {
+      permissionString.append("reporting:projects:");
+    } else {
+      permissionString.append("planning:projects:");
+    }
+    permissionString.append(projectID);
+    permissionString.append(":");
+    permissionString.append(actionName);
+    permissionString.append(":");
+    permissionString.append(fieldName);
+
+    return securityContext.hasPermission(permissionString.toString());
+  }
+
+  /**
    * This method returns the status of the given section in a specific cycle (Planning or Reporting).
    * 
    * @param project is the project that you want to look for the missing fields.
