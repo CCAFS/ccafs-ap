@@ -94,6 +94,7 @@ public class ProjectNextUserManagerImpl implements ProjectNextUserManager {
     if (nextUser.getId() == -1) {
       nextUser.setCreatedBy(Long.parseLong(user.getId() + ""));
       nextUser.setActiveSince(new Date());
+      nextUser.setId(0);
     }
     nextUser.setIsActive(true);
     nextUser.setModifiedBy(Long.parseLong(user.getId() + ""));
