@@ -1,0 +1,3 @@
+ALTER TABLE `project_next_user`
+MODIFY COLUMN `id`  int(11) NOT NULL AUTO_INCREMENT FIRST ;
+

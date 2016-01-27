@@ -18,8 +18,10 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectNextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.validation.projects.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
@@ -40,6 +42,8 @@ public class ProjectNextUsersAction extends BaseAction {
 
   // Managers
   private ProjectManager projectManager;
+  private ProjectNextUserManager projectNextUserManager;
+
   private HistoryManager historyManager;
 
 
@@ -53,11 +57,13 @@ public class ProjectNextUsersAction extends BaseAction {
 
   @Inject
   public ProjectNextUsersAction(APConfig config, ActivityManager activityManager, ProjectManager projectManager,
-    ProjectPartnerManager projectPartnerManager, ActivitiesListValidator validator, HistoryManager historyManager) {
+    ProjectPartnerManager projectPartnerManager, ActivitiesListValidator validator, HistoryManager historyManager,
+    ProjectNextUserManager projectNextUserManager) {
     super(config);
     this.projectManager = projectManager;
     this.validator = validator;
     this.historyManager = historyManager;
+    this.projectNextUserManager = projectNextUserManager;
   }
 
 
@@ -78,7 +84,6 @@ public class ProjectNextUsersAction extends BaseAction {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
 
-
   @Override
   public void prepare() throws Exception {
     super.prepare();
@@ -87,11 +92,12 @@ public class ProjectNextUsersAction extends BaseAction {
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
-      if (project.getActivities() != null) {
-        project.getActivities().clear();
+      if (project.getNextUsers() != null) {
+        project.getNextUsers().clear();
       }
     }
 
+    project.setNextUsers(projectNextUserManager.getProjectNextUserProject(projectID));
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
       this.getCurrentPlanningYear(), this.getCycleName()));
@@ -105,6 +111,11 @@ public class ProjectNextUsersAction extends BaseAction {
 
   @Override
   public String save() {
+    for (ProjectNextUser projectNextUser : project.getNextUsers()) {
+      projectNextUser.setProjectId(projectID);
+      projectNextUserManager.saveProjectNextUser(projectID, projectNextUser, this.getCurrentUser(),
+        this.getJustification());
+    }
     return SUCCESS;
   }
 

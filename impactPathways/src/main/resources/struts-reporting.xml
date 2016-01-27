@@ -271,6 +271,14 @@
     
     <action name="nextUsers" class="org.cgiar.ccafs.ap.action.projects.ProjectNextUsersAction">
       <result name="input">/WEB-INF/projects/projectNextUsers.ftl</result>
+       <result name="success" type="redirectAction">   
+        <param name="actionName">"nextUsers"</param>    
+        <param name="projectID">${project.id}</param>   
+      </result> 
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">"nextUsers"</param>
+        <param name="projectID">${project.id}</param>
+      </result>
     </action>
     
     <action name="highlights" class="org.cgiar.ccafs.ap.action.projects.ProjectHighListAction">

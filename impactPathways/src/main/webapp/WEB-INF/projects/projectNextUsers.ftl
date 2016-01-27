@@ -79,7 +79,7 @@
 </section>
 
 [#macro projectNextUsersMacro index="0" template=false]
-[#assign customName = "${params.nextUsers.name}[${index}]."/]
+[#assign customName = "${params.nextUsers.name}[${index}]"/]
 [#assign customId = "nextUser-${template?string('template',index)}" /]
 [#assign display = "${template?string('none','block')}" /]
 <div id="${customId}" class="nextUser borderBox" style="display:${display}">

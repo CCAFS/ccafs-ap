@@ -6,7 +6,7 @@
     <class name="org.cgiar.ccafs.ap.data.model.ProjectNextUser" table="project_next_user">
         <id name="id" type="int">
             <column name="id" />
-            <generator class="assigned" />
+              <generator class="identity" />
         </id>
         <property name="projectId" type="int">
             <column name="project_id" not-null="true" />
@@ -14,6 +14,14 @@
         <property name="strategies" type="string">
             <column name="strategies" length="65535" />
         </property>
+        
+        <property name="keyNextUser" type="string">
+            <column name="key_next_user" length="65535" />
+        </property>
+        
+        
+        
+        
         <property name="reportedDeliverables" type="string">
             <column name="reported_deliverables" length="65535" />
         </property>

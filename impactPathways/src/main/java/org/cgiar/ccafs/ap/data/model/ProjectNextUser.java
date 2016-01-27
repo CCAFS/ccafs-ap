@@ -10,11 +10,20 @@ import java.util.Date;
 public class ProjectNextUser implements java.io.Serializable {
 
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -285191648622361767L;
   private int id;
   private int projectId;
   private String strategies;
+  private String keyNextUser;
+
   private String reportedDeliverables;
+
+
   private String lessonsImplications;
+
   private boolean isActive;
   private Date activeSince;
   private long createdBy;
@@ -23,7 +32,6 @@ public class ProjectNextUser implements java.io.Serializable {
 
   public ProjectNextUser() {
   }
-
 
   public ProjectNextUser(int id, int projectId, boolean isActive, Date activeSince, long createdBy, long modifiedBy,
     String modificationJustification) {
@@ -51,84 +59,93 @@ public class ProjectNextUser implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
-  public int getId() {
-    return this.id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public int getProjectId() {
-    return this.projectId;
-  }
-
-  public void setProjectId(int projectId) {
-    this.projectId = projectId;
-  }
-
-  public String getStrategies() {
-    return this.strategies;
-  }
-
-  public void setStrategies(String strategies) {
-    this.strategies = strategies;
-  }
-
-  public String getReportedDeliverables() {
-    return this.reportedDeliverables;
-  }
-
-  public void setReportedDeliverables(String reportedDeliverables) {
-    this.reportedDeliverables = reportedDeliverables;
-  }
-
-  public String getLessonsImplications() {
-    return this.lessonsImplications;
-  }
-
-  public void setLessonsImplications(String lessonsImplications) {
-    this.lessonsImplications = lessonsImplications;
-  }
-
-  public boolean isIsActive() {
-    return this.isActive;
-  }
-
-  public void setIsActive(boolean isActive) {
-    this.isActive = isActive;
-  }
 
   public Date getActiveSince() {
     return this.activeSince;
-  }
-
-  public void setActiveSince(Date activeSince) {
-    this.activeSince = activeSince;
   }
 
   public long getCreatedBy() {
     return this.createdBy;
   }
 
-  public void setCreatedBy(long createdBy) {
-    this.createdBy = createdBy;
+  public int getId() {
+    return this.id;
   }
 
-  public long getModifiedBy() {
-    return this.modifiedBy;
+  public String getKeyNextUser() {
+    return keyNextUser;
   }
 
-  public void setModifiedBy(long modifiedBy) {
-    this.modifiedBy = modifiedBy;
+  public String getLessonsImplications() {
+    return this.lessonsImplications;
   }
 
   public String getModificationJustification() {
     return this.modificationJustification;
   }
 
+  public long getModifiedBy() {
+    return this.modifiedBy;
+  }
+
+  public int getProjectId() {
+    return this.projectId;
+  }
+
+  public String getReportedDeliverables() {
+    return this.reportedDeliverables;
+  }
+
+  public String getStrategies() {
+    return this.strategies;
+  }
+
+  public boolean isIsActive() {
+    return this.isActive;
+  }
+
+  public void setActiveSince(Date activeSince) {
+    this.activeSince = activeSince;
+  }
+
+  public void setCreatedBy(long createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setIsActive(boolean isActive) {
+    this.isActive = isActive;
+  }
+
+  public void setKeyNextUser(String keyNextUser) {
+    this.keyNextUser = keyNextUser;
+  }
+
+  public void setLessonsImplications(String lessonsImplications) {
+    this.lessonsImplications = lessonsImplications;
+  }
+
   public void setModificationJustification(String modificationJustification) {
     this.modificationJustification = modificationJustification;
+  }
+
+  public void setModifiedBy(long modifiedBy) {
+    this.modifiedBy = modifiedBy;
+  }
+
+  public void setProjectId(int projectId) {
+    this.projectId = projectId;
+  }
+
+  public void setReportedDeliverables(String reportedDeliverables) {
+    this.reportedDeliverables = reportedDeliverables;
+  }
+
+  public void setStrategies(String strategies) {
+    this.strategies = strategies;
   }
 
 

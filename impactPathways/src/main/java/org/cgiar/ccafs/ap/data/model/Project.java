@@ -66,9 +66,15 @@ public class Project {
   private ProjectPartner coordinator; // Project Coordinator.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
+  private List<ProjectNextUser> nextUsers; // Project research outputs - deliverables.
   private List<CasesStudies> caseStudies;
+
   private List<IPIndicator> indicators;
+
+
   private OtherContribution ipOtherContribution;
+
+
   private String leaderResponsabilities;
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
   private List<Project> linkedProjects;
@@ -228,7 +234,6 @@ public class Project {
     return allYears;
   }
 
-
   public String getAnnualReportDonor() {
     return annualReportDonor;
   }
@@ -266,6 +271,7 @@ public class Project {
     }
     return null;
   }
+
 
   public List<Budget> getBudgets() {
     return budgets;
@@ -448,7 +454,6 @@ public class Project {
     return emptyIndicator;
   }
 
-
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
@@ -474,6 +479,7 @@ public class Project {
     }
     return indicators;
   }
+
 
   /**
    * This method search if the list of indicators contains an indicator
@@ -501,7 +507,6 @@ public class Project {
     return ipOtherContribution;
   }
 
-
   /**
    * This method returns the project partner institution that is leading the project.
    * 
@@ -520,7 +525,6 @@ public class Project {
     }
     return null;
   }
-
 
   /**
    * This method returns the project partner person who is leading the project.
@@ -561,6 +565,11 @@ public class Project {
   }
 
 
+  public List<ProjectNextUser> getNextUsers() {
+    return nextUsers;
+  }
+
+
   public List<OtherContributions> getOtherContributions() {
     return otherContributions;
   }
@@ -569,6 +578,7 @@ public class Project {
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
+
 
   /**
    * This method returns the output (MOG) represented with the given identifier.
@@ -611,10 +621,10 @@ public class Project {
     return outputsBudgets;
   }
 
-
   public List<OutputOverview> getOutputsOverview() {
     return outputsOverview;
   }
+
 
   public BudgetOverhead getOverhead() {
     return overhead;
@@ -950,7 +960,6 @@ public class Project {
     return workplanRequired;
   }
 
-
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
   }
@@ -960,6 +969,7 @@ public class Project {
     this.annualReportDonor = annualReportDonor;
   }
 
+
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
   }
@@ -968,10 +978,10 @@ public class Project {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
 
-
   public void setBilateralContractRequired(boolean bilateralContractRequired) {
     this.bilateralContractRequired = bilateralContractRequired;
   }
+
 
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
@@ -1050,6 +1060,10 @@ public class Project {
 
   public void setLocations(List<Location> locations) {
     this.locations = locations;
+  }
+
+  public void setNextUsers(List<ProjectNextUser> nextUsers) {
+    this.nextUsers = nextUsers;
   }
 
   public void setOtherContributions(List<OtherContributions> otherContributions) {
