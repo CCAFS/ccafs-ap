@@ -321,14 +321,17 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * planning.
    * 
    * @param fieldName is the name of a field.
+   * @param usePlanningReporting is true if you want to validate permission in a certain round. False otherwise.
    * @return true if the user has permissions to edit the specified field name, false otherwise.
    */
-  public boolean hasPermission(String fieldName) {
+  public boolean hasPermission(String fieldName, boolean usePlanningReporting) {
     StringBuffer permissionString = new StringBuffer();
-    if (this.isReportingCycle()) {
-      permissionString.append("reporting:");
-    } else {
-      permissionString.append("planning:");
+    if (usePlanningReporting) {
+      if (this.isReportingCycle()) {
+        permissionString.append("reporting:");
+      } else {
+        permissionString.append("planning:");
+      }
     }
     permissionString.append(this.getActionName());
     permissionString.append(":");
