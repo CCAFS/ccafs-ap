@@ -15,10 +15,10 @@
             <column name="author" length="65535" not-null="true" />
         </property>
         <property name="startDate" type="date">
-            <column name="start_date" length="10" />
+            <column name="start_date" />
         </property>
         <property name="endDate" type="date">
-            <column name="end_date" length="10" />
+            <column name="end_date" />
         </property>
         <property name="photo" type="string">
             <column name="photo" length="65535" />

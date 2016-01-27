@@ -118,12 +118,12 @@
       <div class="fullPartBlock">
         [#-- Start Date --]
         <div class="halfPartBlock">
-          [@customForm.input name="highlight.startDate" className="startDate" type="text" i18nkey="reporting.projectHighlight.startDate" editable=editable/]
+          [@customForm.input name="highlight.startDateText" className="startDate" type="text" i18nkey="reporting.projectHighlight.startDate" editable=editable/]
         </div>
   
         [#-- End Date --]
         <div class="halfPartBlock">
-          [@customForm.input name="highlight.endDate" className="endDate" type="text" i18nkey="reporting.projectHighlight.endDate" editable=editable/]
+          [@customForm.input name="highlight.endDateText" className="endDate" type="text" i18nkey="reporting.projectHighlight.endDate" editable=editable/]
         </div>
       </div>
       
