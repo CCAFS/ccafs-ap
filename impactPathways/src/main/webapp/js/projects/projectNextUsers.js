@@ -48,6 +48,7 @@ function setElementIndex(i,element) {
   var name = nextUsersName + "[" + i + "].";
   $(element).attr("id", "nextUser-" + i);
   $(element).find("span.index").html(i + 1);
+  $(element).find(".nextUserID").attr("name", name + "id");
   $(element).find(".keyNextUser").attr("name", name + "keyNextUser");
   $(element).find(".strategies").attr("name", name + "strategies");
   $(element).find(".reportedDeliverables").attr("name", name + "reportedDeliverables");
