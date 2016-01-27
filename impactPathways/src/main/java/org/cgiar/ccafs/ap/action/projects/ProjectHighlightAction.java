@@ -32,6 +32,7 @@ import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,6 +214,11 @@ public class ProjectHighlightAction extends BaseAction {
 
     // Getting the highlight information.
     highlight = highLightManager.getHighLightById(highlightID);
+
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    // highlight.setStartDate(dateformatter.parse(dateformatter.format(highlight.getStartDate())));
+    highlight.setStartDateText(dateformatter.format(highlight.getStartDate()));
+    highlight.setEndDateText(dateformatter.format(highlight.getEndDate()));
     Iterator<ProjectHighligthsTypes> iteratorTypes = higligth.getProjectHighligthsTypeses().iterator();
     List<ProjectHighlightsType> typesids = new ArrayList<>();
     List<String> ids = new ArrayList<>();
@@ -247,6 +253,16 @@ public class ProjectHighlightAction extends BaseAction {
   @Override
   public String save() {
 
+
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    // highlight.setStartDate(dateformatter.parse(dateformatter.format(highlight.getStartDate())));
+
+    try {
+      highlight.setStartDate(dateformatter.parse(highlight.getStartDateText()));
+      highlight.setEndDate(dateformatter.parse(highlight.getEndDateText()));
+    } catch (ParseException e) {
+      LOG.error(e.getMessage());
+    }
     List<ProjectHighligthsTypes> actualTypes = new ArrayList<>();
     for (String type : highlight.getTypesids()) {
       ProjectHighligthsTypes typeHigh = new ProjectHighligthsTypes();

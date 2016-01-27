@@ -91,9 +91,10 @@ public class ProjectNextUserManagerImpl implements ProjectNextUserManager {
 
   @Override
   public int saveProjectNextUser(int projectID, ProjectNextUser nextUser, User user, String justification) {
-    if (nextUser.getId() == 0) {
+    if (nextUser.getId() == -1) {
       nextUser.setCreatedBy(Long.parseLong(user.getId() + ""));
       nextUser.setActiveSince(new Date());
+      nextUser.setId(0);
     }
     nextUser.setIsActive(true);
     nextUser.setModifiedBy(Long.parseLong(user.getId() + ""));

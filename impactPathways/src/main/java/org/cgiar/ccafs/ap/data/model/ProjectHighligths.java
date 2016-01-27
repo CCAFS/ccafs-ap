@@ -18,12 +18,25 @@ public class ProjectHighligths implements java.io.Serializable {
   private String title;
   private String author;
   private Date startDate;
+  private String startDateText;
+
   private Date endDate;
+  private String endDateText;
+
+
   private String photo;
+
+
   private String objectives;
+
+
   private String description;
+
+
   private String results;
+
   private String partners;
+
   private String links;
   private String keywords;
   private String subject;
@@ -53,11 +66,9 @@ public class ProjectHighligths implements java.io.Serializable {
   public ProjectHighligths() {
   }
 
-
   public ProjectHighligths(int id) {
     this.id = id;
   }
-
 
   public ProjectHighligths(String title, String author, boolean isGlobal, int leader, boolean isActive, long projectId,
     Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
@@ -72,7 +83,6 @@ public class ProjectHighligths implements java.io.Serializable {
     this.modifiedBy = modifiedBy;
     this.modificationJustification = modificationJustification;
   }
-
 
   public ProjectHighligths(String title, String author, Date startDate, Date endDate, String photo, String objectives,
     String description, String results, String partners, String links, String keywords, String subject,
@@ -112,16 +122,13 @@ public class ProjectHighligths implements java.io.Serializable {
     this.projectHighligthsCountries = projectHighligthsCountries;
   }
 
-
   public Date getActiveSince() {
     return this.activeSince;
   }
 
-
   public String getAuthor() {
     return this.author;
   }
-
 
   public String getContributor() {
     return this.contributor;
@@ -137,6 +144,7 @@ public class ProjectHighligths implements java.io.Serializable {
     return countriesIds;
   }
 
+
   public String getCoverage() {
     return this.coverage;
   }
@@ -146,13 +154,21 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.createdBy;
   }
 
+
   public String getDescription() {
     return this.description;
   }
 
+
   public Date getEndDate() {
     return this.endDate;
   }
+
+
+  public String getEndDateText() {
+    return endDateText;
+  }
+
 
   public Integer getId() {
     return this.id;
@@ -161,6 +177,7 @@ public class ProjectHighligths implements java.io.Serializable {
   public String getKeywords() {
     return this.keywords;
   }
+
 
   public int getLeader() {
     return this.leader;
@@ -222,6 +239,10 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.startDate;
   }
 
+  public String getStartDateText() {
+    return startDateText;
+  }
+
   public Long getStatus() {
     return this.status;
   }
@@ -229,6 +250,7 @@ public class ProjectHighligths implements java.io.Serializable {
   public String getSubject() {
     return this.subject;
   }
+
 
   public String getTitle() {
     return this.title;
@@ -292,6 +314,10 @@ public class ProjectHighligths implements java.io.Serializable {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
+  }
+
+  public void setEndDateText(String endDateText) {
+    this.endDateText = endDateText;
   }
 
   public void setId(Integer id) {
@@ -368,6 +394,10 @@ public class ProjectHighligths implements java.io.Serializable {
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public void setStartDateText(String startDateText) {
+    this.startDateText = startDateText;
   }
 
   public void setStatus(Long status) {
