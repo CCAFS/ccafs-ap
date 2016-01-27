@@ -58,7 +58,7 @@ public class ProjectsListAction extends BaseAction {
   }
 
   public String addBilateralProject() {
-    if (!this.hasPermission("addBilateralProject")) {
+    if (!this.hasPermission("addBilateralProject", true)) {
       return NOT_AUTHORIZED;
     }
 
@@ -68,7 +68,7 @@ public class ProjectsListAction extends BaseAction {
   }
 
   public String addCoreProject() {
-    if (!this.hasPermission("addCoreProject")) {
+    if (!this.hasPermission("addCoreProject", true)) {
       return NOT_AUTHORIZED;
     }
     // Create new project and redirect to project description using the new projectId assigned by the database.
