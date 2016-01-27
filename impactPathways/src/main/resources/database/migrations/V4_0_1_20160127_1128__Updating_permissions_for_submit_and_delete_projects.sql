@@ -3,8 +3,12 @@ DELETE rp FROM role_permissions rp
 INNER JOIN permissions p ON rp.permission_id = p.id
 WHERE p.permission like "%submit%";
 
+DELETE rp FROM role_permissions rp 
+INNER JOIN permissions p ON rp.permission_id = p.id
+WHERE p.permission like "%:projects:manage:%";
+
 -- Updating permissions
-DELETE FROM `permissions` WHERE `id`='6';
+DELETE IGNORE FROM `permissions` WHERE `id`='6';	
 UPDATE `permissions` SET `permission`='planning:projects:manage:submitProject', `description`='Can use the \"Submit project\" button in any section in planning round.' WHERE `id`='97';
 UPDATE `permissions` SET `permission`='reporting:projects:manage:submitProject', `description`='Can use the \"Submit project\" button in any section in reporting round.' WHERE `id`='102';
 UPDATE `permissions` SET `permission`='planning:projects:manage:deleteProject', `description`='Can use the \"Delete project\" button in any section in planning round.' WHERE `id`='7';
