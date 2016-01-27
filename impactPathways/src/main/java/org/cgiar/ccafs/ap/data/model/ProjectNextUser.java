@@ -14,18 +14,20 @@ public class ProjectNextUser implements java.io.Serializable {
    * 
    */
   private static final long serialVersionUID = -285191648622361767L;
+
   private int id;
+
   private int projectId;
   private String strategies;
   private String keyNextUser;
-
   private String reportedDeliverables;
-
-
   private String lessonsImplications;
 
   private boolean isActive;
+
+
   private Date activeSince;
+
   private long createdBy;
   private long modifiedBy;
   private String modificationJustification;
@@ -59,10 +61,28 @@ public class ProjectNextUser implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    ProjectNextUser other = (ProjectNextUser) obj;
+    if (id != other.id) {
+      return false;
+    }
+    return true;
+  }
 
   public Date getActiveSince() {
     return this.activeSince;
   }
+
 
   public long getCreatedBy() {
     return this.createdBy;
@@ -98,6 +118,14 @@ public class ProjectNextUser implements java.io.Serializable {
 
   public String getStrategies() {
     return this.strategies;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + id;
+    return result;
   }
 
   public boolean isIsActive() {

@@ -25,6 +25,8 @@ import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.validation.projects.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.List;
+
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -45,7 +47,7 @@ public class ProjectNextUsersAction extends BaseAction {
   private ProjectNextUserManager projectNextUserManager;
 
   private HistoryManager historyManager;
-
+  private List<ProjectNextUser> nextUserPreview;
 
   // Model for the front-end
   private Project project;
@@ -98,6 +100,7 @@ public class ProjectNextUsersAction extends BaseAction {
     }
 
     project.setNextUsers(projectNextUserManager.getProjectNextUserProject(projectID));
+    nextUserPreview = project.getNextUsers();
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
       this.getCurrentPlanningYear(), this.getCycleName()));
@@ -111,6 +114,15 @@ public class ProjectNextUsersAction extends BaseAction {
 
   @Override
   public String save() {
+
+
+    for (ProjectNextUser projectNextUser : nextUserPreview) {
+      if (!project.getNextUsers().contains(projectNextUser)) {
+        projectNextUserManager.deleteProjectNextUser(projectNextUser.getId(), this.getCurrentUser(),
+          this.getJustification());
+      }
+    }
+
     for (ProjectNextUser projectNextUser : project.getNextUsers()) {
       projectNextUser.setProjectId(projectID);
       projectNextUserManager.saveProjectNextUser(projectID, projectNextUser, this.getCurrentUser(),
