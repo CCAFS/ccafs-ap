@@ -15,7 +15,9 @@
 
 package org.cgiar.ccafs.ap.data.model;
 
-
+/**
+ * @author Christian David García.
+ */
 public enum ProjectStatusEnum {
 
 

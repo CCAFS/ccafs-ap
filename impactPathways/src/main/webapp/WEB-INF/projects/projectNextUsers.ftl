@@ -42,7 +42,9 @@
           <div id="nextUsersList">
             [#-- Validating amount of projectNextUsers to be listed --]
             [#if (project.nextUsers?size > 3)!false] 
-              [#-- TODO --]
+              [#list project.nextUsers as nextuser]
+                [@projectNextUsersMacro index="${nextuser_index}" /]
+              [/#list]
             [#else]
               [@projectNextUsersMacro index="0" /]
               [@projectNextUsersMacro index="1" /]
@@ -78,45 +80,49 @@
     </article>
 </section>
 
-[#macro projectNextUsersMacro index="0" template=false]
-[#assign customName = "${params.nextUsers.name}[${index}]"/]
-[#assign customId = "nextUser-${template?string('template',index)}" /]
-[#assign display = "${template?string('none','block')}" /]
-<div id="${customId}" class="nextUser borderBox" style="display:${display}">
-  [#-- Edit/Back/remove buttons --]
-  [#if (!editable && canEdit)]
-    <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.edit" /]</a></div>
-  [#else]
-    [#if canEdit]
-      <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.unedit" /]</a></div>
-      <div class="removeElement" title="[@s.text name="reporting.projectNextUsers.removeNextUser" /]"></div>
-    [/#if] 
-  [/#if]
-  [#-- Next user index --]
-  <div class="leftHead"><span class="index">${index?number+1}</span><span class="elementId">Next user </span></div>
-  [#-- Key next user --]
-  <div class="fullBlock">
-    [@customForm.textArea name="${customName}.keyNextUser" i18nkey="reporting.projectNextUsers.keyNextUser" className="keyNextUser limitWords-200" required=true editable=editable /]
+[#macro projectNextUsersMacro index="-1" template=false]
+  [#assign customName = "${params.nextUsers.name}[${index}]"/]
+  [#assign customId = "nextUser-${template?string('template',index)}" /]
+  [#assign display = "${template?string('none','block')}" /]
+  [#assign element = (customName?eval)! /]
+  
+  <div id="${customId}" class="nextUser borderBox" style="display:${display}">
+    [#-- Edit/Back/remove buttons --]
+    [#if (!editable && canEdit)]
+      <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.edit" /]</a></div>
+    [#else]
+      [#if canEdit]
+        <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.unedit" /]</a></div>
+        <div class="removeElement" title="[@s.text name="reporting.projectNextUsers.removeNextUser" /]"></div>
+      [/#if] 
+    [/#if]
+    [#-- Next user ID --]
+    <input type="hidden" name="${customName}.id" class="nextUserID" value="${(element.id)!-1}"/>
+    [#-- Next user index --]
+    <div class="leftHead"><span class="index">${index?number+1}</span><span class="elementId">Next user </span></div>
+    [#-- Key next user --]
+    <div class="fullBlock">
+      [@customForm.textArea name="${customName}.keyNextUser" i18nkey="reporting.projectNextUsers.keyNextUser" className="keyNextUser limitWords-200" required=true editable=editable /]
+    </div>
+    [#-- What strategies --]
+    <div class="fullBlock">
+      [@customForm.textArea name="${customName}.strategies" i18nkey="reporting.projectNextUsers.strategies" className="strategies limitWords-100" required=true editable=editable /]
+    </div> 
+    [#-- Select reported deliverables --]
+    <div class="fullBlock">
+      [@customForm.textArea name="${customName}.reportedDeliverables" i18nkey="reporting.projectNextUsers.reportedDeliverables" className="reportedDeliverables limitWords-100" required=true editable=editable /]
+    </div> 
+    [#-- Lessons and implications --]
+    <div class="fullBlock">
+      [@customForm.textArea name="${customName}.lessonsImplications" i18nkey="reporting.projectNextUsers.lessonsImplications" className="lessonsImplications limitWords-100" required=true editable=editable /]
+    </div> 
   </div>
-  [#-- What strategies --]
-  <div class="fullBlock">
-    [@customForm.textArea name="${customName}.strategies" i18nkey="reporting.projectNextUsers.strategies" className="strategies limitWords-100" required=true editable=editable /]
-  </div> 
-  [#-- Select reported deliverables --]
-  <div class="fullBlock">
-    [@customForm.textArea name="${customName}.reportedDeliverables" i18nkey="reporting.projectNextUsers.reportedDeliverables" className="reportedDeliverables limitWords-100" required=true editable=editable /]
-  </div> 
-  [#-- Lessons and implications --]
-  <div class="fullBlock">
-    [@customForm.textArea name="${customName}.lessonsImplications" i18nkey="reporting.projectNextUsers.lessonsImplications" className="lessonsImplications limitWords-100" required=true editable=editable /]
-  </div> 
-</div>
 [/#macro]
 
 [#-- Internal parameters --]
 [#list params?keys as prop]<input id="${params[prop].id}" type="hidden" value="${params[prop].name}" />[/#list]
 
 [#-- projectNextUsers template --]
-[@projectNextUsersMacro index="0" template=true/]
+[@projectNextUsersMacro template=true/]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
