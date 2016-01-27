@@ -131,9 +131,8 @@ public class ProjectOutcomesAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectOutcomes(projectID)) {
+    if (this.hasProjectPermission("update", projectID)) {
       boolean success = true;
-
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);
       }
