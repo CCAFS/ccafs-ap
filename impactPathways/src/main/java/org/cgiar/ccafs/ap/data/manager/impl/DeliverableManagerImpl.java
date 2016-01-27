@@ -406,6 +406,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
     }
     if (deliverable.getPublicationMetadata() != null
       && deliverable.getPublicationMetadata().getRelatedFlagships() != null) {
+      deliverable.getPublicationMetadata().setFp1(false);
+      deliverable.getPublicationMetadata().setFp2(false);
+      deliverable.getPublicationMetadata().setFp3(false);
+      deliverable.getPublicationMetadata().setFp4(false);
       for (String flagship : deliverable.getPublicationMetadata().getRelatedFlagshipsIds()) {
         switch (flagship) {
           case "1":
