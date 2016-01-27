@@ -22,7 +22,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectNextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
-import org.cgiar.ccafs.ap.validation.projects.ActivitiesListValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectNextUserValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;
@@ -54,12 +54,12 @@ public class ProjectNextUsersAction extends BaseAction {
   private int projectID;
 
   // validator
-  private ActivitiesListValidator validator;
+  private ProjectNextUserValidator validator;
 
 
   @Inject
   public ProjectNextUsersAction(APConfig config, ActivityManager activityManager, ProjectManager projectManager,
-    ProjectPartnerManager projectPartnerManager, ActivitiesListValidator validator, HistoryManager historyManager,
+    ProjectPartnerManager projectPartnerManager, ProjectNextUserValidator validator, HistoryManager historyManager,
     ProjectNextUserManager projectNextUserManager) {
     super(config);
     this.projectManager = projectManager;
