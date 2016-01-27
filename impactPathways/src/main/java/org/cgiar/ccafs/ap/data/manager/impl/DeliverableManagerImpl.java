@@ -447,15 +447,15 @@ public class DeliverableManagerImpl implements DeliverableManager {
         case "restrictedAccess":
           deliverable.getDissemination().setIntellectualProperty(false);
           deliverable.getDissemination().setLimitedExclusivity(false);
-          deliverable.getDissemination().setRestrictedUseAgreement(false);
-          deliverable.getDissemination().setEffectiveDateRestriction(true);
+          deliverable.getDissemination().setEffectiveDateRestriction(false);
+          deliverable.getDissemination().setRestrictedUseAgreement(true);
 
           break;
         case "embargoedPeriods":
           deliverable.getDissemination().setIntellectualProperty(false);
           deliverable.getDissemination().setLimitedExclusivity(false);
-          deliverable.getDissemination().setRestrictedUseAgreement(true);
-          deliverable.getDissemination().setEffectiveDateRestriction(false);
+          deliverable.getDissemination().setEffectiveDateRestriction(true);
+          deliverable.getDissemination().setRestrictedUseAgreement(false);
 
           break;
 

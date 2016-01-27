@@ -22,12 +22,23 @@ public class DeliverableDissemination implements java.io.Serializable {
   private Boolean limitedExclusivity;
   private Boolean restrictedUseAgreement;
   private Date restrictedAccessUntil;
+  private String restrictedAccessUntilText;
+
   private Boolean effectiveDateRestriction;
+
+
   private Date restrictedEmbargoed;
+
+
+  private String restrictedEmbargoedText;
+
+
   private Boolean alreadyDisseminated;
+
   private String disseminationChannel;
   private String disseminationUrl;
   private String disseminationChannelName;
+
   private String descriptionMetadata;
   private String authorsMetadata;
   private String identifierMetadata;
@@ -83,7 +94,6 @@ public class DeliverableDissemination implements java.io.Serializable {
     this.rigthsMetadata = rigthsMetadata;
   }
 
-
   public Boolean getAlreadyDisseminated() {
     return this.alreadyDisseminated;
   }
@@ -99,6 +109,7 @@ public class DeliverableDissemination implements java.io.Serializable {
   public String getCoverageMetadata() {
     return this.coverageMetadata;
   }
+
 
   public int getDeliverableId() {
     return this.deliverableId;
@@ -168,8 +179,16 @@ public class DeliverableDissemination implements java.io.Serializable {
     return this.restrictedAccessUntil;
   }
 
+  public String getRestrictedAccessUntilText() {
+    return restrictedAccessUntilText;
+  }
+
   public Date getRestrictedEmbargoed() {
     return this.restrictedEmbargoed;
+  }
+
+  public String getRestrictedEmbargoedText() {
+    return restrictedEmbargoedText;
   }
 
   public Boolean getRestrictedUseAgreement() {
@@ -276,8 +295,16 @@ public class DeliverableDissemination implements java.io.Serializable {
     this.restrictedAccessUntil = restrictedAccessUntil;
   }
 
+  public void setRestrictedAccessUntilText(String restrictedAccessUntilText) {
+    this.restrictedAccessUntilText = restrictedAccessUntilText;
+  }
+
   public void setRestrictedEmbargoed(Date restrictedEmbargoed) {
     this.restrictedEmbargoed = restrictedEmbargoed;
+  }
+
+  public void setRestrictedEmbargoedText(String restrictedEmbargoedText) {
+    this.restrictedEmbargoedText = restrictedEmbargoedText;
   }
 
   public void setRestrictedUseAgreement(Boolean restrictedUseAgreement) {

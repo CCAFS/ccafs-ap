@@ -42,6 +42,9 @@ import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -294,8 +297,18 @@ public class ProjectDeliverableAction extends BaseAction {
 
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
-  
-    
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    if (deliverable.getDissemination().getRestrictedAccessUntil() != null) {
+      deliverable.getDissemination()
+        .setRestrictedAccessUntilText(dateformatter.format(deliverable.getDissemination().getRestrictedAccessUntil()));
+
+    }
+
+    if (deliverable.getDissemination().getRestrictedEmbargoed() != null) {
+      deliverable.getDissemination()
+        .setRestrictedEmbargoedText(dateformatter.format(deliverable.getDissemination().getRestrictedEmbargoed()));
+
+    }
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
@@ -361,6 +374,24 @@ public class ProjectDeliverableAction extends BaseAction {
           files.add(file);
         }
 
+      }
+      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+
+      if (deliverable.getDissemination().getRestrictedAccessUntilText() != null) {
+        try {
+          deliverable.getDissemination().setRestrictedAccessUntil(
+            dateformatter.parse(deliverable.getDissemination().getRestrictedAccessUntilText()));
+        } catch (ParseException e) {
+          deliverable.getDissemination().setRestrictedAccessUntil(null);
+        }
+      }
+      if (deliverable.getDissemination().getRestrictedEmbargoedText() != null) {
+        try {
+          deliverable.getDissemination()
+            .setRestrictedEmbargoed(dateformatter.parse(deliverable.getDissemination().getRestrictedEmbargoedText()));
+        } catch (ParseException e) {
+          deliverable.getDissemination().setRestrictedEmbargoed(null);
+        }
       }
       deliverable.setDataSharingFile(files);
       // -------- Saving main information

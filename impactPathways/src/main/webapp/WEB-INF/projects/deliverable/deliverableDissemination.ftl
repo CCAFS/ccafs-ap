@@ -49,10 +49,10 @@
       [#-- Periods --]
       <div class="fullBlock"> 
         <div id="period-restrictedAccess" class="halfPartBlock openAccessPeriods" style="display:${((deliverable.dissemination.type == "restrictedAccess")!false)?string('block','none')}">
-          [@customForm.input name="${params.deliverable.name}.dissemination.restrictedAccessUntil" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.restrictedAccessDate" editable=editable/]
+          [@customForm.input name="${params.deliverable.name}.dissemination.restrictedAccessUntilText" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.restrictedAccessDate" editable=editable/]
         </div>
         <div id="period-embargoedPeriods" class="halfPartBlock openAccessPeriods" style="display:${((deliverable.dissemination.type == "embargoedPeriods")!false)?string('block','none')}">
-          [@customForm.input name="${params.deliverable.name}.dissemination.restrictedEmbargoed" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.embargoedPeriodDate" editable=editable/]
+          [@customForm.input name="${params.deliverable.name}.dissemination.restrictedEmbargoedText" className="period" type="text" i18nkey="reporting.projectDeliverable.dissemination.embargoedPeriodDate" editable=editable/]
         </div>
       </div>
     </div><!-- End aditional-openAccessRestriction -->

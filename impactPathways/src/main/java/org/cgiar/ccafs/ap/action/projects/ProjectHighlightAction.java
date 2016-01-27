@@ -15,7 +15,6 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
@@ -60,7 +59,6 @@ public class ProjectHighlightAction extends BaseAction {
   // Manager
   private ProjectManager projectManager;
   private HighLightManager highLightManager;
-  private DeliverableTypeManager deliverableTypeManager;
   private LocationManager locationManager;
   private String highlightsImagesUrl;
   private File file;
@@ -90,12 +88,11 @@ public class ProjectHighlightAction extends BaseAction {
 
   @Inject
   public ProjectHighlightAction(APConfig config, ProjectManager projectManager, HighLightManager highLightManager,
-    DeliverableTypeManager deliverableTypeManager, LocationManager locationManager,
-    ProjectHighLightValidator validator) {
+    LocationManager locationManager, ProjectHighLightValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.highLightManager = highLightManager;
-    this.deliverableTypeManager = deliverableTypeManager;
+
     this.locationManager = locationManager;
     this.validator = validator;
   }
