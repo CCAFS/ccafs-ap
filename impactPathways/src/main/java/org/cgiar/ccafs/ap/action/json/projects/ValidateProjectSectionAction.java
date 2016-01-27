@@ -17,6 +17,7 @@ import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectNextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -30,6 +31,7 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
+import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.SectionStatusEnum;
@@ -44,6 +46,7 @@ import org.cgiar.ccafs.ap.validation.projects.ProjectDescriptionValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectHighLightValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectLocationsValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectNextUserValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectOutcomeValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectOutputsValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectPartnersValidator;
@@ -106,7 +109,8 @@ public class ValidateProjectSectionAction extends BaseAction {
 
   @Inject
   private HighLightManager hightLigthManager;
-
+  @Inject
+  private ProjectNextUserManager nextUserManager;
   @Inject
   private ProjectOtherContributionManager ipOtherContributionManager;
   @Inject
@@ -150,7 +154,8 @@ public class ValidateProjectSectionAction extends BaseAction {
 
   @Inject
   private ProjectHighLightValidator highLigthValidator;
-
+  @Inject
+  private ProjectNextUserValidator projectNextUserValidator;
   @Inject
   private ProjectCaseStudiesValidator caseStudieValidator;
 
@@ -199,6 +204,10 @@ public class ValidateProjectSectionAction extends BaseAction {
 
         case CASESTUDIES:
           this.validateCaseStudies();
+          break;
+
+        case NEXTUSERS:
+          this.validateNextUsers();
           break;
 
         case HIGHLIGHT:
@@ -462,6 +471,20 @@ public class ValidateProjectSectionAction extends BaseAction {
         highLigthValidator.validate(this, project, projectHighligths, currentCycle);
       }
       // Validate
+
+    }
+  }
+
+
+  private void validateNextUsers() {
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      // Getting basic project information.
+      Project project = projectManager.getProject(projectID);
+      List<ProjectNextUser> list = nextUserManager.getProjectNextUserProject(projectID);
+      project.setNextUsers(list);
+      // Validate
+      projectNextUserValidator.validate(this, project, currentCycle);
+
 
     }
   }

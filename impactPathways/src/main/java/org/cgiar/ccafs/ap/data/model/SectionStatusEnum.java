@@ -22,7 +22,7 @@ public enum SectionStatusEnum {
   DESCRIPTION("description"), PARTNERS("partners"), LOCATIONS("locations"), OUTCOMES("outcomes"),
   CCAFSOUTCOMES("ccafsOutcomes"), OTHERCONTRIBUTIONS("otherContributions"), OUTPUTS("outputs"),
   DELIVERABLESLIST("deliverablesList"), ACTIVITIES("activities"), CROSSCUTTING("crossCutting"), BUDGET("budget"),
-  BUDGETBYMOG("budgetByMog"), HIGHLIGHT("highlight"), CASESTUDIES("caseStudies");
+  BUDGETBYMOG("budgetByMog"), NEXTUSERS("nextUsers"), HIGHLIGHT("highlight"), CASESTUDIES("caseStudies");
 
   private String status;
 
