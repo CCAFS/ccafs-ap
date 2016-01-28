@@ -67,16 +67,23 @@ public class Project {
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
   private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
   private List<ProjectNextUser> nextUsers; // Project research outputs - deliverables.
+  private List<ProjectLeverage> leverages; // Project research outputs - deliverables.
+
+
   private List<CasesStudies> caseStudies;
+
 
   private List<IPIndicator> indicators;
 
 
   private OtherContribution ipOtherContribution;
 
-
   private String leaderResponsabilities;
+
+
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
+
+
   private List<Project> linkedProjects;
   private List<Location> locations; // Project locations.
   private Map<String, ProjectOutcome> outcomes;
@@ -242,7 +249,6 @@ public class Project {
     return anualContribution;
   }
 
-
   /**
    * This method returns the name of the file that was uploaded with the bilateral contract.
    * 
@@ -280,6 +286,7 @@ public class Project {
   public List<CasesStudies> getCaseStudies() {
     return caseStudies;
   }
+
 
   /**
    * This method gets the budget of a specific project that is co-financing the current one in a specific year.
@@ -480,7 +487,6 @@ public class Project {
     return indicators;
   }
 
-
   /**
    * This method search if the list of indicators contains an indicator
    * which parent is identified by the value passed as parameter.
@@ -506,6 +512,7 @@ public class Project {
   public OtherContribution getIpOtherContribution() {
     return ipOtherContribution;
   }
+
 
   /**
    * This method returns the project partner institution that is leading the project.
@@ -544,9 +551,12 @@ public class Project {
     return null;
   }
 
-
   public String getLeaderResponsabilities() {
     return leaderResponsabilities;
+  }
+
+  public List<ProjectLeverage> getLeverages() {
+    return leverages;
   }
 
 
@@ -597,6 +607,7 @@ public class Project {
     return null;
   }
 
+
   /**
    * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
    * 
@@ -625,10 +636,10 @@ public class Project {
     return outputsOverview;
   }
 
-
   public BudgetOverhead getOverhead() {
     return overhead;
   }
+
 
   /**
    * This method returns the OutputOverview gived a mogId and year
@@ -964,7 +975,6 @@ public class Project {
     this.activities = activities;
   }
 
-
   public void setAnnualReportDonor(String annualReportDonor) {
     this.annualReportDonor = annualReportDonor;
   }
@@ -974,6 +984,7 @@ public class Project {
     this.anualContribution = anualContribution;
   }
 
+
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
@@ -982,10 +993,10 @@ public class Project {
     this.bilateralContractRequired = bilateralContractRequired;
   }
 
-
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
   }
+
 
   public void setCaseStudies(List<CasesStudies> caseStudies) {
     this.caseStudies = caseStudies;
@@ -1048,6 +1059,10 @@ public class Project {
 
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
+  }
+
+  public void setLeverages(List<ProjectLeverage> leverages) {
+    this.leverages = leverages;
   }
 
   public void setLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
