@@ -18,13 +18,18 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectLeverageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
 import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -42,19 +47,22 @@ public class ProjectLeveragesAction extends BaseAction {
   private ProjectManager projectManager;
   private InstitutionManager institutionManager;
   private IPProgramManager ipProgramManager;
-
+  private ProjectLeverageManager projectLeverageManager;
   private int projectID;
   private Project project;
   private List<Institution> allInstitutions;
   private List<IPProgram> ipProgramFlagships;
+  private List<ProjectLeverage> leveragesPreview;
 
   @Inject
   public ProjectLeveragesAction(APConfig config, ProjectManager projectManager, HistoryManager historyManager,
-    ProjectCrossCuttingValidator validator, InstitutionManager institutionManager, IPProgramManager ipProgramManager) {
+    ProjectCrossCuttingValidator validator, InstitutionManager institutionManager, IPProgramManager ipProgramManager,
+    ProjectLeverageManager projectLeverageManager) {
     super(config);
     this.projectManager = projectManager;
     this.institutionManager = institutionManager;
     this.ipProgramManager = ipProgramManager;
+    this.projectLeverageManager = projectLeverageManager;
   }
 
   public List<Institution> getAllInstitutions() {
@@ -120,7 +128,17 @@ public class ProjectLeveragesAction extends BaseAction {
 
     // Getting the information of the Flagships program for the View
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+    project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
+    for (ProjectLeverage leverage : project.getLeverages()) {
+      if (project.getEndDate() != null) {
+        leverage.setEndDateText(dateformatter.format(project.getEndDate()));
+      }
+      if (project.getStartDate() != null) {
+        leverage.setStartDateText(dateformatter.format(project.getStartDate()));
+      }
 
+    }
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
@@ -128,6 +146,28 @@ public class ProjectLeveragesAction extends BaseAction {
 
   @Override
   public String save() {
+    for (ProjectLeverage projectLeverage : leveragesPreview) {
+      if (!project.getLeverages().contains(projectLeverage)) {
+        projectLeverageManager.deleteProjectLeverage(projectLeverage.getId(), this.getCurrentUser(),
+          this.getJustification());
+      }
+    }
+    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+
+    for (ProjectLeverage projectLeverage : project.getLeverages()) {
+
+
+      try {
+        projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
+        projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));
+      } catch (ParseException e) {
+
+      }
+      projectLeverage.setProjectId(projectID);
+      projectLeverageManager.saveProjectLeverage(projectID, projectLeverage, this.getCurrentUser(),
+        this.getJustification());
+    }
+
     return SUCCESS;
   }
 

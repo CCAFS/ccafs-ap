@@ -14,23 +14,35 @@ public class ProjectLeverage implements java.io.Serializable {
    * 
    */
   private static final long serialVersionUID = -4247450986711440166L;
+
   private Integer id;
+
   private int projectId;
   private String title;
   private Integer institution;
   private Date startDate;
   private Date endDate;
+  private String startDateText;
+  private String endDateText;
   private Integer flagship;
   private Double budget;
+
+
   private boolean isActive;
+
+
   private Date activeSince;
+
+
   private long createdBy;
+
+
   private long modifiedBy;
+
   private String modificationJustification;
 
   public ProjectLeverage() {
   }
-
 
   public ProjectLeverage(int projectId, String title, boolean isActive, Date activeSince, long createdBy,
     long modifiedBy, String modificationJustification) {
@@ -60,6 +72,28 @@ public class ProjectLeverage implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    ProjectLeverage other = (ProjectLeverage) obj;
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
+    }
+    return true;
+  }
+
   public Date getActiveSince() {
     return this.activeSince;
   }
@@ -72,8 +106,13 @@ public class ProjectLeverage implements java.io.Serializable {
     return this.createdBy;
   }
 
+
   public Date getEndDate() {
     return this.endDate;
+  }
+
+  public String getEndDateText() {
+    return endDateText;
   }
 
   public Integer getFlagship() {
@@ -104,8 +143,20 @@ public class ProjectLeverage implements java.io.Serializable {
     return this.startDate;
   }
 
+  public String getStartDateText() {
+    return startDateText;
+  }
+
   public String getTitle() {
     return this.title;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
   }
 
   public boolean isIsActive() {
@@ -126,6 +177,10 @@ public class ProjectLeverage implements java.io.Serializable {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
+  }
+
+  public void setEndDateText(String endDateText) {
+    this.endDateText = endDateText;
   }
 
   public void setFlagship(Integer flagship) {
@@ -158,6 +213,10 @@ public class ProjectLeverage implements java.io.Serializable {
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public void setStartDateText(String startDateText) {
+    this.startDateText = startDateText;
   }
 
   public void setTitle(String title) {

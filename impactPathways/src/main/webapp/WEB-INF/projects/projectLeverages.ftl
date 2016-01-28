@@ -130,10 +130,10 @@
     [#-- Start and End Date --]
     <div class="fullPartBlock clearfix"> 
       <div class="halfPartBlock">
-        [@customForm.input name="${customName}.startDate" className="startDate" type="text" i18nkey="reporting.projectLeverages.startDate" required=true editable=editable /]
+        [@customForm.input name="${customName}.startDateText" className="startDate" type="text" i18nkey="reporting.projectLeverages.startDate" required=true editable=editable /]
       </div>   
       <div class="halfPartBlock">
-        [@customForm.input name="${customName}.endDate" className="endDate"  type="text" i18nkey="reporting.projectLeverages.endDate" required=true editable=editable /]
+        [@customForm.input name="${customName}.endDateText" className="endDate"  type="text" i18nkey="reporting.projectLeverages.endDate" required=true editable=editable /]
       </div>
     </div>
     
