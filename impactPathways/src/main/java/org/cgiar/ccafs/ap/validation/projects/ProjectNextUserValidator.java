@@ -68,7 +68,7 @@ public class ProjectNextUserValidator extends BaseValidator {
       }
 
       // Saving missing fields.
-      this.saveMissingFields(project, cycle, "activities");
+      this.saveMissingFields(project, cycle, "nextUsers");
     }
   }
 
