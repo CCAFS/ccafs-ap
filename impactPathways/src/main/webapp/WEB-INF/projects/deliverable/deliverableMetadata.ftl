@@ -2,8 +2,8 @@
 <div id="deliverable-metadata" class="clearfix">
   <h1 class="contentTitle">Deliverable Metadata</h1>
   <div id="metadata-block" class="fullBlock">
+    [#-- Description --] 
     <div class="fullBlock">
-      [#-- Description --] 
       [@customForm.textArea name="${params.deliverable.name}.dissemination.descriptionMetadata" i18nkey="reporting.projectDeliverable.metadata.description" help="reporting.projectDeliverable.metadata.description.help" required=true editable=editable /]
     </div>
     
@@ -12,19 +12,14 @@
       [@customForm.input name="${params.deliverable.name}.dissemination.authorsMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.creator" help="reporting.projectDeliverable.metadata.creator.help" editable=editable/] 
     </div>
     
-    [#-- Identifier --]
+    [#-- Author identifier --]
     <div class="halfPartBlock" >
-      [@customForm.input name="${params.deliverable.name}.dissemination.identifierMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.identifier" help="reporting.projectDeliverable.metadata.identifier.help" editable=editable/] 
+      [@customForm.input name="${params.deliverable.name}.dissemination.creatorIdMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.creatorId" help="reporting.projectDeliverable.metadata.creatorId.help" editable=editable/] 
     </div>
    
     [#-- Publisher --]
     <div class="halfPartBlock" >
       [@customForm.input name="${params.deliverable.name}.dissemination.publishierMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.publisher" help="reporting.projectDeliverable.metadata.publisher.help" editable=editable/] 
-    </div>
-    
-    [#-- Relation --]
-    <div class="halfPartBlock" >
-      [@customForm.input name="${params.deliverable.name}.dissemination.relationMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.relation" help="reporting.projectDeliverable.metadata.relation.help" editable=editable/] 
     </div>
   
     [#-- Contributor --]
@@ -32,19 +27,54 @@
       [@customForm.input name="${params.deliverable.name}.dissemination.contributorMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.contributor" help="reporting.projectDeliverable.metadata.contributor.help" editable=editable/] 
     </div>
     
-    [#-- Subject --]
+    [#-- Contributor Center --]
     <div class="halfPartBlock" >
-      [@customForm.input name="${params.deliverable.name}.dissemination.subjectMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.subject" help="reporting.projectDeliverable.metadata.subject.help" editable=editable/] 
-    </div> 
+      [@customForm.input name="${params.deliverable.name}.dissemination.contributorCenterMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.contributorCenter" help="reporting.projectDeliverable.metadata.contributorCenter.help" editable=editable/] 
+    </div>
     
-    [#-- Source --]
+    [#-- Contributor CRP --]
     <div class="halfPartBlock" >
-      [@customForm.input name="${params.deliverable.name}.dissemination.sourceMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.source" help="reporting.projectDeliverable.metadata.source.help" editable=editable/] 
+      [@customForm.input name="${params.deliverable.name}.dissemination.contributorCRPMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.contributorCRP" help="reporting.projectDeliverable.metadata.contributorCRP.help" editable=editable/] 
+    </div>
+    
+    [#-- Contributor Funder --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.contributorFunderMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.contributorFunder" help="reporting.projectDeliverable.metadata.contributorFunder.help" editable=editable/] 
+    </div>
+    
+    [#-- Contributor Partner --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.contributorPartnerMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.contributorPartner" help="reporting.projectDeliverable.metadata.contributorPartner.help" editable=editable/] 
+    </div>
+    
+    [#-- Contributor Project --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.contributorProjectMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.contributorProject" help="reporting.projectDeliverable.metadata.contributorProject.help" editable=editable/] 
     </div>
     
     [#-- Publication date / Creation date --]
     <div class="halfPartBlock" >
       [@customForm.input name="${params.deliverable.name}.dissemination.publicationMetada" type="text" i18nkey="reporting.projectDeliverable.metadata.date" help="reporting.projectDeliverable.metadata.date.help" editable=editable/] 
+    </div>
+    
+    [#-- Format --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.formatMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.format" help="reporting.projectDeliverable.metadata.format.help" editable=editable/] 
+    </div>
+    
+    [#-- Identifier --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.identifierMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.identifier" help="reporting.projectDeliverable.metadata.identifier.help" editable=editable/] 
+    </div>
+    
+    [#-- Relation --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.relationMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.relation" help="reporting.projectDeliverable.metadata.relation.help" editable=editable/] 
+    </div>
+    
+    [#-- Source --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.sourceMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.source" help="reporting.projectDeliverable.metadata.source.help" editable=editable/] 
     </div>
     
     [#-- Language --]
@@ -55,17 +85,48 @@
     [#-- Coverage --]
     <div class="halfPartBlock" >
       [@customForm.input name="${params.deliverable.name}.dissemination.coverageMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.coverage" help="reporting.projectDeliverable.metadata.coverage.help" editable=editable/] 
-    </div> 
-    
-    [#-- Format --]
-    <div class="halfPartBlock" >
-      [@customForm.input name="${params.deliverable.name}.dissemination.formatMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.format" help="reporting.projectDeliverable.metadata.format.help" editable=editable/] 
     </div>
     
+    [#-- Coverage Region--]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.coverageRegionMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.coverageRegion" help="reporting.projectDeliverable.metadata.coverageRegion.help" editable=editable/] 
+    </div>
+    
+    [#-- Coverage Country--]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.coverageCountryMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.coverageCountry" help="reporting.projectDeliverable.metadata.coverageCountry.help" editable=editable/] 
+    </div>
+    
+    [#-- Coverage GeoLocation--]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.coverageGeoLocationMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.coverageGeoLocation" help="reporting.projectDeliverable.metadata.coverageCountry.help" editable=editable/] 
+    </div>
+    
+    [#-- Coverage Administrative unit--]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.coverageAdminUnitMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.coverageAdminUnit" help="reporting.projectDeliverable.metadata.coverageAdminUnit.help" editable=editable/] 
+    </div>
+     
     [#-- Rights --]
     <div class="halfPartBlock" >
       [@customForm.input name="${params.deliverable.name}.dissemination.rigthsMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.rights" help="reporting.projectDeliverable.metadata.rights.help" editable=editable /] 
-    </div>  
+    </div>
+    
+    [#-- Subject --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.subjectMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.subject" help="reporting.projectDeliverable.metadata.subject.help" editable=editable/] 
+    </div>
+    
+    [#-- Subject Agrovoc --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.subjectAgrovocMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.subjectAgrovoc" help="reporting.projectDeliverable.metadata.subjectAgrovoc.help" editable=editable/] 
+    </div>
+    
+    [#-- Subject Domain Specific --]
+    <div class="halfPartBlock" >
+      [@customForm.input name="${params.deliverable.name}.dissemination.subjectDomainSpecificMetadata" type="text" i18nkey="reporting.projectDeliverable.metadata.subjectDomainSpecific" help="reporting.projectDeliverable.metadata.subjectDomainSpecific.help" editable=editable/] 
+    </div> 
+    
   </div>
   
   [#-- Deliverable Publications Metadata --]
