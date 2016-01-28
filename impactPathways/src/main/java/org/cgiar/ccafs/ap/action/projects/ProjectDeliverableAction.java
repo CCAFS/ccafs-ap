@@ -298,17 +298,22 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting the deliverable information.
     deliverable = deliverableManager.getDeliverableById(deliverableID);
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-    if (deliverable.getDissemination().getRestrictedAccessUntil() != null) {
-      deliverable.getDissemination()
-        .setRestrictedAccessUntilText(dateformatter.format(deliverable.getDissemination().getRestrictedAccessUntil()));
 
+
+    if (deliverable.getDissemination() != null) {
+      if (deliverable.getDissemination().getRestrictedAccessUntil() != null) {
+        deliverable.getDissemination().setRestrictedAccessUntilText(
+          dateformatter.format(deliverable.getDissemination().getRestrictedAccessUntil()));
+
+      }
+
+      if (deliverable.getDissemination().getRestrictedEmbargoed() != null) {
+        deliverable.getDissemination()
+          .setRestrictedEmbargoedText(dateformatter.format(deliverable.getDissemination().getRestrictedEmbargoed()));
+
+      }
     }
 
-    if (deliverable.getDissemination().getRestrictedEmbargoed() != null) {
-      deliverable.getDissemination()
-        .setRestrictedEmbargoedText(dateformatter.format(deliverable.getDissemination().getRestrictedEmbargoed()));
-
-    }
     // Getting next users.
     deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
