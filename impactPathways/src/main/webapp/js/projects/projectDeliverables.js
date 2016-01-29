@@ -65,7 +65,7 @@ function attachEvents() {
   $disseminationChannels.on('change', changeDisseminationChannel);
 
   // Yes / No Event
-  $('input.onoffswitch-checkbox').on('change', yesnoEvent);
+  $('input.onoffswitch-radio').on('change', yesnoEvent);
 
   // This event is for check if files smaller than 30MB will be hosted in CCAFS
   $("#dataSharingOptions input[type=radio]").on("click", checkOption);
@@ -99,7 +99,11 @@ function changeOARestriction() {
 }
 
 function yesnoEvent() {
-  var isChecked = $(this).is(':checked');
+  // var isChecked = $(this).is(':checked');
+  var isChecked = ($(this).val() === "true");
+  console.log($(this));
+  $(this).siblings().removeClass('radio-checked');
+  $(this).next().addClass('radio-checked');
   var array = (this.name).split('.');
   var $aditional = $('#aditional-' + array[array.length - 1]);
   if($(this).hasClass('inverse')) {
