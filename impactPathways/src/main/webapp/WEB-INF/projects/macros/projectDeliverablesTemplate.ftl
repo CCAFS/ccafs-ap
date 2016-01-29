@@ -106,13 +106,15 @@
   [#assign value][@s.property value="${name}"/][/#assign]
   <div class="onoffswitch">
     [#if editable]
-      <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="true">
-      <input id="myonoffswitch-${name}" class="onoffswitch-checkbox [#if inverse]inverse[/#if]"  [#if value=="true"]checked[/#if] type="checkbox" name="${name}" value="true" [#if disabled]disabled[/#if] />
-      <label class="onoffswitch-label" for="myonoffswitch-${name}">
-          <span class="onoffswitch-inner"></span>
-          <span class="onoffswitch-switch"></span>
-      </label>
-      [#if disabled] <input type="hidden" name="${name}" value="true" />[/#if]
+      <div class="button-wrap">
+        [#-- Yes Button --]
+        <input type="radio" name="${name}" id="yes-button-${name}" value="true" [#if value == "true"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
+        <label for="yes-button-${name}" class="yes-button-label button-label [#if value == "true"]radio-checked[/#if]">Yes</label>
+        [#-- No Button --]
+        <input type="radio" name="${name}" id="no-button-${name}" value="false" [#if value == "false"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
+        <label for="no-button-${name}" class="no-button-label button-label [#if value == "false"]radio-checked[/#if]">No</label>
+      </div>
+      [#if disabled] <input type="hidden" name="${name}" value="true" />[/#if] 
     [#else]
       <p style="text-align:center;">[#if value=="true"]Yes[#else]No[/#if]</p>
     [/#if]

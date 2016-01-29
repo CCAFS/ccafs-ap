@@ -529,7 +529,7 @@ input.target {
 
 .checkboxGroup .checkboxLabel {
   display: inline-block;
-  font-size: 0.95em;
+  /* font-size: 0.95em; */
   width: 95%;
 }
 
@@ -3633,7 +3633,7 @@ position: relative;}
 #alreadyDisseminated .value, 
 #openAccessRestriction .value{
   width: 20%;
-  padding-left: 49px;
+  padding-left: 20px;
   /* text-align: center; */
 }
 
