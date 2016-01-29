@@ -42,7 +42,13 @@ public class ClientRepository {
       List<Element> elements = metadata.elements();
       for (Element element : elements) {
 
-        jo.put(element.getQName().getName(), element.getStringValue());
+
+        if (jo.has(element.getQName().getName())) {
+          jo.put(element.getQName().getName(), jo.get(element.getQName().getName()) + "," + element.getStringValue());
+        } else {
+          jo.put(element.getQName().getName(), element.getStringValue());
+        }
+
 
       }
 
