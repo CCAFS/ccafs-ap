@@ -100,8 +100,7 @@ function changeOARestriction() {
 
 function yesnoEvent() {
   // var isChecked = $(this).is(':checked');
-  var isChecked = ($(this).val() === "true");
-  console.log($(this));
+  var isChecked = ($(this).val() === "true");  
   $(this).siblings().removeClass('radio-checked');
   $(this).next().addClass('radio-checked');
   var array = (this.name).split('.');

@@ -4,13 +4,27 @@ var currentCycle;
 
 $(document).ready(
     function() {
-      sections =
-          [
-              "description", "partners", "locations", "outcomes", "ccafsOutcomes", "otherContributions", "outputs",
-              "deliverablesList", "activities", "budget", "budgetByMog"
-          ];
       // currentCycle section service
       currentCycle = $('#currentCycle').val();
+
+      switch (currentCycle) {
+        case "Planning":
+          sections =
+              [
+                  "description", "partners", "locations", "outcomes", "ccafsOutcomes", "otherContributions", "outputs",
+                  "deliverablesList", "activities", "budget", "budgetByMog"
+              ];
+          break;
+
+        case "Reporting":
+          sections =
+              [
+                  "description", "partners", "locations", "outcomes", "ccafsOutcomes", "otherContributions",
+                  "caseStudies", "outputs", "deliverablesList", "nextUsers", "highlights", "activities", "leverages"
+              ];
+          break;
+      }
+
       // Progress bar
       tasksLength = sections.length;
       $(".progressbar").progressbar({
