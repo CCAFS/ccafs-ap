@@ -205,7 +205,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectOtherContributions(projectID)) {
+    if (this.hasProjectPermission("update", projectID)) {
 
       if (!this.isNewProject()) {
         super.saveProjectLessons(projectID);
