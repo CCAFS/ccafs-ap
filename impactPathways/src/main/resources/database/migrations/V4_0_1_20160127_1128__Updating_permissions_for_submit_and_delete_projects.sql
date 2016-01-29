@@ -8,11 +8,11 @@ INNER JOIN permissions p ON rp.permission_id = p.id
 WHERE p.permission like "%:projects:manage:%";
 
 -- Updating permissions
-DELETE IGNORE FROM `permissions` WHERE `id`='6';	
-UPDATE `permissions` SET `permission`='planning:projects:manage:submitProject', `description`='Can use the \"Submit project\" button in any section in planning round.' WHERE `id`='97';
-UPDATE `permissions` SET `permission`='reporting:projects:manage:submitProject', `description`='Can use the \"Submit project\" button in any section in reporting round.' WHERE `id`='102';
+DELETE FROM `permissions` WHERE `id`='6';	
+UPDATE `permissions` SET `permission`='planning:projects:manage:submitProject', `description`='Can use the \"Submit project\" button in any section in planning round.' WHERE `id`='95';
+UPDATE `permissions` SET `permission`='reporting:projects:manage:submitProject', `description`='Can use the \"Submit project\" button in any section in reporting round.' WHERE `id`='100';
 UPDATE `permissions` SET `permission`='planning:projects:manage:deleteProject', `description`='Can use the \"Delete project\" button in any section in planning round.' WHERE `id`='7';
-UPDATE `permissions` SET `permission`='reporting:projects:manage:deleteProject', `description`='Can use the \"Delete project\" button in any section in reporting round.' WHERE `id`='101';
+UPDATE `permissions` SET `permission`='reporting:projects:manage:deleteProject', `description`='Can use the \"Delete project\" button in any section in reporting round.' WHERE `id`='99';
 
 
 -- Assingning roles.
