@@ -29,6 +29,15 @@
   
   <article class="halfContent" id="mainInformation">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
+    
+    [#if submission?has_content]
+      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
+    [#elseif !canEdit ]
+      <p class="readPrivileges">
+        [@s.text name="saving.read.privileges"][@s.param][@s.text name=title /][/@s.param][/@s.text]
+      </p>
+    [/#if]
+    
     <h1 class="contentTitle">[@s.text name="reporting.projectHighlights.title" /]</h1> 
     <div id="projectDeliverables" class="clearfix">
       [#if allYears?has_content]
