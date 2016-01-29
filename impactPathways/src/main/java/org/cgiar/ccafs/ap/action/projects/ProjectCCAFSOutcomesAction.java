@@ -397,7 +397,7 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
   @Override
   public String save() {
 
-    if (securityContext.canUpdateProjectCCAFSOutcomes(projectID)) {
+    if (this.hasProjectPermission("update", projectID)) {
       boolean success = true;
 
       if (!this.isNewProject()) {
