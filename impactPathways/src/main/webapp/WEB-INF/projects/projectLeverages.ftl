@@ -95,7 +95,7 @@
 
 [#macro leverage index="0" template=false]
   [#assign customName = "${params.leverages.name}[${template?string('-1',index)}]"/]
-  [#--assign element = (customName?eval)! /--]
+  [#assign element = (customName?eval)! /]
   [#assign customId = "leverage-${template?string('template',index)}" /] 
   <div id="${customId}" class="leverage borderBox" style="display:${template?string('none','block')}">
     [#-- Edit/Back/remove buttons --]
@@ -121,10 +121,8 @@
     [#-- Partner name  --]
     <div class="fullPartBlock partnerName chosen">
       <p class="fieldError"></p>
-      [@customForm.select name="${customName}.institution" value="${(element.institution.id)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="reporting.projectLeverages.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
-      [#if editable && !template]
-        <input class="institutionsList" type="hidden" name="${customName}.institution" value="${(element.institution.id)!-1}" />
-      [/#if]
+      [@customForm.select name="${customName}.institution" value="${(element.institution)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="reporting.projectLeverages.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
+      
     </div>
     
     [#-- Start and End Date --]
@@ -140,7 +138,7 @@
     [#-- Flagship and Budget --]
     <div class="fullPartBlock clearfix"> 
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.flagship" className="flagship" label="" i18nkey="reporting.projectLeverages.flagship" listName="ipProgramFlagships" keyFieldName="id"  displayFieldName="getComposedName()" required=true editable=editable /]
+        [@customForm.select name="${customName}.flagship" value="${(element.flagship)!-1}" className="flagship" label="" i18nkey="reporting.projectLeverages.flagship" listName="ipProgramFlagships" keyFieldName="id"  displayFieldName="getComposedName()" required=true editable=editable /]
       </div>   
       <div class="halfPartBlock">
         <h6> [@s.text name="reporting.projectLeverages.budget" /]: [@customForm.req required=true /]</h6>

@@ -130,13 +130,16 @@ public class ProjectLeveragesAction extends BaseAction {
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
+    leveragesPreview = projectLeverageManager.getProjectLeverageProject(projectID);
     for (ProjectLeverage leverage : project.getLeverages()) {
-      if (project.getEndDate() != null) {
+      if (leverage.getEndDate() != null) {
         leverage.setEndDateText(dateformatter.format(project.getEndDate()));
       }
-      if (project.getStartDate() != null) {
+      if (leverage.getStartDate() != null) {
         leverage.setStartDateText(dateformatter.format(project.getStartDate()));
       }
+      // leverage.setMyInstitution(institutionManager.getInstitution(leverage.getInstitution()));
+
 
     }
     // Initializing Section Statuses:
@@ -146,17 +149,20 @@ public class ProjectLeveragesAction extends BaseAction {
 
   @Override
   public String save() {
-    for (ProjectLeverage projectLeverage : leveragesPreview) {
-      if (!project.getLeverages().contains(projectLeverage)) {
-        projectLeverageManager.deleteProjectLeverage(projectLeverage.getId(), this.getCurrentUser(),
-          this.getJustification());
+    if (leveragesPreview != null) {
+      for (ProjectLeverage projectLeverage : leveragesPreview) {
+        if (!project.getLeverages().contains(projectLeverage)) {
+          projectLeverageManager.deleteProjectLeverage(projectLeverage.getId(), this.getCurrentUser(),
+            this.getJustification());
+        }
       }
     }
+
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
 
     for (ProjectLeverage projectLeverage : project.getLeverages()) {
 
-
+      // projectLeverage.setInstitution(projectLeverage.getMyInstitution().getId());
       try {
         projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
         projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));

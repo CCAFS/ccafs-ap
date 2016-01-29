@@ -26,6 +26,7 @@ public class ProjectLeverage implements java.io.Serializable {
   private String endDateText;
   private Integer flagship;
   private Double budget;
+  private Institution myInstitution;
 
 
   private boolean isActive;
@@ -33,13 +34,14 @@ public class ProjectLeverage implements java.io.Serializable {
 
   private Date activeSince;
 
-
   private long createdBy;
 
 
   private long modifiedBy;
 
+
   private String modificationJustification;
+
 
   public ProjectLeverage() {
   }
@@ -106,7 +108,6 @@ public class ProjectLeverage implements java.io.Serializable {
     return this.createdBy;
   }
 
-
   public Date getEndDate() {
     return this.endDate;
   }
@@ -114,6 +115,7 @@ public class ProjectLeverage implements java.io.Serializable {
   public String getEndDateText() {
     return endDateText;
   }
+
 
   public Integer getFlagship() {
     return this.flagship;
@@ -133,6 +135,10 @@ public class ProjectLeverage implements java.io.Serializable {
 
   public long getModifiedBy() {
     return this.modifiedBy;
+  }
+
+  public Institution getMyInstitution() {
+    return myInstitution;
   }
 
   public int getProjectId() {
@@ -205,6 +211,10 @@ public class ProjectLeverage implements java.io.Serializable {
 
   public void setModifiedBy(long modifiedBy) {
     this.modifiedBy = modifiedBy;
+  }
+
+  public void setMyInstitution(Institution myInstitution) {
+    this.myInstitution = myInstitution;
   }
 
   public void setProjectId(int projectId) {
