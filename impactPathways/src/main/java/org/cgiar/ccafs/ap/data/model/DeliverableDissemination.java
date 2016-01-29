@@ -10,6 +10,10 @@ import java.util.Date;
 public class DeliverableDissemination implements java.io.Serializable {
 
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 5059497581082773630L;
   private Integer id;
   private int deliverableId;
   private String type;
@@ -39,19 +43,6 @@ public class DeliverableDissemination implements java.io.Serializable {
   private String disseminationUrl;
   private String disseminationChannelName;
 
-  private String descriptionMetadata;
-  private String authorsMetadata;
-  private String identifierMetadata;
-  private String publishierMetadata;
-  private String relationMetadata;
-  private String contributorMetadata;
-  private String subjectMetadata;
-  private String sourceMetadata;
-  private String publicationMetada;
-  private String languageMetadata;
-  private String coverageMetadata;
-  private String formatMetadata;
-  private String rigthsMetadata;
 
   public DeliverableDissemination() {
   }
@@ -79,35 +70,11 @@ public class DeliverableDissemination implements java.io.Serializable {
     this.disseminationChannel = disseminationChannel;
     this.disseminationUrl = disseminationUrl;
     this.disseminationChannelName = disseminationChannelName;
-    this.descriptionMetadata = descriptionMetadata;
-    this.authorsMetadata = authorsMetadata;
-    this.identifierMetadata = identifierMetadata;
-    this.publishierMetadata = publishierMetadata;
-    this.relationMetadata = relationMetadata;
-    this.contributorMetadata = contributorMetadata;
-    this.subjectMetadata = subjectMetadata;
-    this.sourceMetadata = sourceMetadata;
-    this.publicationMetada = publicationMetada;
-    this.languageMetadata = languageMetadata;
-    this.coverageMetadata = coverageMetadata;
-    this.formatMetadata = formatMetadata;
-    this.rigthsMetadata = rigthsMetadata;
+
   }
 
   public Boolean getAlreadyDisseminated() {
     return this.alreadyDisseminated;
-  }
-
-  public String getAuthorsMetadata() {
-    return this.authorsMetadata;
-  }
-
-  public String getContributorMetadata() {
-    return this.contributorMetadata;
-  }
-
-  public String getCoverageMetadata() {
-    return this.coverageMetadata;
   }
 
 
@@ -115,9 +82,6 @@ public class DeliverableDissemination implements java.io.Serializable {
     return this.deliverableId;
   }
 
-  public String getDescriptionMetadata() {
-    return this.descriptionMetadata;
-  }
 
   public String getDisseminationChannel() {
     return this.disseminationChannel;
@@ -135,17 +99,11 @@ public class DeliverableDissemination implements java.io.Serializable {
     return this.effectiveDateRestriction;
   }
 
-  public String getFormatMetadata() {
-    return this.formatMetadata;
-  }
 
   public Integer getId() {
     return this.id;
   }
 
-  public String getIdentifierMetadata() {
-    return this.identifierMetadata;
-  }
 
   public Boolean getIntellectualProperty() {
     return this.intellectualProperty;
@@ -155,25 +113,11 @@ public class DeliverableDissemination implements java.io.Serializable {
     return this.isOpenAccess;
   }
 
-  public String getLanguageMetadata() {
-    return this.languageMetadata;
-  }
 
   public Boolean getLimitedExclusivity() {
     return this.limitedExclusivity;
   }
 
-  public String getPublicationMetada() {
-    return this.publicationMetada;
-  }
-
-  public String getPublishierMetadata() {
-    return this.publishierMetadata;
-  }
-
-  public String getRelationMetadata() {
-    return this.relationMetadata;
-  }
 
   public Date getRestrictedAccessUntil() {
     return this.restrictedAccessUntil;
@@ -195,17 +139,6 @@ public class DeliverableDissemination implements java.io.Serializable {
     return this.restrictedUseAgreement;
   }
 
-  public String getRigthsMetadata() {
-    return this.rigthsMetadata;
-  }
-
-  public String getSourceMetadata() {
-    return this.sourceMetadata;
-  }
-
-  public String getSubjectMetadata() {
-    return this.subjectMetadata;
-  }
 
   public String getType() {
     return type;
@@ -215,25 +148,11 @@ public class DeliverableDissemination implements java.io.Serializable {
     this.alreadyDisseminated = alreadyDisseminated;
   }
 
-  public void setAuthorsMetadata(String authorsMetadata) {
-    this.authorsMetadata = authorsMetadata;
-  }
-
-  public void setContributorMetadata(String contributorMetadata) {
-    this.contributorMetadata = contributorMetadata;
-  }
-
-  public void setCoverageMetadata(String coverageMetadata) {
-    this.coverageMetadata = coverageMetadata;
-  }
 
   public void setDeliverableId(int deliverableId) {
     this.deliverableId = deliverableId;
   }
 
-  public void setDescriptionMetadata(String descriptionMetadata) {
-    this.descriptionMetadata = descriptionMetadata;
-  }
 
   public void setDisseminationChannel(String disseminationChannel) {
     this.disseminationChannel = disseminationChannel;
@@ -251,17 +170,11 @@ public class DeliverableDissemination implements java.io.Serializable {
     this.effectiveDateRestriction = effectiveDateRestriction;
   }
 
-  public void setFormatMetadata(String formatMetadata) {
-    this.formatMetadata = formatMetadata;
-  }
 
   public void setId(Integer id) {
     this.id = id;
   }
 
-  public void setIdentifierMetadata(String identifierMetadata) {
-    this.identifierMetadata = identifierMetadata;
-  }
 
   public void setIntellectualProperty(Boolean intellectualProperty) {
     this.intellectualProperty = intellectualProperty;
@@ -271,25 +184,11 @@ public class DeliverableDissemination implements java.io.Serializable {
     this.isOpenAccess = isOpenAccess;
   }
 
-  public void setLanguageMetadata(String languageMetadata) {
-    this.languageMetadata = languageMetadata;
-  }
 
   public void setLimitedExclusivity(Boolean limitedExclusivity) {
     this.limitedExclusivity = limitedExclusivity;
   }
 
-  public void setPublicationMetada(String publicationMetada) {
-    this.publicationMetada = publicationMetada;
-  }
-
-  public void setPublishierMetadata(String publishierMetadata) {
-    this.publishierMetadata = publishierMetadata;
-  }
-
-  public void setRelationMetadata(String relationMetadata) {
-    this.relationMetadata = relationMetadata;
-  }
 
   public void setRestrictedAccessUntil(Date restrictedAccessUntil) {
     this.restrictedAccessUntil = restrictedAccessUntil;
@@ -311,17 +210,6 @@ public class DeliverableDissemination implements java.io.Serializable {
     this.restrictedUseAgreement = restrictedUseAgreement;
   }
 
-  public void setRigthsMetadata(String rigthsMetadata) {
-    this.rigthsMetadata = rigthsMetadata;
-  }
-
-  public void setSourceMetadata(String sourceMetadata) {
-    this.sourceMetadata = sourceMetadata;
-  }
-
-  public void setSubjectMetadata(String subjectMetadata) {
-    this.subjectMetadata = subjectMetadata;
-  }
 
   public void setType(String type) {
     this.type = type;

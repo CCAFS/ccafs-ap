@@ -44,44 +44,6 @@
         <property name="disseminationChannelName" type="string">
             <column name="dissemination_channel_name" length="50" />
         </property>
-        <property name="descriptionMetadata" type="string">
-            <column name="description_metadata" length="65535" />
-        </property>
-        <property name="authorsMetadata" type="string">
-            <column name="authors_metadata" length="65535" />
-        </property>
-        <property name="identifierMetadata" type="string">
-            <column name="identifier_metadata" length="65535" />
-        </property>
-        <property name="publishierMetadata" type="string">
-            <column name="publishier_metadata" length="65535" />
-        </property>
-        <property name="relationMetadata" type="string">
-            <column name="relation_metadata" length="65535" />
-        </property>
-        <property name="contributorMetadata" type="string">
-            <column name="contributor_metadata" length="65535" />
-        </property>
-        <property name="subjectMetadata" type="string">
-            <column name="subject_metadata" length="65535" />
-        </property>
-        <property name="sourceMetadata" type="string">
-            <column name="source_metadata" length="65535" />
-        </property>
-        <property name="publicationMetada" type="string">
-            <column name="publication_metada" length="65535" />
-        </property>
-        <property name="languageMetadata" type="string">
-            <column name="language_metadata" length="65535" />
-        </property>
-        <property name="coverageMetadata" type="string">
-            <column name="coverage_metadata" length="65535" />
-        </property>
-        <property name="formatMetadata" type="string">
-            <column name="format_metadata" length="65535" />
-        </property>
-        <property name="rigthsMetadata" type="string">
-            <column name="rigths_metadata" length="65535" />
-        </property>
+       
     </class>
 </hibernate-mapping>
