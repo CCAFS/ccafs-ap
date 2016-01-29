@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 29, 2016 9:29:48 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="org.cgiar.ccafs.ap.data.model.DeliverableMetadataElements" table="deliverable_metadata_elements">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="deliverableId" type="int">
+            <column name="deliverable_id" not-null="true" />
+        </property>
+        <property name="elementId" type="int">
+            <column name="element_id" not-null="true" />
+        </property>
+        <property name="elementValue" type="string">
+            <column name="element_value" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

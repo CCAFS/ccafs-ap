@@ -3,11 +3,11 @@ package org.cgiar.ccafs.ap.action.json.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.util.ClientRepository;
-import org.cgiar.ccafs.ap.util.Metadata;
 import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class MetadataByLink extends BaseAction {
 
 
   private String id;
-  private Metadata metadata;
+  private String metadata;
 
   // Managers
   private ClientRepository clientRepository;
@@ -74,14 +74,14 @@ public class MetadataByLink extends BaseAction {
       default:
         break;
     }
-    metadata = clientRepository.getMetadata(linkRequest, id);
+    JSONObject metadataObject = clientRepository.getMetadata(linkRequest, id);
 
-
+    metadata = metadataObject.toString();
     return SUCCESS;
   }
 
 
-  public Metadata getMetadata() {
+  public String getMetadata() {
     return metadata;
   }
 
@@ -108,7 +108,7 @@ public class MetadataByLink extends BaseAction {
   }
 
 
-  public void setMetadata(Metadata metadata) {
+  public void setMetadata(String metadata) {
     this.metadata = metadata;
   }
 }
