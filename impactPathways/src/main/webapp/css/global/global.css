@@ -3641,7 +3641,7 @@ position: relative;}
 #alreadyDisseminated .value, 
 #openAccessRestriction .value{
   width: 20%;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   /* text-align: center; */
 }
 
@@ -3763,7 +3763,7 @@ margin: 0;}
 
 li.fileUploaded {
     text-align: left;
-    list-style: none;
+    /* list-style: none; */
     border: 1px solid rgba(0, 0, 0, 0.05);
     -webkit-border-radius: 3px;
     border-radius: 3px;

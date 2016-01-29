@@ -49,7 +49,7 @@
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes" /]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes" /]
         [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" /]
-        [@menu actionName="caseStudies" stageName="caseStudies" textName="menu.reporting.submenu.caseStudies" subText="Previously called outcome histories" active=reportingCycle /]
+        [@menu actionName="caseStudies" stageName="caseStudies" textName="menu.reporting.submenu.caseStudies" subText="Previously called Outcome Stories" active=reportingCycle /]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
@@ -58,7 +58,7 @@
         [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" /]
         [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" /]
         [@menu actionName="nextUsers" stageName="nextUsers" textName="menu.reporting.submenu.nextUsers" active=reportingCycle/]
-        [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" active=reportingCycle/]
+        [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" subText="Previously called Case studies" active=reportingCycle/]
       </ul>
     </li>
     <li class="[#if currentStage == "activities"]${currCss}[/#if]">
