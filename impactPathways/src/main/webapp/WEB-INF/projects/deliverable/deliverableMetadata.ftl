@@ -135,7 +135,12 @@
     
     [#-- Open access status --]
     <div class="fullBlock requiredForType-21" style="display:${deliverable.publicationPeerReviewType?string('block','none')}">
-      [@customForm.radioButtonGroup name="${params.deliverable.name}.publicationMetadata.openAcessStatus" label="" i18nkey="reporting.projectDeliverable.publicationAccessStatus"  listName="openAccessStatuses" required=true editable=editable /]
+      [#if editable]
+        [@customForm.radioButtonGroup name="${params.deliverable.name}.publicationMetadata.openAcessStatus" value="'${(deliverable.publicationMetadata.openAcessStatus)!-1}'" label="" i18nkey="reporting.projectDeliverable.publicationAccessStatus"  listName="openAccessStatuses" required=true editable=editable /]
+      [#else]
+        <h6>[@s.text name="reporting.projectDeliverable.publicationAccessStatus" /]:</h6>
+        <div class="input"><p>[#if (deliverable.publicationMetadata.openAcessStatus??)!false][@s.text name="reporting.projectDeliverable.openAcessStatus.${deliverable.publicationMetadata.openAcessStatus}" /][#else]Open access status is not selected[/#if]</p></div>
+      [/#if]
     </div>
     
     [#-- Indicators for journal articles --]
@@ -144,26 +149,14 @@
       <div class="fullBlock verticallyCheckBox">
         [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.isiPublication"   i18nkey="reporting.projectDeliverable.isiPublication" value="true"       checked=(deliverable.publicationMetadata.isiPublication)!false        editable=editable /]
         [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.narsCoAuthor"     i18nkey="reporting.projectDeliverable.narsCoauthor" value="true"         checked=(deliverable.publicationMetadata.narsCoAuthor)!false          editable=editable /]
-        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.academicCoAuthor" i18nkey="reporting.projectDeliverable.earthSystemCoauthor" value="true"  checked=(deliverable.publicationMetadata.academicCoAuthor)!false   editable=editable /]
+        [@customForm.checkbox name="${params.deliverable.name}.publicationMetadata.academicCoAuthor" i18nkey="reporting.projectDeliverable.earthSystemCoauthor" value="true"  checked=(deliverable.publicationMetadata.academicCoAuthor)!false    editable=editable /]
+        
+        [#if !editable && ( ((deliverable.publicationMetadata.isiPublication)!false) == false && ((deliverable.publicationMetadata.narsCoAuthor)!false) == false && ((deliverable.publicationMetadata.academicCoAuthor)!false) == false )]
+          <div class="select"><p>There is not a indicator selected.</p></div>
+        [/#if]
         <div class="clearfix"></div>
       </div>
     </div>
-    
-    [#-- Citation --]
-    <div class="fullBlock">
-      [@customForm.textArea name="${params.deliverable.name}.publicationMetadata.citation" i18nkey="reporting.projectDeliverable.metadata.citation" help="reporting.projectDeliverable.metadata.citation.help" required=true editable=editable /]
-    </div>
-    
-    [#-- Publication --]
-    <table id="alreadyDisseminated" class="default">
-      <tbody>
-        <tr>
-          <td class="key">[@s.text name="reporting.projectDeliverable.acknowledgeCCAFS" /]</td> 
-          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.publicationMetadata.acknowledgeCcafs" editable=editable/]</td>
-        </tr>
-      </tbody>
-    </table>
-    <br />
     
     [#-- Publication is an output of which flagships --]
     <div class="fullBlock">
@@ -182,6 +175,21 @@
         [/#if]
       </div>
     </div> 
-      
+    
+    [#-- Citation --]
+    <div class="fullBlock">
+      [@customForm.textArea name="${params.deliverable.name}.publicationMetadata.citation" i18nkey="reporting.projectDeliverable.metadata.citation" help="reporting.projectDeliverable.metadata.citation.help" required=true editable=editable /]
+    </div>
+    
+    [#-- Publication --]
+    <table id="alreadyDisseminated" class="default">
+      <tbody>
+        <tr>
+          <td class="key">[@s.text name="reporting.projectDeliverable.acknowledgeCCAFS" /]</td> 
+          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.publicationMetadata.acknowledgeCcafs" editable=editable/]</td>
+        </tr>
+      </tbody>
+    </table>
+    <br /> 
   </div>
 </div>
