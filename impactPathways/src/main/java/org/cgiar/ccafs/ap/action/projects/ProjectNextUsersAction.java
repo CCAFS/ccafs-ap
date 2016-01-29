@@ -114,14 +114,15 @@ public class ProjectNextUsersAction extends BaseAction {
 
   @Override
   public String save() {
-
-
-    for (ProjectNextUser projectNextUser : nextUserPreview) {
-      if (!project.getNextUsers().contains(projectNextUser)) {
-        projectNextUserManager.deleteProjectNextUser(projectNextUser.getId(), this.getCurrentUser(),
-          this.getJustification());
+    if (nextUserPreview != null) {
+      for (ProjectNextUser projectNextUser : nextUserPreview) {
+        if (!project.getNextUsers().contains(projectNextUser)) {
+          projectNextUserManager.deleteProjectNextUser(projectNextUser.getId(), this.getCurrentUser(),
+            this.getJustification());
+        }
       }
     }
+
 
     for (ProjectNextUser projectNextUser : project.getNextUsers()) {
       projectNextUser.setProjectId(projectID);

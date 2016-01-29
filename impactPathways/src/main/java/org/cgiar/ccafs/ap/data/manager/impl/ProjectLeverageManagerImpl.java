@@ -94,7 +94,7 @@ public class ProjectLeverageManagerImpl implements ProjectLeverageManager {
     if (leverage.getId() == -1) {
       leverage.setCreatedBy(Long.parseLong(user.getId() + ""));
       leverage.setActiveSince(new Date());
-      leverage.setId(0);
+      leverage.setId(null);
     }
     leverage.setIsActive(true);
     leverage.setModifiedBy(Long.parseLong(user.getId() + ""));
