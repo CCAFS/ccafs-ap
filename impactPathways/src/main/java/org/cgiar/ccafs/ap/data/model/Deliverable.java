@@ -44,12 +44,14 @@ public class Deliverable {
   private List<DeliverableDataSharingFile> dataSharingFile;
   private List<DeliverableFile> files;
   private DeliverablePublicationMetadata publicationMetadata;
+  private List<DeliverableMetadataElements> metadataElements;
 
 
   private String statusDescription;
 
 
   private int status;
+
 
   public Deliverable() {
     super();
@@ -74,7 +76,6 @@ public class Deliverable {
     return created;
   }
 
-
   public DeliverableDataSharing getDataSharing() {
     return dataSharing;
   }
@@ -84,23 +85,28 @@ public class Deliverable {
     return dataSharingFile;
   }
 
+
   public DeliverableDissemination getDissemination() {
     return dissemination;
   }
+
 
   public List<DeliverableFile> getFiles() {
     return files;
   }
 
-
   public int getId() {
     return id;
   }
 
+  public List<DeliverableMetadataElements> getMetadataElements() {
+    return metadataElements;
+  }
+
+
   public List<NextUser> getNextUsers() {
     return nextUsers;
   }
-
 
   public List<DeliverablePartner> getOtherPartners() {
     return otherPartners;
@@ -130,6 +136,7 @@ public class Deliverable {
   public int getStatus() {
     return status;
   }
+
 
   public String getStatusDescription() {
     return statusDescription;
@@ -193,7 +200,6 @@ public class Deliverable {
     }
   }
 
-
   /**
    * Check if it's a publication Peer-reviewed journal articles deliverable type and category
    * 
@@ -227,14 +233,15 @@ public class Deliverable {
     this.created = created;
   }
 
+
   public void setDataSharing(DeliverableDataSharing dataSharing) {
     this.dataSharing = dataSharing;
   }
 
-
   public void setDataSharingFile(List<DeliverableDataSharingFile> dataSharingFile) {
     this.dataSharingFile = dataSharingFile;
   }
+
 
   public void setDissemination(DeliverableDissemination dissemination) {
     this.dissemination = dissemination;
@@ -246,6 +253,10 @@ public class Deliverable {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setMetadataElements(List<DeliverableMetadataElements> metadataElements) {
+    this.metadataElements = metadataElements;
   }
 
   public void setNextUsers(List<NextUser> nextUsers) {

@@ -17,6 +17,9 @@ package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.DeliverableDisseminationMySQLDAO;
 import org.cgiar.ccafs.ap.data.model.DeliverableDissemination;
+import org.cgiar.ccafs.ap.data.model.DeliverableMetadataElements;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
@@ -24,6 +27,8 @@ import com.google.inject.ImplementedBy;
 public interface DeliverableDisseminationDAO {
 
   public DeliverableDissemination findDeliverableDissemination(int deliverableId);
+
+  public List<DeliverableMetadataElements> findDeliverableElements(int deliverableId);
 
   public int save(DeliverableDissemination dissemination);
 }

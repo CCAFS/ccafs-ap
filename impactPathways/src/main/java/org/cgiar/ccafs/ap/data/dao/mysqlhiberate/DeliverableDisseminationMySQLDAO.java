@@ -18,6 +18,8 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 
 import org.cgiar.ccafs.ap.data.dao.DeliverableDisseminationDAO;
 import org.cgiar.ccafs.ap.data.model.DeliverableDissemination;
+import org.cgiar.ccafs.ap.data.model.DeliverableMetadataElements;
+import org.cgiar.ccafs.ap.data.model.MetadataElements;
 
 import java.util.List;
 
@@ -43,7 +45,26 @@ public class DeliverableDisseminationMySQLDAO implements DeliverableDisseminatio
     if (listDissemination.size() > 0) {
       return listDissemination.get(0);
     }
+
     return null;
+  }
+
+
+  @Override
+  public List<DeliverableMetadataElements> findDeliverableElements(int deliverableId) {
+    String sql = "from " + DeliverableMetadataElements.class.getName() + " where deliverable_id=" + deliverableId;
+    List<DeliverableMetadataElements> listMetada = dao.findAll(sql);
+    for (DeliverableMetadataElements deliverableMetadataElements : listMetada) {
+      deliverableMetadataElements
+        .setMetadataElement(this.findMetadaElement(deliverableMetadataElements.getElementId()));
+    }
+
+    return null;
+  }
+
+  public MetadataElements findMetadaElement(int elementID) {
+    MetadataElements element = dao.find(MetadataElements.class, elementID);
+    return element;
   }
 
   @Override

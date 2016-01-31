@@ -16,6 +16,8 @@ public class DeliverableMetadataElements implements java.io.Serializable {
   private int deliverableId;
   private int elementId;
   private String elementValue;
+  private MetadataElements metadataElement;
+
 
   public DeliverableMetadataElements() {
   }
@@ -26,11 +28,13 @@ public class DeliverableMetadataElements implements java.io.Serializable {
     this.elementId = elementId;
   }
 
+
   public DeliverableMetadataElements(int deliverableId, int elementId, String elementValue) {
     this.deliverableId = deliverableId;
     this.elementId = elementId;
     this.elementValue = elementValue;
   }
+
 
   public int getDeliverableId() {
     return this.deliverableId;
@@ -48,6 +52,10 @@ public class DeliverableMetadataElements implements java.io.Serializable {
     return this.id;
   }
 
+  public MetadataElements getMetadataElement() {
+    return metadataElement;
+  }
+
   public void setDeliverableId(int deliverableId) {
     this.deliverableId = deliverableId;
   }
@@ -62,6 +70,10 @@ public class DeliverableMetadataElements implements java.io.Serializable {
 
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public void setMetadataElement(MetadataElements metadataElement) {
+    this.metadataElement = metadataElement;
   }
 
 
