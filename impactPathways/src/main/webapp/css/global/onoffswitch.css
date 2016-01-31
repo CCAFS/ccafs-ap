@@ -84,12 +84,12 @@
 .button-label {
   display: inline-block;
   padding: 0.25em 1em;
-  margin: 0 0.5em !important;
+  margin: 0 0.2em !important;
   cursor: pointer;
   color: #292929;
-  border-radius: 0.25em;
+  border-radius: 0.2em;
   background: #efefef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), inset 0 -2px 0 rgba(0, 0, 0, 0.22);
   -webkit-transition: 0.3s;
   transition: 0.3s;
   -webkit-user-select: none;
@@ -104,7 +104,7 @@
 .button-label:hover {
   background: #d6d6d6;
   color: #101010;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 -3px 0 rgba(0, 0, 0, 0.32);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -2px 0 rgba(0, 0, 0, 0.32);
 }
 .button-label:active {
   -webkit-transform: translateY(2px);

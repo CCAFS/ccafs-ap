@@ -77,18 +77,21 @@
             <li class=""><a href="#projects">[@s.text name="home.dashboard.projects" /]</a></li>
             <li class=""><a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a></li>
           </ul> <!-- End dashboardHeaders -->
+          [#-- My projects --]
           <div id="projects"> 
             [#if projects?has_content]
-              [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
+              [@projectList.projectsList projects=projects canValidate=true namespace="/reporting/projects" tableID="projects-table" /]
             [#else]
               <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projectsList" /][/@s.param][/@s.text]<p>
             [/#if]
           </div>
+          [#-- IP Graph --]
           <div id="ipGraph-content" style="position: relative;">
             <div id="loading-ipGraph-content" style="display:none;position: absolute;top: 45%;right: 45%;">
                 <img style="display: block; margin: 0 auto;" src="./images/global/loading.gif" alt="Loader" />
             </div>
           </div>
+          
         </div>
       </div>
     </div> <!-- End rightSide -->

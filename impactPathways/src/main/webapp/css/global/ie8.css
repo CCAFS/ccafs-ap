@@ -59,4 +59,12 @@ table.dataTable thead tr th{
     display: none;
 }
 
- 
+/* Switch Radio */
+
+.onoffswitch-radio.hidden {
+    display: block !important;
+}
+.onoffswitch-label {
+    display: none;
+}
+

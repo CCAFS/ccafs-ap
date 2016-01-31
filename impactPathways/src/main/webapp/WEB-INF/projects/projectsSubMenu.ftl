@@ -49,7 +49,7 @@
         [@menu actionName="outcomes" stageName="outcomes" textName="menu.planning.submenu.projectOutcomes" /]
         [@menu actionName="ccafsOutcomes" stageName="ccafsOutcomes" textName="menu.planning.submenu.ccafsOutcomes" /]
         [@menu actionName="otherContributions" stageName="otherContributions" textName="menu.planning.submenu.otherContributions" /]
-        [@menu actionName="caseStudies" stageName="caseStudies" textName="menu.reporting.submenu.caseStudies" active=reportingCycle /]
+        [@menu actionName="caseStudies" stageName="caseStudies" textName="menu.reporting.submenu.caseStudies" subText="Previously called Outcome Stories" active=reportingCycle /]
       </ul>
     </li>
     <li class="[#if currentStage == "outputs"]${currCss}[/#if]">
@@ -58,7 +58,7 @@
         [@menu actionName="outputs" stageName="overviewByMogs" textName="menu.planning.submenu.projectOutputs.overviewByMogs" /]
         [@menu actionName="deliverablesList" stageName="deliverables" textName="menu.planning.submenu.projectOutputs.deliverables" /]
         [@menu actionName="nextUsers" stageName="nextUsers" textName="menu.reporting.submenu.nextUsers" active=reportingCycle/]
-        [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" active=reportingCycle/]
+        [@menu actionName="highlights" stageName="highlights" textName="menu.reporting.submenu.highlights" subText="Previously called Case studies" active=reportingCycle/]
       </ul>
     </li>
     <li class="[#if currentStage == "activities"]${currCss}[/#if]">
@@ -108,16 +108,20 @@
 
 
 [#-- Menu element --]
-[#macro menu actionName stageName textName disabled=false active=true]
+[#macro menu actionName stageName textName disabled=false active=true subText=""]
   [#if active]
     <li id="menu-${actionName}" class="[#if projectStage == stageName]${currCss}[/#if] [#if canEdit]${sectionCompleted(actionName)?string('submitted','toSubmit')}[/#if]">
       [#if disabled]
         <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
       [#else]
         [#if canEdit && !sectionCompleted(actionName)]
-          <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+          <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]" title="[#if subText != ""]${subText}[/#if]">
+            [@s.text name=textName /] 
+          </a> 
         [#else]
-          <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]">[@s.text name=textName /]</a> 
+          <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" title="[#if subText != ""]${subText}[/#if]">
+            [@s.text name=textName /]
+          </a> 
         [/#if]
       [/#if]
     </li>

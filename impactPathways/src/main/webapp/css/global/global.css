@@ -1601,6 +1601,14 @@ a.currentReportingSection li #i-additionalInformation{
   color: #535353;
   text-decoration: none;
 }
+
+#secondaryMenu ul p.subText {
+  font-size: 0.8em;
+  margin: 0;
+  padding: 0;
+  color: #949292;
+}
+
 #secondaryMenu > ul > li {
   /* background-image: url("../../images/global/reportingMenuMarker.png"); */    background-repeat: no-repeat;    background-position-y: -2px;    margin-left: -13px;    width: 191px;    padding: 0px 0px 0px 13px;
 }
@@ -3633,7 +3641,7 @@ position: relative;}
 #alreadyDisseminated .value, 
 #openAccessRestriction .value{
   width: 20%;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   /* text-align: center; */
 }
 
@@ -3755,7 +3763,7 @@ margin: 0;}
 
 li.fileUploaded {
     text-align: left;
-    list-style: none;
+    /* list-style: none; */
     border: 1px solid rgba(0, 0, 0, 0.05);
     -webkit-border-radius: 3px;
     border-radius: 3px;

@@ -23,6 +23,7 @@
            <div class="fileFormat">${file.hosted}</div>
            <div class="fileSize">[#if file.size > 0]${(file.size/1024)?string("0.00")} KB[#else] <span title="Unknown size">- -</span> [/#if]</div>
            [#if editable]<img class="removeInput" src="${baseUrl}/images/global/icon-remove.png" alt="Remove"/>[/#if]
+           <div class="clearfix"></div>
          </li>
         [/#list]
        </ul> 
