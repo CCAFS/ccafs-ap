@@ -34,8 +34,7 @@
 
   [@s.form action="caseStudies" cssClass="pure-form" enctype="multipart/form-data" ]  
   <article class="halfContent" id="activityImpactPathway">
-    [#include "/WEB-INF/projects/dataSheet.ftl" /]
-    [#include "/WEB-INF/projects/projectIP-sub-menu.ftl" /]
+    [#include "/WEB-INF/projects/dataSheet.ftl" /] 
     
     [#-- Submission and privileges message --]
     [#if submission?has_content]

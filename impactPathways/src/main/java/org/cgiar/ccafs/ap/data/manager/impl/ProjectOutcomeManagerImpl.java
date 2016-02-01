@@ -53,6 +53,8 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
       projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
       projectOutcome.setStatement(projectOutcomeData.get("statement"));
       projectOutcome.setAnualProgress(projectOutcomeData.get("anual_progress"));
+      projectOutcome.setComunication(projectOutcomeData.get("comunication"));
+      projectOutcome.setFile(projectOutcomeData.get("file"));
       return projectOutcome;
     }
     return null;
@@ -69,6 +71,8 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
       projectOutcome.setYear(Integer.parseInt(projectOutcomeData.get("year")));
       projectOutcome.setStatement(projectOutcomeData.get("statement"));
       projectOutcome.setAnualProgress(projectOutcomeData.get("anual_progress"));
+      projectOutcome.setComunication(projectOutcomeData.get("comunication"));
+      projectOutcome.setFile(projectOutcomeData.get("file"));
       // adding information of the object to the array
       projectOutcomes.put(String.valueOf(projectOutcome.getYear()), projectOutcome);
     }
@@ -85,6 +89,8 @@ public class ProjectOutcomeManagerImpl implements ProjectOutcomeManager {
     projectOutcomeData.put("year", projectOutcome.getYear());
     projectOutcomeData.put("statement", projectOutcome.getStatement());
     projectOutcomeData.put("anual_progress", projectOutcome.getAnualProgress());
+    projectOutcomeData.put("comunication", projectOutcome.getComunication());
+    projectOutcomeData.put("file", projectOutcome.getFile());
     projectOutcomeData.put("user_id", user.getId());
     projectOutcomeData.put("modification_justification", justification);
 

@@ -30,7 +30,7 @@
 
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
 
-  [@s.form action="outcomes" cssClass="pure-form"]  
+  [@s.form action="outcomes" cssClass="pure-form" enctype="multipart/form-data" ]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     [#include "/WEB-INF/projects/projectIP-sub-menu.ftl" /]
@@ -51,17 +51,17 @@
         <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
       [/#if]
-      [#assign canEditPlanningCycle = !reportingCycle /]
+      [#assign canEditStatement = action.hasProjectPermission("statement", project.id) /]
       [#-- Project  outcome block --]
       <div class="fullPartBlock clearfix">
         <h1 class="contentTitle">[@s.text name="planning.projectOutcome.narrative" /] </h1> 
         [#-- Project Outcome statement --]
         <div class="fullPartBlock" id="projectOutcomeStatement">
-          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" required=!project.bilateralProject className="limitWords-150" i18nkey="planning.projectOutcome.statement" editable=(editable && canEditPlanningCycle) /]
+          [@customForm.textArea name="project.outcomes[${midOutcomeYear}].statement" required=!project.bilateralProject className="limitWords-150" i18nkey="planning.projectOutcome.statement" editable=(editable && canEditStatement) /]
         </div>
         [#-- Annual progress --]
         [#list project.startDate?string.yyyy?number..midOutcomeYear?number-1 as year]
-          [#assign yearEditable = editable && (year gte currentPlanningYear?number) && canEditPlanningCycle /]
+          [#assign yearEditable = editable && (year gte currentPlanningYear?number) && canEditStatement /]
           [#assign yearRequired = !project.bilateralProject && ((year == currentPlanningYear) || (year == currentPlanningYear+1)) /]
           <div class="fullPartBlock">
             <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /] [@customForm.req required=yearRequired /]</h6>
@@ -71,23 +71,24 @@
           [#if reportingCycle && (year == currentReportingYear) ]
           <div class="fullPartBlock">
             <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /] [@customForm.req required=true /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].anualProgress" required=true className="limitWords-300" showTitle=false editable=editable /]
+            [@customForm.textArea name="project.outcomes[${year?string}].anualProgress" required=true className="limitWords-300" showTitle=false editable=editable && action.hasProjectPermission("annualProgress", project.id) /]
           </div>
           
           [#-- Comunication and engagement activities --]
           <div class="fullBlock">
-            [@customForm.textArea name="" className="limitWords-100" i18nkey="reporting.projectOutcomes.commEngagementOutcomes" required=true editable=editable/]
+            [@customForm.textArea name="project.outcomes[${year?string}].comunication" className="limitWords-100" i18nkey="reporting.projectOutcomes.commEngagementOutcomes" required=true editable=editable && action.hasProjectPermission("communicationEngagement", project.id) /]
           </div>
           
           [#-- Upload summary--] 
+          
           <div class="fullBlock fileUpload uploadSummary">
             <h6>[@customForm.text name="reporting.projectOutcomes.uploadSummary" readText=!editable /]:</h6>
             <div class="uploadContainer" title="[@s.text name="reporting.projectOutcomes.uploadSummary.help" /]">
-              [#if (project.crossCutting.file?has_content)!false]
+              [#if (action.getOutcomeFile(year)?has_content)!false]
                 [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
-                <p><a href="${CrossCuttingURL}${(project.crossCutting.file)!}">${(project.crossCutting.file)!}</a></p>
+                <p><a href="${ProjectOutcomeURL}${(outcomeFile(year))!}">${(action.getOutcomeFile(year))!}</a></p>
               [#else]
-                [#if editable]
+                [#if editable && action.hasProjectPermission("uploadSummary", project.id)]
                   [@customForm.inputFile name="file"  /]
                 [#else]  
                   <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
