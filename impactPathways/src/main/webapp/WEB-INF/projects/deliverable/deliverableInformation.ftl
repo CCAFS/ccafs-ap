@@ -8,8 +8,8 @@
     [/#if]
   [/#if]
   <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1> 
+  [#-- Title --] 
   <div class="fullBlock">
-    [#-- Title --] 
     [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable /]
   </div> 
   [#-- MOG  --]

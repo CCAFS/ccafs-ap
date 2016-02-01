@@ -163,6 +163,7 @@
           [#if displayFieldName == "" ]
             [#assign key][@s.property value="${name}"/][/#assign]
             [#assign customValue][#if !stringKey][@s.property value="${listName}[${key}]"/][#else][@s.property value="${listName}['${key}']"/][/#if][/#assign]
+            [#if (key == "-1") || (customValue == "-1")]${requiredText}   [@s.text name="form.values.fieldEmpty" /][/#if] 
             [#if customValue?has_content]
               ${customValue}
             [#else]

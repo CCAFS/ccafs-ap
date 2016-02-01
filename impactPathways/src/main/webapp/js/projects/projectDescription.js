@@ -2,7 +2,14 @@
 var lWordsElemetTitle = 20;
 var lWordsElemetDesc = 150;
 
+var $statuses, $statusDescription;
+
 $(document).ready(function() {
+
+  $statuses = $('#description_project_status');
+  $statusDescription = $('#statusDescription');
+  var implementationStatus = $statuses.find('option[value="2"]').text();
+  $endDate = $('#project\\.endDate');
 
   datePickerConfig({
       "startDate": "#project\\.startDate",
@@ -12,7 +19,7 @@ $(document).ready(function() {
   });
   // setProgramId();
   setDisabledCheckedBoxes();
-  addChosen();
+  addSelect2();
   applyWordCounter($("textarea.project-title"), lWordsElemetTitle);
   applyWordCounter($("textarea.project-description"), lWordsElemetDesc);
 
@@ -50,11 +57,36 @@ $(document).ready(function() {
 
   // Event to remove an element 'li' from core project list
   $('ul li .remove').on('click', function(e) {
-    console.log('entra remove 1');
     removeItemList($(this).parents('li'));
   });
 
+  $statuses.on('change', function(e) {
+    if(isStatusCancelled($(this).val())) {
+      $statusDescription.show(400);
+    } else {
+      $statusDescription.hide(400);
+    }
+  });
+
+  $endDate.on('change', function(e) {
+    var d = new Date($(this).val());
+    checkImplementationStatus(d.getFullYear());
+  });
+
   /** Functions */
+
+  function isStatusCancelled(statusId) {
+    return(statusId == "5")
+  }
+
+  function checkImplementationStatus(year) {
+    if(year <= currentReportingYear) {
+      $statuses.removeOption(2);
+    } else {
+      $statuses.addOption(2, implementationStatus);
+    }
+    $statuses.select2();
+  }
 
   // Function to load all core projects with ajax
   function loadInitialCoreProjects() {
@@ -170,10 +202,8 @@ function datePickerConfig(element) {
 }
 
 // Activate the chosen plugin.
-function addChosen() {
-  $("form select").chosen({
-    search_contains: true
-  });
+function addSelect2() {
+  $("form select").select2();
 }
 
 // Set default Program ID

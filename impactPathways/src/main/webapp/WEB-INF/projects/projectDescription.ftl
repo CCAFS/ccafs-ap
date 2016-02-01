@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Description" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "select2"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectDescription.js"] /]
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentCycleSection = "projects" /]
@@ -116,7 +116,7 @@
               [#if editable]
                 [@customForm.inputFile name="file"  /]
               [#else]  
-                <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
+                <span class="fieldError">[@s.text name="form.values.required" /]</span> <p>[@s.text name="form.values.notFileUploaded" /]</p> 
               [/#if] 
             [/#if]
           </div>  
@@ -137,12 +137,12 @@
             <div class="uploadContainer">
               [#if project.annualReportDonor?has_content]
                 [#if editable]<span id="remove-fileReporting" class="remove"></span>[/#if] 
-                <p> <a href="${AnualReportURL}${project.annualReportDonor}">${project.annualReportDonor}</a> 
+                <p> <a href="${AnualReportURL}${project.annualReportDonor}">${project.annualReportDonor}</a> </p>
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="fileReporting"  /]
                 [#else]  
-                  <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
+                  <span class="fieldError">[@s.text name="form.values.required" /]</span> <p> [@s.text name="form.values.notFileUploaded" /]</p>
                 [/#if] 
               [/#if]
             </div>  
@@ -155,7 +155,7 @@
             </div>
           </div>
           [#-- Project status description/justification --]
-          <div class="fullBlock">
+          <div id="statusDescription" class="fullBlock" style="display:${project.statusCancelled?string('block','none')}">
             [@customForm.textArea name="project.statusDescription" i18nkey="reporting.projectDescription.statusDescription" className="project-statusDescription" required=true editable=editable /]
           </div>
         [/#if]
