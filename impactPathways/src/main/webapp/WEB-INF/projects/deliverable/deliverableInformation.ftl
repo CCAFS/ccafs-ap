@@ -51,7 +51,7 @@
       </div>
     </div>
     [#-- Status justification  --]
-    <div class="fullPartBlock">
+    <div id="statusDescription" class="fullPartBlock" style="display:${deliverable.statusCancelled?string('block','none')}">
       [@customForm.textArea name="${params.deliverable.name}.statusDescription" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
     </div>
   [/#if]
