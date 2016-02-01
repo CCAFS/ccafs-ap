@@ -6,4 +6,4 @@ DROP COLUMN `relation`,
 DROP COLUMN `coverage`,
 DROP COLUMN `rights`,
 DROP COLUMN `is_global`,
-DROP COLUMN `leader`,
+DROP COLUMN `leader`;
