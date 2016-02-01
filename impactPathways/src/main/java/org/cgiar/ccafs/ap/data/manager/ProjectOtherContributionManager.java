@@ -15,7 +15,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectOtherContributionManagerImpl;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
-import org.cgiar.ccafs.ap.data.model.OtherContributions;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public interface ProjectOtherContributionManager {
    * @param projectID - is the Id of the project
    * @return an OtherContributions object with the Information related to the project
    */
-  public List<OtherContributions> getOtherContributionsByProjectId(int projectID);
+  public List<ProjecteOtherContributions> getOtherContributionsByProjectId(int projectID);
 
 
   /**
@@ -69,7 +69,7 @@ public interface ProjectOtherContributionManager {
   public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution, User user,
     String justification);
 
-  public int saveOtherContributionsList(int projectID, List<OtherContributions> OtherContributionsList, User user,
+  public int saveOtherContributionsList(int projectID, List<ProjecteOtherContributions> OtherContributionsList, User user,
     String justification);
 
 

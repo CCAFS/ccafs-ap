@@ -44,7 +44,7 @@ public class Project {
 
 
   private String summary;
-  private List<OtherContributions> otherContributions;
+  private List<ProjecteOtherContributions> otherContributions;
 
 
   private Date startDate;
@@ -580,7 +580,7 @@ public class Project {
   }
 
 
-  public List<OtherContributions> getOtherContributions() {
+  public List<ProjecteOtherContributions> getOtherContributions() {
     return otherContributions;
   }
 
@@ -1081,7 +1081,7 @@ public class Project {
     this.nextUsers = nextUsers;
   }
 
-  public void setOtherContributions(List<OtherContributions> otherContributions) {
+  public void setOtherContributions(List<ProjecteOtherContributions> otherContributions) {
     this.otherContributions = otherContributions;
   }
 

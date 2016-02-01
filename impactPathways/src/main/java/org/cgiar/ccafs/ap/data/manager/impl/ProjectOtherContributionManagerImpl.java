@@ -18,7 +18,7 @@ import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
-import org.cgiar.ccafs.ap.data.model.OtherContributions;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.Date;
@@ -86,8 +86,8 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   }
 
   @Override
-  public List<OtherContributions> getOtherContributionsByProjectId(int projectID) {
-    List<OtherContributions> otherContributionsList = otherContributionsDAO.getOtherContributionsByProject(projectID);
+  public List<ProjecteOtherContributions> getOtherContributionsByProjectId(int projectID) {
+    List<ProjecteOtherContributions> otherContributionsList = otherContributionsDAO.getOtherContributionsByProject(projectID);
 
 
     return otherContributionsList;
@@ -128,11 +128,11 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   }
 
   @Override
-  public int saveOtherContributionsList(int projectID, List<OtherContributions> OtherContributionsList, User user,
+  public int saveOtherContributionsList(int projectID, List<ProjecteOtherContributions> OtherContributionsList, User user,
     String justification) {
 
 
-    for (OtherContributions otherContributions : OtherContributionsList) {
+    for (ProjecteOtherContributions otherContributions : OtherContributionsList) {
       if (otherContributions.getId() == null) {
         otherContributions.setCreatedBy(Long.parseLong(user.getId() + ""));
       }

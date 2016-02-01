@@ -16,7 +16,7 @@
 package org.cgiar.ccafs.ap.data.dao;
 
 import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.OtherContributionsMySQLDAO;
-import org.cgiar.ccafs.ap.data.model.OtherContributions;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 
 import java.util.List;
 
@@ -30,10 +30,10 @@ public interface OtherContributionsDAO {
 
   public boolean existOtherContributions(int otherContributionsID);
 
-  public OtherContributions find(int id);
+  public ProjecteOtherContributions find(int id);
 
 
-  public List<OtherContributions> getOtherContributionsByProject(int projectID);
+  public List<ProjecteOtherContributions> getOtherContributionsByProject(int projectID);
 
-  public int save(OtherContributions projectHighlihts);
+  public int save(ProjecteOtherContributions projectHighlihts);
 }

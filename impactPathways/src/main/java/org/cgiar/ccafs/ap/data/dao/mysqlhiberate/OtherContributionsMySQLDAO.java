@@ -16,7 +16,7 @@
 package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 
 import org.cgiar.ccafs.ap.data.dao.OtherContributionsDAO;
-import org.cgiar.ccafs.ap.data.model.OtherContributions;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class OtherContributionsMySQLDAO implements OtherContributionsDAO {
 
   @Override
   public boolean deleteOtherContributions(int crossCuttingContributionID, int userID, String justification) {
-    OtherContributions project = this.find(crossCuttingContributionID);
+    ProjecteOtherContributions project = this.find(crossCuttingContributionID);
     project.setIsActive(false);
     project.setModifiedBy(new Long(userID));
     project.setModificationJustification(justification);
@@ -43,7 +43,7 @@ public class OtherContributionsMySQLDAO implements OtherContributionsDAO {
 
   @Override
   public boolean existOtherContributions(int crossCuttingContributionID) {
-    OtherContributions project = this.find(crossCuttingContributionID);
+    ProjecteOtherContributions project = this.find(crossCuttingContributionID);
     if (project == null) {
       return false;
     }
@@ -51,19 +51,19 @@ public class OtherContributionsMySQLDAO implements OtherContributionsDAO {
   }
 
   @Override
-  public OtherContributions find(int id) {
-    return dao.find(OtherContributions.class, id);
+  public ProjecteOtherContributions find(int id) {
+    return dao.find(ProjecteOtherContributions.class, id);
   }
 
 
   @Override
-  public List<OtherContributions> getOtherContributionsByProject(int projectID) {
-    String query = "from " + OtherContributions.class.getName() + " where project_id=" + projectID + " and is_active=1";
+  public List<ProjecteOtherContributions> getOtherContributionsByProject(int projectID) {
+    String query = "from " + ProjecteOtherContributions.class.getName() + " where project_id=" + projectID + " and is_active=1";
     return dao.findAll(query);
   }
 
   @Override
-  public int save(OtherContributions projectHighlihts) {
+  public int save(ProjecteOtherContributions projectHighlihts) {
     dao.saveOrUpdate(projectHighlihts); // TODO review
     return projectHighlihts.getId(); // TODO To review
   }

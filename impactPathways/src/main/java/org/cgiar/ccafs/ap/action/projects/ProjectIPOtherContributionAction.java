@@ -24,7 +24,7 @@ import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
-import org.cgiar.ccafs.ap.data.model.OtherContributions;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
@@ -158,7 +158,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     // Getting the information for the IP Other Contribution
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
-    List<OtherContributions> others = ipOtherContributionManager.getOtherContributionsByProjectId(projectID);
+    List<ProjecteOtherContributions> others = ipOtherContributionManager.getOtherContributionsByProjectId(projectID);
     project.setOtherContributions(others);
     if (project.getIpOtherContribution() == null) {
 
