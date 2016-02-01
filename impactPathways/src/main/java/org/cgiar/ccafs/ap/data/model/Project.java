@@ -950,6 +950,20 @@ public class Project {
   }
 
   /**
+   * Check if the project status is "Cancelled"
+   * 
+   * @return true if project status is "Cancelled" else false
+   */
+  public boolean isStatusCancelled() {
+    try {
+      // 5- Cancelled - The activity has been cancelled.
+      return status == "5";
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /**
    * This method validates if the project is already submitted or not.
    * 
    * @param year where the submission date happened.

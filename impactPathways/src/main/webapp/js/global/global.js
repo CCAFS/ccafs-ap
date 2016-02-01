@@ -19,15 +19,15 @@ var notyDefaultOptions = {
       'click'
     ]
 };
-jQuery.fn.exists = function() {
-  return this.length > 0;
-};
 
 // Global javascript must be here.
 $(document).ready(function() {
   baseURL = $("#baseURL").val();
   editable = ($("#editable").val() === "true");
   production = ($("#production").val() === "true");
+  currentPlanningYear = $("#currentPlanningYear").val();
+  currentReportingYear = $("#currentReportingYear").val();
+
   showNotificationMessages();
   showHelpText();
   applyWordCounter($("#justification"), justificationLimitWords);
@@ -269,6 +269,10 @@ function word_count(field) {
   }
 }
 
+jQuery.fn.exists = function() {
+  return this.length > 0;
+};
+
 /**
  * Functions for selects
  */
@@ -277,12 +281,18 @@ function setOption(val,name) {
 }
 
 jQuery.fn.addOption = function(val,name) {
-  $(this).append("<option value='" + val + "'>" + name + "</option>");
+  if(!($(this).find('option[value=' + val + ']').exists())) {
+    $(this).append("<option value='" + val + "'>" + name + "</option>");
+  }
 };
 
-function removeOption(select,value) {
-  $(select).find('option[value=' + value + ']').remove;
+function removeOption(select,val) {
+  $(select).find('option[value=' + val + ']').remove();
 }
+
+jQuery.fn.removeOption = function(val) {
+  $(this).find('option[value=' + val + ']').remove();
+};
 
 /**
  * Escape HTML text

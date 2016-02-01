@@ -1,5 +1,6 @@
-// Limits for textarea input
 var $deliverablesTypes, $deliverablesSubTypes;
+var $statuses, $statusDescription;
+var implementationStatus
 var hashRegenerated = false;
 hashScroll = false;
 
@@ -9,6 +10,11 @@ function init() {
   $deliverablesTypes = $("#deliverable_mainType");
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
   $disseminationChannels = $('#deliverable_deliverable_dissemination_disseminationChannel');
+  
+  $statuses = $('#deliverable_deliverable_status');
+  $statusDescription = $('#statusDescription');
+  implementationStatus = $statuses.find('option[value="2"]').text();
+  $endDate = $('#deliverable_deliverable_year');
 
   attachEvents();
 
@@ -34,7 +40,7 @@ function init() {
   checkOption();
 
   // Add some plugins
-  addChosen();
+  addSelect2();
   addHoverStar();
   addDeliverablesTypesDialog();
 
@@ -73,6 +79,36 @@ function attachEvents() {
   $(".removeInput").on("click", removeFileUploaded);
   // This event is when will be add one URL
   $(".addFileURL").on("click", addfileURL);
+  
+  
+  // Status
+  $statuses.on('change', function(e) {
+    if(isStatusCancelled($(this).val())) {
+      $statusDescription.show(400);
+    } else {
+      $statusDescription.hide(400);
+    }
+  });
+
+  $endDate.on('change', changeStatus);
+  $endDate.trigger('change');
+}
+
+function changeStatus(){ 
+  checkImplementationStatus($(this).val());
+}
+
+function isStatusCancelled(statusId) {
+  return(statusId == "5")
+}
+
+function checkImplementationStatus(year) {
+  if(year <= currentReportingYear) {
+    $statuses.removeOption(2);
+  } else {
+    $statuses.addOption(2, implementationStatus);
+  }
+  $statuses.select2();
 }
 
 function changeDisseminationChannel() {
@@ -115,8 +151,8 @@ function yesnoEvent() {
   }
 }
 
-function addChosen() {
-  $("#projectDeliverable select").chosen({
+function addSelect2() {
+  $("#projectDeliverable select").select2({
     search_contains: true
   });
 }
@@ -203,7 +239,7 @@ function addPartnerEvent(e) {
   $(e.target).parent().parent().find('.emptyText').hide();
   $(e.target).parent().before($newElement);
   $newElement.fadeIn("slow");
-  addChosen();
+  addSelect2();
   setDeliverablesIndexes();
 }
 
@@ -232,7 +268,7 @@ function updateDeliverableSubTypes(typeId) {
       $subTypeSelect.append("<option value='" + subType.id + "' " + isSelected + ">" + subType.name + "</option>");
     });
     // Refresh the plugin in order to show the changes
-    $subTypeSelect.trigger("liszt:updated");
+    $subTypeSelect.select2();
     // Check if other specify is selected
     changeDeliverableSubTypes();
     // Regenerating hash from form information

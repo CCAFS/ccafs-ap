@@ -95,6 +95,8 @@
   <input type="hidden" id="baseURL" value="${baseUrl}" />
   <input type="hidden" id="editable" value="${editable?string}" />
   <input type="hidden" id="production" value="${config.production?string}" />
+  <input type="hidden" id="currentPlanningYear" value="${currentPlanningYear}" />
+  <input type="hidden" id="currentReportingYear" value="${currentReportingYear}" />
   [#-- Library for textareas --]
   <script src="${baseUrl}/js/libs/autogrow-3.0/jquery.autogrowtextarea.min.js"></script>
   [#-- Global Javascript --]
