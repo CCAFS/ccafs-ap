@@ -118,7 +118,7 @@
                                   [#-- Indicator target value --]
                                   <div class="thirdPartBlock">
                                     <label><h6>[@s.text name="planning.projectImpactPathways.targetValue" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                    [#if editable && (cycleYear lte year) && !reportingCycle]
+                                    [#if editable && (cycleYear lte year) && action.hasProjectPermission("target", project.id)]
                                       <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${projectIndicator.target!}"/> 
                                     [#else]
                                       [#if !projectIndicator.target?has_content]
@@ -141,10 +141,11 @@
                                     [#-- Reporting target --]
                                     <div class="thirdPartBlock">
                                       <label><h6 title='[@s.text name="reporting.projectImpactPathways.achievedTarget.help" /]'>[@s.text name="reporting.projectImpactPathways.achievedTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                      [#if editable && (cycleYear lte year)]
+                                      [#if editable && (cycleYear lte year) && action.hasProjectPermission("achieved", project.id)]
                                         <input type="text" class="projectIndicatorAchievedTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.archived" value="${(projectIndicator.archived)!}"/> 
+                                      [#else]
+                                        <div class="select"><p>${(projectIndicator.archived)!}</p></div>
                                       [/#if]
-                                      [#if !editable] <div class="select"><p>${(projectIndicator.archived)!}</p></div>[/#if]
                                     </div>
                                   [/#if]
                                 </div>
@@ -152,7 +153,7 @@
                                 [#-- Indicator target narrative description --]
                                 <div class="textArea fullBlock">
                                   <label><h6>[@s.text name="planning.projectImpactPathways.targetNarrative" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                  [#if editable && (cycleYear lte year) && !reportingCycle]
+                                  [#if editable && (cycleYear lte year) && action.hasProjectPermission("description", project.id)]
                                     <textarea class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
@@ -169,7 +170,7 @@
                                   [#-- Narrative for your achieved targets --]
                                   <div class="textArea fullBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                    [#if editable && (cycleYear lte year)]
+                                    [#if editable && (cycleYear lte year) && action.hasProjectPermission("narrativeTargets", project.id)]
                                       <textarea class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeTargets">${(projectIndicator.narrativeTargets)!}</textarea>
                                     [#else]
                                       [#if !projectIndicator.narrativeTargets?has_content]
@@ -185,7 +186,7 @@
                                 [#-- Indicator target narrative gender --]
                                 <div class="textArea fullBlock">
                                   <label><h6>[@s.text name="planning.projectImpactPathways.targetGender" /]: [@customForm.req required=isYearRequired(year) /]</h6></label>
-                                  [#if editable && (cycleYear lte year) && !reportingCycle]
+                                  [#if editable && (cycleYear lte year) && action.hasProjectPermission("gender", project.id)]
                                     <textarea class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender">${(projectIndicator.gender)!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.gender?has_content]
@@ -202,7 +203,7 @@
                                   [#--  Narrative for your achieved annual gender and social --]
                                   <div class="textArea fullBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.targetNarrativeGenderAchieved" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                    [#if editable && (cycleYear lte year)]
+                                    [#if editable && (cycleYear lte year) && action.hasProjectPermission("narrativeGender", project.id)]
                                       <textarea class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGender" >${(projectIndicator.narrativeGender)!}</textarea>
                                     [#else]
                                       [#if !projectIndicator.narrativeGender?has_content]
