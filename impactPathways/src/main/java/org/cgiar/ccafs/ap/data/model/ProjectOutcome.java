@@ -28,6 +28,8 @@ public class ProjectOutcome {
   private int year;
   private String statement;
   private String anualProgress;
+  private String comunication;
+  private String file;
   // private String stories;
   // private String genderDimension;
 
@@ -40,17 +42,25 @@ public class ProjectOutcome {
     this.id = id;
   }
 
+
   public String getAnualProgress() {
     return anualProgress;
   }
 
+
+  public String getComunication() {
+    return comunication;
+  }
+
+
+  public String getFile() {
+    return file;
+  }
+
+
   public int getId() {
     return id;
   }
-
-  // public String getGenderDimension() {
-  // return genderDimension;
-  // }
 
   public String getStatement() {
     return statement;
@@ -60,12 +70,24 @@ public class ProjectOutcome {
     return year;
   }
 
-  // public String getStories() {
-  // return stories;
+  // public String getGenderDimension() {
+  // return genderDimension;
   // }
 
   public void setAnualProgress(String anualProgress) {
     this.anualProgress = anualProgress;
+  }
+
+  public void setComunication(String comunication) {
+    this.comunication = comunication;
+  }
+
+  // public String getStories() {
+  // return stories;
+  // }
+
+  public void setFile(String file) {
+    this.file = file;
   }
 
   // public void setGenderDimension(String genderDimension) {

@@ -20,9 +20,11 @@ import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
+import org.cgiar.ccafs.ap.util.FileManager;
 import org.cgiar.ccafs.ap.validation.projects.ProjectOutcomeValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,20 +35,31 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author Hernán David Carvajal B.
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Christian David Garcia O. - CIAT/CCAFS
  */
 public class ProjectOutcomesAction extends BaseAction {
 
+
   private static final long serialVersionUID = -3179251766947184219L;
+
 
   // Manager
   private ProjectManager projectManager;
+
+
   private ProjectOutcomeManager projectOutcomeManager;
+
+
   private ProjectOutcomeValidator validator;
+
   private HistoryManager historyManager;
 
+  private File file;
+  private String fileFileName;
   private int currentPlanningYear;
   private int midOutcomeYear;
   private int projectID;
+
   private Project project;
 
   @Inject
@@ -59,8 +72,27 @@ public class ProjectOutcomesAction extends BaseAction {
     this.historyManager = historyManager;
   }
 
+  public File getFile() {
+    return file;
+  }
+
+  public String getFileFileName() {
+    return fileFileName;
+  }
+
   public int getMidOutcomeYear() {
     return midOutcomeYear;
+  }
+
+
+  public String getOutcomeFile(int year) {
+
+    ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
+    if (outcome == null || outcome.getFile() == null) {
+      return "";
+    }
+
+    return outcome.getFile();
   }
 
   public Project getProject() {
@@ -70,6 +102,23 @@ public class ProjectOutcomesAction extends BaseAction {
   public int getProjectID() {
     return projectID;
   }
+
+
+  private String getProjectOutcomeAbsolutePath() {
+    return config.getUploadsBaseFolder() + File.separator + this.getProjectOutcomeRelativePath() + File.separator;
+  }
+
+
+  private String getProjectOutcomeRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "project_outcome"
+      + File.separator;
+  }
+
+
+  public String getProjectOutcomeURL() {
+    return config.getDownloadURL() + "/" + this.getProjectOutcomeRelativePath().replace('\\', '/');
+  }
+
 
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
@@ -84,6 +133,7 @@ public class ProjectOutcomesAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -145,6 +195,12 @@ public class ProjectOutcomesAction extends BaseAction {
       // Saving Project Outcome
       for (int year = evaluatingYear; year <= midOutcomeYear; year++) {
         ProjectOutcome outcome = project.getOutcomes().get(String.valueOf(year));
+        if (file != null && outcome.getYear() == this.getCurrentReportingYear()) {
+          FileManager.deleteFile(this.getProjectOutcomeAbsolutePath() + outcome.getFile());
+          FileManager.copyFile(file, this.getProjectOutcomeAbsolutePath() + fileFileName);
+          outcome.setFile(fileFileName);
+        }
+
         success = success && projectOutcomeManager.saveProjectOutcome(projectID, outcome, this.getCurrentUser(),
           this.getJustification());
       }
@@ -172,6 +228,14 @@ public class ProjectOutcomesAction extends BaseAction {
 
   public void setCurrentPlanningYear(int currentPlanningYear) {
     this.currentPlanningYear = currentPlanningYear;
+  }
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  public void setFileFileName(String fileFileName) {
+    this.fileFileName = fileFileName;
   }
 
   public void setMidOutcomeYear(int midOutcomeYear) {

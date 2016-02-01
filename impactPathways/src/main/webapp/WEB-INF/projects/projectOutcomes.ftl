@@ -30,7 +30,7 @@
 
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
 
-  [@s.form action="outcomes" cssClass="pure-form"]  
+  [@s.form action="outcomes" cssClass="pure-form" enctype="multipart/form-data" ]  
   <article class="halfContent" id="activityImpactPathway">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     [#include "/WEB-INF/projects/projectIP-sub-menu.ftl" /]
@@ -76,16 +76,17 @@
           
           [#-- Comunication and engagement activities --]
           <div class="fullBlock">
-            [@customForm.textArea name="" className="limitWords-100" i18nkey="reporting.projectOutcomes.commEngagementOutcomes" required=true editable=editable && action.hasProjectPermission("communicationEngagement", project.id) /]
+            [@customForm.textArea name="project.outcomes[${year?string}].comunication" className="limitWords-100" i18nkey="reporting.projectOutcomes.commEngagementOutcomes" required=true editable=editable && action.hasProjectPermission("communicationEngagement", project.id) /]
           </div>
           
           [#-- Upload summary--] 
+          
           <div class="fullBlock fileUpload uploadSummary">
             <h6>[@customForm.text name="reporting.projectOutcomes.uploadSummary" readText=!editable /]:</h6>
             <div class="uploadContainer" title="[@s.text name="reporting.projectOutcomes.uploadSummary.help" /]">
-              [#if (project.crossCutting.file?has_content)!false]
+              [#if (action.getOutcomeFile(year)?has_content)!false]
                 [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
-                <p><a href="${CrossCuttingURL}${(project.crossCutting.file)!}">${(project.crossCutting.file)!}</a></p>
+                <p><a href="${ProjectOutcomeURL}${(outcomeFile(year))!}">${(action.getOutcomeFile(year))!}</a></p>
               [#else]
                 [#if editable && action.hasProjectPermission("uploadSummary", project.id)]
                   [@customForm.inputFile name="file"  /]
