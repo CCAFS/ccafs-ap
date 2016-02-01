@@ -21,8 +21,7 @@ package org.cgiar.ccafs.ap.data.model;
 public enum ProjectStatusEnum {
 
 
-  Identification("1", "Identification"), Implementation("2", "Implementation"), Completion("3", "Completion"),
-  Post_completion("4", "Post-completion"), Cancelled("5", "Cancelled"), Suspended("6", "Suspended");
+  Implementation("2", "Implementation"), Completion("3", "Completion"), Cancelled("5", "Cancelled");
 
   private String status;
   private String statusId;
