@@ -14,6 +14,7 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectNextUserManagerImpl;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -37,6 +38,17 @@ public interface ProjectNextUserManager {
    * @return true if the projectNextUser was successfully deleted, false otherwise.
    */
   public boolean deleteProjectNextUser(int projectNextUserId, User user, String justification);
+
+  /**
+   * This method removes a specific projectNextUser value from the database.
+   * 
+   * @param projectNextUsers the actual
+   * @param user - the user that is deleting the projectNextUser.
+   * @param justification - the justification statement.
+   * @return true if the projectNextUser was successfully deleted, false otherwise.
+   */
+  public boolean deleteProjectNextUserList(List<ProjectNextUser> projectNextUsers, Project project, User user,
+    String justification);
 
 
   /**

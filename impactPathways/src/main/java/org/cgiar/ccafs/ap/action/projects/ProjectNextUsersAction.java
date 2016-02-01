@@ -110,19 +110,19 @@ public class ProjectNextUsersAction extends BaseAction {
 
     // Getting the history for this section.
     super.setHistory(historyManager.getActivitiesHistory(project.getId()));
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getNextUsers() != null) {
+        project.getNextUsers().clear();
+      }
+
+    }
   }
 
   @Override
   public String save() {
-    if (nextUserPreview != null) {
-      for (ProjectNextUser projectNextUser : nextUserPreview) {
-        if (!project.getNextUsers().contains(projectNextUser)) {
-          projectNextUserManager.deleteProjectNextUser(projectNextUser.getId(), this.getCurrentUser(),
-            this.getJustification());
-        }
-      }
-    }
-
+    projectNextUserManager.deleteProjectNextUserList(project.getNextUsers(), project, this.getCurrentUser(),
+      this.getJustification());
 
     for (ProjectNextUser projectNextUser : project.getNextUsers()) {
       projectNextUser.setProjectId(projectID);

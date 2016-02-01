@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 
 import org.cgiar.ccafs.ap.data.dao.ProjectNextUserDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectNextUserManager;
+import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -31,17 +32,17 @@ import org.slf4j.LoggerFactory;
  */
 public class ProjectNextUserManagerImpl implements ProjectNextUserManager {
 
+
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectNextUserManagerImpl.class);
-
   // DAO's
   private ProjectNextUserDAO projectNextUsersDAO;
-
 
   @Inject
   public ProjectNextUserManagerImpl(ProjectNextUserDAO projectNextUsersDAO) {
     this.projectNextUsersDAO = projectNextUsersDAO;
   }
+
 
   @Override
   public boolean deleteProjectNextUser(int nextUserID, User user, String justification) {
@@ -54,6 +55,22 @@ public class ProjectNextUserManagerImpl implements ProjectNextUserManager {
 
 
     return !problem;
+  }
+
+  @Override
+  public boolean deleteProjectNextUserList(List<ProjectNextUser> projectNextUsers, Project project, User user,
+    String justification) {
+    boolean save = true;
+    List<ProjectNextUser> nextUserPreview = this.getProjectNextUserProject(project.getId());
+    if (nextUserPreview != null) {
+      for (ProjectNextUser projectNextUser : nextUserPreview) {
+        if (!projectNextUsers.contains(projectNextUser)) {
+          save = save && this.deleteProjectNextUser(projectNextUser.getId(), user, justification);
+        }
+      }
+    }
+    return save;
+
   }
 
 
@@ -96,10 +113,14 @@ public class ProjectNextUserManagerImpl implements ProjectNextUserManager {
       nextUser.setActiveSince(new Date());
       nextUser.setId(0);
     }
+    nextUser.setCreatedBy(Long.parseLong(user.getId() + ""));
+    nextUser.setActiveSince(new Date());
     nextUser.setIsActive(true);
+    nextUser.setActiveSince(new Date());
     nextUser.setModifiedBy(Long.parseLong(user.getId() + ""));
     nextUser.setModificationJustification(justification);
     int result = projectNextUsersDAO.save(nextUser);
+
 
     if (result > 0) {
       LOG.debug("saveProjectNextUser > New ProjectNextUser added with id {}", result);
