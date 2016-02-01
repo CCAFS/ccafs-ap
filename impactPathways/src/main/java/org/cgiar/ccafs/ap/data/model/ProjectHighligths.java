@@ -27,9 +27,6 @@ public class ProjectHighligths implements java.io.Serializable {
   private String photo;
 
 
-  private String objectives;
-
-
   private String description;
 
 
@@ -40,13 +37,8 @@ public class ProjectHighligths implements java.io.Serializable {
   private String links;
   private String keywords;
   private String subject;
-  private String contributor;
-  private String publisher;
-  private String relation;
-  private String coverage;
-  private String rights;
-  private boolean isGlobal;
-  private int leader;
+
+
   private Integer type;
   private Long year;
   private boolean isActive;
@@ -74,8 +66,6 @@ public class ProjectHighligths implements java.io.Serializable {
     Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
     this.title = title;
     this.author = author;
-    this.isGlobal = isGlobal;
-    this.leader = leader;
     this.isActive = isActive;
     this.projectId = projectId;
     this.activeSince = activeSince;
@@ -95,20 +85,13 @@ public class ProjectHighligths implements java.io.Serializable {
     this.startDate = startDate;
     this.endDate = endDate;
     this.photo = photo;
-    this.objectives = objectives;
     this.description = description;
     this.results = results;
     this.partners = partners;
     this.links = links;
     this.keywords = keywords;
     this.subject = subject;
-    this.contributor = contributor;
-    this.publisher = publisher;
-    this.relation = relation;
-    this.coverage = coverage;
-    this.rights = rights;
-    this.isGlobal = isGlobal;
-    this.leader = leader;
+
     this.type = type;
     this.year = year;
     this.isActive = isActive;
@@ -130,10 +113,6 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.author;
   }
 
-  public String getContributor() {
-    return this.contributor;
-  }
-
 
   public List<Country> getCountries() {
     return countries;
@@ -142,11 +121,6 @@ public class ProjectHighligths implements java.io.Serializable {
 
   public List<Integer> getCountriesIds() {
     return countriesIds;
-  }
-
-
-  public String getCoverage() {
-    return this.coverage;
   }
 
 
@@ -179,10 +153,6 @@ public class ProjectHighligths implements java.io.Serializable {
   }
 
 
-  public int getLeader() {
-    return this.leader;
-  }
-
   public String getLinks() {
     return this.links;
   }
@@ -195,9 +165,6 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.modifiedBy;
   }
 
-  public String getObjectives() {
-    return this.objectives;
-  }
 
   public String getPartners() {
     return this.partners;
@@ -219,21 +186,11 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.projectId;
   }
 
-  public String getPublisher() {
-    return this.publisher;
-  }
-
-  public String getRelation() {
-    return this.relation;
-  }
 
   public String getResults() {
     return this.results;
   }
 
-  public String getRights() {
-    return this.rights;
-  }
 
   public Date getStartDate() {
     return this.startDate;
@@ -276,9 +233,6 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.isActive;
   }
 
-  public boolean isIsGlobal() {
-    return this.isGlobal;
-  }
 
   public void setActiveSince(Date activeSince) {
     this.activeSince = activeSince;
@@ -288,9 +242,6 @@ public class ProjectHighligths implements java.io.Serializable {
     this.author = author;
   }
 
-  public void setContributor(String contributor) {
-    this.contributor = contributor;
-  }
 
   public void setCountries(List<Country> countries) {
     this.countries = countries;
@@ -300,9 +251,6 @@ public class ProjectHighligths implements java.io.Serializable {
     this.countriesIds = countriesIds;
   }
 
-  public void setCoverage(String coverage) {
-    this.coverage = coverage;
-  }
 
   public void setCreatedBy(long createdBy) {
     this.createdBy = createdBy;
@@ -328,17 +276,11 @@ public class ProjectHighligths implements java.io.Serializable {
     this.isActive = isActive;
   }
 
-  public void setIsGlobal(boolean isGlobal) {
-    this.isGlobal = isGlobal;
-  }
 
   public void setKeywords(String keywords) {
     this.keywords = keywords;
   }
 
-  public void setLeader(int leader) {
-    this.leader = leader;
-  }
 
   public void setLinks(String links) {
     this.links = links;
@@ -352,9 +294,6 @@ public class ProjectHighligths implements java.io.Serializable {
     this.modifiedBy = modifiedBy;
   }
 
-  public void setObjectives(String objectives) {
-    this.objectives = objectives;
-  }
 
   public void setPartners(String partners) {
     this.partners = partners;
@@ -376,21 +315,11 @@ public class ProjectHighligths implements java.io.Serializable {
     this.projectId = projectId;
   }
 
-  public void setPublisher(String publisher) {
-    this.publisher = publisher;
-  }
-
-  public void setRelation(String relation) {
-    this.relation = relation;
-  }
 
   public void setResults(String results) {
     this.results = results;
   }
 
-  public void setRights(String rights) {
-    this.rights = rights;
-  }
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;

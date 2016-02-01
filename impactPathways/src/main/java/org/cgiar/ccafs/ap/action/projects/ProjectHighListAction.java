@@ -66,24 +66,24 @@ public class ProjectHighListAction extends BaseAction {
 
     newDeliverable.setActiveSince(new Date());
     newDeliverable.setAuthor("");
-    newDeliverable.setContributor("");
-    newDeliverable.setCoverage("");
+    // newDeliverable.setContributor("");
+    // newDeliverable.setCoverage("");
     newDeliverable.setCreatedBy(this.getCurrentUser().getId());
     newDeliverable.setDescription("");
     newDeliverable.setEndDate(new Date());
 
     newDeliverable.setIsActive(true);
-    newDeliverable.setIsGlobal(false);
+    // newDeliverable.setIsGlobal(false);
     newDeliverable.setKeywords("");
-    newDeliverable.setLeader(0);
+    // newDeliverable.setLeader(0);
     newDeliverable.setLinks("");
-    newDeliverable.setObjectives("");
+    // newDeliverable.setObjectives("");
     newDeliverable.setPartners("");
     newDeliverable.setProjectId(project.getId());
-    newDeliverable.setPublisher("");
-    newDeliverable.setRelation("");
+    // newDeliverable.setPublisher("");
+    // newDeliverable.setRelation("");
     newDeliverable.setResults("");
-    newDeliverable.setRights("");
+    // newDeliverable.setRights("");
     newDeliverable.setStartDate(new Date());
     newDeliverable.setStatus(new Long(1));
     newDeliverable.setSubject("");
