@@ -130,16 +130,26 @@ public class ProjectLeveragesAction extends BaseAction {
     ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
-    leveragesPreview = projectLeverageManager.getProjectLeverageProject(projectID);
-    for (ProjectLeverage leverage : project.getLeverages()) {
-      if (leverage.getEndDate() != null) {
-        leverage.setEndDateText(dateformatter.format(project.getEndDate()));
+    if (project.getLeverages() != null) {
+      leveragesPreview = projectLeverageManager.getProjectLeverageProject(projectID);
+      for (ProjectLeverage leverage : project.getLeverages()) {
+        if (leverage.getEndDate() != null) {
+          leverage.setEndDateText(dateformatter.format(project.getEndDate()));
+        }
+        if (leverage.getStartDate() != null) {
+          leverage.setStartDateText(dateformatter.format(project.getStartDate()));
+        }
       }
-      if (leverage.getStartDate() != null) {
-        leverage.setStartDateText(dateformatter.format(project.getStartDate()));
-      }
-      // leverage.setMyInstitution(institutionManager.getInstitution(leverage.getInstitution()));
 
+      // leverage.setMyInstitution(institutionManager.getInstitution(leverage.getInstitution()));
+      if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+        // Clear out the list if it has some element
+        if (project.getLeverages() != null) {
+          project.getLeverages().clear();
+        }
+
+
+      }
 
     }
     // Initializing Section Statuses:

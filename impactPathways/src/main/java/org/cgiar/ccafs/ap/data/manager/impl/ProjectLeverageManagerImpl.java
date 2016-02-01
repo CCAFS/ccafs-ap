@@ -97,6 +97,8 @@ public class ProjectLeverageManagerImpl implements ProjectLeverageManager {
       leverage.setId(null);
     }
     leverage.setIsActive(true);
+    leverage.setCreatedBy(Long.parseLong(user.getId() + ""));
+    leverage.setActiveSince(new Date());
     leverage.setModifiedBy(Long.parseLong(user.getId() + ""));
     leverage.setModificationJustification(justification);
     int result = projectLeveragesDAO.save(leverage);
