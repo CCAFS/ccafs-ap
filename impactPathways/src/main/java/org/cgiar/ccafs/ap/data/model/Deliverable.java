@@ -213,7 +213,6 @@ public class Deliverable {
     }
   }
 
-
   /**
    * Check if it's a publication deliverable type
    * 
@@ -223,6 +222,21 @@ public class Deliverable {
 
     try {
       return this.getType().getCategory().getId() == 3;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+
+  /**
+   * Check if deliverable status is "Cancelled"
+   * 
+   * @return true if deliverable status is "Cancelled" else false
+   */
+  public boolean isStatusCancelled() {
+    try {
+      // 5- Cancelled - The activity has been cancelled.
+      return status == 5;
     } catch (Exception e) {
       return false;
     }

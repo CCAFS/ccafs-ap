@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Deliverable" /]
-[#assign globalLibs = ["jquery", "noty", "chosen", "star-rating", "dropzone", "jsUri"] /]
+[#assign globalLibs = ["jquery", "noty", "select2", "star-rating", "dropzone", "jsUri"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectDeliverables.js"] /]
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentCycleSection = "projects" /]
