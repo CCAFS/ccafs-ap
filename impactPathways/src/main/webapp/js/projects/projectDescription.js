@@ -68,12 +68,15 @@ $(document).ready(function() {
     }
   });
 
-  $endDate.on('change', function(e) {
-    var d = new Date($(this).val());
-    checkImplementationStatus(d.getFullYear());
-  });
+  $endDate.on('change', changeStatus);
+  $endDate.trigger('change');
 
   /** Functions */
+
+  function changeStatus() {
+    var d = new Date($(this).val());
+    checkImplementationStatus(d.getFullYear());
+  }
 
   function isStatusCancelled(statusId) {
     return(statusId == "5")
@@ -109,7 +112,7 @@ $(document).ready(function() {
           });
         },
         complete: function() {
-          $coreSelect.trigger("liszt:updated");
+          $coreSelect.select2();
         }
     });
   }

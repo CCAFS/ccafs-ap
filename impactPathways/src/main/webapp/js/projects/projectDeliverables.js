@@ -90,10 +90,12 @@ function attachEvents() {
     }
   });
 
-  $endDate.on('change', function(e) {
-    var d = new Date($(this).val());
-    checkImplementationStatus(d.getFullYear()+1);
-  });
+  $endDate.on('change', changeStatus);
+  $endDate.trigger('change');
+}
+
+function changeStatus(){ 
+  checkImplementationStatus($(this).val());
 }
 
 function isStatusCancelled(statusId) {
@@ -266,7 +268,7 @@ function updateDeliverableSubTypes(typeId) {
       $subTypeSelect.append("<option value='" + subType.id + "' " + isSelected + ">" + subType.name + "</option>");
     });
     // Refresh the plugin in order to show the changes
-    $subTypeSelect.trigger("liszt:updated");
+    $subTypeSelect.select2();
     // Check if other specify is selected
     changeDeliverableSubTypes();
     // Regenerating hash from form information
