@@ -394,10 +394,18 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.getPublicationMetadata().setDeliverableId((deliverable.getId()));
 
     } else {
-      deliverable.getDissemination().setDeliverableId((result));
-      deliverable.getRanking().setDeliverableId(new Long(result));
+      if (deliverable.getDissemination() != null) {
+        deliverable.getDissemination().setDeliverableId((result));
+
+      }
+      if (deliverable.getRanking() != null) {
+        deliverable.getRanking().setDeliverableId(new Long(result));
+      }
+
+      if (deliverable.getPublicationMetadata() != null) {
+        deliverable.getPublicationMetadata().setDeliverableId((result));
+      }
       // deliverable.getDataSharing().setDeliverableId((result));
-      deliverable.getPublicationMetadata().setDeliverableId((result));
 
 
       // }
@@ -430,46 +438,56 @@ public class DeliverableManagerImpl implements DeliverableManager {
     }
 
     // Save Deliverable Ranking
-    rankingDao.save(deliverable.getRanking());
-    // Stablish the type of Dissemination
-    if (deliverable.getDissemination().getType() != null) {
-      switch (deliverable.getDissemination().getType()) {
-        case "intellectualProperty":
-          deliverable.getDissemination().setIntellectualProperty(true);
-          deliverable.getDissemination().setLimitedExclusivity(false);
-          deliverable.getDissemination().setRestrictedUseAgreement(false);
-          deliverable.getDissemination().setEffectiveDateRestriction(false);
-
-          break;
-        case "limitedExclusivity":
-          deliverable.getDissemination().setIntellectualProperty(false);
-          deliverable.getDissemination().setLimitedExclusivity(true);
-          deliverable.getDissemination().setRestrictedUseAgreement(false);
-          deliverable.getDissemination().setEffectiveDateRestriction(false);
-
-          break;
-        case "restrictedAccess":
-          deliverable.getDissemination().setIntellectualProperty(false);
-          deliverable.getDissemination().setLimitedExclusivity(false);
-          deliverable.getDissemination().setEffectiveDateRestriction(false);
-          deliverable.getDissemination().setRestrictedUseAgreement(true);
-
-          break;
-        case "embargoedPeriods":
-          deliverable.getDissemination().setIntellectualProperty(false);
-          deliverable.getDissemination().setLimitedExclusivity(false);
-          deliverable.getDissemination().setEffectiveDateRestriction(true);
-          deliverable.getDissemination().setRestrictedUseAgreement(false);
-
-          break;
-
-
-      }
+    if (deliverable.getRanking() != null) {
+      rankingDao.save(deliverable.getRanking());
     }
+
+
     // Save Dissemination
-    disseminationDao.save(deliverable.getDissemination());
+    if (deliverable.getDissemination() != null) {
+      // Stablish the type of Dissemination
+      if (deliverable.getDissemination().getType() != null) {
+        switch (deliverable.getDissemination().getType()) {
+          case "intellectualProperty":
+            deliverable.getDissemination().setIntellectualProperty(true);
+            deliverable.getDissemination().setLimitedExclusivity(false);
+            deliverable.getDissemination().setRestrictedUseAgreement(false);
+            deliverable.getDissemination().setEffectiveDateRestriction(false);
+
+            break;
+          case "limitedExclusivity":
+            deliverable.getDissemination().setIntellectualProperty(false);
+            deliverable.getDissemination().setLimitedExclusivity(true);
+            deliverable.getDissemination().setRestrictedUseAgreement(false);
+            deliverable.getDissemination().setEffectiveDateRestriction(false);
+
+            break;
+          case "restrictedAccess":
+            deliverable.getDissemination().setIntellectualProperty(false);
+            deliverable.getDissemination().setLimitedExclusivity(false);
+            deliverable.getDissemination().setEffectiveDateRestriction(false);
+            deliverable.getDissemination().setRestrictedUseAgreement(true);
+
+            break;
+          case "embargoedPeriods":
+            deliverable.getDissemination().setIntellectualProperty(false);
+            deliverable.getDissemination().setLimitedExclusivity(false);
+            deliverable.getDissemination().setEffectiveDateRestriction(true);
+            deliverable.getDissemination().setRestrictedUseAgreement(false);
+
+            break;
+
+
+        }
+      }
+      disseminationDao.save(deliverable.getDissemination());
+    }
+
     /// save publication metadata
-    publicationMetadataDao.save(deliverable.getPublicationMetadata());
+    if (deliverable.getPublicationMetadata() != null) {
+      publicationMetadataDao.save(deliverable.getPublicationMetadata());
+    }
+
 
     /// Preview Files to remove
     if (deliverable.getDataSharingFile() != null) {
@@ -483,17 +501,20 @@ public class DeliverableManagerImpl implements DeliverableManager {
       }
 
       /// Saving Files
-      for (DeliverableDataSharingFile dataFile : deliverable.getDataSharingFile()) {
-        if (result == 0) {
-          dataFile.setDeliverableId(deliverable.getId());
-        } else {
-          dataFile.setDeliverableId(result);
-        }
-        if (dataFile.getId() == null) {
-          sharingFileDao.save(dataFile);
-        }
+      if (deliverable.getDataSharingFile() != null) {
+        for (DeliverableDataSharingFile dataFile : deliverable.getDataSharingFile()) {
+          if (result == 0) {
+            dataFile.setDeliverableId(deliverable.getId());
+          } else {
+            dataFile.setDeliverableId(result);
+          }
+          if (dataFile.getId() == null) {
+            sharingFileDao.save(dataFile);
+          }
 
+        }
       }
+
     }
     if (result > 0) {
       LOG.debug("saveDeliverable > New Deliverable added with id {}", result);
