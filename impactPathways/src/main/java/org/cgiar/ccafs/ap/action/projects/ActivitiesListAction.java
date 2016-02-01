@@ -23,9 +23,11 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.validation.projects.ActivitiesListValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +64,7 @@ public class ActivitiesListAction extends BaseAction {
   private Project project;
   private int projectID;
   private int activityID;
+  private Map<String, String> statuses;
 
   // validator
   private ActivitiesListValidator validator;
@@ -136,10 +139,14 @@ public class ActivitiesListAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public Map<String, String> getStatuses() {
+    return statuses;
+  }
+
+
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -156,6 +163,12 @@ public class ActivitiesListAction extends BaseAction {
       for (PartnerPerson person : partner.getPartnerPersons()) {
         projectPartnerPersons.put(person.getId(), partner.getPersonComposedName(person.getId()));
       }
+    }
+
+    statuses = new HashMap<>();
+    List<ProjectStatusEnum> list = Arrays.asList(ProjectStatusEnum.values());
+    for (ProjectStatusEnum projectStatusEnum : list) {
+      statuses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
     }
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
