@@ -24,7 +24,7 @@ import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Institution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
-import org.cgiar.ccafs.ap.validation.projects.ProjectCrossCuttingValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.text.DateFormat;
@@ -53,16 +53,18 @@ public class ProjectLeveragesAction extends BaseAction {
   private List<Institution> allInstitutions;
   private List<IPProgram> ipProgramFlagships;
   private List<ProjectLeverage> leveragesPreview;
+  private ProjectLeverageValidator validator;
 
   @Inject
   public ProjectLeveragesAction(APConfig config, ProjectManager projectManager, HistoryManager historyManager,
-    ProjectCrossCuttingValidator validator, InstitutionManager institutionManager, IPProgramManager ipProgramManager,
-    ProjectLeverageManager projectLeverageManager) {
+    InstitutionManager institutionManager, IPProgramManager ipProgramManager,
+    ProjectLeverageManager projectLeverageManager, ProjectLeverageValidator validator) {
     super(config);
     this.projectManager = projectManager;
     this.institutionManager = institutionManager;
     this.ipProgramManager = ipProgramManager;
     this.projectLeverageManager = projectLeverageManager;
+    this.validator = validator;
   }
 
   public List<Institution> getAllInstitutions() {
@@ -177,7 +179,7 @@ public class ProjectLeveragesAction extends BaseAction {
         projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
         projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));
       } catch (ParseException e) {
-
+        e.printStackTrace();
       }
       projectLeverage.setProjectId(projectID);
       projectLeverageManager.saveProjectLeverage(projectID, projectLeverage, this.getCurrentUser(),
@@ -202,7 +204,19 @@ public class ProjectLeveragesAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      // validator.validate(this, project, this.getCycleName());
+
+      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+      for (ProjectLeverage projectLeverage : project.getLeverages()) {
+        try {
+          projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
+          projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+      }
+
+
+      validator.validate(this, project, this.getCycleName());
     }
   }
 }

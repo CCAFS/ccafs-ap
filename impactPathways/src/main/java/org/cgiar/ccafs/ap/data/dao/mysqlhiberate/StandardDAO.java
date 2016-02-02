@@ -124,11 +124,11 @@ public class StandardDAO {
     try {
       this.openSession();
       this.initTransaction();
-      this.commitTransaction();
+
       Query query = session.createQuery(hibernateQuery);
       @SuppressWarnings("unchecked")
       List<T> list = query.list();
-
+      this.commitTransaction();
       return list;
     } catch (HibernateException e) {
       this.rollBackTransaction();

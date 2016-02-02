@@ -16,6 +16,7 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectLeverageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectNextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
@@ -45,6 +46,7 @@ import org.cgiar.ccafs.ap.validation.projects.ProjectDeliverableValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectDescriptionValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectHighLightValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
+import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectLocationsValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectNextUserValidator;
 import org.cgiar.ccafs.ap.validation.projects.ProjectOutcomeValidator;
@@ -121,7 +123,8 @@ public class ValidateProjectSectionAction extends BaseAction {
   private BudgetManager budgetManager;
   @Inject
   private BudgetByMogManager budgetByMogManager;
-
+  @Inject
+  private ProjectLeverageManager projectLeverageManager;
 
   @Inject
   private CaseStudiesManager caseStudyManager;
@@ -150,7 +153,8 @@ public class ValidateProjectSectionAction extends BaseAction {
   private ProjectDeliverableValidator deliverableValidator;
   @Inject
   private ProjectBudgetValidator budgetValidator;
-
+  @Inject
+  private ProjectLeverageValidator projectLeverageValidator;
 
   @Inject
   private ProjectHighLightValidator highLigthValidator;
@@ -198,8 +202,8 @@ public class ValidateProjectSectionAction extends BaseAction {
         case OUTPUTS:
           this.validateOverviewByMOGS();
           break;
-        case CROSSCUTTING:
-          this.validateCrossCutting();
+        case LEVERAGES:
+          this.validateLeverages();
           break;
 
         case CASESTUDIES:
@@ -305,7 +309,11 @@ public class ValidateProjectSectionAction extends BaseAction {
     sections.add("budget");
     sections.add("budgetByMog");
     if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
-      sections.add("crossCutting");
+      // sections.add("crossCutting");
+      sections.add("caseStudies");
+      sections.add("nextUsers");
+      sections.add("highlights");
+      sections.add("leverages");
     }
 
     validSection = sections.contains(sectionName);
@@ -379,11 +387,10 @@ public class ValidateProjectSectionAction extends BaseAction {
     if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
       Project project = projectManager.getProject(projectID);
       project.setCaseStudies(caseStudyManager.getCaseStudysByProject(projectID));
-      this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "caseStudies",
-        this.getCurrentPlanningYear(), this.getCycleName()));
+
 
       // Validating
-      projectCCAFSOutcomesValidator.validate(this, project, currentCycle);
+      caseStudieValidator.validate(this, project, currentCycle);
     }
   }
 
@@ -417,9 +424,6 @@ public class ValidateProjectSectionAction extends BaseAction {
       if (list.size() > 0) {
         project.setCrossCutting(list.get(0));
 
-        // Getting the Project lessons for this section.
-        this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "crossCutting",
-          this.getCurrentPlanningYear(), this.getCycleName()));
 
         // Validate
         crossValidator.validate(this, project, currentCycle);
@@ -428,6 +432,7 @@ public class ValidateProjectSectionAction extends BaseAction {
 
 
   }
+
 
   private void validateDeliverables() {
     // Getting basic project information.
@@ -465,13 +470,23 @@ public class ValidateProjectSectionAction extends BaseAction {
 
 
       // Getting the Project lessons for this section.
-      this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "crossCutting",
-        this.getCurrentPlanningYear(), this.getCycleName()));
+
       for (ProjectHighligths projectHighligths : list) {
         highLigthValidator.validate(this, project, projectHighligths, currentCycle);
       }
       // Validate
 
+    }
+  }
+
+  private void validateLeverages() {
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      Project project = projectManager.getProject(projectID);
+      project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
+
+
+      // Validating
+      projectLeverageValidator.validate(this, project, currentCycle);
     }
   }
 
