@@ -50,7 +50,7 @@
             [#-- Just show this empty message to those users who are not able to modify this section --]
             <p class="simpleBox center">[@s.text name="planning.deliverables.empty"/]</p> 
           [/#if]   
-          [#if canEdit]
+          [#if canEdit && action.hasProjectPermission("addDeliverable", project.id)]
           <div class="buttons"> 
             <a class="addButton" href="[@s.url namespace="/${currentSection}/projects" action='addNewDeliverable'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
               [@s.text name="planning.projectDeliverables.addNewDeliverable" /]
