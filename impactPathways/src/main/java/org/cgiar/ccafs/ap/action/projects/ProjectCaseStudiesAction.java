@@ -204,12 +204,16 @@ public class ProjectCaseStudiesAction extends BaseAction {
       }
       indicators = new ArrayList<>();
 
-      for (String indicator : caseStudie.getCaseStudyIndicatorsIds()) {
-        caseStudieIndicator = new CaseStudieIndicators();
-        caseStudieIndicator.setCasesStudies(caseStudie);
-        caseStudieIndicator.setIdIndicator(Integer.parseInt(indicator));
-        indicators.add(caseStudieIndicator);
+
+      if (caseStudie.getCaseStudyIndicatorsIds() != null) {
+        for (String indicator : caseStudie.getCaseStudyIndicatorsIds()) {
+          caseStudieIndicator = new CaseStudieIndicators();
+          caseStudieIndicator.setCasesStudies(caseStudie);
+          caseStudieIndicator.setIdIndicator(Integer.parseInt(indicator));
+          indicators.add(caseStudieIndicator);
+        }
       }
+
       caseStudie.setIsActive(true);
       caseStudie.setCaseStudieIndicatorses(new HashSet<>(indicators));
       caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
