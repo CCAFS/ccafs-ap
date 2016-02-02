@@ -56,19 +56,21 @@ public class ActivitiesListAction extends BaseAction {
   private ProjectPartnerManager projectPartnerManager;
   private Map<Integer, String> projectPartnerPersons;
   private HistoryManager historyManager;
+  private Map<String, String> projectStauses;
 
   // Model for the back-end
   private List<ProjectPartner> projectPartners;
 
+
   // Model for the front-end
   private Project project;
+
   private int projectID;
+
   private int activityID;
   private Map<String, String> statuses;
-
   // validator
   private ActivitiesListValidator validator;
-
 
   @Inject
   public ActivitiesListAction(APConfig config, ActivityManager activityManager, ProjectManager projectManager,
@@ -94,6 +96,7 @@ public class ActivitiesListAction extends BaseAction {
     // Let's redirect the user to the error page.
     return BaseAction.ERROR;
   }
+
 
   /**
    * This method validates if an activity can be deleted or not.
@@ -139,14 +142,18 @@ public class ActivitiesListAction extends BaseAction {
     return APConstants.PROJECT_REQUEST_ID;
   }
 
+  public Map<String, String> getProjectStauses() {
+    return projectStauses;
+  }
+
   public Map<String, String> getStatuses() {
     return statuses;
   }
 
-
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -171,13 +178,19 @@ public class ActivitiesListAction extends BaseAction {
       statuses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
     }
 
-    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
-      // Clear out the list if it has some element
-      if (project.getActivities() != null) {
-        project.getActivities().clear();
-      }
+    /*
+     * if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+     * // Clear out the list if it has some element
+     * if (project.getActivities() != null) {
+     * project.getActivities().clear();
+     * }
+     * }
+     */
+    projectStauses = new HashMap<>();
+    List<ProjectStatusEnum> listEnum = Arrays.asList(ProjectStatusEnum.values());
+    for (ProjectStatusEnum projectStatusEnum : listEnum) {
+      projectStauses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
     }
-
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
       this.getCurrentPlanningYear(), this.getCycleName()));
@@ -188,7 +201,6 @@ public class ActivitiesListAction extends BaseAction {
     // Getting the history for this section.
     super.setHistory(historyManager.getActivitiesHistory(project.getId()));
   }
-
 
   @Override
   public String save() {
@@ -240,12 +252,17 @@ public class ActivitiesListAction extends BaseAction {
     return NOT_AUTHORIZED;
   }
 
+
   public void setProjectID(int projectID) {
     this.projectID = projectID;
   }
 
   public void setProjectPartnerPersons(Map<Integer, String> projectPartnerPersons) {
     this.projectPartnerPersons = projectPartnerPersons;
+  }
+
+  public void setProjectStauses(Map<String, String> projectStauses) {
+    this.projectStauses = projectStauses;
   }
 
   @Override

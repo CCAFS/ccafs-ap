@@ -31,9 +31,18 @@ public class Activity {
   private int id;
   private String title;
   private String description;
+  private int activityStatus;
+  private String activityProgress;
+
   private Date startDate;
+
+
   private Date endDate;
+
+
   private PartnerPerson leader;
+
+
   private long created;
 
   public Activity() {
@@ -52,6 +61,14 @@ public class Activity {
       return a.getId() == this.id;
     }
     return false;
+  }
+
+  public String getActivityProgress() {
+    return activityProgress;
+  }
+
+  public int getActivityStatus() {
+    return activityStatus;
   }
 
   /**
@@ -136,6 +153,14 @@ public class Activity {
    */
   public boolean isNew(Date planningStartDate) {
     return this.created >= planningStartDate.getTime();
+  }
+
+  public void setActivityProgress(String activityProgress) {
+    this.activityProgress = activityProgress;
+  }
+
+  public void setActivityStatus(int activityStatus) {
+    this.activityStatus = activityStatus;
   }
 
   public void setCreated(long created) {

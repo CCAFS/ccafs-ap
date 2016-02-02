@@ -82,7 +82,13 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
+      if (activityData.get("activityStatus") != null) {
+        activity.setActivityStatus(Integer.parseInt(activityData.get("activityStatus")));
+      }
 
+      activity.setActivityProgress(activityData.get("activityProgress"));
+
+      activity.setTitle(activityData.get("title"));
       // Format the date of the activity
       if (activityData.get("startDate") != null) {
         try {
@@ -122,7 +128,10 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
-
+      if (activityData.get("activityStatus") != null) {
+        activity.setActivityStatus(Integer.parseInt(activityData.get("activityStatus")));
+      }
+      activity.setActivityProgress(activityData.get("activityProgress"));
       // Format the date of the activity
       if (activityData.get("startDate") != null) {
         try {
@@ -157,6 +166,10 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
+      if (activityData.get("activityStatus") != null) {
+        activity.setActivityStatus(Integer.parseInt(activityData.get("activityStatus")));
+      }
+      activity.setActivityProgress(activityData.get("activityProgress"));
       // Format the date of the activity
       if (activityData.get("startDate") != null) {
         try {
@@ -194,7 +207,10 @@ public class ActivityManagerImpl implements ActivityManager {
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
       activity.setDescription(activityData.get("description"));
-
+      if (activityData.get("activityStatus") != null) {
+        activity.setActivityStatus(Integer.parseInt(activityData.get("activityStatus")));
+      }
+      activity.setActivityProgress(activityData.get("activityProgress"));
       // Format the date of the activity
       if (activityData.get("startDate") != null) {
         try {
@@ -232,7 +248,10 @@ public class ActivityManagerImpl implements ActivityManager {
       activity = new Activity();
       activity.setId(Integer.parseInt(activityData.get("id")));
       activity.setTitle(activityData.get("title"));
-
+      if (activityData.get("activityStatus") != null) {
+        activity.setActivityStatus(Integer.parseInt(activityData.get("activityStatus")));
+      }
+      activity.setActivityProgress(activityData.get("activityProgress"));
       activities.add(activity);
     }
     return activities;
@@ -264,6 +283,8 @@ public class ActivityManagerImpl implements ActivityManager {
     }
     activityData.put("title", activity.getTitle());
     activityData.put("description", activity.getDescription());
+    activityData.put("activityStatus", activity.getActivityStatus());
+    activityData.put("activityProgress", activity.getActivityProgress());
     SimpleDateFormat format = new SimpleDateFormat(APConstants.DATE_FORMAT);
     if (activity.getEndDate() != null) {
       activityData.put("endDate", format.format(activity.getEndDate()));

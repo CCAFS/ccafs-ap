@@ -50,7 +50,7 @@
       [#-- Activity status --]
       <div class="fullPartBlock clearfix"> 
         <div class="halfPartBlock">
-          [@customForm.select name="${activitiesName}.activityStatus" className="activityStatus" label="" required=true i18nkey="reporting.activityDescription.activityStatus" listName="statuses" editable=editable/]
+          [@customForm.select name="${activitiesName}.activityStatus" className="activityStatus" label="" required=true i18nkey="reporting.activityDescription.activityStatus" listName="projectStauses" editable=editable/]
         </div>   
       </div>
       [#-- Overall Activity progress --]

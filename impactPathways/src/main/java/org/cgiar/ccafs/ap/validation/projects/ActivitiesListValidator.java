@@ -53,11 +53,17 @@ public class ActivitiesListValidator extends BaseValidator {
         // Loop all the activities.
         for (int c = 0; c < project.getActivities().size(); c++) {
           // Required fields are required for all type of projects.
-          this.validateRequiredFields(action, project.getActivities().get(c), c);
-          this.validateTitle(action, project.getActivities().get(c).getTitle(), c);
-          this.validateDescription(action, project.getActivities().get(c).getDescription(), c);
-          this.validateStartDate(action, project.getActivities().get(c).getStartDate(), c);
-          this.validateEndDate(action, project.getActivities().get(c).getEndDate(), c);
+
+          if (action.isReportingCycle()) {
+
+          } else {
+            this.validateRequiredFields(action, project.getActivities().get(c), c);
+            this.validateTitle(action, project.getActivities().get(c).getTitle(), c);
+            this.validateDescription(action, project.getActivities().get(c).getDescription(), c);
+            this.validateStartDate(action, project.getActivities().get(c).getStartDate(), c);
+            this.validateEndDate(action, project.getActivities().get(c).getEndDate(), c);
+          }
+
 
         }
       } else {
@@ -110,9 +116,16 @@ public class ActivitiesListValidator extends BaseValidator {
     }
   }
 
+  public void validateStatusDescription(BaseAction action, int status, int c) {
+    if (!activityValidator.isValidStatus(status)) {
+      this.addMessage("Activity #" + (c + 1) + ": Status");
+      this.addMissingField("project.activities[" + c + "].activityStatus");
+    }
+  }
+
   public void validateTitle(BaseAction action, String title, int c) {
     if (!activityValidator.isValidTitle(title)) {
-      this.addMessage("Activity #" + (c + 1) + ": Title");
+      this.addMessage("Activity #" + (c + 1) + ": Title ");
       this.addMissingField("project.activities[" + c + "].title");
     }
   }
