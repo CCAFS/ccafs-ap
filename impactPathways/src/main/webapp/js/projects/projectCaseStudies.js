@@ -67,14 +67,14 @@ function setElementIndex(i,element) {
   $(element).find(".caseStudyExplainIndicatorRelation").attr("name", name + "explainIndicatorRelation");
   $(element).find(".caseStudyTitle").attr("name", name + "title");
   $(element).find(".caseStudyOutcomeStatement").attr("name", name + "outcomeStatement");
-  $(element).find(".caseStudyResearchOutput").attr("name", name + "researchOutput");
+  $(element).find(".caseStudyResearchOutput").attr("name", name + "researchOutputs");
   $(element).find(".caseStudyResearchPartners").attr("name", name + "researchPartners");
-  $(element).find(".caseStudyActivitiesContributed").attr("name", name + "activitiesContributed");
-  $(element).find(".caseStudyNonResearchPartners").attr("name", name + "nonResearchPartners");
+  $(element).find(".caseStudyActivitiesContributed").attr("name", name + "activities");
+  $(element).find(".caseStudyNonResearchPartners").attr("name", name + "nonResearchPartneres");
   $(element).find(".caseStudyOutputUsers").attr("name", name + "outputUsers");
   $(element).find(".caseStudyOutputUsed").attr("name", name + "outputUsed");
-  $(element).find(".caseStudyEvidence").attr("name", name + "evidence");
-  $(element).find(".caseStudyReferences").attr("name", name + "references");
+  $(element).find(".caseStudyEvidence").attr("name", name + "evidenceOutcome");
+  $(element).find(".caseStudyReferences").attr("name", name + "referencesCase");
   $(element).find(".annexesFile").attr("name", name + "myFile");
 
   $(element).find(".caseStudyYear").attr("name", name + "year");

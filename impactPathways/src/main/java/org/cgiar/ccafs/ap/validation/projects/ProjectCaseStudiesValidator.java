@@ -32,12 +32,14 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
   private ProjectValidator projectValidator;
   private boolean fields = false;
 
+  private int c = 0;
+
+
   @Inject
   public ProjectCaseStudiesValidator(ProjectValidator projectValidator) {
     super();
     this.projectValidator = projectValidator;
   }
-
 
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
@@ -46,7 +48,7 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
         this.validateProjectJustification(action, project);
 
         for (CasesStudies caseStudy : project.getCaseStudies()) {
-
+          c++;
           this.validateTitle(action, caseStudy.getTitle());
           this.validateActivities(action, caseStudy.getActivities());
           this.validateEvidenceOutcome(action, caseStudy.getEvidenceOutcome());
@@ -56,6 +58,7 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
           this.validatereRerencesCase(action, caseStudy.getReferencesCase());
           this.validateResearchOutputs(action, caseStudy.getResearchOutputs());
           this.validateResearchPatern(action, caseStudy.getResearchPartners());
+
         }
       }
       if (fields) {
@@ -66,14 +69,14 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
       }
 
       // Saving missing fields.
-      this.saveMissingFields(project, cycle, "caseStudy");
+      this.saveMissingFields(project, cycle, "caseStudies");
     }
   }
 
 
   private void validateActivities(BaseAction action, String activities) {
     if (!(this.isValidString(activities) && this.wordCount(activities) <= 150)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.activities").toLowerCase());
+      this.addMessage("Case Study #" + c + " Activities");
       this.addMissingField("project.caseStudies.activities");
     }
   }
@@ -81,14 +84,14 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
 
   private void validateEvidenceOutcome(BaseAction action, String evidenceOutcome) {
     if (!(this.isValidString(evidenceOutcome) && this.wordCount(evidenceOutcome) <= 50)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.evidenceOutcome").toLowerCase());
+      this.addMessage("Case Study #" + c + " Outcome");
       this.addMissingField("project.caseStudies.evidenceOutcome");
     }
   }
 
   private void validateNonResearchPartneres(BaseAction action, String nonResearchPartneres) {
     if (!(this.isValidString(nonResearchPartneres) && this.wordCount(nonResearchPartneres) <= 150)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.nonResearchPartneres").toLowerCase());
+      this.addMessage("Case Study #" + c + " Non Research Partneres");
       this.addMissingField("project.caseStudies.nonResearchPartneres");
     }
   }
@@ -96,7 +99,7 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
 
   private void validateOutcomeStatement(BaseAction action, String outcomeStatement) {
     if (!(this.isValidString(outcomeStatement) && this.wordCount(outcomeStatement) <= 80)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.outcomeStatement").toLowerCase());
+      this.addMessage("Case Study #" + c + " Outcome Statement");
       this.addMissingField("project.caseStudies.outcomeStatement");
     }
   }
@@ -104,21 +107,21 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
 
   private void validateOutputUsers(BaseAction action, String outputUsers) {
     if (!(this.isValidString(outputUsers) && this.wordCount(outputUsers) <= 50)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.outputUsers").toLowerCase());
+      this.addMessage("Case Study #" + c + " Output Users");
       this.addMissingField("project.caseStudies.outputUsers");
     }
   }
 
   private void validatereRerencesCase(BaseAction action, String referencesCase) {
     if (!(this.isValidString(referencesCase) && this.wordCount(referencesCase) <= 50)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.referencesCase").toLowerCase());
+      this.addMessage("Case Study #" + c + " References Case");
       this.addMissingField("project.caseStudies.referencesCase");
     }
   }
 
   private void validateResearchOutputs(BaseAction action, String researchOutputs) {
     if (!(this.isValidString(researchOutputs) && this.wordCount(researchOutputs) <= 150)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.researchOutputs").toLowerCase());
+      this.addMessage("Case Study #" + c + " Reserach Outputs");
       this.addMissingField("project.caseStudies.researchOutputs");
     }
   }
@@ -126,14 +129,14 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
 
   private void validateResearchPatern(BaseAction action, String researchPatern) {
     if (!(this.isValidString(researchPatern) && this.wordCount(researchPatern) <= 150)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.researchPatern").toLowerCase());
+      this.addMessage("Case Study #" + c + " Research Patern");
       this.addMissingField("project.caseStudies.researchPatern");
     }
   }
 
   private void validateTitle(BaseAction action, String title) {
     if (!(this.isValidString(title) && this.wordCount(title) <= 15)) {
-      this.addMessage(action.getText("reporting.project.caseStudies.title").toLowerCase());
+      this.addMessage("Case Study #" + c + " Title");
       this.addMissingField("project.caseStudies.title");
     }
   }

@@ -59,6 +59,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
   private int projectID;
   private List<Integer> allYears;
 
+  private List<CasesStudies> caseStudiesPreview;
 
   private Project project;
 
@@ -152,6 +153,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
     }
 
     project.setCaseStudies(caseStudieManager.getCaseStudysByProject(projectID));
+
     List<String> idsIndicators;
     Iterator<CaseStudieIndicators> iteratorIndicators;
     CaseStudieIndicators caseStudyIndicator;
@@ -184,6 +186,14 @@ public class ProjectCaseStudiesAction extends BaseAction {
         ipIndicator.getParent().getDescription());
     }
 
+
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getCaseStudies() != null) {
+        project.getCaseStudies().clear();
+      }
+    }
+
     // Getting the last history
 
   }
@@ -191,9 +201,17 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
   @Override
   public String save() {
-
+    caseStudiesPreview = caseStudieManager.getCaseStudysByProject(projectID);
     List<CaseStudieIndicators> indicators;
     CaseStudieIndicators caseStudieIndicator;
+    if (caseStudiesPreview != null) {
+      for (CasesStudies caseStudie : caseStudiesPreview) {
+        if (!project.getCaseStudies().contains(caseStudie)) {
+          caseStudieManager.deleteCaseStudy(caseStudie.getId(), this.getCurrentUser(), this.getJustification());
+        }
+      }
+    }
+
     for (CasesStudies caseStudie : project.getCaseStudies()) {
 
       if (caseStudie.getMyFile() != null) {
@@ -216,7 +234,10 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
       caseStudie.setIsActive(true);
       caseStudie.setCaseStudieIndicatorses(new HashSet<>(indicators));
-      caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
+      if (caseStudie.getId() != null) {
+        caseStudieManager.saveCaseStudy(projectID, caseStudie, this.getCurrentUser(), this.getJustification());
+      }
+
     }
 
     return SUCCESS;
