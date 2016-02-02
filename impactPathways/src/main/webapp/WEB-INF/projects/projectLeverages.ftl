@@ -122,7 +122,6 @@
     <div class="fullPartBlock partnerName chosen">
       <p class="fieldError"></p>
       [@customForm.select name="${customName}.institution" value="${(element.institution)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="reporting.projectLeverages.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
-      
     </div>
     
     [#-- Start and End Date --]
