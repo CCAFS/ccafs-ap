@@ -35,13 +35,13 @@
           </td>
           
           <td class="removeDeliverable-row">
-            [#--if canEdit]
+            [#if canEdit && action.hasProjectPermission("removeOldDeliverables", project.id)]
               <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="deliverableID${dl.id}" title="" >
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="planning.deliverables.removeDeliverable" /]" /> 
               </a>
-            [#else--]
+            [#else]
               <img src="${baseUrl}/images/global/trash_disable.png" title="[@s.text name="planning.deliverables.cantDeleteDeliverable" /]" />
-            [#--  [/#if]  --]
+            [/#if]  
           </td> 
         </tr> 
       [/#list]
