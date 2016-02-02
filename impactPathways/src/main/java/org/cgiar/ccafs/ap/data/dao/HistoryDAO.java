@@ -67,6 +67,15 @@ public interface HistoryDAO {
   public List<Map<String, String>> getProjectBudgetHistory(int projectID);
 
   /**
+   * This method returns the last five changes (only the user, date, action and justification) made in the interface of
+   * project case studies to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectCaseStudiesHistory(int projectID);
+
+  /**
    * This method returns the last five changes made in the interface of project deliverables to the deliverable
    * identified by the value received by parameter.
    * 
@@ -85,6 +94,17 @@ public interface HistoryDAO {
    */
   public List<Map<String, String>> getProjectDescriptionHistory(int projectID);
 
+
+  /**
+   * This method returns the last five changes (only the user, date, action and justification) made in the interface of
+   * project highlights to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectHighLights(int projectID);
+
+
   /**
    * This method returns the last five changes (only the user, date, action and justification) made in the interface of
    * project Other contributions to the project identified by the value received by parameter.
@@ -93,6 +113,17 @@ public interface HistoryDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getProjectIPOtherContributionHistory(int projectID);
+
+
+  /**
+   * This method returns the last five changes (only the user, date, action and justification) made in the interface of
+   * project leverage to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectLeverage(int projectID);
+
 
   /**
    * This method returns the last five changes (only the user, date, action and justification) made in the interface of
@@ -103,6 +134,15 @@ public interface HistoryDAO {
    */
 
   public List<Map<String, String>> getProjectLocationsHistory(int projectID);
+
+  /**
+   * This method returns the last five changes (only the user, date, action and justification) made in the interface of
+   * project next users to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectNextUsers(int projectID);
 
   /**
    * This method returns the last five changes (only the user, date, action and justification) made in the interface of

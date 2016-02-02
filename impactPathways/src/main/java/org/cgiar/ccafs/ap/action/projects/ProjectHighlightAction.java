@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
+import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.LocationManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Country;
@@ -85,16 +86,18 @@ public class ProjectHighlightAction extends BaseAction {
   private List<Country> countries;
   private List<ProjectHighlightsType> previewTypes;
   private List<ProjectHighligthsCountry> previewCountries;
+  private HistoryManager historyManager;
 
   @Inject
   public ProjectHighlightAction(APConfig config, ProjectManager projectManager, HighLightManager highLightManager,
-    LocationManager locationManager, ProjectHighLightValidator validator) {
+    LocationManager locationManager, ProjectHighLightValidator validator, HistoryManager historyManager) {
     super(config);
     this.projectManager = projectManager;
     this.highLightManager = highLightManager;
 
     this.locationManager = locationManager;
     this.validator = validator;
+    this.historyManager = historyManager;
   }
 
   /**
@@ -243,6 +246,9 @@ public class ProjectHighlightAction extends BaseAction {
     highlight.setTypesIds(typesids);
     previewTypes.addAll(typesids);
     highlight.setTypesids(ids);
+
+    super.setHistory(historyManager.getProjectHighLights(project.getId()));
+
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }

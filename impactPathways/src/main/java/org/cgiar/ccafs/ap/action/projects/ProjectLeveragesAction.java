@@ -30,7 +30,9 @@ import org.cgiar.ccafs.utils.APConfig;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -50,10 +52,11 @@ public class ProjectLeveragesAction extends BaseAction {
   private ProjectLeverageManager projectLeverageManager;
   private int projectID;
   private Project project;
-  private List<Institution> allInstitutions;
-  private List<IPProgram> ipProgramFlagships;
+  private Map<String, String> allInstitutions;
+  private Map<String, String> ipProgramFlagships;
   private List<ProjectLeverage> leveragesPreview;
   private ProjectLeverageValidator validator;
+  private HistoryManager historyManager;
 
   @Inject
   public ProjectLeveragesAction(APConfig config, ProjectManager projectManager, HistoryManager historyManager,
@@ -65,29 +68,31 @@ public class ProjectLeveragesAction extends BaseAction {
     this.ipProgramManager = ipProgramManager;
     this.projectLeverageManager = projectLeverageManager;
     this.validator = validator;
+    this.historyManager = historyManager;
   }
 
-  public List<Institution> getAllInstitutions() {
+  public Map<String, String> getAllInstitutions() {
     return allInstitutions;
   }
 
-  /**
+  /*
+   * /**
    * This method returns a composed name with the Acronym and Name.
    * e.g. FP4: Policies and Institutions for Climate-Resilient Food Systems
-   * 
    * @param ipProgramId is the program identifier.
    * @return the composed name described above.
    */
-  public String getComposedName(int ipProgramId) {
-    for (IPProgram p : ipProgramFlagships) {
-      if (p.getId() == ipProgramId) {
-        return p.getAcronym() + ": " + p.getName();
-      }
-    }
-    return null;
-  }
-
-  public List<IPProgram> getIpProgramFlagships() {
+  /*
+   * public String getComposedName(int ipProgramId) {
+   * for (IPProgram p : ipProgramFlagships) {
+   * if (p.getId() == ipProgramId) {
+   * return p.getAcronym() + ": " + p.getName();
+   * }
+   * }
+   * return null;
+   * }
+   */
+  public Map<String, String> getIpProgramFlagships() {
     return ipProgramFlagships;
   }
 
@@ -126,10 +131,17 @@ public class ProjectLeveragesAction extends BaseAction {
     project = projectManager.getProject(projectID);
 
     // Getting the list of all institutions
-    allInstitutions = institutionManager.getAllInstitutions();
-
+    this.allInstitutions = new HashMap<>();
+    List<Institution> allInstitutions = institutionManager.getAllInstitutions();
+    for (Institution institution : allInstitutions) {
+      this.allInstitutions.put(String.valueOf(institution.getId()), institution.getComposedName());
+    }
+    this.ipProgramFlagships = new HashMap<>();
     // Getting the information of the Flagships program for the View
-    ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    List<IPProgram> ipProgramFlagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    for (IPProgram ipProgram : ipProgramFlagships) {
+      this.ipProgramFlagships.put(String.valueOf(ipProgram.getId()), ipProgram.getComposedName());
+    }
     DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
     if (project.getLeverages() != null) {
@@ -152,6 +164,8 @@ public class ProjectLeveragesAction extends BaseAction {
 
 
       }
+
+      super.setHistory(historyManager.getProjectLeverage(project.getId()));
 
     }
     // Initializing Section Statuses:
