@@ -63,7 +63,6 @@ function checkImplementationStatus(year,element) {
   } else {
     $statuses.addOption(2, "Implementation");
   }
-  $statuses.select2();
 }
 
 function removeElement(e) {
@@ -79,7 +78,7 @@ function addElement(e) {
   var $newElement = $elementTemplate.clone(true).removeAttr("id");
   $elementsBlock.append($newElement.fadeIn("slow"));
   setActivitiesIndexes();
-  addSelect2();
+  $newElement.find('select').select2();
   applyWordCounter($newElement.find(".activity .title"), lWordsTitle);
   applyWordCounter($newElement.find(".activity .description"), lWordsDesc);
   datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));
@@ -111,7 +110,7 @@ function setDatadatePicker() {
 }
 
 function addSelect2() {
-  $elementsBlock.find("select").select2();
+  $("form select").select2();
 }
 
 function datePickerConfig($startDate,$endDate) {
