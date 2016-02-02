@@ -179,15 +179,23 @@ public class StandardDAO {
     try {
       this.openSession();
       this.initTransaction();
-      session.saveOrUpdate(obj);
+      session.save(obj);
       this.commitTransaction();
       return true;
     } catch (HibernateException e) {
       this.rollBackTransaction();
-      e.printStackTrace();
+
+      session.clear();
+      if (e instanceof org.hibernate.exception.ConstraintViolationException) {
+        Transaction tx1 = session.beginTransaction();
+
+
+        tx1.commit();
+
+      }
       return false;
     } finally {
-      session.flush();
+
       this.closeSession();
     }
   }
