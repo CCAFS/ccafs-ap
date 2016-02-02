@@ -121,7 +121,7 @@
     [#-- Partner name  --]
     <div class="fullPartBlock partnerName chosen">
       <p class="fieldError"></p>
-      [@customForm.select name="${customName}.institution" value="${(element.institution)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="reporting.projectLeverages.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=editable /]
+      [@customForm.select name="${customName}.institution" value="${(element.institution)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="reporting.projectLeverages.partner.name" listName="allInstitutions"  editable=editable /]
     </div>
     
     [#-- Start and End Date --]
@@ -138,8 +138,8 @@
     <div class="fullPartBlock clearfix"> 
       [#-- Flagship --]  
       <div class="halfPartBlock">        
-        [@customForm.select name="${customName}.flagship" value="${(element.flagship)!}" label="" className="flagship" disabled=false i18nkey="reporting.projectLeverages.flagship" listName="ipProgramFlagships" keyFieldName="id"  displayFieldName="getComposedName()" required=true editable=editable /]
-        [#if !editable && element.flagship != -1] <div class="select"><p>FP ${element.flagship}</p></div> [/#if]
+        [@customForm.select name="${customName}.flagship" value="${(element.flagship)!}" label="" className="flagship" disabled=false i18nkey="reporting.projectLeverages.flagship" listName="ipProgramFlagships"   required=true editable=editable /]
+     
       </div> 
       [#-- Budget --]  
       <div class="halfPartBlock">
