@@ -62,28 +62,20 @@ public class ProjectHighligths implements java.io.Serializable {
     this.id = id;
   }
 
-  public ProjectHighligths(String title, String author, boolean isGlobal, int leader, boolean isActive, long projectId,
-    Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
-    this.title = title;
-    this.author = author;
-    this.isActive = isActive;
-    this.projectId = projectId;
-    this.activeSince = activeSince;
-    this.createdBy = createdBy;
-    this.modifiedBy = modifiedBy;
-    this.modificationJustification = modificationJustification;
-  }
-
-  public ProjectHighligths(String title, String author, Date startDate, Date endDate, String photo, String objectives,
-    String description, String results, String partners, String links, String keywords, String subject,
-    String contributor, String publisher, String relation, String coverage, String rights, boolean isGlobal, int leader,
-    Integer type, Long year, boolean isActive, Long status, long projectId, Date activeSince, long createdBy,
-    long modifiedBy, String modificationJustification, Set<ProjectHighligthsTypes> projectHighligthsTypeses,
-    Set<ProjectHighligthsCountry> projectHighligthsCountries) {
+  public ProjectHighligths(Integer id, String title, String author, Date startDate, String startDateText, Date endDate,
+    String endDateText, String photo, String description, String results, String partners, String links,
+    String keywords, String subject, Integer type, Long year, boolean isActive, Long status, long projectId,
+    Date activeSince, long createdBy, long modifiedBy, String modificationJustification,
+    Set<ProjectHighligthsTypes> projectHighligthsTypeses, Set<ProjectHighligthsCountry> projectHighligthsCountries,
+    List<Country> countries, List<Integer> countriesIds, List<ProjectHighlightsType> typesIds, List<String> typesids2) {
+    super();
+    this.id = id;
     this.title = title;
     this.author = author;
     this.startDate = startDate;
+    this.startDateText = startDateText;
     this.endDate = endDate;
+    this.endDateText = endDateText;
     this.photo = photo;
     this.description = description;
     this.results = results;
@@ -91,7 +83,6 @@ public class ProjectHighligths implements java.io.Serializable {
     this.links = links;
     this.keywords = keywords;
     this.subject = subject;
-
     this.type = type;
     this.year = year;
     this.isActive = isActive;
@@ -103,6 +94,23 @@ public class ProjectHighligths implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
     this.projectHighligthsTypeses = projectHighligthsTypeses;
     this.projectHighligthsCountries = projectHighligthsCountries;
+    this.countries = countries;
+    this.countriesIds = countriesIds;
+    TypesIds = typesIds;
+    typesids = typesids2;
+  }
+
+
+  public ProjectHighligths(String title, String author, boolean isGlobal, int leader, boolean isActive, long projectId,
+    Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
+    this.title = title;
+    this.author = author;
+    this.isActive = isActive;
+    this.projectId = projectId;
+    this.activeSince = activeSince;
+    this.createdBy = createdBy;
+    this.modifiedBy = modifiedBy;
+    this.modificationJustification = modificationJustification;
   }
 
   public Date getActiveSince() {

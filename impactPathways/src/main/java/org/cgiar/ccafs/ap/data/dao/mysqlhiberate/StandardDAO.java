@@ -179,7 +179,7 @@ public class StandardDAO {
     try {
       this.openSession();
       this.initTransaction();
-      session.save(obj);
+      session.saveOrUpdate(obj);
       this.commitTransaction();
       return true;
     } catch (HibernateException e) {
