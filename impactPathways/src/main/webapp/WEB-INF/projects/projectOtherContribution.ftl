@@ -55,7 +55,7 @@
       
       [#-- How are contributing to other CCAFS IP --]
       <div class="fullBlock">
-        [@customForm.textArea name="project.ipOtherContribution.contribution" className="contribution limitWords-100" i18nkey="planning.impactPathways.otherContributions.contribution" editable=editable && !reportingCycle /]  
+        [@customForm.textArea name="project.ipOtherContribution.contribution" className="contribution limitWords-100" i18nkey="planning.impactPathways.otherContributions.contribution" editable=editable && action.hasProjectPermission("contribution", project.id) /]  
       </div>
       
       [#-- -- -- REPORTING BLOCK -- -- --]
@@ -71,7 +71,7 @@
       
       [#-- Contribution to another center activity --]
       <div class="fullBlock">
-        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" className="additionalContribution limitWords-100" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable && !reportingCycle /]  
+        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" className="additionalContribution limitWords-100" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable && action.hasProjectPermission("additionalContribution", project.id) /]  
       </div>
       
       [#-- Collaborating with other CRPs --]
@@ -94,12 +94,12 @@
                   [#-- CRP Collaboration nature --]
                   [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" showTitle=false /]
                   <div class="fullPartBlock">
-                    [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature limitWords-50" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable && !reportingCycle required=true/]  
+                    [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature limitWords-50" i18nkey="planning.impactPathways.otherContributions.collaborationNature" required=true editable=editable && action.hasProjectPermission("natureCollaboration", project.id) /]  
                   </div>
                   [#-- The achieved outcome  --]
                   [#if reportingCycle]
                     <div class="fullPartBlock">
-                      [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].explainAchieved" className="crpCollaborationAchieved limitWords-100" i18nkey="reporting.projectOtherContributions.collaborationAchieved" editable=editable required=true/]  
+                      [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].explainAchieved" className="crpCollaborationAchieved limitWords-100" i18nkey="reporting.projectOtherContributions.collaborationAchieved" required=true editable=editable && action.hasProjectPermission("explainAchieved", project.id) /]  
                     </div>
                   [/#if]
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
@@ -109,7 +109,7 @@
               <p class="emptyText"> [@s.text name="planning.impactPathways.otherContributions.crpsEmpty" /] </p>  
             [/#if]  
             </ul>
-            [#if editable]
+            [#if editable && action.hasProjectPermission("addCRPContribution", project.id)]
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="crps" keyFieldName="id"  displayFieldName="name" className="crpsSelect" value="" /]
             [/#if] 
           </div>
@@ -208,28 +208,28 @@
     <div class="fullBlock">
       [#-- Region --]
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.region" className="otherContributionRegion" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+        [@customForm.select name="${customName}.region" className="otherContributionRegion" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions" keyFieldName="id"  displayFieldName="name" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
       </div>
       [#-- Flagship --]
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.flagship" className="otherContributionFlagship" label="" i18nkey="reporting.projectOtherContributions.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+        [@customForm.select name="${customName}.flagship" className="otherContributionFlagship" label="" i18nkey="reporting.projectOtherContributions.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
       </div>
     </div>
     [#-- Indicator --]
     <div class="fullBlock">
-      [@customForm.select name="${customName}.indicators" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable /]
+      [@customForm.select name="${customName}.indicators" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
       [#if editable]<span class="indicatorsFound">[#if !contribution.flagship?? || !contribution.region??](Please select a region and flagship)[/#if]</span>[/#if]
     </div>
     [#-- Describe how you are contributing to the selected outcome --]
     <div class="fullBlock">
       <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:</h6>
-      [@customForm.textArea name="${customName}.description" className="otherContributionDescription limitWords-100"  i18nkey="" showTitle=false editable=editable required=true/]
+      [@customForm.textArea name="${customName}.description" className="otherContributionDescription limitWords-100"  i18nkey="" showTitle=false required=true editable=editable && action.hasProjectPermission("otherContributionDescription", project.id) /]
     </div>
     [#-- Target contribution --]
     <div class="fullBlock">
       <h6>[@customForm.text name="reporting.projectOtherContributions.target" readText=!editable /]:</h6>
       <div class="halfPartBlock">
-        [@customForm.input name="${customName}.target" className="otherContributionTarget" i18nkey="" showTitle=false editable=editable /]
+        [@customForm.input name="${customName}.target" className="otherContributionTarget" i18nkey="" showTitle=false editable=editable && action.hasProjectPermission("otherContributionTarget", project.id) /]
       </div>
     </div>
   </div> 

@@ -6,7 +6,7 @@ $(document).ready(init);
 function init() {
   // Set initial variables
   $elementsBlock = $('#leveragesBlock');
-  $budgetInputs = $('.budgetInput');
+  $budgetInputs = $('.budget.budgetInput');
   leveragesName = $('#leveragesName').val();
   // Add events
   attachEvents();
@@ -14,8 +14,6 @@ function init() {
   setDatadatePicker();
   // Popup for partners
   popups();
-  // Active initial currency format to all inputs
-  $budgetInputs.attr("autocomplete", "off").trigger("focusout");
   // Validate justification event
   validateEvent([
     "#justification"
@@ -34,6 +32,8 @@ function attachEvents() {
   }).on("keyup", function(e) {
     // any special calculation here
   });
+  // Active initial currency format to all inputs once
+  $budgetInputs.attr("autocomplete", "off").trigger("focusout");
 
   $("form").submit(function(event) {
     $budgetInputs = $('.budgetInput');
@@ -144,11 +144,12 @@ function datePickerConfig($startDate,$endDate) {
  * Currency functions
  */
 
-function setCurrency(event) {
-  var $input = $(event.target);
+function setCurrency(e) {
+  var $input = $(e.target);
   if($input.val().length == 0) {
     $input.val("0");
   }
+  console.log($input.val());
   $input.val(setCurrencyFormat($input.val()));
 }
 
