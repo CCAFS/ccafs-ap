@@ -1,6 +1,9 @@
 var lWordsTitle = 15;
 var lWordsDesc = 150;
 var lWordsLessons = 150;
+
+var $statuses, $statusDescription;
+
 $(document).ready(init);
 
 function init() {
@@ -9,8 +12,9 @@ function init() {
   $elementTemplate = $("#activity-template");
   elementClass = ".activity";
   elementName = $('#activitiesName').val();
-  // Add chose widget to selects
-  addChosen();
+
+  // Add select2 widget to selects
+  addSelect2();
   // Add JQuery Calendar widget to start dates and end dates
   setDatadatePicker();
   // Add events for activities section
@@ -30,6 +34,36 @@ function attachEvents() {
   $('.removeElement').on('click', removeElement);
   // Add new activity event
   $('#activities_add a').on('click', addElement);
+
+  $('select.activityStatus').on('change', function(e) {
+    if(isStatusCancelled($(this).val())) {
+      $(this).parents('.activity').find('.statusDescription').show(400);
+    } else {
+      $(this).parents('.activity').find('.statusDescription').hide(400);
+    }
+  });
+
+  $('input.endDate').on('change', changeStatus);
+  $('input.endDate').trigger('change');
+}
+
+function isStatusCancelled(statusId) {
+  return(statusId == "5")
+}
+
+function changeStatus() {
+  var d = new Date($(this).val());
+  checkImplementationStatus(d.getFullYear(), $(this));
+}
+
+function checkImplementationStatus(year,element) {
+  var $statuses = $(element).parents('.activity').find('select.activityStatus')
+  if(year <= currentReportingYear) {
+    $statuses.removeOption(2);
+  } else {
+    $statuses.addOption(2, "Implementation");
+  }
+  $statuses.select2();
 }
 
 function removeElement(e) {
@@ -45,7 +79,7 @@ function addElement(e) {
   var $newElement = $elementTemplate.clone(true).removeAttr("id");
   $elementsBlock.append($newElement.fadeIn("slow"));
   setActivitiesIndexes();
-  addChosen();
+  addSelect2();
   applyWordCounter($newElement.find(".activity .title"), lWordsTitle);
   applyWordCounter($newElement.find(".activity .description"), lWordsDesc);
   datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));
@@ -76,10 +110,8 @@ function setDatadatePicker() {
   });
 }
 
-function addChosen() {
-  $elementsBlock.find("select").chosen({
-    search_contains: true
-  });
+function addSelect2() {
+  $elementsBlock.find("select").select2();
 }
 
 function datePickerConfig($startDate,$endDate) {

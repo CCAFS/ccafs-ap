@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Activities" /]
-[#assign globalLibs = ["jquery", "noty","autoSave", "dataTable", "chosen"] /]
+[#assign globalLibs = ["jquery", "noty","autoSave", "dataTable", "select2"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/global/usersManagement.js", "${baseUrl}/js/projects/activity-list.js"] /]
 [#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
 [#assign currentSection = cycleName?lower_case /]
