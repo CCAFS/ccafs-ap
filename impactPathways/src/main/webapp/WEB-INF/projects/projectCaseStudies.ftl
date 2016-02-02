@@ -163,7 +163,7 @@
             <div class="select"><p>Field is empty</p></div>
           [/#if]
         [/#if]
-        </div>
+        </div>   
       </div>
       [@customForm.textArea name="${customName}.explainIndicatorRelation" i18nkey="reporting.projectCaseStudies.explainIndicatorRelation" className="caseStudyExplainIndicatorRelation limitWords-50" editable=editable /]
     </div>
