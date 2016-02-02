@@ -109,7 +109,7 @@ public class ProjectNextUsersAction extends BaseAction {
     this.initializeProjectSectionStatuses(project, this.getCycleName());
 
     // Getting the history for this section.
-    super.setHistory(historyManager.getActivitiesHistory(project.getId()));
+    super.setHistory(historyManager.getProjectNextUser(project.getId()));
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
       if (project.getNextUsers() != null) {

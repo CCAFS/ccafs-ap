@@ -66,6 +66,15 @@ public interface HistoryManager {
   public List<LogHistory> getProjectBudgetHistory(int projectID);
 
   /**
+   * This method returns the last five changes made in the interface of
+   * project case studies to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public <T> List<LogHistory> getProjectCaseStudyHistory(int projectID);
+
+  /**
    * This method returns the last five changes made in the interface of project deliverables to the deliverable
    * identified by the value received by parameter.
    * 
@@ -84,6 +93,15 @@ public interface HistoryManager {
   public <T> List<LogHistory> getProjectDescriptionHistory(int projectID);
 
   /**
+   * This method returns the last five changes made in the interface of
+   * project highlights to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public <T> List<LogHistory> getProjectHighLights(int projectID);
+
+  /**
    * This method returns the last five changes made in the interface of project other contribution to the project
    * identified by the value received by parameter.
    * 
@@ -91,6 +109,16 @@ public interface HistoryManager {
    * @return
    */
   public List<LogHistory> getProjectIPOtherContributionHistory(int projectID);
+
+
+  /**
+   * This method returns the last five changes made in the interface of
+   * project leverage to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public <T> List<LogHistory> getProjectLeverage(int projectID);
 
   /**
    * This method returns the last five changes made in the interface of
@@ -100,6 +128,15 @@ public interface HistoryManager {
    * @return a list of logHistory objects that contains the information.
    */
   public <T> List<LogHistory> getProjectLocationsHistory(int projectID);
+
+  /**
+   * This method returns the last five changes made in the interface of
+   * project next study to the project identified by the value received by parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of logHistory objects that contains the information.
+   */
+  public <T> List<LogHistory> getProjectNextUser(int projectID);
 
   /**
    * This method returns the last five changes made in the interface of project outcomes to the project identified by

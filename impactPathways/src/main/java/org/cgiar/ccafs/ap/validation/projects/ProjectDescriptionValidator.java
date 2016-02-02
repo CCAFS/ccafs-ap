@@ -91,8 +91,8 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateBilateralContractProposalName(action, project.getBilateralContractProposalName());
     if (cycle.equals(APConstants.REPORTING_SECTION)) {
       this.validateStatus(action, project.getStatus());
-      this.validateDesciptionStatus(action, project.getStatusDescription());
-      this.validateAnualRecordName(action, project.getBilateralContractProposalName());
+      // this.validateDesciptionStatus(action, project.getStatusDescription());
+      // this.validateAnualRecordName(action, project.getBilateralContractProposalName());
     }
   }
 

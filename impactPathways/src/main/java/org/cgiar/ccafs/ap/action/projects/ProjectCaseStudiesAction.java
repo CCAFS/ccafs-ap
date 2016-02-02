@@ -50,7 +50,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
   private CaseStudiesManager caseStudieManager;
   private ProjectManager projectManager;
   private IPIndicatorManager ipIndicatorMamager;
-
+  private HistoryManager historyManager;
   private File file;
   private String fileFileName;
   private ProjectCaseStudiesValidator validator;
@@ -72,7 +72,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
     this.caseStudieManager = crossManager;
     this.projectManager = projectManager;
     this.ipIndicatorMamager = ipIndicatorMamager;
-
+    this.historyManager = historyManager;
   }
 
   public List<Integer> getAllYears() {
@@ -185,7 +185,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
       caseStudyIndicators.put(String.valueOf(ipIndicator.getParent().getId()),
         ipIndicator.getParent().getDescription());
     }
-
+    super.setHistory(historyManager.getProjectCaseStudyHistory(project.getId()));
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element

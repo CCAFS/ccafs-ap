@@ -54,6 +54,7 @@ public class ProjectLeveragesAction extends BaseAction {
   private List<IPProgram> ipProgramFlagships;
   private List<ProjectLeverage> leveragesPreview;
   private ProjectLeverageValidator validator;
+  private HistoryManager historyManager;
 
   @Inject
   public ProjectLeveragesAction(APConfig config, ProjectManager projectManager, HistoryManager historyManager,
@@ -65,6 +66,7 @@ public class ProjectLeveragesAction extends BaseAction {
     this.ipProgramManager = ipProgramManager;
     this.projectLeverageManager = projectLeverageManager;
     this.validator = validator;
+    this.historyManager = historyManager;
   }
 
   public List<Institution> getAllInstitutions() {
@@ -152,6 +154,8 @@ public class ProjectLeveragesAction extends BaseAction {
 
 
       }
+
+      super.setHistory(historyManager.getProjectLeverage(project.getId()));
 
     }
     // Initializing Section Statuses:

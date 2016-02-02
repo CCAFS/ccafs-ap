@@ -104,6 +104,12 @@ public class HistoryManagerImpl implements HistoryManager {
   }
 
   @Override
+  public <T> List<LogHistory> getProjectCaseStudyHistory(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectCaseStudiesHistory(projectID);
+    return this.getData(logHistoryData);
+  }
+
+  @Override
   public List<LogHistory> getProjectDeliverablesHistory(int deliverableID) {
     List<Map<String, String>> logHistoryData = historyDAO.getProjectDeliverablesHistory(deliverableID);
     return this.getData(logHistoryData);
@@ -116,14 +122,32 @@ public class HistoryManagerImpl implements HistoryManager {
   }
 
   @Override
+  public <T> List<LogHistory> getProjectHighLights(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectHighLights(projectID);
+    return this.getData(logHistoryData);
+  }
+
+  @Override
   public List<LogHistory> getProjectIPOtherContributionHistory(int projectID) {
     List<Map<String, String>> logHistoryData = historyDAO.getProjectIPOtherContributionHistory(projectID);
     return this.getData(logHistoryData);
   }
 
   @Override
+  public <T> List<LogHistory> getProjectLeverage(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectLeverage(projectID);
+    return this.getData(logHistoryData);
+  }
+
+  @Override
   public List<LogHistory> getProjectLocationsHistory(int projectID) {
     List<Map<String, String>> logHistoryData = historyDAO.getProjectLocationsHistory(projectID);
+    return this.getData(logHistoryData);
+  }
+
+  @Override
+  public <T> List<LogHistory> getProjectNextUser(int projectID) {
+    List<Map<String, String>> logHistoryData = historyDAO.getProjectNextUsers(projectID);
     return this.getData(logHistoryData);
   }
 
