@@ -45,7 +45,10 @@ public class Deliverable {
   private List<DeliverableFile> files;
   private DeliverablePublicationMetadata publicationMetadata;
   private List<DeliverableMetadataElements> metadataElements;
-
+  /**
+   * SAVE -> QUE PESTANA ES
+   * YO SOLO GUARDO LO DE ESA PESTANA
+   */
 
   private String statusDescription;
 

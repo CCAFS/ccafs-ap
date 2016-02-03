@@ -61,7 +61,7 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
 
         }
       }
-      if (fields) {
+      if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action

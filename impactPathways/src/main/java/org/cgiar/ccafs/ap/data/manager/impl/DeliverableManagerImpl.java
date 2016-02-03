@@ -378,9 +378,12 @@ public class DeliverableManagerImpl implements DeliverableManager {
     deliverableData.put("type_id", deliverable.getType() != null ? deliverable.getType().getId() : null);
     deliverableData.put("type_other", deliverable.getTypeOther());
     deliverableData.put("year", deliverable.getYear());
+    if (deliverable.getStatus() != -1) {
+      deliverableData.put("status", deliverable.getStatus());
+      deliverableData.put("status_description", deliverable.getStatusDescription());
+    }
 
-    deliverableData.put("status", deliverable.getStatus());
-    deliverableData.put("status_description", deliverable.getStatusDescription());
+
     // Logs
     deliverableData.put("modified_by", user.getId());
     deliverableData.put("modification_justification", justification);
