@@ -1,3 +1,14 @@
+DROP TRIGGER `after_activities_insert`;
+
+DROP TRIGGER `after_activities_update`;
+DROP TRIGGER `after_deliverables_insert`;
+
+DROP TRIGGER `after_deliverables_update`;
+
+
+DROP TRIGGER `after_project_outcomes_insert`;
+
+DROP TRIGGER `after_project_outcomes_update`;
 
 
  
@@ -21,8 +32,8 @@ ADD COLUMN `status_description`  text CHARACTER SET utf8 COLLATE utf8_general_ci
 
 
 ALTER TABLE $[database]_history.`project_outcomes`
---DROP COLUMN anual_progress,
---DROP COLUMN comunication,
+DROP COLUMN anual_progress,
+DROP COLUMN comunication,
 DROP COLUMN `file`;
 
 ALTER TABLE $[database]_history.`project_outcomes`
