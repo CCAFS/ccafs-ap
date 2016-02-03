@@ -55,7 +55,7 @@ public class ActivitiesListValidator extends BaseValidator {
           // Required fields are required for all type of projects.
 
           if (action.isReportingCycle()) {
-
+            this.validateStatusDescription(action, project.getActivities().get(c).getActivityStatus(), c);
           } else {
             this.validateRequiredFields(action, project.getActivities().get(c), c);
             this.validateTitle(action, project.getActivities().get(c).getTitle(), c);
