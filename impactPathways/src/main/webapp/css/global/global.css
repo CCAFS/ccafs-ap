@@ -822,10 +822,10 @@ select#partnerSave_activityPartner_partner_type_id {
 
 /* P&R Panel Style */
 
-.panel { 
+.panel {
     border: 1px solid rgba(0,0,0,0.2);
     border-radius: 4px;
-    margin: 10px 0 15px 0;
+    margin: 3px 0 15px 0;
 }
 
 .panel.primary{}
