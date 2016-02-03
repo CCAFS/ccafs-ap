@@ -1,4 +1,4 @@
-var $deliverablesTypes, $deliverablesSubTypes;
+var $deliverablesTypes, $deliverablesSubTypes,$alreadyDisseminated, $disseminationChannels;
 var $statuses, $statusDescription;
 var implementationStatus
 var hashRegenerated = false;
@@ -9,7 +9,9 @@ $(document).ready(init);
 function init() {
   $deliverablesTypes = $("#deliverable_mainType");
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
+  $alreadyDisseminated = $('input[name="deliverable.dissemination.alreadyDisseminated"]');
   $disseminationChannels = $('#deliverable_deliverable_dissemination_disseminationChannel');
+  
   
   $statuses = $('#deliverable_deliverable_status');
   $statusDescription = $('#statusDescription');
@@ -69,6 +71,8 @@ function attachEvents() {
   $('.openAccessRestrictionOption input').on('change', changeOARestriction);
 
   $disseminationChannels.on('change', changeDisseminationChannel);
+  
+  $alreadyDisseminated.on('change', changeDisseminatedOption);
 
   // Yes / No Event
   $('input.onoffswitch-radio').on('change', yesnoEvent);
@@ -92,6 +96,17 @@ function attachEvents() {
 
   $endDate.on('change', changeStatus);
   $endDate.trigger('change');
+}
+
+function changeDisseminatedOption(){
+  var isChecked = ($(this).val() === "true");
+  if (isChecked){
+    $('[href="#deliverable-dataSharing"]').parent().hide();
+  }else{
+    // Show metadata fields
+    $('#deliverable-metadata').show(200);
+    $('[href="#deliverable-dataSharing"]').parent().show();
+  }
 }
 
 function changeStatus(){ 
@@ -509,7 +524,7 @@ function initMetadataFunctions() {
   $disseminationChannels.on('change',function(e) {
     e.preventDefault();
     var optionSelected = $disseminationChannels.val();
-    $checkButton.show();
+    $checkButton.show(); 
     if(optionSelected == -1) {
       $('.example').fadeOut();
       $disseminationUrl.fadeOut(500);
@@ -518,6 +533,8 @@ function initMetadataFunctions() {
       $('.example').fadeOut();
       $checkButton.fadeOut();
       $metadataOutput.html("");
+      // Show metadata fields
+      $('#deliverable-metadata').show(200);
     }
     $disseminationUrl.val('');
     $disseminationUrl.fadeIn(500);
@@ -554,6 +571,10 @@ function getMetadata(fillData) {
     } else {
       ajaxData.metadataID = channelUrl;
     }
+    
+    // Show metadata fields
+    $('#deliverable-metadata').show(200);
+    
     $.ajax({
         'url': baseURL + '/metadataByLink.do',
         'type': "GET",
@@ -567,10 +588,11 @@ function getMetadata(fillData) {
           if(data.errorMessage) {
             $metadataOutput.html(data.errorMessage);
           } else {
+            data.metadata = JSON.parse(data.metadata);
             if (jQuery.isEmptyObject(data.metadata)){
               $metadataOutput.html("Metdata empty");
             }else{
-              var fields = [];
+              var fields = []; 
               $.each( data.metadata, function( key, value ) {
                 fields.push(key.charAt(0).toUpperCase() + key.slice(1));
               });
@@ -581,6 +603,9 @@ function getMetadata(fillData) {
         },
         complete: function() {
           $disseminationUrl.removeClass('input-loading');
+        },
+        error: function() {
+          $metadataOutput.empty().append("Invalid URL for searching metadata");
         }
     });
   }

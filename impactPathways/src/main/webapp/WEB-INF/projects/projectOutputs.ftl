@@ -37,15 +37,9 @@
         [@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]
       </p>
     [/#if]
-    <div id="projectOutputs" class="borderBox">
+    <div id="projectOutputs" class="">
       <h1 class="contentTitle">[@s.text name="planning.projectOutputs.title" /]</h1> 
-      [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-      [#else]
-        [#if canEdit && !newProject]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
-        [/#if]
-      [/#if] 
+      
       [#if project.outputs?has_content]
         <div id="mogsTabs">
           [#-- Years Menu --]
@@ -56,7 +50,14 @@
           </ul>
           [#list years as year]
             [#-- Major Output Group list by year --]
-            <div id="mogs-${year}">
+            <div id="mogs-${year}" class="mogs-group">
+              [#if (!editable && canEdit)]
+                <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#mogs-${year}">[@s.text name="form.buttons.edit" /]</a></div>
+              [#else]
+                [#if canEdit && !newProject]
+                  <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#mogs-${year}">[@s.text name="form.buttons.unedit" /]</a></div>
+                [/#if]
+              [/#if]
               [#list project.outputs as output]
                 [#assign index = (year_index * project.outputs?size)+output_index /] 
                 [#assign outputOverview = project.getOutputOverview(output.id, year)! /]

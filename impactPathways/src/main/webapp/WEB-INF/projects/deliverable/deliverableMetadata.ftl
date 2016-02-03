@@ -1,5 +1,5 @@
 [#ftl]
-<div id="deliverable-metadata" class="clearfix">
+<div id="deliverable-metadata" class="clearfix" style="display:${(deliverable.dissemination??)?string('block','none')}">
   <h1 class="contentTitle">Deliverable Metadata</h1>
   <div id="metadata-block" class="fullBlock">
     [#-- Description --] 
