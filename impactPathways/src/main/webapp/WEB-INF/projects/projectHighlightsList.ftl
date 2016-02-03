@@ -49,7 +49,7 @@
             [#-- Just show this empty message to those users who are not able to modify this section --]
             <p class="simpleBox center">[@s.text name="reporting.projectHighlights.empty"/]</p> 
           [/#if]   
-          [#if canEdit]
+          [#if canEdit && action.hasProjectPermission("addHighlight", project.id)]
           <div class="buttons"> 
             <a class="addButton" href="[@s.url namespace="/reporting/projects" action='addNewhighlight'] [@s.param name="${projectRequestID}"]${projectID}[/@s.param][/@s.url]">
               [@s.text name="reporting.projectHighlights.addNewhighlight" /]

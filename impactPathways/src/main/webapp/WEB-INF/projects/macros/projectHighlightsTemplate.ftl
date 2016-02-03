@@ -19,7 +19,7 @@
           <td class="name"><a href="${dlurl}">[#if hl.title?trim?has_content]${hl.title}[#else]Untitled[/#if]</a></td>
           <td class="type">[#if hl.title?trim?has_content]${hl.author}[#else]Not defined[/#if]</td> 
           <td class="removeHighlight-row">
-            [#if canEdit]
+            [#if canEdit && action.hasProjectPermission("removeHighlight", project.id)]
               <a id="removeHighlight-${hl.id}" class="removeHighlight" href="highlightID${hl.id}" title="" >
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="reporting.projectHighlights.removeHighlight" /]" /> 
               </a>

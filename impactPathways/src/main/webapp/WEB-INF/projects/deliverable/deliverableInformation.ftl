@@ -10,7 +10,7 @@
   <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1> 
   [#-- Title --] 
   <div class="fullBlock">
-    [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable /]
+    [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable && action.hasProjectPermission("mainInfo", project.id) /]
   </div> 
   [#-- MOG  --]
   <div class="fullBlock chosen"> 
@@ -38,8 +38,8 @@
   [#-- Year  --]
   <div class="fullPartBlock">
     <div class="halfPartBlock chosen">
-      [@customForm.select name="${params.deliverable.name}.year" value="${deliverable.year}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable /]
-      [#if !editable] <div class="select"><p>${deliverable.year}</p></div> [/#if]
+      [@customForm.select name="${params.deliverable.name}.year" value="${(deliverable.year)!-1}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable && action.hasProjectPermission("mainInfo", project.id)/]
+      [#if !editable || !action.hasProjectPermission("mainInfo", project.id)]<div class="select"><p>${deliverable.year}</p></div> [/#if]
     </div>
   </div>
   [#-- -- -- REPORTING BLOCK -- -- --]
