@@ -16,9 +16,9 @@
     <h1>[@s.text name="home.dashboard.title" /]</h1>
     <div class="homeTitle"><b>What do you want to do ?</b></div>
     <div id="decisionTree" class="borderBox">
-      <div id="newProject" class="option"><p>Enter a new project</p></div>
-      <a href="[@s.url namespace="/planning" action='projectsList'/]"><div id="updatePlanning" class="option"><p>Update planning of an ongoing project</p></div></a>
-      <div id="reportProject" class="option disabled" title="This link is disabled"><p>Report on an ongoing project</p></div>
+      <div id="newProject" class="option disabled" title="This link is disabled"><p>Enter a new project</p></div>
+      <div id="updatePlanning" class="option disabled" title="This link is disabled"><p>Update planning of an ongoing project</p></div>
+      <a href="[@s.url namespace="/reporting" action='projectsList'/]"><div id="reportProject" class="option "><p>Report on an ongoing project</p></div></a>
       <div class="clearfix"></div>
       <div class="addProjectButtons clearfix" style="display:none">
         <p class="title">What type of project do you want to enter?</p>
@@ -33,38 +33,30 @@
         [/#if]
       </div>
     </div>
+    
+    <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.deadline.title" /]</b></div>
+    <div id="timelineBlock" class="borderBox">
+      <ul class="timeline" id="timeline">
+        [@time title="Project leaders" subTitle="PL" date="02/15/2016" status="Open Reporting"/]
+        [@time title="Project leaders" subTitle="PL" date="02/29/2016" status="Close Reporting"/]
+        [@time title="Regional Program Leaders " subTitle="RPL" date="03/07/2016" status="Open Reporting"/]
+        [@time title="Regional Program Leaders " subTitle="RPL" date="03/15/2016" status="Close Reporting"/]
+        [@time title="Flagship Program Leaders " subTitle="FPL" date="03/15/2016" status="Open Reporting"/]
+        [@time title="Flagship Program Leaders " subTitle="FPL" date="03/25/2016" status="Close Reporting"/]
+      </ul> 
+      <div class="clearfix"></div> 
+    </div>
     <div id="leftSide">
       [#-- Deadline --]
-      <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.deadline.title" /]</b></div>
+      <div id="deadlineTitle"  class="homeTitle"><b>Sections</b></div>
       <div id="deadline" class="borderBox">
-        <div id="deadlineGraph" >
-          <div class="point active">1</div>
-          <div class="point inactive">2</div>
-          <div class="point inactive">3</div>
-          <div class="point inactive">4</div>
-        </div>
-        <div id="deadlineGraph">
-          <div class="textPoint">[@s.text name="home.dashboard.deadline.planning" /] </div>
-          <div class="textPoint">[@s.text name="home.dashboard.deadline.summaries" /] </div>
-          <div class="textPoint">[@s.text name="home.dashboard.deadline.reporting" /]</div>
-          <div class="textPoint">[@s.text name="home.dashboard.deadline.learnValidation" /] </div>
-        </div>
-        <div id="deadlineDates">
-          <table>
-            <tr>
-              <td>[@s.text name="home.dashboard.deadline.planning" /] - Managment Liaisons & Contact Points</td>
-              <td>20th October 2015</td>
-            </tr>
-            <tr>
-              <td>[@s.text name="home.dashboard.deadline.planning" /] - Project Leaders & Project Coordinators</td>
-              <td>27th October 2015</td>
-            </tr>
-            <tr>
-              <td>[@s.text name="home.dashboard.deadline.reporting" /]</td>
-              <td>1st January 2016</td>
-            </tr>
-          </table>
-        </div>
+        <ul class="subMenu">
+          <li><a href="" class="">Projects for reporting</a></li>
+          <li><a href="" class="disabled">CRP Indicators</a></li>
+          <li><a href="" class="disabled">Outcome Synthesis</a></li>
+          <li><a href="" class="disabled">Synthesis by MOG</a></li>
+          <li class="last"><a href="" class="disabled">Project Evaluation</a></li> 
+        </ul>
       </div>
     </div> <!-- End leftSide -->
     <div id="rightSide">
@@ -72,7 +64,7 @@
       <div class="loadingBlock"></div>
       <div style="display:none">
         <div id="dashboardTitle" class="homeTitle"><b>[@s.text name="home.dashboard.name" /]</b></div> 
-        <div id="dashboard">
+        <div id="dashboard-tabs">
           <ul class="dashboardHeaders">
             <li class=""><a href="#projects">[@s.text name="home.dashboard.projects" /]</a></li>
             <li class=""><a href="#ipGraph-content">[@s.text name="home.dashboard.impactPathway" /]</a></li>
@@ -104,4 +96,14 @@
     <img id="imgBigModal" src="${baseUrl}/images/global/pandrWorkflow.png"/>
   </div>
 </div> 
+
+[#macro time title subTitle date status]
+<li class="li">
+  <div class="timestamp" title="${title}">
+    <p class="author"> ${status} </p><p class="date">${date?date("MM/dd/yyyy")?string.medium}</p>
+  </div>
+  <div class="status"><h4> For ${title} </h4></div>
+</li>
+[/#macro]
+
 [#include "/WEB-INF/global/pages/footer-logos.ftl"]

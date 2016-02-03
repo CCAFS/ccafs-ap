@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -80,7 +81,7 @@ public class DashboardAction extends BaseAction {
 
         List<Project> allProjects = projectManager.getAllProjectsBasicInfo(APConstants.REPORTING_SECTION);
         List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
-
+        projects = new ArrayList<>();
         // We should remove from the allProjects list the project
         // led by the user and also we should add them to a another list
         for (Integer projectId : editableProjectsIds) {

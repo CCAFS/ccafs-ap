@@ -31,7 +31,7 @@ function workflowModal() {
 
 var graphStarted = false;
 function initTabs() {
-  $("#dashboard").tabs({
+  $("#dashboard-tabs").tabs({
     activate: function(event,ui) {
       if(ui.newTab.index() == 1) {
         if(!graphStarted) {

@@ -87,30 +87,16 @@ input.disabled {
   display: block;
 }
 
-div.disabled {
-  /* Required for IE 5, 6, 7 */
+div.disabled {/* Required for IE 5, 6, 7 */
   /* ...or something to trigger hasLayout, like zoom: 1; */
-  width: 100%; 
-
-  /* Theoretically for IE 8 & 9 (more valid) */	
-  /* ...but not required as filter works too */
-  /* should come BEFORE filter */
-  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
-
-  /* This works in IE 8 & 9 too */
-  /* ... but also 5, 6, 7 */
-  filter: alpha(opacity=40);
-
-  /* Older than Firefox 0.9 */
-  -moz-opacity:0.4;
-
-  /* Safari 1.x (pre WebKit!) */
-  -khtml-opacity: 0.4;
-
-  /* Modern!
+  width: 100%;/* Theoretically for IE 8 & 9 (more valid) *//* ...but not required as filter works too *//* should come BEFORE filter */
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";/* This works in IE 8 & 9 too *//* ... but also 5, 6, 7 */
+  filter: alpha(opacity=40);/* Older than Firefox 0.9 */
+  -moz-opacity:0.4;/* Safari 1.x (pre WebKit!) */
+  -khtml-opacity: 0.4;/* Modern!
   /* Firefox 0.9+, Safari 2?, Chrome any?
   /* Opera 9+, IE 9+ */
-  opacity: 0.3;
+  opacity: 0.6;
 }
 
 .clearfix:before,.clearfix:after {
@@ -2336,6 +2322,7 @@ input.userName {
 
 #decisionTree {
   font-family: 'Open Sans';
+  margin-top: 0;
 }
 
 #decisionTree .title {
@@ -2422,7 +2409,28 @@ input.userName {
 
 #dashboard #deadline{
   margin-top : 0;
+  /* display: none; */
+  padding: 3px 19px;
 }
+
+#deadline ul.subMenu{
+  list-style-type: none;
+  margin: 0;
+} 
+ 
+
+#deadline ul.subMenu li{
+  padding: 10px;
+  font-size: 1.1em;
+  background-color: #FFF;
+  border-bottom: 1px solid #DFDFDF;
+}
+
+#deadline ul.subMenu li.last{ 
+  border-bottom: none;
+}
+
+#deadline ul.subMenu li a{text-decoration: none;}
 
 #dashboard #rightSide{
   float: right;
@@ -2441,6 +2449,125 @@ input.userName {
 #dashboard #pandrDescription p {
     color: #636363;
 }
+
+/* Dasboard timeline */
+
+#timelineBlock .timeline {
+  list-style-type: none;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  margin-left: 0;
+  width: 100%;
+}
+
+#timelineBlock .li {
+  transition: all 200ms ease-in;
+  width: 16%;
+  float: left;
+}
+
+#timelineBlock .timestamp {
+  margin-bottom: 20px;
+  /* padding: 0px 16px; */
+  /* display: flex; */
+  /* flex-direction: column; */
+  align-items: center;
+  font-weight: 100;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+#timelineBlock .status {
+  padding: 0px 33px;
+  display: flex;
+  justify-content: center;
+  border-top: 2px solid #D6DCE0;
+  position: relative;
+  transition: all 200ms ease-in;
+}
+#timelineBlock .status h4 {
+  font-weight: 600;
+  margin-top: 22px;
+  text-align: center;
+}
+#timelineBlock .status:before {
+  content: "";
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  position: absolute;
+  top: -15px;
+  left: 42%;
+  transition: all 200ms ease-in;
+}
+
+#timelineBlock .li.complete .status {
+  border-top: 2px solid #8EA786;
+}
+#timelineBlock .li.complete .status:before {
+  background-color: #8EA786;
+  border: none;
+  transition: all 200ms ease-in;
+}
+#timelineBlock .li.complete .status h4 {
+  color: #8EA786;
+}
+
+@media (min-device-width: 320px) and (max-device-width: 700px) {
+  #timelineBlock .timeline {
+    list-style-type: none;
+    display: block;
+  }
+
+  #timelineBlock .li {
+    transition: all 200ms ease-in;
+    display: flex;
+    width: inherit;
+  }
+
+  #timelineBlock .timestamp {
+    width: 100px;
+  }
+
+  #timelineBlock .status:before {
+    left: -8%;
+    top: 30%;
+    transition: all 200ms ease-in;
+  }
+}
+#timelineBlock {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  color: #758D96;
+  margin-top: 0;
+}
+
+#timelineBlock button {
+  position: absolute;
+  width: 100px;
+  min-width: 100px;
+  padding: 20px;
+  margin: 20px;
+  font-family: "Titillium Web", sans serif;
+  border: none;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+}
+
+#timelineBlock #toggleButton {
+  position: absolute;
+  left: 50px;
+  top: 20px;
+  background-color: #75C7F6;
+}
+
+
+/* END Dasboard timeline*/
 
 #imgPandR{
   text-align: center;
@@ -2492,7 +2619,7 @@ input.userName {
 }
 
 #dashboard #deadline .point {
-  margin: 0px 23px;
+  margin: 0px 19px;
 }
 
 #dashboard #deadline .active {
@@ -2505,7 +2632,7 @@ input.userName {
   font-weight: bold;
   line-height: 4.6em;
   text-align: center;
-  width: 4.6em; 
+  width: 4.6em;
 }
 #dashboard #deadline .inactive {
   background: #C5DAE2;
@@ -3579,7 +3706,8 @@ font-style: italic;
 /** Project Overview by MOGs **/
 
 #projectOutputs .mogs-group{
-  padding-top: 35px;
+  
+padding-top: 35px;
 }
 
 /** Project Deliverables **/
