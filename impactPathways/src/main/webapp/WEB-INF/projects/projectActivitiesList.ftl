@@ -70,7 +70,7 @@
             [/#if]
           </div><!-- End Activities list -->
           [#-- Add activity button --]
-          [#if editable && canEdit && !reportingCycle]
+          [#if editable && action.hasProjectPermission("addActivity", project.id)]
             <div id="activities_add" class="addLink"><a href="" class="addButton">[@s.text name="planning.activities.button.add"/]</a></div>
           [/#if]
         </div>
