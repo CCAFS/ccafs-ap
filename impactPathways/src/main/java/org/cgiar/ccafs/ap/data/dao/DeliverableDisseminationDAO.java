@@ -31,4 +31,7 @@ public interface DeliverableDisseminationDAO {
   public List<DeliverableMetadataElements> findDeliverableElements(int deliverableId);
 
   public int save(DeliverableDissemination dissemination);
+
+  public int saveMetadataElement(DeliverableMetadataElements element);
+
 }

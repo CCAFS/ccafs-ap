@@ -49,7 +49,6 @@ public class DeliverableDisseminationMySQLDAO implements DeliverableDisseminatio
     return null;
   }
 
-
   @Override
   public List<DeliverableMetadataElements> findDeliverableElements(int deliverableId) {
     String sql = "from " + DeliverableMetadataElements.class.getName() + " where deliverable_id=" + deliverableId;
@@ -71,5 +70,12 @@ public class DeliverableDisseminationMySQLDAO implements DeliverableDisseminatio
   public int save(DeliverableDissemination dissemination) {
     dao.saveOrUpdate(dissemination);
     return dissemination.getId(); // TODO To review
+  }
+
+  @Override
+  public int saveMetadataElement(DeliverableMetadataElements element) {
+
+    dao.saveOrUpdate(element);
+    return element.getId();
   }
 }

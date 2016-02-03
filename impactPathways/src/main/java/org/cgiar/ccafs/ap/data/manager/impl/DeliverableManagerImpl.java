@@ -29,6 +29,7 @@ import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
 import org.cgiar.ccafs.ap.data.model.DeliverableFile;
+import org.cgiar.ccafs.ap.data.model.DeliverableMetadataElements;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
@@ -185,6 +186,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
 
       // deliverable.setDataSharing(sharingDao.findDeliverableDataSharing(deliverableID));
       deliverable.setDataSharingFile(sharingFileDao.findDeliverableDataSharingFile(deliverableID));
+      deliverable.setMetadataElements(disseminationDao.findDeliverableElements(deliverableID));
       List<DeliverableFile> deliverableFile = new ArrayList<>();
       DeliverableFile file;
       if (deliverable.getDataSharingFile() != null) {
@@ -385,6 +387,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
     // for (iterable_type iterable_element : iterable) {
 
     // }
+    int deliverableId = 0;
     int result = deliverableDAO.saveDeliverable(deliverableData);
     // if (deliverable.getRanking().getDeliverableId() == null) {
     if (result == 0) {
@@ -392,7 +395,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.getDissemination().setDeliverableId((deliverable.getId()));
       // deliverable.getDataSharing().setDeliverableId((deliverable.getId()));
       deliverable.getPublicationMetadata().setDeliverableId((deliverable.getId()));
-
+      deliverableId = deliverable.getId();
     } else {
       if (deliverable.getDissemination() != null) {
         deliverable.getDissemination().setDeliverableId((result));
@@ -405,6 +408,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       if (deliverable.getPublicationMetadata() != null) {
         deliverable.getPublicationMetadata().setDeliverableId((result));
       }
+      deliverableId = result;
       // deliverable.getDataSharing().setDeliverableId((result));
 
 
@@ -481,6 +485,14 @@ public class DeliverableManagerImpl implements DeliverableManager {
         }
       }
       disseminationDao.save(deliverable.getDissemination());
+    }
+
+
+    if (deliverable.getMetadataElements() != null) {
+      for (DeliverableMetadataElements metadata_elemenet : deliverable.getMetadataElements()) {
+        metadata_elemenet.setDeliverableId(deliverableId);
+        disseminationDao.saveMetadataElement(metadata_elemenet);
+      }
     }
 
     /// save publication metadata
