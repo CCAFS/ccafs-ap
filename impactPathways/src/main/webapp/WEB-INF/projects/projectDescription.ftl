@@ -219,7 +219,7 @@
               <li class="clearfix [#if !element_has_next]last[/#if]">
                 <input class="id" type="hidden" name="project.linkedProjects" value="${element.id?c}" />
                 <a href="[@s.url action='description'][@s.param name='projectID']${element.id}[/@s.param][/@s.url]"><span class="name">${element.id} - ${element.title}</span> </a>
-                [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+                [#if editable]<span class="listButton remove popUpValidation">[@s.text name="form.buttons.remove" /]</span>[/#if] 
               </li>
             [/#list]
           [#else]
@@ -265,8 +265,12 @@
       <span class="name"></span> 
       <span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>
     </li>
-  </ul> 
+  </ul>
   
+  [#-- Remove project contribution popup --]
+  <div id="removeContribution-dialog" title="Remover project contribution" style="display:none">
+    <ul class="messages"><li>Please be aware that the project could have budget related to this project</li></ul>
+  </div>
   
   [#-- File upload Template--] 
   [@customForm.inputFile name="file" template=true /] 

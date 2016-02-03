@@ -57,7 +57,24 @@ $(document).ready(function() {
 
   // Event to remove an element 'li' from core project list
   $('ul li .remove').on('click', function(e) {
-    removeItemList($(this).parents('li'));
+    if($(e.target).hasClass('popUpValidation')) {
+      $("#removeContribution-dialog").dialog({
+          modal: true,
+          width: 500,
+          buttons: {
+              "Close": function() {
+                $(this).dialog("close");
+              },
+              "Remove": function() {
+                removeItemList($(e.target).parents('li'));
+                $(this).dialog("close");
+              }
+          }
+      });
+    } else {
+      removeItemList($(e.target).parents('li'));
+    }
+
   });
 
   $statuses.on('change', function(e) {
