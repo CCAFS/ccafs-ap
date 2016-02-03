@@ -108,13 +108,13 @@
     </div>
     <input id="id" class="partnerPersonId" type="hidden" name="${contactName}[${contactIndex}].id" value="${(contact.id)!-1}" />
     
-    [#assign canEditLeader=(editable && action.hasProjectPermission("ppa",project.id))!false /]
+    [#assign canEditLeader=(editable && action.hasProjectPermission("leader",project.id))!false /]
     
     [#if (contact.leader)!false]
     [#-- Partner Person type and email--]
     <div class="fullPartBlock">
-      <div class="partnerPerson-type halfPartBlock clearfix">
       [#-- Contact type --]
+      <div class="partnerPerson-type halfPartBlock clearfix">
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
         [#if !canEditLeader]
           <div class="select"> 
@@ -125,6 +125,7 @@
           </div>
         [/#if]
       </div>
+      [#-- Contact Email --]
       <div class="partnerPerson-email userField halfPartBlock clearfix">
         [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.id)!-1)?has_content) /]
         <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
@@ -132,12 +133,12 @@
         [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditLeader /]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />   
         [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
-      </div>
+      </div> 
     </div>
     [#else]
      <div class="fullPartBlock">
-      <div class="partnerPerson-type halfPartBlock clearfix">
       [#-- Contact type --]
+      <div class="partnerPerson-type halfPartBlock clearfix">
         [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=editable required=true /]
         [#if !editable]
           <div class="select">
@@ -148,13 +149,14 @@
           </div>
         [/#if]
       </div>
+      [#-- Contact Email --]
       <div class="partnerPerson-email userField halfPartBlock clearfix">
-        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.id)!-1)?has_content) /]
+        [#assign canEditEmail= (!(action.getActivitiesLedByUser((contact.id)!-1)?has_content)) || template /]
         <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
-        [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditLeader /]
+        [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=canEditEmail /]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />
-        [#if canEditLeader]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+        [#if canEditEmail]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
     </div>
     [/#if]
