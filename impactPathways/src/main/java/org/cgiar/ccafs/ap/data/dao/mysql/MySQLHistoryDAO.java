@@ -484,7 +484,7 @@ public class MySQLHistoryDAO implements HistoryDAO {
     String dbName = this.getDatabaseName();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM ( ");
+    query.append("SELECT distinct * FROM ( ");
 
     query.append("  SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
     query.append("  t.active_since, t.modification_justification ");
