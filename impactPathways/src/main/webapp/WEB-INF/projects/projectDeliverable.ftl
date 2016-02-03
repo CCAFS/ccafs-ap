@@ -59,7 +59,7 @@
       [#if reportingCycle] 
         <li class=""><a href="#deliverable-ranking">Ranking</a></li>
         <li class=""><a href="#deliverable-disseminationMetadata">Dissemination & Metadata</a></li>
-        <li class=""><a href="#deliverable-dataSharing">Data Sharing</a></li>
+        <li class="" style="display:${((deliverable.dissemination.alreadyDisseminated??)!true)?string('none','block')}"><a href="#deliverable-dataSharing">Data Sharing</a></li>
       [/#if]
     </ul>
     <div id="deliverable-mainInformation">

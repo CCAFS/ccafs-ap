@@ -116,7 +116,7 @@
       </div>
       [#if disabled] <input type="hidden" name="${name}" value="true" />[/#if] 
     [#else]
-      <p style="text-align:center;">[#if value=="true"]Yes[#else]No[/#if]</p>
+      <p style="text-align:center;">[#if value=="true"]Yes[#elseif value == "false"]No[#else]Not selected[/#if]</p>
     [/#if]
   </div>
 [/#macro]
