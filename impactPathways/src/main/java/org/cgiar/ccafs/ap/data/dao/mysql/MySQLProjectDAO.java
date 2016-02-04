@@ -198,6 +198,13 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("                       ON ipp.id = pf.program_id");
       query.append("        WHERE  pf.project_id = p.id");
       query.append("               AND ipp.type_id = 4)     AS 'flagships'");
+
+      query.append(" ,(select ins.acronym");
+      query.append("    from project_partners pp ");
+      query.append("   inner join institutions ins on pp.institution_id=ins.id ");
+      query.append(
+        "   inner join project_partner_persons ppe on ppe.project_partner_id=pp.id and ppe.is_active=1 and ppe.contact_type='PL' ");
+      query.append("  where pp.project_id=p.id and pp.is_active=1 ) 'Leader' ");
       query.append(" FROM   projects AS p");
       query.append(" WHERE  p.is_active = true");
     } else {
@@ -233,6 +240,13 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("                       ON ipp.id = pf.program_id");
       query.append("        WHERE  pf.project_id = p.id");
       query.append("               AND ipp.type_id = 4)     AS 'flagships'");
+      query.append(" ,(select ins.acronym");
+      query.append("    from project_partners pp ");
+      query.append("   inner join institutions ins on pp.institution_id=ins.id ");
+      query.append(
+        "   inner join project_partner_persons ppe on ppe.project_partner_id=pp.id and ppe.is_active=1 and ppe.contact_type='PL' ");
+      query.append("  where pp.project_id=p.id and pp.is_active=1 ) 'Leader' ");
+
       query.append(" FROM   projects AS p");
       query.append(" WHERE  p.is_active = true and p.start_date<='");
       query.append(formatter.format(reportingStratDate));
@@ -255,6 +269,8 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
         projectData.put("regions", rs.getString("regions"));
         projectData.put("flagships", rs.getString("flagships"));
+
+        projectData.put("leader", rs.getString("Leader"));
         projectData.put("is_cofinancing", String.valueOf(rs.getBoolean("is_cofinancing")));
 
         projectList.add(projectData);
