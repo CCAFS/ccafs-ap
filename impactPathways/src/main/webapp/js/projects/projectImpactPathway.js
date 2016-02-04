@@ -25,10 +25,12 @@ function attachEvents() {
   $('.projectIndicatorCheckbox').click(toogleIndicatorInfo);
   $('input[name^="project.outputs"]').click(selectMogEvent);
   $(".removeContribution").click(removeContributionBlock);
-  // Disabled values thas is not number
+  
+  // Disabled values that is not number
   $targetValue.on("keydown", function(e) {
     isNumber(e);
   });
+  
   // Check for numeric value already inserted
   $targetValue.on("keyup", function(e) {
     var isEmpty = (e.target.value == "");
@@ -43,9 +45,22 @@ function attachEvents() {
     }
   });
   $targetValue.trigger("keyup");
+  
+  // Validate justification on save
   validateEvent([
     "#justification"
   ]);
+  
+  // Remove file if already uploaded and put a new file input
+  $('.fileUpload .remove').on('click', function(e) {
+    var context = $(this).attr('id').split('-')[1];
+    var $parent = $(this).parent();
+    var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
+    $parent.empty().append($inputFile);
+    $inputFile.hide().fadeIn('slow');
+    forceChange = true;
+  });
+  
 }
 
 function setWordCounters() {
@@ -157,7 +172,7 @@ function addOutcome(outcomeSelectedVal) {
 /**
  * This function load the MOGs which contributes to the midOutcome identified by the value received as parameter and put
  * them in the interface as a list of checkboxes
- *
+ * 
  * @param midOutcomeID - midOutcome identifier
  */
 function addMOGs(midOutcomeID,$mogBlock) {
@@ -194,7 +209,7 @@ function addMOGs(midOutcomeID,$mogBlock) {
 /**
  * This function load the indicators which belongs to the midOutcome identified by the value received as parameter and
  * put them in the interface as a list of checkboxes
- *
+ * 
  * @param midOutcomeID - midOutcome identifier
  * @param programID - the program to which the midOutcome belongs to
  * @param $indicatorsBlock - a jquery object that contains the block where the indicators should be append

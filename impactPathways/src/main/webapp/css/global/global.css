@@ -1000,14 +1000,13 @@ body {
 header {
   font-family: 'Open Sans', sans-serif;
 }
-.container { 
+.container {
   background-repeat: no-repeat;
   display: inline-block;
-  width: 1080px; 
+  width: 1100px;
   position: relative;
   text-align: left;
-  display: inline-block; 
-  
+  display: inline-block;
 }
 
 .popup_container {
@@ -1757,7 +1756,7 @@ color: #949292;
 .halfContent {
   float: right;
   padding: 0px 0;
-  width: 845px;
+  width: 78%;
   vertical-align: top;
   position: relative;
   margin-top: 45px;
@@ -3058,7 +3057,7 @@ padding: 0 4px 0 6px;width: 100px;}
 }
 
 .projectsList #projectDelete {
- width: 20px;
+ width: 12px;
  padding: 0 5px 0 0;
 }
 
