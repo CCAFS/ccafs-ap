@@ -87,7 +87,8 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
 
   @Override
   public List<ProjecteOtherContributions> getOtherContributionsByProjectId(int projectID) {
-    List<ProjecteOtherContributions> otherContributionsList = otherContributionsDAO.getOtherContributionsByProject(projectID);
+    List<ProjecteOtherContributions> otherContributionsList =
+      otherContributionsDAO.getOtherContributionsByProject(projectID);
 
 
     return otherContributionsList;
@@ -128,13 +129,14 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   }
 
   @Override
-  public int saveOtherContributionsList(int projectID, List<ProjecteOtherContributions> OtherContributionsList, User user,
-    String justification) {
+  public int saveOtherContributionsList(int projectID, List<ProjecteOtherContributions> OtherContributionsList,
+    User user, String justification) {
 
 
     for (ProjecteOtherContributions otherContributions : OtherContributionsList) {
-      if (otherContributions.getId() == null) {
+      if (otherContributions.getId() == null || otherContributions.getId() == -1) {
         otherContributions.setCreatedBy(Long.parseLong(user.getId() + ""));
+        otherContributions.setId(null);
       }
       otherContributions.setModifiedBy(Long.parseLong(user.getId() + ""));
       otherContributions.setModificationJustification(justification);
