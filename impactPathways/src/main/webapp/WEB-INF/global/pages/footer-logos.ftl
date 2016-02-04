@@ -35,11 +35,7 @@
             <div class="clearfix"></div>
           </div>
         </div> <!-- end container -->   
-      </footer>
-    
-    <div id="scriptsContainer">
-      [#include "/WEB-INF/global/pages/js-imports.ftl"]
-    </div>
+      </footer> 
     
   </body>
 </html>

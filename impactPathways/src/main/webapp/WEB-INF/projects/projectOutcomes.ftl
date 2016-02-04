@@ -64,34 +64,33 @@
           [#assign yearEditable = editable && (year gte currentPlanningYear?number) && canEditStatement /]
           [#assign yearRequired = !project.bilateralProject && ((year == currentPlanningYear) || (year == currentPlanningYear+1)) /]
           <div class="fullPartBlock">
-            <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /] [@customForm.req required=yearRequired /]</h6>
+            <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /]:[@customForm.req required=yearRequired /]</h6>
             [@customForm.textArea name="project.outcomes[${year?string}].statement" required=yearRequired className="limitWords-150" showTitle=false editable=yearEditable /]
           </div>
           [#-- -- -- REPORTING BLOCK -- -- --]
           [#if reportingCycle && (year == currentReportingYear) ]
           <div class="fullPartBlock">
-            <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /] [@customForm.req required=true /]</h6>
+            <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /]:[@customForm.req required=true /]</h6>
             [@customForm.textArea name="project.outcomes[${year?string}].anualProgress" required=true className="limitWords-300" showTitle=false editable=editable && action.hasProjectPermission("annualProgress", project.id) /]
           </div>
           
           [#-- Comunication and engagement activities --]
-          <div class="fullBlock">
+          <div class="fullPartBlock">
             [@customForm.textArea name="project.outcomes[${year?string}].comunication" className="limitWords-100" i18nkey="reporting.projectOutcomes.commEngagementOutcomes" required=true editable=editable && action.hasProjectPermission("communicationEngagement", project.id) /]
           </div>
           
-          [#-- Upload summary--] 
-          
-          <div class="fullBlock fileUpload uploadSummary">
+          [#-- Upload summary--]
+          <div class="fullPartBlock fileUpload uploadSummary">
             <h6>[@customForm.text name="reporting.projectOutcomes.uploadSummary" readText=!editable /]:</h6>
             <div class="uploadContainer" title="[@s.text name="reporting.projectOutcomes.uploadSummary.help" /]">
               [#if (action.getOutcomeFile(year)?has_content)!false]
-                [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
-                <p><a href="${ProjectOutcomeURL}${(outcomeFile(year))!}">${(action.getOutcomeFile(year))!}</a></p>
+                [#if editable]<span id="remove-file" class="remove"></span>[#else]<span class="file"></span>[/#if] 
+                <p><a href="${ProjectOutcomeURL}${(action.outcomeFile(year))!}">${(action.getOutcomeFile(year))!}</a></p>
               [#else]
                 [#if editable && action.hasProjectPermission("uploadSummary", project.id)]
                   [@customForm.inputFile name="file"  /]
                 [#else]  
-                  <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
+                  [@s.text name="form.values.notFileUploaded" /]
                 [/#if] 
               [/#if]
             </div>  
@@ -150,4 +149,8 @@
   </article>
   [/@s.form]  
 </section> 
+
+[#-- File template --]
+[@customForm.inputFile name="file" template=true /] 
+
 [#include "/WEB-INF/global/pages/footer.ftl"]
