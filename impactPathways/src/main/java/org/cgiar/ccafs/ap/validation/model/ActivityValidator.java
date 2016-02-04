@@ -50,7 +50,7 @@ public class ActivityValidator extends BaseValidator {
   }
 
   public boolean isValidStatus(int status) {
-    return (status != -1);
+    return !(status == -1 || status == 0);
   }
 
   public boolean isValidTitle(String title) {

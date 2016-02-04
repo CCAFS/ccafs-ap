@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.validation.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
@@ -54,7 +55,7 @@ public class ActivitiesListValidator extends BaseValidator {
         for (int c = 0; c < project.getActivities().size(); c++) {
           // Required fields are required for all type of projects.
 
-          if (action.isReportingCycle()) {
+          if (cycle.equals(APConstants.REPORTING_SECTION)) {
             this.validateStatusDescription(action, project.getActivities().get(c).getActivityStatus(), c);
           } else {
             this.validateRequiredFields(action, project.getActivities().get(c), c);

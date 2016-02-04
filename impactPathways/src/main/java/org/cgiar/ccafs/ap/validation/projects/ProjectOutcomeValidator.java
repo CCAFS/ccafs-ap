@@ -66,7 +66,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
 
   private void validateCoreProject(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear,
     String cycle) {
-    String message = "";
+    String message = null;
     // Validate for each year.
     for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
       // Validate only two years ahead and the last year which is 2019.
@@ -96,6 +96,10 @@ public class ProjectOutcomeValidator extends BaseValidator {
           message = action.getText("planning.projectOutcome.annualProgress.readText",
             new String[] {action.getCurrentReportingYear() + ""});
         }
+        this.addMissingField("project.outcomes[" + action.getCurrentReportingYear() + "].annualProgress");
+      }
+      if (message != null) {
+        this.addMessage(message.toLowerCase());
       }
 
       if (!projectValidator.hasValidCommunication(project.getOutcomes(), action.getCurrentReportingYear())) {
@@ -105,10 +109,13 @@ public class ProjectOutcomeValidator extends BaseValidator {
           message = action.getText("Communication and engagement are missing or are incorrect",
             new String[] {action.getCurrentReportingYear() + ""});
         }
+        this.addMissingField("project.outcomes[" + action.getCurrentReportingYear() + "].annualProgress");
+      }
+      if (message != null) {
+        this.addMessage(message.toLowerCase());
       }
 
-      this.addMessage(message.toLowerCase());
-      this.addMissingField("project.outcomes[" + action.getCurrentReportingYear() + "].statement");
+
     }
   }
 }
