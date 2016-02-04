@@ -17,20 +17,23 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
-import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.validation.projects.ProjectIPOtherContributionValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,14 +53,13 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   // private Map<String, String> regions;
   // private Map<String, String> flagships;
   private Map<String, String> otherIndicators;
-  private List<IPProgram> regions;
+  private Map<String, String> regions;
 
-  private List<IPProgram> flagships;
+  private Map<String, String> flagships;
 
 
   private CRPManager crpManager;
-
-
+  private IPIndicatorManager ipIndicatorManager;
   private List<CRP> crps;
 
 
@@ -88,7 +90,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   public ProjectIPOtherContributionAction(APConfig config, ProjectOtherContributionManager ipOtherContributionManager,
     ProjectManager projectManager, CRPManager crpManager,
     ProjectIPOtherContributionValidator otherContributionValidator, HistoryManager historyManager,
-    IPProgramManager ipProgramManager) {
+    IPProgramManager ipProgramManager, IPIndicatorManager ipIndicatorManager) {
     super(config);
     this.ipOtherContributionManager = ipOtherContributionManager;
     this.projectManager = projectManager;
@@ -96,6 +98,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.crpManager = crpManager;
     this.otherContributionValidator = otherContributionValidator;
     this.historyManager = historyManager;
+    this.ipIndicatorManager = ipIndicatorManager;
   }
 
   public List<CRPContribution> getCrpContributions() {
@@ -106,7 +109,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     return crps;
   }
 
-  public List<IPProgram> getFlagships() {
+  public Map<String, String> getFlagships() {
     return flagships;
   }
 
@@ -127,7 +130,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     return projectID;
   }
 
-  public List<IPProgram> getRegions() {
+  public Map<String, String> getRegions() {
     return regions;
   }
 
@@ -169,13 +172,44 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     previousCRPContributions = new ArrayList<>();
     previousCRPContributions.addAll(project.getIpOtherContribution().getCrpContributions());
 
-
+    this.regions = new HashMap<String, String>();
     // Getting the information of the Regions program for the View
-    regions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+    List<IPProgram> regions = ipProgramManager.getProgramsByType(APConstants.REGION_PROGRAM_TYPE);
+    for (IPProgram ipProgram : regions) {
+      this.regions.put(String.valueOf(ipProgram.getId()), ipProgram.getComposedName());
 
+    }
+    this.flagships = new HashMap<String, String>();
     // Getting the information of the Flagships program for the View
-    flagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    List<IPProgram> flagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
+    for (IPProgram ipProgram : flagships) {
+      this.flagships.put(String.valueOf(ipProgram.getId()), ipProgram.getComposedName());
 
+    }
+    this.otherIndicators = new HashMap<>();
+    if (project.getOtherContributions() != null) {
+      for (ProjecteOtherContributions otherContributions : project.getOtherContributions()) {
+        int flagship = 0;
+        int region = 0;
+
+        try {
+          flagship = Integer.parseInt(otherContributions.getFlagship());
+          region = Integer.parseInt(otherContributions.getRegion());
+        } catch (Exception e) {
+          flagship = 0;
+          region = 0;
+        }
+
+        if (flagship != 0 && region != 0) {
+          List<IPIndicator> otherIndicators =
+            ipIndicatorManager.getIndicatorsOtherContribution(projectID, flagship, region);
+          for (IPIndicator ipIndicator : otherIndicators) {
+            this.otherIndicators.put(String.valueOf(ipIndicator.getId()), ipIndicator.getDescription());
+          }
+        }
+
+      }
+    }
 
     // Getting the Project lessons for this section.
     int evaluatingYear = 0;
@@ -246,7 +280,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.crpContributions = crpContributions;
   }
 
-  public void setFlagships(List<IPProgram> flagships) {
+  public void setFlagships(Map<String, String> flagships) {
     this.flagships = flagships;
   }
 
@@ -267,7 +301,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.projectID = projectID;
   }
 
-  public void setRegions(List<IPProgram> regions) {
+  public void setRegions(Map<String, String> regions) {
     this.regions = regions;
   }
 
@@ -275,7 +309,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-      otherContributionValidator.validate(this, project);
+      otherContributionValidator.validate(this, project, this.getCycleName());
     }
   }
 }
