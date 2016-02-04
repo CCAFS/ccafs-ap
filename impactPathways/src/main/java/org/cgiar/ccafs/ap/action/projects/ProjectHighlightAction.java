@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -295,7 +296,15 @@ public class ProjectHighlightAction extends BaseAction {
     highlight.setProjectHighligthsTypeses(new HashSet<>(actualTypes));
     highlight.setProjectHighligthsCountries(new HashSet<>(actualcountries));
     highLightManager.saveHighLight(project.getId(), highlight, this.getCurrentUser(), this.getJustification());
-
+    // Get the validation messages and append them to the save message
+    Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty()) {
+      String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else {
+      this.addActionMessage(this.getText("saving.saved"));
+    }
     return SUCCESS;
 
   }

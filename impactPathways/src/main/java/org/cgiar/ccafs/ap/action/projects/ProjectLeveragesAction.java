@@ -30,6 +30,7 @@ import org.cgiar.ccafs.utils.APConfig;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,7 +200,15 @@ public class ProjectLeveragesAction extends BaseAction {
       projectLeverageManager.saveProjectLeverage(projectID, projectLeverage, this.getCurrentUser(),
         this.getJustification());
     }
-
+    // Get the validation messages and append them to the save message
+    Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty()) {
+      String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else {
+      this.addActionMessage(this.getText("saving.saved"));
+    }
     return SUCCESS;
   }
 
