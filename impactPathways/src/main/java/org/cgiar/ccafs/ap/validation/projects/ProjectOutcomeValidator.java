@@ -96,6 +96,10 @@ public class ProjectOutcomeValidator extends BaseValidator {
           message = action.getText("planning.projectOutcome.annualProgress.readText",
             new String[] {action.getCurrentReportingYear() + ""});
         }
+        this.addMissingField("project.outcomes[" + action.getCurrentReportingYear() + "].annualProgress");
+      }
+      if (message != null) {
+        this.addMessage(message.toLowerCase());
       }
 
       if (!projectValidator.hasValidCommunication(project.getOutcomes(), action.getCurrentReportingYear())) {
@@ -105,10 +109,13 @@ public class ProjectOutcomeValidator extends BaseValidator {
           message = action.getText("Communication and engagement are missing or are incorrect",
             new String[] {action.getCurrentReportingYear() + ""});
         }
+        this.addMissingField("project.outcomes[" + action.getCurrentReportingYear() + "].annualProgress");
+      }
+      if (message != null) {
+        this.addMessage(message.toLowerCase());
       }
 
-      this.addMessage(message.toLowerCase());
-      this.addMissingField("project.outcomes[" + action.getCurrentReportingYear() + "].statement");
+
     }
   }
 }

@@ -217,6 +217,9 @@ public class ValidateProjectSectionAction extends BaseAction {
         case HIGHLIGHT:
           this.validateHighLigth();
           break;
+        case HIGHLIGHTS:
+          this.validateHighLigth();
+          break;
         case DELIVERABLESLIST:
           this.validateDeliverables();
           break;
