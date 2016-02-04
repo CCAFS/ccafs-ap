@@ -242,7 +242,8 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     query.append("    INNER JOIN ip_elements ie ON ipi.outcome_id = ie.id ");
     query.append("    WHERE ipi.project_id = " + projectID + "");
     query.append(")");
-    query.append("and  ipr.id IN (" + flagship + "," + region + ");");
+    query.append(
+      "and  ipr.id IN (" + flagship + "," + region + ") and (ii.description is not null or ii.description <>'' ) ;");
 
 
     try (Connection con = databaseManager.getConnection()) {
@@ -256,7 +257,10 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         // indicatorData.put("parent_description", rs.getString("parent_description"));
         // indicatorData.put("outcome_id", rs.getString("outcome_id"));
         // indicatorData.put("outcome_description", rs.getString("outcome_description"));
-        indicatorsList.add(indicatorData);
+        if (!rs.getString("description").equals("")) {
+          indicatorsList.add(indicatorData);
+        }
+
       }
       rs.close();
     } catch (Exception e) {

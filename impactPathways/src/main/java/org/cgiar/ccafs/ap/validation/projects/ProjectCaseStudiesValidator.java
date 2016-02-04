@@ -84,7 +84,7 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
 
   private void validateEvidenceOutcome(BaseAction action, String evidenceOutcome) {
     if (!(this.isValidString(evidenceOutcome) && this.wordCount(evidenceOutcome) <= 50)) {
-      this.addMessage("Case Study #" + c + " Outcome");
+      this.addMissingField("Case Study #" + c + " Outcome");
       this.addMissingField("project.caseStudies.evidenceOutcome");
     }
   }

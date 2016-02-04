@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.validation.projects.ProjectNextUserValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -128,6 +129,15 @@ public class ProjectNextUsersAction extends BaseAction {
       projectNextUser.setProjectId(projectID);
       projectNextUserManager.saveProjectNextUser(projectID, projectNextUser, this.getCurrentUser(),
         this.getJustification());
+    }
+    // Get the validation messages and append them to the save message
+    Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty()) {
+      String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else {
+      this.addActionMessage(this.getText("saving.saved"));
     }
     return SUCCESS;
   }

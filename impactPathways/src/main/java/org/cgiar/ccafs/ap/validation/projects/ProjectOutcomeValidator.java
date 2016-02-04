@@ -66,7 +66,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
 
   private void validateCoreProject(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear,
     String cycle) {
-    String message;
+    String message = null;
     // Validate for each year.
     for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
       // Validate only two years ahead and the last year which is 2019.
@@ -78,15 +78,7 @@ public class ProjectOutcomeValidator extends BaseValidator {
           } else {
             message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
           }
-          if (year == config.getReportingCurrentYear() && cycle.equals(APConstants.REPORTING_SECTION)) {
-            if (!projectValidator.hasValidAnualProgress(project.getOutcomes(), year)) {
-              if (year == midOutcomeYear) {
-                message = action.getText("planning.projectOutcome.annualProgress.readText");
-              } else {
-                message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
-              }
-            }
-          }
+
 
           this.addMessage(message.toLowerCase());
           this.addMissingField("project.outcomes[" + year + "].statement");
@@ -94,6 +86,29 @@ public class ProjectOutcomeValidator extends BaseValidator {
 
       }
 
+    }
+
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      if (!projectValidator.hasValidAnualProgress(project.getOutcomes(), action.getCurrentReportingYear())) {
+        if (action.getCurrentReportingYear() == midOutcomeYear) {
+          message = action.getText("planning.projectOutcome.annualProgress.readText");
+        } else {
+          message = action.getText("planning.projectOutcome.annualProgress.readText",
+            new String[] {action.getCurrentReportingYear() + ""});
+        }
+      }
+
+      if (!projectValidator.hasValidCommunication(project.getOutcomes(), action.getCurrentReportingYear())) {
+        if (action.getCurrentReportingYear() == midOutcomeYear) {
+          message = action.getText("Communication and engagement are missing or are incorrect");
+        } else {
+          message = action.getText("Communication and engagement are missing or are incorrect",
+            new String[] {action.getCurrentReportingYear() + ""});
+        }
+      }
+
+      this.addMessage(message.toLowerCase());
+      this.addMissingField("project.outcomes[" + action.getCurrentReportingYear() + "].statement");
     }
   }
 }
