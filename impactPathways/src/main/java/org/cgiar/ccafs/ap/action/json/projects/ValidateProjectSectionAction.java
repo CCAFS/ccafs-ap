@@ -32,6 +32,7 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
@@ -473,9 +474,15 @@ public class ValidateProjectSectionAction extends BaseAction {
 
 
       // Getting the Project lessons for this section.
-
+      List<String> typesids;
       for (ProjectHighligths projectHighligths : list) {
+        typesids = new ArrayList<>();
+        for (ProjectHighligthsTypes projectHighligthsType : projectHighligths.getProjectHighligthsTypeses()) {
+          typesids.add(String.valueOf(projectHighligthsType.getId()));
+        }
+        projectHighligths.setTypesids(typesids);
         highLigthValidator.validate(this, project, projectHighligths, currentCycle);
+
       }
       // Validate
 

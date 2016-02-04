@@ -48,7 +48,7 @@ public class ProjectHighLightValidator extends BaseValidator {
         this.ValidateHightLigth(action, highLigths);
 
       }
-      if (fields) {
+      if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
       } else if (validationMessage.length() > 0) {
         action
@@ -65,7 +65,6 @@ public class ProjectHighLightValidator extends BaseValidator {
     if (higligth.getTypesids().size() == 0) {
       this.addMessage(action.getText("reporting.projectHighligth.types").toLowerCase());
       this.addMissingField("reporting.projectHighligth.types");
-      fields = true;
     }
 
 
