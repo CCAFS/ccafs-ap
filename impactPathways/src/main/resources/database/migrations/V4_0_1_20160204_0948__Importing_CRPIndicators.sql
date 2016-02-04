@@ -1,7 +1,7 @@
 -- CRP indicator types.
 
 CREATE TABLE `crp_indicator_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -14,12 +14,12 @@ INSERT INTO `crp_indicator_types` (`id`,`name`) VALUES (5,'Outcomes on the groun
 
 -- CRP Indicators
 CREATE TABLE `crp_indicators` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `serial` varchar(5) NOT NULL,
   `name` text NOT NULL,
   `description` text NOT NULL,
   `is_active` tinyint(1) NOT NULL,
-  `indicator_type_id` int(11) NOT NULL,
+  `indicator_type_id` BIGINT(20) NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `crp_indicator_type_id_fk` (`indicator_type_id`),
@@ -62,14 +62,14 @@ INSERT INTO `crp_indicators` (`id`,`serial`,`name`,`description`,`is_active`,`in
 
 -- CRP reported targets
 CREATE TABLE `crp_indicator_reports` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `target` text,
   `next_target` text,
   `actual` text,
   `support_links` text,
   `deviation` text,
-  `liaison_institution_id` int(11) NOT NULL,
-  `indicator_id` int(11) NOT NULL,
+  `liaison_institution_id` BIGINT(20) NOT NULL,
+  `indicator_id` BIGINT(20) NOT NULL,
   `year` int(11) NOT NULL,
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `acronym` text,
