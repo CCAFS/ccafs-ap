@@ -208,16 +208,16 @@
     <div class="fullBlock">
       [#-- Region --]
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.region" className="otherContributionRegion" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions" keyFieldName="id"  displayFieldName="name" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
+        [@customForm.select name="${customName}.region" className="otherContributionRegion" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions"  required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
       </div>
       [#-- Flagship --]
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.flagship" className="otherContributionFlagship" label="" i18nkey="reporting.projectOtherContributions.flagship" listName="flagships" keyFieldName="id"  displayFieldName="name" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
+        [@customForm.select name="${customName}.flagship" className="otherContributionFlagship" label="" i18nkey="reporting.projectOtherContributions.flagship" listName="flagships"  required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
       </div>
     </div>
     [#-- Indicator --]
     <div class="fullBlock">
-      [@customForm.select name="${customName}.indicators" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" keyFieldName="id"  displayFieldName="name" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
+      [@customForm.select name="${customName}.indicators" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
       [#if editable]<span class="indicatorsFound">[#if !contribution.flagship?? || !contribution.region??](Please select a region and flagship)[/#if]</span>[/#if]
     </div>
     [#-- Describe how you are contributing to the selected outcome --]

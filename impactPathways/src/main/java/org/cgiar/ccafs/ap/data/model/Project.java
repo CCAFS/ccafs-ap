@@ -103,6 +103,8 @@ public class Project {
   private String status;
   private String statusDescription;
   private String annualReportDonor;
+  private String leader;
+
 
   public Project() {
   }
@@ -278,15 +280,14 @@ public class Project {
     return null;
   }
 
-
   public List<Budget> getBudgets() {
     return budgets;
   }
 
+
   public List<CasesStudies> getCaseStudies() {
     return caseStudies;
   }
-
 
   /**
    * This method gets the budget of a specific project that is co-financing the current one in a specific year.
@@ -307,6 +308,7 @@ public class Project {
     }
     return null;
   }
+
 
   /**
    * This method gets all the budgets from the projects that are co-financing the curren project.
@@ -513,7 +515,6 @@ public class Project {
     return ipOtherContribution;
   }
 
-
   /**
    * This method returns the project partner institution that is leading the project.
    * 
@@ -532,6 +533,7 @@ public class Project {
     }
     return null;
   }
+
 
   /**
    * This method returns the project partner person who is leading the project.
@@ -558,7 +560,6 @@ public class Project {
   public List<ProjectLeverage> getLeverages() {
     return leverages;
   }
-
 
   public LiaisonInstitution getLiaisonInstitution() {
     return liaisonInstitution;
@@ -624,6 +625,7 @@ public class Project {
     return null;
   }
 
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
@@ -640,7 +642,6 @@ public class Project {
     return overhead;
   }
 
-
   /**
    * This method returns the OutputOverview gived a mogId and year
    * 
@@ -656,6 +657,7 @@ public class Project {
     }
     return null;
   }
+
 
   public User getOwner() {
     return owner;
@@ -993,7 +995,6 @@ public class Project {
     this.annualReportDonor = annualReportDonor;
   }
 
-
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
   }
@@ -1003,6 +1004,7 @@ public class Project {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
 
+
   public void setBilateralContractRequired(boolean bilateralContractRequired) {
     this.bilateralContractRequired = bilateralContractRequired;
   }
@@ -1011,10 +1013,10 @@ public class Project {
     this.budgets = budgets;
   }
 
-
   public void setCaseStudies(List<CasesStudies> caseStudies) {
     this.caseStudies = caseStudies;
   }
+
 
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
@@ -1069,6 +1071,10 @@ public class Project {
 
   public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
+  }
+
+  public void setLeader(String leader) {
+    this.leader = leader;
   }
 
   public void setLeaderResponsabilities(String leaderResponsabilities) {

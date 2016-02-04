@@ -568,7 +568,7 @@ public class ValidateProjectSectionAction extends BaseAction {
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "otherContributions",
       this.getCurrentPlanningYear(), this.getCycleName()));
     // Validating.
-    projectOtherContributionValidator.validate(this, project);
+    projectOtherContributionValidator.validate(this, project, this.getCycleName());
   }
 
   private void validateProjectOutcomes() {

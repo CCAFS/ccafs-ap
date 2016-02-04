@@ -1,6 +1,7 @@
 $.fn.dataTableExt.sErrMode = 'throw';
-$(document).ready(function() {
+$(document).ready(initDashboard);
 
+function initDashboard() {
   $('#newProject').on('click', function(e) {
     console.log(e.target);
     $('#decisionTree .addProjectButtons').show(0, function() {
@@ -9,11 +10,28 @@ $(document).ready(function() {
   });
 
   $('.loadingBlock').hide().next().fadeIn(500);
+  // Initialize tabs
   initTabs();
-  // initSlidr();
+
+  // Initialize datatable of projects
   initDatatable();
 
-});
+  // Set timeline dates completion
+  setCompletionDates();
+
+}
+
+function setCompletionDates() {
+  var today = new Date();
+  $('#timeline li.li').each(function(i,element) {
+    var timelineDate = new Date($(element).find('.dateText').text());
+    timelineDate.setTime(timelineDate.getTime() + 1 * 86400000);
+    $(element).find('.date').text(timelineDate.toDateString()).addClass('animated flipInX');
+    if(today >= timelineDate) {
+      $(element).addClass('complete');
+    }
+  });
+}
 
 function workflowModal() {
   $("#showPandRWorkflowDialog").dialog({

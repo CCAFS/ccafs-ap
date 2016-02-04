@@ -5,13 +5,14 @@
   <table class="projectsList" id="projects">
     <thead>
       <tr class="header">
-        <th colspan="5">General Information</th>
-        <th colspan="2">[@s.text name="preplanning.projects.projectBudget" /]</th> 
+        <th colspan="6">General Information</th>
+        <th colspan="2">[@s.text name="preplanning.projects.projectBudget" /] ${reportingCycle?string(currentReportingYear,currentPlanningYear)}</th> 
         <th colspan="3">Actions</th> 
       </tr>
       <tr class="subHeader">
         <th id="ids">[@s.text name="preplanning.projects.projectids" /]</th>
         <th id="projectTitles" >[@s.text name="preplanning.projects.projectTitles" /]</th>
+        <th id="projectLeader" >[@s.text name="preplanning.projects.projectLeader" /]</th>
         <th id="projectType">[@s.text name="preplanning.projects.projectType" /]</th>
         <th id="projectRegions">[@s.text name="preplanning.projects.projectRegions" /]</th>
         <th id="projectFlagships">[@s.text name="preplanning.projects.projectFlagships" /]</th>
@@ -30,22 +31,29 @@
         <tr>
         [#-- ID --]
         <td class="projectId">
-              <a href="[@s.url namespace=namespace action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-        P${project.id}
+          <a href="[@s.url namespace=namespace action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
+            P${project.id}
           </a>
         </td>
           [#-- Project Title --]
           <td class="left"> 
-                [#if project.title?has_content]
-                  <a href="[@s.url namespace=namespace action='description'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
-                  title="${project.title}">
-                  [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
-                [#else]
-                  <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
-                    [@s.text name="preplanning.projects.title.none" /]
-                  </a>
-                [/#if]
-               
+            [#if project.title?has_content]
+              <a href="[@s.url namespace=namespace action='description'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
+              title="${project.title}">
+              [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
+            [#else]
+              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
+                [@s.text name="preplanning.projects.title.none" /]
+              </a>
+            [/#if]
+          </td>
+          [#-- Project Leader --]
+          <td class="left"> 
+            [#if project.leader?has_content]
+              ${project.leader}
+            [#else]
+              [@s.text name="preplanning.projects.title.none" /]
+            [/#if]
           </td>
           [#-- Project Type --]
           <td>
@@ -118,15 +126,19 @@
           [#if isPlanning]
           <td> <a href="#">Complete / Incomplete</a></td>
           [/#if]
-          [#-- Summary download --]
-          <td> 
+          [#-- Summary PDF download --]
+          <td>
+            [#if !reportingCycle]
             <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" target="__BLANK">
-              <img src="${baseUrl}/images/global/download-summary.png" height="25" alt="[@s.text name="summaries.project.download" /]" title="[@s.text name="summaries.project.download" /]" />
-            </a> 
+              <img src="${baseUrl}/images/global/download-summary.png" height="25" title="[@s.text name="summaries.project.download" /]" />
+            </a>
+            [#else]
+              <img src="${baseUrl}/images/global/download-summary-disabled.png" height="25" title="[@s.text name="menu.link.disabled" /]" />
+            [/#if]
           </td>
           [#-- Delete Project--]
           <td>
-            [#if securityContext.isAdmin() || (securityContext.canDeleteProject() && project.isNew(currentPlanningStartDate)) ]
+            [#if (action.hasProjectPermission("deleteProject", project.id, "manage") && project.isNew(currentPlanningStartDate)) ]
               <a id="removeProject-${project.id}" class="removeProject" href="#" title="">
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="preplanning.projects.deleteProject" /]" /> 
               </a>

@@ -37,12 +37,12 @@
     <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.deadline.title" /]</b></div>
     <div id="timelineBlock" class="borderBox">
       <ul class="timeline" id="timeline">
-        [@time title="Project leaders" subTitle="PL" date="02/15/2016" status="Open Reporting"/]
-        [@time title="Project leaders" subTitle="PL" date="02/29/2016" status="Close Reporting"/]
-        [@time title="Regional Program Leaders " subTitle="RPL" date="03/07/2016" status="Open Reporting"/]
-        [@time title="Regional Program Leaders " subTitle="RPL" date="03/15/2016" status="Close Reporting"/]
-        [@time title="Flagship Program Leaders " subTitle="FPL" date="03/15/2016" status="Open Reporting"/]
-        [@time title="Flagship Program Leaders " subTitle="FPL" date="03/25/2016" status="Close Reporting"/]
+        [@time title="Project leaders"            subTitle="PL"   dateText="2016-02-15" status="Open Reporting"/]
+        [@time title="Project leaders"            subTitle="PL"   dateText="2016-02-29" status="Close Reporting"/]
+        [@time title="Regional Program Leaders "  subTitle="RPL"  dateText="2016-03-07" status="Open Reporting"/]
+        [@time title="Regional Program Leaders "  subTitle="RPL"  dateText="2016-03-15" status="Close Reporting"/]
+        [@time title="Flagship Program Leaders "  subTitle="FPL"  dateText="2016-03-15" status="Open Reporting"/]
+        [@time title="Flagship Program Leaders "  subTitle="FPL"  dateText="2016-03-25" status="Close Reporting"/]
       </ul> 
       <div class="clearfix"></div> 
     </div>
@@ -97,10 +97,13 @@
   </div>
 </div> 
 
-[#macro time title subTitle date status]
+[#macro time title subTitle dateText status]
 <li class="li">
   <div class="timestamp" title="${title}">
-    <p class="author"> ${status} </p><p class="date">${date?date("MM/dd/yyyy")?string.medium}</p>
+    <p class="author"> ${status} </p>
+    [#setting date_format="YYYY-MM-DD"]
+    <p class="date">${dateText}</p>
+    <p class="dateText" style="display:none">${dateText}</p>
   </div>
   <div class="status"><h4> For ${title} </h4></div>
 </li>

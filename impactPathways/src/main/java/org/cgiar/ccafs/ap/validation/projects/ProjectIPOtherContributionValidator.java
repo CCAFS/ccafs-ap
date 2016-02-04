@@ -15,9 +15,11 @@
 package org.cgiar.ccafs.ap.validation.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.OtherContributionValidator;
 
@@ -51,7 +53,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
     return false;
   }
 
-  public void validate(BaseAction action, Project project) {
+  public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
 
@@ -70,21 +72,46 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
               i++;
             }
             this.validateLessonsLearn(action, project, "otherContributions");
+            if (cycle.equals(APConstants.REPORTING_SECTION)) {
+              int c = 1;
+              for (ProjecteOtherContributions projectOtherContributions : project.getOtherContributions()) {
+                try {
+                  this.validateFlaghsip(action, Integer.parseInt(projectOtherContributions.getFlagship()), c);
+                } catch (NumberFormatException e) {
+                  this.validateFlaghsip(action, 0, c);
+                }
+                try {
+                  this.validateRegion(action, Integer.parseInt(projectOtherContributions.getRegion()), c);
+                } catch (NumberFormatException e) {
+                  this.validateRegion(action, 0, c);
+                }
+                try {
+                  this.validateIndicator(action, Integer.parseInt(projectOtherContributions.getIndicators()), c);
+                } catch (NumberFormatException e) {
+                  this.validateIndicator(action, 0, c);
+                }
+                c++;
+              }
+
+            }
           }
 
         }
 
-        if (!action.getFieldErrors().isEmpty()) {
-          action.addActionError(action.getText("saving.fields.required"));
-        } else if (validationMessage.length() > 0) {
-          action.addActionMessage(
-            " " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
-        }
-
       }
+
+      if (!action.getFieldErrors().isEmpty()) {
+        action.addActionError(action.getText("saving.fields.required"));
+      } else if (validationMessage.length() > 0) {
+        action
+          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      }
+
+
       // Saving missing fields.
-      this.saveMissingFields(project, "Planning", "otherContributions");
+      this.saveMissingFields(project, action.getCycleName(), "otherContributions");
     }
+
   }
 
   private void validateAdditionalContribution(BaseAction action, String additionalContribution) {
@@ -103,6 +130,20 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
     }
   }
 
+  private void validateFlaghsip(BaseAction action, int flaghship, int c) {
+    if (!(flaghship > 0)) {
+      this.addMessage(action.getText("Project Other Contribution [" + c + "] Flagship  is requiered").toLowerCase());
+      this.addMissingField("project.projectOtherContribution.falgship");
+    }
+  }
+
+  private void validateIndicator(BaseAction action, int indicator, int c) {
+    if (!(indicator > 0)) {
+      this.addMessage(action.getText("Project Other Contribution [" + c + "] Indicator  is requiered").toLowerCase());
+      this.addMissingField("project.projectOtherContribution.indicator");
+    }
+  }
+
   private void validateNatureCollaboration(BaseAction action, String natureCollaboration, int i) {
     if (!otherContributionValidator.isValidCrpCollaborationNature(natureCollaboration)) {
       this.addMessage(
@@ -111,5 +152,11 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
     }
   }
 
+  private void validateRegion(BaseAction action, int region, int c) {
+    if (!(region > 0)) {
+      this.addMessage(action.getText("Project Other Contribution [" + c + "] Region  is requiered").toLowerCase());
+      this.addMissingField("project.projectOtherContribution.region");
+    }
+  }
 
 }
