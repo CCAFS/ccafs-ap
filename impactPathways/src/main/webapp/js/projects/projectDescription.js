@@ -38,6 +38,7 @@ $(document).ready(function() {
     console.log($inputFile);
     $parent.empty().append($inputFile);
     $inputFile.hide().fadeIn('slow');
+    forceChange = true;
   });
 
   /**

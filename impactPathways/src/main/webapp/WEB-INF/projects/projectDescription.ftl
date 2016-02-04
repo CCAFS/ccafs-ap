@@ -86,7 +86,7 @@
             <div class="halfPartBlock fileUpload projectWorkplan"> 
               [#if project.workplanName?has_content]
                 <p> 
-                  [#if editable]<span id="remove-file" class="remove"></span>[#else]<span id="" class="file"></span>[/#if] 
+                  [#if editable]<span id="remove-file" class="remove"></span>[#else]<span class="file"></span>[/#if] 
                   <a href="${workplanURL}${project.workplanName}">${project.workplanName}</a>  <input type="hidden" name="project.workplanName" value="${project.workplanName}" /> 
                 </p>
               [#else]
@@ -110,7 +110,7 @@
           <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
-                 [#if editable]<span id="remove-file" class="remove"></span>[/#if] 
+              [#if editable]<span id="remove-file" class="remove"></span>[#else]<span class="file"></span>[/#if] 
               <p> <a href="${bilateralContractURL}${project.bilateralContractProposalName}">${project.bilateralContractProposalName}</a> 
             [#else]
               [#if editable]
@@ -136,8 +136,8 @@
             <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
             <div class="uploadContainer">
               [#if project.annualReportDonor?has_content]
-                [#if editable]<span id="remove-fileReporting" class="remove"></span>[/#if] 
-                <p> <a href="${AnualReportURL}${project.annualReportDonor}">${project.annualReportDonor}</a> </p>
+                [#if editable]<span id="remove-fileReporting" class="remove"></span>[#else]<span class="file"></span>[/#if] 
+                <p><a href="${AnualReportURL}${project.annualReportDonor}">${project.annualReportDonor}</a> </p>
               [#else]
                 [#if editable]
                   [@customForm.inputFile name="fileReporting"  /]
