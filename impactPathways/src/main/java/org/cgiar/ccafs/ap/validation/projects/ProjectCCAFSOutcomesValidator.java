@@ -127,21 +127,29 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
           this.addMissingField("project.outcome(" + outcome.getId() + ").indicators.empty");
         } else {
           // Populating years to validate.
-          yearsToValidate.put(config.getPlanningCurrentYear(), false); // 2016
-          SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+          int evaluatingYear = 0;
+          if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+            evaluatingYear = action.getCurrentReportingYear();
+          } else {
+            action.getCurrentPlanningYear();
+          }
+          yearsToValidate.put(evaluatingYear, false); // 2016
+          if (action.getCycleName().equals(APConstants.PLANNING_SECTION)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-          try {
-            if (project.getEndDate().compareTo(sdf.parse("01/01/2017")) >= 0) {
+            try {
+              if (project.getEndDate().compareTo(sdf.parse("01/01/2017")) >= 0) {
 
-              yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
+                yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
+              }
+
+              if (project.getEndDate().compareTo(sdf.parse("01/01/2019")) >= 0) {
+
+                yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+              }
+            } catch (ParseException e) {
+
             }
-
-            if (project.getEndDate().compareTo(sdf.parse("01/01/2019")) >= 0) {
-
-              yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
-            }
-          } catch (ParseException e) {
-
           }
 
 

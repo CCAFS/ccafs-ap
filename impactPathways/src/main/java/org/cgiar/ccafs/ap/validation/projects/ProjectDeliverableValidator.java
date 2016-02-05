@@ -199,7 +199,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
     if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
       if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
         // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
-        this.addMessage("projects.deliverable(" + deliverable.getId() + ").status");
+        this.addMessage("Deliverable (" + deliverable.getId() + ") Status is Requeried");
         this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
       }
     }

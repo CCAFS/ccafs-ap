@@ -361,8 +361,14 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
     previousIndicators.addAll(project.getIndicators());
 
     // Getting the Project lessons for this section.
-    ComponentLesson lessons = lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear(), this.getCycleName());
+    int evaluatingYear = 0;
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      this.getCurrentPlanningYear();
+    }
+    ComponentLesson lessons =
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName());
     this.setProjectLessons(lessons);
 
     super.setHistory(historyManager.getCCAFSOutcomesHistory(projectID));

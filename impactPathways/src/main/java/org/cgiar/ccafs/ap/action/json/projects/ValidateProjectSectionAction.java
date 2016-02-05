@@ -29,12 +29,14 @@ import org.cgiar.ccafs.ap.data.model.CrossCuttingContribution;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.OtherContribution;
 import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.ProjectOutcome;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.data.model.SectionStatus;
 import org.cgiar.ccafs.ap.data.model.SectionStatusEnum;
 import org.cgiar.ccafs.ap.validation.projects.ActivitiesListValidator;
@@ -571,11 +573,19 @@ public class ValidateProjectSectionAction extends BaseAction {
     // Getting the Project information.
     Project project = projectManager.getProject(projectID);
     project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+
+    List<ProjecteOtherContributions> others = ipOtherContributionManager.getOtherContributionsByProjectId(projectID);
+    project.setOtherContributions(others);
+    if (project.getIpOtherContribution() == null) {
+
+      project.setIpOtherContribution(new OtherContribution());
+    }
+
     // Getting the Project lessons for this section.
     this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "otherContributions",
       this.getCurrentPlanningYear(), this.getCycleName()));
     // Validating.
-    projectOtherContributionValidator.validate(this, project, this.getCycleName());
+    projectOtherContributionValidator.validate(this, project, currentCycle);
   }
 
   private void validateProjectOutcomes() {
@@ -584,11 +594,12 @@ public class ValidateProjectSectionAction extends BaseAction {
     int currentPlanningYear = this.config.getPlanningCurrentYear();
     int midOutcomeYear = this.config.getMidOutcomeYear();
 
+
     // Loading the project outcomes
     Map<String, ProjectOutcome> projectOutcomes = new HashMap<>();
 
     int evaluatingYear = 0;
-    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
       evaluatingYear = this.getCurrentReportingYear();
     } else {
       evaluatingYear = currentPlanningYear;

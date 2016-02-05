@@ -204,7 +204,7 @@ public class ActivitiesListAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectActivities(projectID)) {
+    if (this.hasProjectPermission("update", projectID)) {
 
       super.saveProjectLessons(projectID);
 
