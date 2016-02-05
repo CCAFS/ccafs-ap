@@ -10,11 +10,11 @@
   <h1 class="contentTitle">[@s.text name="planning.projectDeliverable.information" /] </h1> 
   [#-- Title --] 
   <div class="fullBlock">
-    [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable && action.hasProjectPermission("mainInfo", project.id) /]
+    [@customForm.input name="${params.deliverable.name}.title" className="deliverableTitle limitWords-15" i18nkey="planning.deliverables.title" required=true editable=editable && ( action.hasProjectPermission("main", project.id) || !((deliverable.title)?has_content) ) /]
   </div> 
   [#-- MOG  --]
   <div class="fullBlock chosen"> 
-    [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" required=true editable=editable /]
+    [@customForm.select name="${params.deliverable.name}.output" label=""  disabled=false i18nkey="planning.deliverables.mog" listName="outputs" keyFieldName="id"  displayFieldName="description" required=true editable=editable && ( action.hasProjectPermission("main", project.id) || !((deliverable.output)?has_content) ) /]
   </div> 
   <div class="fullBlock">
     [#assign deliverableType][#if deliverable.type??]${deliverable.type.category.id}[#else]-1[/#if][/#assign]
@@ -38,8 +38,8 @@
   [#-- Year  --]
   <div class="fullPartBlock">
     <div class="halfPartBlock chosen">
-      [@customForm.select name="${params.deliverable.name}.year" value="${(deliverable.year)!-1}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable && action.hasProjectPermission("mainInfo", project.id)/]
-      [#if !editable || !action.hasProjectPermission("mainInfo", project.id)]<div class="select"><p>${deliverable.year}</p></div> [/#if]
+      [@customForm.select name="${params.deliverable.name}.year" value="${(deliverable.year)!-1}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable && ( action.hasProjectPermission("main", project.id) || !((deliverable.year)?has_content) )/]
+      [#if !editable || !action.hasProjectPermission("main", project.id)]<div class="select"><p>${deliverable.year}</p></div> [/#if]
     </div>
   </div>
   [#-- -- -- REPORTING BLOCK -- -- --]
