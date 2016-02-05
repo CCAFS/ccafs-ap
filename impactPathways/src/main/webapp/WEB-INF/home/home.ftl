@@ -37,12 +37,12 @@
     <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.deadline.title" /]</b></div>
     <div id="timelineBlock" class="borderBox">
       <ul class="timeline" id="timeline">
-        [@time title="Project leaders"            subTitle="PL"   dateText="2016-02-15" status="Open Reporting"/]
-        [@time title="Project leaders"            subTitle="PL"   dateText="2016-02-29" status="Close Reporting"/]
-        [@time title="Regional Program Leaders "  subTitle="RPL"  dateText="2016-03-07" status="Open Reporting"/]
-        [@time title="Regional Program Leaders "  subTitle="RPL"  dateText="2016-03-15" status="Close Reporting"/]
-        [@time title="Flagship Program Leaders "  subTitle="FPL"  dateText="2016-03-15" status="Open Reporting"/]
-        [@time title="Flagship Program Leaders "  subTitle="FPL"  dateText="2016-03-25" status="Close Reporting"/]
+        [@time title="Project leaders"    subTitle="PL"   dateText="2016-02-15" status="Open"/]
+        [@time title="Project leaders"    subTitle="PL"   dateText="2016-02-29" status="Close"/]
+        [@time title="Regional Leaders "  subTitle="RPL"  dateText="2016-03-07" status="Open"/]
+        [@time title="Regional Leaders "  subTitle="RPL"  dateText="2016-03-15" status="Close"/]
+        [@time title="Flagship Leaders "  subTitle="FPL"  dateText="2016-03-15" status="Open"/]
+        [@time title="Flagship Leaders "  subTitle="FPL"  dateText="2016-03-25" status="Close"/]
       </ul> 
       <div class="clearfix"></div> 
     </div>
