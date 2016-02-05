@@ -241,15 +241,15 @@ public class APCustomRealm extends AuthorizingRealm {
       }
     }
     // Converting those general roles into specific for the SYNTHESIS where they are able to edit.
+    List<String> newPermissions = new ArrayList<>();
     for (String permission : authorizationInfo.getStringPermissions()) {
       for (int liaisonInstitutionID : liaisonInstitutionIDs) {
         if (permission.startsWith("reporting:synthesis:")) {
-          System.out.println(permission.replace("synthesis:", "synthesis:" + liaisonInstitutionID + ":"));
-          authorizationInfo
-            .addStringPermission(permission.replace("synthesis:", "synthesis:" + liaisonInstitutionID + ":"));
+          newPermissions.add(permission.replace("synthesis:", "synthesis:" + liaisonInstitutionID + ":"));
         }
       }
     }
+    authorizationInfo.addStringPermissions(newPermissions);
 
     if (!config.isClosed()) {
       // Getting the specific roles based on the table project_roles.
