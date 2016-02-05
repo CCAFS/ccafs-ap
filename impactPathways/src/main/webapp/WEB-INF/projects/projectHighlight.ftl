@@ -75,7 +75,8 @@
         </div>
         [#-- Year --]
         <div class="halfPartBlock">
-          [@customForm.select name="highlight.year" value="highlight.year" i18nkey="reporting.projectHighlight.year" listName="allYears" editable=editable stringKey=true /]
+          [@customForm.select name="highlight.year" value="${(highlight.year)!currentReportingYear}" i18nkey="reporting.projectHighlight.year" listName="allYears" editable=editable stringKey=true /]
+          [#if !editable]${(highlight.year)!}[/#if]
         </div>
       </div>
      

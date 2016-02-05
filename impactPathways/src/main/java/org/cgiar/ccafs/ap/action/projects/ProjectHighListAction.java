@@ -62,7 +62,7 @@ public class ProjectHighListAction extends BaseAction {
   public String add() {
     ProjectHighligths newDeliverable = new ProjectHighligths(-1);
     // newDeliverable.setType(deliverableTypeManager.getDeliverableSubTypes().get(0));
-    newDeliverable.setYear(new Long(project.getAllYears().get(0)));
+    newDeliverable.setYear(new Long(this.getCurrentReportingYear()));
 
     newDeliverable.setActiveSince(new Date());
     newDeliverable.setAuthor("");

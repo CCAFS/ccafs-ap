@@ -7,7 +7,8 @@
         <tr>
           <th class="id" >ID</th> 
           <th class="name">Highlight Name</th>
-          <th class="type">Author</th>  
+          <th class="type">Author</th>
+          <th class="year">Year</th>
           <th class="removeHighlight">Remove</th> 
         </tr>
       </thead>
@@ -17,7 +18,8 @@
         <tr>
           <td class="id" ><a href="${dlurl}">${hl.id}</a></td> 
           <td class="name"><a href="${dlurl}">[#if hl.title?trim?has_content]${hl.title}[#else]Untitled[/#if]</a></td>
-          <td class="type">[#if hl.title?trim?has_content]${hl.author}[#else]Not defined[/#if]</td> 
+          <td class="type">[#if hl.title?trim?has_content]${hl.author}[#else]Not defined[/#if]</td>
+          <td class="year">[#if hl.title?trim?has_content]${hl.year}[#else]Not defined[/#if]</td>
           <td class="removeHighlight-row">
             [#if canEdit && action.hasProjectPermission("removeHighlight", project.id)]
               <a id="removeHighlight-${hl.id}" class="removeHighlight" href="highlightID${hl.id}" title="" >
