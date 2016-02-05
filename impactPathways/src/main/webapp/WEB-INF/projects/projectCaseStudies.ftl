@@ -171,7 +171,7 @@
     <div class="fullBlock">
       [#-- Year --]
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.year" label="" disabled=!canEdit i18nkey="reporting.projectCaseStudies.caseStudyYear" listName="allYears"  className="caseStudyYear" required=true editable=editable/]
+        [@customForm.select name="${customName}.year" label="" value="${(study.year)!currentReportingYear}" disabled=!canEdit i18nkey="reporting.projectCaseStudies.caseStudyYear" listName="allYears"  className="caseStudyYear" required=true editable=editable/]
         [#if !editable]${(study.year)!}[/#if]
       </div>
       [#-- Upload Annexes --]
