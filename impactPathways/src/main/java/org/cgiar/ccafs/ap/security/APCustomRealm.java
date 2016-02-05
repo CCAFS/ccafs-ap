@@ -148,16 +148,14 @@ public class APCustomRealm extends AuthorizingRealm {
     userID = (Integer) principals.getPrimaryPrincipal();
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
     List<Map<String, UserRole>> projectRoles = new ArrayList<>();
+    List<Integer> liaisonInstitutionIDs = new ArrayList<>();
 
     if (roles.size() == 0) {
       roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
     }
     // Get the roles general to the platform
     for (UserRole role : roles) {
-
-
       authorizationInfo.addRole(role.getAcronym());
-
       switch (role.getId()) {
         case APConstants.ROLE_ADMIN:
           for (String permission : role.getPermissions()) {
@@ -180,22 +178,26 @@ public class APCustomRealm extends AuthorizingRealm {
           break;
         case APConstants.ROLE_CONTACT_POINT:
           projectRoles.add(userRoleManager.getContactPointProjects(userID));
+          liaisonInstitutionIDs.addAll(userRoleManager.getLiaisonInstitutionID(userID));
+          break;
+
+        case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
+        case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+          liaisonInstitutionIDs.addAll(userRoleManager.getLiaisonInstitutionID(userID));
           break;
       }
     }
     boolean addPermission = true;
     // Adding the permissions for each role exactly as they come from the database:
     for (UserRole role : roles) {
-
       for (String myPermission : role.getPermissions()) {
         addPermission = true;
-        if (myPermission.contains("planning")) {
+        if (myPermission.startsWith("planning:projects:")) {
           if ((config.isPlanningClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
             addPermission = false;
           }
         }
-
-        if (myPermission.contains("reporting")) {
+        if (myPermission.startsWith("reporting:projects:")) {
           if ((config.isReportingClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
             addPermission = false;
           }
@@ -203,17 +205,10 @@ public class APCustomRealm extends AuthorizingRealm {
         if (addPermission) {
           authorizationInfo.addStringPermission(myPermission);
         }
-
-
       }
-
     }
-    // Converting those general roles into specific for the projects where they are able to edit.
-    for (
-
-    Map<String, UserRole> mapRoles : projectRoles)
-
-    {
+    // Converting those general roles into specific for the PROJECTS where they are able to edit.
+    for (Map<String, UserRole> mapRoles : projectRoles) {
       for (Map.Entry<String, UserRole> entry : mapRoles.entrySet()) {
         String projectID = entry.getKey();
         UserRole role = entry.getValue();
@@ -227,13 +222,13 @@ public class APCustomRealm extends AuthorizingRealm {
           }
 
           addPermission = true;
-          if (permission.contains("planning")) {
+          if (permission.startsWith("planning:projects:")) {
             if ((config.isPlanningClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
               addPermission = false;
             }
           }
 
-          if (permission.contains("reporting")) {
+          if (permission.startsWith("reporting:projects:")) {
             if ((config.isReportingClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
               addPermission = false;
             }
@@ -245,10 +240,18 @@ public class APCustomRealm extends AuthorizingRealm {
         }
       }
     }
+    // Converting those general roles into specific for the SYNTHESIS where they are able to edit.
+    for (String permission : authorizationInfo.getStringPermissions()) {
+      for (int liaisonInstitutionID : liaisonInstitutionIDs) {
+        if (permission.startsWith("reporting:synthesis:")) {
+          System.out.println(permission.replace("synthesis:", "synthesis:" + liaisonInstitutionID + ":"));
+          authorizationInfo
+            .addStringPermission(permission.replace("synthesis:", "synthesis:" + liaisonInstitutionID + ":"));
+        }
+      }
+    }
 
-    if (!config.isClosed())
-
-    {
+    if (!config.isClosed()) {
       // Getting the specific roles based on the table project_roles.
       List<ProjectUserRole> projectSpecificUserRoles =
         projectSpecificUserRoleManager.getProjectSpecificUserRoles(userID);
@@ -263,7 +266,6 @@ public class APCustomRealm extends AuthorizingRealm {
       }
     }
     return authorizationInfo;
-
   }
 
   @Override

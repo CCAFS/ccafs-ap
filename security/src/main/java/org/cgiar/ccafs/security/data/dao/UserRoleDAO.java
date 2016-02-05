@@ -38,6 +38,15 @@ public interface UserRoleDAO {
   public List<Map<String, String>> getContactPointProjects(int userID);
 
   /**
+   * This method gets the ML Institution for a certain user.
+   * It will look into the liaison_users table.
+   * 
+   * @param userID is some user ID
+   * @return a list of liaison institutions where the user belong. Or an empty list if nothing found.
+   */
+  public List<Integer> getLiaisonInstitutionID(int userID);
+
+  /**
    * This method gets the projects where the user is assigned as management liaison.
    * 
    * @param userID - user identifier

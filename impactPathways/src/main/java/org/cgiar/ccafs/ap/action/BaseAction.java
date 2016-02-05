@@ -393,6 +393,32 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
   /**
+   * This method validates if current user has permissions to edit a specified field name in the platform in SYNTHESIS.
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @param liaisonInstitutionID is some liaison institution identifier.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasSynthesisPermission(String fieldName, int liaisonInstitutionID) {
+    StringBuffer permissionString = new StringBuffer();
+    if (this.isReportingCycle()) {
+      permissionString.append("reporting:synthesis:");
+    } else {
+      permissionString.append("planning:synthesis:");
+    }
+    permissionString.append(liaisonInstitutionID);
+    permissionString.append(":");
+    permissionString.append(this.getActionName());
+    permissionString.append(":");
+    permissionString.append(fieldName);
+    System.out.println(securityContext.hasPermission(permissionString.toString()));
+
+    return securityContext.hasPermission(permissionString.toString());
+  }
+
+  /**
    * This method returns the status of the given section in a specific cycle (Planning or Reporting).
    * 
    * @param project is the project that you want to look for the missing fields.
