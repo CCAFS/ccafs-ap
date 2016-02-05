@@ -241,14 +241,12 @@
     <div class="halfPartBlock clearfix">
       <div class="title">
         <h6 class="subTitle">
-          [@s.text name="planning.projectBudget.annualBudget"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]: [@customForm.req required=true /]
+          [@s.text name="planning.projectBudget.annualBudget"][@s.param]${(!project.bilateralProject)?string(w1W2BudgetLabel, w3BilateralBudgetLabel)}[/@s.param][/@s.text]:[@customForm.req required=true /]
         </h6>
-        <p class="inputTitle">
-          [#if !editable]<strong>US$ ${((budget.amount)!0)?number?string(",##0.00")}</strong>[/#if]
-        </p>
+        <p class="inputTitle">[#if !editable]<strong>US$ ${((budget.amount)!0)?number?string(",##0.00")}</strong>[/#if]</p>
       </div>
       <div class="content">
-        [#if editable] 
+        [#if editable]
           [@customForm.input name="project.budgets[${counter}].amount" required=true className="partnerBudget plBudget ${projectType}" showTitle=false value="${(budget.amount)!0}" disabled=(!action.hasProjectPermission("annualW1W2",project.id) &&!project.bilateralProject )/] 
         [/#if]
       </div>
