@@ -63,11 +63,11 @@ $(document).ready(function() {
           modal: true,
           width: 500,
           buttons: {
-              "Close": function() {
+              "Confirm": function() {
+                removeItemList($(e.target).parents('li'));
                 $(this).dialog("close");
               },
-              "Remove": function() {
-                removeItemList($(e.target).parents('li'));
+              "Cancel": function() {
                 $(this).dialog("close");
               }
           }

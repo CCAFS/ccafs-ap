@@ -269,7 +269,7 @@
   
   [#-- Remove project contribution popup --]
   <div id="removeContribution-dialog" title="Remover project contribution" style="display:none">
-    <ul class="messages"><li>Please be aware that the project could have budget related to this project</li></ul>
+    <ul class="messages"><li>[@s.text name="reporting.projectDescription.removeContributionDialog" /]</li></ul>
   </div>
   
   [#-- File upload Template--] 
