@@ -100,7 +100,11 @@ public class CrpIndicatorsAction extends BaseAction {
       liaisonInstitutionID =
         Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.LIAISON_INSTITUTION_REQUEST_ID)));
     } catch (NumberFormatException e) {
-      liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+      if (this.getCurrentUser().getLiaisonInstitution() != null) {
+        liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+      } else {
+        liaisonInstitutionID = 1;
+      }
     }
 
     try {
@@ -126,7 +130,9 @@ public class CrpIndicatorsAction extends BaseAction {
       indicatorReport.setActual("actual" + i);
       Indicator indicator = new Indicator();
       indicator.setId(100 + i);
-      indicator.setName("Question #" + (100 + i));
+      indicator.setName(
+        "Number of multi-stakeholder R4D innovation platforms established for the targeted agro-ecosystems by the CRPs #"
+          + (100 + i));
       indicator.setDescription("Description #" + (100 + i));
       IndicatorType type = new IndicatorType(1000 + i, "Type 1");
       indicator.setType(type);
