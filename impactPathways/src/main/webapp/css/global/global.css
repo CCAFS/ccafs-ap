@@ -668,6 +668,31 @@ input.input-loading {
   background: url(../../images/global/loading_3.gif) #FFF no-repeat right;        
 }
 
+/* Horizontal sub menu */
+ul.horizontalSubMenu{
+  list-style: none;
+  margin: 23px 0px 0 0;
+  text-align: center;
+}
+
+ul.horizontalSubMenu li{
+  padding: 7px 25px;
+  border: 1px solid #E3E3E3;
+  display: inline-block;
+  margin-bottom: 5px;
+  border-radius: 3px;
+}
+
+ul.horizontalSubMenu li a{text-decoration: none;color: #B5B5B5;}
+
+ul.horizontalSubMenu li.active{
+  background: #1DA5CE;
+}
+
+ul.horizontalSubMenu li.active a{
+  color: #fff;
+}
+
 /* Lessons and Implications */
 #lessons {
   padding-top: 31px;
@@ -4380,6 +4405,13 @@ aside[id*="-control"] .slidr-control:after {
 
 #country_locations > div + div[style]{
   display : none !important;  
+}
+
+
+/*** Syntesis CRP Indicators ***/
+
+#crpIndicators .halfContent{
+  margin-top: 22px;
 }
 
 /*** Glossary ***/

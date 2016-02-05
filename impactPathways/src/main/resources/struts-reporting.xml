@@ -10,8 +10,8 @@
       <result name="input">/WEB-INF/projects/projectsList.ftl</result>
     </action>
     
-    <action name="crpIndicators" class="org.cgiar.ccafs.ap.action.BaseAction">
-      <result name="input">/WEB-INF/crpIndicators.ftl</result>
+    <action name="crpIndicators" class="org.cgiar.ccafs.ap.action.synthesis.CrpIndicatorsAction">
+      <result name="input">/WEB-INF/synthesis/crpIndicators.ftl</result>
     </action>
     
     <action name="uploadDeliverable" class="org.cgiar.ccafs.ap.action.json.projects.UploadDeliverableAction">
