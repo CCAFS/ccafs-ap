@@ -46,6 +46,9 @@ public class ProjectHighLightValidator extends BaseValidator {
         this.validateProjectJustification(action, project);
         // this.validateLessonsLearn(action, project, "highlights");
         this.ValidateHightLigth(action, highLigths);
+        this.ValidateHightAuthor(action, highLigths);
+        this.ValidateHightTitle(action, highLigths);
+        this.ValidateYear(action, highLigths);
 
       }
       if (!action.getFieldErrors().isEmpty()) {
@@ -60,6 +63,14 @@ public class ProjectHighLightValidator extends BaseValidator {
     }
   }
 
+  private void ValidateHightAuthor(BaseAction action, ProjectHighligths higligth) {
+
+    if (!this.isValidString(higligth.getAuthor())) {
+      this.addMessage("Author");
+      this.addMissingField("reporting.projectHighligth.author");
+    }
+  }
+
   private void ValidateHightLigth(BaseAction action, ProjectHighligths higligth) {
 
     if (higligth.getTypesids().size() == 0) {
@@ -68,5 +79,23 @@ public class ProjectHighLightValidator extends BaseValidator {
     }
 
 
+  }
+
+  private void ValidateHightTitle(BaseAction action, ProjectHighligths higligth) {
+
+    if (!this.isValidString(higligth.getTitle())) {
+      this.addMessage(action.getText("Title"));
+      this.addMissingField("reporting.projectHighligth.title");
+    }
+  }
+
+
+  private void ValidateYear(BaseAction action, ProjectHighligths higligth) {
+
+    if (!(higligth.getYear() > 0)) {
+      this.addMessage("Year");
+      this.addMissingField("reporting.projectHighligth.year");
+
+    }
   }
 }
