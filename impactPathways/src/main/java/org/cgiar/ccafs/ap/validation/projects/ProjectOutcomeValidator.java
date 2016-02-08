@@ -43,8 +43,8 @@ public class ProjectOutcomeValidator extends BaseValidator {
     if (project != null) {
       // The projects will be validated according to their type
       if (project.isCoreProject() || project.isCoFundedProject()) {
-        this.validateProjectJustification(action, project);
         if (!cycle.equals(APConstants.REPORTING_SECTION)) {
+          this.validateProjectJustification(action, project);
           this.validateLessonsLearn(action, project, "outcomes");
         }
         this.validateCoreProject(action, project, midOutcomeYear, currentPlanningYear, cycle);
