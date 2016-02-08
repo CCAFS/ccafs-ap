@@ -41,6 +41,8 @@ public class ProjectOutputsValidator extends BaseValidator {
   // Managers
   private IPElementManager ipElementManager;
 
+  public String cycle;
+
   @Inject
   public ProjectOutputsValidator(ProjectValidator projectValidator, OutputOverviewValidator overviewValidator,
     IPElementManager ipElementManager) {
@@ -52,7 +54,7 @@ public class ProjectOutputsValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       this.validateProjectJustification(action, project);
-
+      this.cycle = cycle;
       // This section is required for Core, co-funded and bilateral projects that are not contributing to any core
       // project.
       if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
@@ -150,7 +152,7 @@ public class ProjectOutputsValidator extends BaseValidator {
       int c = 0;
 
 
-      if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      if (cycle.equals(APConstants.REPORTING_SECTION)) {
 
         for (OutputOverview overview : project.getOutputsOverview()) {
           // Validate only current planning year which is 2016 at this moment.
@@ -161,7 +163,7 @@ public class ProjectOutputsValidator extends BaseValidator {
           }
         }
       }
-      if (action.getCycleName().equals(APConstants.PLANNING_SECTION)) {
+      if (cycle.equals(APConstants.PLANNING_SECTION)) {
         for (OutputOverview overview : project.getOutputsOverview()) {
           // Validate only current planning year which is 2016 at this moment.
           if (overview.getYear() == this.config.getPlanningCurrentYear()) {

@@ -240,7 +240,13 @@ public class ProjectSubmissionAction extends BaseAction {
     submission.setId(-1);
     submission.setCycle(this.getCycleName());
     submission.setUser(this.getCurrentUser());
-    submission.setYear((short) config.getPlanningCurrentYear());
+    int evaluatingYear = 0;
+    if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
+    submission.setYear((short) evaluatingYear);
     submission.setDateTime(new Date());
 
     int result = submissionManager.saveProjectSubmission(project, submission);

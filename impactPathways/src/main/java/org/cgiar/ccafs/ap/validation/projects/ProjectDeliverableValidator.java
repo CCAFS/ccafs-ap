@@ -42,6 +42,8 @@ public class ProjectDeliverableValidator extends BaseValidator {
   private DeliverableValidator deliverableValidator;
 
 
+  public String cycle;
+
   @Inject
   public ProjectDeliverableValidator(ProjectValidator projectValidator, DeliverableValidator deliverableValidator) {
     super();
@@ -60,6 +62,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
    */
   public void validate(BaseAction action, Project project, Deliverable deliverable, String cycle) {
     if (deliverable != null) {
+      this.cycle = cycle;
       this.missingFields.setLength(0);
       this.validateProjectJustification(action, deliverable);
 
@@ -76,7 +79,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
         action
           .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
       }
-
+      int i = 0;
       // Saving missing fields.
       this.saveMissingFields(project, deliverable, cycle, "deliverable");
     }
@@ -196,7 +199,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
 
     // Validating that deliverable status if is reporting section
-    if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
       if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
         // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
         this.addMessage("Deliverable (" + deliverable.getId() + ") Status is Requeried");

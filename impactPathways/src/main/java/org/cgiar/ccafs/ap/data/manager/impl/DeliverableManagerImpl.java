@@ -276,7 +276,7 @@ public class DeliverableManagerImpl implements DeliverableManager {
       }
       deliverable.setTypeOther(deliverableData.get("type_other"));
       // Next users
-      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(projectID));
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
       // MOG
       deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
       // Partner Person Responsible

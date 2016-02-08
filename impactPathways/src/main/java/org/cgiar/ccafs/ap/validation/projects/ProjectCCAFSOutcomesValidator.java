@@ -42,6 +42,8 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
   private Map<IPElement, List<IPIndicator>> indicatorsMap; // Outcomes vs indicators
   private Map<Integer, Boolean> yearsToValidate;;
 
+  public String cycle;
+
   @Inject
   public ProjectCCAFSOutcomesValidator(ProjectValidator projectValidator) {
     super();
@@ -69,6 +71,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
+      this.cycle = cycle;
       // Projects that are Core, Co-Funded and Bilateral stand-alone needs to fill this section.
       if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
         this.validateProjectJustification(action, project);
@@ -128,13 +131,13 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         } else {
           // Populating years to validate.
           int evaluatingYear = 0;
-          if (action.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+          if (cycle.equals(APConstants.REPORTING_SECTION)) {
             evaluatingYear = action.getCurrentReportingYear();
           } else {
-            action.getCurrentPlanningYear();
+            evaluatingYear = action.getCurrentPlanningYear();
           }
           yearsToValidate.put(evaluatingYear, false); // 2016
-          if (action.getCycleName().equals(APConstants.PLANNING_SECTION)) {
+          if (cycle.equals(APConstants.PLANNING_SECTION)) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
             try {

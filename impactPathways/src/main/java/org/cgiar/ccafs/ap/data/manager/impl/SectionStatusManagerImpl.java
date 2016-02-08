@@ -89,6 +89,8 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
         status.setProjectID(statusData.get("project_id") != null ? Integer.parseInt(statusData.get("project_id")) : -1);
         status.setDeliverableID(
           statusData.get("deliverable_id") != null ? Integer.parseInt(statusData.get("deliverable_id")) : -1);
+
+
         statuses.add(status);
       }
       return statuses;

@@ -421,7 +421,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     }
 
     SectionStatusEnum seciones[] = SectionStatusEnum.values();
-    if (seciones.length != this.realSize(this.sectionStatuses)) {
+    if (seciones.length - 1 != this.realSize(this.sectionStatuses)) {
       return false;
     }
     for (SectionStatus status : this.sectionStatuses) {
