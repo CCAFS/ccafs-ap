@@ -157,18 +157,22 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
 
           for (IPIndicator indicator : indicatorsMap.get(outcome)) {
-            // Validate only those indicators for 2016, 2017 and 2019.
             if (yearsToValidate.keySet().contains(indicator.getYear())) {
-              this.validateTargetValue(action, indicator.getTarget(), outcome.getComposedId(), indicator.getYear(), c);
-              this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
-                indicator.getYear(), c);
+              if (cycle.equals(APConstants.PLANNING_SECTION)) {
+                // Validate only those indicators for 2016, 2017 and 2019.
+                this.validateTargetValue(action, indicator.getTarget(), outcome.getComposedId(), indicator.getYear(),
+                  c);
+                this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
+                  indicator.getYear(), c);
 
-              this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
-                indicator.getYear(), c);
-              this.validateGenderNarrative(action, indicator.getGender(), outcome.getComposedId(), indicator.getYear(),
-                c);
+                this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
+                  indicator.getYear(), c);
+                this.validateGenderNarrative(action, indicator.getGender(), outcome.getComposedId(),
+                  indicator.getYear(), c);
+              }
 
-              if (action.getCycleName().equals(APConstants.REPORTING_SECTION)
+
+              if (cycle.equals(APConstants.REPORTING_SECTION)
                 && indicator.getYear() == action.getCurrentReportingYear()) {
                 this.validateNarrativeTargets(action, indicator.getNarrativeTargets(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
@@ -221,6 +225,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
       this.addMissingField("project.indicators[" + c + "].narrativeGender");
     }
   }
+
 
   private void validateNarrativeTargets(BaseAction action, String targetNarrative, String outcomeAcronym, int year,
     int c) {
