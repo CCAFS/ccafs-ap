@@ -146,8 +146,9 @@
              <p class="checked">${element.name}</p>
             [/#list]
           [#else]
-           Field is empty
+            <p>Field is empty</p>
           [/#if]
+          </div>
         [/#if]
       </div>
 
@@ -180,6 +181,7 @@
       <div class="fullBlock">
         [@customForm.textArea name="highlight.links" i18nkey="reporting.projectHighlight.links" editable=editable/]
       </div>
+      
     </div>
     
     [#if editable]
@@ -187,8 +189,7 @@
       <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <input name="highlightID"type="hidden" value="${highlight.id}">
-      <div class="[#if !newProject]borderBox[/#if]" >
-        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
+      <div class="">
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
@@ -201,8 +202,10 @@
     [/#if]
   </article>
   [/@s.form] 
-     [@customForm.inputFile name="file" template=true /] 
+     
 </section> 
 
+[#-- File upload template --]
+[@customForm.inputFile name="file" template=true /] 
 
 [#include "/WEB-INF/global/pages/footer.ftl"]
