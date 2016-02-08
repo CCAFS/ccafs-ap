@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class MySQLUserRoleDAO implements UserRoleDAO {
@@ -57,6 +58,24 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
     query.append(userID);
 
     return this.setData(query.toString());
+  }
+
+  @Override
+  public List<Integer> getLiaisonInstitutionID(int userID) {
+    List<Integer> liaisonIds = new ArrayList<>();
+    StringBuffer query = new StringBuffer();
+    query.append("SELECT institution_id FROM liaison_users WHERE user_id = ");
+    query.append(userID);
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        liaisonIds.add(rs.getInt(1));
+      }
+    } catch (SQLException e) {
+      LOG.error("verifiyCredentials() > There was an error running a query.", e);
+    }
+    return liaisonIds;
   }
 
   @Override

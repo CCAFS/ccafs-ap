@@ -33,7 +33,8 @@ public final class APConstants {
   public static final String PLANNING_SECTION = "Planning";
   public static final String REPORTING_SECTION = "Reporting";
   public static final String PROGRAM_REQUEST_ID = "programID";
-
+  public static final String LIAISON_INSTITUTION_REQUEST_ID = "liaisonInstitutionID";
+  public static final String INDICATOR_TYPE_REQUEST_ID = "indicatorTypeID";
   public static final String DELIVERABLE_FILE_LOCALLY_HOSTED = "Locally";
   public static final String FLAGSHIP_REQUEST_ID = "flagshipID";
   public static final String METADATA_REQUEST_ID = "metadataID";
@@ -102,6 +103,8 @@ public final class APConstants {
   public static final int ROLE_PROJECT_COORDINATOR = 9;
   public static final int ROLE_COORDINATING_UNIT = 6;
   public static final int ROLE_FINANCING_PROJECT = 10;
+  public static final int ROLE_REGIONAL_PROGRAM_LEADER = 11;
+  public static final int ROLE_FLAGSHIP_PROGRAM_LEADER = 12;
 
   // Location types identifiers
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;

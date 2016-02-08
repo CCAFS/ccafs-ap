@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
-
+  
   <package name="reporting" namespace="/reporting" extends="ccafsap-default">
     <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
@@ -10,12 +10,7 @@
       <result name="input">/WEB-INF/projects/projectsList.ftl</result>
     </action>
     
-    <action name="crpIndicators" class="org.cgiar.ccafs.ap.action.BaseAction">
-      <result name="input">/WEB-INF/crpIndicators.ftl</result>
-    </action>
-    
     <action name="uploadDeliverable" class="org.cgiar.ccafs.ap.action.json.projects.UploadDeliverableAction">
-    
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">314572900</param>
       </interceptor-ref> 
@@ -49,24 +44,24 @@
         <param name="edit">true</param>
       </result>
     </action>
-
-    <action name="addCoFundedProject" class="org.cgiar.ccafs.ap.action.projects.AddCofoundedProjectAction">
-      <result name="input">/WEB-INF/global/pages/addCoFundedProject.ftl</result>
+  </package>
+  
+  <package name="reportingSynthesis" namespace="/reporting/synthesis" extends="ccafsap-default">
+    <default-interceptor-ref name="synthesisStack" />
+    <default-action-ref name="crpIndicators" />
+    
+    <action name="crpIndicators" class="org.cgiar.ccafs.ap.action.synthesis.CrpIndicatorsAction">
+      <result name="input">/WEB-INF/synthesis/crpIndicators.ftl</result>
       <result name="success" type="redirectAction">
-        <param name="namespace">/reporting/projects</param>
-        <param name="actionName">description</param>
-        <param name="projectID">${coreProjectID}</param>
-        <param name="edit">true</param>
+        <param name="actionName">crpIndicators</param>
+        <param name="liaisonInstitutionID">${liaisonInstitutionID}</param>
       </result>
     </action>
-
   </package>
   
   <package name="reportingProjects" namespace="/reporting/projects" extends="ccafsap-default">
     <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
-
-    <!-- Sections -->
     
     <!-- Section: Projects  -->
    
