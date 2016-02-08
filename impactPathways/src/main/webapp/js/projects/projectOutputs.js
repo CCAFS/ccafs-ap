@@ -3,10 +3,9 @@ var limitWords = 50;
 var $textAreas;
 $(document).ready(function() {
   $textAreas = $("div#projectOutputs textarea");
-  validateEvent('[name=save], [name=next]', [
-    "#justification"
-  ]);
-
+  /*
+   * validateEvent('[name=save], [name=next]', [ "#justification" ]);
+   */
   $('#mogsTabs').tabs({
       active: $('#indexTabCurrentYear').val(),
       show: {
