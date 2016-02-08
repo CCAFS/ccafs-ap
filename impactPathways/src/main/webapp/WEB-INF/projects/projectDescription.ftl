@@ -93,7 +93,7 @@
                 [#if editable]
                   [#if !action.hasProjectPermission("workplan",project.id) ]
                     <h6>
-                      [@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]:[#if project.workplanRequired ]<span class="red">*</span>[/#if]
+                      [@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]:[#if project.workplanRequired && editable ]<span class="red">*</span>[/#if]
                     </h6>
                   [/#if]
                   [@customForm.inputFile name="file"  /]
@@ -107,7 +107,7 @@
         [#-- Project upload bilateral contract --]
         [#if (project.bilateralProject && action.hasProjectPermission("bilateralContract",project.id) )]
         <div class="fullBlock fileUpload bilateralContract">
-          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
+          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject && editable]<span class="red">*</span>[/#if]</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
               [#if editable]<span id="remove-file" class="remove"></span>[#else]<span class="file"></span>[/#if] 
@@ -133,7 +133,7 @@
           [#-- Project upload annual report to donor--]
           [#if project.bilateralProject]
           <div class="fullBlock fileUpload annualreportDonor">
-            <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject ]<span class="red">*</span>[/#if]</h6>
+            <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject && editable]<span class="red">*</span>[/#if]</h6>
             <div class="uploadContainer">
               [#if project.annualReportDonor?has_content]
                 [#if editable]<span id="remove-fileReporting" class="remove"></span>[#else]<span class="file"></span>[/#if] 
@@ -161,7 +161,7 @@
         [/#if]
         
         [#--  Regions/global and Flagships that the project is working on --]
-        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]:[#if !project.bilateralProject ]<span class="red">*</span>[/#if] </h6> 
+        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]:[#if !project.bilateralProject && editable ]<span class="red">*</span>[/#if] </h6> 
         <div id="projectWorking" class="fullBlock clearfix">
           [#-- Flagships --] 
           <div id="projectFlagshipsBlock" class="grid_5">
