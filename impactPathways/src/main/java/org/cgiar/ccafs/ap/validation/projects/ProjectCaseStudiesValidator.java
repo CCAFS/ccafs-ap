@@ -45,7 +45,7 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
     if (project != null) {
       // If project is CORE or CO-FUNDED
       if (project.isCoreProject() || project.isCoFundedProject()) {
-        this.validateProjectJustification(action, project);
+        // this.validateProjectJustification(action, project);
 
         for (CasesStudies caseStudy : project.getCaseStudies()) {
           c++;

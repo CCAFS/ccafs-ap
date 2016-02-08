@@ -118,31 +118,6 @@
       
     </div> <!-- End otherContributions -->
     
-    [#if !newProject]
-    <div id="lessons" class="borderBox">
-      [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
-      [#else]
-        [#if canEdit && !newProject]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
-        [/#if]
-      [/#if]  
-      [#-- Lessons learnt from last planning/reporting cycle --]
-      [#if (projectLessonsPreview.lessons?has_content)!false]
-      <div class="fullBlock">
-        <h6>[@customForm.text name="${currentSection}.projectOtherContributions.previousLessons" param="${reportingCycle?string(currentReportingYear,currentPlanningYear-1)}" /]:</h6>
-        <div class="textArea "><p>${projectLessonsPreview.lessons}</p></div>
-      </div>
-      [/#if]
-      [#-- Planning/Reporting lessons --]
-      <div class="fullBlock">
-        <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
-        <input type="hidden" name="projectLessons.year" value=${reportingCycle?string(currentReportingYear,currentPlanningYear)} />
-        <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectOtherContributions.lessons" required=!project.bilateralProject editable=editable /]
-      </div>
-    </div>
-    [/#if]
     
     [#if project.ipOtherContribution?has_content]
       <input name="project.ipOtherContribution.id" type="hidden" value="${project.ipOtherContribution.id}"/>
@@ -151,8 +126,7 @@
       <input type="hidden" id="crpsName" value="project.ipOtherContribution.crpContributions"/>
       [#-- Project identifier --]
       <input id="projectID" name="projectID" type="hidden" value="${project.id?c}" />
-      <div class="[#if !newProject]borderBox[/#if]" >
-        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
+      <div class="" >
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

@@ -12,9 +12,9 @@ function init() {
   // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
   setWordCounterToInputs('limitWords');
   // Validate justification event
-  validateEvent([
-    "#justification"
-  ]);
+  /*
+   * validateEvent([ "#justification" ]);
+   */
   addSelect2();
 }
 

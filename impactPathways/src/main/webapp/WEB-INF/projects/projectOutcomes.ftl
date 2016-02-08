@@ -64,14 +64,14 @@
           [#assign yearEditable = editable && (year gte currentPlanningYear?number) && canEditStatement /]
           [#assign yearRequired = !project.bilateralProject && ((year == currentPlanningYear) || (year == currentPlanningYear+1)) /]
           <div class="fullPartBlock">
-            <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /]:[@customForm.req required=yearRequired /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].statement" required=yearRequired className="limitWords-150" showTitle=false editable=yearEditable /]
+            <h6>[@customForm.text name="planning.projectOutcome.annualProgress" readText=!editable param="${year}" /]:[@customForm.req required=yearRequired && editable /]</h6>
+            [@customForm.textArea name="project.outcomes[${year?string}].statement" required=yearRequired && editable className="limitWords-150" showTitle=false editable=yearEditable /]
           </div>
           [#-- -- -- REPORTING BLOCK -- -- --]
           [#if reportingCycle && (year == currentReportingYear) ]
           <div class="fullPartBlock">
-            <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /]:[@customForm.req required=true /]</h6>
-            [@customForm.textArea name="project.outcomes[${year?string}].anualProgress" required=true className="limitWords-300" showTitle=false editable=editable && action.hasProjectPermission("annualProgress", project.id) /]
+            <h6>[@customForm.text name="reporting.projectOutcomes.annualProgressCurrentReporting" readText=!editable param="${year}" /]:[@customForm.req required=editable /]</h6>
+            [@customForm.textArea name="project.outcomes[${year?string}].anualProgress" required=editable className="limitWords-300" showTitle=false editable=editable && action.hasProjectPermission("annualProgress", project.id) /]
           </div>
           
           [#-- Comunication and engagement activities --]

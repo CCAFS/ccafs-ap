@@ -37,9 +37,9 @@ public class ProjectNextUserValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       // Does the project have any nextUser?
-      if (project.getNextUsers() != null && !project.getNextUsers().isEmpty() && project.getNextUsers().size() >= 3) {
+      if (project.getNextUsers() != null && !project.getNextUsers().isEmpty() && project.getNextUsers().size() >= 1) {
         // Validate project justification.
-        this.validateProjectJustification(action, project);
+        // this.validateProjectJustification(action, project);
 
 
         // Loop all the nexte users.
