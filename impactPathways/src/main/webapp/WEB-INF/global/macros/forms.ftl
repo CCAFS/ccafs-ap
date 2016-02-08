@@ -6,7 +6,7 @@
     [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if][/#assign]
     [#if showTitle]
       <h6>
-        <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:[#if required]<span class="red">*</span>[/#if]</label>
+        <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:[#if required && editable]<span class="red">*</span>[/#if]</label>
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </h6>
     [/#if]
@@ -14,7 +14,7 @@
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  class="${className} ${required?string('required','optional')}" [#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle && placeholder]placeholder="${labelTitle}"[/#if]/>
     [#else]
-      [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
+      [#assign requiredText][#if required && editable ]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
@@ -34,7 +34,7 @@
     [#assign customValue][#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if][/#assign]
   	[#if showTitle]
 	    <h6> 
-	      <label for="${name}" class="${editable?string('editable', 'readOnly')}"> [@s.text name="${customLabel}"/]:[#if required]<span class="red">*</span>[/#if]</label>
+	      <label for="${name}" class="${editable?string('editable', 'readOnly')}"> [@s.text name="${customLabel}"/]:[#if required && editable]<span class="red">*</span>[/#if]</label>
 	      [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
 	    </h6>
     [/#if]
@@ -42,7 +42,7 @@
     [#if editable]
       <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if]  class="[#if className != "-NULL"]ckeditor ${className}[/#if] ${required?string('required','optional')}" />${customValue}</textarea>
     [#else]
-      [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
+      [#assign requiredText][#if required && editable]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
           [#assign customValue][@s.property value="${name?string}"/][/#assign] 
@@ -68,7 +68,7 @@
       <label for="${name}" class="${editable?string('editable', 'readOnly')}">
         <input type="checkbox" id="${name}" class="${className}" name="${name}" value="${value}" [#if checked]checked="checked"[/#if] [#if disabled]disabled="disabled[/#if] />
         <input type="hidden" id="__checkbox_${name}" name="__checkbox_${name}" value="${value}" />
-        <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required]<span class="red">*</span>[/#if]</h6>
+        <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if][#if required && editable]<span class="red">*</span>[/#if]</h6>
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </label>
     [#else]
@@ -79,7 +79,7 @@
 
 [#macro checkboxGroup label name listName displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false display=true editable=true]
   <div class="checkbox" [#if !display]style="display: none;"[/#if]>
-    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if]:[#if required]<span class="red">*</span>[/#if]</h6>
+    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if]:[#if required && editable]<span class="red">*</span>[/#if]</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="checkboxList">
     [#if value=="-NULL"]
@@ -94,7 +94,7 @@
         [@s.checkboxlist name="${name}" list="${listName}" listKey="${keyFieldName}" listValue="${displayFieldName}" value="${customValue}" disabled="${disabled?string}" /]
       [/#if]
     [#elseif keyFieldName == ""]  
-      [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
+      [#assign requiredText][#if required && editable]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       ${requiredText}  [@s.text name="form.values.fieldEmpty" /]
     [#else]
       ${customValue}
@@ -105,7 +105,7 @@
 
 [#macro radioButtonGroup label name listName class="" displayFieldName="" keyFieldName="" value="-NULL" i18nkey="" disabled=false required=false errorField="" checked=false help="" display=true editable=true]
   <div class="radioGroup" [#if !display]style="display: none;"[/#if]>
-    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if]:[#if required]<span class="red">*</span>[/#if]</h6>
+    <h6>[#if i18nkey==""]${label}[#else][@s.text name="${i18nkey}" /][/#if]:[#if required && editable]<span class="red">*</span>[/#if]</h6>
     [#if errorField==""][@s.fielderror cssClass="fieldError" fieldName="${name}"/][#else][@s.fielderror cssClass="fieldError" fieldName="${errorfield}"/][/#if]
     <div class="radiosList">
       [#if editable]
@@ -130,7 +130,7 @@
     [#assign placeholderText][@s.text name="form.select.placeholder" /][/#assign]
     [#if showTitle]
       <h6>
-        [#if i18nkey==""]${label} [#else][@s.text name="${i18nkey}" /]:[/#if][#if required]<span class="red">*</span>[/#if]
+        [#if i18nkey==""]${label} [#else][@s.text name="${i18nkey}" /]:[/#if][#if required && editable]<span class="red">*</span>[/#if]
         [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
       </h6>
     [/#if]
@@ -158,7 +158,7 @@
           [/#if]
         [/#if] 
       [#else]
-        [#assign requiredText][#if required]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign]  
+        [#assign requiredText][#if required && editable]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign]  
         <p>  
           [#if displayFieldName == "" ]
             [#assign key][@s.property value="${name}"/][/#assign]
