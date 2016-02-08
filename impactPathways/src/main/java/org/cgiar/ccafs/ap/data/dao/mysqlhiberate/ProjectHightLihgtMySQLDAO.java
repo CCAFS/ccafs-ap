@@ -41,7 +41,7 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
     project.setIsActive(false);
     project.setModifiedBy(new Long(userID));
     project.setModificationJustification(justification);
-    return this.save(project) == 1;
+    return this.save(project) > 0;
 
   }
 

@@ -53,13 +53,13 @@
       <h1 class="contentTitle">[@s.text name="reporting.projectHighlight.information" /] </h1>  
       [#-- Title --]
       <div class="fullBlock">
-        [@customForm.input name="highlight.title" type="text" i18nkey="reporting.projectHighlight.title" editable=editable /]
+        [@customForm.input name="highlight.title" type="text" i18nkey="reporting.projectHighlight.title" editable=editable required=true  /]
       </div> 
       
       <div class="fullPartBlock">
         [#-- Author --]
         <div class="halfPartBlock" >
-          [@customForm.input name="highlight.author" type="text" i18nkey="reporting.projectHighlight.author" editable=editable /]
+          [@customForm.input name="highlight.author" type="text" i18nkey="reporting.projectHighlight.author" editable=editable  required=true  /]
         </div>
       
         [#-- Subject --]
@@ -75,7 +75,7 @@
         </div>
         [#-- Year --]
         <div class="halfPartBlock">
-          [@customForm.select name="highlight.year" value="${(highlight.year)!currentReportingYear}" i18nkey="reporting.projectHighlight.year" listName="allYears" editable=editable stringKey=true /]
+          [@customForm.select name="highlight.year" value="${(highlight.year)!currentReportingYear}" i18nkey="reporting.projectHighlight.year" listName="allYears" editable=editable stringKey=true required=true  /]
           [#if !editable]${(highlight.year)!}[/#if]
         </div>
       </div>
