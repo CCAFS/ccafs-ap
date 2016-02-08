@@ -229,21 +229,28 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
-  public List<Map<String, String>> getIndicatorsOtherContribution(int projectID, int flagship, int region) {
+  public List<Map<String, String>> getIndicatorsOtherContribution(int projectID, int region) {
     List<Map<String, String>> indicatorsList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    query.append("select * from ip_indicators ii inner join ip_program_elements ip on ip.id=ii.program_element_id");
-    query.append(" inner join ip_programs ipr on ipr.id=ip.program_id where ii.id not in (");
-    query.append("    SELECT i.id ");
-    query.append("    FROM ip_indicators i ");
-    query.append("    LEFT JOIN ip_indicators p ON i.parent_id = p.id ");
-    query.append("    INNER JOIN ip_project_indicators ipi ON i.id = ipi.parent_id ");
-    query.append("    INNER JOIN ip_elements ie ON ipi.outcome_id = ie.id ");
-    query.append("    WHERE ipi.project_id = " + projectID + "");
-    query.append(")");
-    query.append(
-      "and  ipr.id IN (" + flagship + "," + region + ") and (ii.description is not null or ii.description <>'' ) ;");
+    query.append(" SELECT     distinct  i.id ,i.*");
+    query.append("                       FROM       ip_indicators i ");
+    query.append("                       LEFT JOIN  ip_indicators p ");
+    query.append("                       ON         i.parent_id = p.id ");
+    query.append("                      INNER JOIN ip_project_indicators ipi ");
+    query.append("                      ON         i.id = ipi.parent_id ");
+    query.append("                      INNER JOIN ip_elements ie ");
+    query.append("                      ON         ipi.outcome_id = ie.id ");
+    query.append(" where i.id not in(");
+    query.append(" SELECT     distinct  i.id ");
+    query.append("                      FROM       ip_indicators i ");
+    query.append("                      LEFT JOIN  ip_indicators p ");
+    query.append("                      ON         i.parent_id = p.id ");
+    query.append("                      INNER JOIN ip_project_indicators ipi ");
+    query.append("                      ON         i.id = ipi.parent_id ");
+    query.append("                      INNER JOIN ip_elements ie ");
+    query.append("                      ON         ipi.outcome_id = ie.id ");
+    query.append("                      WHERE      ipi.project_id = " + projectID + ")");
 
 
     try (Connection con = databaseManager.getConnection()) {
@@ -252,8 +259,8 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         Map<String, String> indicatorData = new HashMap<String, String>();
         indicatorData.put("id", rs.getString("id"));
         indicatorData.put("description", rs.getString("description"));
-        indicatorData.put("target", rs.getString("target"));
-        indicatorData.put("parent_id", rs.getString("parent_id"));
+        // indicatorData.put("target", rs.getString("target"));
+        // indicatorData.put("parent_id", rs.getString("parent_id"));
         // indicatorData.put("parent_description", rs.getString("parent_description"));
         // indicatorData.put("outcome_id", rs.getString("outcome_id"));
         // indicatorData.put("outcome_description", rs.getString("outcome_description"));

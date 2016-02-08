@@ -17,7 +17,7 @@ public class ProjecteOtherContributions implements java.io.Serializable {
   private Integer id;
   private int projectId;
   private String region;
-  private String flagship;
+
   private String indicators;
   private String description;
   private Integer target;
@@ -41,12 +41,11 @@ public class ProjecteOtherContributions implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
-  public ProjecteOtherContributions(int projectId, String region, String flagship, String indicators, String description,
-    Integer target, boolean isActive, Date activeSince, long createdBy, long modifiedBy,
-    String modificationJustification) {
+  public ProjecteOtherContributions(int projectId, String region, String indicators, String description, Integer target,
+    boolean isActive, Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
     this.projectId = projectId;
     this.region = region;
-    this.flagship = flagship;
+
     this.indicators = indicators;
     this.description = description;
     this.target = target;
@@ -69,9 +68,6 @@ public class ProjecteOtherContributions implements java.io.Serializable {
     return this.description;
   }
 
-  public String getFlagship() {
-    return this.flagship;
-  }
 
   public Integer getId() {
     return this.id;
@@ -117,9 +113,6 @@ public class ProjecteOtherContributions implements java.io.Serializable {
     this.description = description;
   }
 
-  public void setFlagship(String flagship) {
-    this.flagship = flagship;
-  }
 
   public void setId(Integer id) {
     this.id = id;

@@ -75,11 +75,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
             if (cycle.equals(APConstants.REPORTING_SECTION)) {
               int c = 1;
               for (ProjecteOtherContributions projectOtherContributions : project.getOtherContributions()) {
-                try {
-                  this.validateFlaghsip(action, Integer.parseInt(projectOtherContributions.getFlagship()), c);
-                } catch (NumberFormatException e) {
-                  this.validateFlaghsip(action, 0, c);
-                }
+
                 try {
                   this.validateRegion(action, Integer.parseInt(projectOtherContributions.getRegion()), c);
                 } catch (NumberFormatException e) {

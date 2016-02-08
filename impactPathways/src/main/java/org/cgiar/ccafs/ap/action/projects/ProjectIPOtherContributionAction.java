@@ -189,20 +189,19 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     this.otherIndicators = new HashMap<>();
     if (project.getOtherContributions() != null) {
       for (ProjecteOtherContributions otherContributions : project.getOtherContributions()) {
-        int flagship = 0;
+
         int region = 0;
 
         try {
-          flagship = Integer.parseInt(otherContributions.getFlagship());
+
           region = Integer.parseInt(otherContributions.getRegion());
         } catch (Exception e) {
-          flagship = 0;
+
           region = 0;
         }
 
-        if (flagship != 0 && region != 0) {
-          List<IPIndicator> otherIndicators =
-            ipIndicatorManager.getIndicatorsOtherContribution(projectID, flagship, region);
+        if (region != 0) {
+          List<IPIndicator> otherIndicators = ipIndicatorManager.getIndicatorsOtherContribution(projectID, region);
           for (IPIndicator ipIndicator : otherIndicators) {
             this.otherIndicators.put(String.valueOf(ipIndicator.getId()), ipIndicator.getDescription());
           }

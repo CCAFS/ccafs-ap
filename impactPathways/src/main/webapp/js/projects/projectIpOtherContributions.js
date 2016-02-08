@@ -21,7 +21,7 @@ function attachEvents() {
   $('#addOtherContribution .addLink').on('click', addOtherContribution);
 
   // Change a region or flagship
-  $('.otherContributionFlagship, .otherContributionRegion').on('change', changeRegionFlagship)
+ // $('.otherContributionFlagship, .otherContributionRegion').on('change', changeRegionFlagship)
 }
 
 function changeRegionFlagship(e) {

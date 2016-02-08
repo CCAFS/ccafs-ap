@@ -88,7 +88,7 @@ public interface IPIndicatorManager {
    * @param region - id region
    * @return a list of ip indicators object with the information.
    */
-  public List<IPIndicator> getIndicatorsOtherContribution(int projectId, int flagship, int region);
+  public List<IPIndicator> getIndicatorsOtherContribution(int projectId, int region);
 
   /**
    * This method gets all the indicators related to the project passed as parameter

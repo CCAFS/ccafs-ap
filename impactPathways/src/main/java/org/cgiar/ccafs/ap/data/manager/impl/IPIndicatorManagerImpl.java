@@ -184,10 +184,9 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
-  public List<IPIndicator> getIndicatorsOtherContribution(int projectId, int flagship, int region) {
+  public List<IPIndicator> getIndicatorsOtherContribution(int projectId, int region) {
     List<IPIndicator> indicators = new ArrayList<>();
-    List<Map<String, String>> indicatorsDataList =
-      indicatorDAO.getIndicatorsOtherContribution(projectId, flagship, region);
+    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsOtherContribution(projectId, region);
 
     for (Map<String, String> iData : indicatorsDataList) {
       IPIndicator indicator = new IPIndicator();

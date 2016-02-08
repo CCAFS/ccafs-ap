@@ -88,7 +88,7 @@ public interface IPIndicatorDAO {
    * @param projectID - Project identifier
    * @return a list of ip indicators object with the information.
    */
-  public List<Map<String, String>> getIndicatorsOtherContribution(int projectID, int flagship, int region);
+  public List<Map<String, String>> getIndicatorsOtherContribution(int projectID, int region);
 
   /**
    * This method returns all the indicators related with the project

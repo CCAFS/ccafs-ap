@@ -57,7 +57,7 @@ public class IPIndicatorsByIPPrograms extends BaseAction {
     }
     Project project = new Project(project_ID);
 
-    ipIndicators = ipIndicatorManager.getIndicatorsOtherContribution(project_ID, flaghship_ID, region_ID);
+    ipIndicators = ipIndicatorManager.getIndicatorsOtherContribution(project_ID, region_ID);
 
     LOG.info("-- execute() > The indicators related to the project {} were loaded.", project_ID);
     return SUCCESS;

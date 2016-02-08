@@ -14,9 +14,7 @@
         <property name="region" type="string">
             <column name="region" length="5" />
         </property>
-        <property name="flagship" type="string">
-            <column name="flagship" length="5" />
-        </property>
+      
         <property name="indicators" type="string">
             <column name="indicators" length="65535" />
         </property>
