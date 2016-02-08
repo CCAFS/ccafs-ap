@@ -90,7 +90,7 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateEndDate(action, project.getEndDate());
     this.validateBilateralContractProposalName(action, project.getBilateralContractProposalName());
     if (cycle.equals(APConstants.REPORTING_SECTION)) {
-      this.validateStatus(action, project.getStatus());
+      // this.validateStatus(action, project.getStatus());
       // this.validateDesciptionStatus(action, project.getStatusDescription());
       this.validateAnualRecordName(action, project.getBilateralContractProposalName());
     }
@@ -105,11 +105,6 @@ public class ProjectDescriptionValidator extends BaseValidator {
     this.validateSummary(action, project.getSummary());
     this.validateRegions(action, project.getRegions());
     this.validateFlagships(action, project.getFlagships());
-
-    if (cycle.equals(APConstants.REPORTING_SECTION)) {
-      this.validateStatus(action, project.getStatus());
-      // this.validateDesciptionStatus(action, project.getStatusDescription());
-    }
 
 
     if (project.isWorkplanRequired()) {

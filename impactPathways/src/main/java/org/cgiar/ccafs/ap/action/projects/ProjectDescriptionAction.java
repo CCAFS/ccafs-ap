@@ -356,8 +356,6 @@ public class ProjectDescriptionAction extends BaseAction {
     previousProject.setWorkplanName(project.getWorkplanName());
     previousProject.setBilateralContractProposalName(project.getBilateralContractProposalName());
     previousProject.setAnnualReportDonor(project.getAnnualReportDonor());
-    previousProject.setStatus(project.getStatus());
-    previousProject.setStatusDescription(project.getStatusDescription());
 
     if (project.getLinkedProjects() != null) {
       List<Project> linkedProjects = new ArrayList<>();
@@ -499,12 +497,7 @@ public class ProjectDescriptionAction extends BaseAction {
       if (this.hasProjectPermission("summary", projectID)) {
         previousProject.setSummary(project.getSummary());
       }
-      if (this.hasProjectPermission("status", projectID)) {
-        previousProject.setStatus(project.getStatus());
-      }
-      if (this.hasProjectPermission("statusDescription", projectID)) {
-        previousProject.setStatusDescription(project.getStatusDescription());
-      }
+
 
       // Save the information
       int result =

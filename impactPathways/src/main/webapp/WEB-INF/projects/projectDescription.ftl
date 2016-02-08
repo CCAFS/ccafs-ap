@@ -148,16 +148,7 @@
             </div>  
           </div>
           [/#if]
-          [#-- Project Status --]
-          <div class="fullBlock">
-            <div class="halfPartBlock"> 
-              [@customForm.select name="project.status" value="project.status" i18nkey="reporting.projectDescription.projectStatus" listName="projectStauses" required=true editable=editable stringKey=true /]
-            </div>
-          </div>
-          [#-- Project status description/justification --]
-          <div id="statusDescription" class="fullBlock" style="display:${project.statusCancelled?string('block','none')}">
-            [@customForm.textArea name="project.statusDescription" i18nkey="reporting.projectDescription.statusDescription" className="project-statusDescription" required=true editable=editable /]
-          </div>
+         
         [/#if]
         
         [#--  Regions/global and Flagships that the project is working on --]

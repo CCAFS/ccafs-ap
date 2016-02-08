@@ -100,8 +100,7 @@ public class Project {
   private boolean workplanRequired;
   private Budget anualContribution;
   /// Fields for Reporting
-  private String status;
-  private String statusDescription;
+
   private String annualReportDonor;
   private String leader;
 
@@ -779,13 +778,6 @@ public class Project {
     return startDate;
   }
 
-  public String getStatus() {
-    return status;
-  }
-
-  public String getStatusDescription() {
-    return statusDescription;
-  }
 
   public List<Submission> getSubmissions() {
     return submissions;
@@ -951,19 +943,6 @@ public class Project {
     return this.getCreationDate().after(planningStartDate);
   }
 
-  /**
-   * Check if the project status is "Cancelled"
-   * 
-   * @return true if project status is "Cancelled" else false
-   */
-  public boolean isStatusCancelled() {
-    try {
-      // 5- Cancelled - The activity has been cancelled.
-      return status == "5";
-    } catch (Exception e) {
-      return false;
-    }
-  }
 
   /**
    * This method validates if the project is already submitted or not.
@@ -1141,13 +1120,6 @@ public class Project {
     this.startDate = startDate;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public void setStatusDescription(String statusDescription) {
-    this.statusDescription = statusDescription;
-  }
 
   public void setSubmissions(List<Submission> submissions) {
     this.submissions = submissions;

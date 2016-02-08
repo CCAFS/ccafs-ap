@@ -598,8 +598,6 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("requires_workplan_upload", rs.getString("requires_workplan_upload"));
         projectData.put("workplan_name", rs.getString("workplan_name"));
         projectData.put("annual_report_to_dornor", rs.getString("annual_report_to_dornor"));
-        projectData.put("status", rs.getString("status"));
-        projectData.put("status_description", rs.getString("status_description"));
         projectData.put("bilateral_contract_name", rs.getString("bilateral_contract_name"));
         // projectData.put("project_owner_institution_id", rs.getString("owner_institution_id"));
         projectData.put("created", rs.getTimestamp("active_since").getTime() + "");
@@ -1113,10 +1111,10 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("liaison_user_id = (SELECT id FROM liaison_users WHERE user_id = ?), is_cofinancing = ?, ");
       query.append("requires_workplan_upload = ?, liaison_institution_id = ?, type = ?, workplan_name = ?, ");
       query.append(
-        "bilateral_contract_name = ?, modified_by = ?, modification_justification = ?, annual_report_to_dornor=?,status=?,status_description=? ");
+        "bilateral_contract_name = ?, modified_by = ?, modification_justification = ?, annual_report_to_dornor=? ");
       query.append("WHERE id = ?");
 
-      Object[] values = new Object[17];
+      Object[] values = new Object[15];
       values[0] = projectData.get("title");
       values[1] = projectData.get("summary");
       values[2] = projectData.get("start_date");
@@ -1131,9 +1129,8 @@ public class MySQLProjectDAO implements ProjectDAO {
       values[11] = projectData.get("modified_by");
       values[12] = projectData.get("justification");
       values[13] = projectData.get("annual_report_to_dornor");
-      values[14] = projectData.get("status");
-      values[15] = projectData.get("status_description");
-      values[16] = projectData.get("id");
+
+      values[14] = projectData.get("id");
       result = databaseManager.saveData(query.toString(), values);
     }
     LOG.debug(">> saveProject(projectData={})", projectData);
