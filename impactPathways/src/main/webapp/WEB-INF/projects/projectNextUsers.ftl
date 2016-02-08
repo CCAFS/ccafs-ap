@@ -25,7 +25,8 @@
     
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" /> <p> //TODO </p>
+    <img src="${baseUrl}/images/global/icon-help.png" /> <p> //TODO 
++69/p>
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
     <article class="halfContent" id="projectNextUsers">
@@ -41,14 +42,12 @@
         <div id="nextUsersBlock" class="simpleBox">
           <div id="nextUsersList">
             [#-- Validating amount of projectNextUsers to be listed --]
-            [#if (project.nextUsers?size > 3)!false] 
+            [#if (project.nextUsers?size > 1)!false] 
               [#list project.nextUsers as nextuser]
                 [@projectNextUsersMacro index="${nextuser_index}" /]
               [/#list]
             [#else]
               [@projectNextUsersMacro index="0" /]
-              [@projectNextUsersMacro index="1" /]
-              [@projectNextUsersMacro index="2" /]
             [/#if] 
           </div><!-- End projectNextUsers list -->
           [#-- Add projectNextUsers button --]
@@ -60,8 +59,7 @@
         [#if editable]
         [#-- Project identifier --]
         <input name="projectID" type="hidden" value="${projectID?c}" /> 
-        <div class="[#if !newProject]borderBox[/#if]" >
-          [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
+        <div class="" >
           <div class="buttons">
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
             [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

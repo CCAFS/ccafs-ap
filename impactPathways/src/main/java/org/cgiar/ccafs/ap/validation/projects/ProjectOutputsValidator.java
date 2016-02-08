@@ -53,7 +53,7 @@ public class ProjectOutputsValidator extends BaseValidator {
 
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
-      this.validateProjectJustification(action, project);
+      // this.validateProjectJustification(action, project);
       this.cycle = cycle;
       // This section is required for Core, co-funded and bilateral projects that are not contributing to any core
       // project.

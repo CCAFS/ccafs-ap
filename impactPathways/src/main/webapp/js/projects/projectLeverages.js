@@ -15,9 +15,9 @@ function init() {
   // Popup for partners
   popups();
   // Validate justification event
-  validateEvent([
-    "#justification"
-  ]);
+  /*
+   * validateEvent([ "#justification" ]);
+   */
   addSelect2();
 }
 

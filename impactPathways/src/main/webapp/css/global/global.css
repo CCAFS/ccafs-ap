@@ -686,11 +686,13 @@ ul.horizontalSubMenu li{
 ul.horizontalSubMenu li a{text-decoration: none;color: #B5B5B5;}
 
 ul.horizontalSubMenu li.active{
-  background: #1DA5CE;
+  
+background: #1DA5CE;
 }
 
 ul.horizontalSubMenu li.active a{
-  color: #fff;
+  
+color: #fff;
 }
 
 /* Lessons and Implications */
@@ -1500,7 +1502,7 @@ nav#mainMenu ul li a.disabled{
   /* background-color: #FFFFFF; */
   float: left;
   padding: 0px;
-  width: 200px;
+  width: 210px;
   margin-top: 31px;
   font-family: 'Open Sans', sans-serif;
 }
@@ -1624,14 +1626,19 @@ color: #949292;
 }
 
 #secondaryMenu > ul > li {
-  /* background-image: url("../../images/global/reportingMenuMarker.png"); */    background-repeat: no-repeat;    background-position-y: -2px;    margin-left: -13px;    width: 191px;    padding: 0px 0px 0px 13px;
+  /* background-image: url("../../images/global/reportingMenuMarker.png"); */
+  background-repeat: no-repeat;
+  background-position-y: -2px;
+  margin-left: -13px;
+  width: 197px;
+  padding: 0px 0px 0px 13px;
 }
 
 #secondaryMenu ul li ul li{
   background-image: url("../../images/global/list-icon.png");
   background-repeat: no-repeat;
   background-size: 11px;
-  background-position: 10px 45%;
+  background-position: 9px 45%;
 }
 
 #secondaryMenu ul li ul li.currentSection{
@@ -1643,25 +1650,25 @@ color: #949292;
   border-bottom: 1px solid rgba(219, 219, 219, 0.78);
   padding: 10px 0 2px 0px;
   height: 27px;
-  width: 198px;
+  width: 208px;
 }
 
 #secondaryMenu ul li ul li.submitted a{
   background-image: url("../../images/global/submitted.png");
   background-repeat: no-repeat;
-  background-position: 172px 0;
+  background-position: 183px 0;
 }
 
 #secondaryMenu ul li ul li.toSubmit a{
   background-image: url("../../images/global/submitted.png");
   background-repeat: no-repeat;
-  background-position: 172px -33px;
+  background-position: 183px -33px;
 }
 
 #secondaryMenu ul li ul li.loadingSection a{
   background-image: url("../../images/global/loading_3.gif");
   background-repeat: no-repeat;
-  background-position: 172px 0px;
+  background-position: 183px 0px;
 }
 
 
@@ -1733,7 +1740,7 @@ color: #949292;
   font-weight: bold;
   background-color: #47939C;
   height: 16px;
-  width: 189px;
+  width: 198px;
   border-radius: 1px;
   /* display: none; */
 }
@@ -4411,7 +4418,8 @@ aside[id*="-control"] .slidr-control:after {
 /*** Syntesis CRP Indicators ***/
 
 #crpIndicators .halfContent{
-  margin-top: 22px;
+  
+margin-top: 22px;
 }
 
 /*** Glossary ***/

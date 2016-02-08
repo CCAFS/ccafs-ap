@@ -55,7 +55,9 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
-      this.validateProjectJustification(action, project);
+
+      // this.validateProjectJustification(action, project);
+
 
       if (project.getIpOtherContribution() == null) {
         // Do nothing as this section is full optional.
@@ -71,7 +73,10 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
               this.validateNatureCollaboration(action, crp_contribuntion.getNatureCollaboration(), i);
               i++;
             }
-            this.validateLessonsLearn(action, project, "otherContributions");
+
+            // Validate Lessons learn
+            // this.validateLessonsLearn(action, project, "otherContributions");
+
             if (cycle.equals(APConstants.REPORTING_SECTION)) {
               int c = 1;
               for (ProjecteOtherContributions projectOtherContributions : project.getOtherContributions()) {
