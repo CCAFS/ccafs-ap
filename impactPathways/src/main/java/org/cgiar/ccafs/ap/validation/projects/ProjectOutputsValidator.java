@@ -58,8 +58,8 @@ public class ProjectOutputsValidator extends BaseValidator {
       // This section is required for Core, co-funded and bilateral projects that are not contributing to any core
       // project.
       if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
-        this.validateLessonsLearn(action, project, "outputs");
-        this.validateOutputOverviews(action, project);
+        // this.validateLessonsLearn(action, project, "outputs");
+        // this.validateOutputOverviews(action, project);
       } else {
         // If project is bilateral but is co-financing some core project, thus this section is not needed to be filled.
       }

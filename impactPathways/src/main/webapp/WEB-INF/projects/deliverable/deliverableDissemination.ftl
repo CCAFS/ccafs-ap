@@ -18,7 +18,7 @@
         </tr>
       </tbody>
     </table>
-    <div id="aditional-isOpenAccess" class="aditional" style="display:${(deliverable.dissemination.isOpenAccess?string('none','block'))!'block'}">
+    <div id="aditional-isOpenAccess" class="aditional" style="display:${(deliverable.dissemination.isOpenAccess?string('none','block'))!'none'}">
       <h6>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction.title" /]</h6>
       <div class="fullBlock">
         [#if editable]
