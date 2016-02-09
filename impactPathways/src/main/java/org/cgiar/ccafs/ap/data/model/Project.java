@@ -117,18 +117,19 @@ public class Project {
    * 
    * @return
    */
-  public String calculateAcumulativeTarget(int year) {
+  public String calculateAcumulativeTarget(int year, IPIndicator id) {
 
-    double acumulative = 0;
+    int acumulative = 0;
 
     for (IPIndicator indicators : this.getIndicators()) {
-      if (indicators.getYear() <= year) {
+      if (indicators.getYear() <= year && indicators.getParent().getId() == id.getParent().getId()) {
         if (indicators.getTarget() != null) {
-
-          try {
-            acumulative = acumulative + Double.parseDouble(indicators.getTarget());
-          } catch (NumberFormatException e) {
-            return "Can not be Calculated";
+          if (!indicators.getTarget().equals("")) {
+            try {
+              acumulative = acumulative + Integer.parseInt(indicators.getTarget());
+            } catch (NumberFormatException e) {
+              return "Can not be Calculated";
+            }
           }
         }
       }

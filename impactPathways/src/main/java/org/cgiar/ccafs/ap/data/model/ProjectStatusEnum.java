@@ -21,7 +21,7 @@ package org.cgiar.ccafs.ap.data.model;
 public enum ProjectStatusEnum {
 
 
-  Implementation("2", "Implementation"), Completion("3", "Completion"), Cancelled("5", "Cancelled");
+  Ongoing("2", "On-going"), Complete("3", "Complete"), Extended("4", "Extended - delayed"), Cancelled("5", "Cancelled");
 
   private String status;
   private String statusId;
