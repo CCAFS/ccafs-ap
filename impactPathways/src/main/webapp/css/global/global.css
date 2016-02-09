@@ -2122,7 +2122,7 @@ h1.simpleTitle span {
 }
 
 .helpMessage2 p {
-  padding: 1px;
+  padding: 0px;
   color: #636368;
   margin-bottom: 5px;
 }

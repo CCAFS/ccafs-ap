@@ -18,17 +18,18 @@
 [#import "/WEB-INF/global/templates/projectsListTemplate.ftl" as projectList /]
     
 <section class="content">
+  [#if !reportingCycle]
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p>[@s.text name="planning.projectsList.help1" /]</p>
+    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="planning.projectsList.help1" /]</p>
   </div>
+  [/#if]
   <br></br>
   <div class="helpMessage2">
     <img src="${baseUrl}/images/global/document.png" />
     <b><span style="padding: 30px">[@s.text name="planning.projectsList.projectTypesHead" /]</span></b>
-          <p><span style="padding: 30px">[@s.text name="planning.projectsList.projectTypes1" /]</span></p>
-          <p><span style="padding: 65px">[@s.text name="planning.projectsList.projectTypes2" /]</span></p>
-          <p><span style="padding: 65px">[@s.text name="planning.projectsList.projectTypes3" /]</span></p>
+    <p><span style="padding: 30px">[@s.text name="planning.projectsList.projectTypes1" /]</span></p>
+    <p><span style="padding: 65px">[@s.text name="planning.projectsList.projectTypes2" /]</span></p>
+    <p><span style="padding: 65px">[@s.text name="planning.projectsList.projectTypes3" /]</span></p>
   </div>
   <article class="fullBlock" id="mainInformation">
     [#if projects?size>0]

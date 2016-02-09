@@ -21,7 +21,7 @@ function attachEvents() {
   $('#addOtherContribution .addLink').on('click', addOtherContribution);
 
   // Change a region or flagship
- // $('.otherContributionFlagship, .otherContributionRegion').on('change', changeRegionFlagship)
+  // $('.otherContributionFlagship, .otherContributionRegion').on('change', changeRegionFlagship)
 }
 
 function changeRegionFlagship(e) {
@@ -57,6 +57,7 @@ function changeRegionFlagship(e) {
 
 function addOtherContribution(e) {
   e.preventDefault();
+  $('#otherContributionsBlock').find('.emptyMessage').fadeOut();
   var $clone = $("#otherContribution-template").clone(true).removeAttr("id");
   $clone.find('select').select2();
   $clone.appendTo($('#otherContributionsBlock')).hide().show('slow');

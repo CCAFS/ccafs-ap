@@ -61,7 +61,7 @@ function checkImplementationStatus(year,element) {
   if(year <= currentReportingYear) {
     $statuses.removeOption(2);
   } else {
-    $statuses.addOption(2, "Implementation");
+    $statuses.addOption(2, "On-going");
   }
 }
 

@@ -62,17 +62,18 @@
       [#-- Others impact pathways contributions --]
       [#if reportingCycle]
         <div id="otherContributionsBlock">
-          [@otherContribution /] 
+          [#if project.otherContributions?has_content]
+            [#list project.otherContributions as element]
+              [@otherContribution index=element_index /] 
+            [/#list]
+          [#else]
+            <div class="emptyMessage simpleBox center"><p>There is not other contributions added</p></div>
+          [/#if]
         </div>
         [#if editable]<div id="addOtherContribution"><a href="" class="addLink">[@s.text name="reporting.projectOtherContributions.addOtherContribution"/]</a></div>[/#if]
         <div class="clearfix"></div>
         <br />
       [/#if]
-      
-      [#-- Contribution to another center activity --]
-      <div class="fullBlock">
-        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" className="additionalContribution limitWords-100" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable && action.hasProjectPermission("additionalContribution", project.id) /]  
-      </div>
       
       [#-- Collaborating with other CRPs --]
       [#assign crpsName= "project.ipOtherContribution.crps"/]
@@ -183,18 +184,15 @@
       [#-- Region --]
       <div class="halfPartBlock">
         [@customForm.select name="${customName}.region" className="otherContributionRegion" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions"  required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
-      </div>
-      [#-- Flagship --]
-     
+      </div> 
     </div>
     [#-- Indicator --]
     <div class="fullBlock">
       [@customForm.select name="${customName}.indicators" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
-      [#if editable]<span class="indicatorsFound">[#if !contribution.flagship?? || !contribution.region??](Please select a region and flagship)[/#if]</span>[/#if]
     </div>
     [#-- Describe how you are contributing to the selected outcome --]
     <div class="fullBlock">
-      <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:</h6>
+      <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:[@customForm.req required=editable && action.hasProjectPermission("otherContributionDescription", project.id) /]</h6>
       [@customForm.textArea name="${customName}.description" className="otherContributionDescription limitWords-100"  i18nkey="" showTitle=false required=true editable=editable && action.hasProjectPermission("otherContributionDescription", project.id) /]
     </div>
     [#-- Target contribution --]

@@ -40,27 +40,8 @@
       <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="preplanning.project"/][/@s.param][/@s.text]</p>
     [/#if]
     
-    [#-- Listing Partners from partnersTemplate.ftl --]
+    [#-- Title --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
-    <div class="loadingBlock"></div>
-    <div id="projectPartnersBlock" class="simpleBox" style="display:none">
-      [#if project.projectPartners?has_content]
-        [#list project.projectPartners as projectPartner]
-          [@partnersTemplate.projectPartner projectPartner=projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="${projectPartner_index}" /]
-        [/#list]
-      [#else]
-        [#if !editable]
-          <p class="center">[@s.text name="planning.projectPartners.empty" /]
-          <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.projectPartners.switchEditingMode" /]
-          </p>
-        [/#if]
-      [/#if] 
-      [#if (editable && canEdit)]
-        <div id="addProjectPartner" class="addLink">
-          <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
-        </div> 
-      [/#if]
-    </div>
     
     [#if !newProject]
     [#-- Lessons and progress --]
@@ -96,6 +77,27 @@
       
     </div>
     [/#if]
+    
+    [#-- Listing Partners from partnersTemplate.ftl --]
+    <div class="loadingBlock"></div>
+    <div id="projectPartnersBlock" class="simpleBox" style="display:none">
+      [#if project.projectPartners?has_content]
+        [#list project.projectPartners as projectPartner]
+          [@partnersTemplate.projectPartner projectPartner=projectPartner projectPartnerName="project.projectPartners" projectPartnerIndex="${projectPartner_index}" /]
+        [/#list]
+      [#else]
+        [#if !editable]
+          <p class="center">[@s.text name="planning.projectPartners.empty" /]
+          <a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.clickHere" /]</a> [@s.text name="planning.projectPartners.switchEditingMode" /]
+          </p>
+        [/#if]
+      [/#if] 
+      [#if (editable && canEdit)]
+        <div id="addProjectPartner" class="addLink">
+          <a href="" class="addProjectPartner addButton" >[@s.text name="preplanning.projectPartners.addProjectPartner" /]</a>
+        </div> 
+      [/#if]
+    </div>
     
     [#-- Project identifier --]
     <input name="projectID" type="hidden" value="${project.id?c}" />

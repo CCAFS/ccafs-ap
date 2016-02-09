@@ -59,7 +59,6 @@
       <div id="addCaseStudy"><a href="" class="addButton" >[@s.text name="reporting.projectCaseStudies.addCaseStudy" /]</a></div> 
     [/#if]
     
-    
     [#if (editable && canEdit)] 
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
@@ -170,8 +169,11 @@
     <div class="fullBlock">
       [#-- Year --]
       <div class="halfPartBlock">
-        [@customForm.select name="${customName}.year" label="" value="${(study.year)!currentReportingYear}" disabled=!canEdit i18nkey="reporting.projectCaseStudies.caseStudyYear" listName="allYears"  className="caseStudyYear" required=true editable=editable/]
-        [#if !editable]${(study.year)!}[/#if]
+        <div class="select">
+          <h6>[@s.text name="reporting.projectCaseStudies.caseStudyYear" /]:</h6>
+          <div class="selectList"><p>${(study.year)!currentReportingYear}</p></div>
+          <input type="hidden" name="${customName}.year" class="caseStudyYear" value="${(study.year)!currentReportingYear}" />
+        </div>  
       </div>
       [#-- Upload Annexes --]
       <div class="halfPartBlock fileUpload uploadAnnexes">
