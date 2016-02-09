@@ -194,7 +194,6 @@
     [#-- Indicator --]
     <div class="fullBlock">
       [@customForm.select name="${customName}.indicators" className="otherContributionIndicator" label="" i18nkey="reporting.projectOtherContributions.indicators" listName="otherIndicators" required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
-      [#if editable]<span class="indicatorsFound">[#if !contribution.flagship?? || !contribution.region??](Please select a region and flagship)[/#if]</span>[/#if]
     </div>
     [#-- Describe how you are contributing to the selected outcome --]
     <div class="fullBlock">
