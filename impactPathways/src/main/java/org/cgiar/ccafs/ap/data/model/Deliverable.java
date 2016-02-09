@@ -65,6 +65,7 @@ public class Deliverable {
     this.id = id;
   }
 
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Deliverable) {
@@ -73,7 +74,6 @@ public class Deliverable {
     }
     return false;
   }
-
 
   public long getCreated() {
     return created;
@@ -88,7 +88,6 @@ public class Deliverable {
     return dataSharingFile;
   }
 
-
   public DeliverableDissemination getDissemination() {
     return dissemination;
   }
@@ -102,8 +101,51 @@ public class Deliverable {
     return id;
   }
 
+
   public List<DeliverableMetadataElements> getMetadataElements() {
     return metadataElements;
+  }
+
+
+  public int getMetadataID(String metadataName) {
+    for (DeliverableMetadataElements mData : metadataElements) {
+      if (mData.getMetadataElement().getElement().equals(metadataName)) {
+        return mData.getMetadataElement().getId();
+      }
+    }
+    return -1;
+  }
+
+
+  public int getMetadataIndex(String metadataName) {
+    int c = 0;
+    for (DeliverableMetadataElements mData : metadataElements) {
+      if (mData.getMetadataElement().getElement().equals(metadataName)) {
+        return c;
+      }
+      c++;
+    }
+    return -1;
+  }
+
+  public String getMetadataValue(int metadataID) {
+    String value = "";
+    for (DeliverableMetadataElements dmetadata : metadataElements) {
+      if (dmetadata.getMetadataElement().getId() == metadataID) {
+        value = dmetadata.getElementValue();
+      }
+    }
+
+    return value;
+  }
+
+  public String getMetadataValue(String metadataName) {
+    for (DeliverableMetadataElements mData : metadataElements) {
+      if (mData.getMetadataElement().getElement().equals(metadataName)) {
+        return mData.getElementValue();
+      }
+    }
+    return "";
   }
 
 
