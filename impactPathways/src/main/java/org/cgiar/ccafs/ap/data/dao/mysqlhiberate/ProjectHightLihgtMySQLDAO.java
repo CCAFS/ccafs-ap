@@ -169,6 +169,7 @@ public class ProjectHightLihgtMySQLDAO implements ProjectHighlightDAO {
 
       return projectHighlihts.getId();
     } catch (Exception e) {
+      e.printStackTrace();
       return -1;
     }
 

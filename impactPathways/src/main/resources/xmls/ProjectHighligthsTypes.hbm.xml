@@ -8,7 +8,7 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="projectHighligths" class="org.cgiar.ccafs.ap.data.model.ProjectHighligths" fetch="select">
+        <many-to-one name="projectHighligths" class="org.cgiar.ccafs.ap.data.model.ProjectHighligths" fetch="select" lazy="false">
             <column name="project_highlights_id" not-null="true" />
         </many-to-one>
         <property name="idType" type="int">

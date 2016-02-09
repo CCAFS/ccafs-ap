@@ -66,6 +66,7 @@ public class ProjectHighlightAction extends BaseAction {
   private File file;
   private ProjectHighLightValidator validator;
   private String fileFileName;
+  private String contentType;
 
 
   // Model for the back-end
@@ -81,11 +82,15 @@ public class ProjectHighlightAction extends BaseAction {
 
   private Map<String, String> highlightsTypes;
 
+
   private Map<String, String> statuses;
+
+
   private List<Integer> allYears;
 
   private List<Country> countries;
   private List<ProjectHighlightsType> previewTypes;
+
   private List<ProjectHighligthsCountry> previewCountries;
   private HistoryManager historyManager;
 
@@ -123,6 +128,10 @@ public class ProjectHighlightAction extends BaseAction {
       + File.separator;
   }
 
+  public String getContentType() {
+    return contentType;
+  }
+
   public List<Country> getCountries() {
     return countries;
   }
@@ -132,10 +141,10 @@ public class ProjectHighlightAction extends BaseAction {
     return Integer.parseInt(dateFormat.format(project.getEndDate()));
   }
 
-
   public File getFile() {
     return file;
   }
+
 
   public String getFileFileName() {
     return fileFileName;
@@ -145,10 +154,10 @@ public class ProjectHighlightAction extends BaseAction {
     return highlight;
   }
 
-
   public String getHighlightsImagesUrl() {
     return config.getDownloadURL() + "/" + this.getHighlightsImagesUrlPath().replace('\\', '/');
   }
+
 
   public String getHighlightsImagesUrlPath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "hightlightsImage"
@@ -159,10 +168,10 @@ public class ProjectHighlightAction extends BaseAction {
     return highlightsTypes;
   }
 
-
   private String getHightlightImagePath() {
     return config.getUploadsBaseFolder() + File.separator + this.getHighlightsImagesUrlPath() + File.separator;
   }
+
 
   public Project getProject() {
     return project;
@@ -307,6 +316,10 @@ public class ProjectHighlightAction extends BaseAction {
     }
     return SUCCESS;
 
+  }
+
+  public void setContentType(String contentType) {
+    this.contentType = contentType;
   }
 
   public void setDeliverable(ProjectHighligths deliverable) {
