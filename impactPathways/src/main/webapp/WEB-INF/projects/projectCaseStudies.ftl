@@ -45,21 +45,27 @@
     
      
    <h1 class="contentTitle">[@s.text name="reporting.projectCaseStudies.caseStudiestitle" /]</h1>
-    <div id="caseStudiesBlock" class="">
+    <div id="caseStudiesBlock" class="simpleBox">
     [#if project.caseStudies?has_content ]
       [#list project.caseStudies as item] 
         [@caseStudy index=item_index /]
       [/#list]
     [#else]
-      [@caseStudy index=0 /]
+      [#if editable]
+        [@caseStudy index=0 /]
+      [#else]
+        <p class="center">There is not an Outcome Case Study added. <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div></a></p>
+      [/#if]
     [/#if]
     </div>
     
-    [#if (editable && canEdit)]
+    [#if editable]
       <div id="addCaseStudy"><a href="" class="addButton" >[@s.text name="reporting.projectCaseStudies.addCaseStudy" /]</a></div> 
+    [#else]
+      
     [/#if]
     
-    [#if (editable && canEdit)] 
+    [#if editable] 
       [#-- Project identifier --]
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <div class="" >
