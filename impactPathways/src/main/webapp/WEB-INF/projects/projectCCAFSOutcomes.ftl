@@ -68,7 +68,7 @@
                   <input id="midOutcomeID" value="${midOutcome.id}" type="hidden" />
                   <input id="programID" value="${midOutcome.program.id}" type="hidden" /> 
                   <h6 class="title">${midOutcome.program.acronym} - [@s.text name="planning.projectImpactPathways.outcome2019" /]</h6>
-                  <p class="description"> ${midOutcome.description} </p>
+                  <p class="description">${midOutcome.description} </p>
                 </div> 
                 [#-- Indicators list --]
                 <div class="indicators">
@@ -330,7 +330,7 @@
       <p class="simpleBox center">[@s.text name="planning.projectOutcome.message.dateUndefined" /]</p>
     [/#if]
     
-    [#if !newProject]
+    [#if !newProject && !reportingCycle]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
@@ -354,7 +354,6 @@
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
         [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectCcafsOutcomes.lessons" required=!project.bilateralProject editable=editable /]
       </div>
-      
     </div>
     [/#if]
     
