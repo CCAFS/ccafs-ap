@@ -133,7 +133,7 @@
                                   [#if (cycleYear lte year)]
                                   <div class="thirdPartBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /][@customForm.req required=isYearRequired(year) /]</h6></label>
-                                       <div class="select"><p>${project.calculateAcumulativeTarget(year)}</p></div>
+                                       <div class="select"><p>${project.calculateAcumulativeTarget(year,projectIndicator)}</p></div>
                                   </div>
                                   [/#if]
                                   [#-- -- -- REPORTING BLOCK -- -- --]
