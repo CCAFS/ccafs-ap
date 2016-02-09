@@ -189,9 +189,7 @@
       [#-- Region --]
       <div class="halfPartBlock">
         [@customForm.select name="${customName}.region" className="otherContributionRegion" label="" i18nkey="reporting.projectOtherContributions.region" listName="regions"  required=true editable=editable && action.hasProjectPermission("otherContributionIndicator", project.id) /]
-      </div>
-      [#-- Flagship --]
-     
+      </div> 
     </div>
     [#-- Indicator --]
     <div class="fullBlock">
