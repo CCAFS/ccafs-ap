@@ -145,6 +145,39 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
+  public List<IPIndicator> getIndicatorsFlagShips() {
+    List<IPIndicator> indicators = new ArrayList<>();
+    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsFlagShips();
+
+    for (Map<String, String> iData : indicatorsDataList) {
+      IPIndicator indicator = new IPIndicator();
+      indicator.setId(Integer.parseInt(iData.get("id")));
+      indicator.setDescription(iData.get("description"));
+      indicator.setTarget(iData.get("target"));
+
+      // Parent indicator
+      if (iData.get("parent_id") != null) {
+        IPIndicator parent = new IPIndicator();
+        parent.setId(Integer.parseInt(iData.get("parent_id")));
+        parent.setDescription(iData.get("parent_description"));
+        indicator.setParent(parent);
+      }
+
+      // Outcome
+      if (iData.get("outcome_id") != null) {
+        IPElement outcome = new IPElement();
+        outcome.setId(Integer.parseInt(iData.get("outcome_id")));
+        outcome.setDescription(iData.get("outcome_description"));
+        indicator.setOutcome(outcome);
+      }
+
+      indicators.add(indicator);
+    }
+
+    return indicators;
+  }
+
+  @Override
   public List<IPIndicator> getIndicatorsList() {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsList();

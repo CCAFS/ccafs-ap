@@ -202,6 +202,48 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIndicatorsFlagShips() {
+    List<Map<String, String>> indicatorsList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+
+    query.append("SELECT DISTINCT i.id, ");
+    query.append("                i.* ,prog.acronym");
+    query.append("FROM   ip_indicators i ");
+    query.append("       LEFT JOIN ip_indicators p ");
+    query.append("              ON i.parent_id = p.id ");
+    query.append("       INNER JOIN ip_project_indicators ipi ");
+    query.append("               ON i.id = ipi.parent_id ");
+    query.append("       INNER JOIN ip_elements ie ");
+    query.append("               ON ipi.outcome_id = ie.id ");
+    query.append("        inner  JOIN ip_programs prog on prog.id=ie.ip_program_id and prog.type_id=4");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description") + "(" + rs.getString("acronym") + ")");
+
+        if (!rs.getString("description").equals("")) {
+          indicatorsList.add(indicatorData);
+        }
+
+      }
+      rs.close();
+    } catch (Exception e) {
+      String exceptionMessage = "-- getIndicatorsByProjectID() > Exception raised trying ";
+
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getIndicatorsByProjectID():ipIndicatorList.size={}", indicatorsList.size());
+    return indicatorsList;
+  }
+
+  @Override
   public List<Map<String, String>> getIndicatorsList() {
     LOG.debug(">> getIndicatorsList()");
     List<Map<String, String>> indicatorsDataList = new ArrayList<>();

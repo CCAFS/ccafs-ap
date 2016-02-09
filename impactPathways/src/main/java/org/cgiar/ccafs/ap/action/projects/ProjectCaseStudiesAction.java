@@ -180,7 +180,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
-    List<IPIndicator> listIndicators = ipIndicatorMamager.getProjectIndicators(projectID);
+    List<IPIndicator> listIndicators = ipIndicatorMamager.getIndicatorsFlagShips();
     caseStudyIndicators = new HashMap();
     for (IPIndicator ipIndicator : listIndicators) {
       caseStudyIndicators.put(String.valueOf(ipIndicator.getParent().getId()),

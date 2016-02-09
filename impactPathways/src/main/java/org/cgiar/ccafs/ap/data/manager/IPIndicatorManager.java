@@ -64,6 +64,13 @@ public interface IPIndicatorManager {
 
 
   /**
+   * This method get all the indicators for flaglisphs present in the database.
+   * 
+   * @return a list of IPIndicator objects.
+   */
+  public List<IPIndicator> getIndicatorsFlagShips();
+
+  /**
    * This method get all the indicators present in the database.
    * 
    * @return a list of IPIndicator objects.
