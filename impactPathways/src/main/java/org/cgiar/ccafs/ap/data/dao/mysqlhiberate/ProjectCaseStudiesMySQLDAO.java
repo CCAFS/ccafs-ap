@@ -112,24 +112,29 @@ public class ProjectCaseStudiesMySQLDAO implements ProjectCaseStudiesDAO {
             dao.saveOrUpdate(caseStudieIndicators);
           }
 
+        }
+        // Removing CaseStudieIndicators do not select
 
-          // Removing CaseStudieIndicators do not select
-
-          // Deleting ProjectHighligthsTypes no selected
-          if (casesStudiesPrev != null) {
-            Iterator<CaseStudieIndicators> previousCaseStudieIndicatorsIterator =
-              casesStudiesPrev.getCaseStudieIndicatorses().iterator();
-            while (previousCaseStudieIndicatorsIterator.hasNext()) {
-              caseStudieIndicators = previousCaseStudieIndicatorsIterator.next();
-              if (!casesStudies.getCaseStudieIndicatorses().contains(caseStudieIndicators)) {
-                dao.delete(caseStudieIndicators);
-              }
+        // Deleting ProjectHighligthsTypes no selected
+        if (casesStudiesPrev != null) {
+          Iterator<CaseStudieIndicators> previousCaseStudieIndicatorsIterator =
+            casesStudiesPrev.getCaseStudieIndicatorses().iterator();
+          while (previousCaseStudieIndicatorsIterator.hasNext()) {
+            caseStudieIndicators = previousCaseStudieIndicatorsIterator.next();
+            if (!casesStudies.getCaseStudieIndicatorses().contains(caseStudieIndicators)) {
+              dao.delete(caseStudieIndicators);
             }
           }
         }
       }
+
       return casesStudies.getId(); // TODO To review
-    } catch (Exception e) {
+    } catch (
+
+    Exception e)
+
+    {
+      e.printStackTrace();
       return -1;
     }
 

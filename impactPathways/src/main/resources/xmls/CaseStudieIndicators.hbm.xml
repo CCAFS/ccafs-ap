@@ -8,7 +8,7 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="casesStudies" class="org.cgiar.ccafs.ap.data.model.CasesStudies" fetch="select">
+        <many-to-one name="casesStudies" class="org.cgiar.ccafs.ap.data.model.CasesStudies" fetch="select" lazy="false">
             <column name="id_case_studie" not-null="true" />
         </many-to-one>
         <property name="idIndicator" type="int">

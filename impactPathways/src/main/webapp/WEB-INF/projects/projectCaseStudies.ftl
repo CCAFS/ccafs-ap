@@ -154,7 +154,7 @@
         <div class="checkboxGroup">
         [#if editable]
           [@s.fielderror cssClass="fieldError" fieldName="${customName}.caseStudyIndicatorsIds"/]
-          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${(study.caseStudyIndicatorsIds)!}" itemKey="id"    cssClass="caseStudyIndicators checkbox" /]
+          [@s.checkboxlist name="${customName}.caseStudyIndicatorsIds" list="caseStudyIndicators" value="${customName}.caseStudyIndicatorsIds" itemKey="id"    cssClass="caseStudyIndicators checkbox" /]
         [#else]
           [#if (study.caseStudyIndicators?has_content)!false]
             [#list study.caseStudyIndicators as element]<p class="checked">${element.description}</p>[/#list]

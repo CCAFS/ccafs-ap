@@ -59,6 +59,7 @@ public class CasesStudies implements java.io.Serializable {
     this.isActive = isActive;
   }
 
+
   public CasesStudies(int projectId, String comment, String title, String outcomeStatement, String researchOutputs,
     String researchPatern, String activities, String nonResearchPartneres, String outputUsers, String evidenceOutcome,
     String referencesCase, String outputUsed, String researchPartners, String explainIndicatorRelation, Integer year,
@@ -89,6 +90,28 @@ public class CasesStudies implements java.io.Serializable {
   }
 
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    CasesStudies other = (CasesStudies) obj;
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
+    }
+    return true;
+  }
+
   public Date getActiveSince() {
     return this.activeSince;
   }
@@ -103,6 +126,7 @@ public class CasesStudies implements java.io.Serializable {
     return this.caseStudieIndicatorses;
   }
 
+
   public List<IPIndicator> getCaseStudyIndicators() {
     return caseStudyIndicators;
   }
@@ -115,10 +139,10 @@ public class CasesStudies implements java.io.Serializable {
     return this.comment;
   }
 
-
   public Long getCreatedBy() {
     return this.createdBy;
   }
+
 
   public String getEvidenceOutcome() {
     return this.evidenceOutcome;
@@ -194,6 +218,14 @@ public class CasesStudies implements java.io.Serializable {
 
   public Integer getYear() {
     return this.year;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
   }
 
   public boolean isIsActive() {

@@ -9,7 +9,9 @@ public class CaseStudieIndicators implements java.io.Serializable {
 
 
   private Integer id;
+
   private CasesStudies casesStudies;
+
   private int idIndicator;
 
   public CaseStudieIndicators() {
@@ -20,24 +22,58 @@ public class CaseStudieIndicators implements java.io.Serializable {
     this.idIndicator = idIndicator;
   }
 
-  public Integer getId() {
-    return this.id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    CaseStudieIndicators other = (CaseStudieIndicators) obj;
+    if (casesStudies == null) {
+      if (other.casesStudies != null) {
+        return false;
+      }
+    } else if (!casesStudies.equals(other.casesStudies)) {
+      return false;
+    }
+    if (idIndicator != other.idIndicator) {
+      return false;
+    }
+    return true;
   }
 
   public CasesStudies getCasesStudies() {
     return this.casesStudies;
   }
 
-  public void setCasesStudies(CasesStudies casesStudies) {
-    this.casesStudies = casesStudies;
+  public Integer getId() {
+    return this.id;
   }
 
   public int getIdIndicator() {
     return this.idIndicator;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((casesStudies == null) ? 0 : casesStudies.hashCode());
+    result = prime * result + idIndicator;
+    return result;
+  }
+
+  public void setCasesStudies(CasesStudies casesStudies) {
+    this.casesStudies = casesStudies;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public void setIdIndicator(int idIndicator) {
