@@ -209,7 +209,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
 
     query.append("SELECT DISTINCT i.id, ");
     query.append("                i.* ,prog.acronym");
-    query.append("FROM   ip_indicators i ");
+    query.append(" FROM   ip_indicators i ");
     query.append("       LEFT JOIN ip_indicators p ");
     query.append("              ON i.parent_id = p.id ");
     query.append("       INNER JOIN ip_project_indicators ipi ");

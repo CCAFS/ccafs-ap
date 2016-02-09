@@ -183,8 +183,7 @@ public class ProjectCaseStudiesAction extends BaseAction {
     List<IPIndicator> listIndicators = ipIndicatorMamager.getIndicatorsFlagShips();
     caseStudyIndicators = new HashMap();
     for (IPIndicator ipIndicator : listIndicators) {
-      caseStudyIndicators.put(String.valueOf(ipIndicator.getParent().getId()),
-        ipIndicator.getParent().getDescription());
+      caseStudyIndicators.put(String.valueOf(ipIndicator.getId()), ipIndicator.getDescription());
     }
     super.setHistory(historyManager.getProjectCaseStudyHistory(project.getId()));
 
