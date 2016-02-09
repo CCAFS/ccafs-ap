@@ -187,27 +187,9 @@ public class ProjectIPOtherContributionAction extends BaseAction {
 
     }
     this.otherIndicators = new HashMap<>();
-    if (project.getOtherContributions() != null) {
-      for (ProjecteOtherContributions otherContributions : project.getOtherContributions()) {
-
-        int region = 0;
-
-        try {
-
-          region = Integer.parseInt(otherContributions.getRegion());
-        } catch (Exception e) {
-
-          region = 0;
-        }
-
-        if (region != 0) {
-          List<IPIndicator> otherIndicators = ipIndicatorManager.getIndicatorsOtherContribution(projectID, region);
-          for (IPIndicator ipIndicator : otherIndicators) {
-            this.otherIndicators.put(String.valueOf(ipIndicator.getId()), ipIndicator.getDescription());
-          }
-        }
-
-      }
+    List<IPIndicator> otherIndicators = ipIndicatorManager.getIndicatorsOtherContribution(projectID, 0);
+    for (IPIndicator ipIndicator : otherIndicators) {
+      this.otherIndicators.put(String.valueOf(ipIndicator.getId()), ipIndicator.getDescription());
     }
 
     // Getting the Project lessons for this section.
