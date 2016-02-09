@@ -62,7 +62,13 @@
       [#-- Others impact pathways contributions --]
       [#if reportingCycle]
         <div id="otherContributionsBlock">
-          [@otherContribution /] 
+          [#if project.otherContributions?has_content]
+            [#list project.otherContributions as element]
+              [@otherContribution index=element_index /] 
+            [/#list]
+          [#else]
+            <div class="emptyMessage simpleBox center"><p>There is not other contributions added</p></div>
+          [/#if]
         </div>
         [#if editable]<div id="addOtherContribution"><a href="" class="addLink">[@s.text name="reporting.projectOtherContributions.addOtherContribution"/]</a></div>[/#if]
         <div class="clearfix"></div>
@@ -194,7 +200,7 @@
     </div>
     [#-- Describe how you are contributing to the selected outcome --]
     <div class="fullBlock">
-      <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:</h6>
+      <h6>[@customForm.text name="reporting.projectOtherContributions.description" param="${currentReportingYear}" readText=!editable /]:[@customForm.req required=editable && action.hasProjectPermission("otherContributionDescription", project.id) /]</h6>
       [@customForm.textArea name="${customName}.description" className="otherContributionDescription limitWords-100"  i18nkey="" showTitle=false required=true editable=editable && action.hasProjectPermission("otherContributionDescription", project.id) /]
     </div>
     [#-- Target contribution --]
