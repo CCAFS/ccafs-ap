@@ -75,11 +75,6 @@
         <br />
       [/#if]
       
-      [#-- Contribution to another center activity --]
-      <div class="fullBlock">
-        [@customForm.textArea name="project.ipOtherContribution.additionalContribution" className="additionalContribution limitWords-100" i18nkey="planning.impactPathways.otherContributions.contributionToAnotherCenter" editable=editable && action.hasProjectPermission("additionalContribution", project.id) /]  
-      </div>
-      
       [#-- Collaborating with other CRPs --]
       [#assign crpsName= "project.ipOtherContribution.crps"/]
       <div class="fullPartBlock">      
