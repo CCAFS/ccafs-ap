@@ -49,9 +49,10 @@ function init() {
   // Set names to deliverable files already uploaded
   setDeliverableFilesIndexes();
 
-  validateEvent([
-    "#justification"
-  ]);
+  // Validate justification at save
+  /*
+   * validateEvent([ "#justification" ]);
+   */
 }
 
 function attachEvents() {
@@ -178,7 +179,7 @@ function openDialog() {
 
 function initDeliverableTabs() {
   $('#projectDeliverable').tabs({
-      active: $('#indexTabCurrentYear').val(),
+      active: $('#indexTab').val(),
       show: {
           effect: "fadeIn",
           duration: 200
@@ -188,6 +189,17 @@ function initDeliverableTabs() {
           duration: 100
       }
   });
+  
+  $('#projectDeliverable ul.ui-tabs-nav li').on('click', function(){
+    var indexTab = $(this).index();
+    $('#indexTab').val(indexTab);
+    if(indexTab == "0"){
+      $("#justification").parent().show();
+    }else{
+      $("#justification").parent().hide();
+    }
+  });
+  
 }
 
 function changeDeliverableTypes(event) {
