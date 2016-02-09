@@ -150,7 +150,7 @@
     [#-- Region indicators --]
     <div class="fullBlock"> 
       <div class="fullBlock caseStudyIndicators">
-        <h6><label for="${customName}.caseStudyIndicators">[@customForm.text name="reporting.projectCaseStudies.caseStudyIndicators" readText=!editable /]:<span class="red">*</span></label></h6>
+        <h6><label for="${customName}.caseStudyIndicators">[@customForm.text name="reporting.projectCaseStudies.caseStudyIndicators" readText=!editable /]:[@customForm.req required=editable /]</label></h6>
         <div class="checkboxGroup">
         [#if editable]
           [@s.fielderror cssClass="fieldError" fieldName="${customName}.caseStudyIndicatorsIds"/]
@@ -175,7 +175,7 @@
       </div>
       [#-- Upload Annexes --]
       <div class="halfPartBlock fileUpload uploadAnnexes">
-        <h6>[@customForm.text name="reporting.projectCaseStudies.uploadAnnexes" readText=!editable /]:</h6>
+        <h6>[@customForm.text name="reporting.projectCaseStudies.uploadAnnexes" readText=!editable /]:[@customForm.req required=editable /]</h6>
         <div class="uploadContainer">
           [#if (study.file?has_content)!false]
             [#if editable]<span id="remove-annexesFile" class="remove"></span>[/#if] 
@@ -184,7 +184,7 @@
             [#if editable]
               [@customForm.inputFile name="${customName}.myFile" className="annexesFile"  /]
             [#else]  
-              <span class="fieldError">[@s.text name="form.values.required" /]</span>  [@s.text name="form.values.notFileUploaded" /]
+              [@s.text name="form.values.notFileUploaded" /]
             [/#if] 
           [/#if]
         </div>

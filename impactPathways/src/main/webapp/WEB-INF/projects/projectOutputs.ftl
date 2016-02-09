@@ -124,7 +124,7 @@
         <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
         <input type="hidden" name="projectLessons.year" value=${reportingCycle?string(currentReportingYear,currentPlanningYear)} />
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
-        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectOutputs.lessons" required=!project.bilateralProject editable=editable /]
+        [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectOutputs.lessons" required=false editable=editable /]
       </div>
     </div>
     [/#if]
@@ -155,7 +155,7 @@
 
 [#-- Get if the year is required--]
 [#function isYearRequired year]
-  [#return (!project.bilateralProject && (cycleYear == year))]
+  [#return (!project.bilateralProject && (cycleYear == year)) && year != 2015]
 [/#function]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

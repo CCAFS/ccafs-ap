@@ -74,7 +74,9 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
       this.cycle = cycle;
       // Projects that are Core, Co-Funded and Bilateral stand-alone needs to fill this section.
       if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
-        this.validateProjectJustification(action, project);
+        if (!action.isReportingCycle()) {
+          this.validateProjectJustification(action, project);
+        }
         this.validateLessonsLearn(action, project, "ccafsOutcomes");
         this.populateOutcomeMaps(action, project);
         this.validateCoreProject(action, project);

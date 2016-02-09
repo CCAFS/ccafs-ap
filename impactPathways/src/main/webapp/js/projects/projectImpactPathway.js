@@ -47,9 +47,9 @@ function attachEvents() {
   $targetValue.trigger("keyup");
   
   // Validate justification on save
-  validateEvent([
-    "#justification"
-  ]);
+  /*
+   * validateEvent([ "#justification" ]);
+   */
   
   // Remove file if already uploaded and put a new file input
   $('.fileUpload .remove').on('click', function(e) {
