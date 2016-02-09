@@ -40,6 +40,8 @@
     <mapping resource="xmls/DeliverablePublicationMetadata.hbm.xml" />
     <mapping resource="xmls/ProjectNextUser.hbm.xml" />
     <mapping resource="xmls/ProjectLeverage.hbm.xml" />
+    <mapping resource="xmls/DeliverableMetadataElements.hbm.xml" />
+    <mapping resource="xmls/MetadataElements.hbm.xml" />
   </session-factory>
 </hibernate-configuration>
 

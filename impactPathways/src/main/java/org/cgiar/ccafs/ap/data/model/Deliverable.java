@@ -45,10 +45,7 @@ public class Deliverable {
   private List<DeliverableFile> files;
   private DeliverablePublicationMetadata publicationMetadata;
   private List<DeliverableMetadataElements> metadataElements;
-  /**
-   * SAVE -> QUE PESTANA ES
-   * YO SOLO GUARDO LO DE ESA PESTANA
-   */
+  private List<MetadataElements> metadata;
 
   private String statusDescription;
 
@@ -75,14 +72,15 @@ public class Deliverable {
     return false;
   }
 
+
   public long getCreated() {
     return created;
   }
 
+
   public DeliverableDataSharing getDataSharing() {
     return dataSharing;
   }
-
 
   public List<DeliverableDataSharingFile> getDataSharingFile() {
     return dataSharingFile;
@@ -102,15 +100,20 @@ public class Deliverable {
   }
 
 
+  public List<MetadataElements> getMetadata() {
+    return metadata;
+  }
+
+
   public List<DeliverableMetadataElements> getMetadataElements() {
     return metadataElements;
   }
 
 
   public int getMetadataID(String metadataName) {
-    for (DeliverableMetadataElements mData : metadataElements) {
-      if (mData.getMetadataElement().getElement().equals(metadataName)) {
-        return mData.getMetadataElement().getId();
+    for (MetadataElements mData : metadata) {
+      if (mData.getEcondedName().equals(metadataName)) {
+        return mData.getId();
       }
     }
     return -1;
@@ -119,8 +122,8 @@ public class Deliverable {
 
   public int getMetadataIndex(String metadataName) {
     int c = 0;
-    for (DeliverableMetadataElements mData : metadataElements) {
-      if (mData.getMetadataElement().getElement().equals(metadataName)) {
+    for (MetadataElements mData : metadata) {
+      if (mData.getEcondedName().equals(metadataName)) {
         return c;
       }
       c++;
@@ -314,9 +317,16 @@ public class Deliverable {
     this.id = id;
   }
 
+
+  public void setMetadata(List<MetadataElements> metadata) {
+    this.metadata = metadata;
+  }
+
+
   public void setMetadataElements(List<DeliverableMetadataElements> metadataElements) {
     this.metadataElements = metadataElements;
   }
+
 
   public void setNextUsers(List<NextUser> nextUsers) {
     this.nextUsers = nextUsers;

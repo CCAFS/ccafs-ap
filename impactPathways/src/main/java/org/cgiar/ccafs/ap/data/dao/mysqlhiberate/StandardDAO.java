@@ -61,6 +61,7 @@ public class StandardDAO {
     tx.commit();
   }
 
+
   /**
    * This method deletes a record from the database.
    * 
@@ -95,6 +96,7 @@ public class StandardDAO {
     T obj = null;
     try {
       this.openSession();
+
       this.initTransaction();
       obj = session.get(clazz, (Serializable) id);
       this.commitTransaction();
@@ -140,6 +142,26 @@ public class StandardDAO {
     }
   }
 
+  protected <T> List<T> findEveryone(Class<T> clazz) {
+    try {
+      this.openSession();
+      this.initTransaction();
+
+      Query query = session.createQuery("from " + clazz.getName());
+      @SuppressWarnings("unchecked")
+      List<T> list = query.list();
+      this.commitTransaction();
+      return list;
+    } catch (HibernateException e) {
+      this.rollBackTransaction();
+      e.printStackTrace();
+      return null;
+    } finally {
+      session.flush(); // Flushing the changes always.
+      this.closeSession();
+    }
+  }
+
   /**
    * This method initializes a transaction.
    */
@@ -166,7 +188,11 @@ public class StandardDAO {
    * This method tries to roll back the changes in case they were not flushed.
    */
   private void rollBackTransaction() {
-    tx.rollback();
+    try {
+      tx.rollback();
+    } catch (Exception e) {
+
+    }
   }
 
   /**

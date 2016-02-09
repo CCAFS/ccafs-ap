@@ -1,11 +1,12 @@
 [#ftl]
 [#macro metadataField title="" encodedName="" type="input"]
-  <input type="hidden" name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodeName)}].metadata.id" value="${deliverable.getMetadataID(encodeName)}" />
+
+  <input type="hidden" name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].id" value="${deliverable.getMetadataID(encodedName)}" />
   [#if type == "input"]
-    [@customForm.input name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodeName)}].value" type="text" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
+    [@customForm.input name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].value"  type="text" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
   [/#if]
   [#if type == "textArea"]
-    [@customForm.textArea name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodeName)}].value" type="text" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
+    [@customForm.textArea name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].value" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
   [/#if]
 [/#macro]
 

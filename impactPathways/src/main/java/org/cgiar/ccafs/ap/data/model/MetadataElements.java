@@ -20,9 +20,12 @@ public class MetadataElements implements java.io.Serializable {
   private String status;
   private String vocabulary;
   private String definitation;
+  private String value;
+
 
   public MetadataElements() {
   }
+
 
   public MetadataElements(String schema, String element, String qualifier, String econdedName, String status,
     String vocabulary, String definitation) {
@@ -63,6 +66,10 @@ public class MetadataElements implements java.io.Serializable {
     return this.status;
   }
 
+  public String getValue() {
+    return value;
+  }
+
   public String getVocabulary() {
     return this.vocabulary;
   }
@@ -93,6 +100,10 @@ public class MetadataElements implements java.io.Serializable {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
   }
 
   public void setVocabulary(String vocabulary) {

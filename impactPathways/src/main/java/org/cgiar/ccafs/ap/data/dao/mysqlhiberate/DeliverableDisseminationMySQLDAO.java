@@ -58,12 +58,39 @@ public class DeliverableDisseminationMySQLDAO implements DeliverableDisseminatio
         .setMetadataElement(this.findMetadaElement(deliverableMetadataElements.getElementId()));
     }
 
-    return null;
+    return listMetada;
+  }
+
+  @Override
+  public DeliverableMetadataElements findDeliverableMetadata(int deliverableId, int field) {
+
+    String sql = "from " + DeliverableMetadataElements.class.getName() + " where deliverable_id=" + deliverableId
+      + " and element_id=" + field;
+    List<DeliverableMetadataElements> listMetada = dao.findAll(sql);
+
+    if (listMetada.size() > 0) {
+      listMetada.get(0).setMetadataElement(this.findMetadaElement(listMetada.get(0).getElementId()));
+      return listMetada.get(0);
+    }
+
+    DeliverableMetadataElements to_ret = new DeliverableMetadataElements();
+    to_ret.setDeliverableId(deliverableId);
+    to_ret.setElementId(field);
+    to_ret.setMetadataElement(this.findMetadaElement(field));
+    return to_ret;
   }
 
   public MetadataElements findMetadaElement(int elementID) {
     MetadataElements element = dao.find(MetadataElements.class, elementID);
     return element;
+  }
+
+  @Override
+  public List<MetadataElements> findMetadataFields(int deliverableId) {
+
+    List<MetadataElements> fields = dao.findEveryone(MetadataElements.class);
+    return fields;
+
   }
 
   @Override

@@ -34,6 +34,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.MetadataElements;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -187,6 +188,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
       // deliverable.setDataSharing(sharingDao.findDeliverableDataSharing(deliverableID));
       deliverable.setDataSharingFile(sharingFileDao.findDeliverableDataSharingFile(deliverableID));
       deliverable.setMetadataElements(disseminationDao.findDeliverableElements(deliverableID));
+      deliverable.setMetadata(disseminationDao.findMetadataFields(deliverableID));
+      for (MetadataElements field : deliverable.getMetadata()) {
+        field.setValue(disseminationDao.findDeliverableMetadata(deliverableID, field.getId()).getElementValue());
+      }
       List<DeliverableFile> deliverableFile = new ArrayList<>();
       DeliverableFile file;
       if (deliverable.getDataSharingFile() != null) {
@@ -526,6 +531,27 @@ public class DeliverableManagerImpl implements DeliverableManager {
           if (dataFile.getId() == null) {
             sharingFileDao.save(dataFile);
           }
+
+        }
+      }
+
+
+      /// Saving metadata elements
+      if (deliverable.getMetadata() != null) {
+        for (MetadataElements metadata : deliverable.getMetadata()) {
+          DeliverableMetadataElements elementMetadata =
+            disseminationDao.findDeliverableMetadata(deliverableId, metadata.getId());
+          elementMetadata.setElementValue(metadata.getValue());
+          elementMetadata.setMetadataElement(metadata);
+          elementMetadata.setElementId(metadata.getId());
+
+          if (result == 0) {
+            elementMetadata.setDeliverableId(deliverable.getId());
+          } else {
+            elementMetadata.setDeliverableId(result);
+          }
+
+          disseminationDao.saveMetadataElement(elementMetadata);
 
         }
       }
