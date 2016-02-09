@@ -52,10 +52,10 @@
             [#-- Major Output Group list by year --]
             <div id="mogs-${year}" class="mogs-group">
               [#if (!editable && canEdit)]
-                <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#mogs-${year}">[@s.text name="form.buttons.edit" /]</a></div>
+                <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
               [#else]
                 [#if canEdit && !newProject]
-                  <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#mogs-${year}">[@s.text name="form.buttons.unedit" /]</a></div>
+                  <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
                 [/#if]
               [/#if]
               [#list project.outputs as output]
