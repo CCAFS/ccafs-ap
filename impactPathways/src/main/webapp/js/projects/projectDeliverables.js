@@ -624,18 +624,18 @@ function getMetadata(fillData) {
 }
 
 function setMetadata(data) {
-  $("[name$='descriptionMetadata']").val(data.description).autoGrow();
-  $("[name$='authorsMetadata']").val(data.authors);
-  $("[name$='identifierMetadata']").val(data.identifier);
-  $("[name$='publishierMetadata']").val(data.publishier);
-  $("[name$='relationMetadata']").val(data.relation);
-  $("[name$='contributorMetadata']").val(data.contributor);
-  $("[name$='subjectMetadata']").val(data.subject);
-  $("[name$='sourceMetadata']").val(data.source);
-  $("[name$='publicationMetada']").val(data.publication);
-  $("[name$='languageMetadata']").val(data.language);
-  $("[name$='coverageMetadata']").val(data.coverage);
-  $("[name$='formatMetadata']").val(data.format);
-  $("[name$='rigthsMetadata']").val(data.rigths);
-  $("[name$='citation']").val(data.citation);
+  $(".descriptionMetadata").val(data.description).autoGrow();
+  $(".creatorMetadata").val(data.authors);
+  $(".identifierMetadata").val(data.identifier);
+  $(".publishierMetadata").val(data.publishier);
+  $(".relationMetadata").val(data.relation);
+  $(".contributorMetadata").val(data.contributor);
+  $(".subjectMetadata").val(data.subject);
+  $(".sourceMetadata").val(data.source);
+  $(".publicationMetada").val(data.publication);
+  $(".languageMetadata").val(data.language);
+  $(".coverageMetadata").val(data.coverage);
+  $(".formatMetadata").val(data.format);
+  $(".rigthsMetadata").val(data.rigths);
+  $(".citation").val(data.citation);
 }
