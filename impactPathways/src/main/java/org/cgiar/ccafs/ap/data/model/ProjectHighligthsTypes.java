@@ -20,28 +20,56 @@ public class ProjectHighligthsTypes implements java.io.Serializable {
     this.idType = idType;
   }
 
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    ProjectHighligthsTypes other = (ProjectHighligthsTypes) obj;
+    if (idType != other.idType) {
+      return false;
+    }
+    return true;
+  }
+
   public Integer getId() {
     return this.id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public ProjectHighligths getProjectHighligths() {
-    return this.projectHighligths;
-  }
-
-  public void setProjectHighligths(ProjectHighligths projectHighligths) {
-    this.projectHighligths = projectHighligths;
   }
 
   public int getIdType() {
     return this.idType;
   }
 
+
+  public ProjectHighligths getProjectHighligths() {
+    return this.projectHighligths;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + idType;
+    return result;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
   public void setIdType(int idType) {
     this.idType = idType;
+  }
+
+  public void setProjectHighligths(ProjectHighligths projectHighligths) {
+    this.projectHighligths = projectHighligths;
   }
 
 

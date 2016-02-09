@@ -20,28 +20,54 @@ public class ProjectHighligthsCountry implements java.io.Serializable {
     this.idCountry = idCountry;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    ProjectHighligthsCountry other = (ProjectHighligthsCountry) obj;
+    if (idCountry != other.idCountry) {
+      return false;
+    }
+    return true;
+  }
+
   public Integer getId() {
     return this.id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public ProjectHighligths getProjectHighligths() {
-    return this.projectHighligths;
-  }
-
-  public void setProjectHighligths(ProjectHighligths projectHighligths) {
-    this.projectHighligths = projectHighligths;
   }
 
   public int getIdCountry() {
     return this.idCountry;
   }
 
+  public ProjectHighligths getProjectHighligths() {
+    return this.projectHighligths;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + idCountry;
+    return result;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
   public void setIdCountry(int idCountry) {
     this.idCountry = idCountry;
+  }
+
+  public void setProjectHighligths(ProjectHighligths projectHighligths) {
+    this.projectHighligths = projectHighligths;
   }
 
 

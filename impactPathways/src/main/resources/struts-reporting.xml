@@ -281,8 +281,11 @@
     </action>
     
     <action name="highlight" class="org.cgiar.ccafs.ap.action.projects.ProjectHighlightAction">
-      <interceptor-ref name="projectStackHighlights" />
-      <result name="input">/WEB-INF/projects/projectHighlight.ftl</result>
+         <interceptor-ref name="projectStackHighlights" />
+    <interceptor-ref name="defaultStack">
+    <param name="fileUpload.allowedTypes">image/bmp,image/gif,image/jpeg,image/png</param>
+ </interceptor-ref>
+     <result name="input">/WEB-INF/projects/projectHighlight.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">highlight</param>
         <param name="highlightID">${highlight.id}</param>
