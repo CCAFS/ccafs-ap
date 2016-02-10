@@ -35,9 +35,11 @@ function init() {
     applyWordCounter($("form textarea.resp"), lWordsResp);
     applyWordCounter($("#lessons textarea"), lWordsResp);
     // Validate on save and next action
-    validateEvent([
-      "#justification"
-    ]);
+    if(!isReportingCycle()) {
+      validateEvent([
+        "#justification"
+      ]);
+    }
 
   }
   // Attaching listeners

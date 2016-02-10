@@ -29,12 +29,16 @@
 <section class="content">
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" />
+    [#if reportingCycle]
+      <p>[@s.text name="${currentSection}.activities.help" /] </p>
+    [#else]
     <p>
-      [@s.text name="planning.activities.help1" /] 
-      <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.activities.activities" /]</a>
-      [@s.text name="planning.activities.help2" /] 
-      <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="planning.activities.activityLeader" /]</a> 
+      [@s.text name="${currentSection}.activities.help1" /] 
+      <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="${currentSection}.activities.activities" /]</a>
+      [@s.text name="${currentSection}.activities.help2" /] 
+      <a href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="${currentSection}.activities.activityLeader" /]</a> 
     </p>
+    [/#if]
     
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]

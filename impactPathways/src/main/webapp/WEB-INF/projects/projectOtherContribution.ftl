@@ -24,6 +24,12 @@
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
+  [#if reportingCycle]
+  <div class="helpMessage">
+    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="${currentSection}.projectOtherContributions.help" /]</p>
+  </div>
+  [/#if]
+
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   
   [@s.form action="otherContributions" cssClass="pure-form"]  

@@ -26,7 +26,7 @@
 
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="planning.projectPartners.otherPartners.help" /]</p>
+    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="${currentSection}.projectPartners.otherPartners.help" /]</p>
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   
@@ -102,8 +102,8 @@
     [#-- Project identifier --]
     <input name="projectID" type="hidden" value="${project.id?c}" />
     [#if editable]  
-      <div class="clearfix [#if !newProject]borderBox[/#if]" >
-        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
+      <div class="clearfix [#if !newProject && !reportingCycle]borderBox[/#if]" >
+        [#if !newProject  && !reportingCycle] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]

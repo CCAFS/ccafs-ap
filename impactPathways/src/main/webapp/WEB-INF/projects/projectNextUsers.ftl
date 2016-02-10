@@ -25,8 +25,7 @@
     
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" /> <p> //TODO 
-+69/p>
+    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="${currentSection}.projectNextUsers.help" ][@s.param]<a href= [@s.url namespace="/" action='glossary'][/@s.url]>[@s.text name="planning.projectImpactPathways.help.glossary" /]</a>[/@s.param][/@s.text]</p>
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
     <article class="halfContent" id="projectNextUsers">

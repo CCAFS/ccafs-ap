@@ -496,6 +496,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.isPlanningActive();
   }
 
+  public boolean isPlanningCycle() {
+    String namespace = ServletActionContext.getActionMapping().getNamespace();
+    return namespace.contains("/planning");
+  }
+
   public boolean isPreplanningActive() {
     return config.isPrePlanningActive();
   }
@@ -507,7 +512,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public boolean isReportingCycle() {
     String namespace = ServletActionContext.getActionMapping().getNamespace();
     return namespace.contains("/reporting");
-
   }
 
   public boolean isSaveable() {
