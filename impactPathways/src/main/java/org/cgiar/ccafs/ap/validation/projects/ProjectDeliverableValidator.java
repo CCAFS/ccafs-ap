@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.validation.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
@@ -142,6 +143,26 @@ public class ProjectDeliverableValidator extends BaseValidator {
   }
 
 
+  private void validateRanking(BaseAction action, DeliverablesRanking ranking, int i) {
+
+    if (ranking.getAddress() == null) {
+      this.addMessage("Deliverable (" + i + ") Ranking Address gender");
+      this.addMissingField("projects.deliverable(" + i + ").ranking.adress");
+    }
+    if (ranking.getPotential() == null) {
+      this.addMessage("Deliverable (" + i + ") Ranking Potential");
+      this.addMissingField("projects.deliverable(" + i + ").ranking.potential");
+    }
+    if (ranking.getLevel() == null) {
+      this.addMessage("Deliverable (" + i + ") Ranking  Level of shared ");
+      this.addMissingField("projects.deliverable(" + i + ").ranking.leverShared");
+    }
+    if (ranking.getPersonalPerspective() == null) {
+      this.addMessage("Deliverable (" + i + ") Ranking Personal Perspective");
+      this.addMissingField("projects.deliverable(" + i + ").ranking.personalPerspective");
+    }
+  }
+
   private void validateRequiredFields(BaseAction action, Project project, Deliverable deliverable) {
 
     // Validating the title
@@ -205,8 +226,14 @@ public class ProjectDeliverableValidator extends BaseValidator {
         this.addMessage("Deliverable (" + deliverable.getId() + ") Status is Requeried");
         this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
       }
+
+      if (deliverable.getRanking() != null) {
+        this.validateRanking(action, deliverable.getRanking(), deliverable.getId());
+      }
+
     }
 
   }
+
 
 }

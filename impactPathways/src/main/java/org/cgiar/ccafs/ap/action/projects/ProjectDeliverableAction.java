@@ -105,6 +105,8 @@ public class ProjectDeliverableAction extends BaseAction {
   private Map<String, String> openAccessStatuses;
   private Map<String, String> disseminationChannels;
   private Map<String, String> statuses;
+  private int indexTab;
+
 
   @Inject
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
@@ -124,6 +126,7 @@ public class ProjectDeliverableAction extends BaseAction {
     this.validator = validator;
     this.ipProgramManager = ipProgramManager;
   }
+
 
   /**
    * This method validates if this deliverable can be deleted or not.
@@ -153,7 +156,6 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverableSubTypes;
   }
 
-
   /**
    * This method returns a list of DeliverableSubTypes depending on the deliverableMainTypeID received as parameter.
    * 
@@ -170,7 +172,6 @@ public class ProjectDeliverableAction extends BaseAction {
     }
     return listSubTypes;
   }
-
 
   public List<DeliverableType> getDeliverableTypes() {
     return deliverableTypes;
@@ -192,9 +193,15 @@ public class ProjectDeliverableAction extends BaseAction {
   }
 
 
+  public int getIndexTab() {
+    return indexTab;
+  }
+
+
   public Map<String, String> getIpProgramFlagships() {
     return ipProgramFlagships;
   }
+
 
   public Map<String, String> getOpenAccessStatuses() {
     return openAccessStatuses;
@@ -229,7 +236,6 @@ public class ProjectDeliverableAction extends BaseAction {
     return config.getDownloadURL() + "/" + this.getRankingUrlPath().replace('\\', '/');
   }
 
-
   public String getRankingUrlPath() {
     return config.getProjectsBaseFolder() + File.separator + project.getId() + File.separator + "rankingsImage"
       + File.separator;
@@ -239,6 +245,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public Map<String, String> getStatuses() {
     return statuses;
   }
+
 
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
@@ -346,7 +353,6 @@ public class ProjectDeliverableAction extends BaseAction {
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
-
 
   @Override
   public String save() {
@@ -474,12 +480,17 @@ public class ProjectDeliverableAction extends BaseAction {
     this.deliverable = deliverable;
   }
 
+
   public void setFile(File file) {
     this.file = file;
   }
 
   public void setFileFileName(String fileFileName) {
     this.fileFileName = fileFileName;
+  }
+
+  public void setIndexTab(int indexTab) {
+    this.indexTab = indexTab;
   }
 
 
