@@ -169,8 +169,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
                 this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
                   indicator.getYear(), c);
 
-                this.validateTargetNarrative(action, indicator.getDescription(), outcome.getComposedId(),
-                  indicator.getYear(), c);
+
                 this.validateGenderNarrative(action, indicator.getGender(), outcome.getComposedId(),
                   indicator.getYear(), c);
               }
@@ -180,10 +179,13 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
                 && indicator.getYear() == action.getCurrentReportingYear()) {
                 this.validateNarrativeTargets(action, indicator.getNarrativeTargets(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
-
+                this.validateTargetValue(action, indicator.getTarget(), outcome.getComposedId(), indicator.getYear(),
+                  c);
                 this.validateNarrativeGender(action, indicator.getNarrativeGender(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
                 this.validateArchived(action, indicator.getArchived(), outcome.getComposedId(),
+                  action.getCurrentReportingYear(), c);
+                this.validateTargetAchieved(action, indicator.getArchived(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
               }
 
@@ -234,11 +236,20 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
   private void validateNarrativeTargets(BaseAction action, String targetNarrative, String outcomeAcronym, int year,
     int c) {
     if (!projectValidator.isValidTargetNarrative(targetNarrative)) {
-      this.addMessage(
-        "Narrative for your achieved targets, including evidence  '" + outcomeAcronym + "' in '" + year + "' year");
+      this
+        .addMessage("Narrative for your achieved targets, in outcome  '" + outcomeAcronym + "' in '" + year + "' year");
       this.addMissingField("project.indicators[" + c + "].narrativeTargets");
     }
   }
+
+
+  private void validateTargetAchieved(BaseAction action, int targetAchieved, String outcomeAcronym, int year, int c) {
+    if (!(targetAchieved > 0)) {
+      this.addMessage("Target Achieved for '" + outcomeAcronym + "' in '" + year + "' year");
+      this.addMissingField("project.indicators[" + c + "].Target Achieved ");
+    }
+  }
+
 
   private void validateTargetNarrative(BaseAction action, String targetNarrative, String outcomeAcronym, int year,
     int c) {
@@ -247,7 +258,6 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
       this.addMissingField("project.indicators[" + c + "].description");
     }
   }
-
 
   private void validateTargetValue(BaseAction action, String targetValue, String outcomeAconmyn, int year, int c) {
     // First validate that target value is filled.
