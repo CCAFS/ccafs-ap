@@ -262,7 +262,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       if (iData.get("archived") != null) {
         indicator.setArchived(Integer.parseInt(iData.get("archived")));
       } else {
-        indicator.setArchived(0);
+        indicator.setArchived(null);
       }
 
       indicator.setNarrativeGender(iData.get("narrative_gender"));
