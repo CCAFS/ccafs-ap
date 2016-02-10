@@ -222,7 +222,7 @@ public class ProjectIPOtherContributionAction extends BaseAction {
   public String save() {
     if (this.hasProjectPermission("update", projectID)) {
 
-      if (!this.isNewProject()) {
+      if (!this.isNewProject() && !this.isReportingCycle()) {
         super.saveProjectLessons(projectID);
       }
 
