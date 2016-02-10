@@ -113,6 +113,8 @@ function processTasks(tasks,projectId,button) {
                     completed++;
                   } else {
                     $sectionMenu.removeClass('submitted').addClass('toSubmit');
+                    // Show missingFields
+                    console.log(sectionName + ": " + data.sectionStatus.missingFields);
                   }
                 }
                 $sectionMenu.removeClass('loadingSection');
