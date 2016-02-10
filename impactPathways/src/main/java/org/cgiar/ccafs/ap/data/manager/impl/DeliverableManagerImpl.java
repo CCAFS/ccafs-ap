@@ -190,7 +190,10 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setMetadataElements(disseminationDao.findDeliverableElements(deliverableID));
       deliverable.setMetadata(disseminationDao.findMetadataFields(deliverableID));
       for (MetadataElements field : deliverable.getMetadata()) {
-        field.setValue(disseminationDao.findDeliverableMetadata(deliverableID, field.getId()).getElementValue());
+        DeliverableMetadataElements metadata = disseminationDao.findDeliverableMetadata(deliverableID, field.getId());
+        field.setElementValueId(metadata.getId());
+        field.setValue(metadata.getElementValue());
+
       }
       List<DeliverableFile> deliverableFile = new ArrayList<>();
       DeliverableFile file;
@@ -539,8 +542,8 @@ public class DeliverableManagerImpl implements DeliverableManager {
       /// Saving metadata elements
       if (deliverable.getMetadata() != null) {
         for (MetadataElements metadata : deliverable.getMetadata()) {
-          DeliverableMetadataElements elementMetadata =
-            disseminationDao.findDeliverableMetadata(deliverableId, metadata.getId());
+          DeliverableMetadataElements elementMetadata = new DeliverableMetadataElements();
+          elementMetadata.setId(metadata.getElementValueId());
           elementMetadata.setElementValue(metadata.getValue());
           elementMetadata.setMetadataElement(metadata);
           elementMetadata.setElementId(metadata.getId());

@@ -21,6 +21,7 @@ public class MetadataElements implements java.io.Serializable {
   private String vocabulary;
   private String definitation;
   private String value;
+  private Integer elementValueId;
 
 
   public MetadataElements() {
@@ -38,9 +39,11 @@ public class MetadataElements implements java.io.Serializable {
     this.definitation = definitation;
   }
 
+
   public String getDefinitation() {
     return this.definitation;
   }
+
 
   public String getEcondedName() {
     return this.econdedName;
@@ -48,6 +51,10 @@ public class MetadataElements implements java.io.Serializable {
 
   public String getElement() {
     return this.element;
+  }
+
+  public Integer getElementValueId() {
+    return elementValueId;
   }
 
   public Integer getId() {
@@ -84,6 +91,10 @@ public class MetadataElements implements java.io.Serializable {
 
   public void setElement(String element) {
     this.element = element;
+  }
+
+  public void setElementValueId(Integer elementValueId) {
+    this.elementValueId = elementValueId;
   }
 
   public void setId(Integer id) {
