@@ -14,7 +14,13 @@
       </thead>
       <tbody>
       [#list highlights as hl]
-        [#assign dlurl][@s.url namespace=namespace action='highlight' ][@s.param name='highlightID']${hl.id}[/@s.param][/@s.url][/#assign]
+        [#if editable]
+          [#assign dlurl][@s.url namespace=namespace action='highlight' ][@s.param name='highlightID']${hl.id}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url][/#assign]
+        [#else]
+          [#assign dlurl][@s.url namespace=namespace action='highlight' ][@s.param name='highlightID']${hl.id}[/@s.param][/@s.url][/#assign]
+        [/#if]
+        
+        
         <tr>
           <td class="id" ><a href="${dlurl}">${hl.id}</a></td> 
           <td class="name"><a href="${dlurl}">[#if hl.title?trim?has_content]${hl.title}[#else]Untitled[/#if]</a></td>

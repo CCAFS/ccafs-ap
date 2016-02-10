@@ -15,7 +15,11 @@
       </thead>
       <tbody>
       [#list deliverables as dl]
-        [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${dl.id}[/@s.param][/@s.url][/#assign]
+        [#if editable]
+          [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${dl.id}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url][/#assign]
+        [#else]
+          [#assign dlurl][@s.url namespace=namespace action='deliverable' ][@s.param name='deliverableID']${dl.id}[/@s.param][/@s.url][/#assign]
+        [/#if]
         <tr>
           <td class="id" ><a href="${dlurl}">${dl.id}</a></td> 
           <td class="name"><a href="${dlurl}">${dl.title!"Untitled"}</a></td>
