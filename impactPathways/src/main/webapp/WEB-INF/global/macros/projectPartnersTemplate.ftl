@@ -9,12 +9,12 @@
       <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
     [#else]
       [#if canEdit && !newProject]
-        <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+        <div class="viewButton [#if template || !reportingCycle]removeOption[/#if]"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
       [/#if]
     [/#if]
     
     [#-- Remove link for all partners --]
-    [#if editable]
+    [#if editable && (template || !reportingCycle)]
       <div class="removeLink"><div id="removePartner" class="removePartner removeElement removeLink" title="[@s.text name="preplanning.projectPartners.removePartner" /]"></div></div>
     [/#if]
     

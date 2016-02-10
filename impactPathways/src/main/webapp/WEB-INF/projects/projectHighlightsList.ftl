@@ -22,7 +22,6 @@
     
 <section class="content">
   <div class="helpMessage">
-    [#-- TODO: Change help text --]
     <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="reporting.projectHighlights.help" /] </p>
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]

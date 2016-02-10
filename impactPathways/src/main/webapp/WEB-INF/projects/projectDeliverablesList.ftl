@@ -22,8 +22,7 @@
     
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" />
-    <p> [@s.text name="planning.deliverables.list.help" /] </p>
+    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="${currentSection}.deliverables.list.help" /] </p>
   </div>
   [#include "/WEB-INF/projects/projectsSubMenu.ftl" /]
   
