@@ -77,7 +77,9 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
         if (!action.isReportingCycle()) {
           this.validateProjectJustification(action, project);
         }
-        this.validateLessonsLearn(action, project, "ccafsOutcomes");
+        if (!action.isReportingCycle()) {
+          this.validateLessonsLearn(action, project, "ccafsOutcomes");
+        }
         this.populateOutcomeMaps(action, project);
         this.validateCoreProject(action, project);
       } else {
