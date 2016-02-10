@@ -12,13 +12,13 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning;
+package org.cgiar.ccafs.ap.action.summaries.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.PartnersSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadInstitutionPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -36,35 +36,35 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class PartnersSummaryAction extends BaseAction implements Summary {
+public class LeadInstitutionPartnersSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(PartnersSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(LeadInstitutionPartnersSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
-  private PartnersSummaryXLS partnersXLS;
+  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
   private InstitutionManager institutionManager;
   List<ProjectPartner> partners;
-  List<Map<String, Object>> projectPartnerInstitutions;
+  List<Map<String, Object>> projectLeadingInstitutions;
   String[] projectList;
   // CSV bytes
   private byte[] bytesXLS;
 
   // Streams
-  private InputStream inputStream;
+  InputStream inputStream;
 
   @Inject
-  public PartnersSummaryAction(APConfig config, PartnersSummaryXLS partnersXLS, InstitutionManager institutionManager,
+  public LeadInstitutionPartnersSummaryAction(APConfig config,
+    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS, InstitutionManager institutionManager,
     ProjectManager projectManager) {
     super(config);
-    this.partnersXLS = partnersXLS;
+    this.leadInstitutionPartnersSummaryXLS = leadInstitutionPartnersSummaryXLS;
     this.institutionManager = institutionManager;
 
   }
 
   @Override
   public String execute() throws Exception {
-
     // Generate the xls file
-    bytesXLS = partnersXLS.generateCSV(projectPartnerInstitutions);
+    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions);
 
     return SUCCESS;
   }
@@ -83,12 +83,11 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
     }
   }
 
-
   @Override
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("ProjectPartners_");
+    fileName.append("ProjectLeading-Institutions_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -106,17 +105,17 @@ public class PartnersSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() {
 
-    projectPartnerInstitutions = institutionManager.getProjectPartnerInstitutions();
-    projectList = new String[projectPartnerInstitutions.size()];
+    projectLeadingInstitutions = institutionManager.getProjectLeadingInstitutions();
+    projectList = new String[projectLeadingInstitutions.size()];
     // Fill in projectList with blanks to be worked on later
     for (int p = 0; p < projectList.length; p++) {
       projectList[p] = "";
     }
     // Remove repeated institutions
-    for (int k = 0; k < projectPartnerInstitutions.size(); k++) {
-      for (int l = projectPartnerInstitutions.size() - 1; l > k; l--) {
-        if (projectPartnerInstitutions.get(k).get("id").equals(projectPartnerInstitutions.get(l).get("id"))) {
-          projectPartnerInstitutions.remove(l);
+    for (int k = 0; k < projectLeadingInstitutions.size(); k++) {
+      for (int l = projectLeadingInstitutions.size() - 1; l > k; l--) {
+        if (projectLeadingInstitutions.get(k).get("id").equals(projectLeadingInstitutions.get(l).get("id"))) {
+          projectLeadingInstitutions.remove(l);
         }
       }
     }

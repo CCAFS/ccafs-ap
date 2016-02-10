@@ -12,12 +12,16 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning;
+package org.cgiar.ccafs.ap.action.summaries.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.SearchTermsSummaryXLS;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.Institution;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadInstitutionPartnersSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadProjectPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -29,24 +33,25 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class SearchTermsSummaryAction extends BaseAction implements Summary {
+public class LeadProjectPartnersSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(SearchTermsSummaryAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;;
-  private SearchTermsSummaryXLS searchTermsSummaryXLS;
+  public static Logger LOG = LoggerFactory.getLogger(LeadProjectPartnersSummaryAction.class);
+  private static final long serialVersionUID = 5110987672008315842L;
+  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
+  private InstitutionManager institutionManager;
   private ProjectManager projectManager;
-  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
-    "inequality", "equity", "social", "differentiation", "inclusion", "youth", "class", "children", "child"};
-
-  private List<Map<String, Object>> projectList, deliverableList, activityList;
-
+  private ProjectPartnerManager projectPartnerManager;
+  private LeadProjectPartnersSummaryXLS leadProjectPatnersSummaryXLS;
+  List<ProjectPartner> leadPartners;
+  List<Institution> projectLeadingInstitutions;
+  List<Map<String, Object>> projectList;
+  int year;
   // CSV bytes
   private byte[] bytesXLS;
 
@@ -54,20 +59,20 @@ public class SearchTermsSummaryAction extends BaseAction implements Summary {
   InputStream inputStream;
 
   @Inject
-  public SearchTermsSummaryAction(APConfig config, SearchTermsSummaryXLS searchTermsSummary,
-    ProjectManager projectManager) {
-
-
+  public LeadProjectPartnersSummaryAction(APConfig config, LeadProjectPartnersSummaryXLS leadProjectPartnersSummaryXLS,
+    InstitutionManager institutionManager, ProjectManager projectManager, ProjectPartnerManager projectPartnerManager) {
     super(config);
-    this.searchTermsSummaryXLS = searchTermsSummary;
+    this.leadProjectPatnersSummaryXLS = leadProjectPartnersSummaryXLS;
+    this.institutionManager = institutionManager;
     this.projectManager = projectManager;
+    this.projectPartnerManager = projectPartnerManager;
 
   }
 
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = searchTermsSummaryXLS.generateXLS(projectList, activityList, deliverableList, termsToSearch);
+    bytesXLS = leadProjectPatnersSummaryXLS.generateXLS(projectList);
 
     return SUCCESS;
   }
@@ -79,15 +84,18 @@ public class SearchTermsSummaryAction extends BaseAction implements Summary {
 
   @Override
   public String getContentType() {
-    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
+    if (this.getFileName().endsWith("xlsx")) {
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    } else {
+      return "application/vnd.ms-excel";
+    }
   }
 
   @Override
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("SearchTermsSummary_");
+    fileName.append("LeadProjectPartners_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -104,12 +112,9 @@ public class SearchTermsSummaryAction extends BaseAction implements Summary {
 
   @Override
   public void prepare() {
-    String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.QUERY_PARAMETER)));
-    if (string != null) {
-      termsToSearch = StringUtils.split(string, ',');
-    }
-    projectList = projectManager.summaryGetAllProjectsWithGenderContribution(termsToSearch);
-    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution(termsToSearch);
-    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution(termsToSearch);
+    year = config.getPlanningCurrentYear();
+
+    projectList = projectManager.summaryGetAllProjectPartnerLeaders(year);
+
   }
 }

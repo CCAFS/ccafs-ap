@@ -12,12 +12,13 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning;
+package org.cgiar.ccafs.ap.action.summaries.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetPerPartnersSummaryXLS;
+import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.BudgetByMOGSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -36,16 +37,13 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jorge Leonardo Solis B. CCAFS
  */
-public class BudgetPerPartnersSummaryAction extends BaseAction implements Summary {
+public class BudgetByMOGsSummaryAction extends BaseAction implements Summary {
 
   public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
   private static final long serialVersionUID = 5110987672008315842L;
 
-  // Managers
+  private BudgetByMOGSummaryXLS budgetSummaryByMOGXLS;
   private ProjectManager projectManager;
-
-  // XLS
-  private BudgetPerPartnersSummaryXLS budgetPerPartnersSummaryXLS;
 
   // XLS bytes
   private byte[] bytesXLS;
@@ -54,22 +52,24 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
   InputStream inputStream;
 
   // Model
-  List<Map<String, Object>> informationBudgetByPartners;
-  int year;
+  List<Project> projectsList;
+  private List<Map<String, Object>> informationBudgetReportByMOGDetail;
+  private List<Map<String, Object>> informationBudgetReportByMOG;
 
   @Inject
-  public BudgetPerPartnersSummaryAction(APConfig config, ProjectManager projectManager,
-    BudgetPerPartnersSummaryXLS budgetByPartnersSummaryXLS) {
+  public BudgetByMOGsSummaryAction(APConfig config, ProjectManager projectManager,
+    BudgetByMOGSummaryXLS budgetSummaryByMOGXLS) {
     super(config);
     this.projectManager = projectManager;
-    this.budgetPerPartnersSummaryXLS = budgetByPartnersSummaryXLS;
+    this.budgetSummaryByMOGXLS = budgetSummaryByMOGXLS;
+
   }
 
   @Override
   public String execute() throws Exception {
 
     // Generate the csv file
-    bytesXLS = budgetPerPartnersSummaryXLS.generateXLS(informationBudgetByPartners, year);
+    bytesXLS = budgetSummaryByMOGXLS.generateXLS(informationBudgetReportByMOGDetail, informationBudgetReportByMOG);
 
     return SUCCESS;
   }
@@ -87,15 +87,8 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
 
   @Override
   public String getFileName() {
-    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
-    year = config.getPlanningCurrentYear();
-
-    if (strYear != null) {
-      year = Integer.parseInt(strYear);
-    }
     StringBuffer fileName = new StringBuffer();
-    fileName.append("BudgetPerPartnersSummary");
-    fileName.append(year + "-");
+    fileName.append("BudgetSummaryByMOGXLS-");
     fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
 
@@ -113,15 +106,12 @@ public class BudgetPerPartnersSummaryAction extends BaseAction implements Summar
 
   @Override
   public void prepare() {
+    int year = config.getPlanningCurrentYear();
     String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
-    year = config.getPlanningCurrentYear();
-
     if (strYear != null) {
       year = Integer.parseInt(strYear);
     }
-
-    informationBudgetByPartners = this.projectManager.summaryGetProjectBudgetPerPartners(year);
-
-
+    informationBudgetReportByMOG = projectManager.summaryGetInformationPOWB(year);
+    informationBudgetReportByMOGDetail = projectManager.summaryGetInformationPOWBDetail(year);
   }
 }

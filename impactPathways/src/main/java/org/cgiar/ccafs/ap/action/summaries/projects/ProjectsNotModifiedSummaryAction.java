@@ -12,13 +12,11 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning;
+package org.cgiar.ccafs.ap.action.summaries.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.DeliverablePlanningSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.ProjectsNotModifiedSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -34,43 +32,39 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jorge Leonardo Solis B. CCAFS
+ * @author Jorge Leonardo Solis B.
  */
-public class DeliverablePlanningSummaryAction extends BaseAction implements Summary {
+public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;
-
-  // Managers
-
-  private DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS;
+  public static Logger LOG = LoggerFactory.getLogger(ProjectsNotModifiedSummaryAction.class);
+  private static final long serialVersionUID = 5110987672008315842L;;
+  private ProjectsNotModifiedSummaryXLS projectsNotModifiedSummaryXLS;
   private ProjectManager projectManager;
 
+  private List<Map<String, Object>> projectList;
 
-  // XLS bytes
+  // CSV bytes
   private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
 
-  // Model
-  List<Project> projectsList;
-  private List<Map<String, Object>> deliverableList;
-
   @Inject
-  public DeliverablePlanningSummaryAction(APConfig config, ProjectManager projectManager,
-    DeliverableManager deliverableManager, DeliverablePlanningSummaryXLS deliverablePlanningSummaryXLS) {
+  public ProjectsNotModifiedSummaryAction(APConfig config, ProjectsNotModifiedSummaryXLS projectsNotModifiedSummaryXLS,
+    ProjectManager projectManager) {
+
+
     super(config);
+    this.projectsNotModifiedSummaryXLS = projectsNotModifiedSummaryXLS;
     this.projectManager = projectManager;
-    this.deliverablePlanningSummaryXLS = deliverablePlanningSummaryXLS;
+
   }
 
   @Override
   public String execute() throws Exception {
-
     // Generate the xls file
-    bytesXLS = deliverablePlanningSummaryXLS.generateXLS(deliverableList);
-    // System.out.println(new Date());
+    bytesXLS = projectsNotModifiedSummaryXLS.generateXLS(projectList);
+
     return SUCCESS;
   }
 
@@ -82,19 +76,19 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
   @Override
   public String getContentType() {
     return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  }
 
+  }
 
   @Override
   public String getFileName() {
+    String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("Expected-deliverables-");
-    fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
+    fileName.append("ProjectsNotModifiedSummary_");
+    fileName.append(date);
     fileName.append(".xlsx");
-
     return fileName.toString();
-
   }
+
 
   @Override
   public InputStream getInputStream() {
@@ -106,8 +100,8 @@ public class DeliverablePlanningSummaryAction extends BaseAction implements Summ
 
   @Override
   public void prepare() {
-    // System.out.println(new Date());
-    deliverableList = projectManager.summaryGetAllProjectsWithDeliverables();
 
+    projectList = projectManager.summaryGetProjectsNotModified();
   }
+
 }

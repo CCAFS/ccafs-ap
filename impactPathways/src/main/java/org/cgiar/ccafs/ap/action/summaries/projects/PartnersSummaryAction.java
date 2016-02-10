@@ -12,11 +12,13 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning;
+package org.cgiar.ccafs.ap.action.summaries.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.ProjectsNotModifiedSummaryXLS;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.PartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -32,38 +34,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jorge Leonardo Solis B.
+ * @author Carlos Alberto Martínez M.
  */
-public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summary {
+public class PartnersSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(ProjectsNotModifiedSummaryAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;;
-  private ProjectsNotModifiedSummaryXLS projectsNotModifiedSummaryXLS;
-  private ProjectManager projectManager;
-
-  private List<Map<String, Object>> projectList;
-
+  public static Logger LOG = LoggerFactory.getLogger(PartnersSummaryAction.class);
+  private static final long serialVersionUID = 5110987672008315842L;
+  private PartnersSummaryXLS partnersXLS;
+  private InstitutionManager institutionManager;
+  List<ProjectPartner> partners;
+  List<Map<String, Object>> projectPartnerInstitutions;
+  String[] projectList;
   // CSV bytes
   private byte[] bytesXLS;
 
   // Streams
-  InputStream inputStream;
+  private InputStream inputStream;
 
   @Inject
-  public ProjectsNotModifiedSummaryAction(APConfig config, ProjectsNotModifiedSummaryXLS projectsNotModifiedSummaryXLS,
+  public PartnersSummaryAction(APConfig config, PartnersSummaryXLS partnersXLS, InstitutionManager institutionManager,
     ProjectManager projectManager) {
-
-
     super(config);
-    this.projectsNotModifiedSummaryXLS = projectsNotModifiedSummaryXLS;
-    this.projectManager = projectManager;
+    this.partnersXLS = partnersXLS;
+    this.institutionManager = institutionManager;
 
   }
 
   @Override
   public String execute() throws Exception {
+
     // Generate the xls file
-    bytesXLS = projectsNotModifiedSummaryXLS.generateXLS(projectList);
+    bytesXLS = partnersXLS.generateCSV(projectPartnerInstitutions);
 
     return SUCCESS;
   }
@@ -75,15 +76,19 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
 
   @Override
   public String getContentType() {
-    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
+    if (this.getFileName().endsWith("xlsx")) {
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    } else {
+      return "application/vnd.ms-excel";
+    }
   }
+
 
   @Override
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("ProjectsNotModifiedSummary_");
+    fileName.append("ProjectPartners_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -101,7 +106,20 @@ public class ProjectsNotModifiedSummaryAction extends BaseAction implements Summ
   @Override
   public void prepare() {
 
-    projectList = projectManager.summaryGetProjectsNotModified();
-  }
+    projectPartnerInstitutions = institutionManager.getProjectPartnerInstitutions();
+    projectList = new String[projectPartnerInstitutions.size()];
+    // Fill in projectList with blanks to be worked on later
+    for (int p = 0; p < projectList.length; p++) {
+      projectList[p] = "";
+    }
+    // Remove repeated institutions
+    for (int k = 0; k < projectPartnerInstitutions.size(); k++) {
+      for (int l = projectPartnerInstitutions.size() - 1; l > k; l--) {
+        if (projectPartnerInstitutions.get(k).get("id").equals(projectPartnerInstitutions.get(l).get("id"))) {
+          projectPartnerInstitutions.remove(l);
+        }
+      }
+    }
 
+  }
 }

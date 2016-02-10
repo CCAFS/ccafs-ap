@@ -12,12 +12,11 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning;
+package org.cgiar.ccafs.ap.action.summaries.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.SubmissionProjectSummaryXLS;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.NoLoggedInPartnersSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -29,47 +28,45 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jorge Leonardo Solis B.
+ * @author Carlos Alberto Martínez M. CCAFS-CIAT
  */
-public class SubmissionProjectSummaryAction extends BaseAction implements Summary {
+public class NoLoggedInPartnersSummaryAction extends BaseAction implements Summary {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 5929395574012367004L;
-  public static Logger LOG = LoggerFactory.getLogger(SubmissionProjectSummaryAction.class);
+  public static Logger LOG = LoggerFactory.getLogger(DeliverablePlanningSummaryAction.class);
+  private static final long serialVersionUID = 5110987672008315842L;
 
-  private SubmissionProjectSummaryXLS submissionProjectSummaryXLS;
-  private ProjectManager projectManager;
+  // Managers
+  private ProjectPartnerManager projectPartnerManager;
 
-  private List<Map<String, Object>> projectList;
+  // XLS
+  private NoLoggedInPartnersSummaryXLS noLoggedInPartnersSummaryXLS;
 
-  // CSV bytes
+  // XLS bytes
   private byte[] bytesXLS;
 
   // Streams
   InputStream inputStream;
 
+  // Model
+  List<Map<String, Object>> noLoggedInPartners;
+
   @Inject
-  public SubmissionProjectSummaryAction(APConfig config, SubmissionProjectSummaryXLS submissionProjectSummaryXLS,
-    ProjectManager projectManager) {
-
-
+  public NoLoggedInPartnersSummaryAction(APConfig config, NoLoggedInPartnersSummaryXLS noLoggedInPartnersSummaryXLS,
+    ProjectPartnerManager projectPartnerManager) {
     super(config);
-    this.submissionProjectSummaryXLS = submissionProjectSummaryXLS;
-    this.projectManager = projectManager;
-
+    this.noLoggedInPartnersSummaryXLS = noLoggedInPartnersSummaryXLS;
+    this.projectPartnerManager = projectPartnerManager;
   }
 
   @Override
   public String execute() throws Exception {
+
     // Generate the xls file
-    bytesXLS = submissionProjectSummaryXLS.generateXLS(projectList);
+    bytesXLS = noLoggedInPartnersSummaryXLS.generateXLS(noLoggedInPartners);
 
     return SUCCESS;
   }
@@ -82,19 +79,19 @@ public class SubmissionProjectSummaryAction extends BaseAction implements Summar
   @Override
   public String getContentType() {
     return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
   }
+
 
   @Override
   public String getFileName() {
-    String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("SubmmitedProjects_");
-    fileName.append(date);
+    fileName.append("PartnersNotLoggedInP&R-");
+    fileName.append(new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date()));
     fileName.append(".xlsx");
-    return fileName.toString();
-  }
 
+    return fileName.toString();
+
+  }
 
   @Override
   public InputStream getInputStream() {
@@ -106,19 +103,9 @@ public class SubmissionProjectSummaryAction extends BaseAction implements Summar
 
   @Override
   public void prepare() {
-    String strYear = StringUtils.trim(this.getRequest().getParameter(APConstants.YEAR_REQUEST));
-    int year = config.getPlanningCurrentYear();
 
-    if (strYear != null) {
-      year = Integer.parseInt(strYear);
-    }
-
-    String cycle = "planning";
-    if (strYear != null) {
-      cycle = StringUtils.trim(this.getRequest().getParameter(APConstants.CYCLE));
-    }
+    noLoggedInPartners = this.projectPartnerManager.summaryGetNotLoggedInPartners();
 
 
-    projectList = projectManager.summaryGetProjectSubmmited(year, cycle);
   }
 }

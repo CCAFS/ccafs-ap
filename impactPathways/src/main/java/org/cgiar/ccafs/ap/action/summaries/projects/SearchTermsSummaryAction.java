@@ -12,13 +12,12 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.action.summaries.planning;
+package org.cgiar.ccafs.ap.action.summaries.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
-import org.cgiar.ccafs.ap.data.manager.InstitutionManager;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.data.model.ProjectPartner;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.LeadInstitutionPartnersSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.planning.xlsx.SearchTermsSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
@@ -30,21 +29,24 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Carlos Alberto Martínez M.
  */
-public class LeadInstitutionPartnersSummaryAction extends BaseAction implements Summary {
+public class SearchTermsSummaryAction extends BaseAction implements Summary {
 
-  public static Logger LOG = LoggerFactory.getLogger(LeadInstitutionPartnersSummaryAction.class);
-  private static final long serialVersionUID = 5110987672008315842L;
-  private LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS;
-  private InstitutionManager institutionManager;
-  List<ProjectPartner> partners;
-  List<Map<String, Object>> projectLeadingInstitutions;
-  String[] projectList;
+  public static Logger LOG = LoggerFactory.getLogger(SearchTermsSummaryAction.class);
+  private static final long serialVersionUID = 5110987672008315842L;;
+  private SearchTermsSummaryXLS searchTermsSummaryXLS;
+  private ProjectManager projectManager;
+  private String[] termsToSearch = {"Gender", "female", "male", "men", "elderly", "caste", "women", "equitable",
+    "inequality", "equity", "social", "differentiation", "inclusion", "youth", "class", "children", "child"};
+
+  private List<Map<String, Object>> projectList, deliverableList, activityList;
+
   // CSV bytes
   private byte[] bytesXLS;
 
@@ -52,19 +54,20 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
   InputStream inputStream;
 
   @Inject
-  public LeadInstitutionPartnersSummaryAction(APConfig config,
-    LeadInstitutionPartnersSummaryXLS leadInstitutionPartnersSummaryXLS, InstitutionManager institutionManager,
+  public SearchTermsSummaryAction(APConfig config, SearchTermsSummaryXLS searchTermsSummary,
     ProjectManager projectManager) {
+
+
     super(config);
-    this.leadInstitutionPartnersSummaryXLS = leadInstitutionPartnersSummaryXLS;
-    this.institutionManager = institutionManager;
+    this.searchTermsSummaryXLS = searchTermsSummary;
+    this.projectManager = projectManager;
 
   }
 
   @Override
   public String execute() throws Exception {
     // Generate the xls file
-    bytesXLS = leadInstitutionPartnersSummaryXLS.generateXLS(projectLeadingInstitutions);
+    bytesXLS = searchTermsSummaryXLS.generateXLS(projectList, activityList, deliverableList, termsToSearch);
 
     return SUCCESS;
   }
@@ -76,18 +79,15 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   @Override
   public String getContentType() {
-    if (this.getFileName().endsWith("xlsx")) {
-      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    } else {
-      return "application/vnd.ms-excel";
-    }
+    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
   }
 
   @Override
   public String getFileName() {
     String date = new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
     StringBuffer fileName = new StringBuffer();
-    fileName.append("ProjectLeading-Institutions_");
+    fileName.append("SearchTermsSummary_");
     fileName.append(date);
     fileName.append(".xlsx");
     return fileName.toString();
@@ -104,21 +104,12 @@ public class LeadInstitutionPartnersSummaryAction extends BaseAction implements 
 
   @Override
   public void prepare() {
-
-    projectLeadingInstitutions = institutionManager.getProjectLeadingInstitutions();
-    projectList = new String[projectLeadingInstitutions.size()];
-    // Fill in projectList with blanks to be worked on later
-    for (int p = 0; p < projectList.length; p++) {
-      projectList[p] = "";
+    String string = (StringUtils.trim(this.getRequest().getParameter(APConstants.QUERY_PARAMETER)));
+    if (string != null) {
+      termsToSearch = StringUtils.split(string, ',');
     }
-    // Remove repeated institutions
-    for (int k = 0; k < projectLeadingInstitutions.size(); k++) {
-      for (int l = projectLeadingInstitutions.size() - 1; l > k; l--) {
-        if (projectLeadingInstitutions.get(k).get("id").equals(projectLeadingInstitutions.get(l).get("id"))) {
-          projectLeadingInstitutions.remove(l);
-        }
-      }
-    }
-
+    projectList = projectManager.summaryGetAllProjectsWithGenderContribution(termsToSearch);
+    activityList = projectManager.summaryGetAllActivitiesWithGenderContribution(termsToSearch);
+    deliverableList = projectManager.summaryGetAllDeliverablesWithGenderContribution(termsToSearch);
   }
 }
