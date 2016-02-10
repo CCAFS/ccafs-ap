@@ -192,8 +192,17 @@ public class ActivitiesListAction extends BaseAction {
       projectStauses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
     }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, this.getActionName(),
-      this.getCurrentPlanningYear(), this.getCycleName()));
+
+    int evalutingYear = 0;
+    if (this.isReportingCycle()) {
+
+      evalutingYear = this.getCurrentReportingYear();
+    } else {
+      evalutingYear = this.getCurrentPlanningYear();
+    }
+
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evalutingYear, this.getCycleName()));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());

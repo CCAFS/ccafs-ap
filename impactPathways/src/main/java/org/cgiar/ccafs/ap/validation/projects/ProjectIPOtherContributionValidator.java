@@ -71,31 +71,39 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
             int i = 0;
             for (CRPContribution crp_contribuntion : project.getIpOtherContribution().getCrpContributions()) {
               this.validateNatureCollaboration(action, crp_contribuntion.getNatureCollaboration(), i);
+              this.validateArchived(action, crp_contribuntion.getExplainAchieved(), i);
               i++;
             }
+          }
+          // Validate Lessons learn
+          // this.validateLessonsLearn(action, project, "otherContributions");
 
-            // Validate Lessons learn
-            // this.validateLessonsLearn(action, project, "otherContributions");
+          if (cycle.equals(APConstants.REPORTING_SECTION)) {
+            int c = 1;
+            for (ProjecteOtherContributions projectOtherContributions : project.getOtherContributions()) {
 
-            if (cycle.equals(APConstants.REPORTING_SECTION)) {
-              int c = 1;
-              for (ProjecteOtherContributions projectOtherContributions : project.getOtherContributions()) {
-
-                try {
-                  this.validateRegion(action, Integer.parseInt(projectOtherContributions.getRegion()), c);
-                } catch (NumberFormatException e) {
-                  this.validateRegion(action, 0, c);
-                }
-                try {
-                  this.validateIndicator(action, Integer.parseInt(projectOtherContributions.getIndicators()), c);
-                } catch (NumberFormatException e) {
-                  this.validateIndicator(action, 0, c);
-                }
-                c++;
+              try {
+                this.validateRegion(action, Integer.parseInt(projectOtherContributions.getRegion()), c);
+              } catch (NumberFormatException e) {
+                this.validateRegion(action, 0, c);
               }
 
+
+              try {
+                this.validateDescription(action, projectOtherContributions.getDescription(), c);
+              } catch (NumberFormatException e) {
+                this.validateRegion(action, 0, c);
+              }
+              try {
+                this.validateIndicator(action, Integer.parseInt(projectOtherContributions.getIndicators()), c);
+              } catch (NumberFormatException e) {
+                this.validateIndicator(action, 0, c);
+              }
+              c++;
             }
+
           }
+
 
         }
 
@@ -124,6 +132,15 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
   }
 
 
+  private void validateArchived(BaseAction action, String archived, int i) {
+
+    if (!this.isValidString(archived)) {
+      this.addMessage("Achieved outcome contributions");;
+      this.addMissingField("project.ipOtherContribution.crps.[" + i + "].achieved");
+    }
+  }
+
+
   private void validateContribution(BaseAction action, String contribution) {
     if (!otherContributionValidator.isValidContribution(contribution)) {
       this.addMessage(action.getText("planning.impactPathways.otherContributions.contribution.readText").toLowerCase());
@@ -131,16 +148,18 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
     }
   }
 
-  private void validateFlaghsip(BaseAction action, int flaghship, int c) {
-    if (!(flaghship > 0)) {
-      this.addMessage(action.getText("Project Other Contribution [" + c + "] Flagship  is requiered").toLowerCase());
-      this.addMissingField("project.projectOtherContribution.falgship");
+
+  private void validateDescription(BaseAction action, String description, int c) {
+    if (!this.isValidString(description)) {
+      this.addMessage(action.getText("Project Other Contribution [" + c + "] Description  "));
+      this.addMissingField("project.projectOtherContribution.indicator");
     }
   }
 
+
   private void validateIndicator(BaseAction action, int indicator, int c) {
     if (!(indicator > 0)) {
-      this.addMessage(action.getText("Project Other Contribution [" + c + "] Indicator  is requiered").toLowerCase());
+      this.addMessage(action.getText("Project Other Contribution [" + c + "] Indicator  "));
       this.addMissingField("project.projectOtherContribution.indicator");
     }
   }
@@ -151,11 +170,12 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
         action.getText("planning.impactPathways.otherContributions.collaborationNature.readText").toLowerCase());
       this.addMissingField("project.ipOtherContribution.crps.[" + i + "].collaborationNature");
     }
+
   }
 
   private void validateRegion(BaseAction action, int region, int c) {
     if (!(region > 0)) {
-      this.addMessage(action.getText("Project Other Contribution [" + c + "] Region  is requiered").toLowerCase());
+      this.addMessage(action.getText("Project Other Contribution [" + c + "] Region  "));
       this.addMissingField("project.projectOtherContribution.region");
     }
   }

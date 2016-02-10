@@ -55,7 +55,7 @@ public class ProjectNextUserValidator extends BaseValidator {
       } else {
         // Show problem only for Core projects and Co-funded projects
         if (project.isCoreProject() || project.isCoFundedProject()) {
-          this.addMessage("At least Three next users. ");
+          this.addMessage("At least one Project Next Users. ");
           this.addMissingField("project.nextUsers.empty");
         }
       }
