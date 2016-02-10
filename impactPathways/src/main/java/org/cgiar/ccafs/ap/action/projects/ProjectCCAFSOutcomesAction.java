@@ -407,7 +407,10 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
       boolean success = true;
 
       if (!this.isNewProject()) {
-        super.saveProjectLessons(projectID);
+        if (!this.isReportingCycle()) {
+          super.saveProjectLessons(projectID);
+        }
+
       }
 
       // Delete the outputs removed

@@ -430,6 +430,9 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     values[9] = indicatorData.get("user_id");
     values[10] = indicatorData.get("justification");
     values[11] = indicatorData.get("archived");
+    if (values[11].equals("null")) {
+      values[11] = null;
+    }
     values[12] = indicatorData.get("narrative_gender");
     values[13] = indicatorData.get("narrative_targets");
     int newId = databaseManager.saveData(query.toString(), values);
@@ -465,6 +468,9 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     values[3] = indicatorData.get("gender");
     values[4] = indicatorData.get("target");
     values[5] = indicatorData.get("archived");
+    if (values[5].equals("null")) {
+      values[5] = null;
+    }
     values[6] = indicatorData.get("narrative_gender");
     values[7] = indicatorData.get("narrative_targets");
     values[8] = indicatorData.get("id");
