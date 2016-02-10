@@ -114,7 +114,7 @@
       [#if disabled]
         <a class="disabled" href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]">[@s.text name=textName /]</a>
       [#else]
-        [#if canEdit && !sectionCompleted(actionName)]
+        [#if editable ]
           <a href="[@s.url action=actionName][@s.param name='projectID']${projectId}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]" title="[#if subText != ""]${subText}[/#if]">
             [@s.text name=textName /] 
           </a> 

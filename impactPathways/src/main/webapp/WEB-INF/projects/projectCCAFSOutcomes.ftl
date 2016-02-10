@@ -127,7 +127,7 @@
                                         [#if cycleYear lt year]
                                           ${fieldEmpty}
                                         [#else]
-                                          [#if cycleYear == year]
+                                          [#if (cycleYear == year) && editable]
                                             <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${(projectIndicator.target)!}"/>
                                           [#else]
                                             <div class="input"><p>[@s.text name="form.values.notDefined"/]</p></div>

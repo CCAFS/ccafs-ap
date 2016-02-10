@@ -21,7 +21,12 @@ function attachEvents() {
   $('#addOtherContribution .addLink').on('click', addOtherContribution);
 
   // Change a region or flagship
-  // $('.otherContributionFlagship, .otherContributionRegion').on('change', changeRegionFlagship)
+  // $('.otherContributionFlagship, .otherContributionRegion').on('change', changeRegionFlagship);
+
+  // Disabled values that is not number
+  $('.otherContributionTarget').on("keydown", function(e) {
+    isNumber(e);
+  });
 }
 
 function changeRegionFlagship(e) {
