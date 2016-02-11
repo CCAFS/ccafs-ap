@@ -106,7 +106,7 @@ function changeDisseminatedOption(){
   }else{
     // Show metadata fields
     $('#deliverable-metadata').show(200);
-    $('[href="#deliverable-dataSharing"]').parent().show();
+    $('[href="#deliverable-dataSharing"]').parent().show().addClass('animated bounceInUp');
   }
 }
 
@@ -162,9 +162,9 @@ function yesnoEvent() {
   }
   if(isChecked) {
     $aditional.slideDown("slow");
-    $aditional.find('input:text,textarea').val('');
   } else {
     $aditional.slideUp("slow");
+    $aditional.find('input:text,textarea').val('');
   }
 }
 
@@ -180,7 +180,6 @@ function openDialog() {
 
 function initDeliverableTabs() {
   $('#projectDeliverable').tabs({
-      active: $('#indexTab').val(),
       show: {
           effect: "fadeIn",
           duration: 200
@@ -190,17 +189,31 @@ function initDeliverableTabs() {
           duration: 100
       }
   });
+  if(window.location.hash == ""){
+    // Set index tab after save
+    $( "#projectDeliverable" ).tabs({ active: $('#indexTab').val() });
+  }
   
+  // Check tab for justification field
+  var currentIndexTab = $('#projectDeliverable ul.ui-tabs-nav li.ui-state-active').index();
+  checkIndexTab(currentIndexTab);
+  $('#indexTab').val(currentIndexTab);
+  
+  // Event when tabs are clicked
   $('#projectDeliverable ul.ui-tabs-nav li').on('click', function(){
     var indexTab = $(this).index();
     $('#indexTab').val(indexTab);
-    if(indexTab == "0"){
-      $("#justification").parent().show();
-    }else{
-      $("#justification").parent().hide();
-    }
+    checkIndexTab(indexTab);
   });
   
+}
+
+function checkIndexTab(indexTab){
+  if(indexTab == "0"){
+    $("#justification").parent().show();
+  }else{
+    $("#justification").parent().hide();
+  }
 }
 
 function changeDeliverableTypes(event) {
