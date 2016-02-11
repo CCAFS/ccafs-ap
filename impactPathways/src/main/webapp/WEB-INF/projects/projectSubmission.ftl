@@ -35,10 +35,12 @@
         [/#if]
         <p>${(submission.cycle)!} - ${(submission.year)!} - ${(submission.dateTime?date)!} by ${(submission.user.firstName)!} ${(submission.user.lastName)!}</p>
       </div>
+      [#if !reportingCycle]
       <div class="fullPartBlock">
         <h6>Download Full Project Report</h6>
         <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" class="button-pdf-format" target="__BLANK">PDF Format</a> 
       </div>
+      [/#if]
     [#else]
       <p>The project is still incomplete, please go to the sections without the green check mark and complete the missing fields before submitting your project.</p>
     [/#if]
