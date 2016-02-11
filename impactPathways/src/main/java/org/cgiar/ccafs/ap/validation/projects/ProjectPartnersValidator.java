@@ -44,7 +44,7 @@ public class ProjectPartnersValidator extends BaseValidator {
       if (!action.isReportingCycle()) {
         this.validateProjectJustification(action, project);
       }
-      if (!project.getProjectPartners().isEmpty()) {
+      if (!project.getProjectPartners().isEmpty() && (project.isCoreProject() || project.isCoFundedProject())) {
         if (!this.isValidString(project.getProjectPartners().get(0).getOverall())) {
           this.addMessage(action.getText("Partnerships overall is Requiered"));
           this.addMissingField("project.partners.overall");
