@@ -329,10 +329,15 @@ public class ValidateProjectSectionAction extends BaseAction {
     Project project = projectManager.getProject(projectID);
     // Getting the activities from the database.
     project.setActivities(activityManager.getActivitiesByProject(projectID));
-
+    int evaluatingYear = 0;
+    if (this.currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "activities",
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "activities", evaluatingYear, this.currentCycle));
 
     activityListValidator.validate(this, project, currentCycle);
   }
@@ -410,10 +415,16 @@ public class ValidateProjectSectionAction extends BaseAction {
     for (IPIndicator indicator : project.getIndicators()) {
       indicator.setOutcome(ipElementManager.getIPElement(indicator.getOutcome().getId()));
     }
+    int evaluatingYear = 0;
+    if (this.currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "ccafsOutcomes",
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "ccafsOutcomes", evaluatingYear, this.currentCycle));
 
     // Validating
     projectCCAFSOutcomesValidator.validate(this, project, currentCycle);
@@ -524,9 +535,15 @@ public class ValidateProjectSectionAction extends BaseAction {
     // Get the project MOG overviews for this project
     project.setOutputsOverview(overviewManager.getProjectContributionOverviews(project));
 
+    int evaluatingYear = 0;
+    if (this.currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outputs", this.getCurrentPlanningYear(),
-      this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "outputs", evaluatingYear, this.currentCycle));
 
     // Validate
     projectOutputValidator.validate(this, project, currentCycle);
@@ -560,10 +577,15 @@ public class ValidateProjectSectionAction extends BaseAction {
     // Getting the project information.
     Project project = projectManager.getProject(projectID);
     project.setLocations(locationManager.getProjectLocations(projectID));
-
+    int evaluatingYear = 0;
+    if (this.currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "locations",
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "locations", evaluatingYear, this.currentCycle));
 
     locationValidator.validate(this, project, currentCycle);
   }
@@ -579,10 +601,15 @@ public class ValidateProjectSectionAction extends BaseAction {
 
       project.setIpOtherContribution(new OtherContribution());
     }
-
+    int evaluatingYear = 0;
+    if (this.currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "otherContributions",
-      this.getCurrentPlanningYear(), this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "otherContributions", evaluatingYear, this.currentCycle));
     // Validating.
     projectOtherContributionValidator.validate(this, project, currentCycle);
   }
@@ -615,8 +642,8 @@ public class ValidateProjectSectionAction extends BaseAction {
     project.setOutcomes(projectOutcomes);
 
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "outcomes", this.getCurrentPlanningYear(),
-      this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "outcomes", evaluatingYear, this.currentCycle));
 
     projectOutcomeValidator.validate(this, project, midOutcomeYear, currentPlanningYear, currentCycle);
 
@@ -626,10 +653,15 @@ public class ValidateProjectSectionAction extends BaseAction {
     // Getting the Project information.
     Project project = projectManager.getProject(projectID);
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
-
+    int evaluatingYear = 0;
+    if (this.currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      evaluatingYear = this.getCurrentReportingYear();
+    } else {
+      evaluatingYear = this.getCurrentPlanningYear();
+    }
     // Getting the Project lessons for this section.
-    this.setProjectLessons(lessonManager.getProjectComponentLesson(projectID, "partners", this.getCurrentPlanningYear(),
-      this.getCycleName()));
+    this.setProjectLessons(
+      lessonManager.getProjectComponentLesson(projectID, "partners", evaluatingYear, this.currentCycle));
 
     // Validating.
     projectPartnersValidator.validate(this, project, currentCycle);

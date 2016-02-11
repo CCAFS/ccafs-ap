@@ -74,8 +74,17 @@
         <input type="hidden" name="projectLessons.componentName" value="${actionName}">
         [@customForm.textArea name="projectLessons.lessons" i18nkey="${currentSection}.projectPartners.lessons" required=!project.bilateralProject editable=editable /]
       </div>
-      
+      [#if editable && reportingCycle]  
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+        [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
+        [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        <div class="clearfix"></div>
+      </div>
+    [/#if]
     </div>
+    
+    
     [/#if]
     
     [#-- Listing Partners from partnersTemplate.ftl --]

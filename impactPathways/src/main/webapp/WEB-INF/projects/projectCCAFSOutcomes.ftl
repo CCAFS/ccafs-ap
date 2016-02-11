@@ -129,7 +129,7 @@
                                           [#if (cycleYear == year) && editable]
                                             <input type="text" class="projectIndicatorTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.target" value="${(projectIndicator.target)!}"/>
                                           [#else]
-                                            <div class="input"><p>[@s.text name="form.values.notDefined"/]</p></div>
+                                            <div class="input"><p>[@s.text name="form.values.fieldEmpty"/]</p></div>
                                           [/#if]
                                         [/#if]
                                       [#else]
@@ -166,7 +166,7 @@
                                     <textarea class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description">${projectIndicator.description!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.description?has_content]
-                                      [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.notDefined"/]</p></div>[/#if]
+                                      [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.fieldEmpty"/]</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.description)!}</p></div>
                                       <input type="hidden" class="projectIndicatorDescription ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.description" value="${(projectIndicator.description)!}"/>
@@ -183,7 +183,7 @@
                                       <textarea class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeTargets">${(projectIndicator.narrativeTargets)!}</textarea>
                                     [#else]
                                       [#if !projectIndicator.narrativeTargets?has_content]
-                                        [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.notDefined"/]</p></div>[/#if]
+                                        [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.fieldEmpty"/]</p></div>[/#if]
                                       [#else]
                                         <div class="select"><p>${(projectIndicator.narrativeTargets)!}</p></div>
                                         <input type="hidden" class="projectIndicatorNarrativeAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeTargets" value="${(projectIndicator.narrativeTargets)!}"/>
@@ -199,7 +199,7 @@
                                     <textarea class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender">${(projectIndicator.gender)!}</textarea>
                                   [#else]
                                     [#if !projectIndicator.gender?has_content]
-                                      [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.prefilledIfAvailable"/]</p></div>[/#if]
+                                      [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.fieldEmpty"/]</p></div>[/#if]
                                     [#else]
                                       <div class="select"><p>${(projectIndicator.gender)!}</p></div>
                                       <input type="hidden" class="projectIndicatorGender ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.gender" value="${(projectIndicator.gender)!}"/>
@@ -216,7 +216,7 @@
                                       <textarea class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGender" >${(projectIndicator.narrativeGender)!}</textarea>
                                     [#else]
                                       [#if !projectIndicator.narrativeGender?has_content]
-                                        [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.prefilledIfAvailable"/]</p></div>[/#if]
+                                        [#if cycleYear lt year]${fieldEmpty}[#else]<div class="select"><p>[@s.text name="form.values.fieldEmpty"/]</p></div>[/#if]
                                       [#else]
                                         <div class="select"><p>${(projectIndicator.narrativeGender)!}</p></div>
                                         <input type="hidden" class="projectIndicatorNarrativeGenderAchieved ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.narrativeGender" value="${(projectIndicator.narrativeGender)!}"/>
@@ -461,7 +461,7 @@
   [#if project.endDate??]
     [#assign endDate = (project.endDate?string.yyyy)?number]
     [#if reportingCycle]
-      [#return (!project.bilateralProject && ((year == midOutcomeYear) ||(year == currentReportingYear) )) && (endDate gte year)]
+      [#return ((!project.bilateralProject || project.bilateralStandAlone) && ((year == midOutcomeYear) ||(year == currentReportingYear) )) && (endDate gte year)]
     [#else]
       [#return (!project.bilateralProject && ((year == midOutcomeYear) ||(year == currentPlanningYear) || (year == currentPlanningYear+1))) && (endDate gte year)]
     [/#if]

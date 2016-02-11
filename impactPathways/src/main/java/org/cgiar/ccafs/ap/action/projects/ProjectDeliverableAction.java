@@ -15,15 +15,18 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableTypeManager;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.NextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.CRP;
 import org.cgiar.ccafs.ap.data.model.ChannelEnum;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
@@ -32,6 +35,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverableType;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -75,6 +79,8 @@ public class ProjectDeliverableAction extends BaseAction {
   private DeliverableTypeManager deliverableTypeManager;
   private DeliverablePartnerManager deliverablePartnerManager;
   private NextUserManager nextUserManager;
+  private CRPManager crpManager;
+  private LiaisonInstitutionManager institutionManager;
   private ProjectPartnerManager projectPartnerManager;
   private IPElementManager ipElementManager;
   private HistoryManager historyManager;
@@ -105,15 +111,20 @@ public class ProjectDeliverableAction extends BaseAction {
   private Map<String, String> openAccessStatuses;
   private Map<String, String> disseminationChannels;
   private Map<String, String> statuses;
-  private int indexTab;
 
+  private Map<String, String> crps;
+
+
+  private Map<String, String> centers;
+
+  private int indexTab;
 
   @Inject
   public ProjectDeliverableAction(APConfig config, ProjectManager projectManager, DeliverableManager deliverableManager,
     DeliverableTypeManager deliverableTypeManager, NextUserManager nextUserManager,
     DeliverablePartnerManager deliverablePartnerManager, ProjectPartnerManager projectPartnerManager,
     IPElementManager ipElementManager, HistoryManager historyManager, ProjectDeliverableValidator validator,
-    IPProgramManager ipProgramManager) {
+    IPProgramManager ipProgramManager, CRPManager crpManager, LiaisonInstitutionManager institutionManager) {
     super(config);
     this.projectManager = projectManager;
     this.deliverableManager = deliverableManager;
@@ -125,8 +136,9 @@ public class ProjectDeliverableAction extends BaseAction {
     this.historyManager = historyManager;
     this.validator = validator;
     this.ipProgramManager = ipProgramManager;
+    this.crpManager = crpManager;
+    this.institutionManager = institutionManager;
   }
-
 
   /**
    * This method validates if this deliverable can be deleted or not.
@@ -140,9 +152,20 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
   }
 
+
   public List<Integer> getAllYears() {
     return allYears;
   }
+
+  public Map<String, String> getCenters() {
+    return centers;
+  }
+
+
+  public Map<String, String> getCrps() {
+    return crps;
+  }
+
 
   public Deliverable getDeliverable() {
     return deliverable;
@@ -177,11 +200,9 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverableTypes;
   }
 
-
   public Map<String, String> getDisseminationChannels() {
     return disseminationChannels;
   }
-
 
   public File getFile() {
     return file;
@@ -207,9 +228,11 @@ public class ProjectDeliverableAction extends BaseAction {
     return openAccessStatuses;
   }
 
+
   public List<IPElement> getOutputs() {
     return outputs;
   }
+
 
   public Project getProject() {
     return project;
@@ -241,20 +264,20 @@ public class ProjectDeliverableAction extends BaseAction {
       + File.separator;
   }
 
-
   public Map<String, String> getStatuses() {
     return statuses;
   }
-
 
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());
   }
 
+
   @Override
   public String next() {
     return SUCCESS;
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -291,6 +314,18 @@ public class ProjectDeliverableAction extends BaseAction {
     List<ProjectStatusEnum> list = Arrays.asList(ProjectStatusEnum.values());
     for (ProjectStatusEnum projectStatusEnum : list) {
       statuses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
+    }
+
+    crps = new HashMap<>();
+    List<CRP> listCrp = crpManager.getCRPsList();
+    for (CRP crp : listCrp) {
+      crps.put(String.valueOf(crp.getId()), crp.getName());
+    }
+
+    centers = new HashMap<>();
+    List<LiaisonInstitution> listInstitutions = institutionManager.getLiaisonInstitutionsCenter();
+    for (LiaisonInstitution inst : listInstitutions) {
+      centers.put(String.valueOf(inst.getId()), inst.getName());
     }
     projectPartners = projectPartnerManager.getProjectPartners(project);
 
@@ -479,6 +514,14 @@ public class ProjectDeliverableAction extends BaseAction {
     }
 
     return NOT_AUTHORIZED;
+  }
+
+  public void setCenters(Map<String, String> centers) {
+    this.centers = centers;
+  }
+
+  public void setCrps(Map<String, String> crps) {
+    this.crps = crps;
   }
 
 

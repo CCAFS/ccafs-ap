@@ -38,7 +38,7 @@ public class ProjectNextUserMySQLDAO implements ProjectNextUserDAO {
     projectNextUser.setIsActive(false);
     projectNextUser.setModifiedBy(new Long(userID));
     projectNextUser.setModificationJustification(justification);
-    return this.save(projectNextUser) == 1;
+    return this.save(projectNextUser) > 0;
 
   }
 
