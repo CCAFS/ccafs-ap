@@ -224,7 +224,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
       while (rs.next()) {
         Map<String, String> indicatorData = new HashMap<String, String>();
         indicatorData.put("id", rs.getString("id"));
-        indicatorData.put("description", rs.getString("description") + "(" + rs.getString("acronym") + ")");
+        indicatorData.put("description", rs.getString("acronym") + ": " + rs.getString("description") + "");
 
         if (!rs.getString("description").equals("")) {
           indicatorsList.add(indicatorData);
