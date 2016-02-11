@@ -132,6 +132,8 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   public int saveOtherContributionsList(int projectID, List<ProjecteOtherContributions> OtherContributionsList,
     User user, String justification) {
 
+    List<ProjecteOtherContributions> preview = this.getOtherContributionsByProjectId(projectID);
+
 
     for (ProjecteOtherContributions otherContributions : OtherContributionsList) {
       if (otherContributions.getId() == null || otherContributions.getId() == -1) {
@@ -144,6 +146,13 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       otherContributions.setActiveSince(new Date());
       otherContributions.setIsActive(true);
       int result = otherContributionsDAO.save(otherContributions);
+
+      for (ProjecteOtherContributions projecteOtherContributions : preview) {
+        if (!OtherContributionsList.contains(projecteOtherContributions)) {
+          otherContributionsDAO.deleteOtherContributions(projecteOtherContributions.getId(), user.getId(),
+            justification);
+        }
+      }
 
       if (result > 0) {
         LOG.debug("saveCrossCuttingContribution > New CrossCuttingContribution added with id {}", result);

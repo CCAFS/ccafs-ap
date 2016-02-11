@@ -14,12 +14,15 @@ public class ProjecteOtherContributions implements java.io.Serializable {
    * @author Christian David Garcia Oviedo -CIAT/CCFAS
    */
   private static final long serialVersionUID = 5807703289722184780L;
+
+
   private Integer id;
+
   private int projectId;
   private String region;
-
   private String indicators;
   private String description;
+
   private Integer target;
   private boolean isActive;
   private Date activeSince;
@@ -29,7 +32,6 @@ public class ProjecteOtherContributions implements java.io.Serializable {
 
   public ProjecteOtherContributions() {
   }
-
 
   public ProjecteOtherContributions(int projectId, boolean isActive, Date activeSince, long createdBy, long modifiedBy,
     String modificationJustification) {
@@ -56,6 +58,29 @@ public class ProjecteOtherContributions implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    ProjecteOtherContributions other = (ProjecteOtherContributions) obj;
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
+    }
+    return true;
+  }
+
   public Date getActiveSince() {
     return this.activeSince;
   }
@@ -68,10 +93,10 @@ public class ProjecteOtherContributions implements java.io.Serializable {
     return this.description;
   }
 
-
   public Integer getId() {
     return this.id;
   }
+
 
   public String getIndicators() {
     return this.indicators;
@@ -95,6 +120,14 @@ public class ProjecteOtherContributions implements java.io.Serializable {
 
   public Integer getTarget() {
     return this.target;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
   }
 
   public boolean isIsActive() {
