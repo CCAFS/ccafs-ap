@@ -54,7 +54,7 @@ public class FlywayContextListener implements ServletContextListener {
 
     this.configurePlaceholders(flyway);
 
-    flyway.clean();
+    // flyway.clean();
     if (flyway.info().current() == null) {
       LOG.info("Setting baseline version 3.0");
       flyway.setBaselineVersion(MigrationVersion.fromVersion("3.0"));
