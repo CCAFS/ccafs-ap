@@ -106,21 +106,25 @@
   </div>
 [/#macro]
 
-[#macro yesNoInput name disabled=false editable=true inverse=false]
-  [#assign value][@s.property value="${name}"/][/#assign]
+[#macro yesNoInput name disabled=false editable=true inverse=false value=""]
+  [#if value == ""]
+    [#assign customValue][@s.property value="${name}"/][/#assign]
+  [#else]
+    [#assign customValue=value /] 
+  [/#if]
   <div class="onoffswitch">
     [#if editable]
       <div class="button-wrap">
         [#-- Yes Button --]
-        <input type="radio" name="${name}" id="yes-button-${name}" value="true" [#if value == "true"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
-        <label for="yes-button-${name}" class="yes-button-label button-label [#if value == "true"]radio-checked[/#if]">Yes</label>
+        <input type="radio" name="${name}" id="yes-button-${name}" value="true" [#if customValue == "true"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
+        <label for="yes-button-${name}" class="yes-button-label button-label [#if customValue == "true"]radio-checked[/#if]">Yes</label>
         [#-- No Button --]
-        <input type="radio" name="${name}" id="no-button-${name}" value="false" [#if value == "false"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
-        <label for="no-button-${name}" class="no-button-label button-label [#if value == "false"]radio-checked[/#if]">No</label>
+        <input type="radio" name="${name}" id="no-button-${name}" value="false" [#if customValue == "false"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
+        <label for="no-button-${name}" class="no-button-label button-label [#if customValue == "false"]radio-checked[/#if]">No</label>
       </div>
       [#if disabled] <input type="hidden" name="${name}" value="true" />[/#if] 
     [#else]
-      <p style="text-align:center;">[#if value=="true"]Yes[#elseif value == "false"]No[#else]Not selected[/#if]</p>
+      <p style="text-align:center;">[#if customValue=="true"]Yes[#elseif customValue == "false"]No[#else]Not selected[/#if]</p>
     [/#if]
   </div>
 [/#macro]

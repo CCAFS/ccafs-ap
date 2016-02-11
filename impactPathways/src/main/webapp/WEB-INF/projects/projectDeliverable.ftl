@@ -63,6 +63,13 @@
       [/#if]
     </ul>
     <div id="deliverable-mainInformation">
+      [#if !editable && canEdit]
+        <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [#else]
+        [#if canEdit && !newProject]
+          <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+        [/#if]
+      [/#if]
       [#-- Deliverable Information --] 
       [#include "/WEB-INF/projects/deliverable/deliverableInformation.ftl" /]
       [#-- Deliverable Next Users block  --]
@@ -72,16 +79,42 @@
     </div>
     [#-- -- -- REPORTING BLOCK -- -- --]
     [#if reportingCycle]
-      [#-- Deliverable ranking --]
-      [#include "/WEB-INF/projects/deliverable/deliverableRanking.ftl" /]
-      <div id="deliverable-disseminationMetadata">
+      <div id="deliverable-ranking" class="clearfix">
+        [#if !editable && canEdit]
+          <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-ranking">[@s.text name="form.buttons.edit" /]</a></div>
+        [#else]
+          [#if canEdit && !newProject]
+            <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-ranking">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        [/#if]
+        [#-- Deliverable ranking --]
+        [#include "/WEB-INF/projects/deliverable/deliverableRanking.ftl" /]
+      </div>
+      
+      <div id="deliverable-disseminationMetadata" class="clearfix">
+        [#if !editable && canEdit]
+          <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-disseminationMetadata">[@s.text name="form.buttons.edit" /]</a></div>
+        [#else]
+          [#if canEdit && !newProject]
+            <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-disseminationMetadata">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        [/#if]
         [#-- Deliverable Dissemination --]
         [#include "/WEB-INF/projects/deliverable/deliverableDissemination.ftl" /]
         [#-- Deliverable Metadata --]
         [#include "/WEB-INF/projects/deliverable/deliverableMetadata.ftl" /]
       </div>
-      [#-- Deliverable data sharing --]
-      [#include "/WEB-INF/projects/deliverable/deliverableDataSharing.ftl" /]
+      <div id="deliverable-dataSharing" class="clearfix">
+        [#if !editable && canEdit]
+          <div class="editButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#deliverable-dataSharing">[@s.text name="form.buttons.edit" /]</a></div>
+        [#else]
+          [#if canEdit && !newProject]
+            <div class="viewButton"><a href="[@s.url][@s.param name ="deliverableID"]${deliverable.id}[/@s.param][/@s.url]#deliverable-dataSharing">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        [/#if]
+        [#-- Deliverable data sharing --]
+        [#include "/WEB-INF/projects/deliverable/deliverableDataSharing.ftl" /]
+      </div>
     [/#if]
     
     [#if editable] 
@@ -103,9 +136,19 @@
   </article>
   [/@s.form] 
      [@customForm.inputFile name="file" template=true /] 
-</section> 
+</section>
 
-[#-- Internal parameters --]   
+[#-- Metadata Macro --]
+[#macro metadataField title="" encodedName="" type="input"]
+  <input type="hidden" name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].id" value="${deliverable.getMetadataID(encodedName)}" />
+  [#if type == "input"]
+    [@customForm.input name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].value" className="${title}Metadata"  type="text" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
+  [#elseif type == "textArea"]
+    [@customForm.textArea name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].value" className="${title}Metadata" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
+  [/#if]
+[/#macro]
+
+[#-- Internal parameters --]
 [#list params?keys as prop]
   <input id="${params[prop].id}" type="hidden" value="${params[prop].name}" /> 
 [/#list]

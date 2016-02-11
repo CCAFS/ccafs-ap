@@ -1,12 +1,4 @@
 [#ftl]
-[#macro metadataField title="" encodedName="" type="input"]
-  <input type="hidden" name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].id" value="${deliverable.getMetadataID(encodedName)}" />
-  [#if type == "input"]
-    [@customForm.input name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].value" className="${title}Metadata"  type="text" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
-  [#elseif type == "textArea"]
-    [@customForm.textArea name="${params.deliverable.name}.metadata[${deliverable.getMetadataIndex(encodedName)}].value" className="${title}Metadata" i18nkey="reporting.projectDeliverable.metadata.${title}" help="reporting.projectDeliverable.metadata.${title}.help" editable=editable/]
-  [/#if]
-[/#macro]
 
 <div id="deliverable-metadata" class="clearfix" style="display:${(deliverable.dissemination??)?string('block','none')}">
   <h1 class="contentTitle">Deliverable Metadata</h1>
@@ -17,14 +9,9 @@
     [#-- Creators / Authors --]
     <div class="halfPartBlock" >[@metadataField title="creator" encodedName="dc:creator" /]</div>
     
-    [#-- Author identifier --]
+    [#-- Identifier (ORCID/SCOPUS) --]
     <div class="halfPartBlock" >[@metadataField title="creatorId" encodedName="cg.creator.ID" /]</div>
-   
-    [#-- Publisher --]
-    <div class="halfPartBlock" >[@metadataField title="publisher" encodedName="dc.publisher" /]</div>
-  
-    [#-- Contributor --]
-    <div class="halfPartBlock" >[@metadataField title="contributor" encodedName="dc.contributor" /]</div>
+    
     
     [#-- Contributor Center --]
     <div class="halfPartBlock" >[@metadataField title="contributorCenter" encodedName="cg.contributor.center" /]</div>
@@ -32,59 +19,15 @@
     [#-- Contributor CRP --]
     <div class="halfPartBlock" >[@metadataField title="contributorCRP" encodedName="cg.contributor.crp" /]</div>
     
-    [#-- Contributor Funder --]
-    <div class="halfPartBlock" >[@metadataField title="contributorFunder" encodedName="cg.contributor.funder" /]</div>
-    
-    [#-- Contributor Partner --]
-    <div class="halfPartBlock" >[@metadataField title="contributorPartner" encodedName="cg.contributor.partnerId" /]</div>
-    
-    [#-- Contributor Project --]
-    <div class="halfPartBlock" >[@metadataField title="contributorProject" encodedName="cg.contributor.project" /]</div>
     
     [#-- Publication date / Creation date --]
     <div class="halfPartBlock" >[@metadataField title="date" encodedName="dc.date" /]</div>
-    
-    [#-- Format --]
-    <div class="halfPartBlock" >[@metadataField title="format" encodedName="dc.format" /]</div>
-    
-    [#-- Identifier --]
-    <div class="halfPartBlock" >[@metadataField title="identifier" encodedName="dc.identifier" /]</div>
-    
-    [#-- Relation --]
-    <div class="halfPartBlock" >[@metadataField title="relation" encodedName="dc.relation" /]</div>
-    
-    [#-- Source --]
-    <div class="halfPartBlock" >[@metadataField title="source" encodedName="dc.source" /]</div>
     
     [#-- Language --]
     <div class="halfPartBlock" >[@metadataField title="language" encodedName="dc.language" /]</div>
     
     [#-- Coverage --]
     <div class="halfPartBlock" >[@metadataField title="coverage" encodedName="dc.coverage" /]</div>
-    
-    [#-- Coverage Region--]
-    <div class="halfPartBlock" >[@metadataField title="coverageRegion" encodedName="cg.coverage.region" /]</div>
-    
-    [#-- Coverage Country--]
-    <div class="halfPartBlock" >[@metadataField title="coverageCountry" encodedName="cg:coverage.country" /]</div>
-    
-    [#-- Coverage GeoLocation--]
-    <div class="halfPartBlock" >[@metadataField title="coverageGeoLocation" encodedName="cg.coverage.geolocation" /]</div>
-    
-    [#-- Coverage Administrative unit--]
-    <div class="halfPartBlock" >[@metadataField title="coverageAdminUnit" encodedName="cg:coverage.admin-unit" /]</div>
-     
-    [#-- Rights --]
-    <div class="halfPartBlock" >[@metadataField title="rights" encodedName="dc.rights" /]</div>
-    
-    [#-- Subject --]
-    <div class="halfPartBlock" >[@metadataField title="subject" encodedName="dc.subject" /]</div>
-    
-    [#-- Subject Agrovoc --]
-    <div class="halfPartBlock" >[@metadataField title="subjectAgrovoc" encodedName="cg.subject.agrovoc" /]</div>
-    
-    [#-- Subject Domain Specific --]
-    <div class="halfPartBlock" >[@metadataField title="subjectDomainSpecific" encodedName="cg.subject.domain-specific" /]</div> 
     
   </div>
   

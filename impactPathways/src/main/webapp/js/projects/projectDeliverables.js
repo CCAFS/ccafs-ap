@@ -162,6 +162,7 @@ function yesnoEvent() {
   }
   if(isChecked) {
     $aditional.slideDown("slow");
+    $aditional.find('input:text,textarea').val('');
   } else {
     $aditional.slideUp("slow");
   }
