@@ -70,7 +70,10 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
             this.validateAdditionalContribution(action, project.getIpOtherContribution().getAdditionalContribution());
             int i = 0;
             for (CRPContribution crp_contribuntion : project.getIpOtherContribution().getCrpContributions()) {
-              this.validateNatureCollaboration(action, crp_contribuntion.getNatureCollaboration(), i);
+              if (cycle.equals(APConstants.PLANNING_SECTION)) {
+                this.validateNatureCollaboration(action, crp_contribuntion.getNatureCollaboration(), i);
+              }
+
               this.validateArchived(action, crp_contribuntion.getExplainAchieved(), i);
               i++;
             }

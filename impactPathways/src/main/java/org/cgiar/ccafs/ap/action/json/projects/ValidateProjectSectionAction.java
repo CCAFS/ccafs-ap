@@ -217,9 +217,7 @@ public class ValidateProjectSectionAction extends BaseAction {
           this.validateNextUsers();
           break;
 
-        case HIGHLIGHT:
-          this.validateHighLigth();
-          break;
+
         case HIGHLIGHTS:
           this.validateHighLigth();
           break;
@@ -459,6 +457,7 @@ public class ValidateProjectSectionAction extends BaseAction {
 
     if (project.getDeliverables() != null && !project.getDeliverables().isEmpty()) {
       for (Deliverable deliverable : project.getDeliverables()) {
+        deliverable = deliverableManager.getDeliverableById(deliverable.getId());
         deliverableValidator.validate(this, project, deliverable, currentCycle, -1);
         // Appending all the missing fields for the current deliverable.
         tempStatus = sectionStatusManager.getSectionStatus(deliverable, currentCycle, "deliverable");

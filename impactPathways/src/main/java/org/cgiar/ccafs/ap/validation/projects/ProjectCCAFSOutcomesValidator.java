@@ -177,10 +177,14 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
               if (cycle.equals(APConstants.REPORTING_SECTION)
                 && indicator.getYear() == action.getCurrentReportingYear()) {
-                this.validateNarrativeTargets(action, indicator.getNarrativeTargets(), outcome.getComposedId(),
-                  action.getCurrentReportingYear(), c);
-                this.validateTargetValue(action, indicator.getTarget(), outcome.getComposedId(), indicator.getYear(),
-                  c);
+                /*
+                 * this.validateNarrativeTargets(action, indicator.getNarrativeTargets(), outcome.getComposedId(),
+                 * action.getCurrentReportingYear(), c);
+                 */
+                /*
+                 * this.validateTargetValue(action, indicator.getTarget(), outcome.getComposedId(), indicator.getYear(),
+                 * c);
+                 */
                 this.validateNarrativeAchived(action, indicator.getNarrativeTargets(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
                 this.validateNarrativeGender(action, indicator.getNarrativeGender(), outcome.getComposedId(),
@@ -226,7 +230,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
 
   private void validateNarrativeAchived(BaseAction action, String narrativeAchived, String outcomeAcronym, int year,
     int c) {
-    if (this.isValidString(narrativeAchived)) {
+    if (!this.isValidString(narrativeAchived)) {
       this.addMessage("Narrative for your achieved targets   '" + outcomeAcronym + "' in '" + year + "' year");
       this.addMissingField("project.indicators[" + c + "].narrativeTarget");
     }

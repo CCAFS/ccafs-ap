@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Christian David Garcia O. - CIAT/CCAFS
  */
 public class ProjectSubmissionAction extends BaseAction {
 
@@ -73,7 +74,8 @@ public class ProjectSubmissionAction extends BaseAction {
   @Override
   public String execute() throws Exception {
     // Check if user has permissions to submit the project.
-    if (securityContext.canSubmitProject(projectID)) {
+
+    if (this.hasProjectPermission("submitProject", projectID, "manage")) {
       // isComplete method comes from BaseAction.
       if (this.isComplete()) {
         // Getting all the submissions made for this project.

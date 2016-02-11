@@ -123,15 +123,14 @@
       [@customForm.select name="${customName}.institution" value="${(element.institution)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="reporting.projectLeverages.partner.name" listName="allInstitutions"  editable=editable /]
     </div>
     
-    [#-- Start and End Date --]
-    <div class="fullPartBlock clearfix"> 
+    [#-- Year --]
       <div class="halfPartBlock">
-        [@customForm.input name="${customName}.startDateText" className="startDate" type="text" i18nkey="reporting.projectLeverages.startDate" required=true editable=editable /]
-      </div>   
-      <div class="halfPartBlock">
-        [@customForm.input name="${customName}.endDateText" className="endDate"  type="text" i18nkey="reporting.projectLeverages.endDate" required=true editable=editable /]
+        <div class="select">
+          <h6>[@s.text name="reporting.projectLeverages.year" /]:</h6>
+          <div class="selectList"><p>${(element.year)!currentReportingYear}</p></div>
+          <input type="hidden" name="${customName}.year" class="year" value="${(element.year)!currentReportingYear}" />
+        </div>  
       </div>
-    </div>
     
     [#-- Flagship and Budget --]
     <div class="fullPartBlock clearfix"> 

@@ -71,16 +71,18 @@ public class ProjectDeliverableValidator extends BaseValidator {
       if (project.isCoreProject() || project.isCoFundedProject()) {
         if (indexTab == -1) {
           this.validateAsCoreProject(action, project, deliverable);
+
         } else {
           switch (indexTab) {
             case 0:
-              this.validateStandar(action, project, deliverable);
+              this.validateProjectJustification(action, deliverable);
+              this.validateAsCoreProject(action, project, deliverable);
               break;
             case 1:
-              this.validateRanking(action, deliverable.getRanking(), deliverable);
+              this.validateAsCoreProject(action, project, deliverable);
               break;
             case 2:
-              this.validateDismmination(action, deliverable.getDissemination(), deliverable.getId());
+              this.validateAsCoreProject(action, project, deliverable);
               break;
             default:
               break;
@@ -245,7 +247,7 @@ public class ProjectDeliverableValidator extends BaseValidator {
   }
 
   private void validateStandar(BaseAction action, Project project, Deliverable deliverable) {
-    this.validateProjectJustification(action, deliverable);
+
     // Validating the title
     if (!deliverableValidator.isValidTitle(deliverable.getTitle())) {
       // action.addFieldError("deliverable.title", action.getText("validation.field.required"));

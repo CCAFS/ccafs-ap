@@ -73,9 +73,9 @@ function setElementIndex(i,element) {
   $(element).find(".leverageID").attr("name", name + "id");
   $(element).find(".leverageTitle").attr("name", name + "title");
   $(element).find(".institutionsList").attr("name", name + "institution");
-  $(element).find(".startDate").attr("name", name + "startDateText").attr("id", name + "startDate");
-  $(element).find(".endDate").attr("name", name + "endDateText").attr("id", name + "endDate");
   $(element).find(".flagship").attr("name", name + "flagship");
+  $(element).find(".year").attr("name", name + "year");
+
   $(element).find(".budget").attr("name", name + "budget");
 }
 
