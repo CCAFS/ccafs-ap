@@ -70,7 +70,7 @@
    -->
 
   <!-- SSL settings. only allow HTTPS access to JIRA -->
-  <!--  security-constraint>
+  <security-constraint>
     <web-resource-collection>
       <web-resource-name>Entire Application</web-resource-name>
       <url-pattern>/*</url-pattern>
@@ -78,7 +78,7 @@
     <user-data-constraint>
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
-  </security-constraint -->
+  </security-constraint>
   
   <session-config>  
     <session-timeout> 21600 </session-timeout>  
