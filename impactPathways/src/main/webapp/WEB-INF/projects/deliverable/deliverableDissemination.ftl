@@ -66,6 +66,7 @@
     <div class="fullPartBlock" >
       [@metadataField title="rights" encodedName="dc.rights" type="textArea"/]
     </div>
+    [#if editable]
     <div id="licenses-examples">
       <h6>Computer Software:</h6>
       <ul>
@@ -88,6 +89,7 @@
         <li>CC-BY-NC-ND (don't allow modifications neither commercial use)</li>
       </ul>
     </div>
+    [/#if]
   </div><!-- End aditional-alreadyDisseminated -->
 </div>
 
