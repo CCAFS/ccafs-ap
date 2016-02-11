@@ -20,10 +20,9 @@ public class ProjectLeverage implements java.io.Serializable {
   private int projectId;
   private String title;
   private Integer institution;
-  private Date startDate;
-  private Date endDate;
-  private String startDateText;
-  private String endDateText;
+
+
+  private Integer year;
   private Integer flagship;
   private Double budget;
   private Institution myInstitution;
@@ -57,14 +56,13 @@ public class ProjectLeverage implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
-  public ProjectLeverage(int projectId, String title, Integer institution, Date startDate, Date endDate,
-    Integer flagship, Double budget, boolean isActive, Date activeSince, long createdBy, long modifiedBy,
+  public ProjectLeverage(int projectId, String title, Integer institution, Integer year, Integer flagship,
+    Double budget, boolean isActive, Date activeSince, long createdBy, long modifiedBy,
     String modificationJustification) {
     this.projectId = projectId;
     this.title = title;
     this.institution = institution;
-    this.startDate = startDate;
-    this.endDate = endDate;
+    this.year = year;
     this.flagship = flagship;
     this.budget = budget;
     this.isActive = isActive;
@@ -108,14 +106,6 @@ public class ProjectLeverage implements java.io.Serializable {
     return this.createdBy;
   }
 
-  public Date getEndDate() {
-    return this.endDate;
-  }
-
-  public String getEndDateText() {
-    return endDateText;
-  }
-
 
   public Integer getFlagship() {
     return this.flagship;
@@ -145,16 +135,14 @@ public class ProjectLeverage implements java.io.Serializable {
     return this.projectId;
   }
 
-  public Date getStartDate() {
-    return this.startDate;
-  }
-
-  public String getStartDateText() {
-    return startDateText;
-  }
 
   public String getTitle() {
     return this.title;
+  }
+
+
+  public Integer getYear() {
+    return year;
   }
 
   @Override
@@ -181,17 +169,10 @@ public class ProjectLeverage implements java.io.Serializable {
     this.createdBy = createdBy;
   }
 
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
-  }
-
-  public void setEndDateText(String endDateText) {
-    this.endDateText = endDateText;
-  }
-
   public void setFlagship(Integer flagship) {
     this.flagship = flagship;
   }
+
 
   public void setId(Integer id) {
     this.id = id;
@@ -221,16 +202,13 @@ public class ProjectLeverage implements java.io.Serializable {
     this.projectId = projectId;
   }
 
-  public void setStartDate(Date startDate) {
-    this.startDate = startDate;
-  }
-
-  public void setStartDateText(String startDateText) {
-    this.startDateText = startDateText;
-  }
-
   public void setTitle(String title) {
     this.title = title;
+  }
+
+
+  public void setYear(Integer year) {
+    this.year = year;
   }
 
 

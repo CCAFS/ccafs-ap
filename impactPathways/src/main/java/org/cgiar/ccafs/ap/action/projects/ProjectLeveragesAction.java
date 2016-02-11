@@ -27,9 +27,6 @@ import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
 import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -143,18 +140,10 @@ public class ProjectLeveragesAction extends BaseAction {
     for (IPProgram ipProgram : ipProgramFlagships) {
       this.ipProgramFlagships.put(String.valueOf(ipProgram.getId()), ipProgram.getComposedName());
     }
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
     project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
     if (project.getLeverages() != null) {
       leveragesPreview = projectLeverageManager.getProjectLeverageProject(projectID);
-      for (ProjectLeverage leverage : project.getLeverages()) {
-        if (leverage.getEndDate() != null) {
-          leverage.setEndDateText(dateformatter.format(project.getEndDate()));
-        }
-        if (leverage.getStartDate() != null) {
-          leverage.setStartDateText(dateformatter.format(project.getStartDate()));
-        }
-      }
+
 
       // leverage.setMyInstitution(institutionManager.getInstitution(leverage.getInstitution()));
       if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -187,17 +176,11 @@ public class ProjectLeveragesAction extends BaseAction {
         }
       }
 
-      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
 
       for (ProjectLeverage projectLeverage : project.getLeverages()) {
 
         // projectLeverage.setInstitution(projectLeverage.getMyInstitution().getId());
-        try {
-          projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
-          projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));
-        } catch (ParseException e) {
-          e.printStackTrace();
-        }
+
         projectLeverage.setProjectId(projectID);
         projectLeverageManager.saveProjectLeverage(projectID, projectLeverage, this.getCurrentUser(),
           this.getJustification());
@@ -232,17 +215,6 @@ public class ProjectLeveragesAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
-
-      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-      for (ProjectLeverage projectLeverage : project.getLeverages()) {
-        try {
-          projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
-          projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));
-        } catch (ParseException e) {
-          e.printStackTrace();
-        }
-      }
-
 
       validator.validate(this, project, this.getCycleName());
     }

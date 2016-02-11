@@ -17,12 +17,11 @@
         <property name="institution" type="java.lang.Integer">
             <column name="institution" />
         </property>
-        <property name="startDate" type="date">
-            <column name="start_date" length="10" />
+       
+        <property name="year" type="java.lang.Integer">
+            <column name="year" />
         </property>
-        <property name="endDate" type="date">
-            <column name="end_date" length="10" />
-        </property>
+       
         <property name="flagship" type="java.lang.Integer">
             <column name="flagship" />
         </property>

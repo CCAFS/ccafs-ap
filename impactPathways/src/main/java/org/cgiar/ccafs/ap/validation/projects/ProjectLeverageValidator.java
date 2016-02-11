@@ -18,8 +18,6 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 
-import java.util.Date;
-
 import com.google.inject.Inject;
 
 
@@ -50,8 +48,7 @@ public class ProjectLeverageValidator extends BaseValidator {
 
           this.validateTitleLeverage(action, project.getLeverages().get(c).getTitle(), c);
           this.validatePartner(action, String.valueOf(project.getLeverages().get(c).getInstitution()), c);
-          this.validateStartDate(action, project.getLeverages().get(c).getStartDate(), c);
-          this.validateEndDate(action, project.getLeverages().get(c).getEndDate(), c);
+          this.validateYear(action, project.getLeverages().get(c).getYear(), c);
           this.validateFlagship(action, project.getLeverages().get(c).getFlagship(), c);
           this.validateBudget(action, project.getLeverages().get(c).getBudget(), c);
 
@@ -86,14 +83,6 @@ public class ProjectLeverageValidator extends BaseValidator {
   }
 
 
-  public void validateEndDate(BaseAction action, Date endDate, int c) {
-    if (endDate == null) {
-      this.addMessage("Leverage #" + (c + 1) + ": End Date");
-      this.addMissingField("project.leverages[" + c + ".endDate");
-    }
-  }
-
-
   public void validateFlagship(BaseAction action, Integer flagship, int c) {
     if (flagship == -1 || flagship == null) {
       this.addMessage("Leverage #" + (c + 1) + ": FlagShip");
@@ -109,18 +98,19 @@ public class ProjectLeverageValidator extends BaseValidator {
     }
   }
 
-  public void validateStartDate(BaseAction action, Date startDate, int c) {
-    if (startDate == null) {
-      this.addMessage("Leverage #" + (c + 1) + ": Start Date");
-      this.addMissingField("project.leverages[" + c + ".startDate");
-    }
-  }
-
 
   public void validateTitleLeverage(BaseAction action, String title, int c) {
     if (!(this.isValidString(title) && this.wordCount(title) <= 200)) {
       this.addMessage("Leverage #" + (c + 1) + ": Title");
       this.addMissingField("project.leverages[" + c + "].Title");
+    }
+  }
+
+
+  public void validateYear(BaseAction action, Integer year, int c) {
+    if (year == -1 || year == null) {
+      this.addMessage("Leverage #" + (c + 1) + ": Year");
+      this.addMissingField("project.leverages[" + c + ".year");
     }
   }
 
