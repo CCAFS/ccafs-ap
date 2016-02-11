@@ -3812,7 +3812,8 @@ position: relative;}
 }
 #dataCompliance .value, 
 #alreadyDisseminated .value, 
-#openAccessRestriction .value{
+#openAccessRestriction .value,
+#adoptedLicense .value{
   width: 20%;
   /* padding-left: 20px; */
   /* text-align: center; */
@@ -3824,7 +3825,7 @@ position: relative;}
 #dataCompliance .aditional h6 {
 color: #717171;font-weight: normal;}
 
-#aditional-alreadyDisseminated {
+#aditional-alreadyDisseminated, #aditional-adoptedLicense {
   padding: 17px 14px 17px 14px;
   border: 1px solid #DEDEDE;
   margin-top: -1px;
@@ -3887,6 +3888,15 @@ margin: 0;}
 
 #metadata-flagships{
   width: 84%;
+}
+
+#licenses-examples{
+  
+}
+
+#licenses-examples ul{
+  margin-left: 25px;
+  margin-bottom: 10px;
 }
 
 /* Data sharing */
