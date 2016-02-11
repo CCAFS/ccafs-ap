@@ -12,7 +12,7 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-package org.cgiar.ccafs.ap.summaries.planning.xlsx;
+package org.cgiar.ccafs.ap.summaries.projects.xlsx;
 
 
 import org.cgiar.ccafs.utils.APConfig;

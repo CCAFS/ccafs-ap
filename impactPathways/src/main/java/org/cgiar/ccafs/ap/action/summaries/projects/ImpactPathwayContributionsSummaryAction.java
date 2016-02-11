@@ -17,7 +17,7 @@ package org.cgiar.ccafs.ap.action.summaries.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
-import org.cgiar.ccafs.ap.summaries.planning.xlsx.ImpactPathwayContributionsSummaryXLS;
+import org.cgiar.ccafs.ap.summaries.projects.xlsx.ImpactPathwayContributionsSummaryXLS;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
 
