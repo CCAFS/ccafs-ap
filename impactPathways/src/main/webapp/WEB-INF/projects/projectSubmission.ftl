@@ -2,13 +2,13 @@
 [#assign title = "Project Submission" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "chosen"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js"] /]
-[#assign currentSection = "planning" /]
+[#assign currentSection = cycleName?lower_case /]
 [#assign currentCycleSection = "projects" /]
 [#assign currentStage = "submit" /]
 
 [#assign breadCrumb = [
-  {"label":"planning", "nameSpace":"planning", "action":"projectsList"},
-  {"label":"projects", "nameSpace":"planning", "action":"projectsList"}
+  {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
+  {"label":"projects", "nameSpace":"${currentSection}", "action":"projectsList"}
 ]/]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -28,7 +28,11 @@
       </div> 
       <div class="fullPartBlock">
         <h6>Submission date</h6>
-        [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
+        [#if reportingCycle]
+          [#assign submission = (project.isSubmitted(currentReportingYear, 'Reporting'))!/]
+        [#else]
+          [#assign submission = (project.isSubmitted(currentPlanningYear, 'Planning'))!/]
+        [/#if]
         <p>${(submission.cycle)!} - ${(submission.year)!} - ${(submission.dateTime?date)!} by ${(submission.user.firstName)!} ${(submission.user.lastName)!}</p>
       </div>
       <div class="fullPartBlock">
