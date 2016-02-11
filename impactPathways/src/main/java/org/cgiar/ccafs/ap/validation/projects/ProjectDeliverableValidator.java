@@ -17,6 +17,7 @@ package org.cgiar.ccafs.ap.validation.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverableDissemination;
 import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -61,14 +62,31 @@ public class ProjectDeliverableValidator extends BaseValidator {
    * @param deliverable a deliverable with all the information.
    * @param cycle Planning or Reporting
    */
-  public void validate(BaseAction action, Project project, Deliverable deliverable, String cycle) {
+  public void validate(BaseAction action, Project project, Deliverable deliverable, String cycle, int indexTab) {
     if (deliverable != null) {
       this.cycle = cycle;
       this.missingFields.setLength(0);
-      this.validateProjectJustification(action, deliverable);
+
 
       if (project.isCoreProject() || project.isCoFundedProject()) {
-        this.validateAsCoreProject(action, project, deliverable);
+        if (indexTab == -1) {
+          this.validateAsCoreProject(action, project, deliverable);
+        } else {
+          switch (indexTab) {
+            case 0:
+              this.validateStandar(action, project, deliverable);
+              break;
+            case 1:
+              this.validateRanking(action, deliverable.getRanking(), deliverable);
+              break;
+            case 2:
+              this.validateDismmination(action, deliverable.getDissemination(), deliverable.getId());
+              break;
+            default:
+              break;
+          }
+        }
+
       } else {
         // Deliverables are not needed, but if there is one added, it will be validated completely.
         // this.validateAsCoreProject(action, project, deliverable);
@@ -112,6 +130,35 @@ public class ProjectDeliverableValidator extends BaseValidator {
     }
   }
 
+  private void validateComplianceCheck(BaseAction action, DeliverablesRanking ranking, int i) {
+    if (ranking.getProcessData() == null) {
+      this.addMessage("Deliverable (" + i + ") Ranking  Process of data quality ");
+      this.addMissingField("projects.deliverable(" + i + ").ranking.processData");
+    }
+
+    if (ranking.getDictionary() == null) {
+      this.addMessage("Deliverable (" + i + ") Ranking  Data Dictionary ");
+      this.addMissingField("projects.deliverable(" + i + ").ranking.dataDictionary");
+    }
+
+    if (ranking.getTooldata() == null) {
+      this.addMessage("Deliverable (" + i + ") Ranking  Tool data ");
+      this.addMissingField("projects.deliverable(" + i + ").ranking.toolData");
+    }
+  }
+
+  private void validateDismmination(BaseAction action, DeliverableDissemination dissimination, int i) {
+
+    if (dissimination.getIsOpenAccess() == null) {
+      this.addMessage("Deliverable (" + i + ") Disimmination Is open acess");
+      this.addMissingField("projects.deliverable(" + i + ").disimmination.opencAcess");
+    }
+    if (dissimination.getAlreadyDisseminated() == null) {
+      this.addMessage("Deliverable (" + i + ") Disimmination Is Already Disseminated");
+      this.addMissingField("projects.deliverable(" + i + ").disimmination.alreadyDisseminated");
+    }
+  }
+
   private void validateNextUsers(BaseAction action, Deliverable deliverable, List<NextUser> nextUsers) {
     int c = 0;
     for (NextUser nextUser : nextUsers) {
@@ -142,9 +189,8 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
   }
 
-
-  private void validateRanking(BaseAction action, DeliverablesRanking ranking, int i) {
-
+  private void validateRanking(BaseAction action, DeliverablesRanking ranking, Deliverable deliverable) {
+    int i = deliverable.getId();
     if (ranking.getAddress() == null) {
       this.addMessage("Deliverable (" + i + ") Ranking Address gender");
       this.addMissingField("projects.deliverable(" + i + ").ranking.adress");
@@ -161,10 +207,45 @@ public class ProjectDeliverableValidator extends BaseValidator {
       this.addMessage("Deliverable (" + i + ") Ranking Personal Perspective");
       this.addMissingField("projects.deliverable(" + i + ").ranking.personalPerspective");
     }
+
+    if (deliverable.isDataType()) {
+      this.validateComplianceCheck(action, deliverable.getRanking(), deliverable.getId());
+    }
   }
 
-  private void validateRequiredFields(BaseAction action, Project project, Deliverable deliverable) {
 
+  private void validateRequiredFields(BaseAction action, Project project, Deliverable deliverable) {
+    this.validateStandar(action, project, deliverable);
+
+    // Validating that deliverable status if is reporting section
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
+        // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
+        this.addMessage("Deliverable (" + deliverable.getId() + ") Status is Requeried");
+        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
+      }
+
+      if (deliverable.getRanking() != null) {
+        this.validateRanking(action, deliverable.getRanking(), deliverable);
+      } else {
+        this.addMessage("Deliverable (" + deliverable.getId() + ") Ranking Section");
+        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").ranking");
+      }
+
+
+      if (deliverable.getDissemination() != null) {
+        this.validateDismmination(action, deliverable.getDissemination(), deliverable.getId());
+      } else {
+        this.addMessage("Deliverable (" + deliverable.getId() + ") Dissemination Section");
+        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").dissemination");
+      }
+
+
+    }
+  }
+
+  private void validateStandar(BaseAction action, Project project, Deliverable deliverable) {
+    this.validateProjectJustification(action, deliverable);
     // Validating the title
     if (!deliverableValidator.isValidTitle(deliverable.getTitle())) {
       // action.addFieldError("deliverable.title", action.getText("validation.field.required"));
@@ -216,21 +297,6 @@ public class ProjectDeliverableValidator extends BaseValidator {
     if (!deliverableValidator.hasResponsible(deliverable.getResponsiblePartner())) {
       this.addMessage(action.getText("planning.projectDeliverable.indicateResponsablePartner.readText"));
       this.addMissingField("projects.deliverable(" + deliverable.getId() + ").responsible");
-    }
-
-
-    // Validating that deliverable status if is reporting section
-    if (cycle.equals(APConstants.REPORTING_SECTION)) {
-      if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
-        // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
-        this.addMessage("Deliverable (" + deliverable.getId() + ") Status is Requeried");
-        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
-      }
-
-      if (deliverable.getRanking() != null) {
-        this.validateRanking(action, deliverable.getRanking(), deliverable.getId());
-      }
-
     }
 
   }

@@ -459,7 +459,7 @@ public class ValidateProjectSectionAction extends BaseAction {
 
     if (project.getDeliverables() != null && !project.getDeliverables().isEmpty()) {
       for (Deliverable deliverable : project.getDeliverables()) {
-        deliverableValidator.validate(this, project, deliverable, currentCycle);
+        deliverableValidator.validate(this, project, deliverable, currentCycle, -1);
         // Appending all the missing fields for the current deliverable.
         tempStatus = sectionStatusManager.getSectionStatus(deliverable, currentCycle, "deliverable");
         missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());

@@ -349,7 +349,11 @@ public class ProjectDeliverableAction extends BaseAction {
         deliverable.setTypeOther(null);
       }
     }
-
+    try {
+      indexTab = Integer.parseInt(this.getSession().get("indexTab").toString());
+    } catch (Exception e) {
+      indexTab = 0;
+    }
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
@@ -359,6 +363,7 @@ public class ProjectDeliverableAction extends BaseAction {
 
 
     // Getting the project
+    this.getSession().put("indexTab", indexTab);
     project = projectManager.getProjectFromDeliverableId(deliverableID);
     if (securityContext.canUpdateProjectDeliverables(project.getId())) {
       if (file != null) {
@@ -511,7 +516,8 @@ public class ProjectDeliverableAction extends BaseAction {
   public void validate() {
     super.validate();
     if (save) {
-      validator.validate(this, project, deliverable, this.getCycleName());
+
+      validator.validate(this, project, deliverable, this.getCycleName(), indexTab);
     }
   }
 }
