@@ -13,7 +13,6 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.MigrationInfo;
-import org.flywaydb.core.api.MigrationVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,13 +52,13 @@ public class FlywayContextListener implements ServletContextListener {
     flyway.setLocations(SQL_MIGRATIONS_PATH, JAVA_MIGRATIONS_PATH);
 
     this.configurePlaceholders(flyway);
-
-    if (flyway.info().current() == null) {
-      LOG.info("Setting baseline version 3.0");
-      flyway.setBaselineVersion(MigrationVersion.fromVersion("3.0"));
-      flyway.baseline();
-    }
-
+    /*
+     * if (flyway.info().current() == null) {
+     * LOG.info("Setting baseline version 3.0");
+     * flyway.setBaselineVersion(MigrationVersion.fromVersion("3.0"));
+     * flyway.baseline();
+     * }
+     */
 
     // Show the changes to be applied
     LOG.info("-------------------------------------------------------------");
