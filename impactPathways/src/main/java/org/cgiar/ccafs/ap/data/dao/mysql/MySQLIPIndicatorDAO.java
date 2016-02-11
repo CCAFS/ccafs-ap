@@ -125,6 +125,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     return indicatorsList;
   }
 
+
   @Override
   public List<Map<String, String>> getIndicatorsByParent(int parentIndicatorID) {
     LOG.debug(">> getIndicatorsByParent( indicatorID = {} )", parentIndicatorID);
@@ -201,6 +202,48 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIndicatorsFlagShips() {
+    List<Map<String, String>> indicatorsList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+
+    query.append("SELECT DISTINCT i.id, ");
+    query.append("                i.* ,prog.acronym");
+    query.append(" FROM   ip_indicators i ");
+    query.append("       LEFT JOIN ip_indicators p ");
+    query.append("              ON i.parent_id = p.id ");
+    query.append("       INNER JOIN ip_project_indicators ipi ");
+    query.append("               ON i.id = ipi.parent_id ");
+    query.append("       INNER JOIN ip_elements ie ");
+    query.append("               ON ipi.outcome_id = ie.id ");
+    query.append("        inner  JOIN ip_programs prog on prog.id=ie.ip_program_id and prog.type_id=4");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description") + "(" + rs.getString("acronym") + ")");
+
+        if (!rs.getString("description").equals("")) {
+          indicatorsList.add(indicatorData);
+        }
+
+      }
+      rs.close();
+    } catch (Exception e) {
+      String exceptionMessage = "-- getIndicatorsByProjectID() > Exception raised trying ";
+
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getIndicatorsByProjectID():ipIndicatorList.size={}", indicatorsList.size());
+    return indicatorsList;
+  }
+
+  @Override
   public List<Map<String, String>> getIndicatorsList() {
     LOG.debug(">> getIndicatorsList()");
     List<Map<String, String>> indicatorsDataList = new ArrayList<>();
@@ -228,6 +271,59 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIndicatorsOtherContribution(int projectID, int region) {
+    List<Map<String, String>> indicatorsList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+
+    query.append(" SELECT     distinct  i.id ,i.*");
+    query.append("                       FROM       ip_indicators i ");
+    query.append("                       LEFT JOIN  ip_indicators p ");
+    query.append("                       ON         i.parent_id = p.id ");
+    query.append("                      INNER JOIN ip_project_indicators ipi ");
+    query.append("                      ON         i.id = ipi.parent_id ");
+    query.append("                      INNER JOIN ip_elements ie ");
+    query.append("                      ON         ipi.outcome_id = ie.id ");
+    query.append(" where i.id not in(");
+    query.append(" SELECT     distinct  i.id ");
+    query.append("                      FROM       ip_indicators i ");
+    query.append("                      LEFT JOIN  ip_indicators p ");
+    query.append("                      ON         i.parent_id = p.id ");
+    query.append("                      INNER JOIN ip_project_indicators ipi ");
+    query.append("                      ON         i.id = ipi.parent_id ");
+    query.append("                      INNER JOIN ip_elements ie ");
+    query.append("                      ON         ipi.outcome_id = ie.id ");
+    query.append("                      WHERE      ipi.project_id = " + projectID + ")");
+
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        // indicatorData.put("target", rs.getString("target"));
+        // indicatorData.put("parent_id", rs.getString("parent_id"));
+        // indicatorData.put("parent_description", rs.getString("parent_description"));
+        // indicatorData.put("outcome_id", rs.getString("outcome_id"));
+        // indicatorData.put("outcome_description", rs.getString("outcome_description"));
+        if (!rs.getString("description").equals("")) {
+          indicatorsList.add(indicatorData);
+        }
+
+      }
+      rs.close();
+    } catch (Exception e) {
+      String exceptionMessage = "-- getIndicatorsByProjectID() > Exception raised trying ";
+      exceptionMessage += "to get the ip indicators corresponding to the project " + projectID;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getIndicatorsByProjectID():ipIndicatorList.size={}", indicatorsList.size());
+    return indicatorsList;
+  }
+
+  @Override
   public List<Map<String, String>> getProjectIndicators(int projectID) {
     LOG.debug(">> getProjectIndicators( projectID = {} )", projectID);
     List<Map<String, String>> indicatorsDataList = new ArrayList<>();
@@ -235,7 +331,8 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT ai.id, ai.description, ai.gender, ai.target, ai.year, aip.id as 'parent_id', ");
     query.append("aip.description as 'parent_description', aip.target as 'parent_target', ");
-    query.append("ie.id as 'outcome_id', ie.description as 'outcome_description' ");
+    query.append(
+      "ie.id as 'outcome_id', ie.description as 'outcome_description',ai.archived,ai.narrative_gender,ai.narrative_targets ");
     query.append("FROM ip_project_indicators as ai ");
     query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
     query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
@@ -258,6 +355,9 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         indicatorData.put("parent_target", rs.getString("parent_target"));
         indicatorData.put("outcome_id", rs.getString("outcome_id"));
         indicatorData.put("outcome_description", rs.getString("outcome_description"));
+        indicatorData.put("archived", rs.getString("archived"));
+        indicatorData.put("narrative_gender", rs.getString("narrative_gender"));
+        indicatorData.put("narrative_targets", rs.getString("narrative_targets"));
 
         indicatorsDataList.add(indicatorData);
       }
@@ -309,14 +409,15 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     Object[] values;
     // Insert new activity indicator record
     query.append("INSERT INTO ip_project_indicators (id, description, gender, target, year, project_id, ");
-    query.append("parent_id, outcome_id, created_by, modified_by, modification_justification) ");
-    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+    query.append(
+      "parent_id, outcome_id, created_by, modified_by, modification_justification,archived,narrative_gender,narrative_targets) ");
+    query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?) ");
     query.append("ON DUPLICATE KEY UPDATE is_active = TRUE, ");
     query.append("description = VALUES(description), target = VALUES(target), ");
     query.append("modified_by = VALUES(modified_by), ");
     query.append("modification_justification = VALUES(modification_justification) ");
 
-    values = new Object[11];
+    values = new Object[14];
     values[0] = indicatorData.get("id");
     values[1] = indicatorData.get("description");
     values[2] = indicatorData.get("gender");
@@ -328,7 +429,12 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     values[8] = indicatorData.get("user_id");
     values[9] = indicatorData.get("user_id");
     values[10] = indicatorData.get("justification");
-
+    values[11] = indicatorData.get("archived");
+    if (values[11].equals("null")) {
+      values[11] = null;
+    }
+    values[12] = indicatorData.get("narrative_gender");
+    values[13] = indicatorData.get("narrative_targets");
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {
       LOG.warn(
@@ -352,16 +458,22 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     // Insert new activity indicator record
     query.append("UPDATE ip_project_indicators SET ");
     query.append("modified_by = ? , modification_justification = ?, ");
-    query.append("description = ?, gender = ?, target = ? ");
+    query.append("description = ?, gender = ?, target = ?,archived=?,narrative_gender=?,narrative_targets=? ");
     query.append("WHERE id = ? ");
 
-    values = new Object[6];
+    values = new Object[9];
     values[0] = indicatorData.get("user_id");
     values[1] = indicatorData.get("justification");
     values[2] = indicatorData.get("description");
     values[3] = indicatorData.get("gender");
     values[4] = indicatorData.get("target");
-    values[5] = indicatorData.get("id");
+    values[5] = indicatorData.get("archived");
+    if (values[5].equals("null")) {
+      values[5] = null;
+    }
+    values[6] = indicatorData.get("narrative_gender");
+    values[7] = indicatorData.get("narrative_targets");
+    values[8] = indicatorData.get("id");
 
     int newId = databaseManager.saveData(query.toString(), values);
     if (newId == -1) {

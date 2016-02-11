@@ -3,6 +3,7 @@ var formBefore;
 var justificationLimitWords = 100;
 var errorMessages = [];
 var forceChange = false;
+var hashScroll = true;
 var Tawk_API, Tawk_LoadStart;
 var notyDefaultOptions = {
     text: '',
@@ -18,24 +19,26 @@ var notyDefaultOptions = {
       'click'
     ]
 };
-jQuery.fn.exists = function() {
-  return this.length > 0;
-};
 
 // Global javascript must be here.
 $(document).ready(function() {
   baseURL = $("#baseURL").val();
   editable = ($("#editable").val() === "true");
   production = ($("#production").val() === "true");
+  currentPlanningYear = $("#currentPlanningYear").val();
+  currentReportingYear = $("#currentReportingYear").val();
+
   showNotificationMessages();
   showHelpText();
   applyWordCounter($("#justification"), justificationLimitWords);
 
   // hash url animation
   if(window.location.hash) {
-    $('html, body').animate({
-      scrollTop: ($(window.location.hash).offset().top || 10) - 10
-    }, 2000);
+    if($(window.location.hash).exists && hashScroll) {
+      $('html, body').animate({
+        scrollTop: $(window.location.hash).offset().top - 110
+      }, 1500);
+    }
   }
 
   $(window).scroll(function() {
@@ -116,6 +119,11 @@ $(document).ready(function() {
 
 });
 
+function isReportingCycle() {
+  var url = window.location.href;
+  return(url.indexOf("/reporting") > -1)
+}
+
 /**
  * Validate fields length when click to any button
  */
@@ -189,7 +197,6 @@ function validateField($input) {
   } else {
     return true;
   }
-
 }
 
 function getHash(str) {
@@ -203,6 +210,21 @@ function getHash(str) {
     hash |= 0; // Convert to 32bit integer
   }
   return hash;
+}
+
+/* Set word counter to inputs list where cssName could be limitWords */
+function setWordCounterToInputs(cssName) {
+  // Attribute contains certain value somewhere -> [class*="limitWords"]
+  var check = cssName + "-";
+  $('input[class*="' + cssName + '"], textarea[class*="' + cssName + '"]').each(function(i,input) {
+    var className = $(input).attr('class') || '';
+    var cls = $.map(className.split(' '), function(val,i) {
+      if(val.indexOf(check) > -1) {
+        return val.slice(check.length, val.length);
+      }
+    });
+    applyWordCounter($(input), (cls.join(' ')) || 100);
+  });
 }
 
 /* Add a char counter to a specific text area */
@@ -220,8 +242,8 @@ function applyCharCounter($textArea,charCount) {
 
 /* Add a word counter to a specific text area */
 function applyWordCounter($textArea,wordCount) {
-  $textArea.parent().append(
-      "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>");
+  var message = "<p class='charCount'>(<span>" + wordCount + "</span> words remaining of " + wordCount + ")</p>";
+  $textArea.parent().append(message);
   $textArea.parent().find(".charCount").find("span").text(wordCount - word_count($textArea));
   $textArea.on("keyup", function(event) {
     var valueLength = $(event.target).val().length;
@@ -244,16 +266,17 @@ function applyWordCounter($textArea,wordCount) {
 
 function word_count(field) {
   var value = $.trim($(field).val());
-  if(typeof value === "undefined") {
+  if(typeof value === "undefined" || value.length == 0) {
     return 0;
   } else {
     var regex = /\s+/gi;
     return value.replace(regex, ' ').split(' ').length;
   }
-// var matches = value.match(/\b/g);
-// return number = (matches) ? matches.length / 2 : 0;
-// }
 }
+
+jQuery.fn.exists = function() {
+  return this.length > 0;
+};
 
 /**
  * Functions for selects
@@ -262,9 +285,19 @@ function setOption(val,name) {
   return "<option value='" + val + "'>" + name + "</option>";
 }
 
-function removeOption(select,value) {
-  $(select).find('option[value=' + value + ']').remove;
+jQuery.fn.addOption = function(val,name) {
+  if(!($(this).find('option[value=' + val + ']').exists())) {
+    $(this).append("<option value='" + val + "'>" + name + "</option>");
+  }
+};
+
+function removeOption(select,val) {
+  $(select).find('option[value=' + val + ']').remove();
 }
+
+jQuery.fn.removeOption = function(val) {
+  $(this).find('option[value=' + val + ']').remove();
+};
 
 /**
  * Escape HTML text

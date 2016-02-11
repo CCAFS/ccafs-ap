@@ -31,15 +31,25 @@ ccafsap.startYear=2010
 ccafsap.endYear=2015
 ccafsap.midOutcome.revisionYear=2019
 
-# Is planning active?
 ccafsap.planning.future.years.active=true
 ccafsap.planning.future.years=3
+
+# Is pre-planning section active?
 ccafsap.preplanning.active=true
-# Is reporting active?
+
+# Is planning section active?
 ccafsap.planning.active=true
+ccafsap.planning.closed=true
+
+# Is reporting section active?
 ccafsap.reporting.active=true
-ccafsap.summaries.active=false
-ccafsap.is-closed=false
+ccafsap.reporting.closed=false
+
+# Is summaries section active?
+ccafsap.summaries.active=true
+
+# System is closed for editing
+ccafsap.isClosed=false
 # ------------------------------------------------
 #             Files upload configuration
 # ------------------------------------------------
@@ -65,8 +75,14 @@ file.uploads.projectsFolder=projects/
 # folder to upload project work plans
 file.uploads.project.WorkplanFolder=workplan/
 
+
+
+
+
 # folder to upload bilateral project contract proposal
 file.uploads.project.bilateralProposalFolder=bilateralProposal/
+
+file.uploads.project.bilateralPAnualReport=anualReport/
 
 # URL where the files uploaded can be downloaded
 file.downloads=localhost/ccafspr_ip/

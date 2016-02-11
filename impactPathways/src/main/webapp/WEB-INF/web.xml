@@ -10,6 +10,9 @@
     <listener-class>org.cgiar.ccafs.ap.config.APGuiceContextListener</listener-class>
   </listener>
   
+  <listener>
+    <listener-class>org.cgiar.ccafs.ap.config.HibernateListener</listener-class>
+  </listener>
   <!-- Google Guice integration with our web application -->
   <filter>
     <filter-name>guice</filter-name>
@@ -60,14 +63,14 @@
   
   <!-- 
   <filter-mapping>
-	  <filter-name>ExpiresFilter</filter-name>
-	  <url-pattern>*</url-pattern>
-	  <dispatcher>REQUEST</dispatcher>
-	</filter-mapping>
-	 -->
+    <filter-name>ExpiresFilter</filter-name>
+    <url-pattern>*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+   -->
 
   <!-- SSL settings. only allow HTTPS access to JIRA -->
-  <security-constraint>
+  <!--  security-constraint>
     <web-resource-collection>
       <web-resource-name>Entire Application</web-resource-name>
       <url-pattern>/*</url-pattern>
@@ -75,10 +78,10 @@
     <user-data-constraint>
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
-  </security-constraint>
+  </security-constraint -->
   
   <session-config>  
-	  <session-timeout> 21600 </session-timeout>  
+    <session-timeout> 21600 </session-timeout>  
   </session-config> 
   
   <welcome-file-list>

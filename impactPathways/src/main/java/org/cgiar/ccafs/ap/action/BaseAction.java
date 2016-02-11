@@ -71,12 +71,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected boolean cancel;
   protected boolean dataSaved;
   protected boolean add;
-
   // User actions
   private boolean isEditable; // If user is able to edit the form.
   private boolean canEdit; // If user is able to edit the form.
   private boolean saveable; // If user is able to see the save, cancel, delete buttons
-
   private boolean fullEditable; // If user is able to edit all the form.
 
   @SuppressWarnings("rawtypes")
@@ -84,8 +82,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   // Justification of the changes
   private String justification;
-
   private ComponentLesson projectLessons;
+  private ComponentLesson projectLessonsPreview;
   private Map<String, Object> session;
   private HttpServletRequest request;
   private List<SectionStatus> sectionStatuses;
@@ -93,14 +91,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   // Config
   protected APConfig config;
 
+  // Managers
   @Inject
   protected SecurityContext securityContext;
   @Inject
   private BoardMessageManager boardMessageManager;
-
   @Inject
   protected ProjectLessonsManager lessonManager;
-
   @Inject
   private SectionStatusManager sectionStatusManager;
 
@@ -116,7 +113,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public String add() {
     return SUCCESS;
   }
-
 
   /**
    * This function add a flag (--warn--) to the message in order to give
@@ -146,8 +142,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    * This method clears the cache and re-load the user permissions in the next iteration.
    */
   public void clearPermissionsCache() {
-    ((APCustomRealm) securityContext.getRealm()).clearCachedAuthorizationInfo(securityContext.getSubject()
-      .getPrincipals());
+    ((APCustomRealm) securityContext.getRealm())
+      .clearCachedAuthorizationInfo(securityContext.getSubject().getPrincipals());
   }
 
   /* Override this method depending of the delete action. */
@@ -196,6 +192,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.getPlanningCurrentYear();
   }
 
+  public int getCurrentReportingYear() {
+    return config.getReportingCurrentYear();
+  }
+
   /**
    * Get the user that is currently saved in the session.
    * 
@@ -209,6 +209,15 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       LOG.warn("There was a problem trying to find the user in the session.");
     }
     return u;
+  }
+
+  public String getCycleName() {
+    boolean isReporting = this.isReportingCycle();
+    if (isReporting) {
+      return APConstants.REPORTING_SECTION;
+    } else {
+      return APConstants.PLANNING_SECTION;
+    }
   }
 
   /**
@@ -235,7 +244,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return history;
   }
 
-
   public String getJustification() {
     return justification;
   }
@@ -248,12 +256,17 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
+
   public String getOrganizationIdentifier() {
     return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
   }
 
   public ComponentLesson getProjectLessons() {
     return projectLessons;
+  }
+
+  public ComponentLesson getProjectLessonsPreview() {
+    return projectLessonsPreview;
   }
 
   /**
@@ -303,6 +316,109 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
   /**
+   * This method validates if current user has permissions to edit a specified field name in the platform.
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @param usePlanningReporting is true if you want to validate permission in a certain round. False otherwise.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasPermission(String fieldName, boolean usePlanningReporting) {
+    StringBuffer permissionString = new StringBuffer();
+    if (usePlanningReporting) {
+      if (this.isReportingCycle()) {
+        permissionString.append("reporting:");
+      } else {
+        permissionString.append("planning:");
+      }
+    }
+    permissionString.append(this.getActionName());
+    permissionString.append(":");
+    permissionString.append(fieldName);
+
+    return securityContext.hasPermission(permissionString.toString());
+  }
+
+  /**
+   * This method validates if current user has permissions to edit a specified field name in the platform.
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @param projectID is some project identifier.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasProjectPermission(String fieldName, int projectID) {
+    StringBuffer permissionString = new StringBuffer();
+    if (this.isReportingCycle()) {
+      permissionString.append("reporting:projects:");
+    } else {
+      permissionString.append("planning:projects:");
+    }
+    permissionString.append(projectID);
+    permissionString.append(":");
+    permissionString.append(this.getActionName());
+    permissionString.append(":");
+    permissionString.append(fieldName);
+    System.out.println(securityContext.hasPermission(permissionString.toString()));
+
+    return securityContext.hasPermission(permissionString.toString());
+  }
+
+  /**
+   * This method validates if current user has permissions to edit a specified field name in the platform.
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @param projectID is some project identifier.
+   * @param actionName is a specific action name.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasProjectPermission(String fieldName, int projectID, String actionName) {
+    StringBuffer permissionString = new StringBuffer();
+    if (this.isReportingCycle()) {
+      permissionString.append("reporting:projects:");
+    } else {
+      permissionString.append("planning:projects:");
+    }
+    permissionString.append(projectID);
+    permissionString.append(":");
+    permissionString.append(actionName);
+    permissionString.append(":");
+    permissionString.append(fieldName);
+
+    return securityContext.hasPermission(permissionString.toString());
+  }
+
+  /**
+   * This method validates if current user has permissions to edit a specified field name in the platform in SYNTHESIS.
+   * As this method is called in some action, it will validate automatically if the user is working in reporting or in
+   * planning.
+   * 
+   * @param fieldName is the name of a field.
+   * @param liaisonInstitutionID is some liaison institution identifier.
+   * @return true if the user has permissions to edit the specified field name, false otherwise.
+   */
+  public boolean hasSynthesisPermission(String fieldName, int liaisonInstitutionID) {
+    StringBuffer permissionString = new StringBuffer();
+    if (this.isReportingCycle()) {
+      permissionString.append("reporting:synthesis:");
+    } else {
+      permissionString.append("planning:synthesis:");
+    }
+    permissionString.append(liaisonInstitutionID);
+    permissionString.append(":");
+    permissionString.append(this.getActionName());
+    permissionString.append(":");
+    permissionString.append(fieldName);
+    System.out.println(securityContext.hasPermission(permissionString.toString()));
+
+    return securityContext.hasPermission(permissionString.toString());
+  }
+
+  /**
    * This method returns the status of the given section in a specific cycle (Planning or Reporting).
    * 
    * @param project is the project that you want to look for the missing fields.
@@ -331,9 +447,16 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     }
 
     SectionStatusEnum seciones[] = SectionStatusEnum.values();
-    if (seciones.length != this.realSize(this.sectionStatuses)) {
-      return false;
+    if (this.isReportingCycle()) {
+      if (seciones.length - 2 != this.realSize(this.sectionStatuses)) {
+        return false;
+      }
+    } else {
+      if (seciones.length != this.realSize(this.sectionStatuses)) {
+        return false;
+      }
     }
+
     for (SectionStatus status : this.sectionStatuses) {
       if (!status.getMissingFieldsWithPrefix().isEmpty()) {
         return false;
@@ -347,6 +470,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public boolean isDataSaved() {
     return dataSaved;
   }
+
 
   public boolean isEditable() {
     return isEditable;
@@ -379,12 +503,22 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return config.isPlanningActive();
   }
 
+  public boolean isPlanningCycle() {
+    String namespace = ServletActionContext.getActionMapping().getNamespace();
+    return namespace.contains("/planning");
+  }
+
   public boolean isPreplanningActive() {
     return config.isPrePlanningActive();
   }
 
   public boolean isReportingActive() {
     return config.isReportingActive();
+  }
+
+  public boolean isReportingCycle() {
+    String namespace = ServletActionContext.getActionMapping().getNamespace();
+    return namespace.contains("/reporting");
   }
 
   public boolean isSaveable() {
@@ -423,7 +557,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
   protected boolean saveProjectLessons(int projectID) {
-    return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification);
+    return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification,
+      this.getCycleName());
   }
 
   public void setAdd(boolean add) {
@@ -438,10 +573,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.canEdit = canEdit;
   }
 
-
   public void setDataSaved(boolean dataSaved) {
     this.dataSaved = dataSaved;
   }
+
 
   public void setDelete(boolean delete) {
     this.delete = delete;
@@ -470,6 +605,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public void setProjectLessons(ComponentLesson projectLessons) {
     this.projectLessons = projectLessons;
+  }
+
+  public void setProjectLessonsPreview(ComponentLesson projectLessonsPreview) {
+    this.projectLessonsPreview = projectLessonsPreview;
   }
 
   public void setSave(boolean save) {

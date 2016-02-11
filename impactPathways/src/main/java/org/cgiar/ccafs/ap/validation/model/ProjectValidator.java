@@ -84,6 +84,33 @@ public class ProjectValidator extends BaseValidator {
     return (locations != null && !locations.isEmpty());
   }
 
+  public boolean hasValidAnualProgress(Map<String, ProjectOutcome> outcomes, int year) {
+    if (outcomes != null && !outcomes.isEmpty()) {
+      ProjectOutcome outcome = outcomes.get(String.valueOf(year));
+      if (outcome != null) {
+        if (this.isValidString(outcome.getAnualProgress())) {
+          return true;
+        }
+
+      }
+    }
+    return false;
+  }
+
+
+  public boolean hasValidCommunication(Map<String, ProjectOutcome> outcomes, int year) {
+    if (outcomes != null && !outcomes.isEmpty()) {
+      ProjectOutcome outcome = outcomes.get(String.valueOf(year));
+      if (outcome != null) {
+        if (this.isValidString(outcome.getComunication())) {
+          return true;
+        }
+
+      }
+    }
+    return false;
+  }
+
   // This method validates if the outcome statement given as parameter is not empty and different from null
   // If so, it returns true
   public boolean hasValidOutcomeStatement(Map<String, ProjectOutcome> outcomes, int year) {
@@ -93,9 +120,14 @@ public class ProjectValidator extends BaseValidator {
         if (this.isValidString(outcome.getStatement())) {
           return true;
         }
+
       }
     }
     return false;
+  }
+
+  public boolean isValidAnualRecordName(String proposalName) {
+    return (this.isValidString(proposalName)) ? true : false;
   }
 
   public boolean isValidBilateralContractProposalName(String proposalName) {
@@ -104,6 +136,10 @@ public class ProjectValidator extends BaseValidator {
 
   public boolean isValidBudget(List<Budget> budgets) {
     return (budgets != null && !budgets.isEmpty());
+  }
+
+  public boolean isValidDescriptionStatus(String statusDescription) {
+    return (this.isValidString(statusDescription) && this.wordCount(statusDescription) <= 100) ? true : false;
   }
 
   public boolean isValidEndDate(Date endDate) {
@@ -162,6 +198,10 @@ public class ProjectValidator extends BaseValidator {
 
   public boolean isValidStartDate(Date startDate) {
     return (startDate != null) ? true : false;
+  }
+
+  public boolean isValidStatus(String status) {
+    return (this.isValidString(status)) ? true : false;
   }
 
   public boolean isValidSummary(String summary) {

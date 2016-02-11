@@ -1,0 +1,9 @@
+ALTER TABLE `project_highligths`
+DROP COLUMN `objectives`,
+DROP COLUMN `contributor`,
+DROP COLUMN `publisher`,
+DROP COLUMN `relation`,
+DROP COLUMN `coverage`,
+DROP COLUMN `rights`,
+DROP COLUMN `is_global`,
+DROP COLUMN `leader`;

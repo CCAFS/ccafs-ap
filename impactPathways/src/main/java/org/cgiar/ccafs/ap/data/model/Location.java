@@ -24,7 +24,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public abstract class Location {
 
-  private int id;
+  private Integer id;
   private String name;
   private String code;
 
@@ -34,6 +34,24 @@ public abstract class Location {
   public Location(int id, String name) {
     this.id = id;
     this.name = name;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    Location other = (Location) obj;
+    if (id != other.id) {
+      return false;
+    }
+    return true;
   }
 
   public String getCode() {
@@ -54,6 +72,14 @@ public abstract class Location {
     } else {
       return null;
     }
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + id;
+    return result;
   }
 
   public boolean isClimateSmartVillage() {

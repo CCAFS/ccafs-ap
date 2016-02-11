@@ -110,10 +110,44 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
     return indicators;
   }
 
+
   @Override
   public List<IPIndicator> getIndicatorsByProject(Project project) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsByProjectID(project.getId());
+
+    for (Map<String, String> iData : indicatorsDataList) {
+      IPIndicator indicator = new IPIndicator();
+      indicator.setId(Integer.parseInt(iData.get("id")));
+      indicator.setDescription(iData.get("description"));
+      indicator.setTarget(iData.get("target"));
+
+      // Parent indicator
+      if (iData.get("parent_id") != null) {
+        IPIndicator parent = new IPIndicator();
+        parent.setId(Integer.parseInt(iData.get("parent_id")));
+        parent.setDescription(iData.get("parent_description"));
+        indicator.setParent(parent);
+      }
+
+      // Outcome
+      if (iData.get("outcome_id") != null) {
+        IPElement outcome = new IPElement();
+        outcome.setId(Integer.parseInt(iData.get("outcome_id")));
+        outcome.setDescription(iData.get("outcome_description"));
+        indicator.setOutcome(outcome);
+      }
+
+      indicators.add(indicator);
+    }
+
+    return indicators;
+  }
+
+  @Override
+  public List<IPIndicator> getIndicatorsFlagShips() {
+    List<IPIndicator> indicators = new ArrayList<>();
+    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsFlagShips();
 
     for (Map<String, String> iData : indicatorsDataList) {
       IPIndicator indicator = new IPIndicator();
@@ -183,6 +217,39 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
+  public List<IPIndicator> getIndicatorsOtherContribution(int projectId, int region) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    List<Map<String, String>> indicatorsDataList = indicatorDAO.getIndicatorsOtherContribution(projectId, region);
+
+    for (Map<String, String> iData : indicatorsDataList) {
+      IPIndicator indicator = new IPIndicator();
+      indicator.setId(Integer.parseInt(iData.get("id")));
+      indicator.setDescription(iData.get("description"));
+      indicator.setTarget(iData.get("target"));
+
+      // Parent indicator
+      if (iData.get("parent_id") != null) {
+        IPIndicator parent = new IPIndicator();
+        parent.setId(Integer.parseInt(iData.get("parent_id")));
+        parent.setDescription(iData.get("parent_description"));
+        indicator.setParent(parent);
+      }
+
+      // Outcome
+      if (iData.get("outcome_id") != null) {
+        IPElement outcome = new IPElement();
+        outcome.setId(Integer.parseInt(iData.get("outcome_id")));
+        outcome.setDescription(iData.get("outcome_description"));
+        indicator.setOutcome(outcome);
+      }
+
+      indicators.add(indicator);
+    }
+
+    return indicators;
+  }
+
+  @Override
   public List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = indicatorDAO.getProjectIndicators(projectID);
@@ -192,6 +259,14 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicator.setId(Integer.parseInt(iData.get("id")));
       indicator.setDescription(iData.get("description"));
       indicator.setGender(iData.get("gender"));
+      if (iData.get("archived") != null) {
+        indicator.setArchived(Integer.parseInt(iData.get("archived")));
+      } else {
+        indicator.setArchived(null);
+      }
+
+      indicator.setNarrativeGender(iData.get("narrative_gender"));
+      indicator.setNarrativeTargets(iData.get("narrative_targets"));
       indicator.setTarget(iData.get("target"));
       indicator.setYear(Integer.parseInt(iData.get("year")));
 
@@ -231,6 +306,9 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
       indicatorData.put("gender", indicator.getGender());
+      indicatorData.put("archived", String.valueOf(indicator.getArchived()));
+      indicatorData.put("narrative_gender", indicator.getNarrativeGender());
+      indicatorData.put("narrative_targets", indicator.getNarrativeTargets());
       indicatorData.put("year", String.valueOf(indicator.getYear()));
       indicatorData.put("parent_id", String.valueOf(indicator.getParent().getId()));
       indicatorData.put("project_id", String.valueOf(projectID));

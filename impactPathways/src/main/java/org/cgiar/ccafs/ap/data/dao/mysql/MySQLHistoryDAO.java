@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
  * @author Carlos Alberto Martínez M - CIAT/CCAFS
+ * @author Christian David Garcia O.- CIAT/CCAFS
  */
 
 public class MySQLHistoryDAO implements HistoryDAO {
@@ -200,6 +201,29 @@ public class MySQLHistoryDAO implements HistoryDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectCaseStudiesHistory(int projectID) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+
+    query.append("  SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("  t.active_since, t.modification_justification ");
+    query.append("  FROM ");
+    query.append(dbName);
+    query.append("_history.cases_studies t ");
+    query.append("  INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("  WHERE project_id = ");
+    query.append(projectID);
+    query.append("  GROUP BY email, action, modification_justification, ");
+    // This line group the results that have the value of active_since in a range of +/- 2 seconds
+    query.append(" UNIX_TIMESTAMP(active_since) DIV 2 ");
+    query.append(" ORDER BY active_since DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getProjectDeliverablesHistory(int deliverableID) {
     String dbName = this.getDatabaseName();
 
@@ -282,6 +306,29 @@ public class MySQLHistoryDAO implements HistoryDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectHighLights(int projectID) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+
+    query.append("  SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("  t.active_since, t.modification_justification ");
+    query.append("  FROM ");
+    query.append(dbName);
+    query.append("_history.project_highligths t ");
+    query.append("  INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("  WHERE project_id = ");
+    query.append(projectID);
+    query.append("  GROUP BY email, action, modification_justification, ");
+    // This line group the results that have the value of active_since in a range of +/- 2 seconds
+    query.append(" UNIX_TIMESTAMP(active_since) DIV 2 ");
+    query.append(" ORDER BY active_since DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getProjectIPOtherContributionHistory(int projectID) {
     String dbName = this.getDatabaseName();
 
@@ -321,10 +368,34 @@ public class MySQLHistoryDAO implements HistoryDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectLeverage(int projectID) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+
+    query.append("  SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("  t.active_since, t.modification_justification ");
+    query.append("  FROM ");
+    query.append(dbName);
+    query.append("_history.project_leverage t ");
+    query.append("  INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("  WHERE project_id = ");
+    query.append(projectID);
+    query.append("  GROUP BY email, action, modification_justification, ");
+    // This line group the results that have the value of active_since in a range of +/- 2 seconds
+    query.append(" UNIX_TIMESTAMP(active_since) DIV 2 ");
+    query.append(" ORDER BY active_since DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getProjectLocationsHistory(int projectID) {
     String dbName = this.getDatabaseName();
 
     StringBuilder query = new StringBuilder();
+    query.append("SELECT distinct * FROM ( ");
     query.append("SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
     query.append("t.active_since, t.modification_justification ");
     query.append("FROM ");
@@ -333,10 +404,33 @@ public class MySQLHistoryDAO implements HistoryDAO {
     query.append("INNER JOIN users u ON t.modified_by = u.id ");
     query.append("WHERE project_id = ");
     query.append(projectID);
-    query.append(" GROUP BY u.email, t.action, t.modification_justification, ");
+    query.append("  ) temp GROUP BY email, action, modification_justification, ");
     // This line group the results that have the value of active_since in a range of +/- 2 seconds
-    query.append(" UNIX_TIMESTAMP(t.active_since) DIV 2 ");
-    query.append(" ORDER BY t.active_since DESC ");
+    query.append(" UNIX_TIMESTAMP(active_since) DIV 2 ");
+    query.append(" ORDER BY active_since DESC ");
+    query.append(" LIMIT 0, 5 ");
+
+    return this.getData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectNextUsers(int projectID) {
+    String dbName = this.getDatabaseName();
+
+    StringBuilder query = new StringBuilder();
+
+    query.append("  SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
+    query.append("  t.active_since, t.modification_justification ");
+    query.append("  FROM ");
+    query.append(dbName);
+    query.append("_history.project_next_user t ");
+    query.append("  INNER JOIN users u ON t.modified_by = u.id ");
+    query.append("  WHERE project_id = ");
+    query.append(projectID);
+    query.append("  GROUP BY email, action, modification_justification, ");
+    // This line group the results that have the value of active_since in a range of +/- 2 seconds
+    query.append(" UNIX_TIMESTAMP(active_since) DIV 2 ");
+    query.append(" ORDER BY active_since DESC ");
     query.append(" LIMIT 0, 5 ");
 
     return this.getData(query.toString());
@@ -391,7 +485,7 @@ public class MySQLHistoryDAO implements HistoryDAO {
     String dbName = this.getDatabaseName();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT * FROM ( ");
+    query.append("SELECT distinct * FROM ( ");
 
     query.append("  SELECT u.id as 'user_id', u.first_name, u.last_name, u.email, t.action, ");
     query.append("  t.active_since, t.modification_justification ");

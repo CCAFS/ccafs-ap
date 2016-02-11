@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.cgiar.ccafs</groupId>
   <artifactId>pandr</artifactId>
-  <version>2.0-SNAPSHOT</version>
+  <version>4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>CCAFS Planning and Reporting Platform</name>
 
@@ -21,9 +21,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>4.5</junit.version>
     <guice.version>3.0</guice.version>
-    <logback-classic.version>1.0.7</logback-classic.version>
+    <logback-classic.version>1.1.3</logback-classic.version>
     <janino.version>2.6.1</janino.version> 
-    <commons-logging.version>1.1.1</commons-logging.version>
   </properties>
 
   <developers>
@@ -82,12 +81,11 @@
       <artifactId>logback-classic</artifactId>
       <version>${logback-classic.version}</version>
     </dependency>
-    
-    <dependency>
-		<groupId>commons-logging</groupId>
-		<artifactId>commons-logging</artifactId>
-		<version>${commons-logging.version}</version>
-	</dependency>
+    <!-- dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons-logging.version}</version>
+    </dependency -->
     
     <!-- This dependency allows conditions in logger configuration -->
     <dependency>
@@ -121,5 +119,13 @@
 	    </plugins>
     </pluginManagement>
   </build>
+  
+  <licenses>
+    <license>
+      <name>GNU General Public License (GPL)</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+      <distribution>manual</distribution>
+    </license>
+  </licenses>
   
 </project>

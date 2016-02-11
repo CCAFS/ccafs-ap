@@ -27,6 +27,7 @@ import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.utils.APConfig;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,18 +61,20 @@ public class ProjectManagerImpl implements ProjectManager {
   private BudgetManager budgetManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private SubmissionManager submissionManager;
+  private APConfig config;
 
 
   @Inject
   public ProjectManagerImpl(ProjectDAO projectDAO, UserManager userManager, IPProgramManager ipProgramManager,
     BudgetManager budgetManager, LiaisonInstitutionManager liaisonInstitutionManager,
-    SubmissionManager submissionManager) {
+    SubmissionManager submissionManager, APConfig config) {
     this.projectDAO = projectDAO;
     this.userManager = userManager;
     this.ipProgramManager = ipProgramManager;
     this.budgetManager = budgetManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.submissionManager = submissionManager;
+    this.config = config;
   }
 
   @Override
@@ -104,8 +107,9 @@ public class ProjectManagerImpl implements ProjectManager {
 
 
   @Override
-  public List<Project> getAllProjectsBasicInfo() {
-    List<Map<String, String>> projectDataList = projectDAO.getAllProjectsBasicInfo();
+  public List<Project> getAllProjectsBasicInfo(String section) {
+    List<Map<String, String>> projectDataList =
+      projectDAO.getAllProjectsBasicInfo(section, config.getCurrentReportingStartDate());
     List<Project> projectsList = new ArrayList<>();
     Project project;
     for (Map<String, String> projectData : projectDataList) {
@@ -117,6 +121,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
+      project.setLeader(projectData.get("leader"));
       List<Budget> budgets = new ArrayList<>(2);
 
       if (projectData.get("total_ccafs_amount") != null) {
@@ -288,6 +293,8 @@ public class ProjectManagerImpl implements ProjectManager {
 
       project.setWorkplanName(projectData.get("workplan_name"));
       project.setBilateralContractProposalName(projectData.get("bilateral_contract_name"));
+      project.setAnnualReportDonor(projectData.get("annual_report_to_dornor"));
+
       // Getting the project Owner.
       project.setOwner(userManager.getUser(Integer.parseInt(projectData.get("liaison_user_id"))));
       // Getting the creation date timestamp.
@@ -433,10 +440,10 @@ public class ProjectManagerImpl implements ProjectManager {
       // Setting creation date.
       project.setCreated(Long.parseLong(elementData.get("created")));
       // Getting Project Focuses - IPPrograms
-      project.setRegions(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.REGION_PROGRAM_TYPE));
-      project.setFlagships(ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")),
-        APConstants.FLAGSHIP_PROGRAM_TYPE));
+      project.setRegions(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.REGION_PROGRAM_TYPE));
+      project.setFlagships(
+        ipProgramManager.getProjectFocuses(Integer.parseInt(elementData.get("id")), APConstants.FLAGSHIP_PROGRAM_TYPE));
       // Getting Budget.
       project.setBudgets(budgetManager.getBudgetsByProject(project));
 
@@ -450,7 +457,7 @@ public class ProjectManagerImpl implements ProjectManager {
   public List<Project> getProjectsList(String[] values) {
     List<Project> projects = new ArrayList<>();
     List<String> ids = new ArrayList<String>(Arrays.asList(values));
-    for (Project project : this.getAllProjectsBasicInfo()) {
+    for (Project project : this.getAllProjectsBasicInfo(APConstants.PLANNING_SECTION)) {
       if (ids.contains(String.valueOf(project.getId()))) {
         projects.add(project);
       }
@@ -489,6 +496,8 @@ public class ProjectManagerImpl implements ProjectManager {
       }
       projectData.put("requires_workplan_upload", project.isWorkplanRequired());
       projectData.put("workplan_name", project.getWorkplanName());
+      projectData.put("annual_report_to_dornor", project.getAnnualReportDonor());
+
       projectData.put("bilateral_contract_name", project.getBilateralContractProposalName());
       projectData.put("user_id", project.getOwner().getId());
       projectData.put("liaison_institution_id", project.getLiaisonInstitution().getId());
@@ -502,8 +511,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
   @Override
   // TODO - Move this method to a class called projectOutputManager
-    public
-    boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
+  public boolean saveProjectOutputs(List<IPElement> outputs, int projectID, User user, String justification) {
     Map<String, String> outputData;
     boolean saved = true;
 

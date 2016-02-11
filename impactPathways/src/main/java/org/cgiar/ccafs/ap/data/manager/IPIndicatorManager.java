@@ -62,6 +62,14 @@ public interface IPIndicatorManager {
    */
   public List<IPIndicator> getIndicatorsByProject(Project project);
 
+
+  /**
+   * This method get all the indicators for flaglisphs present in the database.
+   * 
+   * @return a list of IPIndicator objects.
+   */
+  public List<IPIndicator> getIndicatorsFlagShips();
+
   /**
    * This method get all the indicators present in the database.
    * 
@@ -77,6 +85,17 @@ public interface IPIndicatorManager {
    * @return a list of IPIndicator objects.
    */
   public List<IPIndicator> getIndicatorsList(String[] indicatorsIDs);
+
+  /**
+   * This method gets all the indicators not related with the project
+   * received as parameter.
+   * 
+   * @param projectId - id project
+   * @param flagship - id flagship
+   * @param region - id region
+   * @return a list of ip indicators object with the information.
+   */
+  public List<IPIndicator> getIndicatorsOtherContribution(int projectId, int region);
 
   /**
    * This method gets all the indicators related to the project passed as parameter

@@ -55,10 +55,12 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
         projectOutcomeData.put("id", rs.getString("id"));
         projectOutcomeData.put("year", rs.getString("year"));
         projectOutcomeData.put("statement", rs.getString("statement"));
+        projectOutcomeData.put("statement", rs.getString("statement"));
         // projectOutcomeData.put("stories", rs.getString("stories"));
         // projectOutcomeData.put("gender_dimension", rs.getString("gender_dimension"));
-        projectOutcomeData.put("project_id", rs.getString("project_id"));
-
+        projectOutcomeData.put("anual_progress", rs.getString("anual_progress"));
+        projectOutcomeData.put("comunication", rs.getString("comunication"));
+        projectOutcomeData.put("file", rs.getString("file"));
         projectOutcomeList.add(projectOutcomeData);
       }
       rs.close();
@@ -109,6 +111,10 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
         projectOutcomeData.put("id", rs.getString("id"));
         projectOutcomeData.put("year", rs.getString("year"));
         projectOutcomeData.put("statement", rs.getString("statement"));
+        projectOutcomeData.put("anual_progress", rs.getString("anual_progress"));
+        projectOutcomeData.put("comunication", rs.getString("comunication"));
+        projectOutcomeData.put("file", rs.getString("file"));
+
       }
       con.close();
     } catch (SQLException e) {
@@ -128,30 +134,38 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
     if (projectOutcomeData.get("id") == null) {
       // Insert new projectOutcome record
       query.append("INSERT INTO project_outcomes (year, statement, ");
-      query.append("project_id, created_by, modified_by, modification_justification) ");
+      query.append("project_id, created_by, modified_by, modification_justification,anual_progress,comunication) ");
       query.append("VALUES (?,?,?,?,?,?) ");
 
-      values = new Object[6];
+      values = new Object[9];
       values[0] = projectOutcomeData.get("year");
       values[1] = projectOutcomeData.get("statement");
       values[2] = projectID;
       values[3] = projectOutcomeData.get("user_id");
       values[4] = projectOutcomeData.get("user_id");
       values[5] = projectOutcomeData.get("modification_justification");
+      values[6] = projectOutcomeData.get("anual_progress");
+      values[7] = projectOutcomeData.get("comunication");
+      values[8] = projectOutcomeData.get("file");
 
       result = databaseManager.saveData(query.toString(), values);
     } else {
       // update projectOutcome record
       query.append("UPDATE project_outcomes SET year = ?, statement = ?, project_id = ?, ");
-      query.append("modified_by = ?, modification_justification = ? ");
+      query.append("modified_by = ?, modification_justification = ? ,anual_progress=?,comunication=?,file=? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[9];
       values[0] = projectOutcomeData.get("year");
       values[1] = projectOutcomeData.get("statement");
       values[2] = projectID;
       values[3] = projectOutcomeData.get("user_id");
       values[4] = projectOutcomeData.get("modification_justification");
-      values[5] = projectOutcomeData.get("id");
+
+      values[5] = projectOutcomeData.get("anual_progress");
+      values[6] = projectOutcomeData.get("comunication");
+      values[7] = projectOutcomeData.get("file");
+      values[8] = projectOutcomeData.get("id");
+
 
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {

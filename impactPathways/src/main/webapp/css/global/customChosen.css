@@ -65,7 +65,7 @@
 }
 
 .fullBlock.chosen .selectList{
-  width: 99% !important;
+  width: 98% !important;
 }
 
 .fullBlock .chzn-container-multi .chzn-choices {
@@ -73,15 +73,15 @@
 }
 
 .fullBlock .chzn-drop .chzn-search input{
-  width: 575px !important; 
+  width: 97% !important;
 }
 
 .fullBlock .chzn-container .chzn-results {
-  width: 608px !important;  
+  width: 100% !important;
 }
 
 .fullBlock .chzn-container .chzn-drop {
-  width: 632px !important;  
+  width: 100% !important;
 }
 
 .fullBlock .chzn-container .chzn-choices .default{

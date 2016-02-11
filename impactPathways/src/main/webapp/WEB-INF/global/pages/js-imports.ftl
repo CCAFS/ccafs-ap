@@ -79,6 +79,15 @@
       [#if libraryName="select2"] 
         <script src="${baseUrl}/js/libs/select2-3.5.4/select2.min.js"></script>
       [/#if]
+      [#if libraryName="star-rating"] 
+        <script src="${baseUrl}/js/libs/star-rating/jquery.rating.js"></script>
+      [/#if]
+      [#if libraryName="dropzone"]          
+        <script src="${baseUrl}/js/libs/dropzone/dropzone-3.12.0.js"></script>
+      [/#if]
+      [#if libraryName="jsUri"]          
+        <script src="${baseUrl}/js/libs/jsUri/Uri.js"></script>
+      [/#if]
    [/#list]
   [/#if]
 
@@ -86,6 +95,8 @@
   <input type="hidden" id="baseURL" value="${baseUrl}" />
   <input type="hidden" id="editable" value="${editable?string}" />
   <input type="hidden" id="production" value="${config.production?string}" />
+  <input type="hidden" id="currentPlanningYear" value="${currentPlanningYear}" />
+  <input type="hidden" id="currentReportingYear" value="${currentReportingYear}" />
   [#-- Library for textareas --]
   <script src="${baseUrl}/js/libs/autogrow-3.0/jquery.autogrowtextarea.min.js"></script>
   [#-- Global Javascript --]

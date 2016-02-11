@@ -59,7 +59,7 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
     List<Map<String, String>> overviewsData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT distinct ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
-    query.append("ie.id as 'output_id', ie.description as output_description ");
+    query.append("ie.id as 'output_id', ie.description as output_description,ipco.brief_summary ,ipco.summary_gender ");
     query.append("FROM ip_project_contributions ipc ");
     query.append(
       "INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipc.mog_id  and ipc.project_id=ipco.project_id");
@@ -77,6 +77,8 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
         overview.put("gender_contribution", rs.getString("gender_contribution"));
         overview.put("output_id", rs.getString("output_id"));
         overview.put("output_description", rs.getString("output_description"));
+        overview.put("brief_summary", rs.getString("brief_summary"));
+        overview.put("summary_gender", rs.getString("summary_gender"));
 
         overviewsData.add(overview);
       }
@@ -95,7 +97,7 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
     List<Map<String, String>> overviewsData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT ipco.id, ipco.year, ipco.anual_contribution, ipco.gender_contribution, ");
-    query.append("ie.id as 'output_id', ie.description as output_description ");
+    query.append("ie.id as 'output_id', ie.description as output_description,ipco.brief_summary ,ipco.summary_gender ");
     query.append("FROM ip_project_contributions ipc ");
     query.append("INNER JOIN ip_project_contribution_overviews ipco ON ipco.output_id = ipc.mog_id ");
     query.append("INNER JOIN ip_elements ie ON ipc.mog_id = ie.id ");
@@ -116,6 +118,8 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
         overview.put("gender_contribution", rs.getString("gender_contribution"));
         overview.put("output_id", rs.getString("output_id"));
         overview.put("output_description", rs.getString("output_description"));
+        overview.put("brief_summary", rs.getString("brief_summary"));
+        overview.put("summary_gender", rs.getString("summary_gender"));
 
         overviewsData.add(overview);
       }
@@ -136,11 +140,12 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
     if (overviewData.get("id") == null) {
 
       query.append("INSERT INTO ip_project_contribution_overviews (project_id, output_id, year, ");
-      query.append("anual_contribution, gender_contribution, created_by, modified_by, modification_justification) ");
-      query.append("VALUES ( ?, ?, ?, ?, ?, ?, ?, ?) ");
+      query.append(
+        "anual_contribution, gender_contribution, created_by, modified_by, modification_justification,brief_summary,summary_gender) ");
+      query.append("VALUES ( ?, ?, ?, ?, ?, ?, ?, ?,?,?) ");
 
 
-      values = new Object[8];
+      values = new Object[10];
       values[0] = projectID;
       values[1] = overviewData.get("output_id");
       values[2] = overviewData.get("year");
@@ -149,14 +154,17 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
       values[5] = userID;
       values[6] = userID;
       values[7] = justification;
+      values[8] = overviewData.get("brief_summary");
+      values[9] = overviewData.get("summary_gender");
+
 
     } else {
 
 
       query.append("update ip_project_contribution_overviews set project_id=?, output_id=?, year=?, ");
       query.append(
-        "anual_contribution=?, gender_contribution=?, created_by=?, modified_by=?, modification_justification=? where id=?");
-      values = new Object[9];
+        "anual_contribution=?, gender_contribution=?, created_by=?, modified_by=?, modification_justification=?,brief_summary=?,summary_gender =? where id=?");
+      values = new Object[11];
       values[0] = projectID;
       values[1] = overviewData.get("output_id");
       values[2] = overviewData.get("year");
@@ -165,7 +173,10 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
       values[5] = userID;
       values[6] = userID;
       values[7] = justification;
-      values[8] = overviewData.get("id");
+      values[8] = overviewData.get("brief_summary");
+      values[9] = overviewData.get("summary_gender");
+
+      values[10] = overviewData.get("id");
 
     }
 

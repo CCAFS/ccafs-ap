@@ -15,7 +15,10 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectOtherContributionManagerImpl;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.data.model.User;
+
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
@@ -43,6 +46,16 @@ public interface ProjectOtherContributionManager {
    */
   public OtherContribution getIPOtherContributionByProjectId(int projectID);
 
+
+  /**
+   * This method gets all the Other Contributions information by a given project Id
+   * 
+   * @param projectID - is the Id of the project
+   * @return an OtherContributions object with the Information related to the project
+   */
+  public List<ProjecteOtherContributions> getOtherContributionsByProjectId(int projectID);
+
+
   /**
    * This method saves the information of the given IP Other Contribution that belongs to a specific project into the
    * database.
@@ -54,6 +67,9 @@ public interface ProjectOtherContributionManager {
    * @return true if the IP Other Contribution was saved successfully, false otherwise.
    */
   public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution, User user,
+    String justification);
+
+  public int saveOtherContributionsList(int projectID, List<ProjecteOtherContributions> OtherContributionsList, User user,
     String justification);
 
 

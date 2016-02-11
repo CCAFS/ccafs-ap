@@ -13,13 +13,17 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.manager.impl;
 
+import org.cgiar.ccafs.ap.data.dao.OtherContributionsDAO;
 import org.cgiar.ccafs.ap.data.dao.ProjectOtherContributionDAO;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.model.OtherContribution;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -34,7 +38,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
 
   // LOG
   private static Logger LOG = LoggerFactory.getLogger(ProjectOtherContributionManagerImpl.class);
-
+  private OtherContributionsDAO otherContributionsDAO;
   // DAO's
   private ProjectOtherContributionDAO ipOtherContributionDAO;
 
@@ -42,9 +46,11 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
   private CRPManager crpManager;
 
   @Inject
-  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO, CRPManager crpManager) {
+  public ProjectOtherContributionManagerImpl(ProjectOtherContributionDAO ipOtherContributionDAO, CRPManager crpManager,
+    OtherContributionsDAO otherContributionsDAO) {
     this.ipOtherContributionDAO = ipOtherContributionDAO;
     this.crpManager = crpManager;
+    this.otherContributionsDAO = otherContributionsDAO;
   }
 
   @Override
@@ -57,7 +63,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
       // ipOtherContribution.setCrpCollaborationNature(crpManager.getCrpContributionsNature()); // TODO JG modify method
-// to bring project ID
+      // to bring project ID
       return ipOtherContribution;
     }
     return null;
@@ -71,11 +77,24 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       ipOtherContribution.setId(Integer.parseInt(ipOtherContributionData.get("id")));
       ipOtherContribution.setContribution(ipOtherContributionData.get("contribution"));
       ipOtherContribution.setAdditionalContribution(ipOtherContributionData.get("additional_contribution"));
+
+
       ipOtherContribution.setCrpCollaborationNature(crpManager.getCrpContributionsNature(projectID));
       return ipOtherContribution;
     }
     return null;
   }
+
+  @Override
+  public List<ProjecteOtherContributions> getOtherContributionsByProjectId(int projectID) {
+    List<ProjecteOtherContributions> otherContributionsList =
+      otherContributionsDAO.getOtherContributionsByProject(projectID);
+
+
+    return otherContributionsList;
+
+  }
+
 
   @Override
   public boolean saveIPOtherContribution(int projectID, OtherContribution ipOtherContribution, User user,
@@ -91,6 +110,7 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
     contributionData.put("user_id", user.getId());
     contributionData.put("justification", justification);
 
+
     int result = ipOtherContributionDAO.saveIPOtherContribution(projectID, contributionData);
 
     if (result > 0) {
@@ -98,14 +118,54 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
     } else if (result == 0) {
       LOG.debug("saveIPOtherContribution > IP Other Contribution with id={} was updated", ipOtherContribution.getId());
     } else {
-      LOG
-        .error(
-          "saveIPOtherContribution > There was an error trying to save/update an IP Other Contribution from projectID={}",
-          projectID);
+      LOG.error(
+        "saveIPOtherContribution > There was an error trying to save/update an IP Other Contribution from projectID={}",
+        projectID);
       allSaved = false;
     }
 
     return allSaved;
 
+  }
+
+  @Override
+  public int saveOtherContributionsList(int projectID, List<ProjecteOtherContributions> OtherContributionsList,
+    User user, String justification) {
+
+    List<ProjecteOtherContributions> preview = this.getOtherContributionsByProjectId(projectID);
+
+
+    for (ProjecteOtherContributions otherContributions : OtherContributionsList) {
+      if (otherContributions.getId() == null || otherContributions.getId() == -1) {
+        otherContributions.setCreatedBy(Long.parseLong(user.getId() + ""));
+        otherContributions.setId(null);
+      }
+      otherContributions.setModifiedBy(Long.parseLong(user.getId() + ""));
+      otherContributions.setModificationJustification(justification);
+      otherContributions.setProjectId(projectID);
+      otherContributions.setActiveSince(new Date());
+      otherContributions.setIsActive(true);
+      int result = otherContributionsDAO.save(otherContributions);
+
+      for (ProjecteOtherContributions projecteOtherContributions : preview) {
+        if (!OtherContributionsList.contains(projecteOtherContributions)) {
+          otherContributionsDAO.deleteOtherContributions(projecteOtherContributions.getId(), user.getId(),
+            justification);
+        }
+      }
+
+      if (result > 0) {
+        LOG.debug("saveCrossCuttingContribution > New CrossCuttingContribution added with id {}", result);
+      } else if (result == 0) {
+        LOG.debug("saveCrossCuttingContribution > CrossCuttingContribution with id={} was updated",
+          otherContributions.getId());
+      } else {
+        LOG.error(
+          "saveCrossCuttingContribution > There was an error trying to save/update a CrossCuttingContribution from projectId={}",
+          projectID);
+      }
+    }
+
+    return 1;
   }
 }

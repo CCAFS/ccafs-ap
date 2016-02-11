@@ -131,6 +131,7 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       while (rs.next()) {
         Map<String, String> projectPartnerData = new HashMap<String, String>();
         projectPartnerData.put("id", rs.getString("id"));
+        projectPartnerData.put("overall", rs.getString("overall"));
         projectPartnerData.put("project_id", rs.getString("project_id"));
         projectPartnerData.put("institution_id", rs.getString("institution_id"));
         projectPartnerList.add(projectPartnerData);
@@ -265,28 +266,30 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     if (projectPartnerData.get("id") == null) {
       // Insert new record
       query.append("INSERT INTO project_partners (id, project_id, institution_id, created_by, modified_by, ");
-      query.append("modification_justification) VALUES (?, ?, ?, ?, ?, ?) ");
+      query.append("modification_justification,overall) VALUES (?, ?, ?, ?, ?, ?,?) ");
       query.append("ON DUPLICATE KEY UPDATE is_active=TRUE, modified_by=VALUES(modified_by),  ");
       query.append("modification_justification=VALUES(modification_justification) ");
 
-      values = new Object[6];
+      values = new Object[7];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");
       values[2] = projectPartnerData.get("institution_id");
       values[3] = projectPartnerData.get("created_by");
       values[4] = projectPartnerData.get("modified_by");
       values[5] = projectPartnerData.get("modification_justification");
+      values[6] = projectPartnerData.get("overall");
     } else {
       // update record
-      query
-      .append("UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
+      query.append(
+        "UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? , overall=? ");
       query.append("WHERE id = ? ");
-      values = new Object[5];
+      values = new Object[6];
       values[0] = projectPartnerData.get("project_id");
       values[1] = projectPartnerData.get("institution_id");
       values[2] = projectPartnerData.get("modified_by");
       values[3] = projectPartnerData.get("modification_justification");
-      values[4] = projectPartnerData.get("id");
+      values[4] = projectPartnerData.get("overall");
+      values[5] = projectPartnerData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);

@@ -61,6 +61,10 @@ public class DeliverableValidator extends BaseValidator {
     return (this.isValidString(strategies) && this.wordCount(strategies) <= 50);
   }
 
+  public boolean isValidStatus(int status) {
+    return (status > 0);
+  }
+
   public boolean isValidTitle(String title) {
     return (this.isValidString(title) && this.wordCount(title) <= 15);
   }
@@ -78,6 +82,7 @@ public class DeliverableValidator extends BaseValidator {
     }
     return true; // This is not the type, thus it is ok.
   }
+
 
   public boolean isValidYear(int year) {
     return (year != -1);

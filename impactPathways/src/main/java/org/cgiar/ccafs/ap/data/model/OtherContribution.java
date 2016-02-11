@@ -32,9 +32,11 @@ public class OtherContribution {
   private List<CRPContribution> crpContributions;
   private int id;
 
+
   public OtherContribution() {
-    crpContributions=new ArrayList<CRPContribution>();
+    crpContributions = new ArrayList<CRPContribution>();
   }
+
 
   @Override
   public boolean equals(Object obj) {
@@ -45,42 +47,57 @@ public class OtherContribution {
     return false;
   }
 
+
   public String getAdditionalContribution() {
     return additionalContribution;
   }
+
 
   public String getContribution() {
     return contribution;
   }
 
+
   public List<CRPContribution> getCrpContributions() {
     return crpContributions;
   }
 
+
   public int getId() {
     return id;
   }
+
 
   @Override
   public int hashCode() {
     return this.id;
   }
 
+
   public void setAdditionalContribution(String additionalContribution) {
     this.additionalContribution = additionalContribution;
   }
+
 
   public void setContribution(String contribution) {
     this.contribution = contribution;
   }
 
+
   public void setCrpCollaborationNature(List<CRPContribution> crpContributions) {
     this.crpContributions = crpContributions;
   }
 
+
+  public void setCrpContributions(List<CRPContribution> crpContributions) {
+    this.crpContributions = crpContributions;
+  }
+
+
   public void setId(int id) {
     this.id = id;
   }
+
 
   @Override
   public String toString() {

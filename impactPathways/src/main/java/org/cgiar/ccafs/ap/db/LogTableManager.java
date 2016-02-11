@@ -114,6 +114,22 @@ public class LogTableManager {
     query.append("` ADD `record_id` BIGINT NOT NULL AFTER `id`; ");
     query.append("END IF; ");
 
+    // Add index to record_id column
+    query.append(
+      "IF NOT EXISTS ((SELECT * FROM information_schema.STATISTICS WHERE table_schema=DATABASE() AND table_name='");
+    query.append(tableName);
+    query.append("' AND index_name='index_");
+    query.append(tableName);
+    query.append("_record_id')) THEN ");
+    query.append("ALTER TABLE `");
+    query.append(tableName);
+    query.append("` ADD INDEX `index_");
+    query.append(tableName);
+    query.append("_record_id` (`record_id` ASC);");
+    query.append("END IF; ");
+
+    // ALTER TABLE `$[database]_history`.`projects` ADD INDEX `index_projects_record_id` (`record_id` ASC);
+
     // Validate that the column `created_by` exists to drop it
     query.append("IF EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
     query.append(tableName);
@@ -133,8 +149,8 @@ public class LogTableManager {
     query.append("END IF; ");
 
     // Validate if the column `active_until` exists to create it if needed
-    query
-      .append("IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
+    query.append(
+      "IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
     query.append(tableName);
     query.append("' AND column_name='active_until')) THEN ");
     query.append("ALTER TABLE `");
@@ -143,8 +159,8 @@ public class LogTableManager {
     query.append("END IF; ");
 
     // Validate if the column `action` exists to create it if needed
-    query
-      .append("IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
+    query.append(
+      "IF NOT EXISTS ((SELECT * FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='");
     query.append(tableName);
     query.append("' AND column_name='action')) THEN ");
     query.append("ALTER TABLE `");

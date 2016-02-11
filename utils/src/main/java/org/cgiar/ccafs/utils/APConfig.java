@@ -16,6 +16,7 @@ package org.cgiar.ccafs.utils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.google.inject.Inject;
@@ -46,8 +47,10 @@ public class APConfig {
   private static final String PLANNING_FUTURE_YEARS = "ccafsap.planning.future.years";
   private static final String PREPLANNING_ACTIVE = "ccafsap.preplanning.active";
   private static final String PLANNING_ACTIVE = "ccafsap.planning.active";
-  private static final String IS_CLOSED = "ccafsap.is-closed";
+  private static final String PLANNING_CLOSED = "ccafsap.planning.closed";
   private static final String REPORTING_ACTIVE = "ccafsap.reporting.active";
+  private static final String REPORTING_CLOSED = "ccafsap.reporting.closed";
+  private static final String IS_CLOSED = "ccafsap.isClosed";
   private static final String SUMMARIES_ACTIVE = "ccafsap.summaries.active";
   private static final String EMAIL_USER = "email.user";
   private static final String EMAIL_NOTIFICATION = "email.notification";
@@ -61,6 +64,7 @@ public class APConfig {
   private static final String PROJECTS_BASE_FOLDER = "file.uploads.projectsFolder";
   private static final String PROJECT_WORKPLAN_FOLDER = "file.uploads.project.WorkplanFolder";
   private static final String PROJECT_BILATERAL_PROPOSAL_FOLDER = "file.uploads.project.bilateralProposalFolder";
+  private static final String PROJECT_BILATERAL_ANUAL_REPORT_FOLDER = "file.uploads.project.bilateralPAnualReport";
   private static final String FILE_DOWNLOADS = "file.downloads";
   private static final String RESOURCE_PATH = "resource.path";
 
@@ -73,6 +77,20 @@ public class APConfig {
   @Inject
   public APConfig(PropertiesManager properties) {
     this.properties = properties;
+  }
+
+  /**
+   * Get the folder where the bilateral project contract proposal should be loaded
+   * 
+   * @return a string with the path
+   */
+  public String getAnualReportFolder() {
+    try {
+      return properties.getPropertiesAsString(PROJECT_BILATERAL_ANUAL_REPORT_FOLDER);
+    } catch (Exception e) {
+      LOG.error("there is not a base folder to save the uploaded files configured.");
+    }
+    return null;
   }
 
   /**
@@ -96,6 +114,7 @@ public class APConfig {
     return base;
   }
 
+
   /**
    * Get the folder where the bilateral project contract proposal should be loaded
    * 
@@ -109,7 +128,6 @@ public class APConfig {
     }
     return null;
   }
-
 
   /**
    * Get the folder where the case studies images uploaded should be saved
@@ -157,6 +175,12 @@ public class APConfig {
       String stringDate = properties.getPropertiesAsString(CURRENT_REPORTING_START_DATE);
       date = formatter.parse(stringDate);
 
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(date);
+
+      cal.set(Calendar.MONTH, 11);
+      cal.set(Calendar.DATE, 31);
+      date = cal.getTime();
     } catch (Exception e) {
       LOG.error("There is not a current year configured for the planning section or has an invalid format.");
     }
@@ -407,6 +431,20 @@ public class APConfig {
   }
 
   /**
+   * Get the flag that indicate if P&R System is closed.
+   * 
+   * @return a boolean indicating if is closed.
+   */
+  public boolean isClosed() {
+    String param = properties.getPropertiesAsString(IS_CLOSED);
+    if (param == null) {
+      LOG.error("There is not a system closed configured");
+      return false;
+    }
+    return param.equals("true");
+  }
+
+  /**
    * Get the flag that indicate is planing stage is active that is in the configuration file.
    * 
    * @return a boolean indicating if it is active.
@@ -423,19 +461,19 @@ public class APConfig {
 
 
   /**
-   * Get the flag that indicate is planing stage is close that is in the configuration file.
+   * Get the flag that indicate if planning cycle is closed in the configuration file.
    * 
-   * @return a boolean indicating if it is active.
+   * @return a boolean indicating if is closed.
    */
-  public boolean isClosed() {
-    String planningActive = properties.getPropertiesAsString(IS_CLOSED);
-    if (planningActive == null) {
-      LOG.error("There is not a planning active configured");
+  public boolean isPlanningClosed() {
+    String param = properties.getPropertiesAsString(PLANNING_CLOSED);
+    if (param == null) {
+      LOG.error("There is not a planning closed configured");
       return false;
     }
-
-    return planningActive.equals("true");
+    return param.equals("true");
   }
+
 
   /**
    * Get the flag that indicate if planing for future years is active, that value is in the configuration file.
@@ -495,6 +533,20 @@ public class APConfig {
     }
 
     return reportingActive.equals("true");
+  }
+
+  /**
+   * Get the flag that indicate if reporting cycle is closed in the configuration file.
+   * 
+   * @return a boolean indicating if is closed.
+   */
+  public boolean isReportingClosed() {
+    String param = properties.getPropertiesAsString(REPORTING_CLOSED);
+    if (param == null) {
+      LOG.error("There is not a reporting closed configured");
+      return false;
+    }
+    return param.equals("true");
   }
 
   /**

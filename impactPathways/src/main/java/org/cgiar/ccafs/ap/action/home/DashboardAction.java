@@ -15,6 +15,7 @@
 package org.cgiar.ccafs.ap.action.home;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -74,13 +75,23 @@ public class DashboardAction extends BaseAction {
 
       // ----- Listing Projects -----
       if (securityContext.isAdmin()) {
-        projects = projectManager.getAllProjectsBasicInfo();
+        projects = projectManager.getAllProjectsBasicInfo(APConstants.REPORTING_SECTION);
       } else {
-        List<Integer> ids = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
+
+
+        List<Project> allProjects = projectManager.getAllProjectsBasicInfo(APConstants.REPORTING_SECTION);
+        List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
         projects = new ArrayList<>();
-        for (Integer projectId : ids) {
-          projects.add(projectManager.getProjectBasicInfo(projectId));
+        // We should remove from the allProjects list the project
+        // led by the user and also we should add them to a another list
+        for (Integer projectId : editableProjectsIds) {
+          Project temp = new Project(projectId);
+          int index = allProjects.indexOf(temp);
+          if (index != -1) {
+            projects.add(allProjects.remove(index));
+          }
         }
+
       }
 
     }

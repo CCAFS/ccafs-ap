@@ -33,13 +33,29 @@
       </result>
     </action>
     
-    <action name="ipIndicatorsByProject" class="org.cgiar.ccafs.ap.action.json.planning.IPIndicatorsByProjectAction">
+    <action name="ipIndicatorsByProject" class="org.cgiar.ccafs.ap.action.json.projects.IPIndicatorsByProjectAction">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
+    
+    
+        <action name="iPIndicatorsByIPPrograms" class="org.cgiar.ccafs.ap.action.json.projects.IPIndicatorsByIPPrograms">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
 
+
+
+   <action name="metadataByLink" class="org.cgiar.ccafs.ap.action.json.projects.MetadataByLink">
+      <result type="json">        
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
+    </action>
     <action name="institutionsByTypeAndCountry" class="org.cgiar.ccafs.ap.action.json.global.InstitutionsByFilterAction">
       <result type="json">        
         <param name="noCache">true</param>
@@ -54,21 +70,21 @@
       </result>
     </action>
     
-    <action name="planningIpGraph" class="org.cgiar.ccafs.ap.action.json.planning.ImpactPathwayComponentsAction">
+    <action name="planningIpGraph" class="org.cgiar.ccafs.ap.action.json.projects.ImpactPathwayComponentsAction">
       <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
     
-    <action name="deliverablesByType" class="org.cgiar.ccafs.ap.action.json.planning.DeliverablesSubTypeByTypeAction">
+    <action name="deliverablesByType" class="org.cgiar.ccafs.ap.action.json.projects.DeliverablesSubTypeByTypeAction">
       <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
     
-    <action name="mogsByOutcome" class="org.cgiar.ccafs.ap.action.json.planning.MogsByOutcomeAction">
+    <action name="mogsByOutcome" class="org.cgiar.ccafs.ap.action.json.projects.MogsByOutcomeAction">
       <result type="json">
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
@@ -89,14 +105,14 @@
       </result>
     </action>
     
-    <action name="coreProjects" class="org.cgiar.ccafs.ap.action.json.planning.CoreProjectsAction">
+    <action name="coreProjects" class="org.cgiar.ccafs.ap.action.json.projects.CoreProjectsAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
 
-    <action name="bilateralProjects" class="org.cgiar.ccafs.ap.action.json.planning.BilateralProjectsAction">
+    <action name="bilateralProjects" class="org.cgiar.ccafs.ap.action.json.projects.BilateralProjectsAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
@@ -105,21 +121,21 @@
     
     
     
-        <action name="coreProjectsBudget" class="org.cgiar.ccafs.ap.action.json.planning.CoreProjectsBudgetAction">
+        <action name="coreProjectsBudget" class="org.cgiar.ccafs.ap.action.json.projects.CoreProjectsBudgetAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
 
-    <action name="bilateralProjectsBudget" class="org.cgiar.ccafs.ap.action.json.planning.BilateralProjectsBudgetAction">
+    <action name="bilateralProjectsBudget" class="org.cgiar.ccafs.ap.action.json.projects.BilateralProjectsBudgetAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
       </result>
     </action>
 
-    <action name="bilateralCoFinancingProjects" class="org.cgiar.ccafs.ap.action.json.planning.BilateralCofinancingProjectsAction">
+    <action name="bilateralCoFinancingProjects" class="org.cgiar.ccafs.ap.action.json.projects.BilateralCofinancingProjectsAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>
@@ -128,8 +144,8 @@
   </package>
   
   <!-- JSON Set that are being used by planning only -->
-  <package name="json-planning" namespace="/planning" extends="json-default">
-    <action name="validateProjectPlanningSection" class="org.cgiar.ccafs.ap.action.json.planning.ValidateProjectPlanningSectionAction">
+  <package name="json-planning" namespace="/projects" extends="json-default">
+    <action name="validateProjectSection" class="org.cgiar.ccafs.ap.action.json.projects.ValidateProjectSectionAction">
       <result type="json">        
         <param name="noCache">true</param>
         <param name="excludeNullProperties">true</param>

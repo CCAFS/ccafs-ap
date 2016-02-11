@@ -184,7 +184,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.newDocument();
 
-    doc.setXmlVersion("1.0");
+    // doc.setXmlVersion("1.0");
     // Lets build the XMLS into the document.
     this.buildXML(doc);
 
@@ -246,7 +246,7 @@ public class PartnersXMLAction extends BaseAction implements Summary {
     }
 
     projects = new HashMap<String, Project>();
-    List<Project> projectList = projectManager.getAllProjectsBasicInfo();
+    List<Project> projectList = projectManager.getAllProjectsBasicInfo(this.getCycleName());
     for (Project project : projectList) {
       projects.put(String.valueOf(project.getId()), project);
     }

@@ -33,6 +33,12 @@ public final class APConstants {
   public static final String PLANNING_SECTION = "Planning";
   public static final String REPORTING_SECTION = "Reporting";
   public static final String PROGRAM_REQUEST_ID = "programID";
+  public static final String LIAISON_INSTITUTION_REQUEST_ID = "liaisonInstitutionID";
+  public static final String INDICATOR_TYPE_REQUEST_ID = "indicatorTypeID";
+  public static final String DELIVERABLE_FILE_LOCALLY_HOSTED = "Locally";
+  public static final String FLAGSHIP_REQUEST_ID = "flagshipID";
+  public static final String METADATA_REQUEST_ID = "metadataID";
+  public static final String PAGE_ID = "pageID";
   public static final String IP_ELEMENT_TYPE_REQUEST_ID = "elementTypeId";
   public static final String IP_ELEMENT_REQUEST_ID = "elementID";
   public static final String PROJECT_REQUEST_ID = "projectID";
@@ -46,6 +52,7 @@ public final class APConstants {
   public static final String DELIVERABLE_TYPE_REQUEST_ID = "deliverableTypeID";
   public static final String EDITABLE_REQUEST = "edit";
   public static final String DELIVERABLE_REQUEST_ID = "deliverableID";
+  public static final String HIGHLIGHT_REQUEST_ID = "highlightID";
   public static final String CCAFS_ORGANIZATION_IDENTIFIER = "XM-DAC-47015-CRP7";
   public static final String SECTION_NAME = "sectionName";
   public static final String CYCLE = "cycle";
@@ -96,6 +103,8 @@ public final class APConstants {
   public static final int ROLE_PROJECT_COORDINATOR = 9;
   public static final int ROLE_COORDINATING_UNIT = 6;
   public static final int ROLE_FINANCING_PROJECT = 10;
+  public static final int ROLE_REGIONAL_PROGRAM_LEADER = 11;
+  public static final int ROLE_FLAGSHIP_PROGRAM_LEADER = 12;
 
   // Location types identifiers
   public static final int LOCATION_TYPE_CLIMATE_SMART_VILLAGE = 10;
@@ -117,6 +126,18 @@ public final class APConstants {
 
   // Deliverable Sub-type Other
   public static final int DELIVERABLE_SUBTYPE_OTHER_ID = 38;
+
+  // Constants for the deliverables types
+  public static final int DELIVERABLE_TYPE_DATA = 1;
+  public static final int DELIVERABLE_TYPE_TOOLS = 7;
+  public static final int DELIVERABLE_TYPE_PUBLICATION = 3;
+  public static final int DELIVERABLE_TYPE_CASE_STUDIES = 5;
+  public static final int DELIVERABLE_SUBTYPE_JOURNAL = 21;
+  public static final int DELIVERABLE_SUBTYPE_DATA = 10;
+
+  // Deliverable open access statuses
+  public static final String OA_OPEN = "OPEN";
+  public static final String OA_LIMITED = "LIMITED";
 
   // Query parameter
   public static final String QUERY_PARAMETER = "q";

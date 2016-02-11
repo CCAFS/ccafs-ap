@@ -8,7 +8,7 @@
        <result name="input">/WEB-INF/summaries/boardSummaries.ftl</result>
      </action>
     
-    <action name="project" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectSummaryAction">
+    <action name="project" class="org.cgiar.ccafs.ap.action.summaries.projects.ProjectSummaryAction">
       <result name="success" type="stream">
           <param name="inputName">inputStream</param>
           <param name="contentType">${contentType}</param>
@@ -16,7 +16,7 @@
      </result>
     </action>
 
-    <action  name="expectedDeliverables" class="org.cgiar.ccafs.ap.action.summaries.planning.DeliverablePlanningSummaryAction">
+    <action  name="expectedDeliverables" class="org.cgiar.ccafs.ap.action.summaries.projects.DeliverablePlanningSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -24,7 +24,7 @@
       </result>
     </action>
 
-    <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.PartnersSummaryAction">
+    <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.PartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -32,7 +32,7 @@
       </result>
     </action>
    
-    <action name="searchTermsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.SearchTermsSummaryAction">
+    <action name="searchTermsSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.SearchTermsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
@@ -40,7 +40,7 @@
      </result>
     </action>
 
-    <action name="leadProjectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadProjectPartnersSummaryAction">
+    <action name="leadProjectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.LeadProjectPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
@@ -48,7 +48,7 @@
       </result>
     </action>
 
-    <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.LeadInstitutionPartnersSummaryAction">
+    <action name="leadProjectInstitutionsSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.LeadInstitutionPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">${contentType}</param>
@@ -56,7 +56,7 @@
       </result>
     </action>
 
-    <action name="budgetPerPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetPerPartnersSummaryAction">
+    <action name="budgetPerPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.BudgetPerPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -64,7 +64,7 @@
       </result>
     </action>
 
-    <action name="noLoggedInPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.NoLoggedInPartnersSummaryAction">
+    <action name="noLoggedInPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.NoLoggedInPartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -72,7 +72,7 @@
       </result>
     </action>
 
-    <action name="budgetByMOGsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.BudgetByMOGsSummaryAction">
+    <action name="budgetByMOGsSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.BudgetByMOGsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -80,7 +80,7 @@
       </result>
     </action>
 
-    <action name="impactPathwayContributionsSummary" class="org.cgiar.ccafs.ap.action.summaries.planning.ImpactPathwayContributionsSummaryAction">
+    <action name="impactPathwayContributionsSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.ImpactPathwayContributionsSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -106,7 +106,7 @@
       </result>
     </action> 
     
-         <action name="submmitedProjects" class="org.cgiar.ccafs.ap.action.summaries.planning.SubmissionProjectSummaryAction">
+    <action name="submmitedProjects" class="org.cgiar.ccafs.ap.action.summaries.projects.SubmissionProjectSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>
@@ -114,7 +114,7 @@
       </result>
     </action>
     
-          <action name="projectsNotModified" class="org.cgiar.ccafs.ap.action.summaries.planning.ProjectsNotModifiedSummaryAction">
+    <action name="projectsNotModified" class="org.cgiar.ccafs.ap.action.summaries.projects.ProjectsNotModifiedSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
         <param name="contentType">text/csv</param>

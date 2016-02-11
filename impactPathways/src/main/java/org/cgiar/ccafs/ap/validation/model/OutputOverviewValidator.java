@@ -30,8 +30,16 @@ public class OutputOverviewValidator extends BaseValidator {
   public OutputOverviewValidator() {
   }
 
+  public boolean isValidBriefSummary(String briefSummary) {
+    return (this.isValidString(briefSummary) && this.wordCount(briefSummary) <= 50) ? true : false;
+  }
+
   public boolean isValidExpectedAnnualContribution(String annualContribution) {
     return (this.isValidString(annualContribution) && this.wordCount(annualContribution) <= 50) ? true : false;
+  }
+
+  public boolean isValidGenderSummary(String genderSummary) {
+    return (this.isValidString(genderSummary) && this.wordCount(genderSummary) <= 50) ? true : false;
   }
 
   public boolean isValidSocialInclusionDimmension(String socialDimmension) {

@@ -72,12 +72,30 @@ public interface IPIndicatorDAO {
   public List<Map<String, String>> getIndicatorsByProjectID(int projectID);
 
   /**
+   * This method returns a list of 8 indicators
+   * in the database.
+   * 
+   * @return a list of maps with the information.
+   */
+  public List<Map<String, String>> getIndicatorsFlagShips();
+
+
+  /**
    * This method returns a list with all the indicators present
    * in the database.
    * 
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getIndicatorsList();
+
+  /**
+   * This method gets all the indicators related with the project identifier
+   * received as parameter.
+   * 
+   * @param projectID - Project identifier
+   * @return a list of ip indicators object with the information.
+   */
+  public List<Map<String, String>> getIndicatorsOtherContribution(int projectID, int region);
 
   /**
    * This method returns all the indicators related with the project

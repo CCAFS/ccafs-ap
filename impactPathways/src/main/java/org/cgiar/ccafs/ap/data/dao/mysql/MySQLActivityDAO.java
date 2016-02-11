@@ -152,6 +152,8 @@ public class MySQLActivityDAO implements ActivityDAO {
       if (rs.next()) {
         activityData.put("id", rs.getString("id"));
         activityData.put("title", rs.getString("title"));
+        activityData.put("activityStatus", rs.getString("activityStatus"));
+        activityData.put("activityProgress", rs.getString("activityProgress"));
         activityData.put("description", rs.getString("description"));
         if (rs.getDate("startDate") != null) {
           activityData.put("startDate", rs.getDate("startDate").toString());
@@ -194,6 +196,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activityData.put("title", rs.getString("title"));
         activityData.put("description", rs.getString("description"));
         activityData.put("leader_id", rs.getString("leader_id"));
+        activityData.put("activityStatus", rs.getString("activityStatus"));
+        activityData.put("activityProgress", rs.getString("activityProgress"));
         if (rs.getDate("startDate") != null) {
           activityData.put("startDate", rs.getDate("startDate").toString());
         }
@@ -236,7 +240,8 @@ public class MySQLActivityDAO implements ActivityDAO {
         activityData = new HashMap<>();
         activityData.put("id", rs.getString("id"));
         activityData.put("title", rs.getString("title"));
-
+        activityData.put("activityStatus", rs.getString("activityStatus"));
+        activityData.put("activityProgress", rs.getString("activityProgress"));
         activities.add(activityData);
       }
     } catch (SQLException e) {
@@ -256,9 +261,9 @@ public class MySQLActivityDAO implements ActivityDAO {
     if (activityData.get("id") == null) {
       // Insert new activity record
       query.append("INSERT INTO activities (project_id, title, description, startDate, endDate, leader_id, ");
-      query.append("modified_by, modification_justification) ");
-      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
-      values = new Object[8];
+      query.append("modified_by, modification_justification,activityStatus,activityProgress) ");
+      query.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?) ");
+      values = new Object[10];
       values[0] = projectID;
       values[1] = activityData.get("title");
       values[2] = activityData.get("description");
@@ -267,6 +272,8 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[5] = activityData.get("leader_id");
       values[6] = activityData.get("modified_by");
       values[7] = activityData.get("modification_justification");
+      values[8] = activityData.get("activityStatus");
+      values[9] = activityData.get("activityProgress");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
         LOG.error("A problem happened trying to add a new activity with id={}", activityData.get("id"));
@@ -274,9 +281,10 @@ public class MySQLActivityDAO implements ActivityDAO {
     } else {
       // update activity record
       query.append("UPDATE activities SET title = ?, description = ?, startDate = ?, endDate = ?, ");
-      query.append("leader_id = ?, modified_by = ?, modification_justification = ? ");
+      query
+        .append("leader_id = ?, modified_by = ?, modification_justification = ? ,activityStatus=?,activityProgress=? ");
       query.append("WHERE id = ? ");
-      values = new Object[8];
+      values = new Object[10];
       values[0] = activityData.get("title");
       values[1] = activityData.get("description");
       values[2] = activityData.get("startDate");
@@ -284,7 +292,10 @@ public class MySQLActivityDAO implements ActivityDAO {
       values[4] = activityData.get("leader_id");
       values[5] = activityData.get("modified_by");
       values[6] = activityData.get("modification_justification");
-      values[7] = activityData.get("id");
+      values[7] = activityData.get("activityStatus");
+      values[8] = activityData.get("activityProgress");
+
+      values[9] = activityData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the activity identified with the id = {}",

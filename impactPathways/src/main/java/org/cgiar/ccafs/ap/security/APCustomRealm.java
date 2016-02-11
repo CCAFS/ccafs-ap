@@ -148,73 +148,66 @@ public class APCustomRealm extends AuthorizingRealm {
     userID = (Integer) principals.getPrimaryPrincipal();
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(userID));
     List<Map<String, UserRole>> projectRoles = new ArrayList<>();
+    List<Integer> liaisonInstitutionIDs = new ArrayList<>();
 
     if (roles.size() == 0) {
       roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
     }
-
-
     // Get the roles general to the platform
     for (UserRole role : roles) {
-
-
-      if (config.isClosed() && !role.getId().equals(APConstants.ROLE_ADMIN)) {
-
-        roles.clear();
-        roles.add(userRoleManager.getUserRole(8)); // Getting the Guest Role.
-        authorizationInfo.addRole(userRoleManager.getUserRole(8).getAcronym());
-        break;
-      }
       authorizationInfo.addRole(role.getAcronym());
-
-
       switch (role.getId()) {
         case APConstants.ROLE_ADMIN:
           for (String permission : role.getPermissions()) {
-
             authorizationInfo.addStringPermission(permission);
           }
           break;
-
-
         case APConstants.ROLE_FINANCING_PROJECT:
-
-
           for (String permission : role.getPermissions()) {
             permission = permission.replace("projects:", "projects:*:");
             authorizationInfo.addStringPermission(permission);
-
           }
-
           break;
         case APConstants.ROLE_MANAGEMENT_LIAISON:
         case APConstants.ROLE_COORDINATING_UNIT:
-
           projectRoles.add(userRoleManager.getManagementLiaisonProjects(userID));
-
           break;
-
         case APConstants.ROLE_PROJECT_LEADER:
         case APConstants.ROLE_PROJECT_COORDINATOR:
-
-
           projectRoles.add(userRoleManager.getProjectLeaderProjects(userID));
           break;
-
-
         case APConstants.ROLE_CONTACT_POINT:
-
           projectRoles.add(userRoleManager.getContactPointProjects(userID));
+          liaisonInstitutionIDs.addAll(userRoleManager.getLiaisonInstitutionID(userID));
           break;
 
+        case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
+        case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+          liaisonInstitutionIDs.addAll(userRoleManager.getLiaisonInstitutionID(userID));
+          break;
       }
     }
-
+    boolean addPermission = true;
     // Adding the permissions for each role exactly as they come from the database:
     for (UserRole role : roles) {
-      authorizationInfo.addStringPermissions(role.getPermissions());
+      for (String myPermission : role.getPermissions()) {
+        addPermission = true;
+        if (myPermission.startsWith("planning:projects:")) {
+          if ((config.isPlanningClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+            addPermission = false;
+          }
+        }
+        if (myPermission.startsWith("reporting:projects:")) {
+          if ((config.isReportingClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+            addPermission = false;
+          }
+        }
+        if (addPermission) {
+          authorizationInfo.addStringPermission(myPermission);
+        }
+      }
     }
-    // Converting those general roles into specific for the projects where they are able to edit.
+    // Converting those general roles into specific for the PROJECTS where they are able to edit.
     for (Map<String, UserRole> mapRoles : projectRoles) {
       for (Map.Entry<String, UserRole> entry : mapRoles.entrySet()) {
         String projectID = entry.getKey();
@@ -227,11 +220,36 @@ public class APCustomRealm extends AuthorizingRealm {
           if (permission.contains(":projects:")) {
             permission = permission.replace("projects:", "projects:" + projectID + ":");
           }
-          authorizationInfo.addStringPermission(permission);
+
+          addPermission = true;
+          if (permission.startsWith("planning:projects:")) {
+            if ((config.isPlanningClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+              addPermission = false;
+            }
+          }
+
+          if (permission.startsWith("reporting:projects:")) {
+            if ((config.isReportingClosed() && !role.getId().equals(APConstants.ROLE_ADMIN))) {
+              addPermission = false;
+            }
+          }
+          if (addPermission) {
+            authorizationInfo.addStringPermission(permission);
+          }
           // }
         }
       }
     }
+    // Converting those general roles into specific for the SYNTHESIS where they are able to edit.
+    List<String> newPermissions = new ArrayList<>();
+    for (String permission : authorizationInfo.getStringPermissions()) {
+      for (int liaisonInstitutionID : liaisonInstitutionIDs) {
+        if (permission.startsWith("reporting:synthesis:")) {
+          newPermissions.add(permission.replace("synthesis:", "synthesis:" + liaisonInstitutionID + ":"));
+        }
+      }
+    }
+    authorizationInfo.addStringPermissions(newPermissions);
 
     if (!config.isClosed()) {
       // Getting the specific roles based on the table project_roles.
@@ -248,7 +266,6 @@ public class APCustomRealm extends AuthorizingRealm {
       }
     }
     return authorizationInfo;
-
   }
 
   @Override

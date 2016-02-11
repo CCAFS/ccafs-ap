@@ -59,9 +59,9 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
   }
 
   @Override
-  public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year) {
+  public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year, String cycle) {
     ComponentLesson lesson = new ComponentLesson();
-    Map<String, String> lessonData = lessonDAO.getProjectComponentLesson(projectID, componentName, year);
+    Map<String, String> lessonData = lessonDAO.getProjectComponentLesson(projectID, componentName, year, cycle);
 
     if (!lessonData.isEmpty()) {
       lesson.setId(Integer.parseInt(lessonData.get("id")));
@@ -74,7 +74,8 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
 
 
   @Override
-  public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification) {
+  public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification,
+    String cylce) {
     Map<String, Object> lessonData = new HashMap<>();
 
     if (lesson.getId() != -1) {
@@ -90,7 +91,7 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
     lessonData.put("created_by", user.getId());
     lessonData.put("modified_by", user.getId());
     lessonData.put("justification", justification);
-
+    lessonData.put("cycle", cylce);
     return lessonDAO.saveProjectComponentLesson(lessonData);
   }
 

@@ -46,7 +46,7 @@ public interface ProjectLessonsManager {
    * @param year
    * @return A ComponentLesson object with the information.
    */
-  public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year);
+  public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year, String cycle);
 
 
   /**
@@ -56,7 +56,9 @@ public interface ProjectLessonsManager {
    * @param project - The project to which belongs the lesson
    * @param user - The user who is making the change
    * @param justification
+   * @param cycle Planning or Reporting
    * @return true if the information was saved successfully. False otherwise.
    */
-  public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification);
+  public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification,
+    String cycle);
 }

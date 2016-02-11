@@ -59,6 +59,6 @@ public class SummaryBoardAction extends BaseAction {
 
   @Override
   public void prepare() {
-    allProjects = projectManager.getAllProjectsBasicInfo();
+    allProjects = projectManager.getAllProjectsBasicInfo(this.getCycleName());
   }
 }

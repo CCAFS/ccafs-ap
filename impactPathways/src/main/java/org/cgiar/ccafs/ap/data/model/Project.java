@@ -38,10 +38,21 @@ public class Project {
   public static final int EMAIL_SUBJECT_IDENTIFIER = 4;
 
   private int id;
+  private CrossCuttingContribution crossCutting;
+
   private String title;
+
+
   private String summary;
+  private List<ProjecteOtherContributions> otherContributions;
+
+
   private Date startDate;
+
+
   private Date endDate;
+
+
   private long created; // Timestamp number when the project was created
   private User owner;
   private List<IPProgram> regions; // The list of regions in which this project works with.
@@ -54,10 +65,25 @@ public class Project {
   private List<ComponentLesson> componentLessons;
   private ProjectPartner coordinator; // Project Coordinator.
   private List<Deliverable> deliverables; // Project research outputs - deliverables.
+  private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
+  private List<ProjectNextUser> nextUsers; // Project research outputs - deliverables.
+  private List<ProjectLeverage> leverages; // Project research outputs - deliverables.
+
+
+  private List<CasesStudies> caseStudies;
+
+
   private List<IPIndicator> indicators;
+
+
   private OtherContribution ipOtherContribution;
+
   private String leaderResponsabilities;
+
+
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
+
+
   private List<Project> linkedProjects;
   private List<Location> locations; // Project locations.
   private Map<String, ProjectOutcome> outcomes;
@@ -73,14 +99,43 @@ public class Project {
   private boolean bilateralContractRequired;
   private boolean workplanRequired;
   private Budget anualContribution;
+  /// Fields for Reporting
+
+  private String annualReportDonor;
+  private String leader;
 
 
   public Project() {
   }
 
-
   public Project(int id) {
     this.id = id;
+  }
+
+  /**
+   * Calculate the acumulative target
+   * 
+   * @return
+   */
+  public String calculateAcumulativeTarget(int year, IPIndicator id) {
+
+    int acumulative = 0;
+
+    for (IPIndicator indicators : this.getIndicators()) {
+      if (indicators.getYear() <= year && indicators.getParent().getId() == id.getParent().getId()) {
+        if (indicators.getTarget() != null) {
+          if (!indicators.getTarget().equals("")) {
+            try {
+              acumulative = acumulative + Integer.parseInt(indicators.getTarget());
+            } catch (NumberFormatException e) {
+              return "Can not be Calculated";
+            }
+          }
+        }
+      }
+
+    }
+    return String.valueOf(acumulative);
   }
 
   /**
@@ -120,7 +175,6 @@ public class Project {
     }
     return false;
   }
-
 
   /**
    * this method validates if the current project contributes to a given output (MOG).
@@ -189,6 +243,10 @@ public class Project {
     return allYears;
   }
 
+  public String getAnnualReportDonor() {
+    return annualReportDonor;
+  }
+
   public Budget getAnualContribution() {
     return anualContribution;
   }
@@ -226,6 +284,11 @@ public class Project {
     return budgets;
   }
 
+
+  public List<CasesStudies> getCaseStudies() {
+    return caseStudies;
+  }
+
   /**
    * This method gets the budget of a specific project that is co-financing the current one in a specific year.
    * 
@@ -245,6 +308,7 @@ public class Project {
     }
     return null;
   }
+
 
   /**
    * This method gets all the budgets from the projects that are co-financing the curren project.
@@ -334,6 +398,10 @@ public class Project {
     return new Date(created);
   }
 
+  public CrossCuttingContribution getCrossCutting() {
+    return crossCutting;
+  }
+
   public List<Deliverable> getDeliverables() {
     return deliverables;
   }
@@ -364,6 +432,9 @@ public class Project {
     return flagshipAcronym.toString();
   }
 
+  public List<ProjectHighligths> getHighlights() {
+    return highlights;
+  }
 
   public int getId() {
     return id;
@@ -395,7 +466,6 @@ public class Project {
   public List<IPIndicator> getIndicators() {
     return indicators;
   }
-
 
   /**
    * This method returns a list of project Indicators where its parent is the the indicator identified with the given
@@ -464,6 +534,7 @@ public class Project {
     return null;
   }
 
+
   /**
    * This method returns the project partner person who is leading the project.
    * 
@@ -486,22 +557,39 @@ public class Project {
     return leaderResponsabilities;
   }
 
+  public List<ProjectLeverage> getLeverages() {
+    return leverages;
+  }
 
   public LiaisonInstitution getLiaisonInstitution() {
     return liaisonInstitution;
   }
 
+
   public List<Project> getLinkedProjects() {
     return linkedProjects;
   }
+
 
   public List<Location> getLocations() {
     return locations;
   }
 
+
+  public List<ProjectNextUser> getNextUsers() {
+    return nextUsers;
+  }
+
+
+  public List<ProjecteOtherContributions> getOtherContributions() {
+    return otherContributions;
+  }
+
+
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
+
 
   /**
    * This method returns the output (MOG) represented with the given identifier.
@@ -520,6 +608,7 @@ public class Project {
     return null;
   }
 
+
   /**
    * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
    * 
@@ -535,6 +624,7 @@ public class Project {
     }
     return null;
   }
+
 
   public List<IPElement> getOutputs() {
     return outputs;
@@ -567,6 +657,7 @@ public class Project {
     }
     return null;
   }
+
 
   public User getOwner() {
     return owner;
@@ -629,18 +720,18 @@ public class Project {
     StringBuilder result = new StringBuilder();
 
     switch (typeCodification) {
-    // Standar identifier
+      // Standar identifier
       case Project.STANDAR_IDENTIFIER:
         result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
         result.append("-P");
         result.append(this.getId());
         break;
 
-        // PDF Identifier
+      // PDF Identifier
       case Project.PDF_IDENTIFIER_REPORT:
         // Acronym leader institution
         if (this.getLeader() != null && this.getLeader().getInstitution() != null
-        && this.getLeader().getInstitution().getAcronym() != null) {
+          && this.getLeader().getInstitution().getAcronym() != null) {
           result.append(this.getLeader().getInstitution().getAcronym() + "-");
         }
 
@@ -664,12 +755,12 @@ public class Project {
         result.append("_P" + this.getId());
         break;
 
-        // Excel Identifier
+      // Excel Identifier
       case Project.EXCEL_IDENTIFIER_REPORT:
         result.append("P" + this.getId());
         break;
 
-        // Email Subject Identifier
+      // Email Subject Identifier
       case Project.EMAIL_SUBJECT_IDENTIFIER:
         result.append("P" + this.getId());
         break;
@@ -687,6 +778,7 @@ public class Project {
   public Date getStartDate() {
     return startDate;
   }
+
 
   public List<Submission> getSubmissions() {
     return submissions;
@@ -841,7 +933,6 @@ public class Project {
     return false;
   }
 
-
   /**
    * Return if the project is new.
    * A project is new when it was created in the planning phase for the current year
@@ -852,6 +943,7 @@ public class Project {
   public boolean isNew(Date planningStartDate) {
     return this.getCreationDate().after(planningStartDate);
   }
+
 
   /**
    * This method validates if the project is already submitted or not.
@@ -879,13 +971,19 @@ public class Project {
     this.activities = activities;
   }
 
+  public void setAnnualReportDonor(String annualReportDonor) {
+    this.annualReportDonor = annualReportDonor;
+  }
+
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
   }
 
+
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
+
 
   public void setBilateralContractRequired(boolean bilateralContractRequired) {
     this.bilateralContractRequired = bilateralContractRequired;
@@ -894,6 +992,11 @@ public class Project {
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
   }
+
+  public void setCaseStudies(List<CasesStudies> caseStudies) {
+    this.caseStudies = caseStudies;
+  }
+
 
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
@@ -914,6 +1017,10 @@ public class Project {
     this.created = created;
   }
 
+  public void setCrossCutting(CrossCuttingContribution crossCutting) {
+    this.crossCutting = crossCutting;
+  }
+
   public void setDeliverables(List<Deliverable> deliverables) {
     this.deliverables = deliverables;
   }
@@ -930,6 +1037,10 @@ public class Project {
     this.isGlobal = isGlobal;
   }
 
+  public void setHighlights(List<ProjectHighligths> highlights) {
+    this.highlights = highlights;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -942,8 +1053,16 @@ public class Project {
     this.ipOtherContribution = ipOtherContribution;
   }
 
+  public void setLeader(String leader) {
+    this.leader = leader;
+  }
+
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
+  }
+
+  public void setLeverages(List<ProjectLeverage> leverages) {
+    this.leverages = leverages;
   }
 
   public void setLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
@@ -956,6 +1075,14 @@ public class Project {
 
   public void setLocations(List<Location> locations) {
     this.locations = locations;
+  }
+
+  public void setNextUsers(List<ProjectNextUser> nextUsers) {
+    this.nextUsers = nextUsers;
+  }
+
+  public void setOtherContributions(List<ProjecteOtherContributions> otherContributions) {
+    this.otherContributions = otherContributions;
   }
 
   public void setOutcomes(Map<String, ProjectOutcome> outcomes) {
@@ -993,6 +1120,7 @@ public class Project {
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
   }
+
 
   public void setSubmissions(List<Submission> submissions) {
     this.submissions = submissions;

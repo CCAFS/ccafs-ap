@@ -45,9 +45,11 @@ public class APModule implements Module {
     ToStringBuilder.setDefaultStyle(ToStringStyle.MULTI_LINE_STYLE);
 
     properties = new PropertiesManager();
+
     config = new APConfig(properties);
     LOG.info("----- DATABASE CONNECTION -----");
     LOG.info(properties.getPropertiesAsString(config.MYSQL_USER));
+
     LOG.info(properties.getPropertiesAsString(config.MYSQL_HOST));
     LOG.info(properties.getPropertiesAsString(config.MYSQL_DATABASE));
     LOG.info("----- RESOURCE PATH --------");

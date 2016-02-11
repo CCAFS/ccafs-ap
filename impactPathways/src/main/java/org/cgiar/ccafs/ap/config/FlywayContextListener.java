@@ -44,6 +44,8 @@ public class FlywayContextListener implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
+
+    System.out.println("entra al flyway");
     Flyway flyway = new Flyway();
     properties = new PropertiesManager();
 
@@ -74,6 +76,7 @@ public class FlywayContextListener implements ServletContextListener {
     // flyway.setValidateOnMigrate(false);
     flyway.setOutOfOrder(true);
     flyway.migrate();
+    System.out.println("Finaliza los listenrs");
 
   }
 

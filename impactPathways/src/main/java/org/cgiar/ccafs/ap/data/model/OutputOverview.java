@@ -28,13 +28,18 @@ public class OutputOverview {
   private IPElement output;
   private String expectedAnnualContribution;
   private String socialInclusionDimmension;
+  private String briefSummary;
+  private String summaryGender;
+
 
   public OutputOverview() {
   }
 
+
   public OutputOverview(int id) {
     this.id = id;
   }
+
 
   @Override
   public boolean equals(Object obj) {
@@ -43,6 +48,11 @@ public class OutputOverview {
       return v.id == this.id;
     }
     return false;
+  }
+
+
+  public String getBriefSummary() {
+    return briefSummary;
   }
 
   public String getExpectedAnnualContribution() {
@@ -61,6 +71,10 @@ public class OutputOverview {
     return socialInclusionDimmension;
   }
 
+  public String getSummaryGender() {
+    return summaryGender;
+  }
+
   public int getYear() {
     return year;
   }
@@ -68,6 +82,10 @@ public class OutputOverview {
   @Override
   public int hashCode() {
     return this.id;
+  }
+
+  public void setBriefSummary(String briefSummary) {
+    this.briefSummary = briefSummary;
   }
 
   public void setExpectedAnnualContribution(String expectedAnnualContribution) {
@@ -84,6 +102,10 @@ public class OutputOverview {
 
   public void setSocialInclusionDimmension(String socialInclusionDimmension) {
     this.socialInclusionDimmension = socialInclusionDimmension;
+  }
+
+  public void setSummaryGender(String summaryGender) {
+    this.summaryGender = summaryGender;
   }
 
   public void setYear(int year) {

@@ -17,6 +17,7 @@ package org.cgiar.ccafs.security;
 
 /**
  * @author Hernán David Carvajal
+ * @author Héctor Fabio Tobón R. - CIAT/CCAFS
  */
 
 public class Permission {
@@ -193,6 +194,11 @@ public class Permission {
    */
   public static final String PLANNING_PROJECT_DELIVERABLE_UPDATE = "planning:projects:deliverable:update";
 
+  /**
+   * Can update the reporting project highlight section
+   */
+  public static final String REPORTING_PROJECT_HIGHLIGHT_UPDATE = "reporting:projects:highlight:update";
+
   // --------------------------- End of Project outputs ---------------------------------
 
   // --------------------------- Project activities list---------------------------------
@@ -271,6 +277,22 @@ public class Permission {
   public static final String PLANNING_SUBMIT_BUTTON = "planning:projects:submitButton:*";
 
   // --------------------------- End Project Submit ---------------------------------
+
+  /*
+   * --------------------------------------------------------------
+   * PERMISSIONS APPLIED TO ALL THE REPORTNG SECTION
+   * --------------------------------------------------------------
+   */
+
+  /**
+   * Can update all the reporting section in project description.
+   */
+  public static final String REPORTING_PROJECT_DESCRIPTION_ALL = "reporting:projects:description:*";
+
+  /**
+   * Can update only the fields about the project status.
+   */
+  public static final String REPORTING_PROJECT_DESCRIPTION_STATUS = "reporting:projects:description:status";
 
   /*
    * --------------------------------------------------------------

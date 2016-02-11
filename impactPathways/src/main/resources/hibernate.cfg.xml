@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+    
+    <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.search.autoregister_listeners">false</property>
+    <property name="hibernate.validator.apply_to_ddl">false</property>
+    <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+
+    
+    <!-- *** Hibernate C3P0 Connection Pool EXTRA Configuration *** -->
+    <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+    
+    <property name="hibernate.c3p0.max_size">30</property>
+    <property name="hibernate.c3p0.acquire_increment">1</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.timeout">10800</property>
+    <property name="hibernate.c3p0.unreturnedConnectionTimeout">30</property>
+    <property name="hibernate.c3p0.debugUnreturnedConnectionStackTraces">true</property>
+    <property name="hibernate.c3p0.initialPoolSize">5</property> 
+    
+    
+    
+    <!-- *********************************************************** -->
+    
+    <!-- Model Mappings -->
+    <mapping resource="xmls/ProjectHighligthsCountry.hbm.xml" />
+    <mapping resource="xmls/ProjectHighligths.hbm.xml" />
+    <mapping resource="xmls/ProjectHighligthsTypes.hbm.xml" />
+    <mapping resource="xmls/DeliverablesRanking.hbm.xml" />
+    <mapping resource="xmls/CrossCuttingContribution.hbm.xml" />
+    <mapping resource="xmls/OtherContributions.hbm.xml" />
+    <mapping resource="xmls/CasesStudies.hbm.xml" />
+    <mapping resource="xmls/CaseStudieIndicators.hbm.xml" />
+    <mapping resource="xmls/DeliverableDissemination.hbm.xml" />
+    <mapping resource="xmls/DeliverableDataSharing.hbm.xml" />
+    <mapping resource="xmls/DeliverableDataSharingFile.hbm.xml" />
+    <mapping resource="xmls/DeliverablePublicationMetadata.hbm.xml" />
+    <mapping resource="xmls/ProjectNextUser.hbm.xml" />
+    <mapping resource="xmls/ProjectLeverage.hbm.xml" />
+    <mapping resource="xmls/DeliverableMetadataElements.hbm.xml" />
+    <mapping resource="xmls/MetadataElements.hbm.xml" />
+  </session-factory>
+</hibernate-configuration>
+
+   

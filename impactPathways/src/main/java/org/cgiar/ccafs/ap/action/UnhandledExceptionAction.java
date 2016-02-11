@@ -13,8 +13,8 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.action;
 
-import org.cgiar.ccafs.ap.util.SendMail;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.SendMail;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

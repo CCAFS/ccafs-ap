@@ -1,5 +1,4 @@
 [#ftl]
-[#compress]
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +17,7 @@
     [#-- Google webmaster tools tag --]
     <meta name="google-site-verification" content="uDt49ijI7uKxK60GeIDi2N1DedHr3hsomqFzE7ngwqw" />
     [#-- TODO - Still need to integrate google verification for google webmaster tools --] 
-    <title>${title!"CCAFS Activity Planning"}</title> 
+    <title>${(title)!"CCAFS Activity Planning"}</title> 
     [#-- This file must be called before close the body tag in order to allow first the page load --]
 	  [#-- import js files of external libraries--]
   	<!-- Support for lower versions of IE 9 -->
@@ -59,6 +58,12 @@
         [#if libraryName="select2"]          
           <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/select2-3.5.4/select2.custom.css" />
         [/#if]
+        [#if libraryName="star-rating"]
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/star-rating/jquery.rating.css" />
+        [/#if]
+        [#if libraryName="dropzone"]          
+          <link rel="stylesheet" type="text/css" href="${baseUrl}/js/libs/dropzone/css/dropzone.css" />
+        [/#if]
   	 [/#list]
   	[/#if]
     [#-- Second, import global javascripts and templates. --]
@@ -66,8 +71,9 @@
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/custom-forms-min.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/global.css" />
     <link rel="stylesheet" type="text/css" href="${baseUrl}/css/libs/animate/animate.min.css" />
-    <!--[if lte IE 7]>
-      <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie7.css"/> 
+    <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/onoffswitch.css" />
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" type="text/css" href="${baseUrl}/css/global/ie8.css"/> 
     <![endif]-->
     [#-- import the custom CSS --]
     [#if customCSS??]
@@ -76,4 +82,3 @@
     [#-- import the JS files --]
     [#include "/WEB-INF/global/pages/js-imports.ftl"]
   </head>
-  [/#compress]

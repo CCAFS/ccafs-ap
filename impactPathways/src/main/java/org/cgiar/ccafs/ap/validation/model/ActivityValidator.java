@@ -49,8 +49,11 @@ public class ActivityValidator extends BaseValidator {
     return startDate != null;
   }
 
+  public boolean isValidStatus(int status) {
+    return !(status == -1 || status == 0);
+  }
+
   public boolean isValidTitle(String title) {
     return (this.isValidString(title) && this.wordCount(title) <= 15) ? true : false;
   }
-
 }
