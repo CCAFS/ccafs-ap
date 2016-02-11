@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.MigrationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,16 +57,14 @@ public class FlywayContextListener implements ServletContextListener {
      * flyway.setBaselineVersion(MigrationVersion.fromVersion("3.0"));
      * flyway.baseline();
      * }
+     * // Show the changes to be applied
+     * LOG.info("-------------------------------------------------------------");
+     * for (MigrationInfo i : flyway.info().all()) {
+     * LOG.info("migrate task: " + i.getVersion() + " : " + i.getDescription() + " from file: " + i.getScript()
+     * + " with state: " + i.getState());
+     * }
+     * LOG.info("-------------------------------------------------------------");
      */
-
-    // Show the changes to be applied
-    LOG.info("-------------------------------------------------------------");
-    for (MigrationInfo i : flyway.info().all()) {
-      LOG.info("migrate task: " + i.getVersion() + " : " + i.getDescription() + " from file: " + i.getScript()
-        + " with state: " + i.getState());
-    }
-    LOG.info("-------------------------------------------------------------");
-
     // Migrate
     // flyway.clean();
     // flyway.validate();
