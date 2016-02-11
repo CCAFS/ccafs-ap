@@ -179,15 +179,18 @@ public class ProjectCrossCuttingAction extends BaseAction {
 
   @Override
   public String save() {
-    if (file != null) {
-      FileManager.deleteFile(this.getCrossCuttingAbsolutePath() + contribution.getFile());
-      FileManager.copyFile(file, this.getCrossCuttingAbsolutePath() + fileFileName);
-      project.getCrossCutting().setFile(fileFileName);
+    if (this.hasProjectPermission("update", project.getId())) {
+      if (file != null) {
+        FileManager.deleteFile(this.getCrossCuttingAbsolutePath() + contribution.getFile());
+        FileManager.copyFile(file, this.getCrossCuttingAbsolutePath() + fileFileName);
+        project.getCrossCutting().setFile(fileFileName);
+      }
+      this.saveProjectLessons(project.getId());
+      crossManager.saveCrossCuttingContribution(projectID, project.getCrossCutting(), this.getCurrentUser(),
+        this.getJustification());
+      return SUCCESS;
     }
-    this.saveProjectLessons(project.getId());
-    crossManager.saveCrossCuttingContribution(projectID, project.getCrossCutting(), this.getCurrentUser(),
-      this.getJustification());
-    return SUCCESS;
+    return NOT_AUTHORIZED;
   }
 
 

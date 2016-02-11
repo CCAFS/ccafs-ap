@@ -176,41 +176,46 @@ public class ProjectLeveragesAction extends BaseAction {
 
   @Override
   public String save() {
-    if (leveragesPreview != null) {
-      for (ProjectLeverage projectLeverage : leveragesPreview) {
-        if (!project.getLeverages().contains(projectLeverage)) {
-          projectLeverageManager.deleteProjectLeverage(projectLeverage.getId(), this.getCurrentUser(),
-            this.getJustification());
+
+    if (this.hasProjectPermission("update", project.getId())) {
+      if (leveragesPreview != null) {
+        for (ProjectLeverage projectLeverage : leveragesPreview) {
+          if (!project.getLeverages().contains(projectLeverage)) {
+            projectLeverageManager.deleteProjectLeverage(projectLeverage.getId(), this.getCurrentUser(),
+              this.getJustification());
+          }
         }
       }
-    }
 
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
 
-    for (ProjectLeverage projectLeverage : project.getLeverages()) {
+      for (ProjectLeverage projectLeverage : project.getLeverages()) {
 
-      // projectLeverage.setInstitution(projectLeverage.getMyInstitution().getId());
-      try {
-        projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
-        projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));
-      } catch (ParseException e) {
-        e.printStackTrace();
+        // projectLeverage.setInstitution(projectLeverage.getMyInstitution().getId());
+        try {
+          projectLeverage.setStartDate(dateformatter.parse(projectLeverage.getStartDateText()));
+          projectLeverage.setEndDate(dateformatter.parse(projectLeverage.getEndDateText()));
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+        projectLeverage.setProjectId(projectID);
+        projectLeverageManager.saveProjectLeverage(projectID, projectLeverage, this.getCurrentUser(),
+          this.getJustification());
       }
-      projectLeverage.setProjectId(projectID);
-      projectLeverageManager.saveProjectLeverage(projectID, projectLeverage, this.getCurrentUser(),
-        this.getJustification());
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
+      return SUCCESS;
     }
-    // Get the validation messages and append them to the save message
-    Collection<String> messages = this.getActionMessages();
-    if (!messages.isEmpty()) {
-      String validationMessage = messages.iterator().next();
-      this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + validationMessage);
-    } else {
-      this.addActionMessage(this.getText("saving.saved"));
-    }
-    return SUCCESS;
+    return NOT_AUTHORIZED;
   }
+
 
   public void setProject(Project project) {
     this.project = project;

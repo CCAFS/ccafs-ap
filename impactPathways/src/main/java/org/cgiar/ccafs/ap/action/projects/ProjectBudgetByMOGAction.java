@@ -209,12 +209,10 @@ public class ProjectBudgetByMOGAction extends BaseAction {
 
       bilateralBudgetByYear = budgetManager.calculateProjectBudgetByTypeAndYear(projectID, bilateralBudgetType, year);
 
-      ccafsGenderPercentage =
-        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, ccafsBudgetType,
-          project.isCoFundedProject() || project.isCoreProject());
-      bilateralGenderPercentage =
-        budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year, bilateralBudgetType,
-          project.isCoFundedProject() || project.isCoreProject());
+      ccafsGenderPercentage = budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year,
+        ccafsBudgetType, project.isCoFundedProject() || project.isCoreProject());
+      bilateralGenderPercentage = budgetManager.calculateTotalGenderPercentageByYearAndType(projectID, year,
+        bilateralBudgetType, project.isCoFundedProject() || project.isCoreProject());
 
       if (!allYears.contains(new Integer(year))) {
         year = allYears.get(0);
@@ -231,7 +229,7 @@ public class ProjectBudgetByMOGAction extends BaseAction {
   @Override
   public String save() {
     boolean success = false;
-    if (securityContext.canUpdateProjectBudgetByMOG(projectID)) {
+    if (this.hasProjectPermission("update", project.getId())) {
 
       success = budgetByMogManager.saveProjectOutputsBudget(project, this.getCurrentUser(), this.getJustification());
 

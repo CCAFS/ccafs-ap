@@ -122,24 +122,27 @@ public class ProjectNextUsersAction extends BaseAction {
 
   @Override
   public String save() {
-    projectNextUserManager.deleteProjectNextUserList(project.getNextUsers(), project, this.getCurrentUser(),
-      this.getJustification());
-
-    for (ProjectNextUser projectNextUser : project.getNextUsers()) {
-      projectNextUser.setProjectId(projectID);
-      projectNextUserManager.saveProjectNextUser(projectID, projectNextUser, this.getCurrentUser(),
+    if (this.hasProjectPermission("update", project.getId())) {
+      projectNextUserManager.deleteProjectNextUserList(project.getNextUsers(), project, this.getCurrentUser(),
         this.getJustification());
+
+      for (ProjectNextUser projectNextUser : project.getNextUsers()) {
+        projectNextUser.setProjectId(projectID);
+        projectNextUserManager.saveProjectNextUser(projectID, projectNextUser, this.getCurrentUser(),
+          this.getJustification());
+      }
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
+      return SUCCESS;
     }
-    // Get the validation messages and append them to the save message
-    Collection<String> messages = this.getActionMessages();
-    if (!messages.isEmpty()) {
-      String validationMessage = messages.iterator().next();
-      this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + validationMessage);
-    } else {
-      this.addActionMessage(this.getText("saving.saved"));
-    }
-    return SUCCESS;
+    return NOT_AUTHORIZED;
   }
 
   public void setProjectID(int projectID) {

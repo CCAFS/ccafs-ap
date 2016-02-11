@@ -266,56 +266,57 @@ public class ProjectHighlightAction extends BaseAction {
   @Override
   public String save() {
 
+    if (this.hasProjectPermission("update", project.getId())) {
+      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+      // highlight.setStartDate(dateformatter.parse(dateformatter.format(highlight.getStartDate())));
 
-    DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-    // highlight.setStartDate(dateformatter.parse(dateformatter.format(highlight.getStartDate())));
+      try {
+        highlight.setStartDate(dateformatter.parse(highlight.getStartDateText()));
+        highlight.setEndDate(dateformatter.parse(highlight.getEndDateText()));
+      } catch (ParseException e) {
+        LOG.error(e.getMessage());
+      }
+      List<ProjectHighligthsTypes> actualTypes = new ArrayList<>();
+      for (String type : highlight.getTypesids()) {
+        ProjectHighligthsTypes typeHigh = new ProjectHighligthsTypes();
+        typeHigh.setIdType(Integer.parseInt(type));
+        typeHigh.setProjectHighligths(highlight);
+        actualTypes.add(typeHigh);
 
-    try {
-      highlight.setStartDate(dateformatter.parse(highlight.getStartDateText()));
-      highlight.setEndDate(dateformatter.parse(highlight.getEndDateText()));
-    } catch (ParseException e) {
-      LOG.error(e.getMessage());
+
+      }
+      List<ProjectHighligthsCountry> actualcountries = new ArrayList<>();
+      for (Integer countries : highlight.getCountriesIds()) {
+        ProjectHighligthsCountry countryHigh = new ProjectHighligthsCountry();
+        countryHigh.setIdCountry(countries);
+        countryHigh.setProjectHighligths(highlight);
+        actualcountries.add(countryHigh);
+      }
+
+
+      if (file != null) {
+        FileManager.deleteFile(this.getHightlightImagePath() + highlight.getPhoto());
+        FileManager.copyFile(file, this.getHightlightImagePath() + fileFileName);
+        highlight.setPhoto(fileFileName);
+      }
+
+
+      highlight.setProjectId(new Long(project.getId() + ""));
+      highlight.setProjectHighligthsTypeses(new HashSet<>(actualTypes));
+      highlight.setProjectHighligthsCountries(new HashSet<>(actualcountries));
+      highLightManager.saveHighLight(project.getId(), highlight, this.getCurrentUser(), this.getJustification());
+      // Get the validation messages and append them to the save message
+      Collection<String> messages = this.getActionMessages();
+      if (!messages.isEmpty()) {
+        String validationMessage = messages.iterator().next();
+        this.setActionMessages(null);
+        this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      } else {
+        this.addActionMessage(this.getText("saving.saved"));
+      }
+      return SUCCESS;
     }
-    List<ProjectHighligthsTypes> actualTypes = new ArrayList<>();
-    for (String type : highlight.getTypesids()) {
-      ProjectHighligthsTypes typeHigh = new ProjectHighligthsTypes();
-      typeHigh.setIdType(Integer.parseInt(type));
-      typeHigh.setProjectHighligths(highlight);
-      actualTypes.add(typeHigh);
-
-
-    }
-    List<ProjectHighligthsCountry> actualcountries = new ArrayList<>();
-    for (Integer countries : highlight.getCountriesIds()) {
-      ProjectHighligthsCountry countryHigh = new ProjectHighligthsCountry();
-      countryHigh.setIdCountry(countries);
-      countryHigh.setProjectHighligths(highlight);
-      actualcountries.add(countryHigh);
-    }
-
-
-    if (file != null) {
-      FileManager.deleteFile(this.getHightlightImagePath() + highlight.getPhoto());
-      FileManager.copyFile(file, this.getHightlightImagePath() + fileFileName);
-      highlight.setPhoto(fileFileName);
-    }
-
-
-    highlight.setProjectId(new Long(project.getId() + ""));
-    highlight.setProjectHighligthsTypeses(new HashSet<>(actualTypes));
-    highlight.setProjectHighligthsCountries(new HashSet<>(actualcountries));
-    highLightManager.saveHighLight(project.getId(), highlight, this.getCurrentUser(), this.getJustification());
-    // Get the validation messages and append them to the save message
-    Collection<String> messages = this.getActionMessages();
-    if (!messages.isEmpty()) {
-      String validationMessage = messages.iterator().next();
-      this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + validationMessage);
-    } else {
-      this.addActionMessage(this.getText("saving.saved"));
-    }
-    return SUCCESS;
-
+    return NOT_AUTHORIZED;
   }
 
   public void setContentType(String contentType) {

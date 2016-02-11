@@ -79,7 +79,8 @@ public class ProjectBudgetsAction extends BaseAction {
   @Inject
   public ProjectBudgetsAction(APConfig config, BudgetManager budgetManager, BudgetOverheadManager overheadManager,
     ProjectBudgetValidator validator, ProjectPartnerManager projectPartnerManager,
-    ProjectCofinancingLinkageManager linkedProjectManager, ProjectManager projectManager, HistoryManager historyManager) {
+    ProjectCofinancingLinkageManager linkedProjectManager, ProjectManager projectManager,
+    HistoryManager historyManager) {
     super(config);
     this.budgetManager = budgetManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -302,7 +303,7 @@ public class ProjectBudgetsAction extends BaseAction {
 
   @Override
   public String save() {
-    if (securityContext.canUpdateProjectBudget(projectID)) {
+    if (this.hasProjectPermission("update", project.getId())) {
       boolean success = true, saved = false;
 
 
@@ -365,8 +366,8 @@ public class ProjectBudgetsAction extends BaseAction {
         p.setAnualContribution(this.getCofinancingBudget(projectID, p.getId(), year));
         if (p.getAnualContribution() != null) {
           if (p.getAnualContribution().getId() > 0) {
-            budgetManager
-              .deleteBudget(p.getAnualContribution().getId(), this.getCurrentUser(), this.getJustification());
+            budgetManager.deleteBudget(p.getAnualContribution().getId(), this.getCurrentUser(),
+              this.getJustification());
           }
 
         }
@@ -397,9 +398,8 @@ public class ProjectBudgetsAction extends BaseAction {
             } catch (Exception e) {
 
             }
-            saved =
-              budgetManager.saveBudget(cofinancingProject.getId(), linkedProject.getAnualContribution(),
-                this.getCurrentUser(), this.getJustification());
+            saved = budgetManager.saveBudget(cofinancingProject.getId(), linkedProject.getAnualContribution(),
+              this.getCurrentUser(), this.getJustification());
           }
 
         }

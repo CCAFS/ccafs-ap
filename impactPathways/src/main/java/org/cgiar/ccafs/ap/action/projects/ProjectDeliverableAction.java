@@ -366,7 +366,7 @@ public class ProjectDeliverableAction extends BaseAction {
     // Getting the project
     this.getSession().put("indexTab", indexTab);
     project = projectManager.getProjectFromDeliverableId(deliverableID);
-    if (securityContext.canUpdateProjectDeliverables(project.getId())) {
+    if (this.hasProjectPermission("update", project.getId())) {
       if (file != null) {
         FileManager.deleteFile(this.getRankingPath() + deliverable.getRanking().getProcessDataFile());
         FileManager.copyFile(file, this.getRankingPath() + fileFileName);

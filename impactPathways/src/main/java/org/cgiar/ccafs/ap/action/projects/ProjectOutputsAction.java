@@ -148,7 +148,7 @@ public class ProjectOutputsAction extends BaseAction {
   @Override
   public String save() {
     boolean success = true;
-    if (securityContext.canUpdateProjectOverviewMOGs(projectID)) {
+    if (this.hasProjectPermission("update", project.getId())) {
 
       if (!this.isNewProject()) {
 
