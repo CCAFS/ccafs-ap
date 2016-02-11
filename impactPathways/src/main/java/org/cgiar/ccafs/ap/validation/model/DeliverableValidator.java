@@ -62,7 +62,7 @@ public class DeliverableValidator extends BaseValidator {
   }
 
   public boolean isValidStatus(int status) {
-    return (status != -1);
+    return (status > 0);
   }
 
   public boolean isValidTitle(String title) {

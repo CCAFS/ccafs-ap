@@ -21,9 +21,8 @@ public enum SectionStatusEnum {
 
   DESCRIPTION("description"), PARTNERS("partners"), LOCATIONS("locations"), OUTCOMES("outcomes"),
   CCAFSOUTCOMES("ccafsOutcomes"), OTHERCONTRIBUTIONS("otherContributions"), OUTPUTS("outputs"),
-  DELIVERABLESLIST("deliverablesList"), ACTIVITIES("activities"), CROSSCUTTING("crossCutting"), BUDGET("budget"),
-  BUDGETBYMOG("budgetByMog"), NEXTUSERS("nextUsers"), HIGHLIGHT("highlight"), CASESTUDIES("caseStudies"),
-  HIGHLIGHTS("highlights"), LEVERAGES("leverages");
+  DELIVERABLESLIST("deliverablesList"), ACTIVITIES("activities"), BUDGET("budget"), BUDGETBYMOG("budgetByMog"),
+  NEXTUSERS("nextUsers"), CASESTUDIES("caseStudies"), HIGHLIGHTS("highlights"), LEVERAGES("leverages");
 
   private String status;
 
