@@ -351,6 +351,7 @@ public class ProjectDeliverableAction extends BaseAction {
     }
     try {
       indexTab = Integer.parseInt(this.getSession().get("indexTab").toString());
+      this.getSession().remove("indexTab");
     } catch (Exception e) {
       indexTab = 0;
     }
