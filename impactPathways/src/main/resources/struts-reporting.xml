@@ -55,6 +55,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">crpIndicators</param>
         <param name="liaisonInstitutionID">${liaisonInstitutionID}</param>
+        <param name="edit">true</param>
       </result>
     </action>
   </package>
@@ -70,6 +71,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">description</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">partners</param>
@@ -88,6 +90,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">partners</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">locations</param>
@@ -104,6 +107,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">locations</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">outcomes</param>
@@ -121,7 +125,8 @@
       <result name="input">/WEB-INF/projects/projectOutcomes.ftl</result>		
       <result name="success" type="redirectAction">		
         <param name="actionName">outcomes</param>		
-        <param name="projectID">${project.id}</param>		
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">ccafsOutcomes</param>
@@ -137,7 +142,8 @@
       <result name="input">/WEB-INF/projects/projectCCAFSOutcomes.ftl</result>   
       <result name="success" type="redirectAction">   
         <param name="actionName">ccafsOutcomes</param>    
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">otherContributions</param>
@@ -149,23 +155,12 @@
       </result>
     </action>
     
-    <action name="crossCutting" class="org.cgiar.ccafs.ap.action.projects.ProjectCrossCuttingAction">
-      <result name="input">/WEB-INF/projects/projectCrossCutting.ftl</result>   
-      <result name="success" type="redirectAction">   
-        <param name="actionName">crossCutting</param>    
-        <param name="projectID">${project.id}</param>   
-      </result> 
-      <result name="cancel" type="redirectAction">
-        <param name="actionName">crossCutting</param>
-        <param name="projectID">${project.id}</param>
-      </result>
-    </action>
-
     <action name="otherContributions" class="org.cgiar.ccafs.ap.action.projects.ProjectIPOtherContributionAction">
       <result name="input">/WEB-INF/projects/projectOtherContribution.ftl</result>
       <result name="success" type="redirectAction">   
         <param name="actionName">otherContributions</param>
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">outputs</param>
@@ -181,7 +176,8 @@
       <result name="input">/WEB-INF/projects/projectCaseStudies.ftl</result>   
       <result name="success" type="redirectAction">   
         <param name="actionName">"caseStudies"</param>    
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result> 
       <result name="cancel" type="redirectAction">
         <param name="actionName">"caseStudies"</param>
@@ -195,7 +191,8 @@
       <result name="input">/WEB-INF/projects/projectOutputs.ftl</result>
       <result name="success" type="redirectAction">   
         <param name="actionName">outputs</param>
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">deliverablesList</param>
@@ -239,7 +236,7 @@
       </result>
     </action>
     
-        <action name="deleteHighLight" method="delete" class="org.cgiar.ccafs.ap.action.projects.ProjectHighListAction">
+    <action name="deleteHighLight" method="delete" class="org.cgiar.ccafs.ap.action.projects.ProjectHighListAction">
       <result name="success" type="redirectAction">
         <param name="namespace">/reporting/projects</param>
         <param name="actionName">highlights</param>
@@ -253,6 +250,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">deliverable</param>
         <param name="deliverableID">${deliverable.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">highlights</param>
@@ -268,7 +266,8 @@
       <result name="input">/WEB-INF/projects/projectNextUsers.ftl</result>
        <result name="success" type="redirectAction">   
         <param name="actionName">"nextUsers"</param>    
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>  
+        <param name="edit">true</param> 
       </result> 
       <result name="cancel" type="redirectAction">
         <param name="actionName">"nextUsers"</param>
@@ -281,14 +280,15 @@
     </action>
     
     <action name="highlight" class="org.cgiar.ccafs.ap.action.projects.ProjectHighlightAction">
-         <interceptor-ref name="projectStackHighlights" />
-    <interceptor-ref name="defaultStack">
-    <param name="fileUpload.allowedTypes">image/bmp,image/gif,image/jpeg,image/png</param>
- </interceptor-ref>
-     <result name="input">/WEB-INF/projects/projectHighlight.ftl</result>
+      <interceptor-ref name="projectStackHighlights" />
+      <interceptor-ref name="defaultStack">
+        <param name="fileUpload.allowedTypes">image/bmp,image/gif,image/jpeg,image/png</param>
+      </interceptor-ref>
+      <result name="input">/WEB-INF/projects/projectHighlight.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">highlight</param>
         <param name="highlightID">${highlight.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="cancel" type="redirectAction">
         <param name="actionName">highlight</param>
@@ -310,6 +310,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">activities</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">budget</param>
@@ -327,7 +328,8 @@
       <result name="input">/WEB-INF/projects/projectLeverages.ftl</result>
       <result name="success" type="redirectAction">
         <param name="actionName">leverages</param>
-        <param name="projectID">${project.id}</param> 
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="cancel" type="redirectAction">
         <param name="actionName">leverages</param>

@@ -19,7 +19,7 @@ package org.cgiar.ccafs.ap.data.model;
 public enum ChannelEnum {
 
 
-  OTHER("other", "Other"), CGSPACE("cgspace", "CGSpace"), AGTRIALS("agtrials", "AgTrials");
+  CGSPACE("cgspace", "CGSpace"), OTHER("other", "Other");
 
 
   private String id;

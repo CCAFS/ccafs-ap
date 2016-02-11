@@ -12,29 +12,23 @@
 	  </thead>
     <tbody>
       [#list projects as project]
+        [#assign projectURL][@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url][/#assign]
     		<tr>  		  
     		  [#-- ID --]
           <td class="projectId">
-            <a href="[@s.url namespace=namespace action='description' includeParams='get'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-              P${project.id}
-            </a>
+            <a href="${projectURL}">P${project.id}</a>
           </td>
           [#-- Project Title --]
           <td class="left"> 
             [#if project.title?has_content]
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
-              title="${project.title}">
-              [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
+              <a href="${projectURL}" title="${project.title}">[#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
             [#else]
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
-                [@s.text name="preplanning.projects.title.none" /]
-              </a>
+              <a href="${projectURL}">[@s.text name="preplanning.projects.title.none" /]</a>
             [/#if]
           </td>
+          [#-- Project type --]
           <td>
-          <center>
-            [@s.text name="${project.type}" /]
-          </center>
+          <center>[@s.text name="${project.type}" /]</center>
           </td>
         </tr>  
       [/#list]

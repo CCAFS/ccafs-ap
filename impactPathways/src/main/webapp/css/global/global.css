@@ -3891,7 +3891,9 @@ margin: 0;}
 }
 
 #licenses-examples{
-  
+  color: #808080;
+  border: 1px dashed #E2E2E2;
+  padding: 10px;
 }
 
 #licenses-examples ul{

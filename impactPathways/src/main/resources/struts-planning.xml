@@ -62,6 +62,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">description</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">partners</param>
@@ -80,6 +81,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">partners</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">locations</param>
@@ -96,6 +98,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">locations</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">outcomes</param>
@@ -113,7 +116,8 @@
       <result name="input">/WEB-INF/projects/projectOutcomes.ftl</result>		
       <result name="success" type="redirectAction">		
         <param name="actionName">outcomes</param>		
-        <param name="projectID">${project.id}</param>		
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">ccafsOutcomes</param>
@@ -129,7 +133,8 @@
       <result name="input">/WEB-INF/projects/projectCCAFSOutcomes.ftl</result>   
       <result name="success" type="redirectAction">   
         <param name="actionName">ccafsOutcomes</param>    
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param> 
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">otherContributions</param>
@@ -145,7 +150,8 @@
       <result name="input">/WEB-INF/projects/projectOtherContribution.ftl</result>
       <result name="success" type="redirectAction">   
         <param name="actionName">otherContributions</param>
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">outputs</param>
@@ -163,7 +169,8 @@
       <result name="input">/WEB-INF/projects/projectOutputs.ftl</result>
       <result name="success" type="redirectAction">   
         <param name="actionName">outputs</param>
-        <param name="projectID">${project.id}</param>   
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">deliverablesList</param>
@@ -203,6 +210,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">deliverable</param>
         <param name="deliverableID">${deliverable.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">impactPathway</param>
@@ -230,6 +238,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">activities</param>
         <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">budget</param>
@@ -249,6 +258,7 @@
         <param name="actionName">budget</param>
         <param name="projectID">${project.id}</param>
         <param name="year">${year}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">budgetByMog</param>
@@ -266,6 +276,7 @@
         <param name="actionName">budgetByMog</param>
         <param name="projectID">${project.id}</param>
         <param name="year">${targetYear}</param>
+        <param name="edit">true</param>
       </result>
       <result name="next" type="redirectAction">
         <param name="actionName">projectsList</param>
