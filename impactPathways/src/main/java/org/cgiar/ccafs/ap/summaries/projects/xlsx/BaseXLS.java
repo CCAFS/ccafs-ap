@@ -13,7 +13,7 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafs.ap.summaries.planning.xlsx;
+package org.cgiar.ccafs.ap.summaries.projects.xlsx;
 
 
 import org.cgiar.ccafs.utils.APConfig;

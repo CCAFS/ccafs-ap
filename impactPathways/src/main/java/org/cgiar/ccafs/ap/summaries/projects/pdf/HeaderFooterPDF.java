@@ -1,4 +1,4 @@
-package org.cgiar.ccafs.ap.summaries.planning.pdf;
+package org.cgiar.ccafs.ap.summaries.projects.pdf;
 
 import org.cgiar.ccafs.ap.data.model.Submission;
 

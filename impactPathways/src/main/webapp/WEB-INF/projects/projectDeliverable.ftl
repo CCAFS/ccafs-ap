@@ -116,11 +116,11 @@
         [#include "/WEB-INF/projects/deliverable/deliverableDataSharing.ftl" /]
       </div>
     [/#if]
-    
+       <input id="indexTab" name="indexTab" type="hidden" value="${(indexTab)!0}">
     [#if editable] 
       <input name="projectID" type="hidden" value="${project.id?c}" />
       <input name="deliverableID" type="hidden" value="${deliverable.id}">
-      <input id="indexTab" name="indexTab" type="hidden" value="${(indexTab)!0}">
+   
       <div class="[#if !newProject]borderBox[/#if]" >
         [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
         <div class="buttons">
