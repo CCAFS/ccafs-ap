@@ -178,14 +178,14 @@ public class ActivitiesListAction extends BaseAction {
       statuses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
     }
 
-    /*
-     * if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
-     * // Clear out the list if it has some element
-     * if (project.getActivities() != null) {
-     * project.getActivities().clear();
-     * }
-     * }
-     */
+
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getActivities() != null) {
+        project.getActivities().clear();
+      }
+    }
+
     projectStauses = new HashMap<>();
     List<ProjectStatusEnum> listEnum = Arrays.asList(ProjectStatusEnum.values());
     for (ProjectStatusEnum projectStatusEnum : listEnum) {

@@ -128,7 +128,7 @@ public class Project {
             try {
               acumulative = acumulative + Integer.parseInt(indicators.getTarget());
             } catch (NumberFormatException e) {
-              return "Can not be Calculated";
+              return "Cannot be Calculated";
             }
           }
         }
