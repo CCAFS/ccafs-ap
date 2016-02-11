@@ -14,10 +14,10 @@
     
     
     [#-- Contributor Center --]
-    <div class="halfPartBlock" >[@metadataField title="contributorCenter" encodedName="cg.contributor.center" /]</div>
+    <div class="halfPartBlock" >[@metadataField title="contributorCenter" encodedName="cg.contributor.center" type="select" list="centers" /]</div>
     
     [#-- Contributor CRP --]
-    <div class="halfPartBlock" >[@metadataField title="contributorCRP" encodedName="cg.contributor.crp" /]</div>
+    <div class="halfPartBlock" >[@metadataField title="contributorCRP" encodedName="cg.contributor.crp" type="select" list="crps"/]</div>
     
     
     [#-- Publication date / Creation date --]

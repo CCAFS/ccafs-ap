@@ -134,7 +134,11 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
 
     List<ProjecteOtherContributions> preview = this.getOtherContributionsByProjectId(projectID);
 
-
+    for (ProjecteOtherContributions projecteOtherContributions : preview) {
+      if (!OtherContributionsList.contains(projecteOtherContributions)) {
+        otherContributionsDAO.deleteOtherContributions(projecteOtherContributions.getId(), user.getId(), justification);
+      }
+    }
     for (ProjecteOtherContributions otherContributions : OtherContributionsList) {
       if (otherContributions.getId() == null || otherContributions.getId() == -1) {
         otherContributions.setCreatedBy(Long.parseLong(user.getId() + ""));
@@ -147,12 +151,6 @@ public class ProjectOtherContributionManagerImpl implements ProjectOtherContribu
       otherContributions.setIsActive(true);
       int result = otherContributionsDAO.save(otherContributions);
 
-      for (ProjecteOtherContributions projecteOtherContributions : preview) {
-        if (!OtherContributionsList.contains(projecteOtherContributions)) {
-          otherContributionsDAO.deleteOtherContributions(projecteOtherContributions.getId(), user.getId(),
-            justification);
-        }
-      }
 
       if (result > 0) {
         LOG.debug("saveCrossCuttingContribution > New CrossCuttingContribution added with id {}", result);
