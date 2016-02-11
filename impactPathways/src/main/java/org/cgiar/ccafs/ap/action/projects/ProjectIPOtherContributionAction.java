@@ -213,7 +213,13 @@ public class ProjectIPOtherContributionAction extends BaseAction {
     if (this.isHttpPost()) {
       project.getIpOtherContribution().getCrpContributions().clear();
     }
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getOtherContributions() != null) {
+        project.getOtherContributions().clear();
+      }
 
+    }
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
   }
