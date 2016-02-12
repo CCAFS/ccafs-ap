@@ -39,6 +39,15 @@ public interface ProjectLessonsDAO {
   public List<Map<String, String>> getComponentLessonByProject(int projectID);
 
   /**
+   * This method get the component lessons list for a specific project and cycle.
+   * 
+   * @param projectID - Project identifier
+   * @param cycle -- Cycle name
+   * @return a map list with the information.
+   */
+  public List<Map<String, String>> getComponentLessonByProjectAndCycle(int projectID, String cycle);
+
+  /**
    * This method get the lessons on a given component for a specific project.
    * 
    * @param componentName - The name of the component
@@ -48,6 +57,7 @@ public interface ProjectLessonsDAO {
    */
   public Map<String, String> getProjectComponentLesson(int projectID, String componentName, int year, String cycle);
 
+
   /**
    * This method saves the lessons of a project component in the database.
    * 
@@ -55,4 +65,5 @@ public interface ProjectLessonsDAO {
    * @return true if the information was saved successfully. False otherwise.
    */
   public boolean saveProjectComponentLesson(Map<String, Object> lessonData);
+
 }

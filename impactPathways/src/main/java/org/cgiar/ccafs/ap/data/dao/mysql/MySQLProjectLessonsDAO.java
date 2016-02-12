@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Hernán David Carvajal B. - CIAT/CCAFS
+ * @author Jorge Leonardo Solis B.-- CIAT/CCAFS.
  */
 
 public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
@@ -52,6 +53,46 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
     query.append("WHERE project_id = ");
     query.append(projectID);
     query.append(" AND is_active = 1");
+
+    LOG.debug(">> executeQuery(query='{}')", query);
+    List<Map<String, String>> componentList = new ArrayList<>();
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      Map<String, String> componentData;
+      while (rs.next()) {
+        componentData = new HashMap<String, String>();
+        componentData.put("id", rs.getString("id"));
+        componentData.put("project_id", rs.getString("project_id"));
+        componentData.put("lessons", rs.getString("lessons"));
+        componentData.put("year", rs.getString("year"));
+        componentData.put("component_name", rs.getString("component_name"));
+        componentList.add(componentData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+
+      LOG.error(exceptionMessage, e);
+      return null;
+    }
+    LOG.debug("<< executeQuery():componentList.size={}", componentList.size());
+    return componentList;
+
+
+  }
+
+  @Override
+  public List<Map<String, String>> getComponentLessonByProjectAndCycle(int projectID, String cycle) {
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * FROM project_component_lessons ");
+    query.append("WHERE project_id = ");
+    query.append(projectID);
+    query.append(" AND cycle = '");
+    query.append(cycle);
+    query.append("' AND is_active = 1");
 
     LOG.debug(">> executeQuery(query='{}')", query);
     List<Map<String, String>> componentList = new ArrayList<>();
