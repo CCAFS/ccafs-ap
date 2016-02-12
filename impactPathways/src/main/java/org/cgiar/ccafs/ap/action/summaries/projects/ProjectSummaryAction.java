@@ -204,9 +204,11 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   @Override
   public void prepare() throws Exception {
     int projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
+    String cycle = StringUtils.trim(this.getRequest().getParameter(APConstants.CYCLE));
 
     // Get all the information to add in the pdf file
     project = projectManager.getProject(projectID);
+    project.setReporting(cycle);
 
     // Get a route for the workplan name
     if (project.isWorkplanRequired()) {
@@ -286,8 +288,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       }
 
       // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(deliverablePartnerManager.getDeliverablePartners(deliverable.getId(),
-        APConstants.DELIVERABLE_PARTNER_OTHER));
+      deliverable.setOtherPartners(
+        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
     }
 
     // Set Deliverables
@@ -306,7 +308,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));
 
     // Set Leasson regarding
-    project.setComponentLessons(this.projectLessonsManager.getComponentLessonsByProject(projectID));
+    project.setComponentLessons(this.projectLessonsManager.getComponentLessonsByProjectAndCycle(projectID, cycle));
 
     // Set project overhead
     if (project.isBilateralProject()) {
@@ -316,11 +318,11 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // *************************Annual contribution*******************/
     for (Project projectContributor : project.getLinkedProjects()) {
       if (project.isBilateralProject()) {
-        projectContributor.setAnualContribution(this.getCofinancingBudget(projectContributor.getId(), projectID,
-          config.getPlanningCurrentYear()));
+        projectContributor.setAnualContribution(
+          this.getCofinancingBudget(projectContributor.getId(), projectID, config.getPlanningCurrentYear()));
       } else if (project.isCoFundedProject()) {
-        projectContributor.setAnualContribution(this.getCofinancingBudget(projectID, projectContributor.getId(),
-          config.getPlanningCurrentYear()));
+        projectContributor.setAnualContribution(
+          this.getCofinancingBudget(projectID, projectContributor.getId(), config.getPlanningCurrentYear()));
       }
     }
   }

@@ -41,7 +41,7 @@ public class Project {
   private CrossCuttingContribution crossCutting;
 
   private String title;
-
+  private boolean isReporting;
 
   private String summary;
   private List<ProjecteOtherContributions> otherContributions;
@@ -949,6 +949,11 @@ public class Project {
     return this.getCreationDate().after(planningStartDate);
   }
 
+  public boolean isReporting() {
+    return isReporting;
+  }
+
+
   /**
    * This method validates if the project is already submitted or not.
    * 
@@ -967,7 +972,6 @@ public class Project {
     return null;
   }
 
-
   public boolean isWorkplanRequired() {
     return workplanRequired;
   }
@@ -984,6 +988,7 @@ public class Project {
     this.anualContribution = anualContribution;
   }
 
+
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
@@ -993,7 +998,6 @@ public class Project {
     this.bilateralContractRequired = bilateralContractRequired;
   }
 
-
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
   }
@@ -1002,10 +1006,10 @@ public class Project {
     this.caseStudies = caseStudies;
   }
 
+
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
   }
-
 
   /**
    * @param componentLessons the componentLessons to set
@@ -1058,10 +1062,10 @@ public class Project {
     this.ipOtherContribution = ipOtherContribution;
   }
 
+
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
   }
-
 
   public void setLeverages(List<ProjectLeverage> leverages) {
     this.leverages = leverages;
@@ -1123,10 +1127,19 @@ public class Project {
     this.regions = regions;
   }
 
+
+  public void setReporting(String cycle) {
+    if (cycle.equals(APConstants.CYCLE)) {
+      this.isReporting = true;
+    } else {
+      this.isReporting = false;
+    }
+
+  }
+
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
   }
-
 
   public void setSubmissions(List<Submission> submissions) {
     this.submissions = submissions;
@@ -1144,9 +1157,11 @@ public class Project {
     this.type = type;
   }
 
+
   public void setWorkplanName(String projectWorkplanName) {
     this.workplanName = projectWorkplanName;
   }
+
 
   public void setWorkplanRequired(boolean workplanRequired) {
     this.workplanRequired = workplanRequired;
@@ -1165,4 +1180,5 @@ public class Project {
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
+
 }
