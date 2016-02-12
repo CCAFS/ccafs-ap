@@ -2510,7 +2510,7 @@ input.userName {
 }
 
 #timelineBlock .status {
-  padding: 0px 33px;
+  padding: 0px 25px;
   display: flex;
   justify-content: center;
   border-top: 2px solid #D6DCE0;

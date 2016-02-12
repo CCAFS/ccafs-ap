@@ -17,12 +17,11 @@
       <div id="tabs">
         <ul>
           <li><a href="#tabs-1">[@s.text name="home.help.menu.userManual" /]</a></li>
-          <li><a href="#tabs-2">[@s.text name="home.help.menu.templates" /]</a></li>
           <li><a href="#tabs-3">[@s.text name="home.help.menu.dmsp" /]</a></li>
           <li><a href="#tabs-4">[@s.text name="home.glossary.title"/]</a></li>
           [#-- <li><a href="#tabs-5">[@s.text name="home.help.menu.faq" /]</a></li>--]
         </ul>
-        [#-- User Manual --]
+        [#-- User Guides --]
         <div id="tabs-1">
           <div id="userManualSection">
             <a href="${baseUrl}/resources/helpDocs/CCAFS_PR_UserManual_20151015.pdf" target="_blank">
@@ -30,9 +29,6 @@
               <img src="${baseUrl}/images/global/icon_pdf.png"  width="100"/>
             </a>
           </div>
-        </div>
-        [#-- Templates --]
-        <div id="tabs-2">
           <div id="templatesSection">
             <div id="template-downloads1">
               <a href="${baseUrl}/resources/helpDocs/CCAFS_PR_UserManual_20151015.pdf" target="_blank">
