@@ -102,11 +102,12 @@ public class Project {
   /// Fields for Reporting
 
   private String annualReportDonor;
-  private String leader;
+  private String myLeader;
 
 
   public Project() {
   }
+
 
   public Project(int id) {
     this.id = id;
@@ -284,7 +285,6 @@ public class Project {
     return budgets;
   }
 
-
   public List<CasesStudies> getCaseStudies() {
     return caseStudies;
   }
@@ -339,6 +339,7 @@ public class Project {
     }
     return null;
   }
+
 
   /**
    * @return the componentLessons
@@ -534,7 +535,6 @@ public class Project {
     return null;
   }
 
-
   /**
    * This method returns the project partner person who is leading the project.
    * 
@@ -557,6 +557,7 @@ public class Project {
     return leaderResponsabilities;
   }
 
+
   public List<ProjectLeverage> getLeverages() {
     return leverages;
   }
@@ -565,14 +566,17 @@ public class Project {
     return liaisonInstitution;
   }
 
-
   public List<Project> getLinkedProjects() {
     return linkedProjects;
   }
 
-
   public List<Location> getLocations() {
     return locations;
+  }
+
+
+  public String getMyLeader() {
+    return myLeader;
   }
 
 
@@ -630,6 +634,7 @@ public class Project {
     return outputs;
   }
 
+
   public List<OutputBudget> getOutputsBudgets() {
     return outputsBudgets;
   }
@@ -658,10 +663,10 @@ public class Project {
     return null;
   }
 
-
   public User getOwner() {
     return owner;
   }
+
 
   /**
    * This method returns the list of partners that have a PPA institution associated.
@@ -779,10 +784,10 @@ public class Project {
     return startDate;
   }
 
-
   public List<Submission> getSubmissions() {
     return submissions;
   }
+
 
   /**
    * This method gets the submissison for the current planning year of current project.
@@ -944,7 +949,6 @@ public class Project {
     return this.getCreationDate().after(planningStartDate);
   }
 
-
   /**
    * This method validates if the project is already submitted or not.
    * 
@@ -963,6 +967,7 @@ public class Project {
     return null;
   }
 
+
   public boolean isWorkplanRequired() {
     return workplanRequired;
   }
@@ -979,7 +984,6 @@ public class Project {
     this.anualContribution = anualContribution;
   }
 
-
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
@@ -989,6 +993,7 @@ public class Project {
     this.bilateralContractRequired = bilateralContractRequired;
   }
 
+
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
   }
@@ -997,10 +1002,10 @@ public class Project {
     this.caseStudies = caseStudies;
   }
 
-
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
   }
+
 
   /**
    * @param componentLessons the componentLessons to set
@@ -1053,13 +1058,10 @@ public class Project {
     this.ipOtherContribution = ipOtherContribution;
   }
 
-  public void setLeader(String leader) {
-    this.leader = leader;
-  }
-
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
   }
+
 
   public void setLeverages(List<ProjectLeverage> leverages) {
     this.leverages = leverages;
@@ -1075,6 +1077,10 @@ public class Project {
 
   public void setLocations(List<Location> locations) {
     this.locations = locations;
+  }
+
+  public void setMyLeader(String myLeader) {
+    this.myLeader = myLeader;
   }
 
   public void setNextUsers(List<ProjectNextUser> nextUsers) {

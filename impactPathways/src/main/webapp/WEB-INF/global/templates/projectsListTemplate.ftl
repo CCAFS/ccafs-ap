@@ -48,9 +48,9 @@
             [/#if]
           </td>
           [#-- Project Leader --]
-          <td class="left"> 
-            [#if project.leader?has_content]
-              ${project.leader}
+          <td class=""> 
+            [#if project.myLeader?has_content]
+              ${project.myLeader}
             [#else]
               [@s.text name="preplanning.projects.title.none" /]
             [/#if]
