@@ -325,7 +325,7 @@ public class ProjectDeliverableAction extends BaseAction {
     centers = new HashMap<>();
     List<LiaisonInstitution> listInstitutions = institutionManager.getLiaisonInstitutionsCenter();
     for (LiaisonInstitution inst : listInstitutions) {
-      centers.put(String.valueOf(inst.getId()), inst.getName());
+      centers.put(String.valueOf(inst.getId()), inst.getName() + "(" + inst.getAcronym() + ")");
     }
     projectPartners = projectPartnerManager.getProjectPartners(project);
 
