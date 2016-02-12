@@ -50,9 +50,8 @@ function init() {
   setDeliverableFilesIndexes();
 
   // Validate justification at save
-  /*
-   * validateEvent([ "#justification" ]);
-   */
+  if(isPlanningCycle()){validateEvent([ "#justification" ]);}
+ 
 }
 
 function attachEvents() {
