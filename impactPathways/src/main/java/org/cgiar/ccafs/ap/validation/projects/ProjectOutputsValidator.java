@@ -58,8 +58,10 @@ public class ProjectOutputsValidator extends BaseValidator {
       // This section is required for Core, co-funded and bilateral projects that are not contributing to any core
       // project.
       if (project.isCoreProject() || project.isCoFundedProject() || project.isBilateralStandAlone()) {
-        // this.validateLessonsLearn(action, project, "outputs");
-        // this.validateOutputOverviews(action, project);
+        if (action.isPlanningCycle()) {
+          this.validateLessonsLearn(action, project, "outputs");
+        }
+        this.validateOutputOverviews(action, project);
       } else {
         // If project is bilateral but is co-financing some core project, thus this section is not needed to be filled.
       }
@@ -130,7 +132,6 @@ public class ProjectOutputsValidator extends BaseValidator {
       int index = ipElementManager.getMOGIndex(output);
       msg.setLength(0);
       msgMOG.setLength(0);
-
       msgMOG.append("( ");
       msgMOG.append(output.getProgram().getAcronym());
       msgMOG.append(" - MOG #");
@@ -147,13 +148,8 @@ public class ProjectOutputsValidator extends BaseValidator {
 
   public void validateOutputOverviews(BaseAction action, Project project) {
     if (projectValidator.hasOutputOverviews(project.getOutputsOverview())) {
-
-
       int c = 0;
-
-
       if (cycle.equals(APConstants.REPORTING_SECTION)) {
-
         for (OutputOverview overview : project.getOutputsOverview()) {
           // Validate only current planning year which is 2016 at this moment.
           if (overview.getYear() == this.config.getReportingCurrentYear()) {
@@ -172,20 +168,15 @@ public class ProjectOutputsValidator extends BaseValidator {
             c++;
           }
         }
-
         for (IPElement ipElement : project.getOutputs()) {
           boolean isContain = false;
           for (OutputOverview overview : project.getOutputsOverview()) {
-
             if (overview.getYear() == this.config.getPlanningCurrentYear()) {
-
               if (overview.getOutput().equals(ipElement)) {
                 isContain = true;
                 break;
               }
-
             }
-
           }
           if (!isContain) {
             this.addMessage("For" + ipElement.getProgram().getAcronym() + "- MOG #"
@@ -194,10 +185,9 @@ public class ProjectOutputsValidator extends BaseValidator {
           }
         }
       }
-
-
     } else {
       action.addActionMessage(action.getText("planning.projectOutputs.validation.empty"));
+      this.addMissingField("project.outputsOverview.empty");
     }
   }
 

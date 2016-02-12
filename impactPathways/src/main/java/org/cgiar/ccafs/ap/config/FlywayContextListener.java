@@ -53,7 +53,8 @@ public class FlywayContextListener implements ServletContextListener {
     flyway.setLocations(SQL_MIGRATIONS_PATH, JAVA_MIGRATIONS_PATH);
 
     this.configurePlaceholders(flyway);
-
+    // DELETE ALL DB
+    // flyway.clean();
     if (flyway.info().current() == null) {
       LOG.info("Setting baseline version 3.0");
       flyway.setBaselineVersion(MigrationVersion.fromVersion("3.0"));

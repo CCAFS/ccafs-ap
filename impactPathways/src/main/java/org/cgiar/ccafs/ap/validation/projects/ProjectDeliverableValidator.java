@@ -67,15 +67,15 @@ public class ProjectDeliverableValidator extends BaseValidator {
       this.cycle = cycle;
       this.missingFields.setLength(0);
 
-
+      if (action.isPlanningCycle()) {
+        this.validateProjectJustification(action, deliverable);
+      }
       if (project.isCoreProject() || project.isCoFundedProject()) {
         if (indexTab == -1) {
           this.validateAsCoreProject(action, project, deliverable);
-
         } else {
           switch (indexTab) {
             case 0:
-              this.validateProjectJustification(action, deliverable);
               this.validateAsCoreProject(action, project, deliverable);
               break;
             case 1:

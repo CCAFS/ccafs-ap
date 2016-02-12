@@ -70,26 +70,26 @@
                   <div class="fullPartBlock"><p class="checked">${output.program.acronym} - MOG #${action.getMOGIndex(output)}: ${output.description} </p></div>
                   [#-- Brief bullet points of your expected annual year contribution towards the selected MOG --]
                   <div class="fullBlock">
-                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!(editable && action.hasProjectPermission("expectedAnnualContribution", project.id)) param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
+                    <h6>[@customForm.text name="planning.projectOutputs.expectedBulletPoints" readText=!(editable && action.hasProjectPermission("expectedAnnualContribution", project.id)) param="${year}" /]:[@customForm.req required=isYearRequired(year) && action.hasProjectPermission("expectedAnnualContribution", project.id)/]</h6>  
                     [@customForm.textArea name="project.outputsOverview[${index}].expectedAnnualContribution" value=outputOverview.expectedAnnualContribution!"" required=isYearRequired(year) showTitle=false editable=(editable && action.hasProjectPermission("expectedAnnualContribution", project.id)) /]
                   </div>
                   [#-- Brief summary of your actual annual contribution --]
                   [#if (year == currentReportingYear) && action.hasProjectPermission("briefSummary", project.id) ]
                   <div class="fullBlock">
-                    <h6>[@customForm.text name="reporting.projectOutputs.summaryAnnualContribution" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>  
+                    <h6>[@customForm.text name="reporting.projectOutputs.summaryAnnualContribution" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) && action.hasProjectPermission("briefSummary", project.id) /]</h6>  
                     [@customForm.textArea name="project.outputsOverview[${index}].briefSummary" value=outputOverview.briefSummary!""  required=isYearRequired(year) showTitle=false editable=editable /]
                   </div>
                   [/#if]
                   [#-- Brief plan of the gender and social inclusion dimension of the expected annual output --]
                   <div class="fullBlock">
-                    <h6>[@customForm.text name="planning.projectOutputs.expectedSocialAndGenderPlan" readText=!(editable && action.hasProjectPermission("socialInclusionDimmension", project.id) ) param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6>
+                    <h6>[@customForm.text name="planning.projectOutputs.expectedSocialAndGenderPlan" readText=!(editable && action.hasProjectPermission("socialInclusionDimmension", project.id) ) param="${year}" /]:[@customForm.req required=isYearRequired(year) && action.hasProjectPermission("socialInclusionDimmension", project.id) /]</h6>
                     [@customForm.textArea name="project.outputsOverview[${index}].socialInclusionDimmension" value=outputOverview.socialInclusionDimmension!"" showTitle=false required=isYearRequired(year) editable=(editable && action.hasProjectPermission("socialInclusionDimmension", project.id)) /]
                   </div>
                   
                   [#-- Summary of the gender and social inclusion dimension --]
                   [#if (year == currentReportingYear) && action.hasProjectPermission("summaryGender", project.id)]
                   <div class="fullBlock">
-                    <h6>[@customForm.text name="reporting.projectOutputs.summarySocialInclusionDimmension" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) /]</h6> 
+                    <h6>[@customForm.text name="reporting.projectOutputs.summarySocialInclusionDimmension" readText=!editable param="${year}" /]:[@customForm.req required=isYearRequired(year) && action.hasProjectPermission("summaryGender", project.id) /]</h6> 
                     [@customForm.textArea name="project.outputsOverview[${index}].summaryGender" value=outputOverview.summaryGender!"" required=isYearRequired(year) showTitle=false editable=editable /]
                   </div>
                   [/#if]
@@ -152,10 +152,9 @@
   <input type="hidden" id="indexTabCurrentYear" value="${(indexTabCurrentYear)!0}" />
   
 </section>
-
 [#-- Get if the year is required--]
 [#function isYearRequired year]
-  [#return (!project.bilateralProject && (cycleYear == year)) && year != 2015]
+  [#return (!(project.bilateralProject && project.cofinancing) && (cycleYear == year))]
 [/#function]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

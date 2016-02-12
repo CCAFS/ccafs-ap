@@ -43,8 +43,15 @@
     </div>
   </div>
   [#-- Status justification  --]
-  <div id="statusDescription" class="fullPartBlock" style="display:${deliverable.statusCancelled?string('block','none')}">
-    [@customForm.textArea name="${params.deliverable.name}.statusDescription" i18nkey="reporting.projectDeliverable.statusJustification" editable=editable/]
+  [#assign justificationRequired = deliverable.isStatusOnGoing() || deliverable.isStatusExtended() || deliverable.isStatusCancelled() ]
+  <div id="statusDescription" class="fullPartBlock" style="display:${justificationRequired?string('block','none')}">
+    [@customForm.textArea name="${params.deliverable.name}.statusDescription" i18nkey="reporting.projectDeliverable.statusJustification.status${(deliverable.status)!'NotSelected'}" editable=editable/]
+    <div id="statusesLables" style="display:none">
+      <div id="status-2">[@s.text name="reporting.projectDeliverable.statusJustification.status2" /]</div>
+      <div id="status-3">[@s.text name="reporting.projectDeliverable.statusJustification.status3" /]</div>
+      <div id="status-4">[@s.text name="reporting.projectDeliverable.statusJustification.status4" /]</div>
+      <div id="status-5">[@s.text name="reporting.projectDeliverable.statusJustification.status5" /]</div>
+    </div>
   </div>
 [/#if]
 

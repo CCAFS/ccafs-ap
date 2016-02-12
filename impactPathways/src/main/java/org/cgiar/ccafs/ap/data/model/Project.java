@@ -1083,6 +1083,10 @@ public class Project {
     this.myLeader = myLeader;
   }
 
+  public void setMyLeader(String myLeader) {
+    this.myLeader = myLeader;
+  }
+
   public void setNextUsers(List<ProjectNextUser> nextUsers) {
     this.nextUsers = nextUsers;
   }

@@ -50,9 +50,8 @@ function init() {
   setDeliverableFilesIndexes();
 
   // Validate justification at save
-  /*
-   * validateEvent([ "#justification" ]);
-   */
+  if(isPlanningCycle()){validateEvent([ "#justification" ]);}
+ 
 }
 
 function attachEvents() {
@@ -88,8 +87,10 @@ function attachEvents() {
   
   // Status
   $statuses.on('change', function(e) {
-    if(isStatusCancelled($(this).val())) {
+    var statusId = $(this).val();
+    if(isStatusCancelled(statusId) || isStatusExtended(statusId) || isStatusOnGoing(statusId) ) {
       $statusDescription.show(400);
+      $statusDescription.find('label').text($('#status-'+statusId).text()+':');
     } else {
       $statusDescription.hide(400);
     }
@@ -116,6 +117,18 @@ function changeStatus(){
 
 function isStatusCancelled(statusId) {
   return(statusId == "5")
+}
+
+function isStatusComplete(statusId) {
+  return(statusId == "3")
+}
+
+function isStatusExtended(statusId) {
+  return(statusId == "4")
+}
+
+function isStatusOnGoing(statusId) {
+  return(statusId == "2")
 }
 
 function checkImplementationStatus(year) {

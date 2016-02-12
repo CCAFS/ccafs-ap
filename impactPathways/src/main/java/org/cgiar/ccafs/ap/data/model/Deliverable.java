@@ -283,8 +283,35 @@ public class Deliverable {
    */
   public boolean isStatusCancelled() {
     try {
-      // 5- Cancelled - The activity has been cancelled.
+      // 5 - Cancelled - The activity has been cancelled.
       return status == 5;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public boolean isStatusComplete() {
+    try {
+      // 3- Complete
+      return status == 3;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public boolean isStatusExtended() {
+    try {
+      // 4 - Extended
+      return status == 4;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public boolean isStatusOnGoing() {
+    try {
+      // 2 - On Going
+      return status == 2;
     } catch (Exception e) {
       return false;
     }
