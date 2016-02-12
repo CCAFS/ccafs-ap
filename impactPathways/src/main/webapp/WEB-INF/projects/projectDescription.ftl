@@ -92,9 +92,7 @@
               [#else]
                 [#if editable]
                   [#if !action.hasProjectPermission("workplan",project.id) ]
-                    <h6>
-                      [@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]:[#if project.workplanRequired && editable ]<span class="red">*</span>[/#if]
-                    </h6>
+                    <h6>[@s.text name="preplanning.projectDescription.uploadProjectWorkplan" /]:</h6>
                   [/#if]
                   [@customForm.inputFile name="file"  /]
                 [/#if] 
@@ -107,7 +105,7 @@
         [#-- Project upload bilateral contract --]
         [#if (project.bilateralProject && action.hasProjectPermission("bilateralContract",project.id) )]
         <div class="fullBlock fileUpload bilateralContract">
-          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:[#if project.bilateralProject && editable]<span class="red">*</span>[/#if]</h6>
+          <h6>[@customForm.text name="preplanning.projectDescription.uploadBilateral" readText=!editable /]:</h6>
           <div class="uploadContainer">
             [#if project.bilateralContractProposalName?has_content]
               [#if editable]<span id="remove-file" class="remove"></span>[#else]<span class="file"></span>[/#if] 
@@ -116,7 +114,7 @@
               [#if editable]
                 [@customForm.inputFile name="file"  /]
               [#else]  
-                <span class="fieldError">[@s.text name="form.values.required" /]</span> <p>[@s.text name="form.values.notFileUploaded" /]</p> 
+                <p>[@s.text name="form.values.notFileUploaded" /]</p> 
               [/#if] 
             [/#if]
           </div>  
@@ -133,7 +131,7 @@
           [#-- Project upload annual report to donor--]
           [#if project.bilateralProject]
           <div class="fullBlock fileUpload annualreportDonor">
-            <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:[#if project.bilateralProject && editable]<span class="red">*</span>[/#if]</h6>
+            <h6>[@customForm.text name="reporting.projectDescription.annualreportDonor" readText=!editable /]:</h6>
             <div class="uploadContainer">
               [#if project.annualReportDonor?has_content]
                 [#if editable]<span id="remove-fileReporting" class="remove"></span>[#else]<span class="file"></span>[/#if] 
@@ -142,7 +140,7 @@
                 [#if editable]
                   [@customForm.inputFile name="fileReporting"  /]
                 [#else]  
-                  <span class="fieldError">[@s.text name="form.values.required" /]</span> <p> [@s.text name="form.values.notFileUploaded" /]</p>
+                  <p> [@s.text name="form.values.notFileUploaded" /]</p>
                 [/#if] 
               [/#if]
             </div>  

@@ -11,13 +11,13 @@
   	      </a>
         </li>
 	      
-        [#-- P&R Overview --]
+        [#-- P&R Overview
         <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
           <a href="${baseUrl}/overview.do">
             <span class="text">[@s.text name="menu.overview" /]</span>
           </a>
         </li>
-       
+        --]
         [#-- PRE-Planning section --]
         [#if securityContext.FPL || securityContext.RPL || securityContext.ML || securityContext.CU || securityContext.admin ]
         <li [#if currentSection?? && currentSection == "preplanning"] class="currentSection" [/#if]>
@@ -43,7 +43,7 @@
               <a href="[#if reportingActive]${baseUrl}/reporting/projectsList.do[/#if]" class="[#if !reportingActive]disabled[/#if]">Projects</a>
             </li>
             <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "crpIndicators"] class="currentSection" [/#if] >
-              <a href="[#if reportingActive]${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID[/#if]">CRP Indicators</a>
+              <a href="[#--if reportingActive]${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID[/#if--]" class="disabled">CRP Indicators</a>
             </li>
             <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "outcomeSynthesis"] class="currentSection" [/#if] >
               <a href="" class="disabled">Outcome Synthesis</a>
@@ -85,11 +85,11 @@
   	      <a href="${baseUrl}/">[@s.text name="menu.login" /]</a>
 	      </li>
 
-	      [#-- P&R Overview --]
+	      [#-- P&R Overview 
         <li [#if currentSection?? && currentSection == "overview"] class="currentSection" [/#if]>
           <a href="${baseUrl}/overview.do"><span class="text">[@s.text name="menu.overview" /]</span></a>
         </li>
-        
+        --]
         [#-- P&R Help --]
         <li [#if currentSection?? && currentSection == "help"] class="currentSection" [/#if]>
           <a href="${baseUrl}/help.do"><span class="text">[@s.text name="menu.help" /]</span></a>

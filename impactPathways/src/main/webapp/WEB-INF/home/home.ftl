@@ -37,21 +37,23 @@
     <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.deadline.title" /]</b></div>
     <div id="timelineBlock" class="borderBox">
       <ul class="timeline" id="timeline">
-        [@time title="Project leaders"    subTitle="PL"   dateText="2016-02-15" status="Open"/]
-        [@time title="Project leaders"    subTitle="PL"   dateText="2016-02-29" status="Close"/]
-        [@time title="Regional Leaders "  subTitle="RPL"  dateText="2016-03-07" status="Open"/]
-        [@time title="Regional Leaders "  subTitle="RPL"  dateText="2016-03-15" status="Close"/]
-        [@time title="Flagship Leaders "  subTitle="FPL"  dateText="2016-03-15" status="Open"/]
-        [@time title="Flagship Leaders "  subTitle="FPL"  dateText="2016-03-25" status="Close"/]
+        [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-02-15" status="Open"/]
+        [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-02-29" status="Close"/]
+        
+        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points & Regional Program Leaders"  dateText="2016-03-07" status="Open"/]
+        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points &  Regional Program Leaders"  dateText="2016-03-15" status="Close"/]
+        
+        [@time title="CRP Indicators & Flagships Synthesis (FPLs)"  subTitle="Flagships Leaders"  dateText="2016-03-15" status="Open"/]
+        [@time title="CRP Indicators & Flagships Synthesis (FPLs)"  subTitle="Flagships Leaders"  dateText="2016-03-25" status="Close"/]
       </ul> 
       <div class="clearfix"></div> 
     </div>
     <div id="leftSide">
       [#-- Deadline --]
-      <div id="deadlineTitle"  class="homeTitle"><b>Sections</b></div>
+      <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.shortcuts" /]</b></div>
       <div id="deadline" class="borderBox">
         <ul class="subMenu">
-          <li><a href="" class="">Projects for reporting</a></li>
+          <li><a href="" class="">Projects</a></li>
           <li><a href="" class="disabled">CRP Indicators</a></li>
           <li><a href="" class="disabled">Outcome Synthesis</a></li>
           <li><a href="" class="disabled">Synthesis by MOG</a></li>
@@ -105,7 +107,7 @@
     <p class="date">${dateText}</p>
     <p class="dateText" style="display:none">${dateText}</p>
   </div>
-  <div class="status"><h4> For ${title} </h4></div>
+  <div class="status"><h4>${title}</h4></div>
 </li>
 [/#macro]
 
