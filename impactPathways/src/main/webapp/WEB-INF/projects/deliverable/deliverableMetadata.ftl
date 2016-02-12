@@ -11,14 +11,7 @@
     
     [#-- Identifier (ORCID/SCOPUS) --]
     <div class="halfPartBlock" >[@metadataField title="creatorId" encodedName="cg.creator.ID" /]</div>
-    
-    
-    [#-- Contributor Center --]
-    <div class="halfPartBlock" >[@metadataField title="contributorCenter" encodedName="cg.contributor.center" type="select" list="centers" /]</div>
-    
-    [#-- Contributor CRP --]
-    <div class="halfPartBlock" >[@metadataField title="contributorCRP" encodedName="cg.contributor.crp" type="select" list="crps"/]</div>
-    
+   
     
     [#-- Publication date / Creation date --]
     <div class="halfPartBlock" >[@metadataField title="date" encodedName="dc.date" /]</div>
