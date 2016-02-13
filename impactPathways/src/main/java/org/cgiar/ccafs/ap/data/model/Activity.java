@@ -170,6 +170,33 @@ public class Activity {
     }
   }
 
+  public boolean isStatusComplete() {
+    try {
+      // 3- Complete
+      return activityStatus == 3;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public boolean isStatusExtended() {
+    try {
+      // 4 - Extended
+      return activityStatus == 4;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public boolean isStatusOnGoing() {
+    try {
+      // 2 - On Going
+      return activityStatus == 2;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
   public void setActivityProgress(String activityProgress) {
     this.activityProgress = activityProgress;
   }
