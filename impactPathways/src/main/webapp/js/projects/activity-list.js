@@ -36,11 +36,15 @@ function attachEvents() {
   $('#activities_add a').on('click', addElement);
 
   $('select.activityStatus').on('change', function(e) {
-    if(isStatusCancelled($(this).val())) {
-      $(this).parents('.activity').find('.statusDescription').show(400);
+    var statusId = $(this).val();
+    var $statusDescription = $(this).parents('.activity').find('.statusDescription');
+    if(isStatusCancelled(statusId) || isStatusExtended(statusId) || isStatusOnGoing(statusId)) {
+      $statusDescription.show(400);
+      $statusDescription.find('label').html($('#status-' + statusId).html());
     } else {
-      $(this).parents('.activity').find('.statusDescription').hide(400);
+      $statusDescription.hide(400);
     }
+    $statusDescription.find('textarea').val('');
   });
 
   $('input.endDate').on('change', changeStatus);
@@ -49,6 +53,18 @@ function attachEvents() {
 
 function isStatusCancelled(statusId) {
   return(statusId == "5")
+}
+
+function isStatusComplete(statusId) {
+  return(statusId == "3")
+}
+
+function isStatusExtended(statusId) {
+  return(statusId == "4")
+}
+
+function isStatusOnGoing(statusId) {
+  return(statusId == "2")
 }
 
 function changeStatus() {

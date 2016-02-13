@@ -90,10 +90,11 @@ function attachEvents() {
     var statusId = $(this).val();
     if(isStatusCancelled(statusId) || isStatusExtended(statusId) || isStatusOnGoing(statusId) ) {
       $statusDescription.show(400);
-      $statusDescription.find('label').text($('#status-'+statusId).text()+':');
+      $statusDescription.find('label').html($('#status-'+statusId).html());
     } else {
       $statusDescription.hide(400);
     }
+    $statusDescription.find('textarea').val('');
   });
 
   $endDate.on('change', changeStatus);

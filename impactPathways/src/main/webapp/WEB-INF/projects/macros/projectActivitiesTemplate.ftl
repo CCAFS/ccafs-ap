@@ -60,8 +60,15 @@
         </div>   
       </div>
       [#-- Overall Activity progress --]
-      <div class="fullPartBlock statusDescription clearfix" style="display:${((element.statusCancelled)!false)?string('block','none')}">
-        [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress" required=true i18nkey="reporting.activityDescription.activityProgress" editable=editable && action.hasProjectPermission("activityProgress", project.id)/]
+      [#assign justificationRequired = element.isStatusOnGoing() || element.isStatusExtended() || element.isStatusCancelled() ]
+      <div class="fullPartBlock statusDescription clearfix" style="display:${justificationRequired?string('block','none')}">
+        [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress" required=true i18nkey="reporting.activityDescription.activityStatus.status${(element.activityStatus)!}" editable=editable && action.hasProjectPermission("activityProgress", project.id)/]
+        <div id="statusesLables" style="display:none">
+          <div id="status-2">[@s.text name="reporting.activityDescription.activityStatus.status2" /]:<span class="red">*</span></div>
+          <div id="status-3">[@s.text name="reporting.activityDescription.activityStatus.status3" /]:<span class="red">*</span></div>
+          <div id="status-4">[@s.text name="reporting.activityDescription.activityStatus.status4" /]:<span class="red">*</span></div>
+          <div id="status-5">[@s.text name="reporting.activityDescription.activityStatus.status5" /]:<span class="red">*</span></div>
+        </div>
       </div>
     [/#if]
   </div><!-- End ${activityId} -->
