@@ -50,9 +50,9 @@ public class UploadDeliverableAction extends BaseAction {
   // Model
   private File file;
   private String fileContentType;
-  private String filename;
-  private int deliverableID;
-  private int projectID;
+  private String fileFileName;
+  private String deliverableID;
+  private String projectID;
   private Deliverable deliverable;
   private boolean saved;
   private int fileID;
@@ -63,6 +63,7 @@ public class UploadDeliverableAction extends BaseAction {
     super(config);
     this.deliverableManager = deliverableManager;
     this.deliverableFileManager = deliverableFileManager;
+    this.config = config;
 
   }
 
@@ -72,27 +73,18 @@ public class UploadDeliverableAction extends BaseAction {
 
     // Validate if project parameter exists in the URL.
 
-    deliverable = deliverableManager.getDeliverableById(deliverableID);
+    deliverable = deliverableManager.getDeliverableById(Integer.parseInt(deliverableID));
 
 
-    StringBuilder finalPath = new StringBuilder();
     // finalPath.append(config.getDeliverablesFilesPath());
-    finalPath.append("/");
-    finalPath.append(this.getCurrentUser());
-    finalPath.append("/");
-    finalPath.append(config.getReportingCurrentYear());
-    finalPath.append("/");
-    finalPath.append(deliverable.getType().getName());
-    finalPath.append("/");
-    finalPath.append(deliverableID);
-    finalPath.append("/");
 
-    fileCopied = FileManager.copyFile(file, finalPath.toString() + filename);
+
+    fileCopied = FileManager.copyFile(file, this.getDeliverableFilePath() + fileFileName);
 
     DeliverableFile delFile = new DeliverableFile();
     delFile.setHosted(APConstants.DELIVERABLE_FILE_LOCALLY_HOSTED);
     delFile.setSize(this.file.length());
-    delFile.setName(filename);
+    delFile.setName(fileFileName);
 
     // int deliverableFileID = deliverableFileManager.existsDeliverableFile(file.getName(), deliverableID);
     // file.setId(deliverableFileID);
@@ -101,14 +93,13 @@ public class UploadDeliverableAction extends BaseAction {
     // saved = (fileID != -1) && fileCopied ? true : false;
 
     DeliverableDataSharingFile file = new DeliverableDataSharingFile();
-    file.setDeliverableId(deliverableID);
+    file.setDeliverableId(Integer.parseInt(deliverableID));
     file.setFile(delFile.getName());
     file.setType(delFile.getHosted());
     fileID = deliverableFileManager.save(file);
     saved = (fileID != -1) && fileCopied ? true : false;
     return SUCCESS;
   }
-
 
   public Deliverable getDeliverable() {
     return deliverable;
@@ -119,8 +110,24 @@ public class UploadDeliverableAction extends BaseAction {
     return deliverableFileManager;
   }
 
+  private String getDeliverableFilePath() {
+    String upload = config.getUploadsBaseFolder();
+    return upload + File.separator + this.getDeliverableFileRelativePath() + File.separator;
+  }
 
-  public int getDeliverableID() {
+
+  private String getDeliverableFileRelativePath() {
+    return config.getProjectsBaseFolder() + File.separator + projectID + File.separator + "deliverableDataSharing"
+      + File.separator;
+  }
+
+
+  public String getDeliverableFileURL() {
+    return config.getDownloadURL() + "/" + this.getDeliverableFilePath().replace('\\', '/');
+  }
+
+
+  public String getDeliverableID() {
     return deliverableID;
   }
 
@@ -140,17 +147,17 @@ public class UploadDeliverableAction extends BaseAction {
   }
 
 
+  public String getFileFileName() {
+    return fileFileName;
+  }
+
+
   public int getFileID() {
     return fileID;
   }
 
 
-  public String getFilename() {
-    return filename;
-  }
-
-
-  public int getProjectID() {
+  public String getProjectID() {
     return projectID;
   }
 
@@ -176,7 +183,7 @@ public class UploadDeliverableAction extends BaseAction {
   }
 
 
-  public void setDeliverableID(int deliverableID) {
+  public void setDeliverableID(String deliverableID) {
     this.deliverableID = deliverableID;
   }
 
@@ -196,17 +203,16 @@ public class UploadDeliverableAction extends BaseAction {
   }
 
 
+  public void setFileFileName(String fileFileName) {
+    this.fileFileName = fileFileName;
+  }
+
+
   public void setFileID(int fileID) {
     this.fileID = fileID;
   }
 
-
-  public void setFilename(String filename) {
-    this.filename = filename;
-  }
-
-
-  public void setProjectID(int projectID) {
+  public void setProjectID(String projectID) {
     this.projectID = projectID;
   }
 

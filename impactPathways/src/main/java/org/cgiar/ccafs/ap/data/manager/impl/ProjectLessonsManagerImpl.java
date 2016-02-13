@@ -59,6 +59,24 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
   }
 
   @Override
+  public List<ComponentLesson> getComponentLessonsByProjectAndCycle(int projectID, String cycle) {
+    List<ComponentLesson> leassonList = new ArrayList<>();
+    ComponentLesson componentLesson;
+    List<Map<String, String>> lessonsDataList = lessonDAO.getComponentLessonByProjectAndCycle(projectID, cycle);
+    for (Map<String, String> lessonData : lessonsDataList) {
+      componentLesson = new ComponentLesson();
+      componentLesson.setId(Integer.parseInt(lessonData.get("id")));
+      componentLesson.setYear(Integer.parseInt(lessonData.get("year")));
+      componentLesson.setComponentName(lessonData.get("component_name"));
+      componentLesson.setLessons(lessonData.get("lessons"));
+      leassonList.add(componentLesson);
+    }
+    // TODO Auto-generated method stub
+    return leassonList;
+  }
+
+
+  @Override
   public ComponentLesson getProjectComponentLesson(int projectID, String componentName, int year, String cycle) {
     ComponentLesson lesson = new ComponentLesson();
     Map<String, String> lessonData = lessonDAO.getProjectComponentLesson(projectID, componentName, year, cycle);

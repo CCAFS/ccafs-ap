@@ -39,6 +39,16 @@ public interface ProjectLessonsManager {
   public List<ComponentLesson> getComponentLessonsByProject(int projectID);
 
   /**
+   * This method get the list of lessons on a given component for a specific project and cycle.
+   * 
+   * @param projectID - Project identifier
+   * @param cycle - Cycle type
+   * @return A ComponentLesson list with the information.
+   */
+  public List<ComponentLesson> getComponentLessonsByProjectAndCycle(int projectID, String cycle);
+
+
+  /**
    * This method get the lessons on a given component for a specific project.
    * 
    * @param componentName - The name of the component
