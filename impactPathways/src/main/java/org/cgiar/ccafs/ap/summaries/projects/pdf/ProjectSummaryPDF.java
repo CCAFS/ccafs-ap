@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import com.lowagie.text.Anchor;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -2082,7 +2083,6 @@ public class ProjectSummaryPDF extends BasePDF {
    * This method is used for add Outcomes in the project summary
    */
   private void addProjectOutcomes() {
-    String outcomeProgress;
     Paragraph outcomesBlock = new Paragraph();
     outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
     Paragraph title = new Paragraph("4. " + this.getText("summaries.project.outcome"), HEADING2_FONT);
@@ -2122,28 +2122,77 @@ public class ProjectSummaryPDF extends BasePDF {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
 
+    Anchor anchor;
     currentPlanningYear--;
     for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
+
       // Annual progress towards
       outcomesBlock = new Paragraph();
       outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
       outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
       outcomesBlock.add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
+      outcomesBlock.setFont(BODY_TEXT_FONT);
 
-      if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null
-        || project.getOutcomes().get(String.valueOf(year)).getStatement() == null
-        || project.getOutcomes().get(String.valueOf(year)).getStatement().equals("")) {
-        outcomesBlock.add(": ");
-        outcomesBlock.setFont(BODY_TEXT_FONT);
-        outcomeProgress = this.getText("summaries.project.empty");
+      if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
+        outcomesBlock.add(this.getText("summaries.project.empty"));
       } else {
-        outcomesBlock.add(Chunk.NEWLINE);
-        outcomeProgress = this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement());
-        outcomesBlock.setFont(BODY_TEXT_FONT);
+        outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement()));
       }
-      outcomesBlock.add(outcomeProgress);
-      outcomesBlock.add(Chunk.NEWLINE);;
-      outcomesBlock.add(Chunk.NEWLINE);;
+
+      if (year == this.currentPlanningYear) {
+        ///// outcome toward in reporting cycle
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualTowards", new String[] {String.valueOf(year)}));
+
+        outcomesBlock.setFont(BODY_TEXT_FONT);
+
+        if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
+          outcomesBlock.add(this.getText("summaries.project.empty"));
+        } else {
+          outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getAnualProgress()));
+        }
+        ///// outcome communication
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.add(Chunk.NEWLINE);
+
+        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualCommunication"));
+
+        outcomesBlock.setFont(BODY_TEXT_FONT);
+
+        if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
+          outcomesBlock.add(this.getText("summaries.project.empty"));
+        } else {
+          outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getComunication()));
+        }
+
+        // Any evendence
+
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualEvidence"));
+        outcomesBlock.setFont(BODY_TEXT_FONT_LINK);
+
+        if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null
+          || project.getOutcomes().get(String.valueOf(year)).getFile() == null
+          || project.getOutcomes().get(String.valueOf(year)).getFile().equals("")) {
+          outcomesBlock.add(this.getText("summaries.project.empty"));
+        } else {
+
+          anchor = new Anchor(project.getOutcomes().get(String.valueOf(year)).getFile());
+          anchor.setFont(BODY_TEXT_FONT_LINK);
+          anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
+            + project.getOutcomes().get(String.valueOf(year)).getFile());
+          outcomesBlock.add(anchor);
+        }
+        outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+      }
+
+      outcomesBlock.add(Chunk.NEWLINE);
+      outcomesBlock.add(Chunk.NEWLINE);
 
 
       try {

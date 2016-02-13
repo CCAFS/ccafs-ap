@@ -54,6 +54,7 @@ public class BasePDF {
   public final static Font HEADING4_FONT = new Font(FontFactory.getFont("openSans", 12, Font.BOLD, titleColor));
 
   public final static Font BODY_TEXT_FONT = new Font(FontFactory.getFont("openSans", 12, bodyColor));
+  public final static Font BODY_TEXT_FONT_LINK = new Font(FontFactory.getFont("openSans", 12, Color.BLUE));
   public final static Font BODY_TEXT_BOLD_FONT = new Font(FontFactory.getFont("openSans", 12, Font.BOLD, bodyColor));
 
   public final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("openSans", 10, Font.BOLD, Color.WHITE));

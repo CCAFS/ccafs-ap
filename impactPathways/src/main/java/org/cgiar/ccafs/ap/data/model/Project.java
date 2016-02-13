@@ -1129,7 +1129,7 @@ public class Project {
 
 
   public void setReporting(String cycle) {
-    if (cycle.equals(APConstants.CYCLE)) {
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
       this.isReporting = true;
     } else {
       this.isReporting = false;
