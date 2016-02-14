@@ -1671,102 +1671,219 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(indicatorsBlock);
       List<IPElement> listIPElements = this.getMidOutcomesPerIndicators();
       if (!listIPElements.isEmpty()) {
+        // indicatorsBlock = new Paragraph();
+        // indicatorsBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        // indicatorsBlock.setFont(BODY_TEXT_BOLD_FONT);
+        // indicatorsBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.lessonRegarding"));
+        // indicatorsBlock.setFont(BODY_TEXT_FONT);
+        // if (project.getComponentLesson("ccafsOutcomes") != null) {
+        // indicatorsBlock.add(this.messageReturn(project.getComponentLesson("ccafsOutcomes").getLessons()));
+        // } else {
+        // indicatorsBlock.add(this.messageReturn(null));
+        // }
+        // document.add(indicatorsBlock);
 
-        for (IPElement outcome : listIPElements) {
-          Paragraph outcomeBlock = new Paragraph();
-          int indicatorIndex = 1;
 
-          outcomeBlock.add(Chunk.NEWLINE);
-          outcomeBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-          outcomeBlock.setFont(BODY_TEXT_BOLD_FONT);
-          outcomeBlock.add(outcome.getProgram().getAcronym());
-          outcomeBlock.add(" - " + this.getText("summaries.project.midoutcome"));
+        if (project.isReporting()) {
 
-          outcomeBlock.setFont(BODY_TEXT_FONT);
-          outcomeBlock.add(outcome.getDescription());
-          outcomeBlock.add(Chunk.NEWLINE);
-          outcomeBlock.add(Chunk.NEWLINE);
+          for (IPElement outcome : listIPElements) {
+            Paragraph outcomeBlock = new Paragraph();
+            int indicatorIndex = 1;
 
-          document.add(outcomeBlock);
+            outcomeBlock.add(Chunk.NEWLINE);
+            outcomeBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+            outcomeBlock.setFont(BODY_TEXT_BOLD_FONT);
+            outcomeBlock.add(outcome.getProgram().getAcronym());
+            outcomeBlock.add(" - " + this.getText("summaries.project.midoutcome"));
 
-          for (IPIndicator outcomeIndicator : outcome.getIndicators()) {
-            outcomeIndicator = outcomeIndicator.getParent() != null ? outcomeIndicator.getParent() : outcomeIndicator;
-            List<IPIndicator> indicators = project.getIndicatorsByParent(outcomeIndicator.getId());
-            if (indicators.isEmpty()) {
-              continue;
-            }
+            outcomeBlock.setFont(BODY_TEXT_FONT);
+            outcomeBlock.add(outcome.getDescription());
+            outcomeBlock.add(Chunk.NEWLINE);
+            outcomeBlock.add(Chunk.NEWLINE);
 
-            Paragraph indicatorDescription = new Paragraph();
-            indicatorDescription.setFont(BODY_TEXT_BOLD_FONT);
-            indicatorDescription.add(this.getText("summaries.project.indicators"));
-            indicatorDescription.add(String.valueOf(indicatorIndex) + ": ");
+            document.add(outcomeBlock);
 
-            indicatorDescription.setFont(BODY_TEXT_FONT);
-            indicatorDescription.setAlignment(Element.ALIGN_JUSTIFIED);
-            indicatorDescription.add(outcomeIndicator.getDescription());
-            document.add(indicatorDescription);
-            document.add(Chunk.NEWLINE);;
-
-            table = new PdfPTable(4);
-            table.setLockedWidth(true);
-            table.setTotalWidth(480);
-            table.setWidths(new int[] {1, 3, 3, 3});
-            table.setHeaderRows(1);
-
-            // Headers
-            cell = new Paragraph(this.getText("summaries.project.indicator.year"), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, cell);
-            cell = new Paragraph(this.getText("summaries.project.indicator.targetValue"), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, cell);
-            cell = new Paragraph(this.getText("summaries.project.indicator.targetNarrative"), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, cell);
-            cell = new Paragraph(this.getText("summaries.project.indicator.targetGender"), TABLE_HEADER_FONT);
-            this.addTableHeaderCell(table, cell);
-
-            for (IPIndicator indicator : indicators) {
-
-              if (indicator.getOutcome().getId() != outcome.getId()) {
+            for (IPIndicator outcomeIndicator : outcome.getIndicators()) {
+              outcomeIndicator = outcomeIndicator.getParent() != null ? outcomeIndicator.getParent() : outcomeIndicator;
+              List<IPIndicator> indicators = project.getIndicatorsByParent(outcomeIndicator.getId());
+              if (indicators.isEmpty()) {
                 continue;
               }
-              cell = new Paragraph(this.messageReturn(String.valueOf(indicator.getYear())), TABLE_BODY_FONT);
-              this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
 
-              cell = new Paragraph(this.messageReturn(indicator.getTarget()), TABLE_BODY_FONT);
-              this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+              Paragraph indicatorDescription = new Paragraph();
+              indicatorDescription.setFont(BODY_TEXT_BOLD_FONT);
+              indicatorDescription.add(this.getText("summaries.project.indicators"));
+              indicatorDescription.add(String.valueOf(indicatorIndex) + ": ");
 
-              cell = new Paragraph(this.messageReturn(indicator.getDescription()), TABLE_BODY_FONT);
-              this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+              indicatorDescription.setFont(BODY_TEXT_FONT);
+              indicatorDescription.setAlignment(Element.ALIGN_JUSTIFIED);
+              indicatorDescription.add(outcomeIndicator.getDescription());
+              document.add(indicatorDescription);
+              document.add(Chunk.NEWLINE);;
 
-              cell = new Paragraph(this.messageReturn(indicator.getGender()), TABLE_BODY_FONT);
-              this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+              for (IPIndicator indicator : indicators) {
+
+                table = new PdfPTable(3);
+                table.setLockedWidth(true);
+                table.setTotalWidth(480);
+                table.setWidths(new int[] {3, 3, 3});
+                table.setHeaderRows(1);
+
+                if (indicator.getOutcome().getId() != outcome.getId()) {
+                  continue;
+                }
+
+                cell = new Paragraph(this.messageReturn(String.valueOf(indicator.getYear())), TABLE_BODY_FONT);
+                this.addTableColSpanCell(table, cell, Element.ALIGN_CENTER, 1, 3);
+
+                // Target value
+                cell = new Paragraph(this.getText("summaries.project.indicator.targetValue"), TABLE_BODY_BOLD_FONT);
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(this.messageReturn(indicator.getTarget()));
+                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+                // Cumulative target to date
+                // TODO
+                cell = new Paragraph(this.getText("summaries.project.indicator.cumulative"), TABLE_BODY_BOLD_FONT);
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(this.messageReturn(String.valueOf(indicator.getId())));
+                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+                // achieved
+                cell = new Paragraph(this.getText("summaries.project.indicator.archieved"), TABLE_BODY_BOLD_FONT);
+                cell.setFont(TABLE_BODY_FONT);
+
+                if (indicator.getArchived() == null) {
+                  cell.add(this.messageReturn(null));
+                } else {
+                  cell.add(this.messageReturn(String.valueOf(indicator.getArchived())));
+                }
+
+                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+                // target narrative
+                cell = new Paragraph(this.getText("summaries.project.indicator.targetNarrative"), TABLE_BODY_BOLD_FONT);
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(this.messageReturn(indicator.getDescription()));
+                this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+
+                // targets achieved
+                cell = new Paragraph(this.getText("summaries.project.indicator.targetsAchieved"), TABLE_BODY_BOLD_FONT);
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(this.messageReturn(indicator.getNarrativeTargets()));
+                this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+
+                // Target gender
+                cell = new Paragraph(this.getText("summaries.project.indicator.targetGender"), TABLE_BODY_BOLD_FONT);
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(this.messageReturn(indicator.getGender()));
+                this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+
+                // Target achieved gender
+                cell = new Paragraph(this.getText("summaries.project.indicator.genderAchieved"), TABLE_BODY_BOLD_FONT);
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(this.messageReturn(indicator.getNarrativeGender()));
+                this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+
+                document.add(table);
+                document.add(Chunk.NEWLINE);
+
+              }
+              indicatorIndex++;
+
 
             }
-            indicatorIndex++;
-            document.add(table);
-            document.add(Chunk.NEWLINE);
+          }
 
-            // Leason regardins
-            indicatorsBlock = new Paragraph();
-            indicatorsBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-            indicatorsBlock.setFont(BODY_TEXT_BOLD_FONT);
-            indicatorsBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.lessonRegarding"));
-            indicatorsBlock.setFont(BODY_TEXT_FONT);
-            if (project.getComponentLesson("ccafsOutcomes") != null) {
-              indicatorsBlock.add(this.messageReturn(project.getComponentLesson("ccafsOutcomes").getLessons()));
-            } else {
-              indicatorsBlock.add(this.messageReturn(null));
+        } else {
+
+
+          for (IPElement outcome : listIPElements) {
+            Paragraph outcomeBlock = new Paragraph();
+            int indicatorIndex = 1;
+
+            outcomeBlock.add(Chunk.NEWLINE);
+            outcomeBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+            outcomeBlock.setFont(BODY_TEXT_BOLD_FONT);
+            outcomeBlock.add(outcome.getProgram().getAcronym());
+            outcomeBlock.add(" - " + this.getText("summaries.project.midoutcome"));
+
+            outcomeBlock.setFont(BODY_TEXT_FONT);
+            outcomeBlock.add(outcome.getDescription());
+            outcomeBlock.add(Chunk.NEWLINE);
+            outcomeBlock.add(Chunk.NEWLINE);
+
+            document.add(outcomeBlock);
+
+            for (IPIndicator outcomeIndicator : outcome.getIndicators()) {
+              outcomeIndicator = outcomeIndicator.getParent() != null ? outcomeIndicator.getParent() : outcomeIndicator;
+              List<IPIndicator> indicators = project.getIndicatorsByParent(outcomeIndicator.getId());
+              if (indicators.isEmpty()) {
+                continue;
+              }
+
+              Paragraph indicatorDescription = new Paragraph();
+              indicatorDescription.setFont(BODY_TEXT_BOLD_FONT);
+              indicatorDescription.add(this.getText("summaries.project.indicators"));
+              indicatorDescription.add(String.valueOf(indicatorIndex) + ": ");
+
+              indicatorDescription.setFont(BODY_TEXT_FONT);
+              indicatorDescription.setAlignment(Element.ALIGN_JUSTIFIED);
+              indicatorDescription.add(outcomeIndicator.getDescription());
+              document.add(indicatorDescription);
+              document.add(Chunk.NEWLINE);;
+
+              table = new PdfPTable(4);
+              table.setLockedWidth(true);
+              table.setTotalWidth(480);
+              table.setWidths(new int[] {1, 3, 3, 3});
+              table.setHeaderRows(1);
+
+              // Headers
+              cell = new Paragraph(this.getText("summaries.project.indicator.year"), TABLE_HEADER_FONT);
+              this.addTableHeaderCell(table, cell);
+              cell = new Paragraph(this.getText("summaries.project.indicator.targetValue"), TABLE_HEADER_FONT);
+              this.addTableHeaderCell(table, cell);
+              cell = new Paragraph(this.getText("summaries.project.indicator.targetNarrative"), TABLE_HEADER_FONT);
+              this.addTableHeaderCell(table, cell);
+              cell = new Paragraph(this.getText("summaries.project.indicator.targetGender"), TABLE_HEADER_FONT);
+              this.addTableHeaderCell(table, cell);
+
+              for (IPIndicator indicator : indicators) {
+
+                if (indicator.getOutcome().getId() != outcome.getId()) {
+                  continue;
+                }
+                cell = new Paragraph(this.messageReturn(String.valueOf(indicator.getYear())), TABLE_BODY_FONT);
+                this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+                cell = new Paragraph(this.messageReturn(indicator.getTarget()), TABLE_BODY_FONT);
+                this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+                cell = new Paragraph(this.messageReturn(indicator.getDescription()), TABLE_BODY_FONT);
+                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+                cell = new Paragraph(this.messageReturn(indicator.getGender()), TABLE_BODY_FONT);
+                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+              }
+              indicatorIndex++;
+              document.add(table);
+              document.add(Chunk.NEWLINE);
             }
-            document.add(indicatorsBlock);
-
           }
         }
+
+
       } else {
         cell = new Paragraph(this.getText("summaries.project.empty"));
         document.add(cell);
       }
+    } catch (
 
+    DocumentException e)
 
-    } catch (DocumentException e) {
+    {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
 
@@ -2124,82 +2241,122 @@ public class ProjectSummaryPDF extends BasePDF {
 
     Anchor anchor;
     currentPlanningYear--;
-    for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
+    ////////////////// Reporting
+    if (project.isReporting()) {
+      for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
 
-      // Annual progress towards
-      outcomesBlock = new Paragraph();
-      outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-      outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-      outcomesBlock.add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
-      outcomesBlock.setFont(BODY_TEXT_FONT);
+        // Annual progress towards
+        outcomesBlock = new Paragraph();
+        outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
+        outcomesBlock.setFont(BODY_TEXT_FONT);
 
-      if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
-        outcomesBlock.add(this.getText("summaries.project.empty"));
-      } else {
-        outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement()));
+
+        if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
+          outcomesBlock.add(this.getText("summaries.project.empty"));
+        } else {
+          outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement()));
+        }
+
+        if (year == this.currentPlanningYear) {
+          ///// outcome toward in reporting cycle
+          outcomesBlock.add(Chunk.NEWLINE);
+          outcomesBlock.add(Chunk.NEWLINE);
+          outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+          outcomesBlock
+            .add(this.getText("summaries.project.outcomeAnnualTowards", new String[] {String.valueOf(year)}));
+
+          outcomesBlock.setFont(BODY_TEXT_FONT);
+
+          if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
+            outcomesBlock.add(this.getText("summaries.project.empty"));
+          } else {
+            outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getAnualProgress()));
+          }
+          ///// outcome communication
+          outcomesBlock.add(Chunk.NEWLINE);
+          outcomesBlock.add(Chunk.NEWLINE);
+
+          outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+          outcomesBlock.add(this.getText("summaries.project.outcomeAnnualCommunication"));
+
+          outcomesBlock.setFont(BODY_TEXT_FONT);
+
+          if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
+            outcomesBlock.add(this.getText("summaries.project.empty"));
+          } else {
+            outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getComunication()));
+          }
+
+          // Any evendence
+          outcomesBlock.add(Chunk.NEWLINE);
+          outcomesBlock.add(Chunk.NEWLINE);
+          outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+          outcomesBlock.add(this.getText("summaries.project.outcomeAnnualEvidence"));
+          outcomesBlock.setFont(BODY_TEXT_FONT_LINK);
+
+          if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null
+            || project.getOutcomes().get(String.valueOf(year)).getFile() == null
+            || project.getOutcomes().get(String.valueOf(year)).getFile().equals("")) {
+            outcomesBlock.add(this.getText("summaries.project.empty"));
+          } else {
+
+            anchor = new Anchor(project.getOutcomes().get(String.valueOf(year)).getFile());
+            anchor.setFont(BODY_TEXT_FONT_LINK);
+            anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
+              + project.getOutcomes().get(String.valueOf(year)).getFile());
+            outcomesBlock.add(anchor);
+          }
+          outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        }
+
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.add(Chunk.NEWLINE);
+
+
+        try {
+          document.add(outcomesBlock);
+        } catch (DocumentException e) {
+          LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
+        }
       }
 
-      if (year == this.currentPlanningYear) {
-        ///// outcome toward in reporting cycle
-        outcomesBlock.add(Chunk.NEWLINE);
-        outcomesBlock.add(Chunk.NEWLINE);
+
+    }
+    ////////////////// Planning
+    else {
+      String outcomeProgress = new String();
+      for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
+        // Annual progress towards
+        outcomesBlock = new Paragraph();
+        outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
         outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualTowards", new String[] {String.valueOf(year)}));
-
-        outcomesBlock.setFont(BODY_TEXT_FONT);
-
-        if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
-          outcomesBlock.add(this.getText("summaries.project.empty"));
-        } else {
-          outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getAnualProgress()));
-        }
-        ///// outcome communication
-        outcomesBlock.add(Chunk.NEWLINE);
-        outcomesBlock.add(Chunk.NEWLINE);
-
-        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualCommunication"));
-
-        outcomesBlock.setFont(BODY_TEXT_FONT);
-
-        if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
-          outcomesBlock.add(this.getText("summaries.project.empty"));
-        } else {
-          outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getComunication()));
-        }
-
-        // Any evendence
-
-        outcomesBlock.add(Chunk.NEWLINE);
-        outcomesBlock.add(Chunk.NEWLINE);
-        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualEvidence"));
-        outcomesBlock.setFont(BODY_TEXT_FONT_LINK);
+        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
 
         if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null
-          || project.getOutcomes().get(String.valueOf(year)).getFile() == null
-          || project.getOutcomes().get(String.valueOf(year)).getFile().equals("")) {
-          outcomesBlock.add(this.getText("summaries.project.empty"));
+          || project.getOutcomes().get(String.valueOf(year)).getStatement() == null
+          || project.getOutcomes().get(String.valueOf(year)).getStatement().equals("")) {
+          outcomesBlock.add(": ");
+          outcomesBlock.setFont(BODY_TEXT_FONT);
+          outcomeProgress = this.getText("summaries.project.empty");
         } else {
-
-          anchor = new Anchor(project.getOutcomes().get(String.valueOf(year)).getFile());
-          anchor.setFont(BODY_TEXT_FONT_LINK);
-          anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
-            + project.getOutcomes().get(String.valueOf(year)).getFile());
-          outcomesBlock.add(anchor);
+          outcomesBlock.add(Chunk.NEWLINE);
+          outcomeProgress = this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement());
+          outcomesBlock.setFont(BODY_TEXT_FONT);
         }
-        outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        outcomesBlock.add(outcomeProgress);
+        outcomesBlock.add(Chunk.NEWLINE);;
+        outcomesBlock.add(Chunk.NEWLINE);;
+
+
+        try {
+          document.add(outcomesBlock);
+        } catch (DocumentException e) {
+          LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
+        }
       }
 
-      outcomesBlock.add(Chunk.NEWLINE);
-      outcomesBlock.add(Chunk.NEWLINE);
-
-
-      try {
-        document.add(outcomesBlock);
-      } catch (DocumentException e) {
-        LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
-      }
     }
 
 
@@ -2263,6 +2420,7 @@ public class ProjectSummaryPDF extends BasePDF {
       outcomesBlock.add(Chunk.NEWLINE);
       outcomesBlock.add(otherContribution.getAdditionalContribution());
     }
+
     outcomesBlock.add(Chunk.NEWLINE);
     outcomesBlock.add(Chunk.NEWLINE);
 
