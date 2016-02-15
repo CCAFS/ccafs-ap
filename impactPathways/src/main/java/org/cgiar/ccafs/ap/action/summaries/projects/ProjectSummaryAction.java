@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.ActivityManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.BudgetOverheadManager;
 import org.cgiar.ccafs.ap.data.manager.CRPManager;
+import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
@@ -38,12 +39,14 @@ import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.summaries.projects.pdf.ProjectSummaryPDF;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.summaries.Summary;
@@ -91,6 +94,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private ProjectLessonsManager projectLessonsManager;
   private SubmissionManager submisssionManager;
   private BudgetOverheadManager budgetOverheadManager;
+  private CRPManager crpManager;
+  private CaseStudiesManager caseStudiesManager;
 
   // Model
   private Project project;
@@ -108,8 +113,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
     CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager,
     ProjectLessonsManager projectLessonsManager, SubmissionManager submisssionManager,
-    BudgetOverheadManager budgetOverheadManager) {
+    BudgetOverheadManager budgetOverheadManager, CaseStudiesManager caseStudiesManager) {
     super(config);
+    this.caseStudiesManager = caseStudiesManager;
     this.projectPDF = projectPDF;
     this.projectManager = projectManager;
     this.ipProgramManager = ipProgramManager;
@@ -130,6 +136,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.projectLessonsManager = projectLessonsManager;
     this.submisssionManager = submisssionManager;
     this.budgetOverheadManager = budgetOverheadManager;
+    this.crpManager = crpManager;
   }
 
 
@@ -267,6 +274,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
     project.setOutputsOverview(listaOver);
 
+
     // *************************Deliverables*****************************/
     List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
     for (Deliverable deliverable : deliverables) {
@@ -303,6 +311,24 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));
 
     project.setActivities(activityManager.getActivitiesByProject(project.getId()));
+
+
+    List<ProjecteOtherContributions> projectOtherList =
+      ipOtherContributionManager.getOtherContributionsByProjectId(project.getId());
+    for (ProjecteOtherContributions projectOther : projectOtherList) {
+      // Changing indicator_id for indicator_description
+      projectOther.setIndicators(
+        this.indicatorManager.getIndicator(Integer.parseInt(projectOther.getIndicators())).getDescription());
+    }
+    project.setOtherContributions(projectOtherList);
+
+    project.setListCRPContributions(crpManager.getCrpContributionsNature(project.getId()));
+
+    List<CasesStudies> caseStudiesList = caseStudiesManager.getCaseStudysByProject(project.getId());
+    for (CasesStudies casesStudies : caseStudiesList) {
+      casesStudies.setCaseStudyIndicators(indicatorManager.getIndicatorsByProject(project));
+    }
+    project.setCaseStudies(caseStudiesList);
 
     // *************************Budgets******************************/
     project.setBudgets(this.budgetManager.getBudgetsByProject(project));

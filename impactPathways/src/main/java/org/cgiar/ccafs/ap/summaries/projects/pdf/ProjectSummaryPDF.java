@@ -24,6 +24,7 @@ import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
+import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.IPElement;
@@ -40,6 +41,7 @@ import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.awt.Color;
@@ -1671,18 +1673,6 @@ public class ProjectSummaryPDF extends BasePDF {
       document.add(indicatorsBlock);
       List<IPElement> listIPElements = this.getMidOutcomesPerIndicators();
       if (!listIPElements.isEmpty()) {
-        // indicatorsBlock = new Paragraph();
-        // indicatorsBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-        // indicatorsBlock.setFont(BODY_TEXT_BOLD_FONT);
-        // indicatorsBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.lessonRegarding"));
-        // indicatorsBlock.setFont(BODY_TEXT_FONT);
-        // if (project.getComponentLesson("ccafsOutcomes") != null) {
-        // indicatorsBlock.add(this.messageReturn(project.getComponentLesson("ccafsOutcomes").getLessons()));
-        // } else {
-        // indicatorsBlock.add(this.messageReturn(null));
-        // }
-        // document.add(indicatorsBlock);
-
 
         if (project.isReporting()) {
 
@@ -1795,6 +1785,7 @@ public class ProjectSummaryPDF extends BasePDF {
             }
           }
 
+          //////////// Planning
         } else {
 
 
@@ -1874,7 +1865,7 @@ public class ProjectSummaryPDF extends BasePDF {
           }
         }
 
-
+        // When there isn't elements in indicators
       } else {
         cell = new Paragraph(this.getText("summaries.project.empty"));
         document.add(cell);
@@ -2379,122 +2370,354 @@ public class ProjectSummaryPDF extends BasePDF {
     // ******************* CCAFS Outcomes***************/
     this.addProjectCCAFSOutcomes();
 
+
+    // **********************************************************************************
     // ******************* Other contributions***************/
+    // **********************************************************************************
+
     OtherContribution otherContribution = project.getIpOtherContribution();
 
-    outcomesBlock = new Paragraph();
-    outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-
-    title = new Paragraph("4.3 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"),
-      HEADING3_FONT);
-    outcomesBlock.add(Chunk.NEWLINE);
-    outcomesBlock.add(Chunk.NEWLINE);
-    outcomesBlock.add(title);
-    outcomesBlock.add(Chunk.NEWLINE);
-
-    // Contribution to other Impact Pathways:
-    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
-
-    outcomesBlock.setFont(BODY_TEXT_FONT);
-
-    if (otherContribution == null || otherContribution.getContribution() == null
-      || otherContribution.getContribution().equals("")) {
-      outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-    } else {
-      outcomesBlock.add(Chunk.NEWLINE);
-      outcomesBlock.add(otherContribution.getContribution());
-    }
-
-    outcomesBlock.add(Chunk.NEWLINE);
-    outcomesBlock.add(Chunk.NEWLINE);
-
-    // Contribution to another Center activity:
-    outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-    outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.center"));
-    outcomesBlock.setFont(BODY_TEXT_FONT);
-    if (otherContribution == null || otherContribution.getAdditionalContribution() == null
-      || otherContribution.getAdditionalContribution().equals("")) {
-      outcomesBlock.add(": " + this.getText("summaries.project.empty"));
-    } else {
-      outcomesBlock.add(Chunk.NEWLINE);
-      outcomesBlock.add(otherContribution.getAdditionalContribution());
-    }
-
-    outcomesBlock.add(Chunk.NEWLINE);
-    outcomesBlock.add(Chunk.NEWLINE);
-
-    // // Collaboration with other CRPs
-    boolean addParagraph = false;
-    Paragraph cell = new Paragraph();;
-    cell.setFont(BODY_TEXT_BOLD_FONT);
     try {
-      PdfPTable table = new PdfPTable(2);
+      outcomesBlock = new Paragraph();
+      outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
 
-      cell.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.covered"));
-      if (otherContribution != null) {
-        List<CRPContribution> listCRP = otherContribution.getCrpContributions();
-        if (listCRP.isEmpty()) {
+      title = new Paragraph("4.3 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"),
+        HEADING3_FONT);
+      outcomesBlock.add(Chunk.NEWLINE);
+      outcomesBlock.add(Chunk.NEWLINE);
+      outcomesBlock.add(title);
+      outcomesBlock.add(Chunk.NEWLINE);
+
+      // Contribution to other Impact Pathways:
+      outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+      outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
+
+      outcomesBlock.setFont(BODY_TEXT_FONT);
+
+      if (otherContribution == null || otherContribution.getContribution() == null
+        || otherContribution.getContribution().equals("")) {
+        outcomesBlock.add(": " + this.getText("summaries.project.empty"));
+      } else {
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.add(otherContribution.getContribution());
+      }
+
+
+      outcomesBlock.add(Chunk.NEWLINE);
+      outcomesBlock.add(Chunk.NEWLINE);
+
+      document.add(outcomesBlock);
+      document.add(Chunk.NEWLINE);
+
+      Paragraph cell;
+
+      if (project.isReporting()) {
+        PdfPTable table = new PdfPTable(4);
+        table.setWidths(new int[] {1, 4, 4, 4});
+        table.setLockedWidth(true);
+        table.setTotalWidth(500);
+
+        // adding headers
+        cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.region"), TABLE_HEADER_FONT);
+        this.addTableHeaderCell(table, cell);
+
+        cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.indicator"), TABLE_HEADER_FONT);
+        this.addTableHeaderCell(table, cell);
+
+        cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.describe"), TABLE_HEADER_FONT);
+        this.addTableHeaderCell(table, cell);
+
+        cell =
+          new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.ablequantily"), TABLE_HEADER_FONT);
+        this.addTableHeaderCell(table, cell);
+
+        // Adding contain
+        for (ProjecteOtherContributions projectOther : project.getOtherContributions()) {
+          cell = new Paragraph(projectOther.getRegion(), TABLE_BODY_FONT);
+          this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+          cell = new Paragraph(projectOther.getIndicators(), TABLE_BODY_FONT);
+          this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+          cell = new Paragraph(projectOther.getDescription(), TABLE_BODY_FONT);
+          this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+          cell = new Paragraph(String.valueOf(projectOther.getTarget()), TABLE_BODY_FONT);
+          this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+
+        }
+        document.add(table);
+        document.add(Chunk.NEWLINE);
+
+        // // Collaboration with other CRPs
+        cell =
+          new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.collaborating"), BODY_TEXT_BOLD_FONT);
+
+        if (project.getListCRPContributions().isEmpty()) {
+
+          cell.setFont(BODY_TEXT_FONT);
+          cell.add(this.messageReturn(null));
+          document.add(cell);
+        } else {
+          document.add(cell);
+          document.add(Chunk.NEWLINE);
+
+          for (CRPContribution crpContribution : project.getListCRPContributions()) {
+            table = new PdfPTable(1);
+            table.setLockedWidth(true);
+            table.setTotalWidth(500);
+
+            cell = new Paragraph(this.messageReturn(crpContribution.getCrp().getName()), TABLE_BODY_BOLD_FONT);
+            cell.setAlignment(Element.ALIGN_LEFT);
+            this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+            cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.natureCollaboration"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(this.messageReturn(crpContribution.getNatureCollaboration()));
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.achievedOutcome"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(this.messageReturn(crpContribution.getExplainAchieved()));
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            document.add(table);
+            document.add(Chunk.NEWLINE);
+          }
+
+        }
+      }
+
+      else {
+        // // Collaboration with other CRPs
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.add(Chunk.NEWLINE);
+
+
+        // Contribution to another Center activity:
+        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+        outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.center"));
+        outcomesBlock.setFont(BODY_TEXT_FONT);
+        if (otherContribution == null || otherContribution.getAdditionalContribution() == null
+          || otherContribution.getAdditionalContribution().equals("")) {
+          outcomesBlock.add(": " + this.getText("summaries.project.empty"));
+        } else {
+          outcomesBlock.add(Chunk.NEWLINE);
+          outcomesBlock.add(otherContribution.getAdditionalContribution());
+
+        }
+
+        boolean addParagraph = false;
+        cell = new Paragraph();;
+        cell.setFont(BODY_TEXT_BOLD_FONT);
+
+        PdfPTable table = new PdfPTable(2);
+
+        cell.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.covered"));
+        if (otherContribution != null)
+
+        {
+          List<CRPContribution> listCRP = otherContribution.getCrpContributions();
+          if (listCRP.isEmpty()) {
+            cell.setFont(BODY_TEXT_FONT);
+            cell.add(this.getText("summaries.project.empty"));
+            addParagraph = true;
+          } else {
+            table.setWidths(new int[] {4, 6});
+            table.setLockedWidth(true);
+            table.setTotalWidth(500);
+
+            this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
+              table.getNumberOfColumns(), 0, false);
+
+            // adding headers
+            this.addTableHeaderCell(table, new Paragraph(
+              this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.crp"), TABLE_HEADER_FONT));
+
+            this.addTableHeaderCell(table, new Paragraph(
+              this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.nature"), TABLE_HEADER_FONT));
+
+            for (CRPContribution CRPContribution : listCRP) {
+              if (CRPContribution != null && CRPContribution.getCrp() != null) {
+                cell = new Paragraph();
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(CRPContribution.getCrp().getName());
+                this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
+                cell = new Paragraph();
+                cell.setFont(TABLE_BODY_FONT);
+                cell.add(CRPContribution.getNatureCollaboration());
+                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+              }
+            }
+          }
+        } else
+
+        {
+          cell.add(": ");
           cell.setFont(BODY_TEXT_FONT);
           cell.add(this.getText("summaries.project.empty"));
           addParagraph = true;
-        } else {
-          table.setWidths(new int[] {4, 6});
+        }
+        document.add(outcomesBlock);
+        // Add paragraphs to document
+        if (addParagraph) {
+          document.add(cell);
+        } else
+
+        {
+          document.add(table);
+        }
+
+        document.add(Chunk.NEWLINE);
+
+        // Lesson regardins Other contributions
+        outcomesBlock = new Paragraph();
+        outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+        outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.lessonRegarding"));
+        outcomesBlock.setFont(BODY_TEXT_FONT);
+        if (project.getComponentLesson("otherContributions") != null)
+
+        {
+          outcomesBlock.add(this.messageReturn(project.getComponentLesson("otherContributions").getLessons()));
+        } else
+
+        {
+          outcomesBlock.add(this.messageReturn(null));
+        }
+        document.add(outcomesBlock);
+      }
+      // **********************************************************************************
+      // *************************** Outcome Case Studies *************************************
+      // **********************************************************************************
+      PdfPTable table;
+      if (project.isReporting()) {
+        title = new Paragraph("4.4 " + this.getText("summaries.project.reporting.outcome.case.studies"), HEADING3_FONT);
+        title.add(Chunk.NEWLINE);
+        document.add(title);
+        document.add(Chunk.NEWLINE);
+
+
+        for (CasesStudies caseStudy : project.getCaseStudies()) {
+          table = new PdfPTable(1);
           table.setLockedWidth(true);
           table.setTotalWidth(500);
 
+          // case study
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.case.studies"), TABLE_BODY_BOLD_FONT);
           this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
             table.getNumberOfColumns(), 0, false);
 
-          // adding headers
-          this.addTableHeaderCell(table, new Paragraph(
-            this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.crp"), TABLE_HEADER_FONT));
+          // Title
+          cell =
+            new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.title"), TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getTitle());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
-          this.addTableHeaderCell(table, new Paragraph(
-            this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.nature"), TABLE_HEADER_FONT));
+          // Outcome statement
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outcomestatement"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getOutcomeStatement());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
-          for (CRPContribution CRPContribution : listCRP) {
-            if (CRPContribution != null && CRPContribution.getCrp() != null) {
-              cell = new Paragraph();
-              cell.setFont(TABLE_BODY_FONT);
-              cell.add(CRPContribution.getCrp().getName());
-              this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+          // Research outputs
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.researchoutputs"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getResearchOutputs());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
-              cell = new Paragraph();
-              cell.setFont(TABLE_BODY_FONT);
-              cell.add(CRPContribution.getNatureCollaboration());
-              this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
-            }
+          // Research partners
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.researchPartners"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getResearchPartners());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // activities Contributed
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.activitiesContributed"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getActivities());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // Non Research Partners
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.nonResearchPartners"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getNonResearchPartneres());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // Output Users
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outputUsers"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getOutputUsers());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // Output Used
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outputWasUsed"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getOutputUsed());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // Evidence
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.evidenceOutcome"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getEvidenceOutcome());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // References
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.references"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getReferencesCase());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // Outcome indicators
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.primaryOutcome",
+            new String[] {String.valueOf(this.midOutcomeYear)}), TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add("\n");
+          for (IPIndicator ipIndicator : caseStudy.getCaseStudyIndicators()) {
+            cell.add(ipIndicator.getOutcome().getId() + ": " + ipIndicator.getDescription() + "\n");
           }
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // Explain link
+          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.explainLink"),
+            TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getExplainIndicatorRelation());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+
+          // year
+          cell =
+            new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.year"), TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(String.valueOf(caseStudy.getYear()));
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          // upload
+          cell =
+            new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.upload"), TABLE_BODY_BOLD_FONT);
+          cell.setFont(TABLE_BODY_FONT);
+          cell.add(caseStudy.getFile());
+          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+          document.add(table);
+          document.add(Chunk.NEWLINE);
+
         }
-      } else {
-        cell.add(": ");
-        cell.setFont(BODY_TEXT_FONT);
-        cell.add(this.getText("summaries.project.empty"));
-        addParagraph = true;
       }
-      document.add(outcomesBlock);
-      // Add paragraphs to document
-      if (addParagraph) {
-        document.add(cell);
-      } else {
-        document.add(table);
-      }
-
-      document.add(Chunk.NEWLINE);
-
-      // Lesson regardins Other contributions
-      outcomesBlock = new Paragraph();
-      outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-      outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-      outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.lessonRegarding"));
-      outcomesBlock.setFont(BODY_TEXT_FONT);
-      if (project.getComponentLesson("otherContributions") != null) {
-        outcomesBlock.add(this.messageReturn(project.getComponentLesson("otherContributions").getLessons()));
-      } else {
-        outcomesBlock.add(this.messageReturn(null));
-      }
-      document.add(outcomesBlock);
 
 
     } catch (DocumentException e) {

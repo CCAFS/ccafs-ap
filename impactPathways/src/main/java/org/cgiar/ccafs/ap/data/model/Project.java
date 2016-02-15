@@ -68,7 +68,7 @@ public class Project {
   private List<ProjectHighligths> highlights; // Project research outputs - deliverables.
   private List<ProjectNextUser> nextUsers; // Project research outputs - deliverables.
   private List<ProjectLeverage> leverages; // Project research outputs - deliverables.
-
+  private List<CRPContribution> listCRPContributions;
 
   private List<CasesStudies> caseStudies;
 
@@ -570,6 +570,11 @@ public class Project {
     return linkedProjects;
   }
 
+  public List<CRPContribution> getListCRPContributions() {
+    return listCRPContributions;
+  }
+
+
   public List<Location> getLocations() {
     return locations;
   }
@@ -634,7 +639,6 @@ public class Project {
     return outputs;
   }
 
-
   public List<OutputBudget> getOutputsBudgets() {
     return outputsBudgets;
   }
@@ -663,10 +667,10 @@ public class Project {
     return null;
   }
 
+
   public User getOwner() {
     return owner;
   }
-
 
   /**
    * This method returns the list of partners that have a PPA institution associated.
@@ -784,10 +788,10 @@ public class Project {
     return startDate;
   }
 
+
   public List<Submission> getSubmissions() {
     return submissions;
   }
-
 
   /**
    * This method gets the submissison for the current planning year of current project.
@@ -949,10 +953,10 @@ public class Project {
     return this.getCreationDate().after(planningStartDate);
   }
 
+
   public boolean isReporting() {
     return isReporting;
   }
-
 
   /**
    * This method validates if the project is already submitted or not.
@@ -984,6 +988,7 @@ public class Project {
     this.annualReportDonor = annualReportDonor;
   }
 
+
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
   }
@@ -993,7 +998,6 @@ public class Project {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
 
-
   public void setBilateralContractRequired(boolean bilateralContractRequired) {
     this.bilateralContractRequired = bilateralContractRequired;
   }
@@ -1002,10 +1006,10 @@ public class Project {
     this.budgets = budgets;
   }
 
+
   public void setCaseStudies(List<CasesStudies> caseStudies) {
     this.caseStudies = caseStudies;
   }
-
 
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
@@ -1058,10 +1062,10 @@ public class Project {
     this.indicators = indicators;
   }
 
+
   public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
-
 
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
@@ -1077,6 +1081,10 @@ public class Project {
 
   public void setLinkedProjects(List<Project> linkedProjects) {
     this.linkedProjects = linkedProjects;
+  }
+
+  public void setListCRPContributions(List<CRPContribution> listCRPContributions) {
+    this.listCRPContributions = listCRPContributions;
   }
 
   public void setLocations(List<Location> locations) {
@@ -1119,6 +1127,7 @@ public class Project {
     this.owner = owner;
   }
 
+
   public void setProjectPartners(List<ProjectPartner> projectPartners) {
     this.projectPartners = projectPartners;
   }
@@ -1126,7 +1135,6 @@ public class Project {
   public void setRegions(List<IPProgram> regions) {
     this.regions = regions;
   }
-
 
   public void setReporting(String cycle) {
     if (cycle.equals(APConstants.REPORTING_SECTION)) {
@@ -1149,9 +1157,11 @@ public class Project {
     this.summary = summary;
   }
 
+
   public void setTitle(String title) {
     this.title = title;
   }
+
 
   public void setType(String type) {
     this.type = type;
