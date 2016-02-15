@@ -360,11 +360,14 @@ public class Project {
     List<PartnerPerson> projectCoordinators = new ArrayList<>();
     if (projectPartners != null) {
       for (ProjectPartner partner : projectPartners) {
-        for (PartnerPerson person : partner.getPartnerPersons()) {
-          if (person.isCoordinator()) {
-            projectCoordinators.add(person);
+        if (partner.getPartnerPersons() != null) {
+          for (PartnerPerson person : partner.getPartnerPersons()) {
+            if (person.isCoordinator()) {
+              projectCoordinators.add(person);
+            }
           }
         }
+
       }
     }
     return projectCoordinators;

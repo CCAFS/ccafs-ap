@@ -16,12 +16,12 @@ package org.cgiar.ccafs.ap.action.synthesis;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
+import org.cgiar.ccafs.ap.data.manager.IndicatorReportManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.model.Indicator;
 import org.cgiar.ccafs.ap.data.model.IndicatorReport;
 import org.cgiar.ccafs.ap.data.model.IndicatorType;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
-import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -43,10 +43,10 @@ public class CrpIndicatorsAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-  private ProjectLeverageValidator validator;
+
   private HistoryManager historyManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
-
+  private IndicatorReportManager indicatorsReportManager;
   // Model for the front-end
   private List<LiaisonInstitution> liaisonInstitutions;
   private List<IndicatorReport> indicatorReports;
@@ -57,18 +57,26 @@ public class CrpIndicatorsAction extends BaseAction {
 
   @Inject
   public CrpIndicatorsAction(APConfig config, HistoryManager historyManager,
-    LiaisonInstitutionManager liaisonInstitutionManager, ProjectLeverageValidator validator) {
+    LiaisonInstitutionManager liaisonInstitutionManager, IndicatorReportManager indicatorsReportManager) {
     super(config);
-    this.validator = validator;
+
     this.historyManager = historyManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
+    this.indicatorsReportManager = indicatorsReportManager;
+  }
+
+
+  public List<IndicatorReport> getCrpIndicators(int instituion, int type) {
+    List<IndicatorReport> list =
+      indicatorsReportManager.getIndicatorReportsList(instituion, this.getCurrentReportingYear(), type);
+    return list;
+
   }
 
 
   public List<IndicatorReport> getIndicatorReports() {
     return indicatorReports;
   }
-
 
   public int getIndicatorTypeID() {
     return indicatorTypeID;
@@ -82,6 +90,7 @@ public class CrpIndicatorsAction extends BaseAction {
     return liaisonInstitutions;
   }
 
+
   @Override
   public String next() {
     String result = this.save();
@@ -91,6 +100,7 @@ public class CrpIndicatorsAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -113,7 +123,7 @@ public class CrpIndicatorsAction extends BaseAction {
     } catch (NumberFormatException e) {
       indicatorTypeID = 1;
     }
-
+    indicatorReports = this.getCrpIndicators(liaisonInstitutionID, indicatorTypeID);
     // Get the list of liaison institutions.
     liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
 

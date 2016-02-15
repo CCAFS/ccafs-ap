@@ -517,9 +517,12 @@ public class ProjectPartnersAction extends BaseAction {
         previousCoordinator = previousProject.getCoordinatorPersons().get(0);
       }
       PartnerPerson coordinator = null;
-      if (project.getCoordinatorPersons().size() > 0) {
-        coordinator = project.getCoordinatorPersons().get(0);
+      if (project.getCoordinatorPersons() != null) {
+        if (project.getCoordinatorPersons().size() > 0) {
+          coordinator = project.getCoordinatorPersons().get(0);
+        }
       }
+
       // Notify user if the project coordinator was created.
       if (coordinator != null) {
         this.notifyNewUserCreated(coordinator.getUser());
