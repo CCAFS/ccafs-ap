@@ -69,21 +69,11 @@ public class Project {
   private List<ProjectNextUser> nextUsers; // Project research outputs - deliverables.
   private List<ProjectLeverage> leverages; // Project research outputs - deliverables.
   private List<CRPContribution> listCRPContributions;
-
   private List<CasesStudies> caseStudies;
-
-
   private List<IPIndicator> indicators;
-
-
   private OtherContribution ipOtherContribution;
-
   private String leaderResponsabilities;
-
-
   private LiaisonInstitution liaisonInstitution; // Creator program. e.g. LAM, FP4, CU, etc.
-
-
   private List<Project> linkedProjects;
   private List<Location> locations; // Project locations.
   private Map<String, ProjectOutcome> outcomes;
@@ -100,10 +90,8 @@ public class Project {
   private boolean workplanRequired;
   private Budget anualContribution;
   /// Fields for Reporting
-
   private String annualReportDonor;
-  private String myLeader;
-
+  private String leadInstitutionAcronym;
 
   public Project() {
   }
@@ -558,6 +546,10 @@ public class Project {
   }
 
 
+  public String getLeadInstitutionAcronym() {
+    return leadInstitutionAcronym;
+  }
+
   public List<ProjectLeverage> getLeverages() {
     return leverages;
   }
@@ -570,6 +562,7 @@ public class Project {
     return linkedProjects;
   }
 
+
   public List<CRPContribution> getListCRPContributions() {
     return listCRPContributions;
   }
@@ -577,11 +570,6 @@ public class Project {
 
   public List<Location> getLocations() {
     return locations;
-  }
-
-
-  public String getMyLeader() {
-    return myLeader;
   }
 
 
@@ -639,6 +627,7 @@ public class Project {
     return outputs;
   }
 
+
   public List<OutputBudget> getOutputsBudgets() {
     return outputsBudgets;
   }
@@ -667,10 +656,10 @@ public class Project {
     return null;
   }
 
-
   public User getOwner() {
     return owner;
   }
+
 
   /**
    * This method returns the list of partners that have a PPA institution associated.
@@ -788,10 +777,10 @@ public class Project {
     return startDate;
   }
 
-
   public List<Submission> getSubmissions() {
     return submissions;
   }
+
 
   /**
    * This method gets the submissison for the current planning year of current project.
@@ -953,10 +942,10 @@ public class Project {
     return this.getCreationDate().after(planningStartDate);
   }
 
-
   public boolean isReporting() {
     return isReporting;
   }
+
 
   /**
    * This method validates if the project is already submitted or not.
@@ -988,7 +977,6 @@ public class Project {
     this.annualReportDonor = annualReportDonor;
   }
 
-
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
   }
@@ -998,6 +986,7 @@ public class Project {
     this.bilateralContractProposalName = bilateralContractProposalName;
   }
 
+
   public void setBilateralContractRequired(boolean bilateralContractRequired) {
     this.bilateralContractRequired = bilateralContractRequired;
   }
@@ -1006,10 +995,10 @@ public class Project {
     this.budgets = budgets;
   }
 
-
   public void setCaseStudies(List<CasesStudies> caseStudies) {
     this.caseStudies = caseStudies;
   }
+
 
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
@@ -1062,13 +1051,17 @@ public class Project {
     this.indicators = indicators;
   }
 
-
   public void setIpOtherContribution(OtherContribution ipOtherContribution) {
     this.ipOtherContribution = ipOtherContribution;
   }
 
+
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
+  }
+
+  public void setLeadInstitutionAcronym(String leadInstitutionAcronym) {
+    this.leadInstitutionAcronym = leadInstitutionAcronym;
   }
 
   public void setLeverages(List<ProjectLeverage> leverages) {
@@ -1091,9 +1084,6 @@ public class Project {
     this.locations = locations;
   }
 
-  public void setMyLeader(String myLeader) {
-    this.myLeader = myLeader;
-  }
 
   public void setNextUsers(List<ProjectNextUser> nextUsers) {
     this.nextUsers = nextUsers;
