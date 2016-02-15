@@ -8,10 +8,16 @@ function init() {
 
   attachEvents();
 
+  initTabs();
+
 }
 
 function attachEvents() {
 
   $numericFields.on("keydown", isNumber);
 
+}
+
+function initTabs() {
+  $("#crpIndicatorsTabs").tabs();
 }

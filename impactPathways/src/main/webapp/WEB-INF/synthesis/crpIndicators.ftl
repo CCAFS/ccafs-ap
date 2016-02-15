@@ -31,9 +31,9 @@
     </ul>
     
     [#-- CRP Indicators Sub Menu --]
-    [#include "/WEB-INF/synthesis/crpIndicators-subMenu.ftl" /]
+    [#--include "/WEB-INF/synthesis/crpIndicators-subMenu.ftl" /--]
     
-    <div class="halfContent">
+    <div class="fullContent">
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
       [#if submission?has_content]
         <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
@@ -42,37 +42,44 @@
       [/#if]
     
       <h1 class="contentTitle">[@s.text name="reporting.synthesis.crpIndicators.title" /]</h1>
-      <div id="indicatorsList" class="borderBox">
-        [#-- Button for edit this section --]
-        [#if (!editable && canEdit)]
-          <div class="editButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-        [#else]
-          [#if canEdit]
-            <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
-          [/#if]
-        [/#if]
-        
-        [#-- Indicators --]
-        [#list indicatorReports as indicatorReport]
-        <div class="simpleBox">
-          <h6 class="title" style="font-size: 1.2em;">${indicatorReport.indicator.name}</h6>
-          [#-- Targets --]
-          <div class="fullBlock">
-            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="Numeric Value" paramText="${currentReportingYear}" editable=false /]</div>
-            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.actual" className="isNumeric" help="Numeric Value" required=canEdit editable=editable /]</div>
-            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.nextYearTarget" className="isNumeric" help="Numeric Value" paramText="${currentReportingYear+1}" required=canEdit editable=editable /]</div>
+      
+      <div id="crpIndicatorsTabs">
+        <ul>
+          [#list 1..5 as indicatorType]  
+            <li><a href="#indicatorType-${indicatorType_index+1}">indicatorType-${indicatorType_index+1}</a></li>
+          [/#list]
+        </ul> 
+        [#list 1..5 as indicatorType]
+          <div id="indicatorType-${indicatorType_index+1}" class="indicatorsByType">
+            [#-- Button for edit this section --]
+            [#if (!editable && canEdit)]
+              <div class="editButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+            [#elseif canEdit]
+                <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+            [/#if]
+            
+            [#-- Indicators --]
+            [#list indicatorReports as indicatorReport]
+            <div class="simpleBox">
+              <h6 class="title" style="font-size: 1.2em;">${indicatorReport.indicator.name}</h6>
+              [#-- Targets --]
+              <div class="fullBlock">
+                <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" editable=false /]</div>
+                <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.actual" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" required=canEdit editable=editable /]</div>
+                <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.nextYearTarget" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear+1}" required=canEdit editable=editable /]</div>
+              </div>
+              [#-- Link to supporting databases --]
+              <div class="fullBlock">
+                [@customForm.textArea name="" i18nkey="reporting.synthesis.crpIndicators.links" required=canEdit editable=editable /]
+              </div>
+              [#-- Deviation --]
+              <div class="fullBlock">
+                [@customForm.textArea name="" i18nkey="reporting.synthesis.crpIndicators.deviation" required=canEdit editable=editable /]
+              </div>
+            </div>
+            [/#list]
           </div>
-          [#-- Link to supporting databases --]
-          <div class="fullBlock">
-            [@customForm.textArea name="" i18nkey="reporting.synthesis.crpIndicators.links" required=canEdit editable=editable /]
-          </div>
-          [#-- Deviation --]
-          <div class="fullBlock">
-            [@customForm.textArea name="" i18nkey="reporting.synthesis.crpIndicators.deviation" required=canEdit editable=editable /]
-          </div>
-        </div>
         [/#list]
-        
       </div>
       
       [#if editable]

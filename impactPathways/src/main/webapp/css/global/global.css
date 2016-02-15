@@ -390,6 +390,7 @@ ul#noty_bottomRight_layout_container {
   cursor:pointer;
   font-size: 1.1em;
   border-radius: 0 0 0 3px;
+  z-index: 9;
 }
 .editButton a{
   color: #fff;
@@ -417,6 +418,7 @@ ul#noty_bottomRight_layout_container {
   cursor:pointer;
   font-size: 1.1em;
   border-radius: 0 0px 4px 4px;
+  z-index: 9;
 }
 .viewButton a{
   color: #fff;
@@ -1855,7 +1857,7 @@ a#backHome {
 }
 
 
-.halfContent h1 {
+.halfContent h1, .fullContent h1 {
   border-bottom: 1px solid #884809;
   color: #663300;
   font-size: 1.7em;
@@ -3684,12 +3686,9 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
 /*** Project other contributions  ***/
 
 .crpContribution .remove{
-  
-position: absolute;
-  
-top: 0.5em;
-  
-right: .5em;
+  position: absolute;
+  top: 0.5em;
+  right: .5em;
 }
 
 #otherContributionsBlock {
@@ -4432,12 +4431,10 @@ aside[id*="-control"] .slidr-control:after {
 
 /*** Syntesis CRP Indicators ***/
 
-#indicatorsList {
-  margin-top: 22px;
-}
 
-#crpIndicators .halfContent{
-margin-top: 22px;
+
+.indicatorsByType{
+  padding-top:24px !important;
 }
 
 /*** Glossary ***/
