@@ -133,7 +133,7 @@ public class BaseValidator {
       ComponentLesson lesson = action.getProjectLessons();
       if (!this.isValidString(lesson.getLessons())) {
         // Let them save.
-        this.addMessage("Lessons has a is Requiered.");
+        this.addMessage("Lessons");
         // action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
         this.addMissingField("projectLessons.lessons");
       }

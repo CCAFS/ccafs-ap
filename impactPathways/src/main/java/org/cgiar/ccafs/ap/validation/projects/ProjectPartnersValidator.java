@@ -39,6 +39,15 @@ public class ProjectPartnersValidator extends BaseValidator {
     this.projectValidator = projectValidator;
   }
 
+  public void replaceAll(StringBuilder builder, String from, String to) {
+    int index = builder.indexOf(from);
+    while (index != -1) {
+      builder.replace(index, index + from.length(), to);
+      index += to.length(); // Move to the end of the replacement
+      index = builder.indexOf(from, index);
+    }
+  }
+
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       if (!action.isReportingCycle()) {
@@ -46,12 +55,17 @@ public class ProjectPartnersValidator extends BaseValidator {
       }
       if (!project.getProjectPartners().isEmpty() && (project.isCoreProject() || project.isCoFundedProject())) {
         if (!this.isValidString(project.getProjectPartners().get(0).getOverall())) {
-          this.addMessage(action.getText("Partnerships overall is Requiered"));
+          this.addMessage(
+            action.getText("Please provide Partnerships overall performance over the last reporting period"));
           this.addMissingField("project.partners.overall");
         }
       }
       if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateLessonsLearn(action, project, "partners");
+        if (this.validationMessage.toString().contains("Lessons")) {
+          this.replaceAll(validationMessage, "Lessons",
+            "Lessons regarding partnerships and possible implications for the coming planning cycle");
+        }
         this.validateCCAFSProject(action, project);
       } else {
         this.validateBilateralProject(action, project);
