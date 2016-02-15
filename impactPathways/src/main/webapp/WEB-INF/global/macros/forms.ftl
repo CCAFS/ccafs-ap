@@ -43,7 +43,7 @@
     [#if editable]
       <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if]  class="[#if className != "-NULL"]ckeditor ${className}[/#if] ${required?string('required','optional')}" />${customValue}</textarea>
     [#else]
-      <input type="hidden" name="${name}" id="${name}" value="${customValue}"/>
+      <input type="hidden" name="${name}" id="${name}" value="${customValue}" />
       [#assign requiredText][#if required && editable]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
@@ -160,7 +160,7 @@
           [/#if]
         [/#if] 
       [#else]
-        <input type="hidden" name="${name}" value="${customValue} />
+        <input type="hidden" name="${name}" value="${customValue}" />
         [#assign requiredText][#if required && editable]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign]  
         <p>  
           [#if displayFieldName == "" ]
