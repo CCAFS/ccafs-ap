@@ -26,7 +26,11 @@ import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
+import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
+import org.cgiar.ccafs.ap.data.model.DeliverableDissemination;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
+import org.cgiar.ccafs.ap.data.model.DeliverablePublicationMetadata;
+import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
@@ -40,6 +44,7 @@ import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.utils.APConfig;
@@ -226,27 +231,44 @@ public class ProjectSummaryPDF extends BasePDF {
             activityBlock.add(Chunk.NEWLINE);
             this.addTableColSpanCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1, 2);
 
+            if (project.isReporting()) {
+              // status
+              activityBlock = new Paragraph();
+              activityBlock.setFont(TABLE_BODY_BOLD_FONT);
+              activityBlock.add(this.getText("summaries.project.activities.status"));
+
+              activityBlock.setFont(TABLE_BODY_FONT);
+              activityBlock.add(String.valueOf(activity.getActivityStatus()));
+              activityBlock.add(Chunk.NEWLINE);
+              this.addTableColSpanCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1, 2);
+            }
+
             // document.add(Chunk.NEWLINE);
             document.add(table);
             activityBlock = new Paragraph();
             activityBlock.add(Chunk.NEWLINE);
             document.add(activityBlock);
             counter++;
+
+
           }
         }
-        // Leason regardins
-        activityBlock = new Paragraph();
-        activityBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-        activityBlock.setFont(BODY_TEXT_BOLD_FONT);
-        activityBlock.add(this.getText("summaries.project.activities.lessonsRegarding"));
-        activityBlock.setFont(BODY_TEXT_FONT);
 
-        if (project.getComponentLesson("activities") != null) {
-          activityBlock.add(this.messageReturn(project.getComponentLesson("activities").getLessons()));
-        } else {
-          activityBlock.add(this.messageReturn(null));
+        if (project.isReporting()) {
+          // Leason regardins
+          activityBlock = new Paragraph();
+          activityBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+          activityBlock.setFont(BODY_TEXT_BOLD_FONT);
+          activityBlock.add(this.getText("summaries.project.activities.lessonsRegarding"));
+          activityBlock.setFont(BODY_TEXT_FONT);
+
+          if (project.getComponentLesson("activities") != null) {
+            activityBlock.add(this.messageReturn(project.getComponentLesson("activities").getLessons()));
+          } else {
+            activityBlock.add(this.messageReturn(null));
+          }
+          document.add(activityBlock);
         }
-        document.add(activityBlock);
       }
 
 
@@ -692,7 +714,6 @@ public class ProjectSummaryPDF extends BasePDF {
         table.setTotalWidth(480);
         table.setLockedWidth(true);
 
-
         StringBuilder stringBuilder = new StringBuilder();
 
         // **** Expected Deliverable #*********
@@ -700,7 +721,12 @@ public class ProjectSummaryPDF extends BasePDF {
 
         deliverableBlock.setFont(HEADING4_FONT);
 
-        deliverableBlock.add(this.getText("summaries.project.deliverable.expected") + " #" + counter);
+        if (project.isReporting()) {
+          deliverableBlock.add(this.getText("summaries.project.deliverable") + " #" + counter);
+        } else {
+          deliverableBlock.add(this.getText("summaries.project.deliverable.expected") + " #" + counter);
+        }
+
         deliverableBlock.add(Chunk.NEWLINE);
         deliverableBlock.add(Chunk.NEWLINE);
         document.add(deliverableBlock);
@@ -732,7 +758,8 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
         if (deliverable.getOutput() != null) {
           stringBuilder = new StringBuilder();
-          if (deliverable.getOutput().getProgram() != null) {
+          if (deliverable.getOutput().getProgram() != null
+            && deliverable.getOutput().getProgram().getAcronym() != null) {
             stringBuilder.append(deliverable.getOutput().getProgram().getAcronym());
             stringBuilder.append(" - MOG # ");
           } else {
@@ -745,7 +772,6 @@ public class ProjectSummaryPDF extends BasePDF {
           stringBuilder = new StringBuilder();
           stringBuilder.append(deliverable.getOutput().getDescription());
         } else {
-
           deliverableBlock.add("MOG :");
           stringBuilder.append(this.getText("summaries.project.empty"));
         }
@@ -813,6 +839,22 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.add(Chunk.NEWLINE);;
         // document.add(deliverableBlock);
         this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // Status
+        deliverableBlock = new Paragraph();
+        stringBuilder = new StringBuilder();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        stringBuilder.append(this.getText("summaries.project.deliverable.information.statuts"));
+        stringBuilder.append(": ");
+        deliverableBlock.add(stringBuilder.toString());
+
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+        stringBuilder = new StringBuilder();
+        stringBuilder.append(deliverable.getYear());
+        deliverableBlock.add(stringBuilder.toString());
+        deliverableBlock.add(Chunk.NEWLINE);
+        // document.add(deliverableBlock);
+        this.addTableColSpanCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1, 2);
 
         document.add(table);
         deliverableBlock = new Paragraph();
@@ -971,12 +1013,307 @@ public class ProjectSummaryPDF extends BasePDF {
           }
         }
 
+
         document.add(table);
         deliverableBlock = new Paragraph();
         deliverableBlock.add(Chunk.NEWLINE);
         document.add(deliverableBlock);
 
       }
+
+      // ********** Ranking**************************************
+
+      if (project.isReporting()) {
+
+        PdfPTable table = new PdfPTable(2);
+        table.setLockedWidth(true);
+        table.setTotalWidth(480);
+        table.setWidths(new int[] {7, 3});
+        DeliverablesRanking deliverableRanking = deliverable.getRanking();
+
+        // summaries.project.reporting.deliverable.ranking
+        Paragraph deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setAlignment(Element.ALIGN_LEFT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.ranking"));
+        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
+          table.getNumberOfColumns(), 0, false);
+
+        // address gender
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.addres.gender"));
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+        if (deliverableRanking != null) {
+          deliverableBlock.add(this.messageReturn(String.valueOf(deliverableRanking.getAddress())));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+
+        // Get Potential
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.contribution.outcome"));
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+        if (deliverableRanking != null) {
+          deliverableBlock.add(this.messageReturn(String.valueOf(deliverableRanking.getPotential())));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+
+        // Level
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.shared.ownership"));
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+        if (deliverableRanking != null) {
+          deliverableBlock.add(this.messageReturn(String.valueOf(deliverableRanking.getLevel())));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+
+        // Personal perspective
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.personal.prespective"));
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+        if (deliverableRanking != null) {
+          deliverableBlock.add(this.messageReturn(String.valueOf(deliverableRanking.getPersonalPerspective())));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+
+        document.add(table);
+        deliverableBlock = new Paragraph();
+        deliverableBlock.add(Chunk.NEWLINE);
+        document.add(deliverableBlock);
+
+
+        // ********** Deliverable Dissemination**************************************
+        DeliverableDissemination deliverableDissemination = deliverable.getDissemination();
+        table = new PdfPTable(1);
+        table.setLockedWidth(true);
+        table.setTotalWidth(480);
+
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setAlignment(Element.ALIGN_LEFT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination"));
+        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
+          table.getNumberOfColumns(), 0, false);
+
+        // Open access
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.open"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          if (deliverableDissemination.getIsOpenAccess()) {
+            deliverableBlock.add(this.messageReturn(deliverableDissemination.getRestrictedAccessUntilText()));
+          } else {
+            deliverableBlock.add("No");
+          }
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // License adopted
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.license"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          if (deliverableDissemination.getIntellectualProperty()) {
+            deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationChannel()));
+          } else {
+            deliverableBlock.add("No");
+          }
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+
+        // Dissemination channel
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.channel"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationChannel()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // Dissemination URL
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.url"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationUrl()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        document.add(table);
+        deliverableBlock = new Paragraph();
+        deliverableBlock.add(Chunk.NEWLINE);
+        document.add(deliverableBlock);
+
+        // ********** Deliverable Metadata**************************************
+        DeliverablePublicationMetadata deliverableMetadata = deliverable.getPublicationMetadata();
+        table = new PdfPTable(1);
+        table.setLockedWidth(true);
+        table.setTotalWidth(480);
+
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setAlignment(Element.ALIGN_LEFT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata"));
+        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
+          table.getNumberOfColumns(), 0, false);
+
+        // Description
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata.description"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableMetadata != null) {
+          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // creator
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata.creator"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableMetadata != null) {
+          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+
+        // authorID
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata.authorID"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableMetadata != null) {
+          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // Creation
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata.creation"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableMetadata != null) {
+          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // Language
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata.language"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableMetadata != null) {
+          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // Coverage
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata.coverage"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableMetadata != null) {
+          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+        document.add(table);
+        deliverableBlock = new Paragraph();
+        deliverableBlock.add(Chunk.NEWLINE);
+        document.add(deliverableBlock);
+
+        // ********** Deliverable Data Sharing**************************************
+        // DeliverableDataSharing deliverableDataSharing = deliverable.getDataSharing()();
+        table = new PdfPTable(1);
+        table.setLockedWidth(true);
+        table.setTotalWidth(480);
+
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setAlignment(Element.ALIGN_LEFT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.datasharing"));
+        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
+          table.getNumberOfColumns(), 0, false);
+
+        // Files
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.datasharing.files"));
+        deliverableBlock.add("\n");
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        deliverable.setDataSharingFile(new ArrayList<DeliverableDataSharingFile>());
+        List<DeliverableDataSharingFile> deliverableDataSharingFileList = deliverable.getDataSharingFile();
+
+        for (DeliverableDataSharingFile deliverableDataSharingFile : deliverableDataSharingFileList) {
+          if (deliverableDataSharingFile != null) {
+            deliverableBlock.add(this.messageReturn(deliverableDataSharingFile.getFile()));
+          }
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+        document.add(table);
+      }
+
+
     } catch (DocumentException e) {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
@@ -1189,10 +1526,12 @@ public class ProjectSummaryPDF extends BasePDF {
     overviewBlock.add(overviewLabel.toString());
     overviewBlock.add(Chunk.NEWLINE);
 
+
     // Expected Annual Contribution text
     overviewBlock.setFont(TABLE_BODY_FONT);
     overviewLabel = new StringBuffer();
     // overviewBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+
 
     if (overviewYear != null) {
       overviewLabel.append(this.messageReturn(overviewYear.getExpectedAnnualContribution()));
@@ -1204,10 +1543,34 @@ public class ProjectSummaryPDF extends BasePDF {
     overviewBlock.add(Chunk.NEWLINE);
     overviewBlock.add(Chunk.NEWLINE);
 
+    //
+    if (project.isReporting()) {
+      // Brief summary Annual Contribution title
+      overviewLabel = new StringBuffer();
+      overviewBlock.setFont(TABLE_BODY_BOLD_FONT);
+      overviewLabel
+        .append(this.getText("summaries.project.reporting.outcome.briefSummary", new String[] {String.valueOf(year)}));
+      overviewBlock.add(overviewLabel.toString());
+      overviewBlock.add(Chunk.NEWLINE);
+
+      // Brief Summary Social Annual Contribution text
+      overviewBlock.setFont(TABLE_BODY_FONT);
+      overviewLabel = new StringBuffer();
+      if (overviewYear != null) {
+        overviewLabel.append(this.messageReturn(overviewYear.getBriefSummary()));
+      } else {
+        overviewLabel.append(this.getText("summaries.project.empty"));
+      }
+      overviewBlock.add(overviewLabel.toString());
+      overviewBlock.add(Chunk.NEWLINE);
+      overviewBlock.add(Chunk.NEWLINE);
+    }
+
+
     // Social Annual Contribution title
     overviewLabel = new StringBuffer();
     overviewBlock.setFont(TABLE_BODY_BOLD_FONT);
-    overviewLabel.append(this.getText("summaries.project.social.contribution"));
+    overviewLabel.append(this.getText("summaries.project.social.contribution", new String[] {String.valueOf(year)}));
     overviewBlock.add(overviewLabel.toString());
     overviewBlock.add(Chunk.NEWLINE);
 
@@ -1223,6 +1586,28 @@ public class ProjectSummaryPDF extends BasePDF {
     overviewBlock.add(Chunk.NEWLINE);
     overviewBlock.add(Chunk.NEWLINE);
 
+    // summaries.project.reporting.outcome.summaryGender
+    if (project.isReporting()) {
+      // Summary gender Brief
+      overviewLabel = new StringBuffer();
+      overviewBlock.setFont(TABLE_BODY_BOLD_FONT);
+      overviewLabel
+        .append(this.getText("summaries.project.reporting.outcome.summaryGender", new String[] {String.valueOf(year)}));
+      overviewBlock.add(overviewLabel.toString());
+      overviewBlock.add(Chunk.NEWLINE);
+
+      // Brief Summary Social Gender Contribution text
+      overviewBlock.setFont(TABLE_BODY_FONT);
+      overviewLabel = new StringBuffer();
+      if (overviewYear != null) {
+        overviewLabel.append(this.messageReturn(overviewYear.getSummaryGender()));
+      } else {
+        overviewLabel.append(this.getText("summaries.project.empty"));
+      }
+      overviewBlock.add(overviewLabel.toString());
+      overviewBlock.add(Chunk.NEWLINE);
+      overviewBlock.add(Chunk.NEWLINE);
+    }
     this.addTableBodyCell(table, overviewBlock, Element.ALIGN_JUSTIFIED, 1);
   }
 
@@ -2832,10 +3217,109 @@ public class ProjectSummaryPDF extends BasePDF {
           counter++;
         }
       }
+
+
+      // **********************************************************************************
+      // *************************** Next users.****************************************
+      // **********************************************************************************
+
+      if (project.isReporting()) {
+
+        counter = 1;
+        document.newPage();
+        paragraph = new Paragraph();
+        paragraph.setFont(HEADING3_FONT);
+        paragraph.add("5.3 " + this.getText("summaries.project.reporting.nextuser.title"));
+        document.add(paragraph);
+
+        paragraph = new Paragraph();
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(Chunk.NEWLINE);
+        document.add(paragraph);
+
+        PdfPTable table;
+
+        for (ProjectNextUser projectNextUser : project.getNextUsers()) {
+
+          paragraph = new Paragraph();
+          paragraph.setFont(BODY_TEXT_BOLD_FONT);
+          paragraph.setAlignment(Element.ALIGN_LEFT);
+
+          table = new PdfPTable(1);
+          table.setLockedWidth(true);
+          table.setTotalWidth(480);
+
+          paragraph.add(this.getText("summaries.project.reporting.nextuser", new String[] {String.valueOf(counter)}));
+          // document.add(deliverableBlock);
+          this.addCustomTableCell(table, paragraph, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
+            table.getNumberOfColumns(), 0, false);
+
+          // Next users key
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.nextuser.currentPeriod"));
+          paragraph.setFont(TABLE_BODY_FONT);
+
+          if (projectNextUser != null) {
+            paragraph.add(this.messageReturn(projectNextUser.getKeyNextUser()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // Strategies
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.nextuser.strategies"));
+          paragraph.setFont(TABLE_BODY_FONT);
+
+          if (projectNextUser != null) {
+            paragraph.add(this.messageReturn(projectNextUser.getStrategies()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+
+          // reported
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.nextuser.reported"));
+          paragraph.setFont(TABLE_BODY_FONT);
+
+          if (projectNextUser != null) {
+            paragraph.add(this.messageReturn(projectNextUser.getReportedDeliverables()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // lessons
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.nextuser.lessons"));
+          paragraph.setFont(TABLE_BODY_FONT);
+
+          if (projectNextUser != null) {
+            paragraph.add(this.messageReturn(projectNextUser.getLessonsImplications()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          counter++;
+          document.add(table);
+          paragraph = new Paragraph();
+          paragraph.add(Chunk.NEWLINE);
+          document.add(paragraph);
+        }
+
+      }
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project title to the project summary pdf", e);
     }
   }
+
 
   /**
    * Entering the project partners in the summary
@@ -2918,11 +3402,8 @@ public class ProjectSummaryPDF extends BasePDF {
         document.add(partnersBlock);
       }
 
-    } catch (
 
-    DocumentException e)
-
-    {
+    } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
 

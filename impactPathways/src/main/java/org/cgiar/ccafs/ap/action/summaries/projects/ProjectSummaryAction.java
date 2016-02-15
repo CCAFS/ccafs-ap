@@ -34,6 +34,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectLessonsManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectNextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
@@ -42,6 +43,7 @@ import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
+import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
@@ -96,7 +98,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private BudgetOverheadManager budgetOverheadManager;
   private CRPManager crpManager;
   private CaseStudiesManager caseStudiesManager;
-
+  private ProjectNextUserManager projectNextUserManager;
   // Model
   private Project project;
   ProjectSummaryPDF projectPDF;
@@ -113,7 +115,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     DeliverablePartnerManager deliverablePartnerManager, ProjectOtherContributionManager ipOtherContributionManager,
     CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager,
     ProjectLessonsManager projectLessonsManager, SubmissionManager submisssionManager,
-    BudgetOverheadManager budgetOverheadManager, CaseStudiesManager caseStudiesManager) {
+    BudgetOverheadManager budgetOverheadManager, CaseStudiesManager caseStudiesManager,
+    ProjectNextUserManager projectNextUserManager) {
     super(config);
     this.caseStudiesManager = caseStudiesManager;
     this.projectPDF = projectPDF;
@@ -137,6 +140,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.submisssionManager = submisssionManager;
     this.budgetOverheadManager = budgetOverheadManager;
     this.crpManager = crpManager;
+    this.projectNextUserManager = projectNextUserManager;
   }
 
 
@@ -283,6 +287,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
       deliverable.setOutput(deliverableManager.getDeliverableOutput(deliverable.getId()));
 
+      deliverable.setRanking(new DeliverablesRanking());
       // Getting the responsible partner.
       List<DeliverablePartner> partners =
         deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
@@ -302,6 +307,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Set Deliverables
     project.setDeliverables(deliverables);
+    // *************************Next users*****************************/
+    project.setNextUsers(this.projectNextUserManager.getProjectNextUserProject(projectID));
 
     // *************************Outcomes*****************************/
     project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
