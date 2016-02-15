@@ -36,23 +36,14 @@ public class Project {
   public static final int PDF_IDENTIFIER_REPORT = 2;
   public static final int EXCEL_IDENTIFIER_REPORT = 3;
   public static final int EMAIL_SUBJECT_IDENTIFIER = 4;
-
   private int id;
   private CrossCuttingContribution crossCutting;
-
   private String title;
   private boolean isReporting;
-
   private String summary;
   private List<ProjecteOtherContributions> otherContributions;
-
-
   private Date startDate;
-
-
   private Date endDate;
-
-
   private long created; // Timestamp number when the project was created
   private User owner;
   private List<IPProgram> regions; // The list of regions in which this project works with.

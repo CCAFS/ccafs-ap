@@ -121,7 +121,7 @@ public class ProjectManagerImpl implements ProjectManager {
 
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
-      project.setMyLeader(projectData.get("leader"));
+      project.setLeadInstitutionAcronym(projectData.get("leader"));
       List<Budget> budgets = new ArrayList<>(2);
 
       if (projectData.get("total_ccafs_amount") != null) {
