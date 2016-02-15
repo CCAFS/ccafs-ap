@@ -58,7 +58,7 @@
                 <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
             [/#if]
             
-            [#-- Indicators --]
+            [#-- Indicators by type --]
             [#list indicatorReports as indicatorReport]
             <div class="simpleBox">
               <h6 class="title" style="font-size: 1.2em;">${indicatorReport.indicator.name}</h6>

@@ -60,6 +60,16 @@
         <param name="edit">true</param>
       </result>
     </action>
+    
+    <action name="outcomeSynthesis" class="org.cgiar.ccafs.ap.action.synthesis.OutcomeSynthesisAction">
+      <result name="input">/WEB-INF/synthesis/outcomeSynthesis.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">outcomeSynthesis</param>
+        <param name="liaisonInstitutionID">${liaisonInstitutionID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+    
   </package>
   
   <package name="reportingProjects" namespace="/reporting/projects" extends="ccafsap-default">
