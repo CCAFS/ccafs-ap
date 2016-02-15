@@ -53,7 +53,7 @@
       <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.shortcuts" /]</b></div>
       <div id="deadline" class="borderBox">
         <ul class="subMenu">
-          <li><a href="" class="">Projects</a></li>
+          <li><a href="${baseUrl}/reporting/projectsList.do" class="">Projects</a></li>
           <li><a href="" class="disabled">CRP Indicators</a></li>
           <li><a href="" class="disabled">Outcome Synthesis</a></li>
           <li><a href="" class="disabled">Synthesis by MOG</a></li>

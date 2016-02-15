@@ -1,9 +1,9 @@
 [#ftl]
 [#macro text name readText=false param="" ][#assign customName][#if readText]${name}.readText[#else]${name}[/#if][/#assign][@s.text name="${customName}"][@s.param]${param}[/@s.param][/@s.text][/#macro]
 
-[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="" readOnly=false showTitle=true editable=true placeholder=false]
+[#macro input name value="-NULL" type="text" i18nkey="" disabled=false required=false errorField="" help="" display=true className="" paramText="" readOnly=false showTitle=true editable=true placeholder=false]
   <div class="input ${(className?has_content)?string('input-','')}${className}" style="display:${display?string('block','none')};">
-    [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"/][#else][@s.text name="${i18nkey}"/][/#if][/#assign]
+    [#assign labelTitle][#if i18nkey==""][@s.text name="${name}"][@s.param]${paramText}[/@s.param][/@s.text][#else][@s.text name="${i18nkey}"][@s.param]${paramText}[/@s.param][/@s.text][/#if][/#assign]
     [#if showTitle]
       <h6>
         <label for="${name}" class="${editable?string('editable', 'readOnly')}">${labelTitle}:[#if required && editable]<span class="red">*</span>[/#if]</label>
@@ -14,6 +14,7 @@
     [#if editable]
       <input type="${type}" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"  class="${className} ${required?string('required','optional')}" [#if readOnly] readonly="readonly"[/#if] [#if disabled]disabled="disabled"[/#if] [#if !showTitle && placeholder]placeholder="${labelTitle}"[/#if]/>
     [#else]
+      <input type="hidden" id="${name}" name="${name}" value="[#if value=="-NULL"][@s.property value="${name?string}"/][#else]${value}[/#if]"/>
       [#assign requiredText][#if required && editable ]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
@@ -42,6 +43,7 @@
     [#if editable]
       <textarea rows="4" name="${name}" id="${name}" [#if disabled]disabled="disabled"[/#if]  class="[#if className != "-NULL"]ckeditor ${className}[/#if] ${required?string('required','optional')}" />${customValue}</textarea>
     [#else]
+      <input type="hidden" name="${name}" id="${name}" value="${customValue}"/>
       [#assign requiredText][#if required && editable]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign] 
       <p>
         [#if value=="-NULL"] 
@@ -158,6 +160,7 @@
           [/#if]
         [/#if] 
       [#else]
+        <input type="hidden" name="${name}" value="${customValue} />
         [#assign requiredText][#if required && editable]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if][/#assign]  
         <p>  
           [#if displayFieldName == "" ]

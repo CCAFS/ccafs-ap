@@ -1,8 +1,8 @@
 [#ftl]
 [#assign title = "CRP Indicators" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty","autoSave"] /]
-[#assign customJS = ["${baseUrl}/js/crpIndicators.js"] /]
-[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable.css"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/synthesis/crpIndicators.js"] /]
+[#assign customCSS = [] /]
 [#assign currentSection = reportingCycle?string('reporting','planning') /]
 [#assign currentCycleSection = "crpIndicators" /]
 [#assign currentStage = "crpIndicators" /]
@@ -22,11 +22,11 @@
   <div class="helpMessage"><img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="reporting.synthesis.crpIndicators.help" /]</p></div>
   
   <article class="fullBlock clearfix" id="crpIndicators">
-    [@s.form action="description" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
+    [@s.form action="crpIndicators" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
     [#-- Program (Regions and Flagships) --]
     <ul id="liaisonInstitutions" class="horizontalSubMenu">
       [#list liaisonInstitutions as institution]
-        <li class="[#if institution.id == liaisonInstitutionID]active[/#if]"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name='indicatorTypeID']${(indicatorTypeID)!}[/@s.param][/@s.url]">${institution.acronym}</a></li>
+        <li class="[#if institution.id == liaisonInstitutionID]active[/#if]"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name='indicatorTypeID']${(indicatorTypeID)!}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">${institution.acronym}</a></li>
       [/#list]
     </ul>
     
@@ -58,9 +58,9 @@
           <h6 class="title" style="font-size: 1.2em;">${indicatorReport.indicator.name}</h6>
           [#-- Targets --]
           <div class="fullBlock">
-            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.target" editable=false /]</div>
-            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.actual" required=canEdit editable=editable /]</div>
-            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.nextYearTarget" required=canEdit editable=editable /]</div>
+            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="Numeric Value" paramText="${currentReportingYear}" editable=false /]</div>
+            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.actual" className="isNumeric" help="Numeric Value" required=canEdit editable=editable /]</div>
+            <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.crpIndicators.nextYearTarget" className="isNumeric" help="Numeric Value" paramText="${currentReportingYear+1}" required=canEdit editable=editable /]</div>
           </div>
           [#-- Link to supporting databases --]
           <div class="fullBlock">

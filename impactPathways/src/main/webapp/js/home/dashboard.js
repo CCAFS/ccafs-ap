@@ -25,7 +25,7 @@ function setCompletionDates() {
   var today = new Date();
   $('#timeline li.li').each(function(i,element) {
     var timelineDate = new Date($(element).find('.dateText').text());
-    timelineDate.setTime(timelineDate.getTime() + 1 * 86400000);
+    timelineDate.setTime(timelineDate.getTime() + 1 * 20900000);
     $(element).find('.date').text(timelineDate.toDateString()).addClass('animated flipInX');
     if(today >= timelineDate) {
       $(element).addClass('complete');
