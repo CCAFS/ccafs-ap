@@ -218,6 +218,14 @@ public class ProjectHighlightAction extends BaseAction {
 
     // Getting all years from project
     allYears = project.getAllYears();
+    List<Integer> listYears = new ArrayList<Integer>();
+    for (int i = 0; i < allYears.size(); i++) {
+      if ((allYears.get(i) <= this.getCurrentReportingYear())) {
+        listYears.add(allYears.get(i));
+      }
+    }
+    allYears.clear();
+    allYears.addAll(listYears);
 
     // Getting countries list
     countries = locationManager.getAllCountries();
