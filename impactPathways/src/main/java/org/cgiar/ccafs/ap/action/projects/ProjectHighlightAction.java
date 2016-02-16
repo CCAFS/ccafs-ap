@@ -245,9 +245,12 @@ public class ProjectHighlightAction extends BaseAction {
       Country country = new Country();
       country.setId(projectHighligthsCountry.getIdCountry());
       int indexCountry = this.countries.indexOf(country);
-      country.setName(this.countries.get(indexCountry).getName());
-      countryids.add(projectHighligthsCountry.getIdCountry());
-      countrys.add(country);
+      if (indexCountry > 0) {
+        country.setName(this.countries.get(indexCountry).getName());
+        countryids.add(projectHighligthsCountry.getIdCountry());
+        countrys.add(country);
+      }
+
     }
 
     highlight.setYear(higligth.getYear());
