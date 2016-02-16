@@ -31,7 +31,6 @@ public enum ProjectStatusEnum {
     this.status = status;
   }
 
-
   public String getStatus() {
     return status;
   }
@@ -39,6 +38,22 @@ public enum ProjectStatusEnum {
 
   public String getStatusId() {
     return statusId;
+  }
+
+  /**
+   * Look for the ProjectStatusEnum with id
+   * 
+   * @param id the id to search
+   * @return Object ProjectStatusEnum if no exist null
+   */
+  public ProjectStatusEnum getValue(int id) {
+    ProjectStatusEnum[] lst = ProjectStatusEnum.values();
+    for (ProjectStatusEnum projectStatusEnum : lst) {
+      if (projectStatusEnum.getStatusId().equals(String.valueOf(id))) {
+        return projectStatusEnum;
+      }
+    }
+    return null;
   }
 
 
