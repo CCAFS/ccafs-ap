@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.manager.CRPManager;
 import org.cgiar.ccafs.ap.data.manager.CaseStudiesManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverableManager;
 import org.cgiar.ccafs.ap.data.manager.DeliverablePartnerManager;
+import org.cgiar.ccafs.ap.data.manager.HighLightManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
@@ -101,6 +102,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private CaseStudiesManager caseStudiesManager;
   private ProjectNextUserManager projectNextUserManager;
   private ProjectLeverageManager projectLeverageManager;
+  private HighLightManager highlightManager;
   // Model
   private Project project;
   ProjectSummaryPDF projectPDF;
@@ -118,7 +120,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager,
     ProjectLessonsManager projectLessonsManager, SubmissionManager submisssionManager,
     BudgetOverheadManager budgetOverheadManager, CaseStudiesManager caseStudiesManager,
-    ProjectNextUserManager projectNextUserManager, ProjectLeverageManager projectLeverageManager) {
+    ProjectNextUserManager projectNextUserManager, ProjectLeverageManager projectLeverageManager,
+    HighLightManager highlightManager) {
     super(config);
     this.caseStudiesManager = caseStudiesManager;
     this.projectPDF = projectPDF;
@@ -144,6 +147,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.crpManager = crpManager;
     this.projectNextUserManager = projectNextUserManager;
     this.projectLeverageManager = projectLeverageManager;
+    this.highlightManager = highlightManager;
   }
 
 
@@ -365,5 +369,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // ************************Project Leverage *******************
     project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
 
+    // ************************Project HighLigth *******************
+    project.setHighlights(highlightManager.getHighLightsByProject(projectID));
   }
 }

@@ -25,6 +25,7 @@ import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
 import org.cgiar.ccafs.ap.data.model.DeliverableDissemination;
@@ -44,6 +45,8 @@ import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectHighlightsType;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -569,7 +572,7 @@ public class ProjectSummaryPDF extends BasePDF {
             leverageBlock.add(this.getText("summaries.project.leverage.year"));
 
             leverageBlock.setFont(TABLE_BODY_FONT);
-            leverageBlock.add(this.messageReturn(String.valueOf(leverage.getYear().toString())));
+            leverageBlock.add(this.messageReturn("" + leverage.getYear()));
             leverageBlock.add(Chunk.NEWLINE);
             this.addTableColSpanCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1, 2);
 
@@ -825,9 +828,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
         // **** Expected Deliverable #*********
         Paragraph deliverableBlock = new Paragraph();
-
         deliverableBlock.setFont(HEADING4_FONT);
-
         if (project.isReporting()) {
           deliverableBlock.add(this.getText("summaries.project.deliverable") + " #" + counter);
         } else {
@@ -3222,7 +3223,7 @@ public class ProjectSummaryPDF extends BasePDF {
   /**
    * Entering the project outputs in the summary
    */
-  private void addProjectOutputs() {
+  private void addProjectOutputs(String number) {
 
     // **********************************************************************************
     // *************************** Overview By Mog *************************************
@@ -3230,7 +3231,7 @@ public class ProjectSummaryPDF extends BasePDF {
     try {
       Paragraph overview_title = new Paragraph();
       overview_title.setFont(HEADING2_FONT);
-      overview_title.add("5. " + this.getText("summaries.project.projectOutput"));
+      overview_title.add(number + ". " + this.getText("summaries.project.projectOutput"));
       overview_title.add(Chunk.NEWLINE);
       overview_title.add(Chunk.NEWLINE);
 
@@ -3239,7 +3240,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
       overview_title = new Paragraph();
       overview_title.setFont(HEADING3_FONT);
-      overview_title.add("5.1 " + this.getText("summaries.project.overviewbymogs"));
+      overview_title.add(number + ".1 " + this.getText("summaries.project.overviewbymogs"));
       document.add(overview_title);
 
     } catch (DocumentException e) {
@@ -3278,23 +3279,23 @@ public class ProjectSummaryPDF extends BasePDF {
           document.add(paragraph);
           document.add(table);
         }
-
-        // Leason regardins
-        paragraph = new Paragraph();
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
-        paragraph.setFont(BODY_TEXT_BOLD_FONT);
-        paragraph.add(this.getText("summaries.project.output.lessonRegarding") + ": ");
-        paragraph.setFont(BODY_TEXT_FONT);
-        if (project.getComponentLesson("outputs") != null) {
-          paragraph.add(this.messageReturn(project.getComponentLesson("outputs").getLessons()));
-        } else {
-          paragraph.add(this.messageReturn(null));
+        if (!project.isReporting()) {
+          // Leason regardins
+          paragraph = new Paragraph();
+          paragraph.add(Chunk.NEWLINE);
+          paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+          paragraph.setFont(BODY_TEXT_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.output.lessonRegarding") + ": ");
+          paragraph.setFont(BODY_TEXT_FONT);
+          if (project.getComponentLesson("outputs") != null) {
+            paragraph.add(this.messageReturn(project.getComponentLesson("outputs").getLessons()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          paragraph.add(Chunk.NEWLINE);
+          paragraph.add(Chunk.NEWLINE);
+          document.add(paragraph);
         }
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(Chunk.NEWLINE);
-        document.add(paragraph);
-
       }
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project title to the project summary pdf", e);
@@ -3309,7 +3310,7 @@ public class ProjectSummaryPDF extends BasePDF {
       document.newPage();
       paragraph = new Paragraph();
       paragraph.setFont(HEADING3_FONT);
-      paragraph.add("5.2 " + this.getText("summaries.project.deliverable.title"));
+      paragraph.add(number + ".2 " + this.getText("summaries.project.deliverable.title"));
       document.add(paragraph);
       paragraph = new Paragraph();
 
@@ -3337,7 +3338,7 @@ public class ProjectSummaryPDF extends BasePDF {
         document.newPage();
         paragraph = new Paragraph();
         paragraph.setFont(HEADING3_FONT);
-        paragraph.add("5.3 " + this.getText("summaries.project.reporting.nextuser.title"));
+        paragraph.add(number + ".3 " + this.getText("summaries.project.reporting.nextuser.title"));
         document.add(paragraph);
 
         paragraph = new Paragraph();
@@ -3421,6 +3422,250 @@ public class ProjectSummaryPDF extends BasePDF {
           paragraph.add(Chunk.NEWLINE);
           document.add(paragraph);
         }
+
+
+        // **********************************************************************************
+        // *************************** Project HighLights****************************************
+        // **********************************************************************************
+        counter = 1;
+        document.newPage();
+        paragraph = new Paragraph();
+        paragraph.setFont(HEADING3_FONT);
+        paragraph.add(number + ".4 " + this.getText("summaries.project.reporting.highlight.principal"));
+        document.add(paragraph);
+
+        paragraph = new Paragraph();
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(Chunk.NEWLINE);
+        document.add(paragraph);
+
+        for (ProjectHighligths projectHighLigth : project.getHighlights()) {
+          paragraph = new Paragraph();
+          paragraph.setFont(HEADING4_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight", new String[] {String.valueOf(counter)}));
+          paragraph.add(Chunk.NEWLINE);
+          paragraph.add(Chunk.NEWLINE);
+          document.add(paragraph);
+
+          table = new PdfPTable(2);
+          table.setLockedWidth(true);
+          table.setTotalWidth(480);
+
+          // title
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.title"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getTitle()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          // author
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.author"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getAuthor()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // subject
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.subject"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getSubject()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // publisher
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.publisher"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getResults()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // year
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.year"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(String.valueOf(projectHighLigth.getYear())));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // project highlight types
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.types"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            for (ProjectHighlightsType projectHighLigthTypes : projectHighLigth.getTypesIds()) {
+              paragraph.add(this.messageReturn(projectHighLigthTypes.getDescription()) + "\n");
+            }
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // project images
+          paragraph = new Paragraph();
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(String.valueOf(projectHighLigth.getType())));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // project start date
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.startDate"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(String.valueOf(projectHighLigth.getStartDate())));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // project end date
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.endDate"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(String.valueOf(projectHighLigth.getEndDate())));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
+          // Its Global
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.itsGlobal"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(String.valueOf(projectHighLigth.getAuthor())));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          // Country
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.country"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          boolean first = false;
+          if (projectHighLigth != null) {
+            for (Country country : projectHighLigth.getCountries()) {
+              if (first) {
+                paragraph.add(", ");
+                first = true;
+              }
+              paragraph.add(country.getName());
+            }
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          // Keywords
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.keywords"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getKeywords()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          // description
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.description"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getDescription()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+
+          // Introduction / Objectives
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.introduction"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getAuthor()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          // Results
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.results"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getResults()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          // Partners
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.partners"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getPartners()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          // Links
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.links"));
+          paragraph.setFont(TABLE_BODY_FONT);
+          if (projectHighLigth != null) {
+            paragraph.add(this.messageReturn(projectHighLigth.getLinks()));
+          } else {
+            paragraph.add(this.messageReturn(null));
+          }
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+
+          document.add(table);
+          document.newPage();
+        }
+
 
       }
     } catch (DocumentException e) {
@@ -3643,7 +3888,7 @@ public class ProjectSummaryPDF extends BasePDF {
     this.addProjectPartners();
     this.addProjectLocations();
     this.addProjectOutcomes();
-    this.addProjectOutputs();
+    this.addProjectOutputs("5");
     this.addActivities();
     if (project.isReporting()) {
       this.addBudgetReporting("7");
