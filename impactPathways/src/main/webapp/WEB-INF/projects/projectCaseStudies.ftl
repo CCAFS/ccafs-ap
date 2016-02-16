@@ -150,7 +150,7 @@
     </div>
     [#-- 10. References --]
     <div class="fullBlock">
-      [@customForm.textArea name="${customName}.referencesCase" i18nkey="reporting.projectCaseStudies.references" help="reporting.projectCaseStudies.references.help" className="caseStudyReferences" required=true editable=editable /]
+      [@customForm.textArea name="${customName}.referencesCase" i18nkey="reporting.projectCaseStudies.references" help="reporting.projectCaseStudies.references.help" className="caseStudyReferences limitWords-150" required=true editable=editable /]
     </div>
     [#-- Region indicators --]
     <div class="fullBlock"> 
