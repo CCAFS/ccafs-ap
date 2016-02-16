@@ -14,8 +14,6 @@
 package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.HighLightManagerImpl;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -74,19 +72,6 @@ public interface HighLightManager {
    */
   public List<ProjectHighligths> getHighLightsByProject(int projectID);
 
-
-  /**
-   * This method returns the highLight identifier whether using composed codification (that is with the organization
-   * IATI
-   * standard id) or a simple id.
-   * 
-   * @param project , the project to get the standard identifier from.
-   * @param highLight, the highLight related to get the standard identifier from.
-   * @param useComposedCodification , true if you want to get the full IATI standard codification or false for simple
-   *        form.
-   * @return a String with the standard identifier.
-   */
-  public String getStandardIdentifier(Project project, ProjectHighlights highLight, boolean useComposedCodification);
 
   /**
    * This method saves the information of the given highLight that belong to a specific project into the database.

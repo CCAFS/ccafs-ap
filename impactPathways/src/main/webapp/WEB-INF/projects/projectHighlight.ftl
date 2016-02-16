@@ -142,7 +142,7 @@
       [#-- Is global --]
       <div class="fullBlock">
         <div class="halfPartBlock">
-          [@customForm.checkbox  name="highlight.global" className="isGlobal" i18nkey="reporting.projectHighlight.isGlobal" checked=(highlight.global)!false value="true" editable=editable/]
+          [@customForm.checkbox  name="highlight.isGlobal" className="isGlobal" i18nkey="reporting.projectHighlight.isGlobal" checked=(highlight.isGlobal)!false value="true" editable=editable/]
         </div>
       </div>
       

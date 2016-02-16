@@ -14,11 +14,8 @@
 package org.cgiar.ccafs.ap.data.manager.impl;
 
 
-import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.dao.ProjectHighlightDAO;
 import org.cgiar.ccafs.ap.data.manager.HighLightManager;
-import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectHighlights;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.User;
 
@@ -90,24 +87,6 @@ public class HighLightManagerImpl implements HighLightManager {
     return highLightList;
   }
 
-
-  @Override
-  public String getStandardIdentifier(Project project, ProjectHighlights highLight, boolean useComposedCodification) {
-    StringBuilder result = new StringBuilder();
-    if (useComposedCodification) {
-      result.append(APConstants.CCAFS_ORGANIZATION_IDENTIFIER);
-      result.append("-P");
-      result.append(project.getId());
-      result.append("-D");
-      result.append(highLight.getId());
-    } else {
-      result.append("P");
-      result.append(project.getId());
-      result.append("-D");
-      result.append(highLight.getId());
-    }
-    return result.toString();
-  }
 
   @Override
   public int saveHighLight(int projectID, ProjectHighligths highLight, User user, String justification) {
