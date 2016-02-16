@@ -33,6 +33,7 @@ import org.cgiar.ccafs.ap.data.manager.PartnerPersonManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectCofinancingLinkageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectLessonsManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectLeverageManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectNextUserManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectOtherContributionManager;
@@ -99,6 +100,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private CRPManager crpManager;
   private CaseStudiesManager caseStudiesManager;
   private ProjectNextUserManager projectNextUserManager;
+  private ProjectLeverageManager projectLeverageManager;
   // Model
   private Project project;
   ProjectSummaryPDF projectPDF;
@@ -116,7 +118,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     CRPManager crpManager, PartnerPersonManager partnerPersonManager, IPIndicatorManager indicatorManager,
     ProjectLessonsManager projectLessonsManager, SubmissionManager submisssionManager,
     BudgetOverheadManager budgetOverheadManager, CaseStudiesManager caseStudiesManager,
-    ProjectNextUserManager projectNextUserManager) {
+    ProjectNextUserManager projectNextUserManager, ProjectLeverageManager projectLeverageManager) {
     super(config);
     this.caseStudiesManager = caseStudiesManager;
     this.projectPDF = projectPDF;
@@ -141,6 +143,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.budgetOverheadManager = budgetOverheadManager;
     this.crpManager = crpManager;
     this.projectNextUserManager = projectNextUserManager;
+    this.projectLeverageManager = projectLeverageManager;
   }
 
 
@@ -358,5 +361,9 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
           this.getCofinancingBudget(projectID, projectContributor.getId(), config.getPlanningCurrentYear()));
       }
     }
+
+    // ************************Project Leverage *******************
+    project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
+
   }
 }

@@ -44,6 +44,7 @@ import org.cgiar.ccafs.ap.data.model.OutputBudget;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
@@ -254,7 +255,7 @@ public class ProjectSummaryPDF extends BasePDF {
           }
         }
 
-        if (project.isReporting()) {
+        if (!project.isReporting()) {
           // Leason regardins
           activityBlock = new Paragraph();
           activityBlock.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -501,6 +502,112 @@ public class ProjectSummaryPDF extends BasePDF {
     this.addTableColSpanCell(table, paragraph, Element.ALIGN_RIGHT, 1, 2);
   }
 
+
+  private void addBudgetReporting(String number) {
+
+    try {
+      document.newPage();
+      Paragraph leverageBlock =
+        new Paragraph(number + ". " + this.getText("summaries.project.leverage") + "s", HEADING2_FONT);
+      leverageBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+      leverageBlock.add(Chunk.NEWLINE);
+
+      PdfPTable table;
+      List<ProjectLeverage> listLeverage = project.getLeverages();
+
+      if (listLeverage.isEmpty()) {
+        leverageBlock.setFont(BODY_TEXT_FONT);
+        leverageBlock.add(this.getText("summaries.project.empty"));
+        document.add(leverageBlock);
+      } else {
+        leverageBlock.add(Chunk.NEWLINE);
+        document.add(leverageBlock);
+        int counter = 1;
+        for (ProjectLeverage leverage : listLeverage) {
+          if (leverage != null) {
+            table = new PdfPTable(2);
+            table.setTotalWidth(480);
+            table.setLockedWidth(true);
+
+            // Header table
+            leverageBlock = new Paragraph();
+            leverageBlock.setAlignment(Element.ALIGN_CENTER);
+            leverageBlock.setFont(BODY_TEXT_BOLD_FONT);
+            leverageBlock.add(this.getText("summaries.project.leverage") + " #" + counter);
+
+            this.addCustomTableCell(table, leverageBlock, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
+              table.getNumberOfColumns(), 0, false);
+
+            // leverage title
+            leverageBlock = new Paragraph();
+            leverageBlock.setFont(TABLE_BODY_BOLD_FONT);
+            leverageBlock.add(this.getText("summaries.project.activities.title"));
+
+            leverageBlock.setFont(TABLE_BODY_FONT);
+            leverageBlock.add(this.messageReturn(leverage.getTitle()));
+            leverageBlock.add(Chunk.NEWLINE);
+            this.addTableColSpanCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1, 2);
+
+            // Leverage institution
+            leverageBlock = new Paragraph();
+            leverageBlock.setFont(TABLE_BODY_BOLD_FONT);
+            leverageBlock.add(this.getText("summaries.project.leverage.partnerName"));
+
+            leverageBlock.setFont(TABLE_BODY_FONT);
+            if (leverage.getMyInstitution() != null) {
+              leverageBlock.add(this.messageReturn(leverage.getMyInstitution().getComposedName()));
+            } else {
+              leverageBlock.add(this.messageReturn(null));
+            }
+
+            leverageBlock.add(Chunk.NEWLINE);
+            this.addTableColSpanCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1, 2);
+
+            // Leverage Year
+            leverageBlock = new Paragraph();
+            leverageBlock.setFont(TABLE_BODY_BOLD_FONT);
+            leverageBlock.add(this.getText("summaries.project.leverage.year"));
+
+            leverageBlock.setFont(TABLE_BODY_FONT);
+            leverageBlock.add(this.messageReturn(String.valueOf(leverage.getYear().toString())));
+            leverageBlock.add(Chunk.NEWLINE);
+            this.addTableColSpanCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1, 2);
+
+            // Leverage Flagship
+            leverageBlock = new Paragraph();
+            leverageBlock.setFont(TABLE_BODY_BOLD_FONT);
+            leverageBlock.add(this.getText("summaries.project.leverage.flagship"));
+
+            leverageBlock.setFont(TABLE_BODY_FONT);
+            leverageBlock.add(this.messageReturn(String.valueOf(leverage.getFlagship())));
+            leverageBlock.add(Chunk.NEWLINE);
+            this.addTableBodyCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1);
+
+            // Leverage Budget
+            leverageBlock = new Paragraph();
+            leverageBlock.setFont(TABLE_BODY_BOLD_FONT);
+            leverageBlock.add(this.getText("summaries.project.leverage.budget"));
+
+            leverageBlock.setFont(TABLE_BODY_FONT);
+            leverageBlock.add(this.messageReturn(String.valueOf(leverage.getBudget())));
+            leverageBlock.add(Chunk.NEWLINE);
+            this.addTableBodyCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1);
+
+            document.add(table);
+            leverageBlock = new Paragraph();
+            leverageBlock.add(Chunk.NEWLINE);
+            document.add(leverageBlock);
+            counter++;
+          }
+        }
+        document.add(leverageBlock);
+      }
+    } catch (DocumentException e) {
+      LOG.error("There was an error trying to add the project activities to the project summary pdf of project {} ", e,
+        project.getId());
+    }
+
+  }
 
   /**
    * This Method is for to calculate the overall or gender summary
@@ -1319,6 +1426,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+
   /**
    * This method is used for equalize the size Flashing list and Region list
    * 
@@ -1480,7 +1588,6 @@ public class ProjectSummaryPDF extends BasePDF {
       LOG.error("-- generatePdf() > There was an error adding the table with content for case study summary. ", e);
     }
   }
-
 
   /**
    * This method is used for add Overview in the project summary
@@ -3111,6 +3218,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
   }
 
+
   /**
    * Entering the project outputs in the summary
    */
@@ -3320,7 +3428,6 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
-
   /**
    * Entering the project partners in the summary
    */
@@ -3430,6 +3537,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
+
   /**
    * @param paragraph paragraph for write
    * @param institution PPA to calculate your budget
@@ -3474,7 +3582,6 @@ public class ProjectSummaryPDF extends BasePDF {
     }
     this.addTableBodyCell(table, paragraph, Element.ALIGN_RIGHT, 1);
   }
-
 
   /**
    * Method used for to add the project summary
@@ -3538,7 +3645,12 @@ public class ProjectSummaryPDF extends BasePDF {
     this.addProjectOutcomes();
     this.addProjectOutputs();
     this.addActivities();
-    this.addProjectBudgets();
+    if (project.isReporting()) {
+      this.addBudgetReporting("7");
+    } else {
+      this.addProjectBudgets();
+    }
+
 
     // Close document
     document.close();
@@ -3547,6 +3659,7 @@ public class ProjectSummaryPDF extends BasePDF {
     contentLength = outputStream.size();
     inputStream = new ByteArrayInputStream(outputStream.toByteArray());
   }
+
 
   /**
    * Method used for to get the etiquette of BudgetType depending of project type
