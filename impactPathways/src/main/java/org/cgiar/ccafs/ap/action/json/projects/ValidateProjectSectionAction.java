@@ -130,6 +130,8 @@ public class ValidateProjectSectionAction extends BaseAction {
   private ProjectLeverageManager projectLeverageManager;
 
   @Inject
+  private SectionStatusManager statusManager;
+  @Inject
   private CaseStudiesManager caseStudyManager;
   @Inject
   private CrossCuttingContributionManager crossCutingManager;
@@ -494,6 +496,15 @@ public class ValidateProjectSectionAction extends BaseAction {
         }
         projectHighligths.setTypesids(typesids);
         highLigthValidator.validate(this, project, projectHighligths, currentCycle);
+
+      }
+      if (list.isEmpty() && (project.isBilateralProject())) {
+        SectionStatus status = statusManager.getSectionStatus(project, currentCycle, "highlights");
+        if (status == null) {
+          status = new SectionStatus(currentCycle, sectionName);
+        }
+        status.setMissingFields("");
+        statusManager.saveSectionStatus(status, project);
 
       }
       // Validate

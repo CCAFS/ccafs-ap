@@ -121,7 +121,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
 
 
       // Saving missing fields.
-      this.saveMissingFields(project, action.getCycleName(), "otherContributions");
+      this.saveMissingFields(project, cycle, "otherContributions");
     }
 
   }
