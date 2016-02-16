@@ -46,7 +46,7 @@ public enum ProjectStatusEnum {
    * @param id the id to search
    * @return Object ProjectStatusEnum if no exist null
    */
-  private ProjectStatusEnum getValue(int id) {
+  public ProjectStatusEnum getValue(int id) {
     ProjectStatusEnum[] lst = ProjectStatusEnum.values();
     for (ProjectStatusEnum projectStatusEnum : lst) {
       if (projectStatusEnum.getStatusId().equals(String.valueOf(id))) {
