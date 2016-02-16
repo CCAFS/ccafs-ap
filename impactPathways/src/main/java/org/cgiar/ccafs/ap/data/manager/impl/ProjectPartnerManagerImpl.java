@@ -168,13 +168,10 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   @Override
   public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification) {
     Map<String, Object> projectPartnerData = new HashMap<>();
-
     // Project partners must have an institution associated.
     if (projectPartner.getInstitution() == null || projectPartner.getInstitution().getId() == -1) {
       return -1;
     }
-
-
     // if this is a new project partner, do not assign an id.
     if (projectPartner.getId() > 0) {
       projectPartnerData.put("id", projectPartner.getId());
@@ -187,7 +184,6 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     projectPartnerData.put("institution_id", projectPartner.getInstitution().getId());
     projectPartnerData.put("modified_by", user.getId());
     projectPartnerData.put("modification_justification", justification);
-
     int result = projectPartnerDAO.saveProjectPartner(projectPartnerData);
     if (result > 0) {
       LOG.debug("saveProjectPartner > New Project Partner added with id {}", result);
@@ -197,11 +193,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       LOG.error("saveProjectPartner > There was an error trying to save/update a project partner from projectId={}",
         project.getId());
     }
-
     // Update the id in the object
     projectPartner.setId((result > 0) ? result : projectPartner.getId());
-
-
     ProjectPartner partnerOld = this.getProjectPartner(projectPartner.getId());
     if (projectPartner.getPartnerPersons() != null && partnerOld != null) {
       for (PartnerPerson person : partnerOld.getPartnerPersons()) {
@@ -209,32 +202,25 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
           partnerPersonManager.deletePartnerPerson(person);
         }
       }
-
     }
-
-
     if (projectPartner.getPartnerPersons() != null) {
       for (PartnerPerson person : projectPartner.getPartnerPersons()) {
-
-
         partnerPersonManager.savePartnerPerson(projectPartner, person, user, justification);
-
       }
     }
-
-
-    if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
+    // if PartnerContributors is null initialize to look up
+    if (projectPartner.getPartnerContributors() == null) {
+      projectPartner.setPartnerContributors(new ArrayList<ProjectPartner>());
+    }
+    // Remove the partner contributions
+    if (partnerOld.getPartnerContributors() != null) {
       for (ProjectPartner contribuntions : partnerOld.getPartnerContributors()) {
-
         if (!projectPartner.getPartnerContributors().contains(contribuntions)) {
-
           this.deleteProjectPartnerContributions(contribuntions);
         }
       }
-
       this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
     }
-
     return result;
   }
 
