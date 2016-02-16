@@ -1,17 +1,37 @@
+var $isGlobal;
+
 $(document).ready(function() {
 
+  $isGlobal = $('input.isGlobal');
   // Activate the select2 plugin to the existing case studies
   addSelect2();
   // Add JQuery Calendar widget to start dates and end dates
   datePickerConfig($("form input.startDate"), $("form input.endDate"));
   // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
   setWordCounterToInputs('limitWords');
+  // Attach Events
+  attachEvents();
+
   // Validate justification event
   /*
    * validateEvent([ "#justification" ]);
    */
 
 });
+
+function attachEvents() {
+  $isGlobal.on('change', isGlobalChange);
+  $isGlobal.trigger('change');
+}
+
+function isGlobalChange(e) {
+  if($(e.target).is(':checked')) {
+    $('div.countriesBlock').hide(500);
+    $("div.countriesBlock select").select2("val", "");
+  } else {
+    $('div.countriesBlock').show(500);
+  }
+}
 
 function addSelect2() {
   $('form select').select2();

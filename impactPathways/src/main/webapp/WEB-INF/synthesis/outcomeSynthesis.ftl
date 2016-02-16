@@ -23,6 +23,7 @@
   
   <article class="fullBlock clearfix" id="">
     [@s.form action="outcomeSynthesis" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
+    
     [#-- Program (Regions and Flagships) --]
     <ul id="liaisonInstitutions" class="horizontalSubMenu">
       [#list liaisonInstitutions as institution]
@@ -37,13 +38,15 @@
       [#elseif !canEdit ]
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
       [/#if]
-    
-      <h1 class="contentTitle">[@s.text name="reporting.synthesis.outcomeSynthesis.title" /]</h1>
+      [#-- Title --]
+      <h1 class="contentTitle">[@s.text name="reporting.synthesis.outcomeSynthesis.title" ][@s.param]${(currentLiaisonInstitution.name)!}[/@s.param][/@s.text]</h1>
       
+      [#-- Outcomes 2019 --]
       <div id="outcomeSynthesisBlock" class="borderBox">
         
       </div>
       
+      [#-- Button save and Log history --]
       [#if editable]
         <div class="" >
           <div class="buttons">
