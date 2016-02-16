@@ -37,13 +37,26 @@ public class ProjectHighligths implements java.io.Serializable {
   private String links;
   private String keywords;
   private String subject;
+  private boolean isGlobal;
+  private String objectives;
+
+  private String publisher;
 
 
   private Integer type;
+
+
   private Long year;
+
+
   private boolean isActive;
+
+
   private Long status;
+
+
   private long projectId;
+
   private Date activeSince;
   private long createdBy;
   private long modifiedBy;
@@ -100,7 +113,6 @@ public class ProjectHighligths implements java.io.Serializable {
     typesids = typesids2;
   }
 
-
   public ProjectHighligths(String title, String author, boolean isGlobal, int leader, boolean isActive, long projectId,
     Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
     this.title = title;
@@ -121,16 +133,13 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.author;
   }
 
-
   public List<Country> getCountries() {
     return countries;
   }
 
-
   public List<Integer> getCountriesIds() {
     return countriesIds;
   }
-
 
   public long getCreatedBy() {
     return this.createdBy;
@@ -141,11 +150,9 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.description;
   }
 
-
   public Date getEndDate() {
     return this.endDate;
   }
-
 
   public String getEndDateText() {
     return endDateText;
@@ -156,6 +163,7 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.id;
   }
 
+
   public String getKeywords() {
     return this.keywords;
   }
@@ -165,12 +173,19 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.links;
   }
 
+
   public String getModificationJustification() {
     return this.modificationJustification;
   }
 
+
   public long getModifiedBy() {
     return this.modifiedBy;
+  }
+
+
+  public String getObjectives() {
+    return objectives;
   }
 
 
@@ -181,6 +196,7 @@ public class ProjectHighligths implements java.io.Serializable {
   public String getPhoto() {
     return this.photo;
   }
+
 
   public Set<ProjectHighligthsCountry> getProjectHighligthsCountries() {
     return this.projectHighligthsCountries;
@@ -195,10 +211,13 @@ public class ProjectHighligths implements java.io.Serializable {
   }
 
 
+  public String getPublisher() {
+    return publisher;
+  }
+
   public String getResults() {
     return this.results;
   }
-
 
   public Date getStartDate() {
     return this.startDate;
@@ -211,6 +230,7 @@ public class ProjectHighligths implements java.io.Serializable {
   public Long getStatus() {
     return this.status;
   }
+
 
   public String getSubject() {
     return this.subject;
@@ -233,6 +253,7 @@ public class ProjectHighligths implements java.io.Serializable {
     return TypesIds;
   }
 
+
   public Long getYear() {
     return this.year;
   }
@@ -241,6 +262,9 @@ public class ProjectHighligths implements java.io.Serializable {
     return this.isActive;
   }
 
+  public boolean isIsGlobal() {
+    return isGlobal;
+  }
 
   public void setActiveSince(Date activeSince) {
     this.activeSince = activeSince;
@@ -250,19 +274,19 @@ public class ProjectHighligths implements java.io.Serializable {
     this.author = author;
   }
 
-
   public void setCountries(List<Country> countries) {
     this.countries = countries;
   }
+
 
   public void setCountriesIds(List<Integer> countriesIds) {
     this.countriesIds = countriesIds;
   }
 
-
   public void setCreatedBy(long createdBy) {
     this.createdBy = createdBy;
   }
+
 
   public void setDescription(String description) {
     this.description = description;
@@ -271,6 +295,7 @@ public class ProjectHighligths implements java.io.Serializable {
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
+
 
   public void setEndDateText(String endDateText) {
     this.endDateText = endDateText;
@@ -284,28 +309,36 @@ public class ProjectHighligths implements java.io.Serializable {
     this.isActive = isActive;
   }
 
+  public void setIsGlobal(boolean isGlobal) {
+    this.isGlobal = isGlobal;
+  }
 
   public void setKeywords(String keywords) {
     this.keywords = keywords;
   }
 
-
   public void setLinks(String links) {
     this.links = links;
   }
+
 
   public void setModificationJustification(String modificationJustification) {
     this.modificationJustification = modificationJustification;
   }
 
+
   public void setModifiedBy(long modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 
+  public void setObjectives(String objectives) {
+    this.objectives = objectives;
+  }
 
   public void setPartners(String partners) {
     this.partners = partners;
   }
+
 
   public void setPhoto(String photo) {
     this.photo = photo;
@@ -321,6 +354,10 @@ public class ProjectHighligths implements java.io.Serializable {
 
   public void setProjectId(long projectId) {
     this.projectId = projectId;
+  }
+
+  public void setPublisher(String publisher) {
+    this.publisher = publisher;
   }
 
 
