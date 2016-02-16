@@ -222,14 +222,16 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
       }
     }
 
+    if (projectPartner.getPartnerContributors() == null) {
+      projectPartner.setPartnerContributors(new ArrayList<ProjectPartner>());
+    }
 
-    if (projectPartner.getPartnerContributors() != null && !projectPartner.getPartnerContributors().isEmpty()) {
-      for (ProjectPartner contribuntions : partnerOld.getPartnerContributors()) {
+    for (ProjectPartner contribuntions : partnerOld.getPartnerContributors()) {
 
-        if (!projectPartner.getPartnerContributors().contains(contribuntions)) {
+      if (!projectPartner.getPartnerContributors().contains(contribuntions)) {
 
-          this.deleteProjectPartnerContributions(contribuntions);
-        }
+        this.deleteProjectPartnerContributions(contribuntions);
+
       }
 
       this.saveProjectPartnerContributions(project.getId(), projectPartner, user, justification);
