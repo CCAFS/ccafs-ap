@@ -154,8 +154,8 @@
     <div id="projectNextUser-${nu_index}" class="projectNextUser simpleBox">
       [#if editable]
         <div id="removeNextUser-${nu_index}"class="removeNextUser removeElement removeLink" title="[@s.text name="planning.deliverables.removeNewUser" /]"></div>
-        <input type="hidden" name="${nu_name}[${nu_index}].id" value="${nextUserValue}" />
       [/#if]
+      <input type="hidden" name="${nu_name}[${nu_index}].id" value="${(nextUserValue)!-1}" />
       <div class="leftHead">
         <span class="index">${nu_index?number+1}</span>
       </div>
