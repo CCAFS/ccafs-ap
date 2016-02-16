@@ -74,7 +74,7 @@ public class ProjectIPOtherContributionValidator extends BaseValidator {
                 this.validateNatureCollaboration(action, crp_contribuntion.getNatureCollaboration(), i);
               }
 
-              this.validateArchived(action, crp_contribuntion.getExplainAchieved(), i);
+              // this.validateArchived(action, crp_contribuntion.getExplainAchieved(), i);
               i++;
             }
           }
