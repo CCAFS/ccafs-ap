@@ -134,17 +134,17 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
   private void validateComplianceCheck(BaseAction action, DeliverablesRanking ranking, int i) {
     if (ranking.getProcessData() == null) {
-      this.addMessage("Deliverable (" + i + ") Ranking  Process of data quality ");
+      this.addMessage("Deliverable  Ranking  Process of data quality ");
       this.addMissingField("projects.deliverable(" + i + ").ranking.processData");
     }
 
     if (ranking.getDictionary() == null) {
-      this.addMessage("Deliverable (" + i + ") Ranking  Data Dictionary ");
+      this.addMessage("Deliverable  Ranking  Data Dictionary ");
       this.addMissingField("projects.deliverable(" + i + ").ranking.dataDictionary");
     }
 
     if (ranking.getTooldata() == null) {
-      this.addMessage("Deliverable (" + i + ") Ranking  Tool data ");
+      this.addMessage("Deliverable  Ranking  Tool data ");
       this.addMissingField("projects.deliverable(" + i + ").ranking.toolData");
     }
   }
@@ -152,11 +152,11 @@ public class ProjectDeliverableValidator extends BaseValidator {
   private void validateDismmination(BaseAction action, DeliverableDissemination dissimination, int i) {
 
     if (dissimination.getIsOpenAccess() == null) {
-      this.addMessage("Deliverable (" + i + ") Disimmination Is open acess");
+      this.addMessage("Deliverable  Disimmination Is open acess");
       this.addMissingField("projects.deliverable(" + i + ").disimmination.opencAcess");
     }
     if (dissimination.getAlreadyDisseminated() == null) {
-      this.addMessage("Deliverable (" + i + ") Disimmination Is Already Disseminated");
+      this.addMessage("Deliverable  Disimmination Is Already Disseminated");
       this.addMissingField("projects.deliverable(" + i + ").disimmination.alreadyDisseminated");
     }
   }
@@ -194,19 +194,19 @@ public class ProjectDeliverableValidator extends BaseValidator {
   private void validateRanking(BaseAction action, DeliverablesRanking ranking, Deliverable deliverable) {
     int i = deliverable.getId();
     if (ranking.getAddress() == null) {
-      this.addMessage("Deliverable (" + i + ") Ranking Address gender");
+      this.addMessage("Deliverable  Ranking Address gender");
       this.addMissingField("projects.deliverable(" + i + ").ranking.adress");
     }
     if (ranking.getPotential() == null) {
-      this.addMessage("Deliverable (" + i + ") Ranking Potential");
+      this.addMessage("Deliverable  Ranking Potential");
       this.addMissingField("projects.deliverable(" + i + ").ranking.potential");
     }
     if (ranking.getLevel() == null) {
-      this.addMessage("Deliverable (" + i + ") Ranking  Level of shared ");
+      this.addMessage("Deliverable  Ranking  Level of shared ");
       this.addMissingField("projects.deliverable(" + i + ").ranking.leverShared");
     }
     if (ranking.getPersonalPerspective() == null) {
-      this.addMessage("Deliverable (" + i + ") Ranking Personal Perspective");
+      this.addMessage("Deliverable  Ranking Personal Perspective");
       this.addMissingField("projects.deliverable(" + i + ").ranking.personalPerspective");
     }
 

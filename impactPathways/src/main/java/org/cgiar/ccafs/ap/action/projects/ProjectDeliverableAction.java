@@ -383,6 +383,10 @@ public class ProjectDeliverableAction extends BaseAction {
       if (deliverable.getTypeOther() != null) {
         deliverable.setTypeOther(null);
       }
+      if (deliverable.getDataSharingFile() != null) {
+        deliverable.getDataSharingFile().clear();
+        deliverable.getFiles().clear();
+      }
     }
     try {
       indexTab = Integer.parseInt(this.getSession().get("indexTab").toString());
@@ -423,7 +427,10 @@ public class ProjectDeliverableAction extends BaseAction {
           if (deliverabelFile.getId() != -1) {
             file.setId((deliverabelFile.getId()));
           }
-          files.add(file);
+          if (file.getFile() != null) {
+            files.add(file);
+          }
+
         }
 
       }
