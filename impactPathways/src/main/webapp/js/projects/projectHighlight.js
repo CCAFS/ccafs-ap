@@ -22,6 +22,16 @@ $(document).ready(function() {
 function attachEvents() {
   $isGlobal.on('change', isGlobalChange);
   $isGlobal.trigger('change');
+
+  $('.fileUpload .remove').on('click', function(e) {
+    var context = $(this).attr('id').split('-')[1];
+    var $parent = $(this).parent();
+    $parent.parent().parent().find('img').attr('src', baseURL + '/images/global/defaultImage.png');
+    var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
+    $parent.empty().append($inputFile);
+    $inputFile.hide().fadeIn('slow');
+    forceChange = true;
+  })
 }
 
 function isGlobalChange(e) {

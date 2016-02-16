@@ -203,6 +203,7 @@
 [#macro inputFile name template=false className="" ]
   [#assign customId][#if template]${name}-template[#else]${name}[/#if][/#assign]
   <!-- Input File ${customId} -->
+  [@s.fielderror cssClass="fieldError" fieldName="${name}"/]
   [@s.file name="${name}" id="${customId}" cssClass="${className} upload" cssStyle="${template?string('display:none','')}"  /]
 [/#macro] 
 

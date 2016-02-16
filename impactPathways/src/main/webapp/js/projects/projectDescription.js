@@ -35,7 +35,6 @@ $(document).ready(function() {
     var context = $(this).attr('id').split('-')[1];
     var $parent = $(this).parent();
     var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
-    console.log($inputFile);
     $parent.empty().append($inputFile);
     $inputFile.hide().fadeIn('slow');
     forceChange = true;

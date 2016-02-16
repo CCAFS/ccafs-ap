@@ -101,10 +101,18 @@
         
         [#-- Image --]
         <div class="halfPartBlock imageBlock">
+          <h6><label for="highlight.image">[@customForm.text name="reporting.projectHighlight.image" readText=!editable /]:</label></h6>
           <div class="browseInput fileUpload">
             [#if editable]
-            
-              [@customForm.inputFile name="file" /]
+              [#if highlight.photo?has_content]
+                <p> 
+                  [#if editable]<span id="remove-file" class="remove"></span>[#else]<span class="file"></span>[/#if] 
+                  <a href="${(highlightsImagesUrl)!baseUrl}${(highlight.photo)!'images/global/defaultImage.png'}">${(highlight.photo)!}</a>  
+                  <input type="hidden" name="highlight.photo" value="${highlight.photo}" /> 
+                </p>
+              [#else]
+                [@customForm.inputFile name="file" /]
+              [/#if] 
             [/#if]  
           </div>
           <div id="highlight.image" class="image">
@@ -158,7 +166,7 @@
 
       [#-- Keywords --]
       <div class="fullBlock">
-        [@customForm.input name="highlight.keywords" type="text" i18nkey="reporting.projectHighlight.keywords" editable=editable/]
+        [@customForm.input name="highlight.keywords" type="text" i18nkey="reporting.projectHighlight.keywords" help="reporting.projectHighlight.keywords.help" editable=editable/]
       </div>
 
       [#-- Description --]
