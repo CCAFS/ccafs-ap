@@ -115,7 +115,7 @@ public class ProjectOutputsValidator extends BaseValidator {
       msgMOG.append(" - MOG #");
       msgMOG.append(index);
       msgMOG.append(")");
-      msg.append(action.getText("planning.projectOutputs.summaryAnnualContribution",
+      msg.append(action.getText("reporting.projectOutputs.summaryAnnualContribution",
         new String[] {String.valueOf(overview.getYear()), msgMOG.toString()}));
 
 
@@ -137,7 +137,7 @@ public class ProjectOutputsValidator extends BaseValidator {
       msgMOG.append(" - MOG #");
       msgMOG.append(index);
       msgMOG.append(")");
-      msg.append(action.getText("planning.projectOutputs.summarySocialInclusionDimmension",
+      msg.append(action.getText("reporting.projectOutputs.summarySocialInclusionDimmension",
         new String[] {String.valueOf(overview.getYear()), msgMOG.toString()}));
 
 
