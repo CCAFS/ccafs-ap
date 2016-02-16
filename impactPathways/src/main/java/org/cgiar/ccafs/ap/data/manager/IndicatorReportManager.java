@@ -18,7 +18,7 @@ public interface IndicatorReportManager {
    * @param leader
    * @return a list of IndicatorReport objects with the information.
    */
-  public List<IndicatorReport> getIndicatorReportsList(int leader, int year, int type);
+  public List<IndicatorReport> getIndicatorReportsList(int leader, int year);
 
   /**
    * @param indicatorReports
