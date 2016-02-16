@@ -71,7 +71,7 @@ function initGraph(programID){
 	      buttons: {
     	  "Print": {  
     		  text: '', 
-              class: 'btnPrint', 
+              'class': 'btnPrint', 
               click: printCyto
               },
 	        Ok: function() {
@@ -111,8 +111,7 @@ function callCytos(url,contentDiv) {
 	        $.each(val, function(attr, item) {	        
 	          if (item.type.id != 1) {
 	        	  present[item.id] = 1;
-	        	  if (!count[item.type.id+'-'+item.program.id])
-	                  count[item.type.id+'-'+item.program.id] = 1;
+	        	  if (!count[item.type.id+'-'+item.program.id]){count[item.type.id+'-'+item.program.id] = 1;}
 	            elements['nodes'].push(
 	                    {data: {
 	                        id: item.id.toString(),
@@ -192,9 +191,10 @@ function callCytos(url,contentDiv) {
 // padding: 200
 	      },
 	      /*
-         * layout: { name: 'concentric', concentric: function () { y = 0; idType= this.data('nodeType'); trans = this.data('translate'); if (idType == 1) { } else if (idType == 2) { y = 1000; } else
-         * if (idType == 3) { y = 800; } else if (idType == 4) { y = 600; } else if (idType == 5) { y = 400; } if (trans > 0) { y -=100; } return y; }, levelWidth: function( nodes ){ return 10; },
-         * padding: 10 },
+         * layout: { name: 'concentric', concentric: function () { y = 0; idType= this.data('nodeType'); trans =
+         * this.data('translate'); if (idType == 1) { } else if (idType == 2) { y = 1000; } else if (idType == 3) { y =
+         * 800; } else if (idType == 4) { y = 600; } else if (idType == 5) { y = 400; } if (trans > 0) { y -=100; }
+         * return y; }, levelWidth: function( nodes ){ return 10; }, padding: 10 },
          */
 	      boxSelectionEnabled: false,
 	      ready: function() {
@@ -444,8 +444,7 @@ function callCytos(url,contentDiv) {
 			x[idType+'.'+trans] = 100;
 			yc+=100;
 		 }
-		 if (!x[idType+'.'+trans])
-			x[idType+'.'+trans] = 100;
+		 if (!x[idType+'.'+trans]){x[idType+'.'+trans] = 100;}
 		 if (idType == 1) {
 		
 		} else if (idType == 2) {
@@ -467,11 +466,11 @@ function callCytos(url,contentDiv) {
 	
 	function getName(item) {
 	  return item.composedId;
-		/*if (item.type.id == 2 && item.program.id > 4) {
-			return item.program.acronym + ' - ' + '2025 Vision'+' #'+count[item.type.id+'-'+item.program.id];
-		} else  {
-			return item.program.acronym + ' - ' + item.type.name+' #'+count[item.type.id+'-'+item.program.id];
-		}*/
+		/*
+     * if (item.type.id == 2 && item.program.id > 4) { return item.program.acronym + ' - ' + '2025 Vision'+'
+     * #'+count[item.type.id+'-'+item.program.id]; } else { return item.program.acronym + ' - ' + item.type.name+'
+     * #'+count[item.type.id+'-'+item.program.id]; }
+     */
 	}
 
 	function getWeight(text) {

@@ -1,4 +1,4 @@
-var baseURL, editable, production;
+var baseURL, editable, production, currentPlanningYear, currentReportingYear;
 var formBefore;
 var justificationLimitWords = 100;
 var errorMessages = [];

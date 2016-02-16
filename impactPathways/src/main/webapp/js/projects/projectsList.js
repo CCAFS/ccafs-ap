@@ -1,3 +1,4 @@
+var dialogOptions = {};
 $(document).ready(function() {
   $('table.projectsList').dataTable({
       "bPaginate": true, // This option enable the table pagination
@@ -79,7 +80,7 @@ var $dialogContent;
 function addJustificationPopUp() {
   $dialogContent = $("#dialog-justification");
   // Initializing justification dialog
-  dialog = $dialogContent.dialog(dialogOptions = {
+  dialog = $dialogContent.dialog({
       autoOpen: false,
       height: 200,
       width: 400,

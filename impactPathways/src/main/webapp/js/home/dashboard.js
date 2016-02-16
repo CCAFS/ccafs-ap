@@ -2,6 +2,9 @@ $.fn.dataTableExt.sErrMode = 'throw';
 $(document).ready(initDashboard);
 
 function initDashboard() {
+  // Set timeline dates completion
+  setCompletionDates();
+
   $('#newProject').on('click', function(e) {
     console.log(e.target);
     $('#decisionTree .addProjectButtons').show(0, function() {
@@ -10,14 +13,12 @@ function initDashboard() {
   });
 
   $('.loadingBlock').hide().next().fadeIn(500);
+
   // Initialize tabs
   initTabs();
 
   // Initialize datatable of projects
   initDatatable();
-
-  // Set timeline dates completion
-  setCompletionDates();
 
 }
 
