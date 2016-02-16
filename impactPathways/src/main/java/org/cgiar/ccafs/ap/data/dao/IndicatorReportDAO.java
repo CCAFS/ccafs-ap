@@ -18,7 +18,7 @@ public interface IndicatorReportDAO {
    * @param year
    * @return A list of maps with the information
    */
-  public List<Map<String, String>> getIndicatorReports(int activityLeaderId, int year, int type);
+  public List<Map<String, String>> getIndicatorReports(int activityLeaderId, int year);
 
   /**
    * This method save the Indicator's report made by the leader

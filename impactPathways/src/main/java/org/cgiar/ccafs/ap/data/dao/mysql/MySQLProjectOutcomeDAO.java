@@ -134,8 +134,9 @@ public class MySQLProjectOutcomeDAO implements ProjectOutcomeDAO {
     if (projectOutcomeData.get("id") == null) {
       // Insert new projectOutcome record
       query.append("INSERT INTO project_outcomes (year, statement, ");
-      query.append("project_id, created_by, modified_by, modification_justification,anual_progress,comunication) ");
-      query.append("VALUES (?,?,?,?,?,?) ");
+      query
+        .append("project_id, created_by, modified_by, modification_justification,anual_progress,comunication,file) ");
+      query.append("VALUES (?,?,?,?,?,?,?,?,?) ");
 
       values = new Object[9];
       values[0] = projectOutcomeData.get("year");

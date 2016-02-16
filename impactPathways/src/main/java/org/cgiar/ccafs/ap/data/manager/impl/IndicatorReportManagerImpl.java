@@ -30,9 +30,9 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
   }
 
   @Override
-  public List<IndicatorReport> getIndicatorReportsList(int leader, int year, int type) {
+  public List<IndicatorReport> getIndicatorReportsList(int leader, int year) {
     List<IndicatorReport> indicatorReports = new ArrayList<>();
-    List<Map<String, String>> irDataList = indicatorReportDAO.getIndicatorReports(leader, year, type);
+    List<Map<String, String>> irDataList = indicatorReportDAO.getIndicatorReports(leader, year);
 
     for (Map<String, String> irData : irDataList) {
       IndicatorReport ir = new IndicatorReport();

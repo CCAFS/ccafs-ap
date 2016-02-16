@@ -29,7 +29,7 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
   }
 
   @Override
-  public List<Map<String, String>> getIndicatorReports(int activityLeaderId, int year, int type) {
+  public List<Map<String, String>> getIndicatorReports(int activityLeaderId, int year) {
     LOG.debug(">> getIndicatorReports(activityLeaderId={}, year={})", activityLeaderId, year);
     List<Map<String, String>> indicatorReportDataList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
@@ -44,8 +44,7 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
     query.append(year);
     query.append(" AND ir.liaison_institution_id = ");
     query.append(activityLeaderId);
-    query.append(" LEFT JOIN `crp_indicator_types` it ON i.indicator_type_id = it.id  WHERE it.id=");
-    query.append(type);
+    query.append(" LEFT JOIN `crp_indicator_types` it ON i.indicator_type_id = it.id  ");
     query.append(" ORDER BY i.id  ");
 
     try (Connection con = databaseManager.getConnection()) {

@@ -22,6 +22,7 @@ import org.cgiar.ccafs.ap.data.model.IndicatorReport;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -62,12 +63,26 @@ public class CrpIndicatorsAction extends BaseAction {
     this.indicatorsReportManager = indicatorsReportManager;
   }
 
+  public List<IndicatorReport> getCrpIndicatorsByType(int type) {
+    List<IndicatorReport> lst = new ArrayList<IndicatorReport>();
+    for (IndicatorReport indicatorReport : indicatorReports) {
+      if (indicatorReport.getIndicator().getType().getId() == type) {
+        lst.add(indicatorReport);
+      }
+    }
+    return lst;
 
-  public List<IndicatorReport> getCrpIndicators(int instituion, int type) {
-    List<IndicatorReport> list =
-      indicatorsReportManager.getIndicatorReportsList(instituion, this.getCurrentReportingYear(), type);
-    return list;
+  }
 
+  public int getIndicatorIndex(int id) {
+    int c = 0;
+    for (IndicatorReport indicatorReport : indicatorReports) {
+      if (indicatorReport.getId() == id) {
+        return c;
+      }
+      c++;
+    }
+    return -1;
   }
 
 
@@ -120,7 +135,8 @@ public class CrpIndicatorsAction extends BaseAction {
     } catch (NumberFormatException e) {
       indicatorTypeID = 1;
     }
-    indicatorReports = this.getCrpIndicators(liaisonInstitutionID, indicatorTypeID);
+    indicatorReports =
+      indicatorsReportManager.getIndicatorReportsList(liaisonInstitutionID, this.getCurrentReportingYear());
     // Get the list of liaison institutions.
     liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
 
