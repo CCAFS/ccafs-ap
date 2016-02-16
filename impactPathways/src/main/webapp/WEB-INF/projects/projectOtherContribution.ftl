@@ -101,14 +101,9 @@
                   [#-- CRP Collaboration nature --]
                   [@customForm.input name="project.ipOtherContribution.crpContributions[${crp_index}].id" display=false className="crpContributionId" showTitle=false /]
                   <div class="fullPartBlock">
-                    [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature limitWords-50" i18nkey="planning.impactPathways.otherContributions.collaborationNature" required=true editable=editable && action.hasProjectPermission("natureCollaboration", project.id) /]  
+                    [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].natureCollaboration" className="crpCollaborationNature limitWords-50" i18nkey="planning.impactPathways.otherContributions.collaborationNature" required=true editable=editable /]  
                   </div>
-                  [#-- The achieved outcome  --]
-                  [#if reportingCycle]
-                    <div class="fullPartBlock">
-                      [@customForm.textArea name="project.ipOtherContribution.crpContributions[${crp_index}].explainAchieved" className="crpCollaborationAchieved limitWords-100" i18nkey="reporting.projectOtherContributions.collaborationAchieved" required=true editable=editable && action.hasProjectPermission("explainAchieved", project.id) /]  
-                    </div>
-                  [/#if]
+                  
                   [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if]
                 </li>
               [/#list] 
@@ -116,7 +111,7 @@
               <p class="emptyText"> [@s.text name="planning.impactPathways.otherContributions.crpsEmpty" /] </p>  
             [/#if]  
             </ul>
-            [#if editable && action.hasProjectPermission("addCRPContribution", project.id)]
+            [#if editable]
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="" listName="crps" keyFieldName="id"  displayFieldName="name" className="crpsSelect" value="" /]
             [/#if] 
           </div>
@@ -161,12 +156,6 @@
     <div class="fullPartBlock">
       [@customForm.textArea name="" className="crpCollaborationNature limitWords-50" i18nkey="planning.impactPathways.otherContributions.collaborationNature" editable=editable required=true/]  
     </div>
-    [#-- The achieved outcome  --]
-    [#if reportingCycle]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="" className="crpCollaborationAchieved limitWords-100" i18nkey="reporting.projectOtherContributions.collaborationAchieved" editable=editable required=true/]  
-      </div>
-    [/#if]
     [#if editable]<span class="listButton remove">[@s.text name="form.buttons.remove" /]</span>[/#if] 
   </li>
 </ul>
