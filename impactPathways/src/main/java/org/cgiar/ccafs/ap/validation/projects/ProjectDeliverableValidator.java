@@ -152,11 +152,11 @@ public class ProjectDeliverableValidator extends BaseValidator {
   private void validateDismmination(BaseAction action, DeliverableDissemination dissimination, int i) {
 
     if (dissimination.getIsOpenAccess() == null) {
-      this.addMessage("Deliverable  Disimmination Is open acess");
+      this.addMessage("Deliverable   Is open acess");
       this.addMissingField("projects.deliverable(" + i + ").disimmination.opencAcess");
     }
     if (dissimination.getAlreadyDisseminated() == null) {
-      this.addMessage("Deliverable  Disimmination Is Already Disseminated");
+      this.addMessage("Deliverable Is Already Disseminated");
       this.addMissingField("projects.deliverable(" + i + ").disimmination.alreadyDisseminated");
     }
   }
