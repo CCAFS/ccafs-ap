@@ -275,7 +275,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     List<Map<String, String>> indicatorsList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-    query.append(" SELECT     distinct  i.id ,i.*");
+    query.append(" SELECT     distinct  i.id ,i.*,prog.acronym");
     query.append("                       FROM       ip_indicators i ");
     query.append("                       LEFT JOIN  ip_indicators p ");
     query.append("                       ON         i.parent_id = p.id ");
@@ -283,6 +283,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     query.append("                      ON         i.id = ipi.parent_id ");
     query.append("                      INNER JOIN ip_elements ie ");
     query.append("                      ON         ipi.outcome_id = ie.id ");
+    query.append("   inner  JOIN ip_programs prog on prog.id=ie.ip_program_id and prog.type_id=4");
     query.append(" where i.id not in(");
     query.append(" SELECT     distinct  i.id ");
     query.append("                      FROM       ip_indicators i ");
@@ -300,12 +301,8 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
       while (rs.next()) {
         Map<String, String> indicatorData = new HashMap<String, String>();
         indicatorData.put("id", rs.getString("id"));
-        indicatorData.put("description", rs.getString("description"));
-        // indicatorData.put("target", rs.getString("target"));
-        // indicatorData.put("parent_id", rs.getString("parent_id"));
-        // indicatorData.put("parent_description", rs.getString("parent_description"));
-        // indicatorData.put("outcome_id", rs.getString("outcome_id"));
-        // indicatorData.put("outcome_description", rs.getString("outcome_description"));
+        indicatorData.put("description", rs.getString("acronym") + ": " + rs.getString("description"));
+
         if (!rs.getString("description").equals("")) {
           indicatorsList.add(indicatorData);
         }
