@@ -74,10 +74,10 @@ public class CrpIndicatorsAction extends BaseAction {
 
   }
 
-  public int getIndicatorIndex(int indicator) {
+  public int getIndicatorIndex(int id) {
     int c = 0;
     for (IndicatorReport indicatorReport : indicatorReports) {
-      if (indicatorReport.getIndicator().getId() == indicator) {
+      if (indicatorReport.getId() == id) {
         return c;
       }
       c++;
