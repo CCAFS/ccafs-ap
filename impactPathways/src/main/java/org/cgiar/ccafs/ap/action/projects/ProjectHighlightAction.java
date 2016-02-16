@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Sebastian Amariles G.
+ * @author Christian Garcia O.
  */
 public class ProjectHighlightAction extends BaseAction {
 
