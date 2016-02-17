@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.model.Activity;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ActivityValidator;
 
@@ -56,7 +57,22 @@ public class ActivitiesListValidator extends BaseValidator {
           // Required fields are required for all type of projects.
 
           if (cycle.equals(APConstants.REPORTING_SECTION)) {
-            this.validateStatusDescription(action, project.getActivities().get(c).getActivityStatus(), c);
+            this.validateStatus(action, project.getActivities().get(c).getActivityStatus(), c);
+
+            if (project.getActivities().get(c).getActivityStatus() > 0) {
+              switch (ProjectStatusEnum.getValue(project.getActivities().get(c).getActivityStatus())) {
+                case Ongoing:
+                case Extended:
+                case Cancelled:
+                  this.validateStatusDescription(action, project.getActivities().get(c).getActivityProgress(), c);
+
+                  break;
+
+                default:
+                  break;
+              }
+            }
+
           } else {
             this.validateRequiredFields(action, project.getActivities().get(c), c);
             this.validateTitle(action, project.getActivities().get(c).getTitle(), c);
@@ -117,10 +133,17 @@ public class ActivitiesListValidator extends BaseValidator {
     }
   }
 
-  public void validateStatusDescription(BaseAction action, int status, int c) {
+  public void validateStatus(BaseAction action, int status, int c) {
     if (!activityValidator.isValidStatus(status)) {
       this.addMessage("Activity #" + (c + 1) + ": Status");
       this.addMissingField("project.activities[" + c + "].activityStatus");
+    }
+  }
+
+  public void validateStatusDescription(BaseAction action, String status, int c) {
+    if (!this.isValidString(status)) {
+      this.addMessage("Activity #" + (c + 1) + ": Status Description");
+      this.addMissingField("project.activities[" + c + "].activityStatusDescription");
     }
   }
 

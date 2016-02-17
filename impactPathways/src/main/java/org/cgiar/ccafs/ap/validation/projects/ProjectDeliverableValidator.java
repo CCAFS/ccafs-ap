@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.model.DeliverableDissemination;
 import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 import org.cgiar.ccafs.ap.data.model.NextUser;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.DeliverableValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
@@ -226,9 +227,28 @@ public class ProjectDeliverableValidator extends BaseValidator {
     if (cycle.equals(APConstants.REPORTING_SECTION)) {
       if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
         // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
-        this.addMessage("Deliverable (" + deliverable.getId() + ") Status is Requeried");
+        this.addMessage("Deliverable Status");
         this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
       }
+
+      if (deliverable.getStatus() > 0) {
+        switch (ProjectStatusEnum.getValue(deliverable.getStatus())) {
+          case Ongoing:
+          case Extended:
+          case Cancelled:
+            if (!this.isValidString(deliverable.getStatusDescription())) {
+              // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
+              this.addMessage("Deliverable  Status Description");
+              this.addMissingField("projects.deliverable(" + deliverable.getId() + ").statusDescription");
+            }
+
+            break;
+
+          default:
+            break;
+        }
+      }
+
 
       if (deliverable.getRanking() != null) {
         this.validateRanking(action, deliverable.getRanking(), deliverable);
