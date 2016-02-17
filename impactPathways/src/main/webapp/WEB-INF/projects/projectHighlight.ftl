@@ -147,7 +147,7 @@
       </div>
       
       [#-- Countries --]
-      <div class="fullBlock countriesBlock chosen">
+      <div class="fullBlock countriesBlock chosen" style="display:${((highlight.isGlobal)!false)?string('none','block')}">
         [#if editable]
           [@customForm.select name="highlight.countriesIds" label="" i18nkey="reporting.projectHighlight.countries" listName="countries" keyFieldName="id"  displayFieldName="name" value="highlight.countriesIds" multiple=true disabled="${(highlight.global?string(1, 0))!0}"/]              
         [#else]

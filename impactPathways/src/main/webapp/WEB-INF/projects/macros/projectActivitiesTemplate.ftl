@@ -32,37 +32,37 @@
     <input class="id" type="hidden" name="${activitiesName}.id" value="[#if activity.id??]${activity.id}[#else]-1[/#if]"> 
     [#-- Title --]
     <div class="fullPartBlock clearfix">
-      [@customForm.input name="${activitiesName}.title" className="title" type="text" required=true i18nkey="planning.activityDescription.title" editable=editable && action.hasProjectPermission("title", project.id) /]
+      [@customForm.input name="${activitiesName}.title" className="title" type="text" required=true i18nkey="planning.activityDescription.title" editable=editable && (action.hasProjectPermission("title", project.id) || template) /]
     </div>
     [#-- Description --]
     <div class="fullPartBlock clearfix">
-      [@customForm.textArea name="${activitiesName}.description" className="description" required=true i18nkey="planning.activityDescription.description" editable=editable && action.hasProjectPermission("description", project.id)/]
+      [@customForm.textArea name="${activitiesName}.description" className="description" required=true i18nkey="planning.activityDescription.description" editable=editable && (action.hasProjectPermission("description", project.id) || template)/]
     </div>  
     [#-- Start and End Date --]
     <div class="fullPartBlock clearfix"> 
       <div class="halfPartBlock">
-        [@customForm.input name="${activitiesName}.startDate" className="startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true editable=editable && action.hasProjectPermission("startDate", project.id)/]
+        [@customForm.input name="${activitiesName}.startDate" className="startDate" type="text" i18nkey="planning.activityDescription.startDate" required=true editable=editable && (action.hasProjectPermission("startDate", project.id)|| template) /]
       </div>   
       <div class="halfPartBlock">
-        [@customForm.input name="${activitiesName}.endDate" className="endDate"  type="text" i18nkey="planning.activityDescription.endDate" required=true editable=editable && action.hasProjectPermission("endDate", project.id)/]
+        [@customForm.input name="${activitiesName}.endDate" className="endDate"  type="text" i18nkey="planning.activityDescription.endDate" required=true editable=editable && (action.hasProjectPermission("endDate", project.id) || template) /]
       </div>
     </div>
     [#-- Project Leader --]
     <div class="fullPartBlock">
-      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable && action.hasProjectPermission("leader", project.id)/]
+      [@customForm.select name="${activitiesName}.leader" className="leader" label="" required=true i18nkey="planning.activityDescription.leaderName" listName="projectPartnerPersons" editable=editable && (action.hasProjectPermission("leader", project.id) || template)/]
     </div>
     [#-- -- -- REPORTING BLOCK -- -- --]
     [#if reportingCycle]
       [#-- Activity status --]
       <div class="fullPartBlock clearfix"> 
         <div class="halfPartBlock">
-          [@customForm.select name="${activitiesName}.activityStatus" className="activityStatus" label="" required=true i18nkey="reporting.activityDescription.activityStatus" listName="projectStauses" editable=editable && action.hasProjectPermission("activityStatus", project.id)/]
+          [@customForm.select name="${activitiesName}.activityStatus" className="activityStatus" label="" required=true i18nkey="reporting.activityDescription.activityStatus" listName="projectStauses" editable=editable && (action.hasProjectPermission("activityStatus", project.id) || template) /]
         </div>   
       </div>
       [#-- Overall Activity progress --]
       [#assign justificationRequired = element.isStatusOnGoing() || element.isStatusExtended() || element.isStatusCancelled() ]
       <div class="fullPartBlock statusDescription clearfix" style="display:${justificationRequired?string('block','none')}">
-        [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress" required=true i18nkey="reporting.activityDescription.activityStatus.status${(element.activityStatus)!}" editable=editable && action.hasProjectPermission("activityProgress", project.id)/]
+        [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress" required=true i18nkey="reporting.activityDescription.activityStatus.status${(element.activityStatus)!}" editable=editable && (action.hasProjectPermission("activityProgress", project.id) || template) /]
         <div id="statusesLables" style="display:none">
           <div id="status-2">[@s.text name="reporting.activityDescription.activityStatus.status2" /]:<span class="red">*</span></div>
           <div id="status-3">[@s.text name="reporting.activityDescription.activityStatus.status3" /]:<span class="red">*</span></div>
