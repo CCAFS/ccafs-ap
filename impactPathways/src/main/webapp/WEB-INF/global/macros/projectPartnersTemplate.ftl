@@ -45,9 +45,6 @@
     <div class="fullPartBlock partnerName chosen">
       <p class="fieldError"></p>
       [@customForm.select name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="planning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=((editable && template) || (editable && !projectPartner.institution??)) /]
-      [#if editable && !template]
-        <input class="institutionsList" type="hidden" name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" />
-      [/#if]
     </div>
     
     [#-- Indicate which PPA Partners for second level partners --]
@@ -115,8 +112,9 @@
     <div class="fullPartBlock">
       [#-- Contact type --]
       <div class="partnerPerson-type halfPartBlock clearfix">
-        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
-        [#if !canEditLeader]
+        [#if canEditLeader]
+          [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
+        [#else]
           <div class="select"> 
             [#if (!action.hasProjectPermission("leader",project.id))]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
@@ -139,8 +137,9 @@
      <div class="fullPartBlock">
       [#-- Contact type --]
       <div class="partnerPerson-type halfPartBlock clearfix">
-        [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=editable required=true /]
-        [#if !editable]
+        [#if editable]
+          [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=editable required=true /]
+        [#else]
           <div class="select">
             [#if (!action.hasProjectPermission("ppa",project.id)) && (contact.leader)!false]
               <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
