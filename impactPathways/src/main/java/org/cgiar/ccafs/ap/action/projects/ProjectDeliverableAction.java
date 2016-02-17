@@ -414,9 +414,13 @@ public class ProjectDeliverableAction extends BaseAction {
       }
       List<DeliverableDataSharingFile> files = new ArrayList<>();
       for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
-        if (deliverabelFile.getName() != null || deliverabelFile.getLink() != null) {
-          DeliverableDataSharingFile file = new DeliverableDataSharingFile();
-          file.setDeliverableId(deliverableID);
+
+        DeliverableDataSharingFile file = new DeliverableDataSharingFile();
+        file.setDeliverableId(deliverableID);
+        if (deliverabelFile.getId() > 0) {
+          file.setId((deliverabelFile.getId()));
+          files.add(file);
+        } else {
           if (!deliverabelFile.getLink().equals("")) {
             file.setFile(deliverabelFile.getLink());
           } else {
@@ -424,14 +428,13 @@ public class ProjectDeliverableAction extends BaseAction {
           }
 
           file.setType(deliverabelFile.getHosted());
-          if (deliverabelFile.getId() != -1) {
-            file.setId((deliverabelFile.getId()));
-          }
+
+
           if (file.getFile() != null) {
             files.add(file);
           }
-
         }
+
 
       }
       DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
