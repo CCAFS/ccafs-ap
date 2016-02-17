@@ -4431,10 +4431,14 @@ aside[id*="-control"] .slidr-control:after {
 
 /*** Syntesis CRP Indicators ***/
 
-
-
 .indicatorsByType{
   padding-top:24px !important;
+}
+
+a.showIndicatorDesc {
+  position: absolute;
+  right: 2px;
+  top: -30px;
 }
 
 /*** Glossary ***/

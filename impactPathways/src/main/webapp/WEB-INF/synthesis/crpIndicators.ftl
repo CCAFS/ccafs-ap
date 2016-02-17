@@ -63,20 +63,24 @@
             [#-- Indicators by type --]
             [#list action.getCrpIndicatorsByType(indicatorType_index+1) as indicatorReport]
             <div class="simpleBox">
-              <h6 class="title" style="font-size: 1.2em;">${indicatorReport.indicator.name}</h6>
+              <h6 class="title" style="font-size: 1.2em;margin-bottom: 5px;">${indicatorReport.indicator.name}</h6>
+              <div class="fullPartBlock">
+                <a class="showIndicatorDesc" href="#"><img src="${baseUrl}/images/global/icon-view.png" alt="" />Show indicator description</a>
+                <p style="display:none">${indicatorReport.indicator.description}</p>
+              </div>
+              
               [#-- Targets --]
-              <div class="fullBlock">
-             
+              <div class="fullPartBlock">
                 <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].target" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" editable=false /]</div>
                 <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].actual" type="text" i18nkey="reporting.synthesis.crpIndicators.actual" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" required=canEdit editable=editable /]</div>
                 <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].nextYearTarget" type="text" i18nkey="reporting.synthesis.crpIndicators.nextYearTarget" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear+1}" required=canEdit editable=editable /]</div>
               </div>
               [#-- Link to supporting databases --]
-              <div class="fullBlock">
+              <div class="fullPartBlock">
                 [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].supportLinks" i18nkey="reporting.synthesis.crpIndicators.links" required=canEdit editable=editable /]
               </div>
               [#-- Deviation --]
-              <div class="fullBlock">
+              <div class="fullPartBlock">
                 [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].deviation" i18nkey="reporting.synthesis.crpIndicators.deviation" required=canEdit editable=editable /]
               </div>
             </div>

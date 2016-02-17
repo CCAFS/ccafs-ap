@@ -1,10 +1,6 @@
-var $numericFields;
-
 $(document).ready(init);
 
 function init() {
-
-  $numericFields = $('.isNumeric');
 
   attachEvents();
 
@@ -14,10 +10,17 @@ function init() {
 
 function attachEvents() {
 
-  $numericFields.on("keydown", isNumber);
+  $('.isNumeric').on("keydown", isNumber);
+
+  $('.showIndicatorDesc').on('click', showIndicatorDesc);
 
 }
 
 function initTabs() {
   $("#crpIndicatorsTabs").tabs();
+}
+
+function showIndicatorDesc(e) {
+  e.preventDefault();
+  $(this).next().slideToggle();
 }
