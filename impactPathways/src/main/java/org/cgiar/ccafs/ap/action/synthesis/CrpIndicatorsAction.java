@@ -139,7 +139,7 @@ public class CrpIndicatorsAction extends BaseAction {
     indicatorReports =
       indicatorsReportManager.getIndicatorReportsList(liaisonInstitutionID, this.getCurrentReportingYear());
     // Get the list of liaison institutions.
-    liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
+    liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutionsCrpsIndicator();
 
     // indicatorReports = indicatorReportManager.getIndicatorReports(liaisonInstitutionID,
     // this.getCurrentReportingYear(), indicatorTypeID);

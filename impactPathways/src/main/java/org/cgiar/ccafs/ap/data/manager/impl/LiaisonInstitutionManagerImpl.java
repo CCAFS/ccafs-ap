@@ -81,11 +81,27 @@ public class LiaisonInstitutionManagerImpl implements LiaisonInstitutionManager 
     return liaisonInstitutions;
   }
 
-
   @Override
   public List<LiaisonInstitution> getLiaisonInstitutionsCenter() {
     List<LiaisonInstitution> liaisonInstitutions = new ArrayList<>();
     List<Map<String, String>> liaisonInsitutionsData = liaisonInstitutionDAO.getLiaisonInstitutionsCenter();
+
+    for (Map<String, String> liData : liaisonInsitutionsData) {
+      LiaisonInstitution liaisonInstitution = new LiaisonInstitution();
+      liaisonInstitution.setId(Integer.parseInt(liData.get("id")));
+      liaisonInstitution.setName(liData.get("name"));
+      liaisonInstitution.setAcronym(liData.get("acronym"));
+
+      liaisonInstitutions.add(liaisonInstitution);
+    }
+
+    return liaisonInstitutions;
+  }
+
+  @Override
+  public List<LiaisonInstitution> getLiaisonInstitutionsCrpsIndicator() {
+    List<LiaisonInstitution> liaisonInstitutions = new ArrayList<>();
+    List<Map<String, String>> liaisonInsitutionsData = liaisonInstitutionDAO.getLiaisonInstitutionsCrps();
 
     for (Map<String, String> liData : liaisonInsitutionsData) {
       LiaisonInstitution liaisonInstitution = new LiaisonInstitution();

@@ -59,4 +59,11 @@ public interface LiaisonInstitutionManager {
    * @return a List of maps with the information.
    */
   public List<LiaisonInstitution> getLiaisonInstitutionsCenter();
+
+  /**
+   * This method return all the center for crps in the database.
+   * 
+   * @return a List of maps with the information.
+   */
+  public List<LiaisonInstitution> getLiaisonInstitutionsCrpsIndicator();
 }

@@ -141,4 +141,30 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
     return liaisonInstitutions;
   }
 
+
+  @Override
+  public List<Map<String, String>> getLiaisonInstitutionsCrps() {
+    List<Map<String, String>> liaisonInstitutions = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * ");
+    query.append("FROM liaison_institutions li where id not in(1,6,7,8,9,10) ");
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+
+      while (rs.next()) {
+        Map<String, String> liaisonInstitution = new HashMap<>();
+        liaisonInstitution.put("id", rs.getString("id"));
+        liaisonInstitution.put("name", rs.getString("name"));
+        liaisonInstitution.put("acronym", rs.getString("acronym"));
+        liaisonInstitutions.add(liaisonInstitution);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getLiaisonInstitutions() > Exception raised trying to get the liaison institutions.", e);
+    }
+
+    return liaisonInstitutions;
+  }
+
 }
