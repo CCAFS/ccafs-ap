@@ -115,12 +115,9 @@
         [#if canEditLeader]
           [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=canEditLeader required=true /]
         [#else]
-          <div class="select"> 
-            [#if (!action.hasProjectPermission("leader",project.id))]
-              <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
-            [/#if]
-            <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
-          </div>
+          <h6><label class="readOnly">[@s.text name="planning.projectPartners.personType" /]:</label></h6>
+          <div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p></div>
+          <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
         [/#if]
       </div>
       [#-- Contact Email --]
@@ -140,12 +137,9 @@
         [#if editable]
           [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'CP'}'" editable=editable required=true /]
         [#else]
-          <div class="select">
-            [#if (!action.hasProjectPermission("ppa",project.id)) && (contact.leader)!false]
-              <p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p>
-            [/#if]
-            <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
-          </div>
+          <h6><label class="readOnly">[@s.text name="planning.projectPartners.personType" /]:</label></h6>
+          <div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p></div>
+          <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!-1}" />
         [/#if]
       </div>
       [#-- Contact Email --]
