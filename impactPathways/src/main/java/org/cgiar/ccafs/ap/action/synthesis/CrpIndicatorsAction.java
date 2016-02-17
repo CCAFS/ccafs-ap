@@ -23,6 +23,7 @@ import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -148,7 +149,20 @@ public class CrpIndicatorsAction extends BaseAction {
 
   @Override
   public String save() {
+
+    LiaisonInstitution leader = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
+    indicatorsReportManager.saveIndicatorReportsList(indicatorReports, leader);
+    Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty()) {
+      String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else {
+      this.addActionMessage(this.getText("saving.saved"));
+    }
     return SUCCESS;
+
+
   }
 
   public void setLiaisonInstitutionID(int liaisonInstitutionID) {

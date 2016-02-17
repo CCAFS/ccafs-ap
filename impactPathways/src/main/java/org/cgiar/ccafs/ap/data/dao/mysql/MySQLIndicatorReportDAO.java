@@ -96,8 +96,8 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
     // The current target should be defined the previous year, by this reason, it is not
     // included in the query.
     StringBuilder query = new StringBuilder();
-    query.append("update   `case_studie_indicators` set , `target`=?, `actual`=?, ");
-    query.append("`support_links`=?, `deviation`=?,next_target=?  ");
+    query.append("update   crp_indicator_reports set  target=?, actual=?, ");
+    query.append(" support_links=?, deviation=?, next_target=?  ");
     query.append(" where `id`=? ");
 
     try (Connection con = databaseManager.getConnection()) {

@@ -59,7 +59,7 @@
                 <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
             [/#if]
             
-            [@s.set var="counter" value="0"/] 
+
             [#-- Indicators by type --]
             [#list action.getCrpIndicatorsByType(indicatorType_index+1) as indicatorReport]
             <div class="simpleBox">
@@ -97,6 +97,7 @@
             [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
           </div>
         </div>
+        <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
       [#else]
         [#-- Display Log History --]
         [#if history??][@log.logList list=history /][/#if] 

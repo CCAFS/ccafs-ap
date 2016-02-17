@@ -78,14 +78,6 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
     Map<String, String> indicatorReportData;
     for (IndicatorReport ir : indicatorReports) {
 
-      // If the indicator is empty, it is not saved
-      if ((ir.getTarget() == null || ir.getTarget().isEmpty())
-        && (ir.getNextYearTarget() == null || ir.getNextYearTarget().isEmpty())
-        && (ir.getActual() == null || ir.getActual().isEmpty())
-        && (ir.getSupportLinks() == null || ir.getSupportLinks().isEmpty())
-        && (ir.getDeviation() == null || ir.getDeviation().isEmpty())) {
-        continue;
-      }
 
       indicatorReportData = new HashMap<String, String>();
       if (ir.getId() != -1) {
@@ -101,7 +93,7 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
       indicatorReportData.put("indicator_id", String.valueOf(ir.getIndicator().getId()));
 
       // This function return true if all the information was saved successfully.
-      saved = saved && indicatorReportDAO.saveIndicatorReport(indicatorReportData, leader.getId(), ir.getYear());
+      saved = indicatorReportDAO.saveIndicatorReport(indicatorReportData, leader.getId(), ir.getYear());
     }
 
     return saved;

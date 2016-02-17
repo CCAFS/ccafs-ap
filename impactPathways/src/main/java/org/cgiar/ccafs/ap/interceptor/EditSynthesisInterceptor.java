@@ -67,7 +67,7 @@ public class EditSynthesisInterceptor extends AbstractInterceptor {
     if (securityContext.isAdmin()) {
       canEditProject = true;
     } else {
-      // Projects wont be able to edit the project if the project has been already submitted.
+      // Synteshis wont be able to edit the project if the project has been already submitted.
       if (baseAction.hasSynthesisPermission("update", liaisonInstitutionID)) {
         canEditProject = true;
       }
