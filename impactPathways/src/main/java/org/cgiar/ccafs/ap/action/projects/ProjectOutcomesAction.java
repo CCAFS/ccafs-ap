@@ -189,6 +189,7 @@ public class ProjectOutcomesAction extends BaseAction {
       int evaluatingYear = 0;
       if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
         evaluatingYear = this.getCurrentReportingYear();
+        midOutcomeYear = this.getCurrentReportingYear();
       } else {
         evaluatingYear = currentPlanningYear;
       }

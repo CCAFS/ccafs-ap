@@ -7,8 +7,9 @@
 [#assign currCss= "currentSection"]
 [#assign projectId=(project.id)!""]
 [#assign projectStage = (currentSubStage)!"" /] 
-[#assign submission = (project.isSubmitted(currentPlanningYear, reportingCycle?string('Reporting','Planning') ))!/]
 [#assign projectSectionStatus= (action.getProjectSectionStatus(actionName))!{} /]
+[#assign submission = (project.isSubmitted(currentPlanningYear, cycleName))! /]
+[#assign canSubmit = action.hasProjectPermission("submitProject", project.id, "manage") /]
 
 <nav id="secondaryMenu" class="projectMenu ${(project.type)!''} ${(projectSectionStatus.missingFieldsWithPrefix?has_content)?string("hasMissingFields","")}">
 <h1><center> 
@@ -78,8 +79,8 @@
   </ul>
   <br />
   
-  [#if !submission?has_content && complete && !securityContext.canSubmitProject(project.id)]
-    <p style="display:none">The project can be submitted now by Management liaison or Contact point.</p>
+  [#if !submission?has_content && complete && !canSubmit]
+    <p style="display:block">The project can be submitted now by Management liaison, Contact point or Project Leader.</p>
   [/#if]
   
   [#-- Check button --]
@@ -91,7 +92,7 @@
   
   [#-- Submit button --]
   [#if canEdit]
-  [#assign showSubmit=(securityContext.canSubmitProject(project.id) && !submission?has_content && complete)]
+  [#assign showSubmit=(canSubmit && !submission?has_content && complete)]
     <a id="submitProject-${projectId}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="submit"][@s.param name='projectID']${projectId}[/@s.param][/@s.url]" >
       [@s.text name="form.buttons.submit" /]
     </a>
