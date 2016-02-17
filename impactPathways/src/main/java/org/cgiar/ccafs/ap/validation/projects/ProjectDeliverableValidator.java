@@ -289,17 +289,16 @@ public class ProjectDeliverableValidator extends BaseValidator {
       this.addMissingField("projects.deliverable(" + deliverable.getId() + ").typeOther");
     }
     // Deliverables has to have at least one next user.
-    if (cycle.equals(APConstants.PLANNING_SECTION)) {
-      if (!deliverableValidator.hasNextUsers(deliverable.getNextUsers())) {
-        this.addMessage(action.getText("planning.projectDeliverable.nextUsers.emptyText"));
-        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").nextUsers.empty");
-      } else {
-        // Validate each next user added.
-        this.validateNextUsers(action, deliverable, deliverable.getNextUsers());
-      }
+    // if (cycle.equals(APConstants.PLANNING_SECTION)) {
+    if (!deliverableValidator.hasNextUsers(deliverable.getNextUsers())) {
+      this.addMessage(action.getText("planning.projectDeliverable.nextUsers.emptyText"));
+      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").nextUsers.empty");
+    } else {
+      // Validate each next user added.
+      this.validateNextUsers(action, deliverable, deliverable.getNextUsers());
+      // }
     }
- 
-   
+
 
     // Validating that the deliverable has a responsible.
     if (!deliverableValidator.hasResponsible(deliverable.getResponsiblePartner())) {

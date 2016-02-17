@@ -498,10 +498,10 @@ public class ValidateProjectSectionAction extends BaseAction {
         highLigthValidator.validate(this, project, projectHighligths, currentCycle);
 
       }
-      if (list.isEmpty() && (project.isBilateralProject())) {
+      if (list.isEmpty()) {
         SectionStatus status = statusManager.getSectionStatus(project, currentCycle, "highlights");
         if (status == null) {
-          status = new SectionStatus(currentCycle, sectionName);
+          status = new SectionStatus(currentCycle, "highlights");
         }
         status.setMissingFields("");
         statusManager.saveSectionStatus(status, project);
