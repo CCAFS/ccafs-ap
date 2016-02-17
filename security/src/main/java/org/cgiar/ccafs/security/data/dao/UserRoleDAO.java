@@ -55,7 +55,16 @@ public interface UserRoleDAO {
   public List<Map<String, String>> getManagementLiaisonProjects(int userID);
 
   /**
-   * This method gets the projects where the user is assigned as leader or coordinator.
+   * This method gets the projects where the user is assigned as coordinator.
+   * 
+   * @param userID - user identifier
+   * @return a list of maps with the project identifier and the contact point role information.
+   */
+  public List<Map<String, String>> getProjectCordinatorProjects(int userID);
+
+
+  /**
+   * This method gets the projects where the user is assigned as leader .
    * 
    * @param userID - user identifier
    * @return a list of maps with the project identifier and the contact point role information.

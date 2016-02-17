@@ -94,12 +94,25 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectCordinatorProjects(int userID) {
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym, project_id ");
+    query.append("FROM  roles r, project_partners pp ");
+    query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
+    query.append("WHERE ( ppp.contact_type = 'PC' ) ");
+    query.append("AND pp.is_active = 1 AND ppp.is_active = 1 AND r.id = 9 AND ppp.user_id = ");
+    query.append(userID);
+
+    return this.setData(query.toString());
+  }
+
+  @Override
   public List<Map<String, String>> getProjectLeaderProjects(int userID) {
     StringBuilder query = new StringBuilder();
     query.append("SELECT r.id, r.name, r.acronym, project_id ");
     query.append("FROM  roles r, project_partners pp ");
     query.append("INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id ");
-    query.append("WHERE ( ppp.contact_type = 'PL' OR ppp.contact_type = 'PC' ) ");
+    query.append("WHERE ( ppp.contact_type = 'PL') ");
     query.append("AND pp.is_active = 1 AND ppp.is_active = 1 AND r.id = 7 AND ppp.user_id = ");
     query.append(userID);
 
