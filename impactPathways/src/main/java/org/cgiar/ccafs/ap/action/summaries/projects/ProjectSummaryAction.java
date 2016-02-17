@@ -154,9 +154,10 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   @Override
   public String execute() throws Exception {
     int currentPlanningYear = this.config.getPlanningCurrentYear();
+    int currentReportingYear = this.config.getReportingCurrentYear();
     int midOutcomeYear = this.config.getMidOutcomeYear();
     // Generate the pdf file
-    projectPDF.generatePdf(project, currentPlanningYear, midOutcomeYear);
+    projectPDF.generatePdf(project, currentPlanningYear, currentReportingYear, midOutcomeYear);
 
     streams = new ArrayList<>();
     streams.add(projectPDF.getInputStream());
