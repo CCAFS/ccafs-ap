@@ -28,11 +28,16 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
   private String headerText;
   private int pagenumber;
   private Submission submissionCurrentPlanningYear;
+  private String cycle, yearCycle;
 
-  public HeaderFooterPDF(String headerText, int pageOrientation, Submission submissionCurrentPlanningYear) {
+  public HeaderFooterPDF(String headerText, int pageOrientation, Submission submissionCurrentPlanningYear, String cycle,
+    String yearCycle) {
     this.submissionCurrentPlanningYear = submissionCurrentPlanningYear;
     this.headerText = headerText;
+    this.cycle = cycle;
+    this.yearCycle = yearCycle;
   }
+
 
   /**
    * Adds the header and the footer.
@@ -81,7 +86,8 @@ public class HeaderFooterPDF extends PdfPageEventHelper {
     phrase = new Phrase();
     phrase.setFont(SUB_HEADER_FONT);
 
-    phrase.add("This report was generated on " + date.format(new Date()));
+    phrase.add(
+      "This report was generated on " + date.format(new Date()) + " (CCAFS " + cycle + " cycle " + yearCycle + ")");
     ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, phrase, rect.getLeft(), rect.getBottom(),
       0);
 
