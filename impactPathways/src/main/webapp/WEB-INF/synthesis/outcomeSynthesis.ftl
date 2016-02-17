@@ -36,14 +36,63 @@
       [#if submission?has_content]
         <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
       [#elseif !canEdit ]
-        <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
+        <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param]${title}[/@s.param][/@s.text]</p>
       [/#if]
       [#-- Title --]
       <h1 class="contentTitle">[@s.text name="reporting.synthesis.outcomeSynthesis.title" ][@s.param]${(currentLiaisonInstitution.name)!}[/@s.param][/@s.text]</h1>
       
       [#-- Outcomes 2019 --]
-      <div id="outcomeSynthesisBlock" class="borderBox">
-        
+      <div id="outcomeSynthesisBlock" class="">
+        [#list midOutcomes as midOutcome]
+        <div class="borderBox">
+          <div class="fullPartBlock">
+            <h6 class="title">${midOutcome.getComposedId()}</h6>
+            <p>${midOutcome.description}</p>
+          </div>
+          <div class="fullPartBlock">
+            <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.indicators" /]:</h6> 
+            [#list midOutcome.indicators as indicator]
+              [#assign flagshipIndicator = (indicator.parent)!indicator /]
+              <div class="simpleBox">
+                <div class="fullPartBlock">
+                  <p>${flagshipIndicator.description}</p>
+                </div>
+                [#-- Achieved target in current reporting period --]
+                <div class="fullPartBlock">
+                  <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" paramText="" editable=editable /]</div>
+                </div>
+                [#-- Synthesis of annual progress towards this indicator --]
+                <div class="fullPartBlock">
+                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" required=canEdit editable=editable /]
+                </div>
+                [#-- Synthesis of annual progress gender and social inclusion contribution towards this indicator --]
+                <div class="fullPartBlock">
+                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" required=canEdit editable=editable /]
+                </div>
+                [#-- Explain any discrepancy  --]
+                [#if action.hasSynthesisPermission("rplSynthesis", liaisonInstitutionID)]
+                <div class="fullPartBlock">
+                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" required=canEdit editable=editable /]
+                </div>
+                [/#if]
+                
+                <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
+                <div class="fullPartBlock">
+                  {Table projectContributions Here}
+                </div>
+                
+                [#if action.hasSynthesisPermission("fplSynthesis", liaisonInstitutionID)]
+                <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
+                <div class="fullPartBlock">
+                  {Table regionalContributions Here}
+                </div>
+                [/#if]
+                
+              </div>
+            [/#list]
+          </div>
+        </div>
+        [/#list]
       </div>
       
       [#-- Button save and Log history --]

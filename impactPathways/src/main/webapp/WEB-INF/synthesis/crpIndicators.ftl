@@ -30,9 +30,6 @@
       [/#list]
     </ul>
     
-    [#-- CRP Indicators Sub Menu --]
-    [#--include "/WEB-INF/synthesis/crpIndicators-subMenu.ftl" /--]
-    
     <div class="fullContent">
       [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
       [#if submission?has_content]
@@ -40,7 +37,8 @@
       [#elseif !canEdit ]
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
       [/#if]
-    
+      
+      [#-- Title --]
       <h1 class="contentTitle">[@s.text name="reporting.synthesis.crpIndicators.title" /]</h1>
       
       <div id="crpIndicatorsTabs">
@@ -59,16 +57,16 @@
                 <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
             [/#if]
             
-
-            [#-- Indicators by type --]
+            [#-- List of indicators by type --]
             [#list action.getCrpIndicatorsByType(indicatorType_index+1) as indicatorReport]
             <div class="simpleBox">
-              <h6 class="title" style="font-size: 1.2em;margin-bottom: 5px;">${indicatorReport.indicator.name}</h6>
+              <h6 class="title" style="font-size: 1.2em;margin-bottom: 5px;">${indicatorReport.indicator.id}.  ${indicatorReport.indicator.name}</h6>
               <div class="fullPartBlock">
-                <a class="showIndicatorDesc" href="#"><img src="${baseUrl}/images/global/icon-view.png" alt="" />Show indicator description</a>
-                <p style="display:none">${indicatorReport.indicator.description}</p>
+                [#if indicatorReport.indicator.description?has_content]
+                  <a class="showIndicatorDesc" href="#"><img src="${baseUrl}/images/global/icon-view.png" alt="" /><img src="${baseUrl}/images/global/icon-info.png" title="Show indicator description" alt="" /></a>
+                  <p style="display:none">${indicatorReport.indicator.description}</p>
+                [/#if]
               </div>
-              
               [#-- Targets --]
               <div class="fullPartBlock">
                 <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].target" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" editable=false /]</div>
@@ -84,7 +82,6 @@
                 [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].deviation" i18nkey="reporting.synthesis.crpIndicators.deviation" required=canEdit editable=editable /]
               </div>
             </div>
-
             [/#list]
           </div>
         [/#list]

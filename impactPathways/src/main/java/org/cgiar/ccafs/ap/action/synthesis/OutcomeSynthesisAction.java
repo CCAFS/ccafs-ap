@@ -17,8 +17,11 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
-import org.cgiar.ccafs.ap.data.model.IndicatorReport;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
 import org.cgiar.ccafs.utils.APConfig;
@@ -44,35 +47,32 @@ public class OutcomeSynthesisAction extends BaseAction {
   private ProjectLeverageValidator validator;
   private HistoryManager historyManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
+  private IPProgramManager ipProgramManager;
   private IPElementManager ipElementManager;
 
   // Model for the front-end
   private List<LiaisonInstitution> liaisonInstitutions;
   private LiaisonInstitution currentLiaisonInstitution;
-
-  private List<IndicatorReport> indicatorReports;
-
+  private List<IPElement> midOutcomes;
+  private IPProgram program;
 
   private int liaisonInstitutionID;
 
   @Inject
   public OutcomeSynthesisAction(APConfig config, HistoryManager historyManager,
-    LiaisonInstitutionManager liaisonInstitutionManager, IPElementManager ipElementManager,
-    ProjectLeverageValidator validator) {
+    LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
+    IPElementManager ipElementManager, ProjectLeverageValidator validator) {
     super(config);
     this.validator = validator;
     this.historyManager = historyManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
+    this.ipProgramManager = ipProgramManager;
     this.ipElementManager = ipElementManager;
   }
 
+
   public LiaisonInstitution getCurrentLiaisonInstitution() {
     return currentLiaisonInstitution;
-  }
-
-
-  public List<IndicatorReport> getIndicatorReports() {
-    return indicatorReports;
   }
 
 
@@ -80,9 +80,16 @@ public class OutcomeSynthesisAction extends BaseAction {
     return liaisonInstitutionID;
   }
 
-
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     return liaisonInstitutions;
+  }
+
+  public List<IPElement> getMidOutcomes() {
+    return midOutcomes;
+  }
+
+  public IPProgram getProgram() {
+    return program;
   }
 
   @Override
@@ -116,6 +123,16 @@ public class OutcomeSynthesisAction extends BaseAction {
     // Get currentLiaisonInstitution
     currentLiaisonInstitution = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
 
+    // Create an ipElementType with the identifier of the outcomes 2025 type
+    IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
+
+    // TODO: Create a function for getting an IPProgram by liaisonInstitutionID
+    // Temporally i (sebas) will use RP LAM that the IpProgram ID is 5
+    program = ipProgramManager.getIPProgramById(5);
+
+    // Get Outcomes 2019 of current IPProgram
+    midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
+
 
   }
 
@@ -130,6 +147,14 @@ public class OutcomeSynthesisAction extends BaseAction {
 
   public void setLiaisonInstitutionID(int liaisonInstitutionID) {
     this.liaisonInstitutionID = liaisonInstitutionID;
+  }
+
+  public void setMidOutcomes(List<IPElement> midOutcomes) {
+    this.midOutcomes = midOutcomes;
+  }
+
+  public void setProgram(IPProgram program) {
+    this.program = program;
   }
 
   @Override
