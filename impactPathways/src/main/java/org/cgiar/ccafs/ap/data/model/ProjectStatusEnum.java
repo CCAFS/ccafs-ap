@@ -23,30 +23,13 @@ public enum ProjectStatusEnum {
 
   Ongoing("2", "On-going"), Complete("3", "Complete"), Extended("4", "Extended - delayed"), Cancelled("5", "Cancelled");
 
-  private String status;
-  private String statusId;
-
-  private ProjectStatusEnum(String statusId, String status) {
-    this.statusId = statusId;
-    this.status = status;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-
-  public String getStatusId() {
-    return statusId;
-  }
-
   /**
    * Look for the ProjectStatusEnum with id
    * 
    * @param id the id to search
    * @return Object ProjectStatusEnum if no exist null
    */
-  public ProjectStatusEnum getValue(int id) {
+  public static ProjectStatusEnum getValue(int id) {
     ProjectStatusEnum[] lst = ProjectStatusEnum.values();
     for (ProjectStatusEnum projectStatusEnum : lst) {
       if (projectStatusEnum.getStatusId().equals(String.valueOf(id))) {
@@ -54,6 +37,24 @@ public enum ProjectStatusEnum {
       }
     }
     return null;
+  }
+
+  private String status;
+
+  private String statusId;
+
+  private ProjectStatusEnum(String statusId, String status) {
+    this.statusId = statusId;
+    this.status = status;
+  }
+
+
+  public String getStatus() {
+    return status;
+  }
+
+  public String getStatusId() {
+    return statusId;
   }
 
 
