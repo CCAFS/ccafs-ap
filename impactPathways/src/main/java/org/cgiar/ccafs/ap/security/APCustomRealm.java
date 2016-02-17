@@ -177,7 +177,7 @@ public class APCustomRealm extends AuthorizingRealm {
           projectRoles.add(userRoleManager.getProjectLeaderProjects(userID));
           break;
         case APConstants.ROLE_PROJECT_COORDINATOR:
-          projectRoles.add(userRoleManager.getProjectLeaderProjects(userID));
+          projectRoles.add(userRoleManager.getProjectCordinatorProjects(userID));
           break;
         case APConstants.ROLE_CONTACT_POINT:
           projectRoles.add(userRoleManager.getContactPointProjects(userID));
