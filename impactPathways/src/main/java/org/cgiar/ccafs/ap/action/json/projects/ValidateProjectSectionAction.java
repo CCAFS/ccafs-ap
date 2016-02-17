@@ -501,7 +501,7 @@ public class ValidateProjectSectionAction extends BaseAction {
       if (list.isEmpty()) {
         SectionStatus status = statusManager.getSectionStatus(project, currentCycle, "highlights");
         if (status == null) {
-          status = new SectionStatus(currentCycle, sectionName);
+          status = new SectionStatus(currentCycle, "highlights");
         }
         status.setMissingFields("");
         statusManager.saveSectionStatus(status, project);
