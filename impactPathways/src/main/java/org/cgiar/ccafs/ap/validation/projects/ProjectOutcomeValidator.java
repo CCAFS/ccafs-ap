@@ -69,21 +69,26 @@ public class ProjectOutcomeValidator extends BaseValidator {
   private void validateCoreProject(BaseAction action, Project project, int midOutcomeYear, int currentPlanningYear,
     String cycle) {
     String message = null;
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      midOutcomeYear = currentPlanningYear;
+    }
     // Validate for each year.
     for (int year = currentPlanningYear; year <= midOutcomeYear; year++) {
       // Validate only two years ahead and the last year which is 2019.
       if (year < (currentPlanningYear + 2) || year == midOutcomeYear) {
         // Validate the outcome statement
-        if (!projectValidator.hasValidOutcomeStatement(project.getOutcomes(), year)) {
-          if (year == midOutcomeYear) {
-            message = action.getText("planning.projectOutcome.statement.readText");
-          } else {
-            message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
+        if (!cycle.equals(APConstants.REPORTING_SECTION)) {
+          if (!projectValidator.hasValidOutcomeStatement(project.getOutcomes(), year)) {
+            if (year == midOutcomeYear) {
+              message = action.getText("planning.projectOutcome.statement.readText");
+            } else {
+              message = action.getText("planning.projectOutcome.annualProgress.readText", new String[] {year + ""});
+            }
+            this.addMessage(message.toLowerCase());
+            this.addMissingField("project.outcomes[" + year + "].statement");
           }
 
 
-          this.addMessage(message.toLowerCase());
-          this.addMissingField("project.outcomes[" + year + "].statement");
         }
 
       }
