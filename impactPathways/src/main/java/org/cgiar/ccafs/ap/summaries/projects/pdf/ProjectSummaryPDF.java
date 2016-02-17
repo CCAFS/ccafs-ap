@@ -115,6 +115,7 @@ public class ProjectSummaryPDF extends BasePDF {
   private Document document;
   private int contentLength;
   private int currentPlanningYear;
+  private int currentReportingYear;
   private int midOutcomeYear;
   private Project project;
   private DecimalFormat budgetFormatter, genderFormatter;
@@ -3003,6 +3004,7 @@ public class ProjectSummaryPDF extends BasePDF {
             cell.setAlignment(Element.ALIGN_LEFT);
             this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
 
+
             cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.natureCollaboration"),
               TABLE_BODY_BOLD_FONT);
             cell.setFont(TABLE_BODY_FONT);
@@ -3880,7 +3882,7 @@ public class ProjectSummaryPDF extends BasePDF {
    * @param currentPlanningYear current year of planning
    * @param midOutcomeYear year 2019
    */
-  public void generatePdf(Project project, int currentPlanningYear, int midOutcomeYear) {
+  public void generatePdf(Project project, int currentPlanningYear, int currentReportingYear, int midOutcomeYear) {
 
     this.allMOGs = elementManager.getIPElementList();
     this.mapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
@@ -3890,6 +3892,7 @@ public class ProjectSummaryPDF extends BasePDF {
     this.project = project;
     this.midOutcomeYear = midOutcomeYear;
     this.currentPlanningYear = currentPlanningYear;
+    this.currentReportingYear = currentReportingYear;
     this.setSummaryTitle(project.getStandardIdentifier(Project.PDF_IDENTIFIER_REPORT));
 
     PdfWriter writer = this.initializePdf(document, outputStream, PORTRAIT);
@@ -3900,12 +3903,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
     if (project.isReporting()) {
-
-      event = new HeaderFooterPDF(summaryTitle, PORTRAIT, project.isSubmitted(2019, APConstants.REPORTING_SECTION),
-        APConstants.REPORTING_SECTION, String.valueOf(2019));
+      event = new HeaderFooterPDF(summaryTitle, PORTRAIT,
+        project.isSubmitted(currentReportingYear, APConstants.REPORTING_SECTION), APConstants.REPORTING_SECTION,
+        String.valueOf(currentReportingYear));
     } else {
-      event = new HeaderFooterPDF(summaryTitle, PORTRAIT, project.isSubmitted(2019, APConstants.PLANNING_SECTION),
-        APConstants.PLANNING_SECTION, String.valueOf(2019));
+      event = new HeaderFooterPDF(summaryTitle, PORTRAIT,
+        project.isSubmitted(currentPlanningYear, APConstants.PLANNING_SECTION), APConstants.PLANNING_SECTION,
+        String.valueOf(this.currentPlanningYear));
     }
 
     writer.setPageEvent(event);
