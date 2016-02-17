@@ -115,6 +115,7 @@ public class ProjectSummaryPDF extends BasePDF {
   private Document document;
   private int contentLength;
   private int currentPlanningYear;
+  private int currentReportingYear;
   private int midOutcomeYear;
   private Project project;
   private DecimalFormat budgetFormatter, genderFormatter;
@@ -2253,10 +2254,13 @@ public class ProjectSummaryPDF extends BasePDF {
                 this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
 
                 // targets achieved
-                cell = new Paragraph(this.getText("summaries.project.indicator.targetsAchieved"), TABLE_BODY_BOLD_FONT);
-                cell.setFont(TABLE_BODY_FONT);
-                cell.add(this.messageReturn(indicator.getNarrativeTargets()));
-                this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+                if (indicator.getYear() <= this.currentReportingYear) {
+                  cell =
+                    new Paragraph(this.getText("summaries.project.indicator.targetsAchieved"), TABLE_BODY_BOLD_FONT);
+                  cell.setFont(TABLE_BODY_FONT);
+                  cell.add(this.messageReturn(indicator.getNarrativeTargets()));
+                  this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+                }
 
                 // Target gender
                 cell = new Paragraph(this.getText("summaries.project.indicator.targetGender"), TABLE_BODY_BOLD_FONT);
@@ -2265,10 +2269,13 @@ public class ProjectSummaryPDF extends BasePDF {
                 this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
 
                 // Target achieved gender
-                cell = new Paragraph(this.getText("summaries.project.indicator.genderAchieved"), TABLE_BODY_BOLD_FONT);
-                cell.setFont(TABLE_BODY_FONT);
-                cell.add(this.messageReturn(indicator.getNarrativeGender()));
-                this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+                if (indicator.getYear() <= this.currentReportingYear) {
+                  cell =
+                    new Paragraph(this.getText("summaries.project.indicator.genderAchieved"), TABLE_BODY_BOLD_FONT);
+                  cell.setFont(TABLE_BODY_FONT);
+                  cell.add(this.messageReturn(indicator.getNarrativeGender()));
+                  this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 3);
+                }
 
                 document.add(table);
                 document.add(Chunk.NEWLINE);
@@ -2690,7 +2697,7 @@ public class ProjectSummaryPDF extends BasePDF {
   private void addProjectOutcomes(String number) {
     Paragraph outcomesBlock = new Paragraph();
     outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-    Paragraph title = new Paragraph("4. " + this.getText("summaries.project.outcome"), HEADING2_FONT);
+    Paragraph title = new Paragraph(number + ". " + this.getText("summaries.project.outcome"), HEADING2_FONT);
     outcomesBlock.add(title);
     outcomesBlock.add(Chunk.NEWLINE);;
     title = new Paragraph();
@@ -2795,7 +2802,7 @@ public class ProjectSummaryPDF extends BasePDF {
             outcomesBlock.add(this.getText("summaries.project.empty"));
           } else {
 
-            anchor = new Anchor("File");
+            anchor = new Anchor(project.getOutcomes().get(String.valueOf(year)).getFile());
             anchor.setFont(TABLE_BODY_FONT_LINK);
             anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
               + project.getOutcomes().get(String.valueOf(year)).getFile());
@@ -2917,8 +2924,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
       // Contribution to other Impact Pathways:
       outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-      outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
+      if (project.isReporting()) {
+        outcomesBlock
+          .add(this.getText("summaries.project.outcome.ccafs.outcomes.reporting.other.contributions.pathways"));
+      } else {
 
+        outcomesBlock.add(this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions.pathways"));
+      }
       outcomesBlock.setFont(BODY_TEXT_FONT);
 
       if (otherContribution == null || otherContribution.getContribution() == null
@@ -2955,7 +2967,8 @@ public class ProjectSummaryPDF extends BasePDF {
           cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.indicator"), TABLE_HEADER_FONT);
           this.addTableHeaderCell(table, cell);
 
-          cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.describe"), TABLE_HEADER_FONT);
+          cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.describe",
+            new String[] {String.valueOf(this.currentReportingYear)}), TABLE_HEADER_FONT);
           this.addTableHeaderCell(table, cell);
 
           cell =
@@ -3002,6 +3015,7 @@ public class ProjectSummaryPDF extends BasePDF {
             cell = new Paragraph(this.messageReturn(crpContribution.getCrp().getName()), TABLE_BODY_BOLD_FONT);
             cell.setAlignment(Element.ALIGN_LEFT);
             this.addTableBodyCell(table, cell, Element.ALIGN_CENTER, 1);
+
 
             cell = new Paragraph(this.getText("summaries.project.reporting.ccafs.outcomes.natureCollaboration"),
               TABLE_BODY_BOLD_FONT);
@@ -3880,7 +3894,7 @@ public class ProjectSummaryPDF extends BasePDF {
    * @param currentPlanningYear current year of planning
    * @param midOutcomeYear year 2019
    */
-  public void generatePdf(Project project, int currentPlanningYear, int midOutcomeYear) {
+  public void generatePdf(Project project, int currentPlanningYear, int currentReportingYear, int midOutcomeYear) {
 
     this.allMOGs = elementManager.getIPElementList();
     this.mapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
@@ -3890,6 +3904,7 @@ public class ProjectSummaryPDF extends BasePDF {
     this.project = project;
     this.midOutcomeYear = midOutcomeYear;
     this.currentPlanningYear = currentPlanningYear;
+    this.currentReportingYear = currentReportingYear;
     this.setSummaryTitle(project.getStandardIdentifier(Project.PDF_IDENTIFIER_REPORT));
 
     PdfWriter writer = this.initializePdf(document, outputStream, PORTRAIT);
@@ -3900,12 +3915,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
 
     if (project.isReporting()) {
-
-      event = new HeaderFooterPDF(summaryTitle, PORTRAIT, project.isSubmitted(2019, APConstants.REPORTING_SECTION),
-        APConstants.REPORTING_SECTION, String.valueOf(2019));
+      event = new HeaderFooterPDF(summaryTitle, PORTRAIT,
+        project.isSubmitted(currentReportingYear, APConstants.REPORTING_SECTION), APConstants.REPORTING_SECTION,
+        String.valueOf(currentReportingYear));
     } else {
-      event = new HeaderFooterPDF(summaryTitle, PORTRAIT, project.isSubmitted(2019, APConstants.PLANNING_SECTION),
-        APConstants.PLANNING_SECTION, String.valueOf(2019));
+      event = new HeaderFooterPDF(summaryTitle, PORTRAIT,
+        project.isSubmitted(currentPlanningYear, APConstants.PLANNING_SECTION), APConstants.PLANNING_SECTION,
+        String.valueOf(this.currentPlanningYear));
     }
 
     writer.setPageEvent(event);
