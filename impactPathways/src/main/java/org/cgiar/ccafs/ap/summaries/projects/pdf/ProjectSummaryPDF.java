@@ -2915,8 +2915,8 @@ public class ProjectSummaryPDF extends BasePDF {
       outcomesBlock = new Paragraph();
       outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
 
-      title = new Paragraph("4.3 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"),
-        HEADING3_FONT);
+      title = new Paragraph(
+        number + ".3 " + this.getText("summaries.project.outcome.ccafs.outcomes.other.contributions"), HEADING3_FONT);
       outcomesBlock.add(Chunk.NEWLINE);
       outcomesBlock.add(Chunk.NEWLINE);
       outcomesBlock.add(title);
@@ -3136,129 +3136,140 @@ public class ProjectSummaryPDF extends BasePDF {
       // **********************************************************************************
       // *************************** Outcome Case Studies *************************************
       // **********************************************************************************
-
+      int counter = 0;
       if (project.isReporting()) {
-        title = new Paragraph("4.4 " + this.getText("summaries.project.reporting.outcome.case.studies"), HEADING3_FONT);
+        document.newPage();
+        title = new Paragraph(number + ".4 " + this.getText("summaries.project.reporting.outcome.case.studies"),
+          HEADING3_FONT);
         title.add(Chunk.NEWLINE);
         document.add(title);
-        document.add(Chunk.NEWLINE);
+
+        if (project.getCaseStudies().isEmpty()) {
+          document.add(new Paragraph(this.getText("summaries.project.reporting.outcome.not.case.studies")));
+        } else {
+          title = new Paragraph();
+          title.add(Chunk.NEWLINE);
+          title.add(Chunk.NEWLINE);
+          document.add(title);
+
+          for (CasesStudies caseStudy : project.getCaseStudies()) {
+
+            counter++;
+            table = new PdfPTable(1);
+            table.setLockedWidth(true);
+            table.setTotalWidth(500);
+
+            // case study
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.case.studies") + "# " + counter,
+              TABLE_BODY_BOLD_FONT);
+            this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
+              table.getNumberOfColumns(), 0, false);
+
+            // Title
+            cell =
+              new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.title"), TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getTitle());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Outcome statement
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outcomestatement"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getOutcomeStatement());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Research outputs
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.researchoutputs"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getResearchOutputs());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Research partners
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.researchPartners"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getResearchPartners());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // activities Contributed
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.activitiesContributed"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getActivities());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Non Research Partners
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.nonResearchPartners"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getNonResearchPartneres());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Output Users
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outputUsers"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getOutputUsers());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Output Used
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outputWasUsed"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getOutputUsed());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Evidence
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.evidenceOutcome"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getEvidenceOutcome());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // References
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.references"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getReferencesCase());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Outcome indicators
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.primaryOutcome",
+              new String[] {String.valueOf(this.midOutcomeYear)}), TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add("\n");
+            for (IPIndicator ipIndicator : caseStudy.getCaseStudyIndicators()) {
+              cell.add(ipIndicator.getDescription() + "\n");
+            }
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
+
+            // Explain link
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.explainLink"),
+              TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getExplainIndicatorRelation());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
 
-        for (CasesStudies caseStudy : project.getCaseStudies()) {
-          table = new PdfPTable(1);
-          table.setLockedWidth(true);
-          table.setTotalWidth(500);
+            // year
+            cell =
+              new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.year"), TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(String.valueOf(caseStudy.getYear()));
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
-          // case study
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.case.studies"), TABLE_BODY_BOLD_FONT);
-          this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
-            table.getNumberOfColumns(), 0, false);
+            // upload
+            cell =
+              new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.upload"), TABLE_BODY_BOLD_FONT);
+            cell.setFont(TABLE_BODY_FONT);
+            cell.add(caseStudy.getFile());
+            this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
-          // Title
-          cell =
-            new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.title"), TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getTitle());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Outcome statement
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outcomestatement"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getOutcomeStatement());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Research outputs
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.researchoutputs"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getResearchOutputs());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Research partners
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.researchPartners"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getResearchPartners());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // activities Contributed
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.activitiesContributed"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getActivities());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Non Research Partners
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.nonResearchPartners"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getNonResearchPartneres());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Output Users
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outputUsers"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getOutputUsers());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Output Used
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.outputWasUsed"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getOutputUsed());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Evidence
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.evidenceOutcome"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getEvidenceOutcome());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // References
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.references"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getReferencesCase());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Outcome indicators
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.primaryOutcome",
-            new String[] {String.valueOf(this.midOutcomeYear)}), TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add("\n");
-          for (IPIndicator ipIndicator : caseStudy.getCaseStudyIndicators()) {
-            cell.add(ipIndicator.getOutcome().getId() + ": " + ipIndicator.getDescription() + "\n");
+            document.add(table);
+            document.add(new Paragraph(Chunk.NEWLINE));
           }
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // Explain link
-          cell = new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.explainLink"),
-            TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getExplainIndicatorRelation());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-
-          // year
-          cell =
-            new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.year"), TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(String.valueOf(caseStudy.getYear()));
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          // upload
-          cell =
-            new Paragraph(this.getText("summaries.project.reporting.outcome.casestudy.upload"), TABLE_BODY_BOLD_FONT);
-          cell.setFont(TABLE_BODY_FONT);
-          cell.add(caseStudy.getFile());
-          this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
-
-          document.add(table);
-          document.add(Chunk.NEWLINE);
-
         }
       }
 
