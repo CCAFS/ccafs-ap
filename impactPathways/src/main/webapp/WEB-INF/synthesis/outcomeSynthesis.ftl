@@ -70,7 +70,7 @@
                   [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" required=canEdit editable=editable /]
                 </div>
                 [#-- Explain any discrepancy  --]
-                [#if action.hasSynthesisPermission("rplSynthesis", liaisonInstitutionID)]
+                [#if midOutcome.regionalProgramType]
                 <div class="fullPartBlock">
                   [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" editable=editable /]
                 </div>
@@ -81,14 +81,13 @@
                   {Table projectContributions to this indicator Here}
                 </div>
                 
-                [#if action.hasSynthesisPermission("fplSynthesis", liaisonInstitutionID)]
+                [#if midOutcome.flagshipProgramType]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
                 <div class="fullPartBlock">
                   {Table regionalContributions to this indicator Here}
                 </div>
                 [/#if]
                 
-                ${midOutcome.program.type}
               </div>
             [/#list]
           </div>

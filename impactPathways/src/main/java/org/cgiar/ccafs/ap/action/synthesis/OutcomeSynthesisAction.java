@@ -128,7 +128,41 @@ public class OutcomeSynthesisAction extends BaseAction {
 
     // TODO: Create a function for getting an IPProgram by liaisonInstitutionID
     // Temporally i (sebas) will use RP LAM that the IpProgram ID is 5
-    program = ipProgramManager.getIPProgramById(5);
+
+    int programID = 1; // FP1
+    switch (liaisonInstitutionID) {
+      case 2:
+        programID = 1; // FP1
+        break;
+      case 3:
+        programID = 2; // FP2
+        break;
+      case 4:
+        programID = 3; // FP3
+        break;
+      case 5:
+        programID = 4; // FP4
+        break;
+      case 6:
+        programID = 6; // RP EA
+        break;
+      case 7:
+        programID = 5; // RP LAM
+        break;
+      case 8:
+        programID = 8; // RP SAs
+        break;
+      case 9:
+        programID = 9; // RP SEA
+        break;
+      case 10:
+        programID = 7; // RP WA
+        break;
+      default:
+        break;
+    }
+
+    program = ipProgramManager.getIPProgramById(programID);
 
     // Get Outcomes 2019 of current IPProgram
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
