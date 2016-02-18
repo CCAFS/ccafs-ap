@@ -193,9 +193,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
         ipElementData.put("element_type_name", rs.getString("element_type_name"));
         ipElementData.put("program_id", rs.getString("program_id"));
         ipElementData.put("program_acronym", rs.getString("program_acronym"));
-        if (rs.getString("program_type") != null) {
-          ipElementData.put("program_type", rs.getString("program_type"));
-        }
+
         // TODO - delete this line once we are sure it doesn't generate errors
         ipElementData.put("program_element_id", null);
 
