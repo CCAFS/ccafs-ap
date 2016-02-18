@@ -62,8 +62,33 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
     return indicators;
   }
 
+
   @Override
   public IPIndicator getIndicator(int indicatorID) {
+    Map<String, String> iData = indicatorDAO.getIndicator(indicatorID);
+
+    if (!iData.isEmpty()) {
+      IPIndicator indicator = new IPIndicator();
+      indicator.setId(Integer.parseInt(iData.get("id")));
+      indicator.setDescription(iData.get("description"));
+      indicator.setTarget(iData.get("target"));
+
+      // Parent indicator
+      if (iData.get("parent_id") != null) {
+        IPIndicator parent = new IPIndicator();
+        parent.setId(Integer.parseInt(iData.get("parent_id")));
+        parent.setDescription(iData.get("parent_description"));
+        indicator.setParent(parent);
+      }
+
+      return indicator;
+    }
+    return null;
+  }
+
+
+  @Override
+  public IPIndicator getIndicatorFlgship(int indicatorID) {
     Map<String, String> iData = indicatorDAO.getIndicator(indicatorID);
 
     if (!iData.isEmpty()) {
