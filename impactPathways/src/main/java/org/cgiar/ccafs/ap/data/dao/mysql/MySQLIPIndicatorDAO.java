@@ -58,6 +58,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     return deleted;
   }
 
+
   @Override
   public Map<String, String> getIndicator(int indicatorID) {
     LOG.debug(">> getIndicator(indicatorID = {})", indicatorID);
@@ -89,6 +90,44 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     LOG.debug("<< getIndicator():indicatorData={}", indicatorData);
     return indicatorData;
   }
+
+
+  @Override
+  public Map<String, String> getIndicatorFlaghship(int indicatorID) {
+    LOG.debug(">> getIndicator(indicatorID = {})", indicatorID);
+    Map<String, String> indicatorData = new HashMap<>();
+    StringBuilder query = new StringBuilder();
+
+    query.append(
+      "SELECT i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description',prog.acronym ");
+    query.append("FROM ip_indicators i  ");
+    query.append("LEFT JOIN ip_indicators p ON i.parent_id = p.id   ");
+    query.append("       INNER JOIN ip_elements ie ");
+    query.append(
+      "               ON ipi.outcome_id = ie.id  inner  JOIN ip_programs prog on prog.id=ie.ip_program_id and prog.type_id=4");
+    query.append("WHERE i.id = ");
+    query.append(indicatorID);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("acronym") + ": " + rs.getString("description"));
+        indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getIndicator() > Exception raised trying ";
+      exceptionMessage += "to get the ip indicator with id " + indicatorID;
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getIndicator():indicatorData={}", indicatorData);
+    return indicatorData;
+  }
+
 
   @Override
   public List<Map<String, String>> getIndicatorsByElementID(int elementID) {

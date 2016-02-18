@@ -46,6 +46,15 @@ public interface IPIndicatorDAO {
   public Map<String, String> getIndicator(int indicatorID);
 
   /**
+   * This method returns from the database the information of the indicator desc contains flsgship
+   * identified by the value received as parameter.
+   * 
+   * @param indicatorID - indicator identifier
+   * @return a map with the information.
+   */
+  public Map<String, String> getIndicatorFlaghship(int indicatorID);
+
+  /**
    * This method returns all the indicators corresponding to the given ip Element
    * 
    * @param elementID
@@ -71,6 +80,7 @@ public interface IPIndicatorDAO {
    */
   public List<Map<String, String>> getIndicatorsByProjectID(int projectID);
 
+
   /**
    * This method returns a list of 8 indicators
    * in the database.
@@ -78,7 +88,6 @@ public interface IPIndicatorDAO {
    * @return a list of maps with the information.
    */
   public List<Map<String, String>> getIndicatorsFlagShips();
-
 
   /**
    * This method returns a list with all the indicators present
