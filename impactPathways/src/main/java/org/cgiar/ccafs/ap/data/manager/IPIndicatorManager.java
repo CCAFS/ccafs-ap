@@ -44,6 +44,8 @@ public interface IPIndicatorManager {
    */
   public IPIndicator getIndicator(int indicatorID);
 
+  public IPIndicator getIndicatorFlgship(int indicatorID);
+
   /**
    * This method returns a list of indicators which have a parent
    * identified with the value passed as parameter.
@@ -53,6 +55,7 @@ public interface IPIndicatorManager {
    */
   public List<IPIndicator> getIndicatorsByParent(IPIndicator indicator);
 
+
   /**
    * This method gets all the indicators related with the project
    * received as parameter.
@@ -61,7 +64,6 @@ public interface IPIndicatorManager {
    * @return a list of ip indicators object with the information.
    */
   public List<IPIndicator> getIndicatorsByProject(Project project);
-
 
   /**
    * This method get all the indicators for flaglisphs present in the database.
