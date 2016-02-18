@@ -88,7 +88,7 @@
                 </div>
                 [/#if]
                 
-                ${midOutcome.program}
+                ${midOutcome.program.type}
               </div>
             [/#list]
           </div>

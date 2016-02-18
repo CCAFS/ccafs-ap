@@ -12,7 +12,6 @@
     [#-- Identifier (ORCID/SCOPUS) --]
     <div class="halfPartBlock" >[@metadataField title="creatorId" encodedName="cg.creator.ID" /]</div>
    
-    
     [#-- Publication date / Creation date --]
     <div class="halfPartBlock" >[@metadataField title="date" encodedName="dc.date" /]</div>
     
@@ -73,7 +72,7 @@
     
     [#-- Citation --]
     <div class="fullBlock">
-      [@customForm.textArea name="${params.deliverable.name}.publicationMetadata.citation" i18nkey="reporting.projectDeliverable.metadata.citation" help="reporting.projectDeliverable.metadata.citation.help" required=true editable=editable /]
+      [@customForm.textArea name="${params.deliverable.name}.publicationMetadata.citation" i18nkey="reporting.projectDeliverable.metadata.citation" help="reporting.projectDeliverable.metadata.citation.help" required=finalizingCurrently editable=editable /]
     </div>
     
     [#-- Publication --]

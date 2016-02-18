@@ -152,15 +152,14 @@ public class ProjectDeliverableAction extends BaseAction {
     return deliverable.getCreated() >= this.config.getCurrentPlanningStartDate().getTime();
   }
 
-
   public List<Integer> getAllYears() {
     return allYears;
   }
 
+
   public Map<String, String> getCenters() {
     return centers;
   }
-
 
   public Map<String, String> getCrps() {
     return crps;
@@ -170,6 +169,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public Deliverable getDeliverable() {
     return deliverable;
   }
+
 
   public List<DeliverablePartner> getDeliverablePartners() {
     return deliverablePartners;
@@ -208,7 +208,6 @@ public class ProjectDeliverableAction extends BaseAction {
     return file;
   }
 
-
   public String getFileFileName() {
     return fileFileName;
   }
@@ -237,6 +236,7 @@ public class ProjectDeliverableAction extends BaseAction {
   public Project getProject() {
     return project;
   }
+
 
   public Map<Integer, String> getProjectPartnerPersons() {
     return projectPartnerPersons;
@@ -267,6 +267,17 @@ public class ProjectDeliverableAction extends BaseAction {
   public Map<String, String> getStatuses() {
     return statuses;
   }
+
+  /**
+   * This method validates if the deliverable must be reported in the current reporting year.
+   * 
+   * @return true if the expected delivery year is the same as the current reporting year configured in the system,
+   *         false otherwise.
+   */
+  public boolean isFinalizingCurrently() {
+    return deliverable.getYear() == this.getCurrentReportingYear();
+  }
+
 
   public boolean isNewProject() {
     return project.isNew(config.getCurrentPlanningStartDate());

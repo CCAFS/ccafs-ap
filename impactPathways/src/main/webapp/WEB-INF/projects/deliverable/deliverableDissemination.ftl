@@ -56,7 +56,7 @@
   <table id="adoptedLicense" class="default">
     <tbody>
       <tr>
-        <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.adoptedLicense" /]</p></td> 
+        <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.adoptedLicense" /][@customForm.req required=finalizingCurrently /]</p></td> 
         <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.adoptedLicense" editable=editable value="${(adoptedLicense?has_content)?string}"/]</td>
       </tr>
     </tbody>
@@ -98,7 +98,7 @@
   <table id="alreadyDisseminated" class="default">
     <tbody>
       <tr>
-        <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated" /]</p></td> 
+        <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated" /][@customForm.req required=finalizingCurrently /]</p></td> 
         <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.alreadyDisseminated" editable=editable/]</td>
       </tr>
     </tbody>
@@ -108,7 +108,7 @@
     [#-- Dissemination channel list --]
     <div class="fullBlock">
       <div class="halfPartBlock"> 
-        [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label="" i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels"  stringKey=true value="'${(deliverable.dissemination.disseminationChannel)!}'" required=true editable=editable /]
+        [@customForm.select name="${params.deliverable.name}.dissemination.disseminationChannel" label="" i18nkey="reporting.projectDeliverable.disseminationChannel" listName="disseminationChannels"  stringKey=true value="'${(deliverable.dissemination.disseminationChannel)!}'" required=finalizingCurrently editable=editable /]
       </div>
       <div class="halfPartBlock"> 
         <div id="examples">
@@ -120,7 +120,7 @@
     </div>
     [#-- Dissemination channel URL / URI --]
     <div id="disseminationUrl" class="fullBlock" style="display:${((deliverable.dissemination.disseminationChannel?has_content)?string('block','none'))!'none'}">
-      [@customForm.input name="${params.deliverable.name}.dissemination.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=true editable=editable /]
+      [@customForm.input name="${params.deliverable.name}.dissemination.disseminationUrl" className="" i18nkey="reporting.projectDeliverable.disseminationUrl" required=finalizingCurrently editable=editable /]
       [#if editable]<div id="fillMetadata" class="checkButton" style="display:${deliverable.otherChannel?string('none','block')}">Search & Fill Metadata</div>[/#if]
       <div class="clearfix"></div>
     </div>

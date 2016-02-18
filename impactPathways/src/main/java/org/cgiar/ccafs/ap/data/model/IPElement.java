@@ -66,7 +66,7 @@ public class IPElement {
     if (this.program != null && this.program.getId() >= 5) {
       composedID.append(this.program != null ? this.program.getAcronym().substring(3) : "p_null");
     } else {
-      composedID.append(this.program != null ? "F" + this.program.getAcronym().substring(3) : "p_null");
+      composedID.append(this.program != null ? "F" + this.program.getAcronym().substring(2) : "p_null");
     }
     composedID.append("-");
     composedID.append(this.type != null ? this.type.getName() : "t_null");
