@@ -60,7 +60,7 @@
         </div>   
       </div>
       [#-- Overall Activity progress --]
-      [#assign justificationRequired = element.isStatusOnGoing() || element.isStatusExtended() || element.isStatusCancelled() ]
+      [#assign justificationRequired = (element.isStatusOnGoing())!false || (element.isStatusExtended())!false || (element.isStatusCancelled())!false ]
       <div class="fullPartBlock statusDescription clearfix" style="display:${justificationRequired?string('block','none')}">
         [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress" required=true i18nkey="reporting.activityDescription.activityStatus.status${(element.activityStatus)!}" editable=editable && (action.hasProjectPermission("activityProgress", project.id) || template) /]
         <div id="statusesLables" style="display:none">
