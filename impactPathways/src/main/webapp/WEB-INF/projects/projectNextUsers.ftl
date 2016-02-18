@@ -38,15 +38,19 @@
       [@s.form action="nextUsers" cssClass="pure-form"]
       [#if project.startDate?? && project.endDate??]
         <h1 class="contentTitle">[@s.text name="reporting.projectNextUsers.title" /]</h1>
-        <div id="nextUsersBlock" class="simpleBox">
+        <div id="nextUsersBlock" class="">
           <div id="nextUsersList">
             [#-- Validating amount of projectNextUsers to be listed --]
-            [#if (project.nextUsers?size > 1)!false] 
+            [#if (project.nextUsers?size >= 1)!false] 
               [#list project.nextUsers as nextuser]
                 [@projectNextUsersMacro index="${nextuser_index}" /]
               [/#list]
             [#else]
-              [@projectNextUsersMacro index="0" /]
+              [#if !(project.bilateralProject && project.cofinancing)]
+                [@projectNextUsersMacro index="0" /]
+              [#else]
+                <p class="simpleBox message center">There is not project next users yet.</p>
+              [/#if]
             [/#if] 
           </div><!-- End projectNextUsers list -->
           [#-- Add projectNextUsers button --]
@@ -87,11 +91,9 @@
     [#-- Edit/Back/remove buttons --]
     [#if (!editable && canEdit)]
       <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.edit" /]</a></div>
-    [#else]
-      [#if canEdit]
+    [#elseif canEdit]
         <div class="viewButton removeOption"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]#${customId}">[@s.text name="form.buttons.unedit" /]</a></div>
         <div class="removeElement" title="[@s.text name="reporting.projectNextUsers.removeNextUser" /]"></div>
-      [/#if] 
     [/#if]
     [#-- Next user ID --]
     <input type="hidden" name="${customName}.id" class="nextUserID" value="${(element.id)!-1}"/>

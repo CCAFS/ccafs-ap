@@ -35,6 +35,7 @@ function removeElement(e) {
 function addElement(e) {
   e.preventDefault();
   var $newElement = $('#nextUser-template').clone(true).removeAttr("id");
+  $elementsBlock.find('p.message').remove();
   $elementsBlock.append($newElement.fadeIn("slow"));
   setElementsIndexes();
   $newElement.find('textarea').autoGrow();
