@@ -22,5 +22,6 @@ function initTabs() {
 
 function showIndicatorDesc(e) {
   e.preventDefault();
-  $(this).next().slideToggle();
+  var descID = $(this).attr('id').split('-')[1];
+  $('#indicatorDesc-' + descID).slideToggle();
 }

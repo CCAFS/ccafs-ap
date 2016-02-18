@@ -60,13 +60,16 @@
             [#-- List of indicators by type --]
             [#list action.getCrpIndicatorsByType(indicatorType_index+1) as indicatorReport]
             <div class="simpleBox">
-              <h6 class="title" style="font-size: 1.2em;margin-bottom: 5px;">${indicatorReport.indicator.id}.  ${indicatorReport.indicator.name}</h6>
-              <div class="fullPartBlock">
+              <h6 class="title" style="font-size: 1.2em;margin-bottom: 5px;">${indicatorReport.indicator.id}.  ${indicatorReport.indicator.name}
                 [#if indicatorReport.indicator.description?has_content]
-                  <a class="showIndicatorDesc" href="#"><img src="${baseUrl}/images/global/icon-view.png" alt="" /><img src="${baseUrl}/images/global/icon-info.png" title="Show indicator description" alt="" /></a>
-                  <p style="display:none">${indicatorReport.indicator.description}</p>
+                  <a id="showIndicatorDesc-${indicatorReport.indicator.id}" class="showIndicatorDesc" href="#"><img src="${baseUrl}/images/global/icon-info.png" title="Show indicator description" alt="" /></a>
                 [/#if]
-              </div>
+              </h6>
+              [#if indicatorReport.indicator.description?has_content]
+                <div class="fullPartBlock">
+                  <p id="indicatorDesc-${indicatorReport.indicator.id}" style="display:none">${indicatorReport.indicator.description}</p>
+                </div>
+              [/#if]
               [#-- Targets --]
               <div class="fullPartBlock">
                 <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].target" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" editable=false /]</div>
