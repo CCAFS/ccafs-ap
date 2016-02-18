@@ -19,6 +19,7 @@ import org.cgiar.ccafs.ap.data.dao.IPIndicatorDAO;
 import org.cgiar.ccafs.ap.data.dao.IPRelationshipDAO;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
@@ -40,14 +41,16 @@ public class IPElementManagerImpl implements IPElementManager {
   private IPIndicatorDAO ipIndicatorDAO;
   private IPRelationshipDAO ipRelationshipDAO;
   private IPIndicatorManager ipIndicatorManager;
+  private IPProgramManager ipProgamManager;
 
   @Inject
   public IPElementManagerImpl(IPElementDAO ipElementDAO, IPIndicatorDAO ipIndicatorDAO,
-    IPRelationshipDAO ipRelationshipDAO, IPIndicatorManager ipIndicatorManager) {
+    IPRelationshipDAO ipRelationshipDAO, IPIndicatorManager ipIndicatorManager, IPProgramManager ipProgamManager) {
     this.ipElementDAO = ipElementDAO;
     this.ipIndicatorDAO = ipIndicatorDAO;
     this.ipRelationshipDAO = ipRelationshipDAO;
     this.ipIndicatorManager = ipIndicatorManager;
+    this.ipProgamManager = ipProgamManager;
   }
 
   @Override
@@ -374,7 +377,9 @@ public class IPElementManagerImpl implements IPElementManager {
       // Create an object program
       IPProgram programTemp = new IPProgram();
       programTemp.setId(Integer.parseInt(elementData.get("program_id")));
-      programTemp.setAcronym(elementData.get("program_acronym"));
+      programTemp = ipProgamManager.getIPProgramById(programTemp.getId());
+
+
       element.setProgram(programTemp);
 
       // Create an object IPElementType

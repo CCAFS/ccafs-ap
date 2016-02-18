@@ -193,7 +193,9 @@ public class MySQLIPElementDAO implements IPElementDAO {
         ipElementData.put("element_type_name", rs.getString("element_type_name"));
         ipElementData.put("program_id", rs.getString("program_id"));
         ipElementData.put("program_acronym", rs.getString("program_acronym"));
-
+        if (rs.getString("program_type") != null) {
+          ipElementData.put("program_type", rs.getString("program_type"));
+        }
         // TODO - delete this line once we are sure it doesn't generate errors
         ipElementData.put("program_element_id", null);
 
@@ -287,7 +289,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     StringBuilder query = new StringBuilder();
     query.append("SELECT e.id, e.description, ");
     query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
-    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym',pro.type as 'program_type' ");
     query.append("FROM ip_elements e ");
     query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
     query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
