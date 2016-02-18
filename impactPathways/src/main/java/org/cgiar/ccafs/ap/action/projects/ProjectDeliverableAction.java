@@ -275,7 +275,7 @@ public class ProjectDeliverableAction extends BaseAction {
    *         false otherwise.
    */
   public boolean isFinalizingCurrently() {
-    return deliverable.getYear() == this.getCurrentReportingYear();
+    return deliverable.getYear() <= this.getCurrentReportingYear();
   }
 
 

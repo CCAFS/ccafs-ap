@@ -257,12 +257,13 @@ public class ProjectDeliverableValidator extends BaseValidator {
         this.addMissingField("projects.deliverable(" + deliverable.getId() + ").ranking");
       }
 
-
-      if (deliverable.getDissemination() != null) {
-        this.validateDismmination(action, deliverable.getDissemination(), deliverable.getId());
-      } else {
-        this.addMessage("Deliverable (" + deliverable.getId() + ") Dissemination Section");
-        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").dissemination");
+      if (deliverable.getYear() <= action.getCurrentReportingYear()) {
+        if (deliverable.getDissemination() != null) {
+          this.validateDismmination(action, deliverable.getDissemination(), deliverable.getId());
+        } else {
+          this.addMessage("Deliverable (" + deliverable.getId() + ") Dissemination Section");
+          this.addMissingField("projects.deliverable(" + deliverable.getId() + ").dissemination");
+        }
       }
 
 
