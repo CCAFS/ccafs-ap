@@ -47,6 +47,7 @@ import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
 import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -334,14 +335,26 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
       // Changing indicator_id for indicator_description
       projectOther.setIndicators(
         this.indicatorManager.getIndicator(Integer.parseInt(projectOther.getIndicators())).getDescription());
+      // Changing Id region By the composed name
+      projectOther
+        .setRegion(ipProgramManager.getIPProgramById(Integer.parseInt(projectOther.getRegion())).getComposedName());
     }
     project.setOtherContributions(projectOtherList);
 
     project.setListCRPContributions(crpManager.getCrpContributionsNature(project.getId()));
 
     List<CasesStudies> caseStudiesList = caseStudiesManager.getCaseStudysByProject(project.getId());
-    for (CasesStudies casesStudies : caseStudiesList) {
-      casesStudies.setCaseStudyIndicators(indicatorManager.getIndicatorsByProject(project));
+
+    List<IPIndicator> ipIndicatorList;
+    for (CasesStudies caseStudie : caseStudiesList) {
+      ipIndicatorList = new ArrayList<IPIndicator>();
+      if (caseStudie.getCaseStudyIndicatorsIds() != null) {
+        for (String indicator : caseStudie.getCaseStudyIndicatorsIds()) {
+          ipIndicatorList.add(indicatorManager.getIndicator(Integer.parseInt(indicator)));
+        }
+      }
+      caseStudie.setCaseStudyIndicators(ipIndicatorList);
+
     }
     project.setCaseStudies(caseStudiesList);
 
