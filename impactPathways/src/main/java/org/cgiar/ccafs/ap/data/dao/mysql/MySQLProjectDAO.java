@@ -1506,7 +1506,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
     query.append(") as 'project_leader', ");
     query.append("( ");
-    query.append("SELECT CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>') ");
+    query.append("SELECT Group_concat(CONCAT( u.last_name, ', ', u.first_name, ' <', u.email, '>')) ");
     query.append("FROM project_partners pp ");
     query.append("INNER JOIN project_partner_persons ppp ON ppp.project_partner_id = pp.id ");
     query.append("INNER JOIN users u ON ppp.user_id = u.id ");
