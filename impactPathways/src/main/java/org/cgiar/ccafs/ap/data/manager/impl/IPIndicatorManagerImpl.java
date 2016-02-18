@@ -89,7 +89,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
 
   @Override
   public IPIndicator getIndicatorFlgship(int indicatorID) {
-    Map<String, String> iData = indicatorDAO.getIndicator(indicatorID);
+    Map<String, String> iData = indicatorDAO.getIndicatorFlaghship(indicatorID);
 
     if (!iData.isEmpty()) {
       IPIndicator indicator = new IPIndicator();

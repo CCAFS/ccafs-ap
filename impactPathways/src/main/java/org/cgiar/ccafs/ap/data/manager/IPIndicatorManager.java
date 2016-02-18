@@ -44,6 +44,12 @@ public interface IPIndicatorManager {
    */
   public IPIndicator getIndicator(int indicatorID);
 
+  /**
+   * This method get the indicator identified by the value passed as parameter. desc contains flaghsip
+   * 
+   * @param indicatorID - indicator identifier
+   * @return the indicator object searched. Null if the indicator wasn't found.
+   */
   public IPIndicator getIndicatorFlgship(int indicatorID);
 
   /**
