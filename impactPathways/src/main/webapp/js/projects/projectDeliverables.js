@@ -589,7 +589,7 @@ function urlCheck(e) {
       clearTimeout(timeoutID);
     }
     // Start a timer that will search when finished
-    timeoutID = setTimeout(getMetadata(false), 1000);
+    timeoutID = setTimeout(getMetadata(true), 1000);
   }
 }
 
@@ -653,9 +653,10 @@ function getMetadata(fillData) {
 
 function setMetadata(data) {
   $(".descriptionMetadata").val(data.description).autoGrow();
-  $(".creatorMetadata").val(data.authors);
+  $(".creatorMetadata").val(data.creator);
   $(".identifierMetadata").val(data.identifier);
   $(".publishierMetadata").val(data.publishier);
+  $(".dateMetadata").val(data.date);
   $(".relationMetadata").val(data.relation);
   $(".contributorMetadata").val(data.contributor);
   $(".subjectMetadata").val(data.subject);

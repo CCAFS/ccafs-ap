@@ -123,7 +123,7 @@ public class OutcomeSynthesisAction extends BaseAction {
     // Get currentLiaisonInstitution
     currentLiaisonInstitution = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
 
-    // Create an ipElementType with the identifier of the outcomes 2025 type
+    // Create an ipElementType with the identifier of the outcomes 2019 type
     IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
     // TODO: Create a function for getting an IPProgram by liaisonInstitutionID

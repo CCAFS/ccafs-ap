@@ -185,6 +185,34 @@ public class IPElement {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
   }
 
+  /**
+   * Check the IPElement program type if is Flagship Type
+   * 
+   * @return true if IPElement program type is Flagship else false
+   */
+  public boolean isFlagshipProgramType() {
+    try {
+      // 4 -Flagship program from table ip_program_types
+      return program.getType().getId() == 4;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /**
+   * Check the IPElement program type if is Regional Type
+   * 
+   * @return true if IPElement program type is Regional else false
+   */
+  public boolean isRegionalProgramType() {
+    try {
+      // 5 - Regional program from table ip_program_types
+      return program.getType().getId() == 5;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
   public void setContributesTo(List<IPElement> contributesTo) {
     this.contributesTo = contributesTo;
   }

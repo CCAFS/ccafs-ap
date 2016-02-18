@@ -59,7 +59,7 @@
                 </div>
                 [#-- Achieved target in current reporting period --]
                 <div class="fullPartBlock">
-                  <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" paramText="" editable=editable /]</div>
+                  <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
                 </div>
                 [#-- Synthesis of annual progress towards this indicator --]
                 <div class="fullPartBlock">
@@ -72,22 +72,23 @@
                 [#-- Explain any discrepancy  --]
                 [#if action.hasSynthesisPermission("rplSynthesis", liaisonInstitutionID)]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" required=canEdit editable=editable /]
+                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" editable=editable /]
                 </div>
                 [/#if]
                 
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
                 <div class="fullPartBlock">
-                  {Table projectContributions Here}
+                  {Table projectContributions to this indicator Here}
                 </div>
                 
                 [#if action.hasSynthesisPermission("fplSynthesis", liaisonInstitutionID)]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
                 <div class="fullPartBlock">
-                  {Table regionalContributions Here}
+                  {Table regionalContributions to this indicator Here}
                 </div>
                 [/#if]
                 
+                ${midOutcome.program}
               </div>
             [/#list]
           </div>
