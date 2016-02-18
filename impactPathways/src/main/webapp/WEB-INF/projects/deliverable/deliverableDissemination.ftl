@@ -5,7 +5,7 @@
   <table id="openAccessRestriction" class="default">
     <tbody>
       <tr>
-        <td class="key""><p>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction" /]</p></td> 
+        <td class="key""><p>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction" /][@customForm.req required=finalizingCurrently /]</p></td> 
         <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.isOpenAccess" editable=editable inverse=true/]</td>
       </tr>
     </tbody>
@@ -56,7 +56,7 @@
   <table id="adoptedLicense" class="default">
     <tbody>
       <tr>
-        <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.adoptedLicense" /][@customForm.req required=finalizingCurrently /]</p></td> 
+        <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.adoptedLicense" /]</p></td> 
         <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.adoptedLicense" editable=editable value="${(adoptedLicense?has_content)?string}"/]</td>
       </tr>
     </tbody>
