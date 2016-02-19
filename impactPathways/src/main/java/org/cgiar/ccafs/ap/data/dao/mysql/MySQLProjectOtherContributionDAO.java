@@ -108,7 +108,7 @@ public class MySQLProjectOtherContributionDAO implements ProjectOtherContributio
       // Insert new IP Other Contribution record
       query.append("INSERT INTO project_other_contributions (project_id, contribution, additional_contribution, ");
       query.append("crp_contributions_nature, created_by, modified_by, modification_justification)  ");
-      query.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ");
+      query.append("VALUES (?,?,?,?,?,?,?) ");
       values = new Object[7];
       values[0] = projectID;
       values[1] = ipOtherContributionData.get("contribution");
