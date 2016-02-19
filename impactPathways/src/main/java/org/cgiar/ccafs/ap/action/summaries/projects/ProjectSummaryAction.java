@@ -42,14 +42,13 @@ import org.cgiar.ccafs.ap.data.manager.ProjectOutcomeManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
+import org.cgiar.ccafs.ap.data.model.CaseStudieIndicators;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
-import org.cgiar.ccafs.ap.data.model.Deliverable;
-import org.cgiar.ccafs.ap.data.model.DeliverablePartner;
-import org.cgiar.ccafs.ap.data.model.DeliverablesRanking;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.summaries.projects.pdf.ProjectSummaryPDF;
@@ -226,6 +225,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     int projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     String cycle = StringUtils.trim(this.getRequest().getParameter(APConstants.CYCLE));
 
+
     // Get all the information to add in the pdf file
     project = projectManager.getProject(projectID);
     project.setReporting(cycle);
@@ -283,39 +283,40 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // Get the project outputs from database
     List<OutputOverview> listaOver = overviewManager.getProjectContributionOverviews(project);
     for (int a = 0; a < listaOver.size(); a++) {
-      listaOver.get(a).setOutput(ipElementManager.getIPElement(listaOver.get(a).getOutput().getId()));
+      if (listaOver.get(a).getOutput() != null) {
+        listaOver.get(a).setOutput(ipElementManager.getIPElement(listaOver.get(a).getOutput().getId()));
+      }
     }
     project.setOutputsOverview(listaOver);
 
+    // Set Deliverables
+    project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
 
     // *************************Deliverables*****************************/
-    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
-    for (Deliverable deliverable : deliverables) {
-      // Getting next users.
-      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
 
-      deliverable.setOutput(deliverableManager.getDeliverableOutput(deliverable.getId()));
+    // for (Deliverable deliverable : deliverables) {
+    // // Getting next users.
+    // deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
+    //
+    // deliverable.setOutput(deliverableManager.getDeliverableOutput(deliverable.getId()));
+    //
+    // // Getting the responsible partner.
+    // List<DeliverablePartner> partners =
+    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
+    // if (partners.size() > 0) {
+    // deliverable.setResponsiblePartner(partners.get(0));
+    // } else {
+    // DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
+    // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
+    // deliverable.setResponsiblePartner(responsiblePartner);
+    // }
+    //
+    // // Getting the other partners that are contributing to this deliverable.
+    // deliverable.setOtherPartners(
+    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
+    // }
+    //
 
-      deliverable.setRanking(new DeliverablesRanking());
-      // Getting the responsible partner.
-      List<DeliverablePartner> partners =
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
-      if (partners.size() > 0) {
-        deliverable.setResponsiblePartner(partners.get(0));
-      } else {
-        DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-        responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-
-        deliverable.setResponsiblePartner(responsiblePartner);
-      }
-
-      // Getting the other partners that are contributing to this deliverable.
-      deliverable.setOtherPartners(
-        deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
-    }
-
-    // Set Deliverables
-    project.setDeliverables(deliverables);
     // *************************Next users*****************************/
     project.setNextUsers(this.projectNextUserManager.getProjectNextUserProject(projectID));
 
@@ -346,15 +347,13 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     List<CasesStudies> caseStudiesList = caseStudiesManager.getCaseStudysByProject(project.getId());
 
     List<IPIndicator> ipIndicatorList;
+
     for (CasesStudies caseStudie : caseStudiesList) {
       ipIndicatorList = new ArrayList<IPIndicator>();
-      if (caseStudie.getCaseStudyIndicatorsIds() != null) {
-        for (String indicator : caseStudie.getCaseStudyIndicatorsIds()) {
-          ipIndicatorList.add(indicatorManager.getIndicator(Integer.parseInt(indicator)));
-        }
+      for (CaseStudieIndicators indicatorCaseStudie : caseStudie.getCaseStudieIndicatorses()) {
+        ipIndicatorList.add(indicatorManager.getIndicator(indicatorCaseStudie.getIdIndicator()));
       }
       caseStudie.setCaseStudyIndicators(ipIndicatorList);
-
     }
     project.setCaseStudies(caseStudiesList);
 
@@ -368,6 +367,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     if (project.isBilateralProject()) {
       project.setOverhead(this.budgetOverheadManager.getProjectBudgetOverhead(project.getId()));
     }
+
 
     // *************************Annual contribution*******************/
     for (Project projectContributor : project.getLinkedProjects()) {
@@ -384,6 +384,18 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
 
     // ************************Project HighLigth *******************
-    project.setHighlights(highlightManager.getHighLightsByProject(projectID));
+
+    List<ProjectHighligths> projectHighLightList = highlightManager.getHighLightsByProject(projectID);
+    project.setHighlights(projectHighLightList);
+
+    //
+    // for (ProjectHighligths projectHighLight : projectHighLightList) {
+    // Set<ProjectHighligthsCountry> countriesHighLight = projectHighLight.getProjectHighligthsCountries();
+    //
+    //
+    // Set<ProjectHighligthsTypes> highLightTypes = projectHighLight.getProjectHighligthsTypeses();
+    // }
+    //
+
   }
 }

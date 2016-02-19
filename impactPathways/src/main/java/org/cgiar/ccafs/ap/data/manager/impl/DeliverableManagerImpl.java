@@ -297,6 +297,84 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setOtherPartners(
         deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
 
+
+      deliverable.setRanking(rankingDao.findDeliverableRanking(deliverable.getId()));
+
+      deliverable.setDissemination(disseminationDao.findDeliverableDissemination(deliverable.getId()));
+
+      if (deliverable.getDissemination() != null) {
+        if (deliverable.getDissemination().getIntellectualProperty() != null
+          && deliverable.getDissemination().getIntellectualProperty()) {
+          deliverable.getDissemination().setType("intellectualProperty");
+        }
+        if (deliverable.getDissemination().getLimitedExclusivity() != null
+          && deliverable.getDissemination().getLimitedExclusivity()) {
+          deliverable.getDissemination().setType("limitedExclusivity");
+        }
+        if (deliverable.getDissemination().getRestrictedUseAgreement() != null
+          && deliverable.getDissemination().getRestrictedUseAgreement()) {
+          deliverable.getDissemination().setType("restrictedAccess");
+        }
+        if (deliverable.getDissemination().getEffectiveDateRestriction() != null
+          && deliverable.getDissemination().getEffectiveDateRestriction()) {
+          deliverable.getDissemination().setType("embargoedPeriods");
+        }
+
+      }
+
+      // deliverable.setDataSharing(sharingDao.findDeliverableDataSharing(deliverableID));
+      deliverable.setDataSharingFile(sharingFileDao.findDeliverableDataSharingFile(deliverable.getId()));
+      deliverable.setMetadataElements(disseminationDao.findDeliverableElements(deliverable.getId()));
+      deliverable.setMetadata(disseminationDao.findMetadataFields(deliverable.getId()));
+      for (MetadataElements field : deliverable.getMetadata()) {
+        DeliverableMetadataElements metadata =
+          disseminationDao.findDeliverableMetadata(deliverable.getId(), field.getId());
+        field.setElementValueId(metadata.getId());
+        field.setValue(metadata.getElementValue());
+
+      }
+      List<DeliverableFile> deliverableFile = new ArrayList<>();
+      DeliverableFile file;
+      if (deliverable.getDataSharingFile() != null) {
+        for (DeliverableDataSharingFile dataFile : deliverable.getDataSharingFile()) {
+          file = new DeliverableFile();
+          file.setHosted(dataFile.getType());
+          file.setId(dataFile.getId());
+          file.setLink(dataFile.getFile());
+          file.setName(dataFile.getFile());
+          deliverableFile.add(file);
+        }
+        deliverable.setFiles(deliverableFile);
+      }
+
+
+      deliverable
+        .setPublicationMetadata(publicationMetadataDao.findDeliverablePublicationMetadata(deliverable.getId()));
+      List<IPProgram> ipFlashigps = new ArrayList<>();
+      List<String> ipFlashigpsIds = new ArrayList<>();
+
+      if (deliverable.getPublicationMetadata() != null) {
+        if (deliverable.getPublicationMetadata().getFp1()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(1));
+          ipFlashigpsIds.add("1");
+        }
+        if (deliverable.getPublicationMetadata().getFp2()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(2));
+          ipFlashigpsIds.add("2");
+        }
+        if (deliverable.getPublicationMetadata().getFp3()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(3));
+          ipFlashigpsIds.add("3");
+        }
+        if (deliverable.getPublicationMetadata().getFp4()) {
+          ipFlashigps.add(ipProgramManager.getIPProgramById(4));
+          ipFlashigpsIds.add("4");
+        }
+        deliverable.getPublicationMetadata().setRelatedFlagships(ipFlashigps);
+        deliverable.getPublicationMetadata().setRelatedFlagshipsIds(ipFlashigpsIds);
+      }
+
+
       // adding information of the object to the array
       deliverableList.add(deliverable);
     }
