@@ -391,17 +391,29 @@ public class IPElementManagerImpl implements IPElementManager {
       // Set element indicators if exists
       List<IPIndicator> indicators = new ArrayList<>();
       List<Map<String, String>> indicatorsData = ipIndicatorDAO.getIndicatorsByElementID(element.getId());
+      IPIndicator previewFlagship = null;
       for (Map<String, String> indicatorData : indicatorsData) {
         IPIndicator indicator = new IPIndicator();
         indicator.setId(Integer.parseInt(indicatorData.get("id")));
         indicator.setDescription(indicatorData.get("description"));
         indicator.setTarget(indicatorData.get("target"));
-
+        previewFlagship = ipIndicatorManager.getIndicatorFlgship(indicator.getId());
+        if (previewFlagship != null) {
+          indicator.setDescription(previewFlagship.getDescription());
+        }
         // Indicator parent
         if (indicatorData.get("parent_id") != null) {
           IPIndicator indicatorParent = new IPIndicator();
+
+
           indicatorParent.setId(Integer.parseInt(indicatorData.get("parent_id")));
-          indicatorParent.setDescription(indicatorData.get("parent_description"));
+          previewFlagship = ipIndicatorManager.getIndicatorFlgship(indicatorParent.getId());
+          if (previewFlagship != null) {
+            indicatorParent.setDescription(previewFlagship.getDescription());
+          } else {
+            indicatorParent.setDescription(indicatorData.get("parent_description"));
+          }
+
           indicator.setParent(indicatorParent);
         }
 

@@ -99,13 +99,15 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     StringBuilder query = new StringBuilder();
 
     query.append(
-      "SELECT i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description',prog.acronym ");
-    query.append("FROM ip_indicators i  ");
-    query.append("LEFT JOIN ip_indicators p ON i.parent_id = p.id   ");
-    query.append("       INNER JOIN ip_elements ie ");
-    query.append(
-      "               ON ipi.outcome_id = ie.id  inner  JOIN ip_programs prog on prog.id=ie.ip_program_id and prog.type_id=4");
-    query.append("WHERE i.id = ");
+      "SELECT distinct i.id, i.description, i.target, p.id as 'parent_id', p.description as 'parent_description',prog.acronym ");
+    query.append(" FROM ip_indicators i  ");
+    query.append(" LEFT JOIN ip_indicators p ON i.parent_id = p.id   ");
+    query.append(" LEFT JOIN ip_project_indicators ipi ");
+    query.append("              ON i.id = ipi.parent_id ");
+    query.append("  LEFT JOIN ip_elements ie ");
+    query.append("  ON ipi.outcome_id = ie.id ");
+    query.append("   inner  JOIN ip_programs prog on prog.id=ie.ip_program_id and prog.type_id=4 ");
+    query.append(" WHERE i.id = ");
     query.append(indicatorID);
 
     try (Connection con = databaseManager.getConnection()) {
