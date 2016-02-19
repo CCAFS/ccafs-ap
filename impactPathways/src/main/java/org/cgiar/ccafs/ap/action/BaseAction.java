@@ -361,7 +361,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     permissionString.append(this.getActionName());
     permissionString.append(":");
     permissionString.append(fieldName);
-    System.out.println(securityContext.hasPermission(permissionString.toString()));
+    
 
     return securityContext.hasPermission(permissionString.toString());
   }
@@ -413,7 +413,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     permissionString.append(this.getActionName());
     permissionString.append(":");
     permissionString.append(fieldName);
-    System.out.println(securityContext.hasPermission(permissionString.toString()));
+
 
     return securityContext.hasPermission(permissionString.toString());
   }
