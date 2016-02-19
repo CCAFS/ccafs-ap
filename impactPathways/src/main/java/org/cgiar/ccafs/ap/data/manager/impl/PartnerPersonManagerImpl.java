@@ -89,7 +89,9 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
   @Override
   public int savePartnerPerson(ProjectPartner partner, PartnerPerson partnerPerson, User user, String justification) {
     Map<String, Object> partnerPersonData = new HashMap<>();
-
+    if (partnerPerson.getType().equals("-1")) {
+      partnerPerson.setType("CP");
+    }
 
     // if this is a new partner person, do not assign an id.
     partnerPersonData.put("created_by", user.getId());
@@ -106,6 +108,7 @@ public class PartnerPersonManagerImpl implements PartnerPersonManager {
 
       partnerPersonData.put("id", partnerPerson.getId());
     }
+
     result = partnerPersonDAO.savePartnerPerson(partnerPersonData);
 
 
