@@ -134,6 +134,7 @@ public class SendMail {
       LOG.info("   - BBC: " + bbcEmail);
 
     } catch (MessagingException e) {
+      e.printStackTrace();
       LOG.error("There was an error sending a message", e.getMessage());
     } catch (UnsupportedEncodingException e) {
       LOG.error("There was an error setting up the FROM Email when trying to send a message", e.getMessage());
