@@ -29,6 +29,7 @@ public class IPIndicator {
   private Integer archived;
   private String narrativeTargets;
   private String narrativeGender;
+  private String projectId;
 
 
   public IPIndicator() {
@@ -73,9 +74,11 @@ public class IPIndicator {
     return gender;
   }
 
+
   public int getId() {
     return id;
   }
+
 
   public String getNarrativeGender() {
     return narrativeGender;
@@ -91,6 +94,10 @@ public class IPIndicator {
 
   public IPIndicator getParent() {
     return parent;
+  }
+
+  public String getProjectId() {
+    return projectId;
   }
 
   public String getTarget() {
@@ -136,6 +143,10 @@ public class IPIndicator {
 
   public void setParent(IPIndicator parent) {
     this.parent = parent;
+  }
+
+  public void setProjectId(String projectId) {
+    this.projectId = projectId;
   }
 
   public void setTarget(String target) {

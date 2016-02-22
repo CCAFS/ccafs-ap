@@ -284,6 +284,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicatorDb.setId(Integer.parseInt(iData.get("id")));
       indicatorDb.setDescription(iData.get("description"));
       indicatorDb.setGender(iData.get("gender"));
+      indicatorDb.setProjectId(iData.get("project_id"));
       if (iData.get("archived") != null) {
         indicatorDb.setArchived(Integer.parseInt(iData.get("archived")));
       } else {

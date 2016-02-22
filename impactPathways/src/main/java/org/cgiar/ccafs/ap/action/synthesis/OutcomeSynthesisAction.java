@@ -17,10 +17,12 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
@@ -49,7 +51,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private IPProgramManager ipProgramManager;
   private IPElementManager ipElementManager;
-
+  private IPIndicatorManager ipIndicatorManager;
   // Model for the front-end
   private List<LiaisonInstitution> liaisonInstitutions;
   private LiaisonInstitution currentLiaisonInstitution;
@@ -58,18 +60,19 @@ public class OutcomeSynthesisAction extends BaseAction {
 
   private int liaisonInstitutionID;
 
+
   @Inject
   public OutcomeSynthesisAction(APConfig config, HistoryManager historyManager,
     LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
-    IPElementManager ipElementManager, ProjectLeverageValidator validator) {
+    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, ProjectLeverageValidator validator) {
     super(config);
     this.validator = validator;
     this.historyManager = historyManager;
+    this.ipIndicatorManager = ipIndicatorManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.ipProgramManager = ipProgramManager;
     this.ipElementManager = ipElementManager;
   }
-
 
   public LiaisonInstitution getCurrentLiaisonInstitution() {
     return currentLiaisonInstitution;
@@ -79,6 +82,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   public int getLiaisonInstitutionID() {
     return liaisonInstitutionID;
   }
+
 
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     return liaisonInstitutions;
@@ -90,6 +94,10 @@ public class OutcomeSynthesisAction extends BaseAction {
 
   public IPProgram getProgram() {
     return program;
+  }
+
+  public List<IPIndicator> getProjectIndicators(int year, int indicator) {
+    return ipIndicatorManager.getIndicatorsSyntesis(year, indicator);
   }
 
   @Override

@@ -418,7 +418,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     List<Map<String, String>> indicatorsDataList = new ArrayList<>();
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT ai.id, ai.description, ai.gender, ai.target, ai.year, aip.id as 'parent_id', ");
+    query.append("SELECT ai.id,ai.project_id, ai.description, ai.gender, ai.target, ai.year, aip.id as 'parent_id', ");
     query.append("aip.description as 'parent_description', aip.target as 'parent_target', ");
     query.append(
       "ie.id as 'outcome_id', ie.description as 'outcome_description',ai.archived,ai.narrative_gender,ai.narrative_targets ");
@@ -433,6 +433,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
         Map<String, String> indicatorData = new HashMap<String, String>();
 
         indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("project_id", rs.getString("project_id"));
         indicatorData.put("description", rs.getString("description"));
         indicatorData.put("gender", rs.getString("gender"));
         indicatorData.put("target", rs.getString("target"));
