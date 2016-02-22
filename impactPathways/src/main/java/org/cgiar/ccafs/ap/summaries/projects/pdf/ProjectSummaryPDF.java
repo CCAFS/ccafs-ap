@@ -3738,7 +3738,21 @@ public class ProjectSummaryPDF extends BasePDF {
           // project images
           paragraph = new Paragraph();
           if (projectHighLigth != null) {
-            paragraph.add(this.messageReturn(String.valueOf(projectHighLigth.getType())));
+            Image global;
+            try {
+              global = Image.getInstance(config.getBaseUrl() + "/images/summaries/global-map.png");
+              global.scalePercent(60f);
+              global.setAlignment(Element.ALIGN_CENTER);
+              paragraph.add(global);
+            } catch (MalformedURLException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            } catch (IOException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+
+
           } else {
             paragraph.add(this.messageReturn(null));
           }
