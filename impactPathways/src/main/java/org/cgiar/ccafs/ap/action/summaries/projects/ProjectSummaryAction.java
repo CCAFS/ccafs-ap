@@ -289,33 +289,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
     project.setOutputsOverview(listaOver);
 
-    // Set Deliverables
-    project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
-
     // *************************Deliverables*****************************/
-
-    // for (Deliverable deliverable : deliverables) {
-    // // Getting next users.
-    // deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
-    //
-    // deliverable.setOutput(deliverableManager.getDeliverableOutput(deliverable.getId()));
-    //
-    // // Getting the responsible partner.
-    // List<DeliverablePartner> partners =
-    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_RESP);
-    // if (partners.size() > 0) {
-    // deliverable.setResponsiblePartner(partners.get(0));
-    // } else {
-    // DeliverablePartner responsiblePartner = new DeliverablePartner(-1);
-    // responsiblePartner.setType(APConstants.DELIVERABLE_PARTNER_RESP);
-    // deliverable.setResponsiblePartner(responsiblePartner);
-    // }
-    //
-    // // Getting the other partners that are contributing to this deliverable.
-    // deliverable.setOtherPartners(
-    // deliverablePartnerManager.getDeliverablePartners(deliverable.getId(), APConstants.DELIVERABLE_PARTNER_OTHER));
-    // }
-    //
+    project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
 
     // *************************Next users*****************************/
     project.setNextUsers(this.projectNextUserManager.getProjectNextUserProject(projectID));

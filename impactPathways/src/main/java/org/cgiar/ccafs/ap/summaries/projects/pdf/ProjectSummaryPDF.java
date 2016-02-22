@@ -173,11 +173,19 @@ public class ProjectSummaryPDF extends BasePDF {
             // Header table
             activityBlock = new Paragraph();
             activityBlock.setAlignment(Element.ALIGN_CENTER);
-            activityBlock.setFont(BODY_TEXT_BOLD_FONT);
+            activityBlock.setFont(TABLE_HEADER_FONT);
             activityBlock.add("Activity #" + counter);
 
-            this.addCustomTableCell(table, activityBlock, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
-              table.getNumberOfColumns(), 0, false);
+            PdfPCell cell_new = new PdfPCell(activityBlock);
+            cell_new.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell_new.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell_new.setBackgroundColor(TABLE_HEADER_BACKGROUND);
+            cell_new.setUseBorderPadding(true);
+            cell_new.setPadding(3);
+            cell_new.setBorderColor(TABLE_CELL_BORDER_COLOR);
+            cell_new.setColspan(2);
+
+            this.addTableHeaderCell(table, cell_new);
 
             // Activity title
             activityBlock = new Paragraph();
@@ -253,17 +261,17 @@ public class ProjectSummaryPDF extends BasePDF {
               activityBlock.add(Chunk.NEWLINE);
 
               if (activity.isStatusCancelled()) {
-                this.addTableColSpanCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1, 1);
+                this.addTableBodyCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1);
 
                 activityBlock = new Paragraph();
                 activityBlock.setFont(TABLE_BODY_BOLD_FONT);
                 activityBlock.add(this.getText("summaries.project.activities.justification"));
 
                 activityBlock.setFont(TABLE_BODY_FONT);
-                activityBlock.add(statuses.get(String.valueOf(null)));
+                activityBlock.add(this.messageReturn(activity.getActivityProgress()));
                 activityBlock.add(Chunk.NEWLINE);
 
-
+                this.addTableBodyCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1);
               } else {
                 this.addTableColSpanCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1, 2);
               }
@@ -850,6 +858,7 @@ public class ProjectSummaryPDF extends BasePDF {
         table.setLockedWidth(true);
 
         StringBuilder stringBuilder = new StringBuilder();
+        PdfPCell cell_new;
 
         // **** Expected Deliverable #*********
         Paragraph deliverableBlock = new Paragraph();
@@ -868,11 +877,19 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock = new Paragraph();
         deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
         deliverableBlock.setAlignment(Element.ALIGN_LEFT);
-
+        deliverableBlock.setFont(TABLE_HEADER_FONT);
         deliverableBlock.add(this.getText("summaries.project.deliverable.information"));
-        // document.add(deliverableBlock);
-        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-          table.getNumberOfColumns(), 0, false);
+
+        cell_new = new PdfPCell(deliverableBlock);
+        cell_new.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell_new.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell_new.setBackgroundColor(TABLE_HEADER_BACKGROUND);
+        cell_new.setUseBorderPadding(true);
+        cell_new.setPadding(3);
+        cell_new.setBorderColor(TABLE_CELL_BORDER_COLOR);
+        cell_new.setColspan(2);
+
+        this.addTableHeaderCell(table, cell_new);
 
         // Title
         deliverableBlock = new Paragraph();
@@ -913,21 +930,6 @@ public class ProjectSummaryPDF extends BasePDF {
         // document.add(deliverableBlock);
         this.addTableColSpanCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1, 2);
 
-        // Year
-        deliverableBlock = new Paragraph();
-        stringBuilder = new StringBuilder();
-        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
-        stringBuilder.append(this.getText("summaries.project.deliverable.information.year"));
-        stringBuilder.append(": ");
-        deliverableBlock.add(stringBuilder.toString());
-
-        deliverableBlock.setFont(TABLE_BODY_FONT);
-        stringBuilder = new StringBuilder();
-        stringBuilder.append(deliverable.getYear());
-        deliverableBlock.add(stringBuilder.toString());
-        deliverableBlock.add(Chunk.NEWLINE);
-        // document.add(deliverableBlock);
-        this.addTableColSpanCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1, 2);
 
         // Main Type
         deliverableBlock = new Paragraph();
@@ -998,7 +1000,11 @@ public class ProjectSummaryPDF extends BasePDF {
 
         deliverableBlock.setFont(TABLE_BODY_FONT);
         stringBuilder = new StringBuilder();
-        stringBuilder.append(this.statuses.get(String.valueOf(deliverable.getStatus())));
+        if (String.valueOf(deliverable.getStatus()) != null) {
+          stringBuilder.append(this.statuses.get(String.valueOf(deliverable.getStatus())));
+        } else {
+          stringBuilder.append(this.messageReturn(null));
+        }
         deliverableBlock.add(stringBuilder.toString());
         deliverableBlock.add(Chunk.NEWLINE);
         // document.add(deliverableBlock);
@@ -1043,15 +1049,14 @@ public class ProjectSummaryPDF extends BasePDF {
             // Next user title
             deliverableBlock = new Paragraph();
             deliverableBlock.setAlignment(Element.ALIGN_LEFT);
-            deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+            deliverableBlock.setFont(TABLE_HEADER_FONT);
             if (nextUsers.size() == 1) {
               deliverableBlock.add(this.getText("summaries.project.deliverable.next.user"));
             } else {
               deliverableBlock.add(this.getText("summaries.project.deliverable.next.user") + " #" + counter);
             }
 
-            this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-              table.getNumberOfColumns(), 0, false);
+            this.addTableHeaderCell(table, deliverableBlock);
 
             // Next user
             stringBuilder = new StringBuilder();
@@ -1104,10 +1109,10 @@ public class ProjectSummaryPDF extends BasePDF {
         // Title partners contributing
         deliverableBlock = new Paragraph();
         deliverableBlock.setAlignment(Element.ALIGN_LEFT);
-        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setFont(TABLE_HEADER_FONT);
         deliverableBlock.add(this.getText("summaries.project.deliverable.partnership"));
-        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-          table.getNumberOfColumns(), 0, false);
+        deliverableBlock.setFont(TABLE_HEADER_FONT);
+        this.addTableHeaderCell(table, deliverableBlock);
 
         // Organization
         stringBuilder = new StringBuilder();
@@ -1131,7 +1136,6 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.add(stringBuilder.toString());
         deliverableBlock.add(Chunk.NEWLINE);;
         this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
-
         counter = 1;
         // ************** Other Partners
         List<DeliverablePartner> listOtherPartner = deliverable.getOtherPartners();
@@ -1189,7 +1193,7 @@ public class ProjectSummaryPDF extends BasePDF {
       }
 
       // ********** Ranking**************************************
-
+      PdfPCell cell_new;
       if (project.isReporting()) {
 
         PdfPTable table = new PdfPTable(2);
@@ -1200,11 +1204,20 @@ public class ProjectSummaryPDF extends BasePDF {
 
         // summaries.project.reporting.deliverable.ranking
         Paragraph deliverableBlock = new Paragraph();
-        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setFont(TABLE_HEADER_FONT);
         deliverableBlock.setAlignment(Element.ALIGN_LEFT);
         deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.ranking"));
-        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-          table.getNumberOfColumns(), 0, false);
+
+        cell_new = new PdfPCell(deliverableBlock);
+        cell_new.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell_new.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell_new.setBackgroundColor(TABLE_HEADER_BACKGROUND);
+        cell_new.setUseBorderPadding(true);
+        cell_new.setPadding(3);
+        cell_new.setBorderColor(TABLE_CELL_BORDER_COLOR);
+        cell_new.setColspan(2);
+
+        this.addTableHeaderCell(table, cell_new);
 
         // address gender
         deliverableBlock = new Paragraph();
@@ -1219,7 +1232,7 @@ public class ProjectSummaryPDF extends BasePDF {
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
-        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_CENTER, 1);
 
         // Get Potential
         deliverableBlock = new Paragraph();
@@ -1234,7 +1247,7 @@ public class ProjectSummaryPDF extends BasePDF {
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
-        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_CENTER, 1);
 
         // Level
         deliverableBlock = new Paragraph();
@@ -1249,7 +1262,7 @@ public class ProjectSummaryPDF extends BasePDF {
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
-        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_CENTER, 1);
 
         // Personal perspective
         deliverableBlock = new Paragraph();
@@ -1265,7 +1278,7 @@ public class ProjectSummaryPDF extends BasePDF {
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
-        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1);
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_CENTER, 1);
 
         document.add(table);
         deliverableBlock = new Paragraph();
@@ -1280,77 +1293,90 @@ public class ProjectSummaryPDF extends BasePDF {
         table.setTotalWidth(480);
 
         deliverableBlock = new Paragraph();
-        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setFont(TABLE_HEADER_FONT);
         deliverableBlock.setAlignment(Element.ALIGN_LEFT);
         deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination"));
-        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-          table.getNumberOfColumns(), 0, false);
+        this.addTableHeaderCell(table, deliverableBlock);
 
         // Open access
-        // deliverableBlock = new Paragraph();
-        // deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
-        // deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.open"));
-        // deliverableBlock.setFont(TABLE_BODY_FONT);
-        //
-        // if (deliverableDissemination != null && deliverableDissemination.getIsOpenAccess() != null) {
-        // if (deliverableDissemination.getIsOpenAccess()) {
-        // deliverableBlock.add(this.messageReturn(deliverableDissemination.getRestrictedAccessUntilText()));
-        // } else {
-        // deliverableBlock.add("No");
-        // }
-        // } else {
-        // deliverableBlock.add(this.messageReturn(null));
-        // }
-        // this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.open"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          if (deliverableDissemination.getIsOpenAccess() != null
+            && deliverableDissemination.getIsOpenAccess().booleanValue()) {
+            deliverableBlock.add("Yes");
+          } else if (deliverableDissemination.getIntellectualProperty() != null
+            && deliverableDissemination.getIntellectualProperty().booleanValue()) {
+            deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.intellectual"));
+          } else if (deliverableDissemination.getLimitedExclusivity() != null
+            && deliverableDissemination.getLimitedExclusivity().booleanValue()) {
+            deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.limited"));
+          } else if (deliverableDissemination.getRestrictedUseAgreement() != null
+            && deliverableDissemination.getRestrictedUseAgreement().booleanValue()) {
+            deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.restricted"));
+          } else if (deliverableDissemination.getEffectiveDateRestriction() != null
+            && deliverableDissemination.getEffectiveDateRestriction().booleanValue()) {
+            deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.effective"));
+          } else {
+            deliverableBlock.add(this.messageReturn(null));
+          }
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
 
         // License adopted
-        // deliverableBlock = new Paragraph();
-        // deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
-        // deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.license"));
-        // deliverableBlock.setFont(TABLE_BODY_FONT);
-        //
-        // if (deliverableDissemination != null) {
-        // if (deliverableDissemination.getIntellectualProperty()) {
-        // deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationChannel()));
-        // } else {
-        // deliverableBlock.add("No");
-        // }
-        // } else {
-        // deliverableBlock.add(this.messageReturn(null));
-        // }
-        // this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
-        //
-        //
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.license"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          if (deliverableDissemination.getIntellectualProperty() != null
+            && deliverableDissemination.getIntellectualProperty()) {
+            deliverableBlock.add(this.messageReturn(deliverableDissemination.getRestrictedEmbargoedText()));
+          } else {
+            deliverableBlock.add("No");
+          }
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+
         // // Dissemination channel
-        // deliverableBlock = new Paragraph();
-        // deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
-        // deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.channel"));
-        // deliverableBlock.setFont(TABLE_BODY_FONT);
-        //
-        // if (deliverableDissemination != null) {
-        // deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationChannel()));
-        // } else {
-        // deliverableBlock.add(this.messageReturn(null));
-        // }
-        // this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
-        //
-        // // Dissemination URL
-        // deliverableBlock = new Paragraph();
-        // deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
-        // deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.url"));
-        // deliverableBlock.setFont(TABLE_BODY_FONT);
-        //
-        // if (deliverableDissemination != null) {
-        // deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationUrl()));
-        // } else {
-        // deliverableBlock.add(this.messageReturn(null));
-        // }
-        // this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
-        //
-        // document.add(table);
-        // deliverableBlock = new Paragraph();
-        // deliverableBlock.add(Chunk.NEWLINE);
-        // document.add(deliverableBlock);
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.channel"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationChannel()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        // Dissemination URL
+        deliverableBlock = new Paragraph();
+        deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+        deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.url"));
+        deliverableBlock.setFont(TABLE_BODY_FONT);
+
+        if (deliverableDissemination != null) {
+          deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationUrl()));
+        } else {
+          deliverableBlock.add(this.messageReturn(null));
+        }
+        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+        document.add(table);
+        deliverableBlock = new Paragraph();
+        deliverableBlock.add(Chunk.NEWLINE);
+        document.add(deliverableBlock);
 
         // ********** Deliverable Metadata**************************************
         DeliverablePublicationMetadata deliverableMetadata = deliverable.getPublicationMetadata();
@@ -1359,11 +1385,10 @@ public class ProjectSummaryPDF extends BasePDF {
         table.setTotalWidth(480);
 
         deliverableBlock = new Paragraph();
-        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setFont(TABLE_HEADER_FONT);
         deliverableBlock.setAlignment(Element.ALIGN_LEFT);
         deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.metadata"));
-        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-          table.getNumberOfColumns(), 0, false);
+        this.addTableHeaderCell(table, deliverableBlock);
 
         // Description
         deliverableBlock = new Paragraph();
@@ -1454,11 +1479,10 @@ public class ProjectSummaryPDF extends BasePDF {
         table.setTotalWidth(480);
 
         deliverableBlock = new Paragraph();
-        deliverableBlock.setFont(BODY_TEXT_BOLD_FONT);
+        deliverableBlock.setFont(TABLE_HEADER_FONT);
         deliverableBlock.setAlignment(Element.ALIGN_LEFT);
         deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.datasharing"));
-        this.addCustomTableCell(table, deliverableBlock, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-          table.getNumberOfColumns(), 0, false);
+        this.addTableHeaderCell(table, deliverableBlock);
 
         // Files
         deliverableBlock = new Paragraph();
@@ -1467,16 +1491,44 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.add("\n");
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
-
-        deliverable.setDataSharingFile(new ArrayList<DeliverableDataSharingFile>());
         List<DeliverableDataSharingFile> deliverableDataSharingFileList = deliverable.getDataSharingFile();
 
-        for (DeliverableDataSharingFile deliverableDataSharingFile : deliverableDataSharingFileList) {
-          if (deliverableDataSharingFile != null) {
-            deliverableBlock.add(this.messageReturn(deliverableDataSharingFile.getFile()));
+        cell_new = new PdfPCell(deliverableBlock);
+        cell_new.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell_new.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell_new.setBackgroundColor(TABLE_BODY_ODD_ROW_BACKGROUND);
+        cell_new.setUseBorderPadding(true);
+        cell_new.setPadding(3);
+        cell_new.setBorderColor(TABLE_CELL_BORDER_COLOR);
+        cell_new.setColspan(2);
+        Anchor anchor;
+        Phrase myurl;
+        counter = 0;
+        if (deliverableDataSharingFileList != null) {
+          for (DeliverableDataSharingFile deliverableDataSharingFile : deliverableDataSharingFileList) {
+            if (deliverableDataSharingFile != null) {
+
+              anchor = new Anchor(deliverableDataSharingFile.getFile());
+              anchor.setFont(TABLE_BODY_FONT_LINK);
+              anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
+                + deliverableDataSharingFile.getFile());
+              myurl = new Phrase();
+              myurl.add(anchor);
+              myurl.setFont(TABLE_BODY_FONT_LINK);
+
+              cell_new.addElement(myurl);
+              if (counter > 1) {
+                cell_new.addElement(new Paragraph("\n"));
+              }
+              counter++;
+            }
           }
+          table.addCell(cell_new);
+        } else {
+          deliverableBlock.setFont(TABLE_BODY_FONT);
+          deliverableBlock.add(this.messageReturn(null));
+          this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
         }
-        this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
         document.add(table);
         deliverableBlock = new Paragraph();
         deliverableBlock.add(Chunk.NEWLINE);
@@ -2215,7 +2267,7 @@ public class ProjectSummaryPDF extends BasePDF {
     }
   }
 
-  private void addProjectCCAFSOutcomes() {
+  private void addProjectCCAFSOutcomes(String number) {
     PdfPTable table = new PdfPTable(3);
 
     Paragraph cell = new Paragraph();
@@ -2223,7 +2275,8 @@ public class ProjectSummaryPDF extends BasePDF {
     indicatorsBlock.setAlignment(Element.ALIGN_JUSTIFIED);
     indicatorsBlock.setKeepTogether(true);
 
-    Paragraph title = new Paragraph("4.2 " + this.getText("summaries.project.indicatorsContribution"), HEADING3_FONT);
+    Paragraph title =
+      new Paragraph(number + ".2 " + this.getText("summaries.project.indicatorsContribution"), HEADING3_FONT);
     indicatorsBlock.add(Chunk.NEWLINE);
     indicatorsBlock.add(title);
 
@@ -2269,6 +2322,7 @@ public class ProjectSummaryPDF extends BasePDF {
               document.add(indicatorDescription);
               document.add(Chunk.NEWLINE);;
 
+              PdfPCell cell_new;
               for (IPIndicator indicator : indicators) {
 
                 table = new PdfPTable(3);
@@ -2281,9 +2335,23 @@ public class ProjectSummaryPDF extends BasePDF {
                   continue;
                 }
 
-                cell = new Paragraph(this.messageReturn(String.valueOf(indicator.getYear())), TABLE_BODY_FONT);
-                this.addTableColSpanCell(table, cell, Element.ALIGN_CENTER, 1, 3);
+                cell = new Paragraph(this.messageReturn(String.valueOf(indicator.getYear())), TABLE_HEADER_FONT);
 
+                cell_new = new PdfPCell(cell);
+                // Set alignment
+                cell_new.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell_new.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell_new.setBackgroundColor(TABLE_HEADER_BACKGROUND);
+
+                // Set padding
+                cell_new.setUseBorderPadding(true);
+                cell_new.setPadding(3);
+
+                // Set border color
+                cell_new.setBorderColor(TABLE_CELL_BORDER_COLOR);
+                cell_new.setColspan(3);
+
+                this.addTableHeaderCell(table, cell_new);
                 // Target value
                 cell = new Paragraph(this.getText("summaries.project.indicator.targetValue"), TABLE_BODY_BOLD_FONT);
                 cell.setFont(TABLE_BODY_FONT);
@@ -2965,7 +3033,7 @@ public class ProjectSummaryPDF extends BasePDF {
       LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
     }
     // ******************* CCAFS Outcomes***************/
-    this.addProjectCCAFSOutcomes();
+    this.addProjectCCAFSOutcomes(number);
 
 
     // **********************************************************************************
@@ -3222,9 +3290,10 @@ public class ProjectSummaryPDF extends BasePDF {
 
             // case study
             cell = new Paragraph(this.getText("summaries.project.reporting.outcome.case.studies") + "# " + counter,
-              TABLE_BODY_BOLD_FONT);
-            this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
-              table.getNumberOfColumns(), 0, false);
+              TABLE_HEADER_FONT);
+            this.addTableHeaderCell(table, cell);
+            // this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
+            // table.getNumberOfColumns(), 0, false);
 
             // Title
             cell =
@@ -3394,13 +3463,12 @@ public class ProjectSummaryPDF extends BasePDF {
         PdfPTable table;
         for (int a = 0; a < years.length; a++) {
           paragraph = new Paragraph();
-          paragraph.setFont(BODY_TEXT_BOLD_FONT);
+          paragraph.setFont(TABLE_HEADER_FONT);
           paragraph.add(this.getText("summaries.project.overviewbymogs.text") + "- " + years[a]);
           table = new PdfPTable(1);
           table.setLockedWidth(true);
           table.setTotalWidth(480);
-          this.addCustomTableCell(table, paragraph, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
-            table.getNumberOfColumns(), 0, false);
+          this.addTableHeaderCell(table, paragraph);
           // Mog
           for (int b = 0; b < mogs.size(); b++) {
             this.addOverview(table, mogs.get(b), years[a]);
@@ -3490,7 +3558,7 @@ public class ProjectSummaryPDF extends BasePDF {
           for (ProjectNextUser projectNextUser : project.getNextUsers()) {
 
             paragraph = new Paragraph();
-            paragraph.setFont(BODY_TEXT_BOLD_FONT);
+            paragraph.setFont(TABLE_HEADER_FONT);
             paragraph.setAlignment(Element.ALIGN_LEFT);
 
             table = new PdfPTable(1);
@@ -3498,9 +3566,7 @@ public class ProjectSummaryPDF extends BasePDF {
             table.setTotalWidth(480);
 
             paragraph.add(this.getText("summaries.project.reporting.nextuser", new String[] {String.valueOf(counter)}));
-            // document.add(deliverableBlock);
-            this.addCustomTableCell(table, paragraph, Element.ALIGN_LEFT, BODY_TEXT_BOLD_FONT, Color.WHITE,
-              table.getNumberOfColumns(), 0, false);
+            this.addTableHeaderCell(table, paragraph);
 
             // Next users key
             paragraph = new Paragraph();
