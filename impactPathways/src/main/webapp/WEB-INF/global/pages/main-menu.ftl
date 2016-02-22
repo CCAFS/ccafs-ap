@@ -39,21 +39,28 @@
             [@s.text name="menu.reporting" /]
           </a>
           <ul class="subMenu">
-            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "projects"] class="currentSection" [/#if] >
+            <li [#if reportingCycle && currentCycleSection  == "projects"] class="currentSection" [/#if] >
               <a href="[#if reportingActive]${baseUrl}/reporting/projectsList.do[/#if]" class="[#if !reportingActive]disabled[/#if]">Projects</a>
             </li>
-            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "crpIndicators"] class="currentSection" [/#if] >
-              <a href="[#--if reportingActive]${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID[/#if--]" class="disabled">CRP Indicators</a>
-            </li>
-            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "outcomeSynthesis"] class="currentSection" [/#if] >
-              <a href="" class="disabled">Outcome Synthesis</a>
-            </li>
-            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "synthesisByMog"] class="currentSection" [/#if] >
-              <a href="" class="disabled">Synthesis by MOG</a>
-            </li>
-            <li [#if currentCycleSection?? && reportingCycle && currentCycleSection  == "projectEvaluation"] class="currentSection" [/#if] >
-              <a href="" class="disabled">Project Evaluation</a>
-            </li> 
+            [#-- Contact points and Flagships Leaders --]
+            [#if securityContext.FPL || securityContext.CP || securityContext.admin]
+              <li [#if reportingCycle && currentCycleSection  == "crpIndicators"] class="currentSection" [/#if] >
+                <a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" class="disabled">CRP Indicators</a>
+              </li>
+            [/#if]
+            [#-- Flagships Leaders and Regional Leaders --]
+            [#if securityContext.FPL || securityContext.RPL || securityContext.admin]
+              <li [#if reportingCycle && currentCycleSection  == "outcomeSynthesis"] class="currentSection" [/#if] >
+                <a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" class="disabled">Outcome Synthesis</a>
+              </li>
+            [/#if]
+            [#-- Flagships Leaders and Regional Leaders --]
+            [#if securityContext.FPL || securityContext.RPL || securityContext.admin]
+              <li [#if reportingCycle && currentCycleSection  == "synthesisByMog"] class="currentSection" [/#if] >
+                <a href="" class="disabled">Synthesis by MOG</a>
+              </li> 
+            [/#if]
+            
           </ul>
         </li>
               

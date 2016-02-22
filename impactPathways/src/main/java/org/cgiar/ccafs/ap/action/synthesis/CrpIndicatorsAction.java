@@ -15,11 +15,11 @@ package org.cgiar.ccafs.ap.action.synthesis;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
-import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IndicatorReportManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.model.IndicatorReport;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
+import org.cgiar.ccafs.ap.validation.synthesis.ProjectCrpIndicatorsValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class CrpIndicatorsAction extends BaseAction {
 
   // Manager
 
-  private HistoryManager historyManager;
+  private ProjectCrpIndicatorsValidator validator;
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private IndicatorReportManager indicatorsReportManager;
   // Model for the front-end
@@ -55,11 +55,11 @@ public class CrpIndicatorsAction extends BaseAction {
 
 
   @Inject
-  public CrpIndicatorsAction(APConfig config, HistoryManager historyManager,
+  public CrpIndicatorsAction(APConfig config, ProjectCrpIndicatorsValidator validator,
     LiaisonInstitutionManager liaisonInstitutionManager, IndicatorReportManager indicatorsReportManager) {
     super(config);
 
-    this.historyManager = historyManager;
+    this.validator = validator;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.indicatorsReportManager = indicatorsReportManager;
   }
@@ -172,6 +172,7 @@ public class CrpIndicatorsAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
+      validator.validate(this, indicatorReports);
     }
   }
 }
