@@ -46,7 +46,6 @@
       <p class="fieldError"></p>
       [@customForm.select name="${projectPartnerName}[${projectPartnerIndex}].institution" value="${(projectPartner.institution.id)!-1}" className="institutionsList" required=true  disabled=!editable i18nkey="planning.projectPartners.partner.name" listName="allInstitutions" keyFieldName="id"  displayFieldName="getComposedName()" editable=((editable && template) || (editable && !projectPartner.institution??)) /]
     </div>
-    
     [#-- Indicate which PPA Partners for second level partners --]
     [#if (editable || ((!editable && projectPartner.partnerContributors?has_content)!false)) && (!project.bilateralProject)]
       [#assign showPPABlock][#if (projectPartner.institution.PPA)!true]none[#else]block[/#if][/#assign]

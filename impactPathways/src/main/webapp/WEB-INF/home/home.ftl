@@ -54,10 +54,15 @@
       <div id="deadline" class="borderBox">
         <ul class="subMenu">
           <li><a href="${baseUrl}/reporting/projectsList.do" class="">Projects</a></li>
-          <li><a href="" class="disabled">CRP Indicators</a></li>
-          <li><a href="" class="disabled">Outcome Synthesis</a></li>
-          <li><a href="" class="disabled">Synthesis by MOG</a></li>
-          <li class="last"><a href="" class="disabled">Project Evaluation</a></li> 
+          [#if securityContext.FPL || securityContext.CP || securityContext.admin]
+            <li><a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" class="disabled">CRP Indicators</a></li>
+          [/#if]
+          [#if securityContext.FPL || securityContext.RPL || securityContext.admin]
+            <li><a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" class="disabled">Outcome Synthesis</a></li>
+          [/#if]
+          [#if securityContext.FPL || securityContext.RPL || securityContext.admin]
+            <li><a href="" class="disabled">Synthesis by MOG</a></li>
+          [/#if]
         </ul>
       </div>
     </div> <!-- End leftSide -->
