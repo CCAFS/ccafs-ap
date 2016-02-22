@@ -20,6 +20,16 @@ public interface IndicatorReportDAO {
    */
   public List<Map<String, String>> getIndicatorReports(int activityLeaderId, int year);
 
+
+  /**
+   * This method return the list of indicator's type
+   * 
+   * @param activityLeaderId - Activity leader identifier
+   * @param year
+   * @return A list of maps with the information
+   */
+  public List<Map<String, String>> getIndicatorTypes();
+
   /**
    * This method save the Indicator's report made by the leader
    * corresponding to the logframe.
