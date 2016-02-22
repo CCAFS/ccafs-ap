@@ -49,6 +49,7 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
+import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.summaries.projects.pdf.ProjectSummaryPDF;
@@ -103,6 +104,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private ProjectNextUserManager projectNextUserManager;
   private ProjectLeverageManager projectLeverageManager;
   private HighLightManager highlightManager;
+  private InstitutionManager institutionManager;
   // Model
   private Project project;
   ProjectSummaryPDF projectPDF;
@@ -148,6 +150,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     this.projectNextUserManager = projectNextUserManager;
     this.projectLeverageManager = projectLeverageManager;
     this.highlightManager = highlightManager;
+    this.institutionManager = institutionManager;
   }
 
 
@@ -356,7 +359,19 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
 
     // ************************Project Leverage *******************
-    project.setLeverages(projectLeverageManager.getProjectLeverageProject(projectID));
+
+    List<ProjectLeverage> projectLeverageList = projectLeverageManager.getProjectLeverageProject(projectID);
+    for (ProjectLeverage projectLeverage : projectLeverageList) {
+      if (projectLeverage.getInstitution() != null) {
+        projectLeverage.setMyInstitution(institutionManager.getInstitution(projectLeverage.getInstitution()));
+      }
+
+      if (projectLeverage.getFlagship() != null) {
+        projectLeverage.setMyFlagship(this.ipProgramManager.getIPProgramById(projectLeverage.getFlagship()));
+      }
+    }
+
+    project.setLeverages(projectLeverageList);
 
     // ************************Project HighLigth *******************
 

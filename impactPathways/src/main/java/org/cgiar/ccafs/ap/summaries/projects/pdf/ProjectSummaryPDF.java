@@ -568,11 +568,10 @@ public class ProjectSummaryPDF extends BasePDF {
             // Header table
             leverageBlock = new Paragraph();
             leverageBlock.setAlignment(Element.ALIGN_CENTER);
-            leverageBlock.setFont(BODY_TEXT_BOLD_FONT);
+            leverageBlock.setFont(TABLE_HEADER_FONT);
             leverageBlock.add(this.getText("summaries.project.leverage") + " #" + counter);
 
-            this.addCustomTableCell(table, leverageBlock, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
-              table.getNumberOfColumns(), 0, false);
+            this.addTableHeaderCellColspan(table, leverageBlock, 2);
 
             // leverage title
             leverageBlock = new Paragraph();
@@ -605,7 +604,7 @@ public class ProjectSummaryPDF extends BasePDF {
             leverageBlock.add(this.getText("summaries.project.leverage.year"));
 
             leverageBlock.setFont(TABLE_BODY_FONT);
-            leverageBlock.add(this.messageReturn("" + leverage.getYear()));
+            leverageBlock.add(String.valueOf(this.currentReportingYear));
             leverageBlock.add(Chunk.NEWLINE);
             this.addTableColSpanCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1, 2);
 
@@ -615,7 +614,7 @@ public class ProjectSummaryPDF extends BasePDF {
             leverageBlock.add(this.getText("summaries.project.leverage.flagship"));
 
             leverageBlock.setFont(TABLE_BODY_FONT);
-            leverageBlock.add(this.messageReturn(String.valueOf(leverage.getFlagship())));
+            leverageBlock.add(this.messageReturn(String.valueOf(leverage.getMyFlagship().getComposedName())));
             leverageBlock.add(Chunk.NEWLINE);
             this.addTableBodyCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1);
 
@@ -625,7 +624,11 @@ public class ProjectSummaryPDF extends BasePDF {
             leverageBlock.add(this.getText("summaries.project.leverage.budget"));
 
             leverageBlock.setFont(TABLE_BODY_FONT);
-            leverageBlock.add(this.messageReturn(String.valueOf(leverage.getBudget())));
+            if (leverage.getBudget() != null) {
+              leverageBlock.add(this.budgetFormatter.format(leverage.getBudget().doubleValue()));
+            } else {
+              leverageBlock.add(this.messageReturn(null));
+            }
             leverageBlock.add(Chunk.NEWLINE);
             this.addTableBodyCell(table, leverageBlock, Element.ALIGN_JUSTIFIED, 1);
 
@@ -2011,7 +2014,6 @@ public class ProjectSummaryPDF extends BasePDF {
     int endYear = 0;
 
     Paragraph paragraph = new Paragraph();
-    this.prepareFormatter();
 
     Calendar startDate = Calendar.getInstance();
     Calendar endDate = Calendar.getInstance();
@@ -4059,8 +4061,8 @@ public class ProjectSummaryPDF extends BasePDF {
    */
   public void generatePdf(Project project, int currentPlanningYear, int currentReportingYear, int midOutcomeYear) {
 
+    this.prepareFormatter();
     this.allMOGs = elementManager.getIPElementList();
-
     statuses = new HashMap<>();
     List<ProjectStatusEnum> list = Arrays.asList(ProjectStatusEnum.values());
     for (ProjectStatusEnum projectStatusEnum : list) {

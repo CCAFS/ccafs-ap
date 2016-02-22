@@ -26,6 +26,7 @@ public class ProjectLeverage implements java.io.Serializable {
   private Integer flagship;
   private Double budget;
   private Institution myInstitution;
+  private IPProgram myFlagship;
 
 
   private boolean isActive;
@@ -127,9 +128,14 @@ public class ProjectLeverage implements java.io.Serializable {
     return this.modifiedBy;
   }
 
+  public IPProgram getMyFlagship() {
+    return myFlagship;
+  }
+
   public Institution getMyInstitution() {
     return myInstitution;
   }
+
 
   public int getProjectId() {
     return this.projectId;
@@ -139,7 +145,6 @@ public class ProjectLeverage implements java.io.Serializable {
   public String getTitle() {
     return this.title;
   }
-
 
   public Integer getYear() {
     return year;
@@ -169,10 +174,10 @@ public class ProjectLeverage implements java.io.Serializable {
     this.createdBy = createdBy;
   }
 
+
   public void setFlagship(Integer flagship) {
     this.flagship = flagship;
   }
-
 
   public void setId(Integer id) {
     this.id = id;
@@ -194,9 +199,14 @@ public class ProjectLeverage implements java.io.Serializable {
     this.modifiedBy = modifiedBy;
   }
 
+  public void setMyFlagship(IPProgram myFlagship) {
+    this.myFlagship = myFlagship;
+  }
+
   public void setMyInstitution(Institution myInstitution) {
     this.myInstitution = myInstitution;
   }
+
 
   public void setProjectId(int projectId) {
     this.projectId = projectId;
@@ -205,7 +215,6 @@ public class ProjectLeverage implements java.io.Serializable {
   public void setTitle(String title) {
     this.title = title;
   }
-
 
   public void setYear(Integer year) {
     this.year = year;
