@@ -106,6 +106,7 @@ public interface IPIndicatorDAO {
    */
   public List<Map<String, String>> getIndicatorsOtherContribution(int projectID, int region);
 
+
   /**
    * This method returns all the indicators related with the project
    * identified by the value received as parameter.
@@ -114,6 +115,16 @@ public interface IPIndicatorDAO {
    * @return a list of maps with the information
    */
   public List<Map<String, String>> getProjectIndicators(int projectID);
+
+
+  /**
+   * This method returns all the indicators related with the year and indicator
+   * 
+   * @param year
+   * @param indicator
+   * @return a list of maps with the information
+   */
+  public List<Map<String, String>> getProjectIndicatorsSynthesis(int year, int indicator);
 
   /**
    * This method save the information of the indicator.
