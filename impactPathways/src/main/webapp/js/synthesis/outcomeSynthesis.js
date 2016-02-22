@@ -5,6 +5,8 @@ function init() {
   attachEvents();
   // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
   setWordCounterToInputs('limitWords');
+  // Adding DataTable plugin
+  $(".projectContributions").dataTable();
 }
 
 function attachEvents() {

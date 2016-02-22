@@ -2,7 +2,7 @@
 [#assign title = "Outcome Synthesis" /]
 [#assign globalLibs = ["jquery", "dataTable", "noty","autoSave"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/synthesis/outcomeSynthesis.js"] /]
-[#assign customCSS = [] /]
+[#assign customCSS = ["${baseUrl}/css/libs/dataTables/jquery.dataTables-1.9.4.css", "${baseUrl}/css/global/customDataTable-flat.css"] /]
 [#assign currentSection = reportingCycle?string('reporting','planning') /]
 [#assign currentCycleSection = "outcomeSynthesis" /]
 [#assign currentStage = "outcomeSynthesis" /]
@@ -76,11 +76,35 @@
                 </div>
                 [/#if]
                 
+                [#-- Project Contributions --]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
                 <div class="fullPartBlock">
-                  {Table projectContributions to this indicator Here}
+                  <table class="projectContributions">
+                    <thead>
+                      <tr class="header">
+                        <th rowspan="2">Project ID</th>
+                        <th colspan="2">Target of current reporting period</th>
+                        <th rowspan="2">Narrative for your achieved targets, including evidence</th>
+                      </tr>
+                    	<tr class="subHeader"> 
+                    		<th>Expected</th>
+                    		<th>Achieved</th> 
+                    	</tr>
+                  	</thead>
+                  	<tbody>
+                    [#list 1..40 as projectIndicator]
+                      <tr>
+                      	<td class="center">P${projectIndicator_index+1}</td>
+                      	<td class="center">${projectIndicator_index+1}</td>
+                        <td class="center">${projectIndicator_index+2}</td>
+                        <td class="">${projectIndicator_index+1} AgMIP: at least two sub-national institutions (typically at the district/county level, target Embu and Makueni counties in Kenya).</td>
+                      </tr>
+                    [/#list]
+                  	</tbody>
+                  </table>
                 </div>
                 
+                [#-- Regions/Global contributions --]
                 [#if midOutcome.flagshipProgramType]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
                 <div class="fullPartBlock">
