@@ -73,6 +73,25 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
   }
 
   @Override
+  public List<IndicatorType> getIndicatorReportsType() {
+    List<IndicatorType> indicatorTypes = new ArrayList<>();
+    List<Map<String, String>> irDataList = indicatorReportDAO.getIndicatorTypes();
+
+    for (Map<String, String> irData : irDataList) {
+      IndicatorType ir = new IndicatorType();
+
+
+      ir.setId(Integer.parseInt(irData.get("id")));
+      ir.setName(irData.get("name"));
+      indicatorTypes.add(ir);
+
+    }
+
+    return indicatorTypes;
+
+  }
+
+  @Override
   public boolean saveIndicatorReportsList(List<IndicatorReport> indicatorReports, LiaisonInstitution leader) {
     boolean saved = true;
     Map<String, String> indicatorReportData;

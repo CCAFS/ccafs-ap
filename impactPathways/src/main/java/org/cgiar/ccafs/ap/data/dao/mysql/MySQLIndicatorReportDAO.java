@@ -79,6 +79,29 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
   }
 
   @Override
+  public List<Map<String, String>> getIndicatorTypes() {
+    // TODO Auto-generated method stub
+    List<Map<String, String>> indicatorTypeDataList = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * from crp_indicator_types ");
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorReportData = new HashMap<String, String>();
+        indicatorReportData.put("id", rs.getString("id"));
+        indicatorReportData.put("name", rs.getString("name"));
+        indicatorTypeDataList.add(indicatorReportData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+
+      LOG.error("-- getIndicatorTypes");
+    }
+
+    return indicatorTypeDataList;
+  }
+
+  @Override
   public boolean saveIndicatorReport(Map<String, String> indicatorReportData, int activityLeaderId, int year) {
     Object[] params = new Object[] {indicatorReportData.size(), activityLeaderId, year};
     LOG.debug(">> saveIndicatorsReport(indicatorsReport.size={}, activityLeaderId={}, year={})", params);

@@ -43,22 +43,22 @@
       
       <div id="crpIndicatorsTabs">
         <ul>
-          [#list 1..5 as indicatorType]  
-            <li><a href="#indicatorType-${indicatorType_index+1}">indicatorType-${indicatorType_index+1}</a></li>
+          [#list indicatorsType as indicatorType]  
+            <li><a href="#indicatorType-${indicatorType.id}">Indicator Type ${indicatorType.id}</a></li>
           [/#list]
         </ul> 
   
-        [#list 1..5 as indicatorType]
-          <div id="indicatorType-${indicatorType_index+1}" class="indicatorsByType">
+        [#list indicatorsType as indicatorType]
+          <div id="indicatorType-${indicatorType.id}" class="indicatorsByType">
             [#-- Button for edit this section --]
             [#if (!editable && canEdit)]
               <div class="editButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
             [#elseif canEdit]
                 <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
             [/#if]
-            
+            ${indicatorType.name}
             [#-- List of indicators by type --]
-            [#list action.getCrpIndicatorsByType(indicatorType_index+1) as indicatorReport]
+            [#list action.getCrpIndicatorsByType(indicatorType.id) as indicatorReport]
             <div class="simpleBox">
               <h6 class="title" style="font-size: 1.2em;margin-bottom: 5px;">${indicatorReport.indicator.id}.  ${indicatorReport.indicator.name}
                 [#if indicatorReport.indicator.description?has_content]

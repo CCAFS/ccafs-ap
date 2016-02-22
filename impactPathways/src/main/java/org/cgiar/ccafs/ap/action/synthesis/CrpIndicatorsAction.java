@@ -18,6 +18,7 @@ import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IndicatorReportManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.model.IndicatorReport;
+import org.cgiar.ccafs.ap.data.model.IndicatorType;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.validation.synthesis.ProjectCrpIndicatorsValidator;
 import org.cgiar.ccafs.utils.APConfig;
@@ -49,10 +50,12 @@ public class CrpIndicatorsAction extends BaseAction {
   // Model for the front-end
   private List<LiaisonInstitution> liaisonInstitutions;
   private List<IndicatorReport> indicatorReports;
+  private List<IndicatorType> indicatorsType;
 
   private int liaisonInstitutionID;
-  private int indicatorTypeID;
 
+
+  private int indicatorTypeID;
 
   @Inject
   public CrpIndicatorsAction(APConfig config, ProjectCrpIndicatorsValidator validator,
@@ -75,6 +78,7 @@ public class CrpIndicatorsAction extends BaseAction {
 
   }
 
+
   public int getIndicatorIndex(int id) {
     int c = 0;
     for (IndicatorReport indicatorReport : indicatorReports) {
@@ -86,10 +90,14 @@ public class CrpIndicatorsAction extends BaseAction {
     return -1;
   }
 
-
   public List<IndicatorReport> getIndicatorReports() {
     return indicatorReports;
   }
+
+  public List<IndicatorType> getIndicatorsType() {
+    return indicatorsType;
+  }
+
 
   public int getIndicatorTypeID() {
     return indicatorTypeID;
@@ -102,7 +110,6 @@ public class CrpIndicatorsAction extends BaseAction {
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     return liaisonInstitutions;
   }
-
 
   @Override
   public String next() {
@@ -126,7 +133,7 @@ public class CrpIndicatorsAction extends BaseAction {
       if (this.getCurrentUser().getLiaisonInstitution() != null) {
         liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
       } else {
-        liaisonInstitutionID = 1;
+        liaisonInstitutionID = 2;
       }
     }
 
@@ -140,12 +147,13 @@ public class CrpIndicatorsAction extends BaseAction {
       indicatorsReportManager.getIndicatorReportsList(liaisonInstitutionID, this.getCurrentReportingYear());
     // Get the list of liaison institutions.
     liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutionsCrpsIndicator();
-
+    indicatorsType = indicatorsReportManager.getIndicatorReportsType();
     // indicatorReports = indicatorReportManager.getIndicatorReports(liaisonInstitutionID,
     // this.getCurrentReportingYear(), indicatorTypeID);
 
 
   }
+
 
   @Override
   public String save() {
@@ -163,6 +171,10 @@ public class CrpIndicatorsAction extends BaseAction {
     return SUCCESS;
 
 
+  }
+
+  public void setIndicatorsType(List<IndicatorType> indicatorsType) {
+    this.indicatorsType = indicatorsType;
   }
 
   public void setLiaisonInstitutionID(int liaisonInstitutionID) {

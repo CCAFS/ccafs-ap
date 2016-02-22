@@ -18,6 +18,7 @@ package org.cgiar.ccafs.ap.data.dao.mysqlhiberate;
 import org.cgiar.ccafs.ap.config.HibernateListener;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Singleton;
@@ -135,10 +136,13 @@ public class StandardDAO {
     } catch (HibernateException e) {
       this.rollBackTransaction();
       e.printStackTrace();
-      return null;
+      return new ArrayList<T>();
     } finally {
-      session.flush(); // Flushing the changes always.
-      this.closeSession();
+      if (session.isOpen()) {
+        session.flush(); // Flushing the changes always.
+        this.closeSession();
+      }
+
     }
   }
 
