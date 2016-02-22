@@ -63,16 +63,16 @@
                 </div>
                 [#-- Synthesis of annual progress towards this indicator --]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" required=canEdit editable=editable /]
+                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
                 [#-- Synthesis of annual progress gender and social inclusion contribution towards this indicator --]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" required=canEdit editable=editable /]
+                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" className="genderProgressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
                 [#-- Explain any discrepancy  --]
                 [#if midOutcome.regionalProgramType]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" editable=editable /]
+                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" className="discrepancy limitWords-100" editable=editable /]
                 </div>
                 [/#if]
                 
