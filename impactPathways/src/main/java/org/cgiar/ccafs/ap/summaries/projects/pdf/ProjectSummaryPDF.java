@@ -3290,7 +3290,7 @@ public class ProjectSummaryPDF extends BasePDF {
             table.setTotalWidth(500);
 
             // case study
-            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.case.studies") + "# " + counter,
+            cell = new Paragraph(this.getText("summaries.project.reporting.outcome.case.study") + " #" + counter,
               TABLE_HEADER_FONT);
             this.addTableHeaderCell(table, cell);
             // this.addCustomTableCell(table, cell, Element.ALIGN_LEFT, BODY_TEXT_FONT, Color.WHITE,
