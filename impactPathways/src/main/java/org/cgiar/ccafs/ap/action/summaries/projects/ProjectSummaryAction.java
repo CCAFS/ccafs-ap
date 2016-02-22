@@ -44,6 +44,7 @@ import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.CaseStudieIndicators;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
+import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
@@ -376,6 +377,16 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     // ************************Project HighLigth *******************
 
     List<ProjectHighligths> projectHighLightList = highlightManager.getHighLightsByProject(projectID);
+    List<Country> countryList;
+    for (ProjectHighligths projectHighligth : projectHighLightList) {
+      countryList = new ArrayList<Country>();
+      if (projectHighligth.getCountriesIds() != null) {
+        for (Integer countryId : projectHighligth.getCountriesIds()) {
+          countryList.add(this.locationManager.getCountry(countryId.intValue()));
+        }
+      }
+      projectHighligth.setCountries(countryList);
+    }
     project.setHighlights(projectHighLightList);
 
     //

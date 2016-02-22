@@ -8,9 +8,14 @@ package org.cgiar.ccafs.ap.data.model;
 public class ProjectHighligthsCountry implements java.io.Serializable {
 
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -3031750914438220963L;
   private Integer id;
   private ProjectHighligths projectHighligths;
   private int idCountry;
+  private Country country;
 
   public ProjectHighligthsCountry() {
   }
@@ -38,6 +43,10 @@ public class ProjectHighligthsCountry implements java.io.Serializable {
     return true;
   }
 
+  public Country getCountry() {
+    return country;
+  }
+
   public Integer getId() {
     return this.id;
   }
@@ -56,6 +65,10 @@ public class ProjectHighligthsCountry implements java.io.Serializable {
     int result = 1;
     result = prime * result + idCountry;
     return result;
+  }
+
+  public void setCountry(Country country) {
+    this.country = country;
   }
 
   public void setId(Integer id) {
