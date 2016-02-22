@@ -106,6 +106,14 @@ public interface IPIndicatorManager {
   public List<IPIndicator> getIndicatorsOtherContribution(int projectId, int region);
 
   /**
+   * This method returns a list of ccfas outcome reporting
+   * 
+   * @param indicator
+   * @return a list of indicators object
+   */
+  public List<IPIndicator> getIndicatorsSyntesis(int year, int indicator);
+
+  /**
    * This method gets all the indicators related to the project passed as parameter
    * 
    * @param projectID - project identifier

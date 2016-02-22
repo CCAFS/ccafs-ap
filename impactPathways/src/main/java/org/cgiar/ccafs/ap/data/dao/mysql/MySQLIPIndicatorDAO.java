@@ -411,6 +411,53 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     return indicatorsDataList;
   }
 
+
+  @Override
+  public List<Map<String, String>> getProjectIndicatorsSynthesis(int year, int indicator) {
+
+    List<Map<String, String>> indicatorsDataList = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT ai.id, ai.description, ai.gender, ai.target, ai.year, aip.id as 'parent_id', ");
+    query.append("aip.description as 'parent_description', aip.target as 'parent_target', ");
+    query.append(
+      "ie.id as 'outcome_id', ie.description as 'outcome_description',ai.archived,ai.narrative_gender,ai.narrative_targets ");
+    query.append("FROM ip_project_indicators as ai ");
+    query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
+    query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
+    query.append("WHERE ai.is_active = TRUE and aip.id=" + indicator + " and ai.year=" + year);
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> indicatorData = new HashMap<String, String>();
+
+        indicatorData.put("id", rs.getString("id"));
+        indicatorData.put("description", rs.getString("description"));
+        indicatorData.put("gender", rs.getString("gender"));
+        indicatorData.put("target", rs.getString("target"));
+        indicatorData.put("year", rs.getString("year"));
+        indicatorData.put("parent_id", rs.getString("parent_id"));
+        indicatorData.put("parent_description", rs.getString("parent_description"));
+        indicatorData.put("parent_target", rs.getString("parent_target"));
+        indicatorData.put("outcome_id", rs.getString("outcome_id"));
+        indicatorData.put("outcome_description", rs.getString("outcome_description"));
+        indicatorData.put("archived", rs.getString("archived"));
+        indicatorData.put("narrative_gender", rs.getString("narrative_gender"));
+        indicatorData.put("narrative_targets", rs.getString("narrative_targets"));
+
+        indicatorsDataList.add(indicatorData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+
+      LOG.error(e.getMessage(), e);
+      return null;
+    }
+    LOG.debug("<< getProjectIndicators():indicatorsDataList.size={}", indicatorsDataList.size());
+    return indicatorsDataList;
+  }
+
   @Override
   public int saveIndicator(Map<String, Object> indicatorData) {
     LOG.debug(">> saveIndicator(indicatorData={})", indicatorData);

@@ -275,6 +275,44 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
+  public List<IPIndicator> getIndicatorsSyntesis(int year, int indicator) {
+    List<IPIndicator> indicators = new ArrayList<>();
+    List<Map<String, String>> indicatorsData = indicatorDAO.getProjectIndicatorsSynthesis(year, indicator);
+
+    for (Map<String, String> iData : indicatorsData) {
+      IPIndicator indicatorDb = new IPIndicator();
+      indicatorDb.setId(Integer.parseInt(iData.get("id")));
+      indicatorDb.setDescription(iData.get("description"));
+      indicatorDb.setGender(iData.get("gender"));
+      if (iData.get("archived") != null) {
+        indicatorDb.setArchived(Integer.parseInt(iData.get("archived")));
+      } else {
+        indicatorDb.setArchived(null);
+      }
+
+      indicatorDb.setNarrativeGender(iData.get("narrative_gender"));
+      indicatorDb.setNarrativeTargets(iData.get("narrative_targets"));
+      indicatorDb.setTarget(iData.get("target"));
+      indicatorDb.setYear(Integer.parseInt(iData.get("year")));
+
+      // Parent indicator
+      IPIndicator parent = new IPIndicator(Integer.parseInt(iData.get("parent_id")));
+      parent.setDescription(iData.get("parent_description"));
+      parent.setTarget(iData.get("parent_target"));
+      indicatorDb.setParent(parent);
+
+      // Outcome
+      IPElement outcome = new IPElement(Integer.parseInt(iData.get("outcome_id")));
+      outcome.setDescription(iData.get("outcome_description"));
+      indicatorDb.setOutcome(outcome);
+
+      indicators.add(indicatorDb);
+    }
+
+    return indicators;
+  }
+
+  @Override
   public List<IPIndicator> getProjectIndicators(int projectID) {
     List<IPIndicator> indicators = new ArrayList<>();
     List<Map<String, String>> indicatorsData = indicatorDAO.getProjectIndicators(projectID);
