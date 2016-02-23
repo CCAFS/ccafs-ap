@@ -189,12 +189,15 @@ public class DeliverableManagerImpl implements DeliverableManager {
       deliverable.setDataSharingFile(sharingFileDao.findDeliverableDataSharingFile(deliverableID));
       deliverable.setMetadataElements(disseminationDao.findDeliverableElements(deliverableID));
       deliverable.setMetadata(disseminationDao.findMetadataFields(deliverableID));
-      for (MetadataElements field : deliverable.getMetadata()) {
-        DeliverableMetadataElements metadata = disseminationDao.findDeliverableMetadata(deliverableID, field.getId());
-        field.setElementValueId(metadata.getId());
-        field.setValue(metadata.getElementValue());
+      if (deliverable.getMetadata() != null) {
+        for (MetadataElements field : deliverable.getMetadata()) {
+          DeliverableMetadataElements metadata = disseminationDao.findDeliverableMetadata(deliverableID, field.getId());
+          field.setElementValueId(metadata.getId());
+          field.setValue(metadata.getElementValue());
 
+        }
       }
+
       List<DeliverableFile> deliverableFile = new ArrayList<>();
       DeliverableFile file;
       if (deliverable.getDataSharingFile() != null) {
