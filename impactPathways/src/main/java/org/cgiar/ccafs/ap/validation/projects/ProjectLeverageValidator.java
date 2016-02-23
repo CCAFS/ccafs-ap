@@ -37,7 +37,7 @@ public class ProjectLeverageValidator extends BaseValidator {
   public void validate(BaseAction action, Project project, String cycle) {
     if (project != null) {
       // Does the project have any nextUser?
-      if (project.getLeverages() != null && !project.getLeverages().isEmpty() && project.getLeverages().size() >= 1) {
+      if (project.getLeverages() != null && !project.getLeverages().isEmpty()) {
         // Validate project justification.
         // this.validateProjectJustification(action, project);
 
@@ -53,12 +53,6 @@ public class ProjectLeverageValidator extends BaseValidator {
           this.validateBudget(action, project.getLeverages().get(c).getBudget(), c);
 
 
-        }
-      } else {
-        // Show problem only for Core projects and Co-funded projects
-        if (project.isCoreProject() || project.isCoFundedProject()) {
-          this.addMessage("At least One Leverage. ");
-          this.addMissingField("project.leverage.empty");
         }
       }
 

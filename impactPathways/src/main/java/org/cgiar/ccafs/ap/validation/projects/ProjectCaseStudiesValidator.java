@@ -113,7 +113,7 @@ public class ProjectCaseStudiesValidator extends BaseValidator {
   }
 
   private void validatereRerencesCase(BaseAction action, String referencesCase) {
-    if (!(this.isValidString(referencesCase) && this.wordCount(referencesCase) <= 50)) {
+    if (!(this.isValidString(referencesCase) && this.wordCount(referencesCase) <= 150)) {
       this.addMessage("Case Study #" + c + " References Case");
       this.addMissingField("project.caseStudies.referencesCase");
     }
