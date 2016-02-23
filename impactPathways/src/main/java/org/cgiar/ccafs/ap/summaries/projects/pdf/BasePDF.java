@@ -57,8 +57,8 @@ public class BasePDF {
   public final static Font BODY_TEXT_FONT_LINK = new Font(FontFactory.getFont("openSans", 12, Color.BLUE));
   public final static Font BODY_TEXT_BOLD_FONT = new Font(FontFactory.getFont("openSans", 12, Font.BOLD, bodyColor));
 
-
-  public final static Font TABLE_BODY_FONT_LINK = new Font(FontFactory.getFont("openSans", 10, Color.BLUE));
+  public final static Font TABLE_BODY_FONT_LINK =
+    new Font(Font.getFamilyIndex("openSans"), 10, Font.UNDERLINE, Color.BLUE);
   public final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("openSans", 10, Font.BOLD, Color.WHITE));
   public final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("openSans", 10, bodyColor));
   public final static Font TABLE_BODY_BOLD_FONT = new Font(FontFactory.getFont("openSans", 10, Font.BOLD, bodyColor));
@@ -310,7 +310,30 @@ public class BasePDF {
   }
 
 
-  
+  /**
+   * Creates a PdfCell object add the text passed and
+   * give it the standard format for header cells.
+   * 
+   * @param cell - Cell for insert
+   * @return a PdfCell object with the text formatted.
+   */
+  public void addTableHeaderCell(PdfPTable table, PdfPCell cell) {
+    // Set alignment
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    cell.setBackgroundColor(TABLE_HEADER_BACKGROUND);
+
+    // Set padding
+    cell.setUseBorderPadding(true);
+    cell.setPadding(3);
+
+    // Set border color
+    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
+
+    table.addCell(cell);
+  }
+
+
   /**
    * Creates a PdfCell object add the text passed and
    * give it the standard format for header cell with colspan
@@ -333,34 +356,9 @@ public class BasePDF {
     // Set border color
     cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
 
-    
-    //colspan
+
+    // colspan
     cell.setColspan(colspan);
-    table.addCell(cell);
-  }
-
-
-  
-  /**
-   * Creates a PdfCell object add the text passed and
-   * give it the standard format for header cells.
-   * 
-   * @param cell - Cell for insert
-   * @return a PdfCell object with the text formatted.
-   */
-  public void addTableHeaderCell(PdfPTable table, PdfPCell cell) {
-    // Set alignment
-    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-    cell.setBackgroundColor(TABLE_HEADER_BACKGROUND);
-
-    // Set padding
-    cell.setUseBorderPadding(true);
-    cell.setPadding(3);
-
-    // Set border color
-    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
-
     table.addCell(cell);
   }
 

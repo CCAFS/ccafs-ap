@@ -261,7 +261,7 @@ public class ProjectSummaryPDF extends BasePDF {
               activityBlock.add(statuses.get(String.valueOf(activity.getActivityStatus())));
               activityBlock.add(Chunk.NEWLINE);
 
-              if (activity.isStatusCancelled()) {
+              if (activity.isStatusCancelled() || activity.isStatusExtended() || activity.isStatusOnGoing()) {
                 this.addTableBodyCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1);
 
                 activityBlock = new Paragraph();
@@ -626,6 +626,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
             leverageBlock.setFont(TABLE_BODY_FONT);
             if (leverage.getBudget() != null) {
+              leverageBlock.add("US $");
               leverageBlock.add(this.budgetFormatter.format(leverage.getBudget().doubleValue()));
             } else {
               leverageBlock.add(this.messageReturn(null));
@@ -1004,7 +1005,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
         deliverableBlock.setFont(TABLE_BODY_FONT);
         stringBuilder = new StringBuilder();
-        if (String.valueOf(deliverable.getStatus()) != null) {
+        if (!String.valueOf(deliverable.getStatus()).equals("null")) {
           stringBuilder.append(this.statuses.get(String.valueOf(deliverable.getStatus())));
         } else {
           stringBuilder.append(this.messageReturn(null));
@@ -1013,7 +1014,7 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.add(Chunk.NEWLINE);
         // document.add(deliverableBlock);
 
-        if (deliverable.isStatusCancelled()) {
+        if (deliverable.isStatusCancelled() || deliverable.isStatusExtended() || deliverable.isStatusOnGoing()) {
           this.addTableColSpanCell(table, deliverableBlock, Element.ALIGN_JUSTIFIED, 1, 1);
 
           // Justification
@@ -2366,20 +2367,20 @@ public class ProjectSummaryPDF extends BasePDF {
                 cell = new Paragraph(this.getText("summaries.project.indicator.cumulative"), TABLE_BODY_BOLD_FONT);
                 cell.setFont(TABLE_BODY_FONT);
                 cell.add(this.messageReturn(project.calculateAcumulativeTarget(indicator.getYear(), indicator)));
-                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
-
-                // achieved
-                cell = new Paragraph(this.getText("summaries.project.indicator.archieved"), TABLE_BODY_BOLD_FONT);
-                cell.setFont(TABLE_BODY_FONT);
-
-                if (indicator.getArchived() == null) {
-                  cell.add(this.messageReturn(null));
+                if (indicator.getYear() <= this.currentReportingYear) {
+                  this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
+                  // achieved
+                  cell = new Paragraph(this.getText("summaries.project.indicator.archieved"), TABLE_BODY_BOLD_FONT);
+                  cell.setFont(TABLE_BODY_FONT);
+                  if (indicator.getArchived() == null) {
+                    cell.add(this.messageReturn(null));
+                  } else {
+                    cell.add(this.messageReturn(String.valueOf(indicator.getArchived())));
+                  }
+                  this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
                 } else {
-                  cell.add(this.messageReturn(String.valueOf(indicator.getArchived())));
+                  this.addTableColSpanCell(table, cell, Element.ALIGN_JUSTIFIED, 1, 2);
                 }
-
-                this.addTableBodyCell(table, cell, Element.ALIGN_JUSTIFIED, 1);
-
                 // target narrative
                 cell = new Paragraph(this.getText("summaries.project.indicator.targetNarrative"), TABLE_BODY_BOLD_FONT);
                 cell.setFont(TABLE_BODY_FONT);
@@ -2873,26 +2874,33 @@ public class ProjectSummaryPDF extends BasePDF {
     PdfPTable table;
     if (project.isReporting()) {
       for (int year = currentPlanningYear; year < midOutcomeYear; year++) {
+
+        // Annual progress towards
+        outcomesBlock = new Paragraph();
+        outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
+        outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
+        outcomesBlock.add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
+        outcomesBlock.setFont(BODY_TEXT_FONT);
+
+        if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
+          outcomesBlock.add(this.getText("summaries.project.empty"));
+        } else {
+          outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement()));
+        }
+        outcomesBlock.add(Chunk.NEWLINE);
+        outcomesBlock.add(Chunk.NEWLINE);
+
+        try {
+          document.add(outcomesBlock);
+        } catch (DocumentException e) {
+          LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
+        }
+
+
         if (year == this.currentPlanningYear) {
           table = new PdfPTable(1);
           table.setLockedWidth(true);
           table.setTotalWidth(500);
-
-          // Annual progress towards
-          outcomesBlock = new Paragraph();
-          outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-          outcomesBlock.setFont(TABLE_BODY_BOLD_FONT);
-          outcomesBlock
-            .add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
-          outcomesBlock.setFont(TABLE_BODY_FONT);
-
-          if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
-            outcomesBlock.add(this.getText("summaries.project.empty"));
-          } else {
-            outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement()));
-          }
-          this.addTableBodyCell(table, outcomesBlock, Element.ALIGN_JUSTIFIED, 1);
-
 
           ///// outcome toward in reporting cycle
           outcomesBlock = new Paragraph();
@@ -2945,29 +2953,6 @@ public class ProjectSummaryPDF extends BasePDF {
             document.add(table);
             outcomesBlock = new Paragraph();
             outcomesBlock.add(Chunk.NEWLINE);
-            document.add(outcomesBlock);
-          } catch (DocumentException e) {
-            LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
-          }
-        } else {
-
-          // Annual progress towards
-          outcomesBlock = new Paragraph();
-          outcomesBlock.setAlignment(Element.ALIGN_JUSTIFIED);
-          outcomesBlock.setFont(BODY_TEXT_BOLD_FONT);
-          outcomesBlock
-            .add(this.getText("summaries.project.outcomeAnnualProgress", new String[] {String.valueOf(year)}));
-          outcomesBlock.setFont(BODY_TEXT_FONT);
-
-          if (project.getOutcomes() == null || project.getOutcomes().get(String.valueOf(year)) == null) {
-            outcomesBlock.add(this.getText("summaries.project.empty"));
-          } else {
-            outcomesBlock.add(this.messageReturn(project.getOutcomes().get(String.valueOf(year)).getStatement()));
-          }
-          outcomesBlock.add(Chunk.NEWLINE);
-          outcomesBlock.add(Chunk.NEWLINE);
-
-          try {
             document.add(outcomesBlock);
           } catch (DocumentException e) {
             LOG.error("There was an error trying to add the project focuses to the project summary pdf", e);
@@ -3372,7 +3357,10 @@ public class ProjectSummaryPDF extends BasePDF {
             cell.setFont(TABLE_BODY_FONT);
             cell.add("\n");
             for (IPIndicator ipIndicator : caseStudy.getCaseStudyIndicators()) {
-              cell.add(ipIndicator.getDescription() + "\n");
+              if (ipIndicator.getOutcome() != null) {
+                cell.add(ipIndicator.getOutcome().getDescription());
+              }
+              cell.add(" " + ipIndicator.getDescription() + "\n");
             }
             this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
 
@@ -3478,24 +3466,28 @@ public class ProjectSummaryPDF extends BasePDF {
           document.add(paragraph);
           document.add(table);
         }
+
+        // Leason regardins
+        paragraph = new Paragraph();
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+        paragraph.setFont(BODY_TEXT_BOLD_FONT);
         if (!project.isReporting()) {
-          // Leason regardins
-          paragraph = new Paragraph();
-          paragraph.add(Chunk.NEWLINE);
-          paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
-          paragraph.setFont(BODY_TEXT_BOLD_FONT);
-          paragraph.add(this.getText("summaries.project.output.lessonRegarding") + ": ");
-          paragraph.setFont(BODY_TEXT_FONT);
-          if (project.getComponentLesson("outputs") != null) {
-            paragraph.add(this.messageReturn(project.getComponentLesson("outputs").getLessons()));
-          } else {
-            paragraph.add(this.messageReturn(null));
-          }
-          paragraph.add(Chunk.NEWLINE);
-          paragraph.add(Chunk.NEWLINE);
-          document.add(paragraph);
+          paragraph.add(this.getText("summaries.project.output.lessonRegarding"));
+        } else {
+          paragraph.add(this.getText("summaries.project.overviewbymogs.reporting.lesson"));
         }
+        paragraph.setFont(BODY_TEXT_FONT);
+        if (project.getComponentLesson("outputs") != null) {
+          paragraph.add(this.messageReturn(project.getComponentLesson("outputs").getLessons()));
+        } else {
+          paragraph.add(this.messageReturn(null));
+        }
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(Chunk.NEWLINE);
+        document.add(paragraph);
       }
+
     } catch (DocumentException e) {
       LOG.error("There was an error trying to add the project title to the project summary pdf", e);
     }

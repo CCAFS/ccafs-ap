@@ -326,11 +326,13 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     List<CasesStudies> caseStudiesList = caseStudiesManager.getCaseStudysByProject(project.getId());
 
     List<IPIndicator> ipIndicatorList;
+    IPIndicator ipIndicator;
 
     for (CasesStudies caseStudie : caseStudiesList) {
       ipIndicatorList = new ArrayList<IPIndicator>();
       for (CaseStudieIndicators indicatorCaseStudie : caseStudie.getCaseStudieIndicatorses()) {
-        ipIndicatorList.add(indicatorManager.getIndicator(indicatorCaseStudie.getIdIndicator()));
+        ipIndicator = indicatorManager.getIndicatorFlgship(indicatorCaseStudie.getIdIndicator());
+        ipIndicatorList.add(ipIndicator);
       }
       caseStudie.setCaseStudyIndicators(ipIndicatorList);
     }
