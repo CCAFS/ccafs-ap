@@ -57,6 +57,7 @@ function addElement(e) {
   e.preventDefault();
   var $newElement = $('#leverage-template').clone(true).removeAttr("id");
   $elementsBlock.append($newElement.fadeIn("slow"));
+  $elementsBlock.find('.message').remove();
   setElementsIndexes();
   $newElement.find('select').select2();
   datePickerConfig($newElement.find(".startDate"), $newElement.find(".endDate"));

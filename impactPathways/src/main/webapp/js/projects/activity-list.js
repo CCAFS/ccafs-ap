@@ -20,8 +20,8 @@ function init() {
   // Add events for activities section
   attachEvents();
 
-  applyWordCounter($("form .activity .title"), lWordsTitle);
-  applyWordCounter($("form .activity .description"), lWordsDesc);
+  applyWordCounter($("form .activity input[type=text].title"), lWordsTitle);
+  applyWordCounter($("form .activity textarea.description"), lWordsDesc);
   applyWordCounter($("#lessons textarea"), lWordsLessons);
 
   validateEvent([

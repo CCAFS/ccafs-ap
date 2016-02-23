@@ -51,7 +51,7 @@
         [@caseStudy index=item_index /]
       [/#list]
     [#else]
-        <p class="center">There is not an Outcome Case Study added. 
+        <p class="message center">There is not an Outcome Case Study added. 
         [#if !editable]
           <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div></a>
         [/#if]

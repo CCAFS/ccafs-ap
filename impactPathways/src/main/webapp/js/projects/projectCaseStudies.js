@@ -51,6 +51,7 @@ function addElement(e) {
   e.preventDefault();
   var $newElement = $('#caseStudy-template').clone(true).removeAttr("id");
   $elementsBlock.append($newElement.fadeIn("slow"));
+  $elementsBlock.find('.message').remove();
   setElementsIndexes();
 }
 
