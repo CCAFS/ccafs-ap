@@ -51,7 +51,10 @@
           [@leverage index=item_index /]
         [/#list]
       [#else]
-        [@leverage index=0 /]
+        <p class="message center simpleBox">There is not a leverage added.
+        [#if !editable]Please <a href="[@s.url][@s.param name="projectID" value=project.id /][@s.param name="edit" value="true" /][/@s.url]">click here</a> for adding a leverage[/#if]
+        </p>
+        [#--@leverage index=0 /--]
       [/#if]
     </div>
     
