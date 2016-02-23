@@ -37,7 +37,7 @@ import org.hibernate.Transaction;
 @Singleton
 public class StandardDAO {
 
-  private Session session;
+
   private Transaction tx;
   private SessionFactory sessionFactory;
 
@@ -49,7 +49,7 @@ public class StandardDAO {
   /**
    * This method closes the session to the database.
    */
-  private void closeSession() {
+  private void closeSession(Session session) {
     // Close caches and connection pools
     session.close();
   }
@@ -70,9 +70,10 @@ public class StandardDAO {
    * @return true if the record was successfully deleted, false otherwhise.
    */
   protected boolean delete(Object obj) {
+    Session session = null;
     try {
-      this.openSession();
-      this.initTransaction();
+      session = this.openSession();
+      this.initTransaction(session);
       session.delete(obj);
       this.commitTransaction();
       return true;
@@ -82,7 +83,7 @@ public class StandardDAO {
       return false;
     } finally {
       session.flush(); // Flushing the changes always.
-      this.closeSession();
+      this.closeSession(session);
     }
   }
 
@@ -95,10 +96,11 @@ public class StandardDAO {
    */
   protected <T> T find(Class<T> clazz, Object id) {
     T obj = null;
+    Session session = null;
     try {
-      this.openSession();
+      session = this.openSession();
 
-      this.initTransaction();
+      this.initTransaction(session);
       obj = session.get(clazz, (Serializable) id);
       this.commitTransaction();
     } catch (HibernateException e) {
@@ -106,7 +108,7 @@ public class StandardDAO {
       e.printStackTrace();
     } finally {
       session.flush(); // Flushing the changes always.
-      this.closeSession();
+      this.closeSession(session);
     }
     return obj;
   }
@@ -124,9 +126,10 @@ public class StandardDAO {
    * @return a list of <T> objects.
    */
   protected <T> List<T> findAll(String hibernateQuery) {
+    Session session = null;
     try {
-      this.openSession();
-      this.initTransaction();
+      session = this.openSession();
+      this.initTransaction(session);
 
       Query query = session.createQuery(hibernateQuery);
       @SuppressWarnings("unchecked")
@@ -140,16 +143,17 @@ public class StandardDAO {
     } finally {
       if (session.isOpen()) {
         session.flush(); // Flushing the changes always.
-        this.closeSession();
+        this.closeSession(session);
       }
 
     }
   }
 
   protected <T> List<T> findEveryone(Class<T> clazz) {
+    Session session = null;
     try {
-      this.openSession();
-      this.initTransaction();
+      session = this.openSession();
+      this.initTransaction(session);
 
       Query query = session.createQuery("from " + clazz.getName());
       @SuppressWarnings("unchecked")
@@ -162,14 +166,14 @@ public class StandardDAO {
       return null;
     } finally {
       session.flush(); // Flushing the changes always.
-      this.closeSession();
+      this.closeSession(session);
     }
   }
 
   /**
    * This method initializes a transaction.
    */
-  private void initTransaction() {
+  private void initTransaction(Session session) {
     tx = session.beginTransaction();
   }
 
@@ -180,12 +184,12 @@ public class StandardDAO {
    * @return a Session object.
    */
   private Session openSession() {
-    if (session == null || !session.isOpen()) {
-      session = sessionFactory.openSession();
-      // Calling flush when committing change.
-      session.setFlushMode(FlushMode.COMMIT);
-    }
+    Session session = null;
+    session = sessionFactory.openSession();
+    // Calling flush when committing change.
+    session.setFlushMode(FlushMode.COMMIT);
     return session;
+
   }
 
   /**
@@ -206,9 +210,10 @@ public class StandardDAO {
    * @return true if the the save/updated was successfully made, false otherwhise.
    */
   protected boolean saveOrUpdate(Object obj) {
+    Session session = null;
     try {
-      this.openSession();
-      this.initTransaction();
+      session = this.openSession();
+      this.initTransaction(session);
       session.saveOrUpdate(obj);
       this.commitTransaction();
       return true;
@@ -226,7 +231,7 @@ public class StandardDAO {
       return false;
     } finally {
 
-      this.closeSession();
+      this.closeSession(session);
     }
   }
 
