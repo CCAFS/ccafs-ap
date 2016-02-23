@@ -105,10 +105,11 @@
     <input id="id" class="partnerPersonId" type="hidden" name="${contactName}[${contactIndex}].id" value="${(contact.id)!-1}" />
     
     [#assign canEditLeader=(editable && action.hasProjectPermission("leader",project.id))!false /]
+    [#assign canEditCoordinator=(editable && action.hasProjectPermission("coordinator",project.id))!false /]
     
+    <div class="fullPartBlock">
     [#if (contact.leader)!false]
     [#-- Partner Person type and email--]
-    <div class="fullPartBlock">
       [#-- Contact type --]
       <div class="partnerPerson-type halfPartBlock clearfix">
         [#if canEditLeader]
@@ -121,16 +122,34 @@
       </div>
       [#-- Contact Email --]
       <div class="partnerPerson-email userField halfPartBlock clearfix">
-        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.id)!-1)?has_content) /]
+        [#assign canEditEmail=!(action.getActivitiesLedByUser((contact.id)!-1)?has_content) && canEditLeader/]
         <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
         [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
         [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable && canEditEmail /]
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />   
         [#if editable && canEditEmail]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div> 
-    </div>
+    [#elseif (contact.coordinator)!false]
+      [#-- Contact type --]
+      <div class="partnerPerson-type halfPartBlock clearfix">
+        [#if canEditCoordinator]
+          [@customForm.select name="${contactName}[${contactIndex}].type" className="partnerPersonType" disabled=!canEdit i18nkey="planning.projectPartners.personType" stringKey=true listName="partnerPersonTypes" value="'${(contact.type)!'PC'}'" editable=editable && canEditCoordinator required=true /]
+        [#else]
+          <h6><label class="readOnly">[@s.text name="planning.projectPartners.personType" /]:</label></h6>
+          <div class="select"><p>[@s.text name="planning.projectPartners.types.${(contact.type)!'none'}"/]</p></div>
+          <input type="hidden" name="${contactName}[${contactIndex}].type" class="partnerPersonType" value="${(contact.type)!'PC'}" />
+        [/#if]
+      </div>
+      [#-- Contact Email --]
+      <div class="partnerPerson-email userField halfPartBlock clearfix">
+        [#assign canEditEmail= (!(action.getActivitiesLedByUser((contact.id)!-1)?has_content)) && canEditCoordinator /]
+        <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
+        [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
+        [@customForm.input name="partner-${partnerIndex}-person-${contactIndex}" value="${(contact.user.composedName?html)!}" className="userName" type="text" disabled=!canEdit i18nkey="planning.projectPartners.contactPersonEmail" required=true readOnly=true editable=editable && canEditEmail /]
+        <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />
+        [#if editable && canEditEmail]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
+      </div>   
     [#else]
-     <div class="fullPartBlock">
       [#-- Contact type --]
       <div class="partnerPerson-type halfPartBlock clearfix">
         [#if editable]
@@ -150,8 +169,9 @@
         <input class="userId" type="hidden" name="${contactName}[${contactIndex}].user" value="${(contact.user.id)!'-1'}" />
         [#if editable && canEditEmail]<div class="searchUser">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
-    </div>
     [/#if]
+    </div>  
+    
     
     [#-- Responsibilities --]
     <div class="fullPartBlock partnerResponsabilities chosen"> 
