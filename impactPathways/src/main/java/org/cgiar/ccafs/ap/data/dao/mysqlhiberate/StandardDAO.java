@@ -24,7 +24,6 @@ import java.util.List;
 import com.google.inject.Singleton;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.FlushMode;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,7 +37,8 @@ import org.hibernate.Transaction;
 public class StandardDAO {
 
 
-  private Transaction tx;
+  ;
+
   private SessionFactory sessionFactory;
 
   public StandardDAO() {
@@ -58,7 +58,7 @@ public class StandardDAO {
    * This method commit the changes to hibernate table (in memory) but does not synchronize the changes to the database
    * engine.
    */
-  private void commitTransaction() {
+  private void commitTransaction(Transaction tx) {
     tx.commit();
   }
 
@@ -71,14 +71,17 @@ public class StandardDAO {
    */
   protected boolean delete(Object obj) {
     Session session = null;
+    Transaction tx = null;
     try {
       session = this.openSession();
-      this.initTransaction(session);
+      tx = this.initTransaction(session);
       session.delete(obj);
-      this.commitTransaction();
+      this.commitTransaction(tx);
       return true;
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
+    } catch (Exception e) {
+      if (tx != null) {
+        this.rollBackTransaction(tx);
+      }
       e.printStackTrace();
       return false;
     } finally {
@@ -97,14 +100,17 @@ public class StandardDAO {
   protected <T> T find(Class<T> clazz, Object id) {
     T obj = null;
     Session session = null;
+    Transaction tx = null;
     try {
       session = this.openSession();
 
-      this.initTransaction(session);
+      tx = this.initTransaction(session);
       obj = session.get(clazz, (Serializable) id);
-      this.commitTransaction();
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
+      this.commitTransaction(tx);
+    } catch (Exception e) {
+      if (tx != null) {
+        this.rollBackTransaction(tx);
+      }
       e.printStackTrace();
     } finally {
       session.flush(); // Flushing the changes always.
@@ -127,17 +133,20 @@ public class StandardDAO {
    */
   protected <T> List<T> findAll(String hibernateQuery) {
     Session session = null;
+    Transaction tx = null;
     try {
       session = this.openSession();
-      this.initTransaction(session);
+      tx = this.initTransaction(session);
 
       Query query = session.createQuery(hibernateQuery);
       @SuppressWarnings("unchecked")
       List<T> list = query.list();
-      this.commitTransaction();
+      this.commitTransaction(tx);
       return list;
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
+    } catch (Exception e) {
+      if (tx != null) {
+        this.rollBackTransaction(tx);
+      }
       e.printStackTrace();
       return new ArrayList<T>();
     } finally {
@@ -151,17 +160,20 @@ public class StandardDAO {
 
   protected <T> List<T> findEveryone(Class<T> clazz) {
     Session session = null;
+    Transaction tx = null;
     try {
       session = this.openSession();
-      this.initTransaction(session);
+      tx = this.initTransaction(session);
 
       Query query = session.createQuery("from " + clazz.getName());
       @SuppressWarnings("unchecked")
       List<T> list = query.list();
-      this.commitTransaction();
+      this.commitTransaction(tx);
       return list;
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
+    } catch (Exception e) {
+      if (tx != null) {
+        this.rollBackTransaction(tx);
+      }
       e.printStackTrace();
       return null;
     } finally {
@@ -173,8 +185,9 @@ public class StandardDAO {
   /**
    * This method initializes a transaction.
    */
-  private void initTransaction(Session session) {
-    tx = session.beginTransaction();
+  private Transaction initTransaction(Session session) {
+    Transaction tx = session.beginTransaction();
+    return tx;
   }
 
 
@@ -195,7 +208,7 @@ public class StandardDAO {
   /**
    * This method tries to roll back the changes in case they were not flushed.
    */
-  private void rollBackTransaction() {
+  private void rollBackTransaction(Transaction tx) {
     try {
       tx.rollback();
     } catch (Exception e) {
@@ -211,14 +224,18 @@ public class StandardDAO {
    */
   protected boolean saveOrUpdate(Object obj) {
     Session session = null;
+    Transaction tx = null;
     try {
       session = this.openSession();
-      this.initTransaction(session);
+      tx = this.initTransaction(session);
       session.saveOrUpdate(obj);
-      this.commitTransaction();
+      this.commitTransaction(tx);
       return true;
-    } catch (HibernateException e) {
-      this.rollBackTransaction();
+    } catch (Exception e) {
+      if (tx != null) {
+        this.rollBackTransaction(tx);
+      }
+
 
       session.clear();
       if (e instanceof org.hibernate.exception.ConstraintViolationException) {
