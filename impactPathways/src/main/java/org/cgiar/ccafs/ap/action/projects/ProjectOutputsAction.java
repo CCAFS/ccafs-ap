@@ -139,6 +139,14 @@ public class ProjectOutputsAction extends BaseAction {
     this.setProjectLessons(
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName()));
 
+
+    if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
+      // Clear out the list if it has some element
+      if (project.getOutputsOverview() != null) {
+        project.getOutputsOverview().clear();
+      }
+
+    }
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());
     // Getting the history for this section.
