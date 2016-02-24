@@ -1540,7 +1540,7 @@ public class ProjectSummaryPDF extends BasePDF {
             if (deliverableDataSharingFile != null) {
 
               anchor = new Anchor(deliverableDataSharingFile.getFile(), TABLE_BODY_FONT_LINK);
-              anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
+              anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/hightlightsImage/"
                 + deliverableDataSharingFile.getFile());
               myurl = new Phrase();
               myurl.add(anchor);
@@ -3753,7 +3753,12 @@ public class ProjectSummaryPDF extends BasePDF {
           if (projectHighLigth != null) {
             Image global;
             try {
-              global = Image.getInstance(config.getBaseUrl() + "/images/summaries/global-map.png");
+              if (projectHighLigth.getPhoto() != null) {
+                global = Image.getInstance(config.getDownloadURL() + "project/" + project.getId() + "/hightlightsImage/"
+                  + projectHighLigth.getPhoto());
+              } else {
+                global = Image.getInstance(Image.getInstance(config.getBaseUrl() + "/images/summaries/global-map.png"));
+              }
               global.scalePercent(60f);
               global.setAlignment(Element.ALIGN_CENTER);
               paragraph.add(global);
@@ -3888,24 +3893,12 @@ public class ProjectSummaryPDF extends BasePDF {
 
           Anchor anchor = new Anchor(this.getText("summaries.project.reporting.highlight.links"), TABLE_BODY_FONT_LINK);
           anchor.setReference("http://www.lowagie.com/iText/");
-          // anchor.setName("previewlink" + item);
-          Phrase myurl = new Phrase();
-          myurl.add(anchor);
-          myurl.setFont(TABLE_BODY_FONT_LINK);
-          PdfPCell myurlcell = new PdfPCell(myurl);
-          myurlcell.setBorder(0);
-          myurlcell.setPadding(0);
-          table.addCell(myurlcell);
-
-          // paragraph = new Paragraph();
-          // paragraph.setFont(TABLE_BODY_BOLD_FONT);
-          // paragraph.setFont(TABLE_BODY_FONT);
-          // if (projectHighLigth != null) {
-          // paragraph.add(this.messageReturn(projectHighLigth.getLinks()));
-          // } else {
-          // paragraph.add(this.messageReturn(null));
-          // }
-          // this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.links"));
+          paragraph.setFont(TABLE_BODY_FONT_LINK);
+          paragraph.add(anchor);
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
 
           document.add(table);
           document.newPage();
