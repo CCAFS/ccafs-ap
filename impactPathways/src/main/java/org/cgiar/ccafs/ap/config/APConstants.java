@@ -139,6 +139,17 @@ public final class APConstants {
   public static final String OA_OPEN = "OPEN";
   public static final String OA_LIMITED = "LIMITED";
 
+
+  // Constants for deliverable enconding_name
+  public static final String DELIVERABLE_ENCONDING_LICENSE = "dc.rights";
+  public static final String DELIVERABLE_ENCONDING_CREATOR = "dc:creator";
+  public static final String DELIVERABLE_ENCONDING_CREATOR_ID = "cg.creator.ID";
+  public static final String DELIVERABLE_ENCONDING_DESCRIPTION = "dc.description.abstract";
+  public static final String DELIVERABLE_ENCONDING_PUBLICATION = "dc.date";
+  public static final String DELIVERABLE_ENCONDING_LANGUAGE = "dc.language";
+  public static final String DELIVERABLE_ENCONDING_COVERAGE = "dc.coverage";
+
+
   // Query parameter
   public static final String QUERY_PARAMETER = "q";
 

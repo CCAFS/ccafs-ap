@@ -1005,7 +1005,7 @@ public class ProjectSummaryPDF extends BasePDF {
 
         deliverableBlock.setFont(TABLE_BODY_FONT);
         stringBuilder = new StringBuilder();
-        if (!String.valueOf(deliverable.getStatus()).equals("null")) {
+        if (deliverable.getStatus() != 0) {
           stringBuilder.append(this.statuses.get(String.valueOf(deliverable.getStatus())));
         } else {
           stringBuilder.append(this.messageReturn(null));
@@ -1321,10 +1321,27 @@ public class ProjectSummaryPDF extends BasePDF {
             deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.limited"));
           } else if (deliverableDissemination.getRestrictedUseAgreement() != null
             && deliverableDissemination.getRestrictedUseAgreement().booleanValue()) {
+
             deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.restricted"));
+            this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+            deliverableBlock = new Paragraph();
+            deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+            deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.access"));
+            deliverableBlock.setFont(TABLE_BODY_FONT);
+            deliverableBlock.add(deliverableDissemination.getRestrictedAccessUntilText());
+
           } else if (deliverableDissemination.getEffectiveDateRestriction() != null
             && deliverableDissemination.getEffectiveDateRestriction().booleanValue()) {
             deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.effective"));
+            this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
+
+            deliverableBlock = new Paragraph();
+            deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
+            deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.embargoed"));
+            deliverableBlock.setFont(TABLE_BODY_FONT);
+            deliverableBlock.add(deliverableDissemination.getRestrictedEmbargoedText());
+
           } else {
             deliverableBlock.add(this.messageReturn(null));
           }
@@ -1333,16 +1350,19 @@ public class ProjectSummaryPDF extends BasePDF {
         }
         this.addTableBodyCell(table, deliverableBlock, Element.ALIGN_LEFT, 1);
 
+
         // License adopted
+
         deliverableBlock = new Paragraph();
         deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
         deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.license"));
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
+
         if (deliverableDissemination != null) {
-          if (deliverableDissemination.getIntellectualProperty() != null
-            && deliverableDissemination.getIntellectualProperty()) {
-            deliverableBlock.add(this.messageReturn(deliverableDissemination.getRestrictedEmbargoedText()));
+          if (deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_LICENSE) != null) {
+            deliverableBlock.add(this
+              .messageReturn(deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_LICENSE)));
           } else {
             deliverableBlock.add("No");
           }
@@ -1369,7 +1389,7 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock = new Paragraph();
         deliverableBlock.setFont(TABLE_BODY_BOLD_FONT);
         deliverableBlock.add(this.getText("summaries.project.reporting.deliverable.dissemination.url"));
-        deliverableBlock.setFont(TABLE_BODY_FONT);
+        deliverableBlock.setFont(TABLE_BODY_FONT_LINK);
 
         if (deliverableDissemination != null) {
           deliverableBlock.add(this.messageReturn(deliverableDissemination.getDisseminationUrl()));
@@ -1402,7 +1422,8 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
         if (deliverableMetadata != null) {
-          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+          deliverableBlock.add(this
+            .messageReturn(deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_DESCRIPTION)));
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
@@ -1415,7 +1436,8 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
         if (deliverableMetadata != null) {
-          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+          deliverableBlock.add(
+            this.messageReturn(deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_CREATOR)));
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
@@ -1429,7 +1451,8 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
         if (deliverableMetadata != null) {
-          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+          deliverableBlock.add(this
+            .messageReturn(deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_CREATOR_ID)));
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
@@ -1442,7 +1465,8 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
         if (deliverableMetadata != null) {
-          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+          deliverableBlock.add(this
+            .messageReturn(deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_PUBLICATION)));
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
@@ -1455,7 +1479,8 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
         if (deliverableMetadata != null) {
-          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+          deliverableBlock.add(this.messageReturn(this
+            .messageReturn(deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_LANGUAGE))));
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
@@ -1468,7 +1493,8 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_FONT);
 
         if (deliverableMetadata != null) {
-          deliverableBlock.add(this.messageReturn(deliverableMetadata.getCitation()));
+          deliverableBlock.add(
+            this.messageReturn(deliverable.getMetadataValueByEncondedName(APConstants.DELIVERABLE_ENCONDING_COVERAGE)));
         } else {
           deliverableBlock.add(this.messageReturn(null));
         }
@@ -1514,7 +1540,7 @@ public class ProjectSummaryPDF extends BasePDF {
             if (deliverableDataSharingFile != null) {
 
               anchor = new Anchor(deliverableDataSharingFile.getFile(), TABLE_BODY_FONT_LINK);
-              anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
+              anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/hightlightsImage/"
                 + deliverableDataSharingFile.getFile());
               myurl = new Phrase();
               myurl.add(anchor);
@@ -3727,7 +3753,12 @@ public class ProjectSummaryPDF extends BasePDF {
           if (projectHighLigth != null) {
             Image global;
             try {
-              global = Image.getInstance(config.getBaseUrl() + "/images/summaries/global-map.png");
+              if (projectHighLigth.getPhoto() != null) {
+                global = Image.getInstance(config.getDownloadURL() + "project/" + project.getId() + "/hightlightsImage/"
+                  + projectHighLigth.getPhoto());
+              } else {
+                global = Image.getInstance(Image.getInstance(config.getBaseUrl() + "/images/summaries/global-map.png"));
+              }
               global.scalePercent(60f);
               global.setAlignment(Element.ALIGN_CENTER);
               paragraph.add(global);
@@ -3862,24 +3893,12 @@ public class ProjectSummaryPDF extends BasePDF {
 
           Anchor anchor = new Anchor(this.getText("summaries.project.reporting.highlight.links"), TABLE_BODY_FONT_LINK);
           anchor.setReference("http://www.lowagie.com/iText/");
-          // anchor.setName("previewlink" + item);
-          Phrase myurl = new Phrase();
-          myurl.add(anchor);
-          myurl.setFont(TABLE_BODY_FONT_LINK);
-          PdfPCell myurlcell = new PdfPCell(myurl);
-          myurlcell.setBorder(0);
-          myurlcell.setPadding(0);
-          table.addCell(myurlcell);
-
-          // paragraph = new Paragraph();
-          // paragraph.setFont(TABLE_BODY_BOLD_FONT);
-          // paragraph.setFont(TABLE_BODY_FONT);
-          // if (projectHighLigth != null) {
-          // paragraph.add(this.messageReturn(projectHighLigth.getLinks()));
-          // } else {
-          // paragraph.add(this.messageReturn(null));
-          // }
-          // this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
+          paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add(this.getText("summaries.project.reporting.highlight.links"));
+          paragraph.setFont(TABLE_BODY_FONT_LINK);
+          paragraph.add(anchor);
+          this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
 
           document.add(table);
           document.newPage();
