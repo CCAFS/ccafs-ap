@@ -2281,7 +2281,7 @@ public class MySQLProjectDAO implements ProjectDAO {
 
   @Override
   public boolean updateProjectTypes() {
-
+    int i = 0;
     int result = databaseManager.saveData("UPDATE projects SET type = ? WHERE type = ?",
       new Object[] {APConstants.PROJECT_CORE, APConstants.PROJECT_CCAFS_COFUNDED});
 
