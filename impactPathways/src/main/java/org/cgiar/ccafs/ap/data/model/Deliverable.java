@@ -151,6 +151,15 @@ public class Deliverable {
     return "";
   }
 
+  public String getMetadataValueByEncondedName(String metadataName) {
+    for (DeliverableMetadataElements mData : metadataElements) {
+      if (mData.getMetadataElement().getEcondedName().equals(metadataName)) {
+        return mData.getElementValue();
+      }
+    }
+    return "";
+  }
+
 
   public List<NextUser> getNextUsers() {
     return nextUsers;
