@@ -94,11 +94,11 @@ table.dataTable tr {
 table.dataTable td {
   border-bottom: 1px solid #E7E7E7;
   border-right: 1px solid #E7E7E7;
+  vertical-align: middle;
 }
 
 table.dataTable a {
-  text-decoration:none;
-  color: #444;
+  color: #7D7D7D;
   vertical-align: middle;
 }
 

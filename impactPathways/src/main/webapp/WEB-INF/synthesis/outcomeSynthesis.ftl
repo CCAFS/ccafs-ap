@@ -16,6 +16,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
+[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 
 <section class="content">
   [#-- Help Message --]
@@ -74,35 +75,38 @@
                 <div class="fullPartBlock">
                   [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" className="discrepancy limitWords-100" editable=editable /]
                 </div>
-                [/#if]
-                
+                [/#if] 
                 [#-- Project Contributions --]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
+                [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id))?has_content]
                 <div class="fullPartBlock">
                   <table class="projectContributions">
                     <thead>
                       <tr class="header">
-                        <th rowspan="2">Project ID</th>
+                        <th class="col-projectId" rowspan="2">Project ID</th>
                         <th colspan="2">Target of current reporting period</th>
                         <th rowspan="2">Narrative for your achieved targets, including evidence</th>
                       </tr>
                     	<tr class="subHeader"> 
-                    		<th>Expected</th>
-                    		<th>Achieved</th> 
+                    		<th class="col-expected">Expected</th>
+                    		<th class="col-achieved">Achieved</th> 
                     	</tr>
                   	</thead>
                   	<tbody>
-                    [#list 1..40 as projectIndicator]
+                    [#list action.getProjectIndicators(currentReportingYear, flagshipIndicator.id) as projectIndicator]
                       <tr>
-                      	<td class="center">P${projectIndicator_index+1}</td>
-                      	<td class="center">${projectIndicator_index+1}</td>
-                        <td class="center">${projectIndicator_index+2}</td>
-                        <td class="">${projectIndicator_index+1} AgMIP: at least two sub-national institutions (typically at the district/county level, target Embu and Makueni counties in Kenya).</td>
+                      	<td class="center"><a href="[@s.url action="ccafsOutcomes" namespace="/reporting/projects"][@s.param name='projectID']${(projectIndicator.projectId)!}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">P${(projectIndicator.projectId)!}</a></td>
+                      	<td class="center" title="${(projectIndicator.target)!''}" >[@utilities.wordCutter string=(projectIndicator.target)!'Not defined' maxPos=15 /]</td>
+                      	<td class="center" title="${(projectIndicator.archived)!''}" >[@utilities.wordCutter string=(projectIndicator.archived)!'Not defined' maxPos=15 /]</td>
+                        <td class="">${(projectIndicator.narrativeTargets)!'Not defined'} </td>
                       </tr>
                     [/#list]
                   	</tbody>
                   </table>
                 </div>
+                [#else]
+                  <p>There is not project contributing to this indicator</p>
+                [/#if]
                 
                 [#-- Regions/Global contributions --]
                 [#if midOutcome.flagshipProgramType]

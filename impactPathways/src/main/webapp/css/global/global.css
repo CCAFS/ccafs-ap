@@ -4024,8 +4024,7 @@ li.fileUploaded span {
 /*** Project next users  ***/
 
 #nextUsersBlock .nextUser {
-  
-padding-top: 38px;
+  padding-top: 38px;
 }
 
 /*** Activities ***/
@@ -4450,6 +4449,18 @@ a.showIndicatorDesc {
 a.showIndicatorDesc img{
   height: 16px;
   vertical-align: bottom;
+}
+
+/*** Outcome synthesis ***/
+
+table.projectContributions th.col-projectId{
+  width: 10%;
+}
+table.projectContributions th.col-expected{
+  width: 12%;
+}
+table.projectContributions th.col-achieved{
+  width: 12%;
 }
 
 /*** Glossary ***/
