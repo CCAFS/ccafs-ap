@@ -2290,7 +2290,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       query.append("UPDATE projects p ");
       query
         .append("INNER JOIN project_cofinancing_linkages pcl ON p.id = pcl.core_project_id AND pcl.is_active =TRUE ");
-      query.append("SET p.type = ?");
+      query.append("SET p.type = ? ");
       result = databaseManager.saveData(query.toString(), new Object[] {APConstants.PROJECT_CCAFS_COFUNDED});
     }
 

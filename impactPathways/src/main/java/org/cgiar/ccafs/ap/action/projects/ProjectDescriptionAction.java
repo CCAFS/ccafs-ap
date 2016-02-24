@@ -578,7 +578,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
       // Then save the new core projects linked
       if (!project.getLinkedProjects().isEmpty()) {
-        if (project.isBilateralProject()) {
+        if (previousProject.isBilateralProject()) {
           linkedProjectManager.saveLinkedCoreProjects(project, this.getCurrentUser(), this.getJustification());
         } else {
           linkedProjectManager.saveLinkedBilateralProjects(project, this.getCurrentUser(), this.getJustification());
