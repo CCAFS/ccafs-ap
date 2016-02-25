@@ -3771,14 +3771,15 @@ public class ProjectSummaryPDF extends BasePDF {
               }
 
               if (global != null) {
-                this.addTableBodyCell(table, global, Element.ALIGN_LEFT, 1);
+
                 float documentWidth =
                   document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin();
                 float documentHeight =
                   document.getPageSize().getHeight() - document.topMargin() - document.bottomMargin();
                 global.scaleToFit((float) (documentWidth * 0.4), global.getHeight());
                 global.setAlignment(Element.ALIGN_CENTER);
-                paragraph.add(global);
+
+                this.addTableBodyCell(table, global, Element.ALIGN_LEFT, 1);
 
               }
 
