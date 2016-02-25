@@ -97,7 +97,8 @@
           </td>
           [#-- Project Action Status --]
           <td>
-            [#assign submission = (project.isSubmitted(currentPlanningYear, cycleName))! /]
+            [#assign currentCycleYear= (reportingCycle?string(currentReportingYear,currentPlanningYear))?number /]
+            [#assign submission = (project.isSubmitted(currentCycleYear, cycleName))! /]
             [#assign canSubmit = action.hasProjectPermission("submitProject", project.id, "manage") /]
             
             [#-- Check button --] 

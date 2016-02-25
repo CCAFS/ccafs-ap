@@ -4457,10 +4457,12 @@ table.projectContributions th.col-projectId{
   width: 10%;
 }
 table.projectContributions th.col-expected{
-  width: 12%;
+  width: 15%;
+  padding: 6px 0;
 }
 table.projectContributions th.col-achieved{
-  width: 12%;
+  width: 15%;
+  padding: 6px 0;
 }
 
 /*** Glossary ***/

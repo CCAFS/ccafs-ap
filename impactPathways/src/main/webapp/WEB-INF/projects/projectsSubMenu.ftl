@@ -8,7 +8,8 @@
 [#assign projectId=(project.id)!""]
 [#assign projectStage = (currentSubStage)!"" /] 
 [#assign projectSectionStatus= (action.getProjectSectionStatus(actionName))!{} /]
-[#assign submission = (project.isSubmitted(currentPlanningYear, cycleName))! /]
+[#assign currentCycleYear= (reportingCycle?string(currentReportingYear,currentPlanningYear))?number /]
+[#assign submission = (project.isSubmitted(currentCycleYear, cycleName))! /]
 [#assign canSubmit = action.hasProjectPermission("submitProject", project.id, "manage") /]
 
 <nav id="secondaryMenu" class="projectMenu ${(project.type)!''} ${(projectSectionStatus.missingFieldsWithPrefix?has_content)?string("hasMissingFields","")}">

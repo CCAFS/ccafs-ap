@@ -96,9 +96,9 @@
                     [#list action.getProjectIndicators(currentReportingYear, flagshipIndicator.id) as projectIndicator]
                       <tr>
                       	<td class="center"><a href="[@s.url action="ccafsOutcomes" namespace="/reporting/projects"][@s.param name='projectID']${(projectIndicator.projectId)!}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">P${(projectIndicator.projectId)!}</a></td>
-                      	<td class="center" title="${(projectIndicator.target)!''}" >[@utilities.wordCutter string=(projectIndicator.target)!'Not defined' maxPos=15 /]</td>
-                      	<td class="center" title="${(projectIndicator.archived)!''}" >[@utilities.wordCutter string=(projectIndicator.archived)!'Not defined' maxPos=15 /]</td>
-                        <td class="">${(projectIndicator.narrativeTargets)!'Not defined'} </td>
+                      	<td class="center" title="${(projectIndicator.target)!''}" >[@utilities.wordCutter string=(projectIndicator.target)!'Prefilled when available' maxPos=25 /]</td>
+                      	<td class="center" title="${(projectIndicator.archived)!''}" >[@utilities.wordCutter string=(projectIndicator.archived)!'Prefilled when available' maxPos=25 /]</td>
+                        <td class="">${(projectIndicator.narrativeTargets)!'Prefilled when available'} </td>
                       </tr>
                     [/#list]
                   	</tbody>
