@@ -2970,7 +2970,7 @@ public class ProjectSummaryPDF extends BasePDF {
           } else {
 
             anchor = new Anchor(project.getOutcomes().get(String.valueOf(year)).getFile(), TABLE_BODY_FONT_LINK);
-            anchor.setReference(config.getDownloadURL() + "projects//" + project.getId() + "/project_outcome/"
+            anchor.setReference(config.getDownloadURL() + "/projects/" + project.getId() + "/project_outcome/"
               + project.getOutcomes().get(String.valueOf(year)).getFile());
             outcomesBlock.add(anchor);
           }
@@ -3413,7 +3413,7 @@ public class ProjectSummaryPDF extends BasePDF {
             } else {
               anchor = new Anchor(caseStudy.getFile(), TABLE_BODY_FONT_LINK);
               anchor.setReference(
-                config.getDownloadURL() + "projects//" + project.getId() + "/caseStudy/" + caseStudy.getFile());
+                config.getDownloadURL() + "/projects/" + project.getId() + "/caseStudy/" + caseStudy.getFile());
               cell.add(anchor);
             }
             this.addTableBodyCell(table, cell, Element.ALIGN_LEFT, 1);
