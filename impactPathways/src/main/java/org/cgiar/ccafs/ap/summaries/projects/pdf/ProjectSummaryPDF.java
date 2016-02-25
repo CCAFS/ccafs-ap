@@ -258,7 +258,11 @@ public class ProjectSummaryPDF extends BasePDF {
               activityBlock.add(this.getText("summaries.project.activities.status"));
 
               activityBlock.setFont(TABLE_BODY_FONT);
-              activityBlock.add(statuses.get(String.valueOf(activity.getActivityStatus())));
+              if (activity.getActivityStatus() > 0) {
+                activityBlock.add(statuses.get(String.valueOf(activity.getActivityStatus())));
+              } else {
+                activityBlock.add(" " + this.getText("summaries.project.empty"));
+              }
               activityBlock.add(Chunk.NEWLINE);
 
               if (activity.isStatusCancelled() || activity.isStatusExtended() || activity.isStatusOnGoing()) {
