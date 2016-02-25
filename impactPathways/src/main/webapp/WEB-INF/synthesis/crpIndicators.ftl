@@ -16,6 +16,7 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
+[#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 
 <section class="content">
   [#-- Help Message --]
@@ -44,9 +45,9 @@
       <div id="crpIndicatorsTabs">
         <ul>
           [#list indicatorsType as indicatorType]  
-            <li><a href="#indicatorType-${indicatorType.id}">Indicator Type ${indicatorType.id}</a></li>
+            <li title="${indicatorType.name}"><a href="#indicatorType-${indicatorType.id}">[@utilities.wordCutter string=indicatorType.name maxPos=36 /]</a></li>
           [/#list]
-        </ul> 
+        </ul>
   
         [#list indicatorsType as indicatorType]
           <div id="indicatorType-${indicatorType.id}" class="indicatorsByType">
@@ -56,7 +57,7 @@
             [#elseif canEdit]
                 <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
             [/#if]
-            ${indicatorType.name}
+            
             [#-- List of indicators by type --]
             [#list action.getCrpIndicatorsByType(indicatorType.id) as indicatorReport]
             <div class="simpleBox">
