@@ -28,11 +28,11 @@
       <form action="">
       <h6>[@s.text name="summaries.board.projectResearchCycle" /]</h6>
       <div class="summariesOption">
-        <input type="radio" name="cycle" id="planning" value="planning" checked="checked"/>
+        <input type="radio" name="cycle" id="planning" value="planning"/>
         <label for="planning">[@s.text name="summaries.board.projectResearchCycle.planning" /]</label>
       </div>
       <div class="summariesOption">
-        <input type="radio" name="cycle" id="reporting" value="reporting" disabled="disabled"/>
+        <input type="radio" name="cycle" id="reporting" value="Reporting"  checked="checked" />
         <label for="reporting">[@s.text name="summaries.board.projectResearchCycle.reporting" /]</label>
       </div>
       

@@ -26,7 +26,6 @@ import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.CRPContribution;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
-import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
 import org.cgiar.ccafs.ap.data.model.DeliverableDataSharingFile;
 import org.cgiar.ccafs.ap.data.model.DeliverableDissemination;
@@ -48,6 +47,7 @@ import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectHighlightsType;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
+import org.cgiar.ccafs.ap.data.model.ProjectHighligthsCountry;
 import org.cgiar.ccafs.ap.data.model.ProjectHighligthsTypes;
 import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
 import org.cgiar.ccafs.ap.data.model.ProjectNextUser;
@@ -114,7 +114,7 @@ public class ProjectSummaryPDF extends BasePDF {
   private BudgetManager budgetManager;
   private BudgetByMogManager budgetByMogManager;
   private ProjectPartnerManager projectPartnerManager;
-
+  private LocationManager locationManager;
   // Model
   private APConfig config;
   private Document document;
@@ -138,6 +138,7 @@ public class ProjectSummaryPDF extends BasePDF {
     this.elementManager = elementManager;
     this.budgetByMogManager = budgetByMogManager;
     this.projectPartnerManager = projectPartnerManager;
+    this.locationManager = locationManager;
     this.initialize(config.getBaseUrl());
   }
 
@@ -3754,31 +3755,44 @@ public class ProjectSummaryPDF extends BasePDF {
 
           // project images
           paragraph = new Paragraph();
+          paragraph.setFont(TABLE_BODY_BOLD_FONT);
+          paragraph.add("Image");
+
           if (projectHighLigth != null) {
             Image global;
             try {
               if (projectHighLigth.getPhoto() != null) {
-                global = Image.getInstance(config.getDownloadURL() + "project/" + project.getId() + "/hightlightsImage/"
-                  + projectHighLigth.getPhoto());
+                String urlImage =
+                  config.getDownloadURL() + "/" + this.getHighlightsImagesUrlPath() + projectHighLigth.getPhoto();
+                global = Image.getInstance(urlImage);
+
               } else {
-                global = Image.getInstance(Image.getInstance(config.getBaseUrl() + "/images/summaries/global-map.png"));
+                global = null;
               }
-              global.scalePercent(60f);
+
+              float documentWidth = document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin();
+              float documentHeight =
+                document.getPageSize().getHeight() - document.topMargin() - document.bottomMargin();
+              global.scaleToFit((float) (documentWidth * 0.4), global.getHeight());
               global.setAlignment(Element.ALIGN_CENTER);
               paragraph.add(global);
+              if (global != null) {
+                this.addTableBodyCell(table, global, Element.ALIGN_LEFT, 1);
+              }
+
             } catch (MalformedURLException e) {
               // TODO Auto-generated catch block
               e.printStackTrace();
             } catch (IOException e) {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
+
+
             }
 
 
           } else {
             paragraph.add(this.messageReturn(null));
           }
-          this.addTableBodyCell(table, paragraph, Element.ALIGN_LEFT, 1);
+
 
           // project start date
           paragraph = new Paragraph();
@@ -3825,9 +3839,9 @@ public class ProjectSummaryPDF extends BasePDF {
           paragraph.setFont(TABLE_BODY_BOLD_FONT);
           paragraph.add(this.getText("summaries.project.reporting.highlight.country"));
           paragraph.setFont(TABLE_BODY_FONT);
-          if (projectHighLigth != null && projectHighLigth.getCountries() != null) {
-            for (Country country : projectHighLigth.getCountries()) {
-              paragraph.add(country.getName() + "\n");
+          if (projectHighLigth != null && projectHighLigth.getProjectHighligthsCountries() != null) {
+            for (ProjectHighligthsCountry country : projectHighLigth.getProjectHighligthsCountries()) {
+              paragraph.add(locationManager.getCountry(country.getIdCountry()).getName() + "\n");
             }
           } else {
             paragraph.add(this.messageReturn(null));
@@ -3895,13 +3909,13 @@ public class ProjectSummaryPDF extends BasePDF {
 
           // Links
 
-          Anchor anchor = new Anchor(this.getText("summaries.project.reporting.highlight.links"), TABLE_BODY_FONT_LINK);
-          anchor.setReference("http://www.lowagie.com/iText/");
+
           paragraph = new Paragraph();
           paragraph.setFont(TABLE_BODY_BOLD_FONT);
           paragraph.add(this.getText("summaries.project.reporting.highlight.links"));
-          paragraph.setFont(TABLE_BODY_FONT_LINK);
-          paragraph.add(anchor);
+          paragraph.setFont(TABLE_BODY_FONT);
+          paragraph.add(this.messageReturn(projectHighLigth.getLinks()));
+
           this.addTableColSpanCell(table, paragraph, Element.ALIGN_LEFT, 1, 2);
 
           document.add(table);
@@ -4206,6 +4220,11 @@ public class ProjectSummaryPDF extends BasePDF {
     return fileName;
   }
 
+  public String getHighlightsImagesUrlPath() {
+    return config.getProjectsBaseFolder() + "/" + project.getId() + "/" + "hightlightsImage" + "/";
+  }
+
+
   /**
    * Method used for to get the inputStream of document
    * 
@@ -4214,7 +4233,6 @@ public class ProjectSummaryPDF extends BasePDF {
   public InputStream getInputStream() {
     return inputStream;
   }
-
 
   /**
    * Method used for to get outcomes by indicator
@@ -4251,6 +4269,7 @@ public class ProjectSummaryPDF extends BasePDF {
     return index;
   }
 
+
   /**
    * Method used for to search if the MOG in an OutputBudget's ArrayList is related.
    * 
@@ -4267,7 +4286,6 @@ public class ProjectSummaryPDF extends BasePDF {
     }
     return null;
   }
-
 
   /**
    * This method is for search the project partner for the index in a list

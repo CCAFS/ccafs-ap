@@ -222,6 +222,40 @@ public class BasePDF {
    * @param alignment - Alignment to apply in the cell.
    * @return a PdfCell object with the text formatted.
    */
+  public void addTableBodyCell(PdfPTable table, Image paragraph, int alignment, int rowIndex) {
+    PdfPCell cell = new PdfPCell(paragraph);
+
+    // Set alignment
+    cell.setHorizontalAlignment(alignment);
+    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    if (rowIndex == ROW_EVEN) {
+      cell.setBackgroundColor(TABLE_BODY_EVEN_ROW_BACKGROUND);
+    } else {
+      cell.setBackgroundColor(TABLE_BODY_ODD_ROW_BACKGROUND);
+    }
+
+    // Set padding
+    cell.setUseBorderPadding(true);
+    cell.setPadding(5);
+
+    // Set border color
+    cell.setBorderColor(TABLE_CELL_BORDER_COLOR);
+
+    // Set leading
+    cell.setLeading(2, 1);
+
+    table.addCell(cell);
+  }
+
+
+  /**
+   * Creates a PdfCell object add the text passed and
+   * give it the standard format for body cells.
+   * 
+   * @param text - Text to insert into the cell.
+   * @param alignment - Alignment to apply in the cell.
+   * @return a PdfCell object with the text formatted.
+   */
   public void addTableBodyCell(PdfPTable table, Paragraph paragraph, int alignment, int rowIndex) {
     PdfPCell cell = new PdfPCell(paragraph);
 

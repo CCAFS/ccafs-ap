@@ -25,10 +25,15 @@ import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.SendMail;
+import org.cgiar.ccafs.utils.URLFileDownloader;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -216,25 +221,25 @@ public class ProjectSubmissionAction extends BaseAction {
     ByteBuffer buffer = null;
     String fileName = null;
     String contentType = null;
-    /*
-     * try {
-     * // Making the URL to get the report.
-     * URL pdfURL =
-     * new URL(config.getBaseUrl() + "/summaries/project.do?" + APConstants.PROJECT_REQUEST_ID + "=" + projectID);
-     * // Getting the file data.
-     * Map<String, Object> fileProperties = URLFileDownloader.getAsByteArray(pdfURL);
-     * buffer = fileProperties.get("byte_array") != null ? (ByteBuffer) fileProperties.get("byte_array") : null;
-     * fileName = fileProperties.get("filename") != null ? (String) fileProperties.get("filename") : null;
-     * contentType = fileProperties.get("mime_type") != null ? (String) fileProperties.get("mime_type") : null;
-     * } catch (MalformedURLException e) {
-     * // Do nothing.
-     * LOG.error("There was an error trying to get the URL to download the PDF file: " + e.getMessage());
-     * } catch (IOException e) {
-     * // Do nothing
-     * LOG.error(
-     * "There was a problem trying to download the PDF file for the projectID=" + projectID + " : " + e.getMessage());
-     * }
-     */
+
+    try {
+      // Making the URL to get the report.
+      URL pdfURL = new URL(config.getBaseUrl() + "/summaries/project.do?cycle=" + this.getCycleName() + "&"
+        + APConstants.PROJECT_REQUEST_ID + "=" + projectID);
+      // Getting the file data.
+      Map<String, Object> fileProperties = URLFileDownloader.getAsByteArray(pdfURL);
+      buffer = fileProperties.get("byte_array") != null ? (ByteBuffer) fileProperties.get("byte_array") : null;
+      fileName = fileProperties.get("filename") != null ? (String) fileProperties.get("filename") : null;
+      contentType = fileProperties.get("mime_type") != null ? (String) fileProperties.get("mime_type") : null;
+    } catch (MalformedURLException e) {
+      // Do nothing.
+      LOG.error("There was an error trying to get the URL to download the PDF file: " + e.getMessage());
+    } catch (IOException e) {
+      // Do nothing
+      LOG.error(
+        "There was a problem trying to download the PDF file for the projectID=" + projectID + " : " + e.getMessage());
+    }
+
     if (buffer != null && fileName != null && contentType != null) {
       sendMail.send(toEmail, ccEmail, bbcEmails, subject, message.toString(), buffer.array(), contentType, fileName);
     } else {
