@@ -131,7 +131,11 @@ public class CrpIndicatorsAction extends BaseAction {
         Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.LIAISON_INSTITUTION_REQUEST_ID)));
     } catch (NumberFormatException e) {
       if (this.getCurrentUser().getLiaisonInstitution() != null) {
-        liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+        if (this.hasSynthesisPermission("update", liaisonInstitutionID)) {
+          liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+        } else {
+          liaisonInstitutionID = 2;
+        }
       } else {
         liaisonInstitutionID = 2;
       }
