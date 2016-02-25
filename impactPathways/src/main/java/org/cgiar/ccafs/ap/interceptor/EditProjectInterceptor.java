@@ -59,7 +59,14 @@ public class EditProjectInterceptor extends AbstractInterceptor {
       String projectParameter = ((String[]) parameters.get(APConstants.PROJECT_REQUEST_ID))[0];
       int projectID = Integer.parseInt(projectParameter);
       Project project = projectManager.getProjectBasicInfo(projectID);
-      Submission submission = project.isSubmitted(baseAction.getCurrentPlanningYear(), baseAction.getCycleName());
+
+      int currentCycleYear;
+      if (baseAction.isReportingCycle()) {
+        currentCycleYear = baseAction.getCurrentReportingYear();
+      } else {
+        currentCycleYear = baseAction.getCurrentPlanningYear();
+      }
+      Submission submission = project.isSubmitted(currentCycleYear, baseAction.getCycleName());
 
       // If user is admin, it should have privileges to edit all projects.
       if (securityContext.isAdmin()) {
