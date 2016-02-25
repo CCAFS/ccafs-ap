@@ -129,7 +129,7 @@
           [/#if]
           [#-- Summary PDF download --]
           <td>
-            [#if !reportingCycle]
+            [#if true]
             <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" target="__BLANK">
               <img src="${baseUrl}/images/global/download-summary.png" height="25" title="[@s.text name="summaries.project.download" /]" />
             </a>
