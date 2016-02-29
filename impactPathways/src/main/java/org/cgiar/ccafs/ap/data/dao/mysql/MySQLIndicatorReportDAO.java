@@ -45,6 +45,7 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
     query.append(" AND ir.liaison_institution_id = ");
     query.append(activityLeaderId);
     query.append(" LEFT JOIN `crp_indicator_types` it ON i.indicator_type_id = it.id  ");
+    query.append(" where i.serial not in ('ind01','ind02','ind03','ind04','ind05','ind06')");
     query.append(" ORDER BY i.id  ");
 
     try (Connection con = databaseManager.getConnection()) {

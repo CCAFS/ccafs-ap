@@ -26,7 +26,7 @@ public class IPIndicator {
   private IPIndicator parent;
   private IPElement outcome;
   private int year;
-  private Integer archived;
+  private Double archived;
   private String narrativeTargets;
   private String narrativeGender;
   private String projectId;
@@ -60,7 +60,7 @@ public class IPIndicator {
   }
 
 
-  public Integer getArchived() {
+  public Double getArchived() {
     return archived;
   }
 
@@ -113,7 +113,7 @@ public class IPIndicator {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
   }
 
-  public void setArchived(Integer archived) {
+  public void setArchived(Double archived) {
     this.archived = archived;
   }
 
