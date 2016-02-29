@@ -101,7 +101,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
     }
   }
 
-  private void validateArchived(BaseAction action, Integer archived, String outcomeAcronym, int year, int c) {
+  private void validateArchived(BaseAction action, Double archived, String outcomeAcronym, int year, int c) {
     if ((archived == null)) {
       this.addMessage(" Achieved in current reporting period   '" + outcomeAcronym + "' in '" + year + "' year");
       this.addMissingField("project.indicators[" + c + "].archivied");

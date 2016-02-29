@@ -286,7 +286,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicatorDb.setGender(iData.get("gender"));
       indicatorDb.setProjectId(iData.get("project_id"));
       if (iData.get("archived") != null) {
-        indicatorDb.setArchived(Integer.parseInt(iData.get("archived")));
+        indicatorDb.setArchived(Double.parseDouble(iData.get("archived")));
       } else {
         indicatorDb.setArchived(null);
       }
@@ -324,7 +324,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicator.setDescription(iData.get("description"));
       indicator.setGender(iData.get("gender"));
       if (iData.get("archived") != null) {
-        indicator.setArchived(Integer.parseInt(iData.get("archived")));
+        indicator.setArchived(Double.parseDouble(iData.get("archived")));
       } else {
         indicator.setArchived(null);
       }

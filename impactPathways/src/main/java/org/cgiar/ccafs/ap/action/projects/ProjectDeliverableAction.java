@@ -424,30 +424,33 @@ public class ProjectDeliverableAction extends BaseAction {
         deliverable.getRanking().setProcessDataFile(fileFileName);
       }
       List<DeliverableDataSharingFile> files = new ArrayList<>();
-      for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
+      if (deliverable.getFiles() != null) {
+        for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
 
-        DeliverableDataSharingFile file = new DeliverableDataSharingFile();
-        file.setDeliverableId(deliverableID);
-        if (deliverabelFile.getId() > 0) {
-          file.setId((deliverabelFile.getId()));
-          files.add(file);
-        } else {
-          if (!deliverabelFile.getLink().equals("")) {
-            file.setFile(deliverabelFile.getLink());
-          } else {
-            file.setFile(deliverabelFile.getName());
-          }
-
-          file.setType(deliverabelFile.getHosted());
-
-
-          if (file.getFile() != null) {
+          DeliverableDataSharingFile file = new DeliverableDataSharingFile();
+          file.setDeliverableId(deliverableID);
+          if (deliverabelFile.getId() > 0) {
+            file.setId((deliverabelFile.getId()));
             files.add(file);
+          } else {
+            if (!deliverabelFile.getLink().equals("")) {
+              file.setFile(deliverabelFile.getLink());
+            } else {
+              file.setFile(deliverabelFile.getName());
+            }
+
+            file.setType(deliverabelFile.getHosted());
+
+
+            if (file.getFile() != null) {
+              files.add(file);
+            }
           }
+
+
         }
-
-
       }
+
       DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
 
       if (deliverable.getDissemination().getRestrictedAccessUntilText() != null) {
