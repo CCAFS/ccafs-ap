@@ -31,7 +31,7 @@
 <div class="fullPartBlock">
   <div class="halfPartBlock chosen">
     [@customForm.select name="${params.deliverable.name}.year" value="${(deliverable.year)!-1}" label=""  disabled=false i18nkey="planning.deliverables.year" listName="allYears" required=true editable=editable && ( action.hasProjectPermission("main", project.id) || !((deliverable.year)?has_content) )/]
-    [#if !editable || !action.hasProjectPermission("main", project.id)]<div class="select"><p>${deliverable.year}</p></div> [/#if]
+    [#if !editable || !action.hasProjectPermission("main", project.id)]<div class="select"><p>${(deliverable.year)!}</p></div> [/#if]
   </div>
 </div>
 [#-- -- -- REPORTING BLOCK -- -- --]

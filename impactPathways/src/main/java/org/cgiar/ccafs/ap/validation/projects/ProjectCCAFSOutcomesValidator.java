@@ -189,7 +189,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
                   action.getCurrentReportingYear(), c);
                 this.validateNarrativeGender(action, indicator.getNarrativeGender(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
-                this.validateArchived(action, indicator.getArchived(), outcome.getComposedId(),
+                this.validateArchived(action, Double.parseDouble(indicator.getArchivedText()), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
 
               }
