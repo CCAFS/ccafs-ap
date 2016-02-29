@@ -139,10 +139,10 @@
                                     [/#if]
                                   </div>
                                   [#-- 2. Cumulative target --]
-                                  [#if (cycleYear lte year)]
+                                  [#if (cycleYear lte year) && reportingCycle]
                                   <div class="thirdPartBlock">
                                     <label><h6>[@s.text name="reporting.projectImpactPathways.comulativeTarget" /]:</h6></label>
-                                    <div class="input"><p>${project.calculateAcumulativeTarget(year,projectIndicator)}</p></div>
+                                    <div class="input"><p>${(project.calculateAcumulativeTarget(year,projectIndicator))!}</p></div>
                                   </div>
                                   [/#if]
                                   [#-- 3. Reporting target --]
