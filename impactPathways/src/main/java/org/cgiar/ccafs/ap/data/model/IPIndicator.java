@@ -27,14 +27,17 @@ public class IPIndicator {
   private IPElement outcome;
   private int year;
   private Double archived;
+
+  private String archivedText;
+
+
   private String narrativeTargets;
+
   private String narrativeGender;
   private String projectId;
 
-
   public IPIndicator() {
   }
-
 
   public IPIndicator(int id) {
     this.id = id;
@@ -65,6 +68,11 @@ public class IPIndicator {
   }
 
 
+  public String getArchivedText() {
+    return archivedText;
+  }
+
+
   public String getDescription() {
     return description;
   }
@@ -83,6 +91,7 @@ public class IPIndicator {
   public String getNarrativeGender() {
     return narrativeGender;
   }
+
 
   public String getNarrativeTargets() {
     return narrativeTargets;
@@ -115,6 +124,10 @@ public class IPIndicator {
 
   public void setArchived(Double archived) {
     this.archived = archived;
+  }
+
+  public void setArchivedText(String archivedText) {
+    this.archivedText = archivedText;
   }
 
   public void setDescription(String description) {

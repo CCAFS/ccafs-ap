@@ -79,6 +79,12 @@ input.disabled {
   background-color: #f1f1f1 !important;
 }
 
+.viewMore {
+  position: absolute;
+  bottom: 0;
+  background: #fff;
+}
+
 .hide {
   display: none;
 }
@@ -4463,6 +4469,11 @@ table.projectContributions th.col-expected{
 table.projectContributions th.col-achieved{
   width: 15%;
   padding: 6px 0;
+}
+
+table.projectContributions{
+  width: 98% !important;
+  margin: 0 !important;
 }
 
 /*** Glossary ***/
