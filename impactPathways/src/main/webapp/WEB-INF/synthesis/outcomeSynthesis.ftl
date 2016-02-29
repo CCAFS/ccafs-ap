@@ -79,7 +79,7 @@
                 [#-- Project Contributions --]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
                 [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id))?has_content]
-                <div class="fullPartBlock">
+                <div class="fullPartBlock" style="height:200px; overflow-y:hidden;">
                   <table class="projectContributions">
                     <thead>
                       <tr class="header">
@@ -103,6 +103,7 @@
                     [/#list]
                   	</tbody>
                   </table>
+                  <div class="viewMore">View more</div>
                 </div>
                 [#else]
                   <p>There is not project contributing to this indicator</p>
