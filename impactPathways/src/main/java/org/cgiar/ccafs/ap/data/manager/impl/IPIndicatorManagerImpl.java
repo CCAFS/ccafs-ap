@@ -325,6 +325,8 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicator.setGender(iData.get("gender"));
       if (iData.get("archived") != null) {
         indicator.setArchived(Double.parseDouble(iData.get("archived")));
+
+        indicator.setArchivedText(iData.get("archived"));
       } else {
         indicator.setArchived(null);
       }
@@ -370,7 +372,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
       indicatorData.put("gender", indicator.getGender());
-      indicatorData.put("archived", String.valueOf(indicator.getArchived()));
+      indicatorData.put("archived", String.valueOf(indicator.getArchivedText()));
       indicatorData.put("narrative_gender", indicator.getNarrativeGender());
       indicatorData.put("narrative_targets", indicator.getNarrativeTargets());
       indicatorData.put("year", String.valueOf(indicator.getYear()));

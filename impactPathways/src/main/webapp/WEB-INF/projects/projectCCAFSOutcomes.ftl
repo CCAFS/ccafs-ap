@@ -151,7 +151,7 @@
                                     <div class="thirdPartBlock">
                                       <label><h6 title='[@s.text name="reporting.projectImpactPathways.achievedTarget.help" /]'>[@s.text name="reporting.projectImpactPathways.achievedTarget" /]:[@customForm.req required=isYearRequired(year) && action.hasProjectPermission("achieved", project.id) /]</h6></label>
                                       [#if editable && (cycleYear lte year) && action.hasProjectPermission("achieved", project.id)]
-                                        <input type="text" class="projectIndicatorAchievedTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.archived" value="${(projectIndicator.archived)!}"/> 
+                                        <input type="text" class="projectIndicatorAchievedTarget ${(isYearRequired(year))?string('required','optional')}" name="project.indicators.archivedText" value="${(projectIndicator.archivedText)!}"/> 
                                       [#else]
                                         <div class="input"><p>${(projectIndicator.archived)!}</p></div>
                                       [/#if]
