@@ -79,10 +79,35 @@ input.disabled {
   background-color: #f1f1f1 !important;
 }
 
+.viewMore-block {
+  overflow-y:hidden;
+  padding-bottom: 50px;
+  -webkit-transition: height 1s;
+  -moz-transition: height 1s;
+  transition: height 1s;
+}
+
 .viewMore {
-  position: absolute;
+  position:absolute;
   bottom: 0;
-  background: #fff;
+  width: 99%;
+  margin: 0 0.5%;
+  cursor: pointer;
+  padding: 40px 0 3px 0;
+  font-weight: 900;
+  text-align: center;
+  background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, #fff 0%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255,0)), color-stop(50%, #fff));
+  background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, #fff 50%);
+  background: -o-linear-gradient(top, rgba(255,255,255,0) 0%, #fff 50%);
+  background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, #fff 50%);
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,#FFF 70%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
+}
+
+.viewMore:hover{
+  color:#999;
+  text-decoration:underline;
 }
 
 .hide {
@@ -4458,6 +4483,9 @@ a.showIndicatorDesc img{
 }
 
 /*** Outcome synthesis ***/
+.projectContributions-block {
+  width: 98%;
+}
 
 table.projectContributions th.col-projectId{
   width: 10%;
@@ -4472,8 +4500,6 @@ table.projectContributions th.col-achieved{
 }
 
 table.projectContributions{
-  width: 98% !important;
-  margin: 0 !important;
 }
 
 /*** Glossary ***/
