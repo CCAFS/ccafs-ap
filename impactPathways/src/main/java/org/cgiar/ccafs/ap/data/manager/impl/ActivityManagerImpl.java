@@ -292,7 +292,12 @@ public class ActivityManagerImpl implements ActivityManager {
     if (activity.getStartDate() != null) {
       activityData.put("startDate", format.format(activity.getStartDate()));
     }
-    activityData.put("leader_id", activity.getLeader().getId());
+    if (activity.getLeader() != null) {
+      activityData.put("leader_id", activity.getLeader().getId());
+    } else {
+      activityData.put("leader_id", 0);
+    }
+
     activityData.put("modified_by", String.valueOf(user.getId()));
     activityData.put("modification_justification", justification);
 
