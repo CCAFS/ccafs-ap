@@ -38,25 +38,26 @@
           <a [#if reportingActive ]href="${baseUrl}/reporting/projectsList.do"[#else]]href="javascript:void(0);" title="[@s.text name="menu.link.disabled" /]" class="disabled"[/#if]>
             [@s.text name="menu.reporting" /]
           </a>
+          [#assign reportingCycleValid = currentCycleSection?? && reportingCycle/]
           <ul class="subMenu">
-            <li [#if reportingCycle && currentCycleSection  == "projects"] class="currentSection" [/#if] >
+            <li [#if reportingCycleValid && (currentCycleSection  == "projects")] class="currentSection" [/#if] >
               <a href="[#if reportingActive]${baseUrl}/reporting/projectsList.do[/#if]" class="[#if !reportingActive]disabled[/#if]">Projects</a>
             </li>
             [#-- Contact points and Flagships Leaders : securityContext.FPL || securityContext.CP || --]
             [#if  securityContext.admin]
-              <li [#if reportingCycle && currentCycleSection  == "crpIndicators"] class="currentSection" [/#if] >
+              <li [#if reportingCycleValid && (currentCycleSection  == "crpIndicators")] class="currentSection" [/#if] >
                 <a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" class="disabled">CRP Indicators</a>
               </li>
             [/#if]
             [#-- Flagships Leaders and Regional Leaders : securityContext.FPL || securityContext.RPL || --]
             [#if securityContext.admin]
-              <li [#if reportingCycle && currentCycleSection  == "outcomeSynthesis"] class="currentSection" [/#if] >
+              <li [#if reportingCycleValid && (currentCycleSection  == "outcomeSynthesis")] class="currentSection" [/#if] >
                 <a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" class="disabled">Outcome Synthesis</a>
               </li>
             [/#if]
             [#-- Flagships Leaders and Regional Leaders : securityContext.FPL || securityContext.RPL || --]
             [#if  securityContext.admin]
-              <li [#if reportingCycle && currentCycleSection  == "synthesisByMog"] class="currentSection" [/#if] >
+              <li [#if reportingCycleValid && (currentCycleSection  == "synthesisByMog")] class="currentSection" [/#if] >
                 <a href="" class="disabled">Synthesis by MOG</a>
               </li> 
             [/#if]
