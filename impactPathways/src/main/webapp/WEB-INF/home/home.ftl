@@ -38,7 +38,7 @@
     <div id="timelineBlock" class="borderBox">
       <ul class="timeline" id="timeline">
         [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-02-15" status="Open"/]
-        [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-02-29" status="Close"/]
+        [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-03-03" status="Close"/]
         
         [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points & Regional Program Leaders"  dateText="2016-03-07" status="Open"/]
         [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points &  Regional Program Leaders"  dateText="2016-03-15" status="Close"/]
