@@ -37,7 +37,7 @@
       </div> 
       <div class="fullPartBlock">
         <h6>Download Full Project Report</h6>
-        <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" class="button-pdf-format" target="__BLANK">PDF Format</a> 
+        <a href="[@s.url namespace="/summaries" action='project'][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='cycle']${submission.cycle}[/@s.param][/@s.url]" class="button-pdf-format" target="__BLANK">PDF Format</a> 
       </div> 
     [#else]
       <p>The project is still incomplete, please go to the sections without the green check mark and complete the missing fields before submitting your project.</p>
