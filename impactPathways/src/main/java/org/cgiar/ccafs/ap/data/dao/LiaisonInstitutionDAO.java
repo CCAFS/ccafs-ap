@@ -66,4 +66,12 @@ public interface LiaisonInstitutionDAO {
    * @return a List of maps with the information.
    */
   public List<Map<String, String>> getLiaisonInstitutionsCrps();
+
+  /**
+   * This method return all the liaison institutions for crps contained in the database.
+   * 
+   * @return a List of maps with the information.
+   */
+  public List<Map<String, String>> getLiaisonInstitutionsSynthesis();
+
 }

@@ -55,6 +55,7 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
         liaisonInstitution.put("id", rs.getString("id"));
         liaisonInstitution.put("name", rs.getString("name"));
         liaisonInstitution.put("acronym", rs.getString("acronym"));
+        liaisonInstitution.put("ip_program", rs.getString("ip_program"));
       }
     } catch (SQLException e) {
       LOG.error("getLiaisonInstitution() > Exception raised trying to get the liaison institution {}.",
@@ -157,6 +158,33 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
         liaisonInstitution.put("id", rs.getString("id"));
         liaisonInstitution.put("name", rs.getString("name"));
         liaisonInstitution.put("acronym", rs.getString("acronym"));
+        liaisonInstitutions.add(liaisonInstitution);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("getLiaisonInstitutions() > Exception raised trying to get the liaison institutions.", e);
+    }
+
+    return liaisonInstitutions;
+  }
+
+
+  @Override
+  public List<Map<String, String>> getLiaisonInstitutionsSynthesis() {
+    List<Map<String, String>> liaisonInstitutions = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * ");
+    query.append("FROM liaison_institutions li where id  in(2,3,4,5,6,7,8,9,10)  ");
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+
+      while (rs.next()) {
+        Map<String, String> liaisonInstitution = new HashMap<>();
+        liaisonInstitution.put("id", rs.getString("id"));
+        liaisonInstitution.put("name", rs.getString("name"));
+        liaisonInstitution.put("acronym", rs.getString("acronym"));
+        liaisonInstitution.put("ip_program", rs.getString("ip_program"));
         liaisonInstitutions.add(liaisonInstitution);
       }
 

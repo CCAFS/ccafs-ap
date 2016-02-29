@@ -26,13 +26,20 @@ public class LiaisonInstitution {
   private int id;
   private String name;
   private String acronym;
+  private String ipProgram;
+
 
   public String getAcronym() {
     return acronym;
   }
 
+
   public int getId() {
     return id;
+  }
+
+  public String getIpProgram() {
+    return ipProgram;
   }
 
   public String getName() {
@@ -45,6 +52,10 @@ public class LiaisonInstitution {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setIpProgram(String ipProgram) {
+    this.ipProgram = ipProgram;
   }
 
   public void setName(String name) {
