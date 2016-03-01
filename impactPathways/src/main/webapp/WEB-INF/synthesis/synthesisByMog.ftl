@@ -47,6 +47,13 @@
       <div id="outcomeSynthesisBlock" class="">
         [#list mogs as mog]
         <div class="borderBox">
+          [#-- Button for edit this section --]
+          [#if (!editable && canEdit)]
+            <div class="editButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+          [#elseif canEdit]
+              <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+      
           [#-- MOG Name --]
           <div class="fullPartBlock">
             <h6 class="title">${mog.getComposedId()}</h6>
@@ -54,19 +61,65 @@
           </div>
           [#-- Synthesis report for MOG --]
           <div class="fullPartBlock">
-            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.synthesisReport" className="synthesisReport limitWords-100" required=canEdit editable=editable /]
+            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.synthesisReport" paramText="${mog.getComposedId()}" className="synthesisReport limitWords-100" required=canEdit editable=editable /]
           </div>
           [#-- Gender synthesis report for MOG --]
           <div class="fullPartBlock">
-            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.genderSynthesisReport" className="genderSynthesisReport limitWords-100" required=canEdit editable=editable /]
+            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.genderSynthesisReport" paramText="${mog.getComposedId()}" className="genderSynthesisReport limitWords-100" required=canEdit editable=editable /]
           </div>
+          
           [#-- Synthesis reported by regions --]
+          [#if program.flagshipProgram]
           <div class="fullPartBlock">
-            {Synthesis reported by regions HERE}
+            <h6>[@s.text name="reporting.synthesis.synthesisByMog.RegionalSynthesis" /]:</h6> 
+            <div class="fullPartBlock projectContributions-block viewMore-block">
+              <table class="projectContributions">
+                <thead>
+                  <tr class="header">
+                    <th class="col-regionId">Region</th>
+                    <th>Synthesis report</th>
+                    <th>Gender synthesis report</th>
+                  </tr>
+                </thead>
+                <tbody>
+                [#list 1..5 as syntesisReport]
+                  <tr>
+                    <td class="center"> Region_ID</td>
+                    <td class="center" > Prefilled by RPL</td>
+                    <td class="center"> Prefilled by RPL</td>
+                  </tr>
+                [/#list]
+                </tbody>
+              </table>
+              <div class="viewMore"></div>
+            </div>
           </div>
+          [/#if]
+          
           [#-- Projects contributions to this MOG --]
           <div class="fullPartBlock">
-            {Projects contributions to this MOG HERE}
+            <h6>[@s.text name="reporting.synthesis.synthesisByMog.projectContributions" /]:</h6> 
+            <div class="fullPartBlock projectContributions-block viewMore-block">
+              <table class="projectContributions">
+                <thead>
+                  <tr class="header">
+                    <th class="col-projectId">Project ID</th>
+                    <th>Expected annual ${currentReportingYear} contribution</th>
+                    <th>Plan of the gender and social inclusion dimension of the expected annual output</th>
+                  </tr>
+                </thead>
+                <tbody>
+                [#list 1..10 as projectContribution]
+                  <tr>
+                    <td class="center"> P_ID</td>
+                    <td class="center" > Prefilled by PL</td>
+                    <td class="center"> Prefilled by PL</td>
+                  </tr>
+                [/#list]
+                </tbody>
+              </table>
+              <div class="viewMore"></div>
+            </div>
           </div>
         </div>
         [/#list]

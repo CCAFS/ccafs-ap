@@ -46,6 +46,13 @@
       <div id="outcomeSynthesisBlock" class="">
         [#list midOutcomes as midOutcome]
         <div class="borderBox">
+          [#-- Button for edit this section --]
+          [#if (!editable && canEdit)]
+            <div class="editButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+          [#elseif canEdit]
+              <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        
           <div class="fullPartBlock">
             <h6 class="title">${midOutcome.getComposedId()}</h6>
             <p>${midOutcome.description}</p>
@@ -62,20 +69,52 @@
                 <div class="fullPartBlock">
                   <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
                 </div>
+                
                 [#-- Synthesis of annual progress towards this indicator --]
                 <div class="fullPartBlock">
                   [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
+                
                 [#-- Synthesis of annual progress gender and social inclusion contribution towards this indicator --]
                 <div class="fullPartBlock">
                   [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" className="genderProgressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
+                
                 [#-- Explain any discrepancy  --]
                 [#if midOutcome.regionalProgramType]
                 <div class="fullPartBlock">
                   [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" className="discrepancy limitWords-100" editable=editable /]
                 </div>
-                [/#if] 
+                [/#if]
+                
+                [#-- Regions/Global contributions --]
+                [#if midOutcome.flagshipProgramType]
+                <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
+                <div class="fullPartBlock">
+                  <div class="fullPartBlock projectContributions-block viewMore-block">
+                    <table class="projectContributions">
+                      <thead>
+                        <tr class="header">
+                          <th>Region</th>
+                          <th>Synthesis report</th>
+                          <th>Gender synthesis report</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      [#list 1..5 as syntesisReport]
+                        <tr>
+                          <td class="center"> Region_ID</td>
+                          <td class="center" > Prefilled by RPL</td>
+                          <td class="center"> Prefilled by RPL</td>
+                        </tr>
+                      [/#list]
+                      </tbody>
+                    </table>
+                    <div class="viewMore"></div>
+                  </div>
+                </div>
+                [/#if]
+                
                 [#-- Project Contributions --]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
                 [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id))?has_content]
@@ -107,14 +146,6 @@
                 </div>
                 [#else]
                   <p>There is not project contributing to this indicator</p>
-                [/#if]
-                
-                [#-- Regions/Global contributions --]
-                [#if midOutcome.flagshipProgramType]
-                <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
-                <div class="fullPartBlock">
-                  {Table regionalContributions to this indicator Here}
-                </div>
                 [/#if]
                 
               </div>
