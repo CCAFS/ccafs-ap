@@ -31,6 +31,7 @@
     <mapping resource="xmls/ProjectLeverage.hbm.xml" />
     <mapping resource="xmls/DeliverableMetadataElements.hbm.xml" />
     <mapping resource="xmls/MetadataElements.hbm.xml" />
+     <mapping resource="xmls/OutcomeSynthesis.hbm.xml" />
   </session-factory>
 </hibernate-configuration>
 
