@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Sebastian Amariles Garcia - CIAT/CCAFS
+ * @author Christian david Garcia - CIAT/CCAFS
  */
 
 public class OutcomeSynthesisAction extends BaseAction {
@@ -130,7 +131,7 @@ public class OutcomeSynthesisAction extends BaseAction {
     }
 
     // Get the list of liaison institutions.
-    liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutions();
+    liaisonInstitutions = liaisonInstitutionManager.getLiaisonInstitutionSynthesis();
 
     // Get currentLiaisonInstitution
     currentLiaisonInstitution = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
@@ -138,42 +139,7 @@ public class OutcomeSynthesisAction extends BaseAction {
     // Create an ipElementType with the identifier of the outcomes 2019 type
     IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
-    // TODO: Create a function for getting an IPProgram by liaisonInstitutionID
-    // Temporally i (sebas) will use RP LAM that the IpProgram ID is 5
-
-    int programID = 1; // FP1
-    switch (liaisonInstitutionID) {
-      case 2:
-        programID = 1; // FP1
-        break;
-      case 3:
-        programID = 2; // FP2
-        break;
-      case 4:
-        programID = 3; // FP3
-        break;
-      case 5:
-        programID = 4; // FP4
-        break;
-      case 6:
-        programID = 6; // RP EA
-        break;
-      case 7:
-        programID = 5; // RP LAM
-        break;
-      case 8:
-        programID = 8; // RP SAs
-        break;
-      case 9:
-        programID = 9; // RP SEA
-        break;
-      case 10:
-        programID = 7; // RP WA
-        break;
-      default:
-        break;
-    }
-
+    int programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
     program = ipProgramManager.getIPProgramById(programID);
 
     // Get Outcomes 2019 of current IPProgram

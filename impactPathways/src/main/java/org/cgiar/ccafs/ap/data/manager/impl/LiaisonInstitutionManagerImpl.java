@@ -46,6 +46,7 @@ public class LiaisonInstitutionManagerImpl implements LiaisonInstitutionManager 
     liaisonInstitution.setId(Integer.parseInt(liaisonInstitutionData.get("id")));
     liaisonInstitution.setName(liaisonInstitutionData.get("name"));
     liaisonInstitution.setAcronym(liaisonInstitutionData.get("acronym"));
+    liaisonInstitution.setIpProgram(liaisonInstitutionData.get("ip_program"));
     return liaisonInstitution;
   }
 
@@ -108,6 +109,24 @@ public class LiaisonInstitutionManagerImpl implements LiaisonInstitutionManager 
       liaisonInstitution.setId(Integer.parseInt(liData.get("id")));
       liaisonInstitution.setName(liData.get("name"));
       liaisonInstitution.setAcronym(liData.get("acronym"));
+
+      liaisonInstitutions.add(liaisonInstitution);
+    }
+
+    return liaisonInstitutions;
+  }
+
+  @Override
+  public List<LiaisonInstitution> getLiaisonInstitutionSynthesis() {
+    List<LiaisonInstitution> liaisonInstitutions = new ArrayList<>();
+    List<Map<String, String>> liaisonInsitutionsData = liaisonInstitutionDAO.getLiaisonInstitutionsSynthesis();
+
+    for (Map<String, String> liData : liaisonInsitutionsData) {
+      LiaisonInstitution liaisonInstitution = new LiaisonInstitution();
+      liaisonInstitution.setId(Integer.parseInt(liData.get("id")));
+      liaisonInstitution.setName(liData.get("name"));
+      liaisonInstitution.setAcronym(liData.get("acronym"));
+      liaisonInstitution.setIpProgram(liData.get("ip_program"));
 
       liaisonInstitutions.add(liaisonInstitution);
     }
