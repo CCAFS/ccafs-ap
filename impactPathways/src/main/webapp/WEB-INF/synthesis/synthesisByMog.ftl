@@ -28,7 +28,7 @@
     [#-- Program (Regions and Flagships) --]
     <ul id="liaisonInstitutions" class="horizontalSubMenu">
       [#list liaisonInstitutions as institution]
-        <li class="[#if institution.id == liaisonInstitutionID]active[/#if]"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name='indicatorTypeID']${(indicatorTypeID)!}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">${institution.acronym}</a></li>
+        <li class="[#if institution.id == liaisonInstitutionID]active[/#if]"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name='indicatorTypeID']${(indicatorTypeID)!}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">${institution.name}</a></li>
       [/#list]
     </ul>
     
@@ -39,16 +39,34 @@
       [#elseif !canEdit ]
         <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param]${title}[/@s.param][/@s.text]</p>
       [/#if]
-      [#-- Title --]
-      <h1 class="contentTitle">[@s.text name="reporting.synthesis.outcomeSynthesis.title" ][@s.param]${(currentLiaisonInstitution.name)!}[/@s.param][/@s.text]</h1>
       
-      [#-- Mogs --]
+      [#-- Title --]
+      <h1 class="contentTitle">[@s.text name="reporting.synthesis.synthesisByMog.title" ][@s.param]${(currentLiaisonInstitution.name)!}[/@s.param][/@s.text]</h1>
+      
+      [#-- MOGs --]
       <div id="outcomeSynthesisBlock" class="">
         [#list mogs as mog]
         <div class="borderBox">
+          [#-- MOG Name --]
           <div class="fullPartBlock">
             <h6 class="title">${mog.getComposedId()}</h6>
             <p>${mog.description}</p>
+          </div>
+          [#-- Synthesis report for MOG --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.synthesisReport" className="synthesisReport limitWords-100" required=canEdit editable=editable /]
+          </div>
+          [#-- Gender synthesis report for MOG --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.genderSynthesisReport" className="genderSynthesisReport limitWords-100" required=canEdit editable=editable /]
+          </div>
+          [#-- Synthesis reported by regions --]
+          <div class="fullPartBlock">
+            {Synthesis reported by regions HERE}
+          </div>
+          [#-- Projects contributions to this MOG --]
+          <div class="fullPartBlock">
+            {Projects contributions to this MOG HERE}
           </div>
         </div>
         [/#list]
