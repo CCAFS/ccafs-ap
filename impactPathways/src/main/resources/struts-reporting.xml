@@ -70,6 +70,15 @@
       </result>
     </action>
     
+    <action name="synthesisByMog" class="org.cgiar.ccafs.ap.action.synthesis.SynthesisByMogAction">
+      <result name="input">/WEB-INF/synthesis/synthesisByMog.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">synthesisByMog</param>
+        <param name="liaisonInstitutionID">${liaisonInstitutionID}</param>
+        <param name="edit">true</param>
+      </result>
+    </action>
+    
   </package>
   
   <package name="reportingProjects" namespace="/reporting/projects" extends="ccafsap-default">
