@@ -4490,6 +4490,10 @@ a.showIndicatorDesc img{
 table.projectContributions th.col-projectId{
   width: 10%;
 }
+table.projectContributions th.col-regionId{
+  width: 10%;
+}
+
 table.projectContributions th.col-expected{
   width: 15%;
   padding: 6px 0;

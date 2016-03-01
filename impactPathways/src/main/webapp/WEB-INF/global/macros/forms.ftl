@@ -28,14 +28,14 @@
   </div>
 [/#macro]
 
-[#macro textArea name editable value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL" editable=true ]
+[#macro textArea name editable value="-NULL" i18nkey="" disabled=false required=false errorfield="" help="" addButton=false showTitle=true display=true className="-NULL" paramText="" editable=true ]
   <div class="textArea [#if addButton] button[/#if]" [#if !display]style="display: none;"[/#if]> 
     [#assign customName]${(i18nkey?has_content)?string(i18nkey,name)}[/#assign]  
     [#assign customLabel][#if !editable]${customName}.readText[#else]${customName}[/#if][/#assign]
     [#assign customValue][#if value=="-NULL"][@s.property value="${name}"/][#else]${value}[/#if][/#assign]
   	[#if showTitle]
 	    <h6> 
-	      <label for="${name}" class="${editable?string('editable', 'readOnly')}"> [@s.text name="${customLabel}"/]:[#if required && editable]<span class="red">*</span>[/#if]</label>
+	      <label for="${name}" class="${editable?string('editable', 'readOnly')}"> [@s.text name="${customLabel}"][@s.param]${paramText}[/@s.param][/@s.text]:[#if required && editable]<span class="red">*</span>[/#if]</label>
 	      [#if help != ""]<img src="${baseUrl}/images/global/icon-help2.png" title="[@s.text name="${help}"/]" />[/#if]
 	    </h6>
     [/#if]
