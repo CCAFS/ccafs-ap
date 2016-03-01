@@ -40,9 +40,9 @@ import org.slf4j.LoggerFactory;
  * @author Sebastian Amariles Garcia - CIAT/CCAFS
  */
 
-public class OutcomeSynthesisAction extends BaseAction {
+public class SynthesisByMogAction extends BaseAction {
 
-  private static Logger LOG = LoggerFactory.getLogger(OutcomeSynthesisAction.class);
+  private static Logger LOG = LoggerFactory.getLogger(SynthesisByMogAction.class);
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
@@ -55,14 +55,14 @@ public class OutcomeSynthesisAction extends BaseAction {
   // Model for the front-end
   private List<LiaisonInstitution> liaisonInstitutions;
   private LiaisonInstitution currentLiaisonInstitution;
-  private List<IPElement> midOutcomes;
+  private List<IPElement> mogs;
   private IPProgram program;
 
   private int liaisonInstitutionID;
 
 
   @Inject
-  public OutcomeSynthesisAction(APConfig config, HistoryManager historyManager,
+  public SynthesisByMogAction(APConfig config, HistoryManager historyManager,
     LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
     IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, ProjectLeverageValidator validator) {
     super(config);
@@ -88,8 +88,8 @@ public class OutcomeSynthesisAction extends BaseAction {
     return liaisonInstitutions;
   }
 
-  public List<IPElement> getMidOutcomes() {
-    return midOutcomes;
+  public List<IPElement> getMogs() {
+    return mogs;
   }
 
   public IPProgram getProgram() {
@@ -136,7 +136,7 @@ public class OutcomeSynthesisAction extends BaseAction {
     currentLiaisonInstitution = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
 
     // Create an ipElementType with the identifier of the outcomes 2019 type
-    IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
+    IPElementType mogsType = new IPElementType(APConstants.ELEMENT_TYPE_OUTPUTS);
 
     // TODO: Create a function for getting an IPProgram by liaisonInstitutionID
     // Temporally i (sebas) will use RP LAM that the IpProgram ID is 5
@@ -176,9 +176,10 @@ public class OutcomeSynthesisAction extends BaseAction {
 
     program = ipProgramManager.getIPProgramById(programID);
 
-    // Get Outcomes 2019 of current IPProgram
-    midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
-
+    // Get all MOGs manually
+    String[] ids = {"171", "172", "173", "174", "175", "46", "47", "48", "49", "50", "51", "40", "41", "42", "176",
+      "177", "177", "178", "179"};
+    mogs = ipElementManager.getIPElementList(ids);
 
   }
 
@@ -195,8 +196,8 @@ public class OutcomeSynthesisAction extends BaseAction {
     this.liaisonInstitutionID = liaisonInstitutionID;
   }
 
-  public void setMidOutcomes(List<IPElement> midOutcomes) {
-    this.midOutcomes = midOutcomes;
+  public void setMogs(List<IPElement> mogs) {
+    this.mogs = mogs;
   }
 
   public void setProgram(IPProgram program) {

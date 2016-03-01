@@ -58,7 +58,7 @@
             [#-- Flagships Leaders and Regional Leaders : securityContext.FPL || securityContext.RPL || --]
             [#if  securityContext.admin]
               <li [#if reportingCycleValid && (currentCycleSection  == "synthesisByMog")] class="currentSection" [/#if] >
-                <a href="" class="disabled">Synthesis by MOG</a>
+                <a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true" class="disabled">Synthesis by MOG</a>
               </li> 
             [/#if]
             
