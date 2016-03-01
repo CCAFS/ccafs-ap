@@ -111,7 +111,7 @@ public interface IPIndicatorManager {
    * @param indicator
    * @return a list of indicators object
    */
-  public List<IPIndicator> getIndicatorsSyntesis(int year, int indicator);
+  public List<IPIndicator> getIndicatorsSyntesis(int year, int indicator, int program);
 
   /**
    * This method gets all the indicators related to the project passed as parameter

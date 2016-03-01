@@ -98,7 +98,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   }
 
   public List<IPIndicator> getProjectIndicators(int year, int indicator) {
-    return ipIndicatorManager.getIndicatorsSyntesis(year, indicator);
+    return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId());
   }
 
   @Override
