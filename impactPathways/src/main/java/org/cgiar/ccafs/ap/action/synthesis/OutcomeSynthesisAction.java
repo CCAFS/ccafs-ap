@@ -20,14 +20,17 @@ import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.OutcomeSynthesisManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
+import org.cgiar.ccafs.ap.data.model.OutcomeSynthesis;
 import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -52,20 +55,24 @@ public class OutcomeSynthesisAction extends BaseAction {
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private IPProgramManager ipProgramManager;
   private IPElementManager ipElementManager;
+  private OutcomeSynthesisManager outcomeSynthesisManager;
   private IPIndicatorManager ipIndicatorManager;
   // Model for the front-end
   private List<LiaisonInstitution> liaisonInstitutions;
   private LiaisonInstitution currentLiaisonInstitution;
   private List<IPElement> midOutcomes;
+  private List<OutcomeSynthesis> synthesis;
+
   private IPProgram program;
 
-  private int liaisonInstitutionID;
 
+  private int liaisonInstitutionID;
 
   @Inject
   public OutcomeSynthesisAction(APConfig config, HistoryManager historyManager,
     LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
-    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, ProjectLeverageValidator validator) {
+    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, ProjectLeverageValidator validator,
+    OutcomeSynthesisManager outcomeSynthesisManager) {
     super(config);
     this.validator = validator;
     this.historyManager = historyManager;
@@ -73,12 +80,24 @@ public class OutcomeSynthesisAction extends BaseAction {
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.ipProgramManager = ipProgramManager;
     this.ipElementManager = ipElementManager;
+    this.outcomeSynthesisManager = outcomeSynthesisManager;
   }
 
   public LiaisonInstitution getCurrentLiaisonInstitution() {
     return currentLiaisonInstitution;
   }
 
+
+  public int getIndex(int indicator, int midoutcome, int program) {
+    OutcomeSynthesis synthe = new OutcomeSynthesis();
+    synthe.setIndicadorId(indicator);
+    synthe.setMidOutcomeId(midoutcome);
+    synthe.setIpProgamId(program);
+
+    int index = synthesis.indexOf(synthe);
+    return index;
+
+  }
 
   public int getLiaisonInstitutionID() {
     return liaisonInstitutionID;
@@ -88,6 +107,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     return liaisonInstitutions;
   }
+
 
   public List<IPElement> getMidOutcomes() {
     return midOutcomes;
@@ -100,6 +120,11 @@ public class OutcomeSynthesisAction extends BaseAction {
   public List<IPIndicator> getProjectIndicators(int year, int indicator) {
     return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId());
   }
+
+  public List<OutcomeSynthesis> getSynthesis() {
+    return synthesis;
+  }
+
 
   @Override
   public String next() {
@@ -144,12 +169,47 @@ public class OutcomeSynthesisAction extends BaseAction {
 
     // Get Outcomes 2019 of current IPProgram
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
+    synthesis = outcomeSynthesisManager.getOutcomeSynthesis(programID);
 
+    for (IPElement midoutcome : midOutcomes) {
+      for (IPIndicator indicator : midoutcome.getIndicators()) {
+        int indicatorId = indicator.getId();
+        if (indicator.getParent() != null) {
+          indicatorId = indicator.getParent().getId();
+        }
+        if (this.getIndex(indicatorId, midoutcome.getId(), program.getId()) == -1) {
+          OutcomeSynthesis synthe = new OutcomeSynthesis();
+          synthe.setIndicadorId(indicatorId);
+          synthe.setMidOutcomeId(midoutcome.getId());
+          synthe.setIpProgamId(program.getId());
+          synthe.setYear(this.getCurrentReportingYear());
+          synthe.setId(null);
+          synthesis.add(synthe);
+
+        }
+
+      }
+    }
 
   }
 
   @Override
   public String save() {
+    for (OutcomeSynthesis synthe : synthesis) {
+
+      outcomeSynthesisManager.saveOutcomeSynthesis(synthe);
+
+    }
+
+    Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty()) {
+      String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else {
+      this.addActionMessage(this.getText("saving.saved"));
+    }
+
     return SUCCESS;
   }
 
@@ -167,6 +227,10 @@ public class OutcomeSynthesisAction extends BaseAction {
 
   public void setProgram(IPProgram program) {
     this.program = program;
+  }
+
+  public void setSynthesis(List<OutcomeSynthesis> synthesis) {
+    this.synthesis = synthesis;
   }
 
   @Override

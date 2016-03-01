@@ -41,76 +41,112 @@ public class OutcomeSynthesis implements java.io.Serializable {
     this.discrepancy = discrepancy;
   }
 
-  public Integer getId() {
-    return this.id;
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    OutcomeSynthesis other = (OutcomeSynthesis) obj;
+    if (indicadorId != other.indicadorId) {
+      return false;
+    }
+    if (ipProgamId != other.ipProgamId) {
+      return false;
+    }
+    if (midOutcomeId != other.midOutcomeId) {
+      return false;
+    }
+    return true;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public int getIpProgamId() {
-    return this.ipProgamId;
-  }
-
-  public void setIpProgamId(int ipProgamId) {
-    this.ipProgamId = ipProgamId;
-  }
-
-  public int getYear() {
-    return this.year;
-  }
-
-  public void setYear(int year) {
-    this.year = year;
-  }
-
-  public int getMidOutcomeId() {
-    return this.midOutcomeId;
-  }
-
-  public void setMidOutcomeId(int midOutcomeId) {
-    this.midOutcomeId = midOutcomeId;
-  }
-
-  public int getIndicadorId() {
-    return this.indicadorId;
-  }
-
-  public void setIndicadorId(int indicadorId) {
-    this.indicadorId = indicadorId;
-  }
 
   public Double getAchieved() {
     return this.achieved;
-  }
-
-  public void setAchieved(Double achieved) {
-    this.achieved = achieved;
-  }
-
-  public String getSynthesisAnual() {
-    return this.synthesisAnual;
-  }
-
-  public void setSynthesisAnual(String synthesisAnual) {
-    this.synthesisAnual = synthesisAnual;
-  }
-
-  public String getSynthesisGender() {
-    return this.synthesisGender;
-  }
-
-  public void setSynthesisGender(String synthesisGender) {
-    this.synthesisGender = synthesisGender;
   }
 
   public String getDiscrepancy() {
     return this.discrepancy;
   }
 
+  public Integer getId() {
+    return this.id;
+  }
+
+  public int getIndicadorId() {
+    return this.indicadorId;
+  }
+
+  public int getIpProgamId() {
+    return this.ipProgamId;
+  }
+
+  public int getMidOutcomeId() {
+    return this.midOutcomeId;
+  }
+
+  public String getSynthesisAnual() {
+    return this.synthesisAnual;
+  }
+
+  public String getSynthesisGender() {
+    return this.synthesisGender;
+  }
+
+  public int getYear() {
+    return this.year;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + indicadorId;
+    result = prime * result + ipProgamId;
+    result = prime * result + midOutcomeId;
+    return result;
+  }
+
+  public void setAchieved(Double achieved) {
+    this.achieved = achieved;
+  }
+
   public void setDiscrepancy(String discrepancy) {
     this.discrepancy = discrepancy;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public void setIndicadorId(int indicadorId) {
+    this.indicadorId = indicadorId;
+  }
+
+  public void setIpProgamId(int ipProgamId) {
+    this.ipProgamId = ipProgamId;
+  }
+
+  public void setMidOutcomeId(int midOutcomeId) {
+    this.midOutcomeId = midOutcomeId;
+  }
+
+  public void setSynthesisAnual(String synthesisAnual) {
+    this.synthesisAnual = synthesisAnual;
+  }
+
+  public void setSynthesisGender(String synthesisGender) {
+    this.synthesisGender = synthesisGender;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
 

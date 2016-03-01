@@ -54,26 +54,28 @@
             <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.indicators" /]:</h6> 
             [#list midOutcome.indicators as indicator]
               [#assign flagshipIndicator = (indicator.parent)!indicator /]
+               [#assign index = action.getIndex(flagshipIndicator.id,midOutcome.id,program.id) /]
+           
               <div class="simpleBox">
                 <div class="fullPartBlock">
                   <p>${flagshipIndicator.description}</p>
                 </div>
                 [#-- Achieved target in current reporting period --]
                 <div class="fullPartBlock">
-                  <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
+                  <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achieved" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
                 </div>
                 [#-- Synthesis of annual progress towards this indicator --]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-200" required=canEdit editable=editable /]
+                  [@customForm.textArea name="synthesis[${index}].synthesisAnual" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
                 [#-- Synthesis of annual progress gender and social inclusion contribution towards this indicator --]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" className="genderProgressIndicator limitWords-200" required=canEdit editable=editable /]
+                  [@customForm.textArea name="synthesis[${index}].synthesisGender" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" className="genderProgressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
                 [#-- Explain any discrepancy  --]
                 [#if midOutcome.regionalProgramType]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" className="discrepancy limitWords-100" editable=editable /]
+                  [@customForm.textArea name="synthesis[${index}].discrepancy" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" className="discrepancy limitWords-100" editable=editable /]
                 </div>
                 [/#if] 
                 [#-- Project Contributions --]
@@ -126,6 +128,7 @@
       
       [#-- Button save and Log history --]
       [#if editable]
+        <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
         <div class="" >
           <div class="buttons">
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
