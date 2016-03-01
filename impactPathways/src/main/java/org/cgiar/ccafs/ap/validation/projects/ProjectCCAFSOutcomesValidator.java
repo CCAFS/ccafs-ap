@@ -189,8 +189,14 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
                   action.getCurrentReportingYear(), c);
                 this.validateNarrativeGender(action, indicator.getNarrativeGender(), outcome.getComposedId(),
                   action.getCurrentReportingYear(), c);
-                this.validateArchived(action, Double.parseDouble(indicator.getArchivedText()), outcome.getComposedId(),
-                  action.getCurrentReportingYear(), c);
+                try {
+                  this.validateArchived(action, Double.parseDouble(indicator.getArchivedText()),
+                    outcome.getComposedId(), action.getCurrentReportingYear(), c);
+                } catch (NumberFormatException e) {
+                  this.addMessage(" Achieved in current reporting period   '" + outcome.getComposedId() + "' in '"
+                    + action.getCurrentReportingYear() + "' year");
+                  this.addMissingField("project.indicators[" + c + "].archivied");
+                }
 
               }
 
