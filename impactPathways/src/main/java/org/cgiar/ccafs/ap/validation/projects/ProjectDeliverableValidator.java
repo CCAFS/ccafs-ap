@@ -272,11 +272,13 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
   private void validateStandar(BaseAction action, Project project, Deliverable deliverable) {
 
-    // Validating the title
-    if (!deliverableValidator.isValidTitle(deliverable.getTitle())) {
-      // action.addFieldError("deliverable.title", action.getText("validation.field.required"));
-      this.addMessage("projects.deliverable(" + deliverable.getId() + ").title");
-      this.addMissingField("projects.deliverable(" + deliverable.getId() + ").title");
+    if (action.hasProjectPermission("main", project.getId())) {
+      // Validating the title
+      if (!deliverableValidator.isValidTitle(deliverable.getTitle())) {
+        // action.addFieldError("deliverable.title", action.getText("validation.field.required"));
+        this.addMessage("projects.deliverable(" + deliverable.getId() + ").title");
+        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").title");
+      }
     }
 
     // Validating that a MOG is selected.
