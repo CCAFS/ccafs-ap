@@ -10,18 +10,22 @@ public class OutcomeSynthesis implements java.io.Serializable {
 
   private Integer id;
   private int ipProgamId;
+  private IPProgram ipprogram;
+
   private int year;
+
+
   private int midOutcomeId;
+
   private int indicadorId;
   private Float achieved;
   private String achievedText;
-
   private String synthesisAnual;
-
-
   private String synthesisGender;
 
   private String discrepancy;
+
+
   private Double achievedExpected;
 
   public OutcomeSynthesis() {
@@ -34,7 +38,6 @@ public class OutcomeSynthesis implements java.io.Serializable {
     this.indicadorId = indicadorId;
   }
 
-
   public OutcomeSynthesis(int ipProgamId, int year, int midOutcomeId, int indicadorId, Float achieved,
     String synthesisAnual, String synthesisGender, String discrepancy) {
     this.ipProgamId = ipProgamId;
@@ -46,7 +49,6 @@ public class OutcomeSynthesis implements java.io.Serializable {
     this.synthesisGender = synthesisGender;
     this.discrepancy = discrepancy;
   }
-
 
   @Override
   public boolean equals(Object obj) {
@@ -82,6 +84,7 @@ public class OutcomeSynthesis implements java.io.Serializable {
     return achievedExpected;
   }
 
+
   public String getAchievedText() {
     return achievedText;
   }
@@ -91,17 +94,22 @@ public class OutcomeSynthesis implements java.io.Serializable {
     return this.discrepancy;
   }
 
-
   public Integer getId() {
     return this.id;
   }
+
 
   public int getIndicadorId() {
     return this.indicadorId;
   }
 
+
   public int getIpProgamId() {
     return this.ipProgamId;
+  }
+
+  public IPProgram getIpprogram() {
+    return ipprogram;
   }
 
   public int getMidOutcomeId() {
@@ -156,6 +164,10 @@ public class OutcomeSynthesis implements java.io.Serializable {
 
   public void setIpProgamId(int ipProgamId) {
     this.ipProgamId = ipProgamId;
+  }
+
+  public void setIpprogram(IPProgram ipprogram) {
+    this.ipprogram = ipprogram;
   }
 
   public void setMidOutcomeId(int midOutcomeId) {

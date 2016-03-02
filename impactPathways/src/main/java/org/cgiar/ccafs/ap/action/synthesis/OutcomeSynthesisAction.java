@@ -63,6 +63,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   private List<IPElement> midOutcomes;
   private List<OutcomeSynthesis> synthesis;
 
+
   private IPProgram program;
 
 
@@ -83,10 +84,10 @@ public class OutcomeSynthesisAction extends BaseAction {
     this.outcomeSynthesisManager = outcomeSynthesisManager;
   }
 
+
   public LiaisonInstitution getCurrentLiaisonInstitution() {
     return currentLiaisonInstitution;
   }
-
 
   public int getIndex(int indicator, int midoutcome, int program) {
     OutcomeSynthesis synthe = new OutcomeSynthesis();
@@ -108,23 +109,31 @@ public class OutcomeSynthesisAction extends BaseAction {
     return liaisonInstitutions;
   }
 
-
   public List<IPElement> getMidOutcomes() {
     return midOutcomes;
   }
+
 
   public IPProgram getProgram() {
     return program;
   }
 
+
   public List<IPIndicator> getProjectIndicators(int year, int indicator) {
     return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId());
+  }
+
+  public List<OutcomeSynthesis> getRegionalSynthesis(int indicator, int midoutcome) {
+    List<OutcomeSynthesis> list = outcomeSynthesisManager.getOutcomeSynthesis(midoutcome, indicator);
+    for (OutcomeSynthesis outcomeSynthesis : list) {
+      outcomeSynthesis.setIpprogram(ipProgramManager.getIPProgramById(outcomeSynthesis.getIpProgamId()));
+    }
+    return list;
   }
 
   public List<OutcomeSynthesis> getSynthesis() {
     return synthesis;
   }
-
 
   @Override
   public String next() {
@@ -135,6 +144,7 @@ public class OutcomeSynthesisAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -175,6 +185,7 @@ public class OutcomeSynthesisAction extends BaseAction {
     // Get Outcomes 2019 of current IPProgram
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     synthesis = outcomeSynthesisManager.getOutcomeSynthesis(programID);
+
     for (OutcomeSynthesis synthe : synthesis) {
       if (synthe.getAchieved() != null) {
         synthe.setAchievedText(String.valueOf(synthe.getAchieved()).replace(",", "."));
@@ -241,6 +252,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   public void setProgram(IPProgram program) {
     this.program = program;
   }
+
 
   public void setSynthesis(List<OutcomeSynthesis> synthesis) {
     this.synthesis = synthesis;

@@ -27,5 +27,7 @@ public interface OutcomeSynthesisDAO {
 
   public List<OutcomeSynthesis> findOutcomeSynthesis(int programId);
 
+  public List<OutcomeSynthesis> findOutcomeSynthesis(int midoutcome, int indicator);
+
   public int save(OutcomeSynthesis outcomeSynthesis);
 }
