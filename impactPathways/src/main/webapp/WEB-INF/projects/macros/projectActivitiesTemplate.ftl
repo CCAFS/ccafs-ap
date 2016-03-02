@@ -62,7 +62,7 @@
       [#-- Overall Activity progress --]
       [#assign justificationRequired = ((element.isStatusOnGoing())!false) || ((element.isStatusExtended())!false) || ((element.isStatusCancelled())!false) ]
       <div class="fullPartBlock statusDescription clearfix" style="display:${justificationRequired?string('block','none')}">
-        [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress" required=true i18nkey="reporting.activityDescription.activityStatus.status${(element.activityStatus)!}" editable=editable && (action.hasProjectPermission("activityProgress", project.id) || template) /]
+        [@customForm.textArea name="${activitiesName}.activityProgress" className="activityProgress limitWords-100" required=true i18nkey="reporting.activityDescription.activityStatus.status${(element.activityStatus)!}" editable=editable && (action.hasProjectPermission("activityProgress", project.id) || template) /]
         <div id="statusesLables" style="display:none">
           <div id="status-2">[@s.text name="reporting.activityDescription.activityStatus.status2" /]:<span class="red">*</span></div>
           <div id="status-3">[@s.text name="reporting.activityDescription.activityStatus.status3" /]:<span class="red">*</span></div>
