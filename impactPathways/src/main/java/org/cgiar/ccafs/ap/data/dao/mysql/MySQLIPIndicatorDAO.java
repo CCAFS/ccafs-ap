@@ -555,7 +555,11 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     values[3] = indicatorData.get("gender");
     values[4] = indicatorData.get("target");
     values[5] = indicatorData.get("archived");
-    if (values[5].equals("null")) {
+    try {
+      if (values[5].equals("null") || values[5].equals("")) {
+        values[5] = null;
+      }
+    } catch (Exception e) {
       values[5] = null;
     }
     values[6] = indicatorData.get("narrative_gender");

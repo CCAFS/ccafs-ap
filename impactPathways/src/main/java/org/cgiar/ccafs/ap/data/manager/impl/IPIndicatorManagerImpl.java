@@ -372,7 +372,9 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicatorData.put("description", indicator.getDescription());
       indicatorData.put("target", indicator.getTarget());
       indicatorData.put("gender", indicator.getGender());
-      indicatorData.put("archived", String.valueOf(indicator.getArchivedText()));
+
+      indicatorData.put("archived", (indicator.getArchivedText()));
+
       indicatorData.put("narrative_gender", indicator.getNarrativeGender());
       indicatorData.put("narrative_targets", indicator.getNarrativeTargets());
       indicatorData.put("year", String.valueOf(indicator.getYear()));
