@@ -22,7 +22,7 @@ public class OutcomeSynthesis implements java.io.Serializable {
   private String synthesisGender;
 
   private String discrepancy;
-  private Float achievedExpected;
+  private Double achievedExpected;
 
   public OutcomeSynthesis() {
   }
@@ -78,7 +78,7 @@ public class OutcomeSynthesis implements java.io.Serializable {
   }
 
 
-  public Float getAchievedExpected() {
+  public Double getAchievedExpected() {
     return achievedExpected;
   }
 
@@ -134,7 +134,7 @@ public class OutcomeSynthesis implements java.io.Serializable {
     this.achieved = achieved;
   }
 
-  public void setAchievedExpected(Float achievedExpected) {
+  public void setAchievedExpected(Double achievedExpected) {
     this.achievedExpected = achievedExpected;
   }
 

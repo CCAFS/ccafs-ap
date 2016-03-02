@@ -45,6 +45,10 @@ public class OutcomeSynthesisMySQLDAO implements OutcomeSynthesisDAO {
 
   @Override
   public int save(OutcomeSynthesis outcomeSynthesis) {
+    OutcomeSynthesis outcomeSynthesisPrev = dao.find(OutcomeSynthesis.class, outcomeSynthesis.getId());
+    if (outcomeSynthesisPrev != null) {
+      outcomeSynthesis.setAchievedExpected(outcomeSynthesisPrev.getAchievedExpected());
+    }
     dao.saveOrUpdate(outcomeSynthesis);
     return outcomeSynthesis.getId(); // TODO To review
   }

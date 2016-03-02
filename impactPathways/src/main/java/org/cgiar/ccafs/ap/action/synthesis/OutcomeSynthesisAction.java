@@ -27,7 +27,7 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.OutcomeSynthesis;
-import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
+import org.cgiar.ccafs.ap.validation.synthesis.OutcomeSynthesisValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Collection;
@@ -50,7 +50,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-  private ProjectLeverageValidator validator;
+  private OutcomeSynthesisValidator validator;
   private HistoryManager historyManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private IPProgramManager ipProgramManager;
@@ -71,7 +71,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   @Inject
   public OutcomeSynthesisAction(APConfig config, HistoryManager historyManager,
     LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
-    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, ProjectLeverageValidator validator,
+    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, OutcomeSynthesisValidator validator,
     OutcomeSynthesisManager outcomeSynthesisManager) {
     super(config);
     this.validator = validator;
@@ -164,7 +164,12 @@ public class OutcomeSynthesisAction extends BaseAction {
     // Create an ipElementType with the identifier of the outcomes 2019 type
     IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
-    int programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
+    int programID;
+    try {
+      programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
+    } catch (Exception e) {
+      programID = 1;
+    }
     program = ipProgramManager.getIPProgramById(programID);
 
     // Get Outcomes 2019 of current IPProgram
@@ -251,6 +256,8 @@ public class OutcomeSynthesisAction extends BaseAction {
           synthe.setAchieved(null);
         }
       }
+
+      validator.validate(this, synthesis);
     }
   }
 }
