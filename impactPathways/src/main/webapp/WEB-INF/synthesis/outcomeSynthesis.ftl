@@ -28,7 +28,7 @@
     [#-- Program (Regions and Flagships) --]
     <ul id="liaisonInstitutions" class="horizontalSubMenu">
       [#list liaisonInstitutions as institution]
-        <li class="[#if institution.id == liaisonInstitutionID]active[/#if]"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name='indicatorTypeID']${(indicatorTypeID)!}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">${institution.acronym}</a></li>
+        <li class="[#if institution.id == liaisonInstitutionID]active[/#if]"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name='indicatorTypeID']${(indicatorTypeID)!}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">${institution.name}</a></li>
       [/#list]
     </ul>
     
@@ -46,6 +46,13 @@
       <div id="outcomeSynthesisBlock" class="">
         [#list midOutcomes as midOutcome]
         <div class="borderBox">
+          [#-- Button for edit this section --]
+          [#if (!editable && canEdit)]
+            <div class="editButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+          [#elseif canEdit]
+              <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        
           <div class="fullPartBlock">
             <h6 class="title">${midOutcome.getComposedId()}</h6>
             <p>${midOutcome.description}</p>
@@ -54,28 +61,66 @@
             <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.indicators" /]:</h6> 
             [#list midOutcome.indicators as indicator]
               [#assign flagshipIndicator = (indicator.parent)!indicator /]
+               [#assign index = action.getIndex(flagshipIndicator.id,midOutcome.id,program.id) /]
+           
               <div class="simpleBox">
                 <div class="fullPartBlock">
                   <p>${flagshipIndicator.description}</p>
                 </div>
                 [#-- Achieved target in current reporting period --]
                 <div class="fullPartBlock">
-                  <div class="thirdPartBlock">[@customForm.input name="" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
+                  <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achievedText" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
                 </div>
+               
+                <div class="fullPartBlock">
+                  <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achievedExpected" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchievedExpected" className="isNumeric" help="form.message.numericValue" required=canEdit editable=false /]</div>
+                </div>
+                
                 [#-- Synthesis of annual progress towards this indicator --]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-200" required=canEdit editable=editable /]
+                  [@customForm.textArea name="synthesis[${index}].synthesisAnual" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
+                
                 [#-- Synthesis of annual progress gender and social inclusion contribution towards this indicator --]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" className="genderProgressIndicator limitWords-200" required=canEdit editable=editable /]
+                  [@customForm.textArea name="synthesis[${index}].synthesisGender" i18nkey="reporting.synthesis.outcomeSynthesis.genderProgressIndicator" className="genderProgressIndicator limitWords-200" required=canEdit editable=editable /]
                 </div>
+                
                 [#-- Explain any discrepancy  --]
                 [#if midOutcome.regionalProgramType]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" className="discrepancy limitWords-100" editable=editable /]
+                  [@customForm.textArea name="synthesis[${index}].discrepancy" i18nkey="reporting.synthesis.outcomeSynthesis.discrepancy" className="discrepancy limitWords-100" editable=editable /]
                 </div>
-                [/#if] 
+                [/#if]
+                
+                [#-- Regions/Global contributions --]
+                [#if midOutcome.flagshipProgramType]
+                <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
+                <div class="fullPartBlock">
+                  <div class="fullPartBlock projectContributions-block viewMore-block">
+                    <table class="projectContributions">
+                      <thead>
+                        <tr class="header">
+                          <th>Region</th>
+                          <th>Synthesis report</th>
+                          <th>Gender synthesis report</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      [#list 1..5 as syntesisReport]
+                        <tr>
+                          <td class="center"> Region_ID</td>
+                          <td class="center" > Prefilled by RPL</td>
+                          <td class="center"> Prefilled by RPL</td>
+                        </tr>
+                      [/#list]
+                      </tbody>
+                    </table>
+                    <div class="viewMore"></div>
+                  </div>
+                </div>
+                [/#if]
+                
                 [#-- Project Contributions --]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
                 [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id))?has_content]
@@ -109,14 +154,6 @@
                   <p>There is not project contributing to this indicator</p>
                 [/#if]
                 
-                [#-- Regions/Global contributions --]
-                [#if midOutcome.flagshipProgramType]
-                <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
-                <div class="fullPartBlock">
-                  {Table regionalContributions to this indicator Here}
-                </div>
-                [/#if]
-                
               </div>
             [/#list]
           </div>
@@ -126,6 +163,7 @@
       
       [#-- Button save and Log history --]
       [#if editable]
+        <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
         <div class="" >
           <div class="buttons">
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

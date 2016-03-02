@@ -258,6 +258,12 @@ public class ProjectHighlightAction extends BaseAction {
         country.setName(this.countries.get(indexCountry).getName());
         countryids.add(projectHighligthsCountry.getIdCountry());
         countrys.add(country);
+      } else {
+        country = locationManager.getCountry(projectHighligthsCountry.getIdCountry());
+        if (country != null) {
+          countryids.add(projectHighligthsCountry.getIdCountry());
+          countrys.add(country);
+        }
       }
 
     }

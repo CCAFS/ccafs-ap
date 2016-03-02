@@ -57,12 +57,17 @@ function addDataTable() {
       "bAutoWidth": false, // This option enables the auto adjust columns width
       "iDisplayLength": 50,// Number of rows to show on the table
       aoColumnDefs: [
-        {
-            bSortable: false,
-            aTargets: [
-                -1, -2
-            ]
-        }
+          {
+              bSortable: false,
+              aTargets: [
+                  -1, -2
+              ]
+          }, {
+              sType: "natural",
+              aTargets: [
+                0
+              ]
+          }
       ]
   });
   $('table#projectDeliverables').on('draw.dt', function() {

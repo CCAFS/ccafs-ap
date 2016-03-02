@@ -275,9 +275,9 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
   }
 
   @Override
-  public List<IPIndicator> getIndicatorsSyntesis(int year, int indicator) {
+  public List<IPIndicator> getIndicatorsSyntesis(int year, int indicator, int program) {
     List<IPIndicator> indicators = new ArrayList<>();
-    List<Map<String, String>> indicatorsData = indicatorDAO.getProjectIndicatorsSynthesis(year, indicator);
+    List<Map<String, String>> indicatorsData = indicatorDAO.getProjectIndicatorsSynthesis(year, indicator, program);
 
     for (Map<String, String> iData : indicatorsData) {
       IPIndicator indicatorDb = new IPIndicator();

@@ -39,7 +39,7 @@
           </td>
           
           <td class="removeDeliverable-row">
-            [#if canEdit && action.hasProjectPermission("removeOldDeliverables", project.id)]
+            [#if canEdit && (action.hasProjectPermission("removeOldDeliverables", project.id) || dl.isNew("Jan 01, 2016"?date))]
               <a id="removeDeliverable-${dl.id}" class="removeDeliverable" href="deliverableID${dl.id}" title="" >
                 <img src="${baseUrl}/images/global/trash.png" title="[@s.text name="planning.deliverables.removeDeliverable" /]" /> 
               </a>
