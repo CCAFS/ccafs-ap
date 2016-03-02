@@ -1,0 +1,105 @@
+/*****************************************************************
+ * This file is part of CCAFS Planning and Reporting Platform.
+ * CCAFS P&R is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * at your option) any later version.
+ * CCAFS P&R is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************/
+
+package org.cgiar.ccafs.ap.validation.synthesis;
+
+import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.manager.IPElementManager;
+import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.OutcomeSynthesis;
+import org.cgiar.ccafs.ap.validation.BaseValidator;
+
+import java.util.List;
+
+import com.google.inject.Inject;
+
+
+/**
+ * @author Christian David Garcia Oviedo. - CIAT/CCAFS
+ */
+
+public class OutcomeSynthesisValidator extends BaseValidator {
+
+
+  private int c = 0;
+  private IPElementManager ipElementManager;
+  private IPIndicatorManager ipIndicatorManager;
+
+  @Inject
+  public OutcomeSynthesisValidator(IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager) {
+    super();
+    this.ipIndicatorManager = ipIndicatorManager;
+
+    this.ipElementManager = ipElementManager;
+  }
+
+  public void validate(BaseAction action, List<OutcomeSynthesis> synthesis) {
+    String msjFinal = "";
+    for (OutcomeSynthesis synthe : synthesis) {
+      IPElement midOutcome = ipElementManager.getIPElement(synthe.getMidOutcomeId());
+      IPIndicator indicator = ipIndicatorManager.getIndicator(synthe.getIndicadorId());
+      try {
+
+        this.validateActualAchieved(action, synthe.getAchieved(), indicator.getDescription(),
+          midOutcome.getComposedId());
+      } catch (Exception e) {
+        this.addMessage(indicator.getDescription() + ": Achieved target ");
+      }
+      this.validateSynthesisAnual(action, synthe.getSynthesisAnual(), indicator.getDescription(),
+        midOutcome.getComposedId());
+      this.validateSynthesisGender(action, synthe.getSynthesisGender(), indicator.getDescription(),
+        midOutcome.getComposedId());
+      if (validationMessage.length() > 0) {
+
+        msjFinal = msjFinal + "<p> - " + midOutcome.getComposedId() + ": " + indicator.getDescription() + "</p>";
+
+
+      }
+      validationMessage = new StringBuilder();
+    }
+    if (!action.getFieldErrors().isEmpty()) {
+      action.addActionError(action.getText("saving.fields.required"));
+    } else if (msjFinal.length() > 0) {
+      action.addActionMessage(" " + action.getText("saving.missingFields", new String[] {msjFinal}));
+    }
+
+
+  }
+
+
+  private void validateActualAchieved(BaseAction action, float actualAchieved, String indicator, String midOutcome) {
+    if (!(actualAchieved >= 0)) {
+      this.addMessage(midOutcome + ": " + indicator + ": Achieved target ");
+
+    }
+  }
+
+  private void validateSynthesisAnual(BaseAction action, String synthesisAnual, String indicator, String midOutcome) {
+    if (!(this.isValidString(synthesisAnual) && this.wordCount(synthesisAnual) <= 200)) {
+      this.addMessage(midOutcome + ": " + indicator + ": Synthesis of annual progress towards ");
+
+    }
+  }
+
+  private void validateSynthesisGender(BaseAction action, String synthesisGender, String indicator, String midOutcome) {
+    if (!(this.isValidString(synthesisGender) && this.wordCount(synthesisGender) <= 200)) {
+      this.addMessage(midOutcome + ": " + indicator + ": Synthesis of annual progress gender ");
+
+    }
+  }
+
+
+}

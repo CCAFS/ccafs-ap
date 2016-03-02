@@ -24,6 +24,9 @@ function init() {
   applyWordCounter($("form .activity textarea.description"), lWordsDesc);
   applyWordCounter($("#lessons textarea"), lWordsLessons);
 
+  // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
+  setWordCounterToInputs('limitWords');
+
   validateEvent([
     "#justification"
   ]);

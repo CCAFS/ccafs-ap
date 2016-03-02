@@ -44,7 +44,19 @@ public class OutcomeSynthesisMySQLDAO implements OutcomeSynthesisDAO {
   }
 
   @Override
+  public List<OutcomeSynthesis> findOutcomeSynthesis(int midoutcome, int indicator) {
+    String sql = "from " + OutcomeSynthesis.class.getName() + " where indicador_id=" + indicator
+      + " and ip_progam_id not in (1,2,3,4)";
+    List<OutcomeSynthesis> list = dao.findAll(sql);
+    return list;
+  }
+
+  @Override
   public int save(OutcomeSynthesis outcomeSynthesis) {
+    OutcomeSynthesis outcomeSynthesisPrev = dao.find(OutcomeSynthesis.class, outcomeSynthesis.getId());
+    if (outcomeSynthesisPrev != null) {
+      outcomeSynthesis.setAchievedExpected(outcomeSynthesisPrev.getAchievedExpected());
+    }
     dao.saveOrUpdate(outcomeSynthesis);
     return outcomeSynthesis.getId(); // TODO To review
   }

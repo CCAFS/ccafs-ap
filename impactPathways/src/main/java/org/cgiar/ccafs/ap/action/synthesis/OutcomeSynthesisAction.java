@@ -27,7 +27,7 @@ import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.OutcomeSynthesis;
-import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
+import org.cgiar.ccafs.ap.validation.synthesis.OutcomeSynthesisValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.Collection;
@@ -50,7 +50,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-  private ProjectLeverageValidator validator;
+  private OutcomeSynthesisValidator validator;
   private HistoryManager historyManager;
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private IPProgramManager ipProgramManager;
@@ -63,6 +63,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   private List<IPElement> midOutcomes;
   private List<OutcomeSynthesis> synthesis;
 
+
   private IPProgram program;
 
 
@@ -71,7 +72,7 @@ public class OutcomeSynthesisAction extends BaseAction {
   @Inject
   public OutcomeSynthesisAction(APConfig config, HistoryManager historyManager,
     LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
-    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, ProjectLeverageValidator validator,
+    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, OutcomeSynthesisValidator validator,
     OutcomeSynthesisManager outcomeSynthesisManager) {
     super(config);
     this.validator = validator;
@@ -83,10 +84,10 @@ public class OutcomeSynthesisAction extends BaseAction {
     this.outcomeSynthesisManager = outcomeSynthesisManager;
   }
 
+
   public LiaisonInstitution getCurrentLiaisonInstitution() {
     return currentLiaisonInstitution;
   }
-
 
   public int getIndex(int indicator, int midoutcome, int program) {
     OutcomeSynthesis synthe = new OutcomeSynthesis();
@@ -108,23 +109,31 @@ public class OutcomeSynthesisAction extends BaseAction {
     return liaisonInstitutions;
   }
 
-
   public List<IPElement> getMidOutcomes() {
     return midOutcomes;
   }
+
 
   public IPProgram getProgram() {
     return program;
   }
 
+
   public List<IPIndicator> getProjectIndicators(int year, int indicator) {
     return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId());
+  }
+
+  public List<OutcomeSynthesis> getRegionalSynthesis(int indicator, int midoutcome) {
+    List<OutcomeSynthesis> list = outcomeSynthesisManager.getOutcomeSynthesis(midoutcome, indicator);
+    for (OutcomeSynthesis outcomeSynthesis : list) {
+      outcomeSynthesis.setIpprogram(ipProgramManager.getIPProgramById(outcomeSynthesis.getIpProgamId()));
+    }
+    return list;
   }
 
   public List<OutcomeSynthesis> getSynthesis() {
     return synthesis;
   }
-
 
   @Override
   public String next() {
@@ -135,6 +144,7 @@ public class OutcomeSynthesisAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -164,12 +174,18 @@ public class OutcomeSynthesisAction extends BaseAction {
     // Create an ipElementType with the identifier of the outcomes 2019 type
     IPElementType midOutcomesType = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2019);
 
-    int programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
+    int programID;
+    try {
+      programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
+    } catch (Exception e) {
+      programID = 1;
+    }
     program = ipProgramManager.getIPProgramById(programID);
 
     // Get Outcomes 2019 of current IPProgram
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     synthesis = outcomeSynthesisManager.getOutcomeSynthesis(programID);
+
     for (OutcomeSynthesis synthe : synthesis) {
       if (synthe.getAchieved() != null) {
         synthe.setAchievedText(String.valueOf(synthe.getAchieved()).replace(",", "."));
@@ -237,6 +253,7 @@ public class OutcomeSynthesisAction extends BaseAction {
     this.program = program;
   }
 
+
   public void setSynthesis(List<OutcomeSynthesis> synthesis) {
     this.synthesis = synthesis;
   }
@@ -251,6 +268,8 @@ public class OutcomeSynthesisAction extends BaseAction {
           synthe.setAchieved(null);
         }
       }
+
+      validator.validate(this, synthesis);
     }
   }
 }

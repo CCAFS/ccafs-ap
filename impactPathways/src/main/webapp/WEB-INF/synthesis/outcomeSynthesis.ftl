@@ -102,16 +102,20 @@
                       <thead>
                         <tr class="header">
                           <th>Region</th>
+                          <th>Target</th>
+                          <th>Target Expected</th>
                           <th>Synthesis report</th>
                           <th>Gender synthesis report</th>
                         </tr>
                       </thead>
                       <tbody>
-                      [#list 1..5 as syntesisReport]
+                      [#list action.getRegionalSynthesis(flagshipIndicator.id,midOutcome.id) as syntesisReport]
                         <tr>
-                          <td class="center"> Region_ID</td>
-                          <td class="center" > Prefilled by RPL</td>
-                          <td class="center"> Prefilled by RPL</td>
+                          <td class="center"> ${(syntesisReport.ipprogram.acronym)!}</td>
+                          <td class="center"> ${(syntesisReport.achieved)!}</td>
+                          <td class="center"> ${(syntesisReport.achievedExpected)!}</td>  
+                          <td class="center" >${(syntesisReport.synthesisAnual)!}</td>
+                          <td class="center"> ${(syntesisReport.synthesisGender)!}</td>
                         </tr>
                       [/#list]
                       </tbody>

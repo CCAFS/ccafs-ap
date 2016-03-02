@@ -35,6 +35,13 @@ public interface OutcomeSynthesisManager {
    */
   public List<OutcomeSynthesis> getOutcomeSynthesis(int programId);
 
+  /**
+   * This method gets all the OutcomeSynthesis information by a given program id
+   * 
+   * @param projectID - is the Id of the project
+   * @return a List of OutcomeSynthesis with the Information related with the programId
+   */
+  public List<OutcomeSynthesis> getOutcomeSynthesis(int midoutcome, int indicator);
 
   /**
    * This method saves the information of the given OutcomeSynthesis

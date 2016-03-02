@@ -40,6 +40,11 @@ public class OutcomeSynthesisManagerImpl implements OutcomeSynthesisManager {
   }
 
   @Override
+  public List<OutcomeSynthesis> getOutcomeSynthesis(int midoutcome, int indicator) {
+    return dao.findOutcomeSynthesis(midoutcome, indicator);
+  }
+
+  @Override
   public int saveOutcomeSynthesis(OutcomeSynthesis synthesis) {
 
     return dao.save(synthesis);
