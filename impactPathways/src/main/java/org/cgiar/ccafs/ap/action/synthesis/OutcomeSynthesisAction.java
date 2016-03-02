@@ -170,7 +170,11 @@ public class OutcomeSynthesisAction extends BaseAction {
     // Get Outcomes 2019 of current IPProgram
     midOutcomes = ipElementManager.getIPElements(program, midOutcomesType);
     synthesis = outcomeSynthesisManager.getOutcomeSynthesis(programID);
-
+    for (OutcomeSynthesis synthe : synthesis) {
+      if (synthe.getAchieved() != null) {
+        synthe.setAchievedText(String.valueOf(synthe.getAchieved()).replace(",", "."));
+      }
+    }
     for (IPElement midoutcome : midOutcomes) {
       for (IPIndicator indicator : midoutcome.getIndicators()) {
         int indicatorId = indicator.getId();
@@ -196,7 +200,11 @@ public class OutcomeSynthesisAction extends BaseAction {
   @Override
   public String save() {
     for (OutcomeSynthesis synthe : synthesis) {
-
+      try {
+        synthe.setAchieved(Float.parseFloat(synthe.getAchievedText()));
+      } catch (NumberFormatException e) {
+        synthe.setAchieved(null);
+      }
       outcomeSynthesisManager.saveOutcomeSynthesis(synthe);
 
     }
@@ -236,6 +244,13 @@ public class OutcomeSynthesisAction extends BaseAction {
   @Override
   public void validate() {
     if (save) {
+      for (OutcomeSynthesis synthe : synthesis) {
+        try {
+          synthe.setAchieved(Float.parseFloat(synthe.getAchievedText()));
+        } catch (NumberFormatException e) {
+          synthe.setAchieved(null);
+        }
+      }
     }
   }
 }

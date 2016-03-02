@@ -69,7 +69,11 @@
                 </div>
                 [#-- Achieved target in current reporting period --]
                 <div class="fullPartBlock">
-                  <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achieved" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
+                  <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achievedText" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
+                </div>
+               
+                <div class="fullPartBlock">
+                  <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achievedExpected" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchievedExpected" className="isNumeric" help="form.message.numericValue" required=canEdit editable=false /]</div>
                 </div>
                 
                 [#-- Synthesis of annual progress towards this indicator --]

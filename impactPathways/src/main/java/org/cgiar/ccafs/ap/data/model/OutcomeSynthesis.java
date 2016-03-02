@@ -13,14 +13,19 @@ public class OutcomeSynthesis implements java.io.Serializable {
   private int year;
   private int midOutcomeId;
   private int indicadorId;
-  private Double achieved;
+  private Float achieved;
+  private String achievedText;
+
   private String synthesisAnual;
+
+
   private String synthesisGender;
+
   private String discrepancy;
+  private Float achievedExpected;
 
   public OutcomeSynthesis() {
   }
-
 
   public OutcomeSynthesis(int ipProgamId, int year, int midOutcomeId, int indicadorId) {
     this.ipProgamId = ipProgamId;
@@ -29,7 +34,8 @@ public class OutcomeSynthesis implements java.io.Serializable {
     this.indicadorId = indicadorId;
   }
 
-  public OutcomeSynthesis(int ipProgamId, int year, int midOutcomeId, int indicadorId, Double achieved,
+
+  public OutcomeSynthesis(int ipProgamId, int year, int midOutcomeId, int indicadorId, Float achieved,
     String synthesisAnual, String synthesisGender, String discrepancy) {
     this.ipProgamId = ipProgamId;
     this.year = year;
@@ -67,13 +73,24 @@ public class OutcomeSynthesis implements java.io.Serializable {
   }
 
 
-  public Double getAchieved() {
+  public Float getAchieved() {
     return this.achieved;
   }
+
+
+  public Float getAchievedExpected() {
+    return achievedExpected;
+  }
+
+  public String getAchievedText() {
+    return achievedText;
+  }
+
 
   public String getDiscrepancy() {
     return this.discrepancy;
   }
+
 
   public Integer getId() {
     return this.id;
@@ -113,8 +130,16 @@ public class OutcomeSynthesis implements java.io.Serializable {
     return result;
   }
 
-  public void setAchieved(Double achieved) {
+  public void setAchieved(Float achieved) {
     this.achieved = achieved;
+  }
+
+  public void setAchievedExpected(Float achievedExpected) {
+    this.achievedExpected = achievedExpected;
+  }
+
+  public void setAchievedText(String achievedText) {
+    this.achievedText = achievedText;
   }
 
   public void setDiscrepancy(String discrepancy) {
