@@ -2051,10 +2051,16 @@ h1.simpleTitle span {
 
 .buttons {
   display: block;
-  margin: 0;
   text-align: right;
   margin: 17px 0 10px 0;
   float: right;
+}
+
+.borderBox .buttons, .simpleBox .buttons{
+  
+float: none;
+  
+margin: 0;
 }
 
 .buttons button[name=save] {
