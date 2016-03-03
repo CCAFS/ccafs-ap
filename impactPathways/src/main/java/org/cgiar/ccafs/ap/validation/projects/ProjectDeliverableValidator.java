@@ -225,48 +225,50 @@ public class ProjectDeliverableValidator extends BaseValidator {
 
     // Validating that deliverable status if is reporting section
     if (cycle.equals(APConstants.REPORTING_SECTION)) {
-      if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
-        // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
-        this.addMessage("Deliverable Status");
-        this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
-      }
-
-      if (deliverable.getStatus() > 0) {
-        switch (ProjectStatusEnum.getValue(deliverable.getStatus())) {
-          case Complete:
-            if (deliverable.getRanking() != null) {
-              this.validateRanking(action, deliverable.getRanking(), deliverable);
-            } else {
-              this.addMessage("Deliverable (" + deliverable.getId() + ") Ranking Section");
-              this.addMissingField("projects.deliverable(" + deliverable.getId() + ").ranking");
-            }
-
-            if (deliverable.getYear() <= action.getCurrentReportingYear()) {
-              if (deliverable.getDissemination() != null) {
-                this.validateDismmination(action, deliverable.getDissemination(), deliverable.getId());
-              } else {
-                this.addMessage("Deliverable (" + deliverable.getId() + ") Dissemination Section");
-                this.addMissingField("projects.deliverable(" + deliverable.getId() + ").dissemination");
-              }
-            }
-            break;
-          case Ongoing:
-          case Extended:
-          case Cancelled:
-            if (!this.isValidString(deliverable.getStatusDescription())) {
-              // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
-              this.addMessage("Deliverable  Status Description");
-              this.addMissingField("projects.deliverable(" + deliverable.getId() + ").statusDescription");
-            }
-
-            break;
-
-          default:
-            break;
+      if (deliverable.getYear() <= action.getCurrentReportingYear()) {
+        if (!deliverableValidator.isValidStatus(deliverable.getStatus())) {
+          // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
+          this.addMessage("Deliverable Status");
+          this.addMissingField("projects.deliverable(" + deliverable.getId() + ").status");
         }
+
+        if (deliverable.getStatus() > 0) {
+          switch (ProjectStatusEnum.getValue(deliverable.getStatus())) {
+            case Complete:
+              if (deliverable.getRanking() != null) {
+                this.validateRanking(action, deliverable.getRanking(), deliverable);
+              } else {
+                this.addMessage("Deliverable (" + deliverable.getId() + ") Ranking Section");
+                this.addMissingField("projects.deliverable(" + deliverable.getId() + ").ranking");
+              }
+
+              if (deliverable.getYear() <= action.getCurrentReportingYear()) {
+                if (deliverable.getDissemination() != null) {
+                  this.validateDismmination(action, deliverable.getDissemination(), deliverable.getId());
+                } else {
+                  this.addMessage("Deliverable (" + deliverable.getId() + ") Dissemination Section");
+                  this.addMissingField("projects.deliverable(" + deliverable.getId() + ").dissemination");
+                }
+              }
+              break;
+            case Ongoing:
+            case Extended:
+            case Cancelled:
+              if (!this.isValidString(deliverable.getStatusDescription())) {
+                // action.addFieldError("deliverable.year", action.getText("validation.field.required"));
+                this.addMessage("Deliverable  Status Description");
+                this.addMissingField("projects.deliverable(" + deliverable.getId() + ").statusDescription");
+              }
+
+              break;
+
+            default:
+              break;
+          }
+        }
+
+
       }
-
-
     }
   }
 
