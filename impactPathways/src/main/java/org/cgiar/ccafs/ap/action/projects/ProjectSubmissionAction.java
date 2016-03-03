@@ -94,7 +94,7 @@ public class ProjectSubmissionAction extends BaseAction {
         for (Submission theSubmission : submissions) {
           // Get the submission we need.
           
-          if (theSubmission.getYear() == 
+          if (theSubmission.getYear() == evaluatingYear
             && theSubmission.getCycle().equals(this.getCycleName())) {
             submission = theSubmission;
             alreadySubmitted = true;
