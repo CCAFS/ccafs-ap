@@ -111,6 +111,7 @@
     [#setting date_format="YYYY-MM-DD"]
     <p class="date">${dateText}</p>
     <p class="dateText" style="display:none">${dateText}</p>
+    <p class="isOpen" style="display:none">${(status == "Open")?string}</p>
   </div>
   <div class="status"><h4>${title}</h4></div>
 </li>

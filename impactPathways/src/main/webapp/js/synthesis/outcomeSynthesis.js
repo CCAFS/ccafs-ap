@@ -43,18 +43,18 @@ function expandViewMoreBlock() {
 
 function colapseViewMoreBlock() {
   $(this).parent().css({
-    height: 300
+    height: 250
   });
   $(this).html('View More');
 }
 
 function setViewMore() {
   $('.viewMore-block').each(function(i,element) {
-    if($(element).height() < 300) {
+    if($(element).height() < 250) {
       $(element).find('.viewMore').remove();
     } else {
       $(element).css({
-        "height": 300
+        "height": 250
       })
       $(element).find('.viewMore').html('View More');
     }
