@@ -26,8 +26,12 @@ function setCompletionDates() {
   var today = new Date();
   $('#timeline li.li').each(function(i,element) {
     var timelineDate = new Date($(element).find('.dateText').text());
-    timelineDate.setTime(timelineDate.getTime() + 1 * 20900000);
+    timelineDate.setTime(timelineDate.getTime() + (timelineDate.getTimezoneOffset() / 60) * 3600000);
     $(element).find('.date').text(timelineDate.toDateString()).addClass('animated flipInX');
+    var isOpen = $(element).find('.isOpen').text() === "true";
+    if(!isOpen) {
+      timelineDate.setTime(timelineDate.getTime() + (24 * 3600000));
+    }
     if(today >= timelineDate) {
       $(element).addClass('complete');
     }

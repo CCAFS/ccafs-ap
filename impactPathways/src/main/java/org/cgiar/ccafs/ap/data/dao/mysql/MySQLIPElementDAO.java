@@ -279,6 +279,76 @@ public class MySQLIPElementDAO implements IPElementDAO {
     return this.getData(query.toString());
   }
 
+
+  @Override
+  public List<Map<String, String>> getIPElementByProgramIDSynthesis(int programID) {
+    LOG.debug(">> getIPElement( programID = {} )", programID);
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description,  ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym' ");
+    query.append("FROM ip_elements e ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
+    query.append("WHERE pro.id = ");
+    query.append(programID + " and et.id =4  ");
+    query.append(" GROUP BY e.id");
+    query.append(" ORDER BY et.id, pro.type_id ");
+
+
+    LOG.debug("-- getIPElement() > Calling method executeQuery to get the results");
+    return this.getData(query.toString());
+  }
+
+
+  @Override
+  public List<Map<String, String>> getIPElementListForSynthesisRegion(int programId) {
+
+    List<Map<String, String>> ipElementList = new ArrayList<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT e.id, e.description, ");
+    query.append("et.id as 'element_type_id', et.name as 'element_type_name', ");
+    query.append("pro.id as 'program_id', pro.acronym as 'program_acronym', ");
+    query.append("iep.id as 'parent_id', iep.description as 'parent_description' ");
+    query.append("FROM ip_elements e ");
+    query.append("INNER JOIN ip_element_types et ON e.element_type_id = et.id ");
+    query.append("INNER JOIN ip_programs pro ON e.ip_program_id = pro.id ");
+    query.append("INNER JOIN ip_project_contributions ipc ON e.id = ipc.mog_id ");
+    query.append("INNER JOIN ip_elements iep ON iep.id = ipc.midOutcome_id ");
+    query.append("WHERE project_id in (select project_id from project_focuses where program_id=" + programId + ")   ");
+
+    query.append(" AND ipc.is_active = TRUE ");
+    query.append("GROUP BY id order by  pro.acronym  ");
+
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> ipElementData = new HashMap<String, String>();
+        ipElementData.put("id", rs.getString("id"));
+        ipElementData.put("description", rs.getString("description"));
+        ipElementData.put("element_type_id", rs.getString("element_type_id"));
+        ipElementData.put("element_type_name", rs.getString("element_type_name"));
+        ipElementData.put("program_id", rs.getString("program_id"));
+        ipElementData.put("program_acronym", rs.getString("program_acronym"));
+        ipElementData.put("parent_id", rs.getString("parent_id"));
+        ipElementData.put("parent_description", rs.getString("parent_description"));
+
+        ipElementList.add(ipElementData);
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- executeQuery() > Exception raised trying ";
+      exceptionMessage += "to execute the following query " + query;
+
+      LOG.error(exceptionMessage, e);
+    }
+
+    LOG.debug("<< getProjectOutputs():ipElementList.size={}", ipElementList.size());
+    return ipElementList;
+  }
+
   @Override
   public List<Map<String, String>> getIPElements(String[] elementIds) {
     LOG.debug(">> getIPElement( elementIds = {} )", Arrays.toString(elementIds));
@@ -379,6 +449,7 @@ public class MySQLIPElementDAO implements IPElementDAO {
     return programElementID;
   }
 
+
   @Override
   public List<Map<String, String>> getProjectOutputs(int projectID) {
     LOG.debug(">> getProjectOutputs( projectID = {} )", projectID);
@@ -425,7 +496,6 @@ public class MySQLIPElementDAO implements IPElementDAO {
     LOG.debug("<< getProjectOutputs():ipElementList.size={}", ipElementList.size());
     return ipElementList;
   }
-
 
   @Override
   public List<Map<String, String>> getProjectOutputsCcafs(int projectID) {

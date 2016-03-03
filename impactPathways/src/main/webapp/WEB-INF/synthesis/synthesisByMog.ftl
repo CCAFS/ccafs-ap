@@ -59,13 +59,15 @@
             <h6 class="title">${mog.getComposedId()}</h6>
             <p>${mog.description}</p>
           </div>
+          
+             [#assign index = action.getIndex(mog.id,program.id) /]
           [#-- Synthesis report for MOG --]
           <div class="fullPartBlock">
-            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.synthesisReport" paramText="${mog.getComposedId()}" className="synthesisReport limitWords-100" required=canEdit editable=editable /]
+            [@customForm.textArea name="synthesis[${index}].synthesisReport" i18nkey="reporting.synthesis.synthesisByMog.synthesisReport" paramText="${mog.getComposedId()}" className="synthesisReport limitWords-100" required=canEdit editable=editable /]
           </div>
           [#-- Gender synthesis report for MOG --]
           <div class="fullPartBlock">
-            [@customForm.textArea name="" i18nkey="reporting.synthesis.synthesisByMog.genderSynthesisReport" paramText="${mog.getComposedId()}" className="genderSynthesisReport limitWords-100" required=canEdit editable=editable /]
+            [@customForm.textArea name="synthesis[${index}].synthesisGender" i18nkey="reporting.synthesis.synthesisByMog.genderSynthesisReport" paramText="${mog.getComposedId()}" className="genderSynthesisReport limitWords-100" required=canEdit editable=editable /]
           </div>
           
           [#-- Synthesis reported by regions --]
@@ -82,11 +84,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                [#list 1..5 as syntesisReport]
+                [#list action.getRegionalSynthesis(mog.id) as syntesisReport]
                   <tr>
-                    <td class="center"> Region_ID</td>
-                    <td class="center" > Prefilled by RPL</td>
-                    <td class="center"> Prefilled by RPL</td>
+                      <td class="center"> ${(syntesisReport.ipProgam.acronym)!}</td>
+                      <td class="center"> ${(syntesisReport.synthesisReport)!}</td>  
+                      <td class="center"> ${(syntesisReport.synthesisGender)!}</td>
                   </tr>
                 [/#list]
                 </tbody>
@@ -109,11 +111,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                [#list 1..10 as projectContribution]
+                [#list action.getProjectOutputOverviews(mog.id) as projectContribution]
                   <tr>
-                    <td class="center"> P_ID</td>
-                    <td class="center" > Prefilled by PL</td>
-                    <td class="center"> Prefilled by PL</td>
+                    <td class="center"><a href="[@s.url action="outputs" namespace="/reporting/projects"][@s.param name='projectID']${(projectContribution.projectID)!}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">P${(projectContribution.projectID)!}</a></td>
+                  <td class="">${(projectContribution.briefSummary)!'Prefilled when available'} </td>
+                   <td class="">${(projectContribution.summaryGender)!'Prefilled when available'} </td>
                   </tr>
                 [/#list]
                 </tbody>
@@ -127,6 +129,7 @@
       
       [#-- Button save and Log history --]
       [#if editable]
+      <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
         <div class="" >
           <div class="buttons">
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]

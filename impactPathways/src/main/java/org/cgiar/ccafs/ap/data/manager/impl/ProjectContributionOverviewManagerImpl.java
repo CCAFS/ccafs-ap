@@ -71,6 +71,7 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
     return outputOverviews;
   }
 
+
   @Override
   public List<OutputOverview> getProjectContributionOverviewsByYearAndOutput(Project project, int year, int outputID) {
     List<OutputOverview> outputOverviews = new ArrayList<>();
@@ -90,6 +91,31 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
       output.setDescription(overviewData.get("output_description"));
       overview.setOutput(output);
       overview.setYear(Integer.parseInt(overviewData.get("year")));
+
+      outputOverviews.add(overview);
+    }
+
+    return outputOverviews;
+  }
+
+  @Override
+  public List<OutputOverview> getProjectContributionOverviewsSytnhesis(int mogId, int year) {
+    List<OutputOverview> outputOverviews = new ArrayList<>();
+    List<Map<String, String>> overviewsData = overviewDAO.getProjectContributionOverviewsSynthesis(mogId, year);
+
+    for (Map<String, String> overviewData : overviewsData) {
+      OutputOverview overview = new OutputOverview();
+      overview.setId(Integer.parseInt(overviewData.get("id")));
+      overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
+      overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
+      overview.setBriefSummary(overviewData.get("brief_summary"));
+      overview.setSummaryGender(overviewData.get("summary_gender"));
+      IPElement output = new IPElement();
+      output.setId(Integer.parseInt(overviewData.get("output_id")));
+
+      overview.setOutput(output);
+      overview.setYear(Integer.parseInt(overviewData.get("year")));
+      overview.setProjectID(overviewData.get("project_id"));
 
       outputOverviews.add(overview);
     }

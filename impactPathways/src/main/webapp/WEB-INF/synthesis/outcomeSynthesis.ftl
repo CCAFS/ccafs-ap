@@ -70,9 +70,7 @@
                 [#-- Achieved target in current reporting period --]
                 <div class="fullPartBlock">
                   <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achievedText" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchieved" className="isNumeric" help="form.message.numericValue" required=canEdit editable=editable /]</div>
-                </div>
-               
-                <div class="fullPartBlock">
+                  <div class="thirdPartBlock"></div>
                   <div class="thirdPartBlock">[@customForm.input name="synthesis[${index}].achievedExpected" type="text" i18nkey="reporting.synthesis.outcomeSynthesis.targetAchievedExpected" className="isNumeric" help="form.message.numericValue" required=canEdit editable=false /]</div>
                 </div>
                 
@@ -102,9 +100,9 @@
                       <thead>
                         <tr class="header">
                           <th>Region</th>
-                          <th>Target</th>
                           <th>Target Expected</th>
-                          <th>Synthesis report</th>
+                          <th>Target Achieved</th>
+                          <th>Synthesis reported</th>
                           <th>Gender synthesis report</th>
                         </tr>
                       </thead>
@@ -112,10 +110,10 @@
                       [#list action.getRegionalSynthesis(flagshipIndicator.id,midOutcome.id) as syntesisReport]
                         <tr>
                           <td class="center"> ${(syntesisReport.ipprogram.acronym)!}</td>
-                          <td class="center"> ${(syntesisReport.achieved)!}</td>
                           <td class="center"> ${(syntesisReport.achievedExpected)!}</td>  
-                          <td class="center" >${(syntesisReport.synthesisAnual)!}</td>
-                          <td class="center"> ${(syntesisReport.synthesisGender)!}</td>
+                          <td class="center"> ${(syntesisReport.achieved)!}</td>
+                          <td>${(syntesisReport.synthesisAnual)!}</td>
+                          <td> ${(syntesisReport.synthesisGender)!}</td>
                         </tr>
                       [/#list]
                       </tbody>
