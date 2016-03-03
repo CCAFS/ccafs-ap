@@ -19,14 +19,17 @@ import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.MogSynthesisManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
-import org.cgiar.ccafs.ap.data.model.IPElementType;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
+import org.cgiar.ccafs.ap.data.model.MogSynthesis;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
+import org.cgiar.ccafs.ap.validation.synthesis.MogSynthesisValidator;
 import org.cgiar.ccafs.utils.APConfig;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -45,7 +48,7 @@ public class SynthesisByMogAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-
+  private MogSynthesisValidator validator;
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private IPProgramManager ipProgramManager;
   private IPElementManager ipElementManager;
@@ -55,19 +58,23 @@ public class SynthesisByMogAction extends BaseAction {
   private LiaisonInstitution currentLiaisonInstitution;
   private List<IPElement> mogs;
   private IPProgram program;
-
+  private List<MogSynthesis> synthesis;
+  private MogSynthesisManager mogSynthesisManager;
   private int liaisonInstitutionID;
 
 
   @Inject
   public SynthesisByMogAction(APConfig config, HistoryManager historyManager,
     LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
-    IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager) {
+    IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager,
+    MogSynthesisManager mogSynthesisManager, MogSynthesisValidator validator) {
     super(config);
     this.overviewManager = overviewManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.ipProgramManager = ipProgramManager;
     this.ipElementManager = ipElementManager;
+    this.mogSynthesisManager = mogSynthesisManager;
+    this.validator = validator;
   }
 
   public LiaisonInstitution getCurrentLiaisonInstitution() {
@@ -75,10 +82,20 @@ public class SynthesisByMogAction extends BaseAction {
   }
 
 
+  public int getIndex(int midoutcome, int program) {
+    MogSynthesis synthe = new MogSynthesis();
+
+    synthe.setMogId(midoutcome);
+    synthe.setProgramId(program);
+
+    int index = synthesis.indexOf(synthe);
+    return index;
+
+  }
+
   public int getLiaisonInstitutionID() {
     return liaisonInstitutionID;
   }
-
 
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     return liaisonInstitutions;
@@ -96,6 +113,19 @@ public class SynthesisByMogAction extends BaseAction {
     return overviewManager.getProjectContributionOverviewsSytnhesis(mogId, config.getReportingCurrentYear());
   }
 
+  public List<MogSynthesis> getRegionalSynthesis(int midoutcome) {
+    List<MogSynthesis> list = mogSynthesisManager.getMogSynthesisRegions(midoutcome);
+    for (MogSynthesis mogSynthesis : list) {
+      mogSynthesis.setIpProgam(ipProgramManager.getIPProgramById(mogSynthesis.getProgramId()));
+    }
+    return list;
+  }
+
+  public List<MogSynthesis> getSynthesis() {
+    return synthesis;
+  }
+
+
   @Override
   public String next() {
     String result = this.save();
@@ -105,6 +135,7 @@ public class SynthesisByMogAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -131,8 +162,6 @@ public class SynthesisByMogAction extends BaseAction {
     // Get currentLiaisonInstitution
     currentLiaisonInstitution = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
 
-    // Create an ipElementType with the identifier of the outcomes 2019 type
-    IPElementType mogsType = new IPElementType(APConstants.ELEMENT_TYPE_OUTPUTS);
 
     int programID;
     try {
@@ -145,13 +174,45 @@ public class SynthesisByMogAction extends BaseAction {
     // Get all MOGs manually
 
     mogs = ipElementManager.getIPElementListForSynthesis(program);
+    synthesis = mogSynthesisManager.getMogSynthesis(programID);
 
+    for (IPElement mog : mogs) {
+
+      if (this.getIndex(mog.getId(), programID) == -1) {
+        MogSynthesis synthe = new MogSynthesis();
+
+        synthe.setMogId(mog.getId());
+        synthe.setProgramId(program.getId());
+        synthe.setYear(this.getCurrentReportingYear());
+        synthe.setId(null);
+        synthesis.add(synthe);
+
+      }
+
+    }
   }
 
 
   @Override
   public String save() {
+
+    for (MogSynthesis synthe : synthesis) {
+
+      mogSynthesisManager.saveMogSynthesis(synthe);
+
+    }
+
+    Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty()) {
+      String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else {
+      this.addActionMessage(this.getText("saving.saved"));
+    }
+
     return SUCCESS;
+
   }
 
   public void setCurrentLiaisonInstitution(LiaisonInstitution currentLiaisonInstitution) {
@@ -170,9 +231,14 @@ public class SynthesisByMogAction extends BaseAction {
     this.program = program;
   }
 
+  public void setSynthesis(List<MogSynthesis> synthesis) {
+    this.synthesis = synthesis;
+  }
+
   @Override
   public void validate() {
     if (save) {
+      validator.validate(this, synthesis);
     }
   }
 }

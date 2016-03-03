@@ -9,14 +9,19 @@ public class MogSynthesis implements java.io.Serializable {
 
 
   private Integer id;
+
   private int programId;
+
   private int mogId;
   private int year;
   private String synthesisReport;
   private String synthesisGender;
+  private IPProgram ipProgam;
+
 
   public MogSynthesis() {
   }
+
 
   public MogSynthesis(int programId, int mogId, int year, String synthesisReport, String synthesisGender) {
     this.programId = programId;
@@ -26,52 +31,90 @@ public class MogSynthesis implements java.io.Serializable {
     this.synthesisGender = synthesisGender;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    MogSynthesis other = (MogSynthesis) obj;
+    if (mogId != other.mogId) {
+      return false;
+    }
+    if (programId != other.programId) {
+      return false;
+    }
+    return true;
+  }
+
   public Integer getId() {
     return this.id;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public int getProgramId() {
-    return this.programId;
-  }
-
-  public void setProgramId(int programId) {
-    this.programId = programId;
+  public IPProgram getIpProgam() {
+    return ipProgam;
   }
 
   public int getMogId() {
     return this.mogId;
   }
 
-  public void setMogId(int mogId) {
-    this.mogId = mogId;
-  }
-
-  public int getYear() {
-    return this.year;
-  }
-
-  public void setYear(int year) {
-    this.year = year;
-  }
-
-  public String getSynthesisReport() {
-    return this.synthesisReport;
-  }
-
-  public void setSynthesisReport(String synthesisReport) {
-    this.synthesisReport = synthesisReport;
+  public int getProgramId() {
+    return this.programId;
   }
 
   public String getSynthesisGender() {
     return this.synthesisGender;
   }
 
+  public String getSynthesisReport() {
+    return this.synthesisReport;
+  }
+
+  public int getYear() {
+    return this.year;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + mogId;
+    result = prime * result + programId;
+    return result;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public void setIpProgam(IPProgram ipProgam) {
+    this.ipProgam = ipProgam;
+  }
+
+  public void setMogId(int mogId) {
+    this.mogId = mogId;
+  }
+
+  public void setProgramId(int programId) {
+    this.programId = programId;
+  }
+
   public void setSynthesisGender(String synthesisGender) {
     this.synthesisGender = synthesisGender;
+  }
+
+  public void setSynthesisReport(String synthesisReport) {
+    this.synthesisReport = synthesisReport;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
 
