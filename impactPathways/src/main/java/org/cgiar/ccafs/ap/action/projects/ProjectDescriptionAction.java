@@ -460,7 +460,7 @@ public class ProjectDescriptionAction extends BaseAction {
       // TODO - Update the type of projects and all the implications.
       // previousProject.setType(project.getType());
 
-      if (project.isBilateralProject()) {
+      if (previousProject.isBilateralProject()) {
         if (this.hasProjectPermission("bilateralContract", projectID)) {
           if (file != null) {
             FileManager
