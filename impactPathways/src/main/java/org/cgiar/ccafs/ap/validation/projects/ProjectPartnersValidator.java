@@ -132,11 +132,14 @@ public class ProjectPartnersValidator extends BaseValidator {
     int c = 0;
     for (ProjectPartner partner : project.getProjectPartners()) {
       if (partner.getInstitution() == null || partner.getInstitution().getId() == -1) {
-        if (partner.getPartnerPersons().size() > 0) {
-          action.addFieldError("project.projectPartners[" + c + "].institution", action.getText("validation.required",
-            new String[] {action.getText("planning.projectPartners.partner.name")}));
-          // No need to add missing fields because field error doesn't allow to save into the database.
+        if (partner.getPartnerPersons() != null) {
+          if (partner.getPartnerPersons().size() > 0) {
+            action.addFieldError("project.projectPartners[" + c + "].institution", action.getText("validation.required",
+              new String[] {action.getText("planning.projectPartners.partner.name")}));
+            // No need to add missing fields because field error doesn't allow to save into the database.
+          }
         }
+
       }
       c++;
     }
