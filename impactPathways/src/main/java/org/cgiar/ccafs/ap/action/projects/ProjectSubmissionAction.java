@@ -85,9 +85,16 @@ public class ProjectSubmissionAction extends BaseAction {
       if (this.isComplete()) {
         // Getting all the submissions made for this project.
         List<Submission> submissions = submissionManager.getProjectSubmissions(project);
+        int evaluatingYear=0;
+        if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
+          evaluatingYear=this.getCurrentReportingYear();
+        } else {
+          evaluatingYear=this.getCurrentPlanningYear();
+        }
         for (Submission theSubmission : submissions) {
           // Get the submission we need.
-          if (theSubmission.getYear() == config.getPlanningCurrentYear()
+          
+          if (theSubmission.getYear() == 
             && theSubmission.getCycle().equals(this.getCycleName())) {
             submission = theSubmission;
             alreadySubmitted = true;
