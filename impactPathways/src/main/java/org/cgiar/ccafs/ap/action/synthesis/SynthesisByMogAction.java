@@ -17,15 +17,14 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.HistoryManager;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
-import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectContributionOverviewManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPElementType;
-import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
-import org.cgiar.ccafs.ap.validation.projects.ProjectLeverageValidator;
+import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.List;
@@ -46,12 +45,11 @@ public class SynthesisByMogAction extends BaseAction {
   private static final long serialVersionUID = -3179251766947184219L;
 
   // Manager
-  private ProjectLeverageValidator validator;
-  private HistoryManager historyManager;
+
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private IPProgramManager ipProgramManager;
   private IPElementManager ipElementManager;
-  private IPIndicatorManager ipIndicatorManager;
+  private ProjectContributionOverviewManager overviewManager;
   // Model for the front-end
   private List<LiaisonInstitution> liaisonInstitutions;
   private LiaisonInstitution currentLiaisonInstitution;
@@ -64,11 +62,9 @@ public class SynthesisByMogAction extends BaseAction {
   @Inject
   public SynthesisByMogAction(APConfig config, HistoryManager historyManager,
     LiaisonInstitutionManager liaisonInstitutionManager, IPProgramManager ipProgramManager,
-    IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager, ProjectLeverageValidator validator) {
+    IPElementManager ipElementManager, ProjectContributionOverviewManager overviewManager) {
     super(config);
-    this.validator = validator;
-    this.historyManager = historyManager;
-    this.ipIndicatorManager = ipIndicatorManager;
+    this.overviewManager = overviewManager;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.ipProgramManager = ipProgramManager;
     this.ipElementManager = ipElementManager;
@@ -96,8 +92,8 @@ public class SynthesisByMogAction extends BaseAction {
     return program;
   }
 
-  public List<IPIndicator> getProjectIndicators(int year, int indicator) {
-    return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId());
+  public List<OutputOverview> getProjectOutputOverviews(int mogId) {
+    return overviewManager.getProjectContributionOverviewsSytnhesis(mogId, config.getReportingCurrentYear());
   }
 
   @Override
@@ -138,15 +134,20 @@ public class SynthesisByMogAction extends BaseAction {
     // Create an ipElementType with the identifier of the outcomes 2019 type
     IPElementType mogsType = new IPElementType(APConstants.ELEMENT_TYPE_OUTPUTS);
 
-    int programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
+    int programID;
+    try {
+      programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
+    } catch (Exception e) {
+      programID = 1;
+    }
     program = ipProgramManager.getIPProgramById(programID);
 
     // Get all MOGs manually
-    String[] ids = {"171", "172", "173", "174", "175", "46", "47", "48", "49", "50", "51", "40", "41", "42", "176",
-      "177", "177", "178", "179"};
-    mogs = ipElementManager.getIPElementList(ids);
+
+    mogs = ipElementManager.getIPElementListForSynthesis(program);
 
   }
+
 
   @Override
   public String save() {

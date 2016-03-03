@@ -110,6 +110,25 @@ public interface IPElementDAO {
   public List<Map<String, String>> getIPElementByProgramID(int programID);
 
   /**
+   * This method return a all the IP elements which belongs to the program
+   * indicated by parameter.
+   * 
+   * @param programID, identifier of the program
+   * @return a list of maps with the information of all IP elements returned.
+   */
+
+  public List<Map<String, String>> getIPElementByProgramIDSynthesis(int programID);
+
+  /**
+   * This method return a all the IP elements which belongs to the program
+   * indicated by parameter regions.
+   * 
+   * @param programID, identifier of the program
+   * @return a list of maps with the information of all IP elements returned.
+   */
+  public List<Map<String, String>> getIPElementListForSynthesisRegion(int programId);
+
+  /**
    * This method gets the ipElements identified by the values received by
    * parameter
    * 

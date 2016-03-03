@@ -109,11 +109,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                [#list 1..10 as projectContribution]
+                [#list action.getProjectOutputOverviews(mog.id) as projectContribution]
                   <tr>
-                    <td class="center"> P_ID</td>
-                    <td class="center" > Prefilled by PL</td>
-                    <td class="center"> Prefilled by PL</td>
+                    <td class="center"><a href="[@s.url action="outputs" namespace="/reporting/projects"][@s.param name='projectID']${(projectContribution.projectID)!}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">P${(projectContribution.projectID)!}</a></td>
+                  <td class="">${(projectContribution.briefSummary)!'Prefilled when available'} </td>
+                   <td class="">${(projectContribution.summaryGender)!'Prefilled when available'} </td>
                   </tr>
                 [/#list]
                 </tbody>

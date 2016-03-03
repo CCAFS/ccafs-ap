@@ -132,6 +132,36 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
   }
 
   @Override
+  public List<Map<String, String>> getProjectContributionOverviewsSynthesis(int mogId, int year) {
+    List<Map<String, String>> overviewsData = new ArrayList<>();
+    StringBuilder query = new StringBuilder();
+    query.append("select * from ip_project_contribution_overviews where YEAR= ");
+    query.append(year + " and output_id=" + mogId + " and is_active=1");
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      while (rs.next()) {
+        Map<String, String> overview = new HashMap<>();
+        overview.put("id", rs.getString("id"));
+        overview.put("year", rs.getString("year"));
+        overview.put("annual_contribution", rs.getString("anual_contribution"));
+        overview.put("gender_contribution", rs.getString("gender_contribution"));
+        overview.put("output_id", rs.getString("output_id"));
+        overview.put("project_id", rs.getString("project_id"));
+        overview.put("brief_summary", rs.getString("brief_summary"));
+        overview.put("summary_gender", rs.getString("summary_gender"));
+
+        overviewsData.add(overview);
+      }
+
+    } catch (SQLException e) {
+      LOG.error("-- getProjectContributionOverviews(int projectID)( ) > Exception arised trying to get the project "
+        + "contributions overview for project {}", e);
+    }
+    return overviewsData;
+  }
+
+  @Override
   public boolean saveProjectContribution(int projectID, Map<String, Object> overviewData, int userID,
     String justification) {
 

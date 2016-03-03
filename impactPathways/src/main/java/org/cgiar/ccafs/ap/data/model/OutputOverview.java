@@ -31,6 +31,8 @@ public class OutputOverview {
   private String briefSummary;
   private String summaryGender;
 
+  private String projectID;
+
 
   public OutputOverview() {
   }
@@ -55,9 +57,11 @@ public class OutputOverview {
     return briefSummary;
   }
 
+
   public String getExpectedAnnualContribution() {
     return expectedAnnualContribution;
   }
+
 
   public int getId() {
     return id;
@@ -65,6 +69,10 @@ public class OutputOverview {
 
   public IPElement getOutput() {
     return output;
+  }
+
+  public String getProjectID() {
+    return projectID;
   }
 
   public String getSocialInclusionDimmension() {
@@ -98,6 +106,10 @@ public class OutputOverview {
 
   public void setOutput(IPElement output) {
     this.output = output;
+  }
+
+  public void setProjectID(String projectID) {
+    this.projectID = projectID;
   }
 
   public void setSocialInclusionDimmension(String socialInclusionDimmension) {
