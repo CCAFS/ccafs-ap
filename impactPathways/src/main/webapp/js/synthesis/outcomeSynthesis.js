@@ -14,12 +14,12 @@ function init() {
       "bFilter": false, // This option enable the search
       "bSort": true, // this option enable the sort of contents by columns
       "bAutoWidth": false, // This option enables the auto adjust columns width
-      "iDisplayLength": 50,
+      "iDisplayLength": 100,
       aoColumnDefs: [
         {
             sType: "natural",
             aTargets: [
-              0
+                0, 1, 2
             ]
         }
       ]
@@ -32,6 +32,12 @@ function attachEvents() {
 
   $('.viewMore').toggle(expandViewMoreBlock, colapseViewMoreBlock);
 
+  // urlify
+  $('table tbody td').each(function(i,e) {
+    var html = urlify($(e).html());
+    $(e).html(html);
+  });
+
 }
 
 function expandViewMoreBlock() {
@@ -43,18 +49,18 @@ function expandViewMoreBlock() {
 
 function colapseViewMoreBlock() {
   $(this).parent().css({
-    height: 250
+    height: 225
   });
   $(this).html('View More');
 }
 
 function setViewMore() {
   $('.viewMore-block').each(function(i,element) {
-    if($(element).height() < 250) {
+    if($(element).height() < 225) {
       $(element).find('.viewMore').remove();
     } else {
       $(element).css({
-        "height": 250
+        "height": 225
       })
       $(element).find('.viewMore').html('View More');
     }

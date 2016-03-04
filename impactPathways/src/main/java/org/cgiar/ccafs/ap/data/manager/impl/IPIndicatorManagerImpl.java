@@ -72,7 +72,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicator.setId(Integer.parseInt(iData.get("id")));
       indicator.setDescription(iData.get("description"));
       indicator.setTarget(iData.get("target"));
-
+      indicator.setAcronym(iData.get("acronym"));
       // Parent indicator
       if (iData.get("parent_id") != null) {
         IPIndicator parent = new IPIndicator();
@@ -96,7 +96,7 @@ public class IPIndicatorManagerImpl implements IPIndicatorManager {
       indicator.setId(Integer.parseInt(iData.get("id")));
       indicator.setDescription(iData.get("description"));
       indicator.setTarget(iData.get("target"));
-
+      indicator.setAcronym(iData.get("acronym"));
       // Parent indicator
       if (iData.get("parent_id") != null) {
         IPIndicator parent = new IPIndicator();

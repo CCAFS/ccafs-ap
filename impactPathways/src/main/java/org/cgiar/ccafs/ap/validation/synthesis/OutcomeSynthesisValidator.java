@@ -48,9 +48,15 @@ public class OutcomeSynthesisValidator extends BaseValidator {
 
   public void validate(BaseAction action, List<OutcomeSynthesis> synthesis) {
     String msjFinal = "";
+    int indicatorFP1 = 1;
+    int indicatorFP2 = 1;
+    int indicatorFP3 = 1;
+    int indicatorFP4 = 1;
     for (OutcomeSynthesis synthe : synthesis) {
       IPElement midOutcome = ipElementManager.getIPElement(synthe.getMidOutcomeId());
-      IPIndicator indicator = ipIndicatorManager.getIndicator(synthe.getIndicadorId());
+      IPIndicator indicator = ipIndicatorManager.getIndicatorFlgship(synthe.getIndicadorId());
+
+
       try {
 
         this.validateActualAchieved(action, synthe.getAchieved(), indicator.getDescription(),
@@ -63,8 +69,31 @@ public class OutcomeSynthesisValidator extends BaseValidator {
       this.validateSynthesisGender(action, synthe.getSynthesisGender(), indicator.getDescription(),
         midOutcome.getComposedId());
       if (validationMessage.length() > 0) {
+        int number = 0;
+        if (indicator.getAcronym() != null) {
+          switch (indicator.getAcronym()) {
+            case "FP1":
+              number = indicatorFP1;
+              indicatorFP1++;
+              break;
+            case "FP2":
+              number = indicatorFP2;
+              indicatorFP2++;
+              break;
+            case "FP3":
+              number = indicatorFP3;
+              indicatorFP3++;
+              break;
+            case "FP4":
+              number = indicatorFP4;
+              indicatorFP4++;
+              break;
+            default:
+              break;
+          }
+        }
 
-        msjFinal = msjFinal + "<p> - " + midOutcome.getComposedId() + ": " + indicator.getDescription() + "</p>";
+        msjFinal = msjFinal + "</br><p align='left'>- " + indicator.getAcronym() + ": Indicator " + number + "</p>";
 
 
       }

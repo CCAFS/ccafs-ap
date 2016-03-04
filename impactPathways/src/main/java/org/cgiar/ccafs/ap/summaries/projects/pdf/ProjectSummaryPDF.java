@@ -209,8 +209,20 @@ public class ProjectSummaryPDF extends BasePDF {
             activityBlock.add(Chunk.NEWLINE);
             this.addTableColSpanCell(table, activityBlock, Element.ALIGN_JUSTIFIED, 1, 2);
 
-            String startDate = new SimpleDateFormat("dd-MM-yyyy").format(activity.getStartDate());
-            String endDate = new SimpleDateFormat("dd-MM-yyyy").format(activity.getEndDate());
+            String startDate = null;
+            String endDate = null;
+            try {
+              startDate = new SimpleDateFormat("dd-MM-yyyy").format(activity.getStartDate());
+            } catch (Exception e) {
+
+            }
+            try {
+
+              endDate = new SimpleDateFormat("dd-MM-yyyy").format(activity.getEndDate());
+            } catch (Exception e) {
+
+            }
+
 
             // Activity Start Date
             activityBlock = new Paragraph();

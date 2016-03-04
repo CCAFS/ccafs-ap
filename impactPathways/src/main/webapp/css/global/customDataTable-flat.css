@@ -47,7 +47,7 @@ table.dataTable thead {
 }
 
 table.dataTable tr.odd {
-  background-color: #FAFAFA;
+  background-color: #F7F7F7;
 }
 
 table.dataTable tr.even {
@@ -81,7 +81,7 @@ table.dataTable thead th {
   text-align: center;
   border: 0px solid #8EBBDA;
   color: #FAFAFA;
-  font-size: 0.53em;
+  font-size: 0.5em;
   vertical-align: middle;
   padding: 5px 16px 5px 10px;
   font-weight: lighter;

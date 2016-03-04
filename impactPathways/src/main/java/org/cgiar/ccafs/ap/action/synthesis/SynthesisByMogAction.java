@@ -209,7 +209,7 @@ public class SynthesisByMogAction extends BaseAction {
       this.setActionMessages(null);
       this.addActionWarning(this.getText("saving.saved") + validationMessage);
     } else {
-      this.addActionMessage(this.getText("saving.saved"));
+      this.addActionMessage("All required fields are filled. You've successfully completed your work. Thank you!");
     }
 
     return SUCCESS;

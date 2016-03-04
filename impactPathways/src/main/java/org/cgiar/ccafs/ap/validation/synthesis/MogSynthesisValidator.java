@@ -47,6 +47,11 @@ public class MogSynthesisValidator extends BaseValidator {
 
   public void validate(BaseAction action, List<MogSynthesis> synthesis) {
     String msjFinal = "";
+
+    int indicatorFP1 = 1;
+    int indicatorFP2 = 1;
+    int indicatorFP3 = 1;
+    int indicatorFP4 = 1;
     for (MogSynthesis synthe : synthesis) {
       IPElement midOutcome = ipElementManager.getIPElement(synthe.getMogId());
 
@@ -54,11 +59,32 @@ public class MogSynthesisValidator extends BaseValidator {
       this.validateSynthesisAnual(action, synthe.getSynthesisReport(), midOutcome.getComposedId());
       this.validateSynthesisGender(action, synthe.getSynthesisGender(), midOutcome.getComposedId());
       if (validationMessage.length() > 0) {
-
-        msjFinal = msjFinal + "<p> - " + midOutcome.getComposedId() + " </p>";
+        int number = 0;
+        switch (midOutcome.getProgram().getId()) {
+          case 1:
+            number = indicatorFP1;
+            indicatorFP1++;
+            break;
+          case 2:
+            number = indicatorFP2;
+            indicatorFP2++;
+            break;
+          case 3:
+            number = indicatorFP3;
+            indicatorFP3++;
+            break;
+          case 4:
+            number = indicatorFP4;
+            indicatorFP4++;
+            break;
+          default:
+            break;
+        }
+        msjFinal = msjFinal + "</br><p align='left'>-" + midOutcome.getComposedId() + " " + number + " </p>";
 
 
       }
+      c++;
       validationMessage = new StringBuilder();
     }
     if (!action.getFieldErrors().isEmpty()) {

@@ -15,7 +15,9 @@
 package org.cgiar.ccafs.ap.validation.synthesis;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.data.manager.IndicatorReportManager;
 import org.cgiar.ccafs.ap.data.model.IndicatorReport;
+import org.cgiar.ccafs.ap.data.model.IndicatorType;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 
 import java.util.List;
@@ -29,18 +31,22 @@ import com.google.inject.Inject;
 
 public class ProjectCrpIndicatorsValidator extends BaseValidator {
 
+  private IndicatorReportManager indicatorsReportManager;
 
   private int c = 0;
 
+  private List<IndicatorType> indicatorsType;
 
   @Inject
-  public ProjectCrpIndicatorsValidator() {
+  public ProjectCrpIndicatorsValidator(IndicatorReportManager indicatorsReportManager) {
     super();
+    this.indicatorsReportManager = indicatorsReportManager;
 
   }
 
   public void validate(BaseAction action, List<IndicatorReport> indicator) {
     String msjFinal = "";
+    indicatorsType = indicatorsReportManager.getIndicatorReportsType();
     for (IndicatorReport indicatorReport : indicator) {
       try {
         this.validateActualAchieved(action, Integer.parseInt(indicatorReport.getActual()),
@@ -56,14 +62,30 @@ public class ProjectCrpIndicatorsValidator extends BaseValidator {
       }
       this.validateLink(action, indicatorReport.getSupportLinks(), indicatorReport.getIndicator().getName());
       this.validateDeviation(action, indicatorReport.getDeviation(), indicatorReport.getIndicator().getName());
-      if (validationMessage.length() > 0) {
 
-        msjFinal = msjFinal + "<p> - " + indicatorReport.getIndicator().getName() + "</p>";
+
+      if (validationMessage.length() > 0) {
+        int index = indicatorsType.indexOf(indicatorReport.getIndicator().getType());
+        IndicatorType indicatorTypeMsj = indicatorsType.get(index);
+        if (indicatorTypeMsj.getMessageError().equals("")) {
+          indicatorTypeMsj.setMessageError("Indicator " + indicatorReport.getIndicator().getId());
+        } else {
+          indicatorTypeMsj.setMessageError(
+            indicatorTypeMsj.getMessageError() + ", Indicator " + indicatorReport.getIndicator().getId());
+        }
 
 
       }
       validationMessage = new StringBuilder();
     }
+    for (IndicatorType indicatorTypeMsj : indicatorsType) {
+      if (indicatorTypeMsj.getMessageError().length() > 0) {
+        msjFinal = msjFinal + "</br><p align='left'> - " + indicatorTypeMsj.getName() + ": "
+          + indicatorTypeMsj.getMessageError() + "</p>";
+      }
+
+    }
+
     if (!action.getFieldErrors().isEmpty()) {
       action.addActionError(action.getText("saving.fields.required"));
     } else if (msjFinal.length() > 0) {

@@ -93,7 +93,7 @@ input.disabled {
   width: 99%;
   margin: 0 0.5%;
   cursor: pointer;
-  padding: 40px 0 3px 0;
+  padding: 30px 0 12px 0;
   font-weight: 900;
   text-align: center;
   background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, #fff 0%);
@@ -715,17 +715,19 @@ ul.horizontalSubMenu{
 
 ul.horizontalSubMenu li{
   padding: 7px 11px;
-  border: 1px solid #E3E3E3;
+  border: 1px solid #D2D2D2;
   display: inline-block;
   margin-bottom: 5px;
   border-radius: 3px;
 }
 
-ul.horizontalSubMenu li a{text-decoration: none;color: #B5B5B5;}
+ul.horizontalSubMenu li a{text-decoration: none;color: #B3B2B2;}
 
 ul.horizontalSubMenu li.active{
   
 background: #1DA5CE;
+  
+border-color: #1DA5CE;
 }
 
 ul.horizontalSubMenu li.active a{
@@ -4493,20 +4495,28 @@ a.showIndicatorDesc img{
   width: 98%;
 }
 
-table.projectContributions th.col-projectId{
-  width: 10%;
+.synthesisContributions-block table th.col-projectId{
+  width: 5%;
 }
-table.projectContributions th.col-regionId{
-  width: 10%;
+.synthesisContributions-block table th.col-regionId{
+  width: 5%;
 }
 
-table.projectContributions th.col-expected{
-  width: 15%;
+.synthesisContributions-block table th.col-expected{
+  width: 9%;
   padding: 6px 0;
 }
-table.projectContributions th.col-achieved{
-  width: 15%;
+.synthesisContributions-block table th.col-achieved{
+  width: 9%;
   padding: 6px 0;
+}
+
+.synthesisContributions-block table th.col-synthesis{
+  width: 39%; 
+}
+
+.synthesisContributions-block table th.col-mogSynthesis{
+  width: 45%; 
 }
 
 table.projectContributions{
@@ -4514,6 +4524,15 @@ table.projectContributions{
 
 table.regionalContributions thead{background-color: #07C39F !important;}
 
+
+span.ipElementId {
+  border-radius: 5px;
+  border: 1px solid #B0D8E6;
+  padding: 0 5px 1px 5px;
+  margin: 5px;
+  font-size: 0.75em;
+  color: #9EC3D0;
+}
 /*** Glossary ***/
 
 #glossary-content {

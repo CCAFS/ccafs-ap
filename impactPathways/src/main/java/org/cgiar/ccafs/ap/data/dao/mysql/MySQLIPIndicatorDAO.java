@@ -115,6 +115,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
       if (rs.next()) {
         indicatorData.put("id", rs.getString("id"));
         indicatorData.put("description", rs.getString("acronym") + " Indicator: " + rs.getString("description"));
+        indicatorData.put("acronym", rs.getString("acronym"));
         indicatorData.put("target", rs.getString("target"));
         indicatorData.put("parent_id", rs.getString("parent_id"));
         indicatorData.put("parent_description", rs.getString("parent_description"));

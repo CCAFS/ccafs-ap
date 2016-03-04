@@ -56,7 +56,7 @@
       
           [#-- MOG Name --]
           <div class="fullPartBlock">
-            <h6 class="title">${mog.getComposedId()}</h6>
+            <h6 class="title">${mog.getComposedId()} <span class="ipElementId">ID ${mog.id}</span></h6>
             <p>${mog.description}</p>
           </div>
           
@@ -79,16 +79,16 @@
                 <thead>
                   <tr class="header">
                     <th class="col-regionId">Region</th>
-                    <th>Synthesis report</th>
-                    <th>Gender synthesis report</th>
+                    <th class="col-mogSynthesis">Synthesis reported</th>
+                    <th class="col-mogSynthesis">Gender synthesis reported</th>
                   </tr>
                 </thead>
                 <tbody>
                 [#list action.getRegionalSynthesis(mog.id) as syntesisReport]
                   <tr>
                       <td class="center"> ${(syntesisReport.ipProgam.acronym)!}</td>
-                      <td> ${(syntesisReport.synthesisReport)!}</td>  
-                      <td> ${(syntesisReport.synthesisGender)!}</td>
+                      <td>${(syntesisReport.synthesisReport)!}</td>  
+                      <td>${(syntesisReport.synthesisGender)!}</td>
                   </tr>
                 [/#list]
                 </tbody>
@@ -105,17 +105,17 @@
               <table class="projectContributions">
                 <thead>
                   <tr class="header">
-                    <th class="col-projectId">Project ID</th>
-                    <th>Expected annual ${currentReportingYear} contribution</th>
-                    <th>Plan of the gender and social inclusion dimension of the expected annual output</th>
+                    <th class="col-projectId">Project</th>
+                    <th class="col-mogSynthesis">Expected annual ${currentReportingYear} contribution</th>
+                    <th class="col-mogSynthesis">Plan of the gender and social inclusion dimension of the expected annual output</th>
                   </tr>
                 </thead>
                 <tbody>
                 [#list action.getProjectOutputOverviews(mog.id) as projectContribution]
                   <tr>
                     <td class="center"><a href="[@s.url action="outputs" namespace="/reporting/projects"][@s.param name='projectID']${(projectContribution.projectID)!}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">P${(projectContribution.projectID)!}</a></td>
-                  <td class="">${(projectContribution.briefSummary)!'Prefilled when available'} </td>
-                   <td class="">${(projectContribution.summaryGender)!'Prefilled when available'} </td>
+                    <td class="">${(projectContribution.briefSummary)!'Prefilled when available'} </td>
+                    <td class="">${(projectContribution.summaryGender)!'Prefilled when available'} </td>
                   </tr>
                 [/#list]
                 </tbody>
