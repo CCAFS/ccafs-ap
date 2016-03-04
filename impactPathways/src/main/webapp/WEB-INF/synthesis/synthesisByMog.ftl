@@ -74,8 +74,8 @@
           [#if program.flagshipProgram]
           <div class="fullPartBlock">
             <h6>[@s.text name="reporting.synthesis.synthesisByMog.RegionalSynthesis" /]:</h6> 
-            <div class="fullPartBlock projectContributions-block viewMore-block">
-              <table class="projectContributions">
+            <div class="fullPartBlock synthesisContributions-block viewMore-block">
+              <table class="regionalContributions">
                 <thead>
                   <tr class="header">
                     <th class="col-regionId">Region</th>
@@ -101,7 +101,7 @@
           [#-- Projects contributions to this MOG --]
           <div class="fullPartBlock">
             <h6>[@s.text name="reporting.synthesis.synthesisByMog.projectContributions" /]:</h6> 
-            <div class="fullPartBlock projectContributions-block viewMore-block">
+            <div class="fullPartBlock synthesisContributions-block viewMore-block">
               <table class="projectContributions">
                 <thead>
                   <tr class="header">

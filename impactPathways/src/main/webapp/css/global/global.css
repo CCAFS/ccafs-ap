@@ -4489,7 +4489,7 @@ a.showIndicatorDesc img{
 }
 
 /*** Outcome synthesis ***/
-.projectContributions-block {
+.synthesisContributions-block {
   width: 98%;
 }
 
@@ -4511,6 +4511,8 @@ table.projectContributions th.col-achieved{
 
 table.projectContributions{
 }
+
+table.regionalContributions thead{background-color: #07C39F !important;}
 
 /*** Glossary ***/
 

@@ -95,8 +95,8 @@
                 [#if midOutcome.flagshipProgramType]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
                 <div class="fullPartBlock">
-                  <div class="fullPartBlock projectContributions-block viewMore-block">
-                    <table class="projectContributions">
+                  <div class="fullPartBlock synthesisContributions-block viewMore-block">
+                    <table class="regionalContributions">
                       <thead>
                         <tr class="header">
                           <th>Region</th>
@@ -130,7 +130,7 @@
                   <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
                 [/#if]
                 [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id))?has_content]
-                <div class="fullPartBlock projectContributions-block viewMore-block">
+                <div class="fullPartBlock synthesisContributions-block viewMore-block">
                   <table class="projectContributions">
                     <thead>
                       <tr class="header">
