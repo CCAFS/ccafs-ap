@@ -27,9 +27,11 @@ public class OutcomeSynthesis implements java.io.Serializable {
 
 
   private Double achievedExpected;
+  private String achievedExpectedText;
 
   public OutcomeSynthesis() {
   }
+
 
   public OutcomeSynthesis(int ipProgamId, int year, int midOutcomeId, int indicadorId) {
     this.ipProgamId = ipProgamId;
@@ -74,14 +76,17 @@ public class OutcomeSynthesis implements java.io.Serializable {
     return true;
   }
 
-
   public Float getAchieved() {
     return this.achieved;
   }
 
-
   public Double getAchievedExpected() {
     return achievedExpected;
+  }
+
+
+  public String getAchievedExpectedText() {
+    return achievedExpectedText;
   }
 
 
@@ -94,10 +99,10 @@ public class OutcomeSynthesis implements java.io.Serializable {
     return this.discrepancy;
   }
 
+
   public Integer getId() {
     return this.id;
   }
-
 
   public int getIndicadorId() {
     return this.indicadorId;
@@ -107,6 +112,7 @@ public class OutcomeSynthesis implements java.io.Serializable {
   public int getIpProgamId() {
     return this.ipProgamId;
   }
+
 
   public IPProgram getIpprogram() {
     return ipprogram;
@@ -144,6 +150,10 @@ public class OutcomeSynthesis implements java.io.Serializable {
 
   public void setAchievedExpected(Double achievedExpected) {
     this.achievedExpected = achievedExpected;
+  }
+
+  public void setAchievedExpectedText(String achievedExpectedText) {
+    this.achievedExpectedText = achievedExpectedText;
   }
 
   public void setAchievedText(String achievedText) {

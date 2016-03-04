@@ -85,6 +85,23 @@ public class OutcomeSynthesisAction extends BaseAction {
   }
 
 
+  public String fmt(double d) {
+    if (d == (long) d) {
+      return String.format("%d", (long) d);
+    } else {
+      return String.format("%s", d);
+    }
+  }
+
+  public String fmt(float d) {
+    if (d == (long) d) {
+      return String.format("%d", (long) d);
+    } else {
+      return String.format("%s", d);
+    }
+  }
+
+
   public LiaisonInstitution getCurrentLiaisonInstitution() {
     return currentLiaisonInstitution;
   }
@@ -100,14 +117,15 @@ public class OutcomeSynthesisAction extends BaseAction {
 
   }
 
+
   public int getLiaisonInstitutionID() {
     return liaisonInstitutionID;
   }
 
-
   public List<LiaisonInstitution> getLiaisonInstitutions() {
     return liaisonInstitutions;
   }
+
 
   public List<IPElement> getMidOutcomes() {
     return midOutcomes;
@@ -117,7 +135,6 @@ public class OutcomeSynthesisAction extends BaseAction {
   public IPProgram getProgram() {
     return program;
   }
-
 
   public List<IPIndicator> getProjectIndicators(int year, int indicator) {
     return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId());
@@ -135,6 +152,7 @@ public class OutcomeSynthesisAction extends BaseAction {
     return synthesis;
   }
 
+
   @Override
   public String next() {
     String result = this.save();
@@ -144,7 +162,6 @@ public class OutcomeSynthesisAction extends BaseAction {
       return result;
     }
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -188,8 +205,10 @@ public class OutcomeSynthesisAction extends BaseAction {
 
     for (OutcomeSynthesis synthe : synthesis) {
       if (synthe.getAchieved() != null) {
-        synthe.setAchievedText(String.valueOf(synthe.getAchieved()).replace(",", "."));
+        synthe.setAchievedText(this.fmt(synthe.getAchieved()).replace(",", "."));
+
       }
+      synthe.setAchievedExpectedText(this.fmt(synthe.getAchievedExpected()).replace(",", "."));
     }
     for (IPElement midoutcome : midOutcomes) {
       for (IPIndicator indicator : midoutcome.getIndicators()) {
@@ -213,6 +232,7 @@ public class OutcomeSynthesisAction extends BaseAction {
 
   }
 
+
   @Override
   public String save() {
     for (OutcomeSynthesis synthe : synthesis) {
@@ -229,9 +249,9 @@ public class OutcomeSynthesisAction extends BaseAction {
     if (!messages.isEmpty()) {
       String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      this.addActionWarning(this.getText("saving.saved") + "</br>" + validationMessage);
     } else {
-      this.addActionMessage(this.getText("saving.saved"));
+      this.addActionMessage("All required fields are filled. You've successfully completed your work. Thank you!");
     }
 
     return SUCCESS;

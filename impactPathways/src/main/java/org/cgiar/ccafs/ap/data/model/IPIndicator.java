@@ -27,6 +27,7 @@ public class IPIndicator {
   private IPElement outcome;
   private int year;
   private Double archived;
+  private String acronym;
 
   private String archivedText;
 
@@ -34,6 +35,8 @@ public class IPIndicator {
   private String narrativeTargets;
 
   private String narrativeGender;
+
+
   private String projectId;
 
   public IPIndicator() {
@@ -42,7 +45,6 @@ public class IPIndicator {
   public IPIndicator(int id) {
     this.id = id;
   }
-
 
   @Override
   public boolean equals(Object obj) {
@@ -60,6 +62,10 @@ public class IPIndicator {
     }
 
     return false;
+  }
+
+  public String getAcronym() {
+    return acronym;
   }
 
 
@@ -97,6 +103,7 @@ public class IPIndicator {
     return narrativeTargets;
   }
 
+
   public IPElement getOutcome() {
     return outcome;
   }
@@ -120,6 +127,10 @@ public class IPIndicator {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
+  }
+
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
   }
 
   public void setArchived(Double archived) {

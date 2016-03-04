@@ -44,23 +44,23 @@
               <a href="[#if reportingActive]${baseUrl}/reporting/projectsList.do[/#if]" class="[#if !reportingActive]disabled[/#if]">Projects</a>
             </li>
             [#-- Contact points and Flagships Leaders : securityContext.FPL || securityContext.CP || --]
-            [#if  securityContext.admin]
+    
               <li [#if reportingCycleValid && (currentCycleSection  == "crpIndicators")] class="currentSection" [/#if] >
-                <a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" class="disabled">CRP Indicators</a>
+                <a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" >CRP Indicators</a>
               </li>
-            [/#if]
+          
             [#-- Flagships Leaders and Regional Leaders : securityContext.FPL || securityContext.RPL || --]
-            [#if securityContext.admin]
+       
               <li [#if reportingCycleValid && (currentCycleSection  == "outcomeSynthesis")] class="currentSection" [/#if] >
-                <a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" class="disabled">Outcome Synthesis</a>
+                <a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" >Outcome Synthesis</a>
               </li>
-            [/#if]
+         
             [#-- Flagships Leaders and Regional Leaders : securityContext.FPL || securityContext.RPL || --]
-            [#if  securityContext.admin]
+           
               <li [#if reportingCycleValid && (currentCycleSection  == "synthesisByMog")] class="currentSection" [/#if] >
-                <a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true" class="disabled">Synthesis by MOG</a>
+                <a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true" >Synthesis by MOG</a>
               </li> 
-            [/#if]
+          
             
           </ul>
         </li>

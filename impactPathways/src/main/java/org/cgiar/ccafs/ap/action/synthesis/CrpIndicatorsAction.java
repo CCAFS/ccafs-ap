@@ -133,6 +133,9 @@ public class CrpIndicatorsAction extends BaseAction {
       if (this.getCurrentUser().getLiaisonInstitution() != null) {
         if (this.hasSynthesisPermission("update", liaisonInstitutionID)) {
           liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+          if (liaisonInstitutionID == 1) {
+            liaisonInstitutionID = 2;
+          }
         } else {
           liaisonInstitutionID = 2;
         }
@@ -155,7 +158,6 @@ public class CrpIndicatorsAction extends BaseAction {
     // indicatorReports = indicatorReportManager.getIndicatorReports(liaisonInstitutionID,
     // this.getCurrentReportingYear(), indicatorTypeID);
 
-
   }
 
 
@@ -168,9 +170,9 @@ public class CrpIndicatorsAction extends BaseAction {
     if (!messages.isEmpty()) {
       String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      this.addActionWarning(this.getText("saving.saved") + "</br>" + validationMessage);
     } else {
-      this.addActionMessage(this.getText("saving.saved"));
+      this.addActionMessage("All required fields are filled. You've successfully completed your work. Thank you!");
     }
     return SUCCESS;
 
