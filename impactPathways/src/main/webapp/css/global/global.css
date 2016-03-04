@@ -715,17 +715,17 @@ ul.horizontalSubMenu{
 
 ul.horizontalSubMenu li{
   padding: 7px 11px;
-  border: 1px solid #E3E3E3;
+  border: 1px solid #C7C6C6;
   display: inline-block;
   margin-bottom: 5px;
   border-radius: 3px;
 }
 
-ul.horizontalSubMenu li a{text-decoration: none;color: #B5B5B5;}
+ul.horizontalSubMenu li a{text-decoration: none;color: #949494;}
 
 ul.horizontalSubMenu li.active{
-  
-background: #1DA5CE;
+  background: #1DA5CE;
+  border-color: #1DA5CE;
 }
 
 ul.horizontalSubMenu li.active a{
@@ -4514,6 +4514,15 @@ table.projectContributions{
 
 table.regionalContributions thead{background-color: #07C39F !important;}
 
+
+span.ipElementId {
+  border-radius: 5px;
+  border: 1px solid #B0D8E6;
+  padding: 0 5px 1px 5px;
+  margin: 5px;
+  font-size: 0.75em;
+  color: #9EC3D0;
+}
 /*** Glossary ***/
 
 #glossary-content {

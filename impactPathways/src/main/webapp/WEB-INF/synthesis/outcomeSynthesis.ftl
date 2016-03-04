@@ -54,7 +54,7 @@
           [/#if]
         
           <div class="fullPartBlock">
-            <h6 class="title">${midOutcome.getComposedId()}</h6>
+            <h6 class="title">${midOutcome.getComposedId()} <span class="ipElementId">ID ${midOutcome.id}</span></h6>
             <p>${midOutcome.description}</p>
           </div>
           <div class="fullPartBlock">

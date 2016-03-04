@@ -56,7 +56,7 @@
       
           [#-- MOG Name --]
           <div class="fullPartBlock">
-            <h6 class="title">${mog.getComposedId()}</h6>
+            <h6 class="title">${mog.getComposedId()} <span class="ipElementId">ID ${mog.id}</span></h6>
             <p>${mog.description}</p>
           </div>
           
