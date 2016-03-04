@@ -70,8 +70,8 @@ public class IPElement {
     }
     composedID.append("-");
     composedID.append(this.type != null ? this.type.getName() : "t_null");
-    composedID.append(" #");
-    composedID.append(this.id);
+    // composedID.append(" #");
+    // composedID.append(this.id);
     return composedID.toString();
   }
 
