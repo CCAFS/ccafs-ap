@@ -32,6 +32,12 @@ function attachEvents() {
 
   $('.viewMore').toggle(expandViewMoreBlock, colapseViewMoreBlock);
 
+  // urlify
+  $('table tbody td').each(function(i,e) {
+    var html = urlify($(e).html());
+    $(e).html(html);
+  });
+
 }
 
 function expandViewMoreBlock() {
