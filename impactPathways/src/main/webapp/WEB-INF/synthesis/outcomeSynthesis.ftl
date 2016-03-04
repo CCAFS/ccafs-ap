@@ -99,21 +99,21 @@
                     <table class="regionalContributions">
                       <thead>
                         <tr class="header">
-                          <th>Region</th>
-                          <th>Target Expected</th>
-                          <th>Target Achieved</th>
-                          <th>Synthesis reported</th>
-                          <th>Gender synthesis report</th>
+                          <th class="col-projectId">Region</th>
+                          <th class="col-expected">Target Expected</th>
+                          <th class="col-achieved">Target Achieved</th>
+                          <th class="col-synthesis">Synthesis reported</th>
+                          <th class="col-synthesis">Gender synthesis reported</th>
                         </tr>
                       </thead>
                       <tbody>
                       [#list action.getRegionalSynthesis(flagshipIndicator.id,midOutcome.id) as syntesisReport]
                         <tr>
-                          <td class="center"> ${(syntesisReport.ipprogram.acronym)!}</td>
-                          <td class="center"> ${(syntesisReport.achievedExpected)!}</td>  
-                          <td class="center"> ${(syntesisReport.achieved)!}</td>
-                          <td>${(syntesisReport.synthesisAnual)!}</td>
-                          <td> ${(syntesisReport.synthesisGender)!}</td>
+                          <td class="center">${(syntesisReport.ipprogram.acronym)!'Prefilled when available'}</td>
+                          <td class="center">${(syntesisReport.achievedExpected)!'Prefilled when available'}</td>  
+                          <td class="center">${(syntesisReport.achieved)!'Prefilled when available'}</td>
+                          <td >${(syntesisReport.synthesisAnual)!'Prefilled when available'}</td>
+                          <td> ${(syntesisReport.synthesisGender)!'Prefilled when available'}</td>
                         </tr>
                       [/#list]
                       </tbody>
@@ -134,14 +134,12 @@
                   <table class="projectContributions">
                     <thead>
                       <tr class="header">
-                        <th class="col-projectId" rowspan="2">Project ID</th>
-                        <th colspan="2">Target of current reporting period</th>
-                        <th rowspan="2">Narrative for your achieved targets, including evidence</th>
+                        <th class="col-projectId">Project</th>
+                        <th class="col-expected">Target Expected</th>
+                        <th class="col-achieved">Target Achieved</th> 
+                        <th class="col-synthesis">Narrative of achieved targets, including evidence</th>
+                        <th class="col-synthesis">Narrative of achieved annual gender and social inclusion contribution</th>
                       </tr>
-                    	<tr class="subHeader"> 
-                    		<th class="col-expected">Expected</th>
-                    		<th class="col-achieved">Achieved</th> 
-                    	</tr>
                   	</thead>
                   	<tbody>
                     [#list action.getProjectIndicators(currentReportingYear, flagshipIndicator.id) as projectIndicator]
@@ -150,6 +148,7 @@
                       	<td class="center" title="${(projectIndicator.target)!''}" >[@utilities.wordCutter string=(projectIndicator.target)!'Prefilled when available' maxPos=25 /]</td>
                       	<td class="center" title="${(projectIndicator.archived)!''}" >[@utilities.wordCutter string=(projectIndicator.archived)!'Prefilled when available' maxPos=25 /]</td>
                         <td class="">${(projectIndicator.narrativeTargets)!'Prefilled when available'} </td>
+                        <td class="">${(projectIndicator.narrativeGender)!'Prefilled when available'} </td>
                       </tr>
                     [/#list]
                   	</tbody>

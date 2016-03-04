@@ -14,12 +14,12 @@ function init() {
       "bFilter": false, // This option enable the search
       "bSort": true, // this option enable the sort of contents by columns
       "bAutoWidth": false, // This option enables the auto adjust columns width
-      "iDisplayLength": 50,
+      "iDisplayLength": 100,
       aoColumnDefs: [
         {
             sType: "natural",
             aTargets: [
-              0
+                0, 1, 2
             ]
         }
       ]
@@ -43,18 +43,18 @@ function expandViewMoreBlock() {
 
 function colapseViewMoreBlock() {
   $(this).parent().css({
-    height: 250
+    height: 225
   });
   $(this).html('View More');
 }
 
 function setViewMore() {
   $('.viewMore-block').each(function(i,element) {
-    if($(element).height() < 250) {
+    if($(element).height() < 225) {
       $(element).find('.viewMore').remove();
     } else {
       $(element).css({
-        "height": 250
+        "height": 225
       })
       $(element).find('.viewMore').html('View More');
     }
