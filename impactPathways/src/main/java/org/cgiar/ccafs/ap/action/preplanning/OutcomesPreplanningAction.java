@@ -126,7 +126,13 @@ public class OutcomesPreplanningAction extends BaseAction {
 
   @Override
   public void prepare() throws Exception {
-    programID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROGRAM_REQUEST_ID)));
+
+
+    try {
+      programID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROGRAM_REQUEST_ID)));
+    } catch (Exception e1) {
+      programID = 1;
+    }
 
     IPElementType type = new IPElementType(APConstants.ELEMENT_TYPE_OUTCOME2025);
 
@@ -218,8 +224,8 @@ public class OutcomesPreplanningAction extends BaseAction {
         this
           .addActionMessage(this.getText("saving.success", new String[] {this.getText("preplanning.outcomes.title")}));
       } else if (securityContext.isRPL()) {
-        this.addActionMessage(this.getText("saving.success",
-          new String[] {this.getText("preplanning.outcomes.titleRPL")}));
+        this.addActionMessage(
+          this.getText("saving.success", new String[] {this.getText("preplanning.outcomes.titleRPL")}));
       }
       return SUCCESS;
     } else {
