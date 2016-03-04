@@ -192,7 +192,7 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
                 try {
                   this.validateArchived(action, Double.parseDouble(indicator.getArchivedText()),
                     outcome.getComposedId(), action.getCurrentReportingYear(), c);
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
                   this.addMessage(" Achieved in current reporting period   '" + outcome.getComposedId() + "' in '"
                     + action.getCurrentReportingYear() + "' year");
                   this.addMissingField("project.indicators[" + c + "].archivied");

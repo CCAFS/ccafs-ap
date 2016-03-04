@@ -3764,6 +3764,7 @@ public class ProjectSummaryPDF extends BasePDF {
               if (projectHighLigth.getPhoto() != null) {
                 String urlImage =
                   config.getDownloadURL() + "/" + this.getHighlightsImagesUrlPath() + projectHighLigth.getPhoto();
+                urlImage = urlImage.replace(" ", "%20");
                 global = Image.getInstance(urlImage);
 
               } else {
@@ -3784,10 +3785,10 @@ public class ProjectSummaryPDF extends BasePDF {
               }
 
             } catch (MalformedURLException e) {
-              // TODO Auto-generated catch block
+
               e.printStackTrace();
             } catch (IOException e) {
-
+              e.printStackTrace();
 
             }
 

@@ -2051,10 +2051,16 @@ h1.simpleTitle span {
 
 .buttons {
   display: block;
-  margin: 0;
   text-align: right;
   margin: 17px 0 10px 0;
   float: right;
+}
+
+.borderBox .buttons, .simpleBox .buttons{
+  
+float: none;
+  
+margin: 0;
 }
 
 .buttons button[name=save] {
@@ -4483,7 +4489,7 @@ a.showIndicatorDesc img{
 }
 
 /*** Outcome synthesis ***/
-.projectContributions-block {
+.synthesisContributions-block {
   width: 98%;
 }
 
@@ -4505,6 +4511,8 @@ table.projectContributions th.col-achieved{
 
 table.projectContributions{
 }
+
+table.regionalContributions thead{background-color: #07C39F !important;}
 
 /*** Glossary ***/
 

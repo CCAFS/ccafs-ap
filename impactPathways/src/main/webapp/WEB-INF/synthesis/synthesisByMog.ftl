@@ -74,8 +74,8 @@
           [#if program.flagshipProgram]
           <div class="fullPartBlock">
             <h6>[@s.text name="reporting.synthesis.synthesisByMog.RegionalSynthesis" /]:</h6> 
-            <div class="fullPartBlock projectContributions-block viewMore-block">
-              <table class="projectContributions">
+            <div class="fullPartBlock synthesisContributions-block viewMore-block">
+              <table class="regionalContributions">
                 <thead>
                   <tr class="header">
                     <th class="col-regionId">Region</th>
@@ -87,8 +87,8 @@
                 [#list action.getRegionalSynthesis(mog.id) as syntesisReport]
                   <tr>
                       <td class="center"> ${(syntesisReport.ipProgam.acronym)!}</td>
-                      <td class="center"> ${(syntesisReport.synthesisReport)!}</td>  
-                      <td class="center"> ${(syntesisReport.synthesisGender)!}</td>
+                      <td> ${(syntesisReport.synthesisReport)!}</td>  
+                      <td> ${(syntesisReport.synthesisGender)!}</td>
                   </tr>
                 [/#list]
                 </tbody>
@@ -101,7 +101,7 @@
           [#-- Projects contributions to this MOG --]
           <div class="fullPartBlock">
             <h6>[@s.text name="reporting.synthesis.synthesisByMog.projectContributions" /]:</h6> 
-            <div class="fullPartBlock projectContributions-block viewMore-block">
+            <div class="fullPartBlock synthesisContributions-block viewMore-block">
               <table class="projectContributions">
                 <thead>
                   <tr class="header">
@@ -123,6 +123,12 @@
               <div class="viewMore"></div>
             </div>
           </div>
+          [#if editable]
+            <div class="buttons">
+              [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+              [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+            </div>
+          [/#if]
         </div>
         [/#list]
       </div>
@@ -130,12 +136,6 @@
       [#-- Button save and Log history --]
       [#if editable]
       <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
-        <div class="" >
-          <div class="buttons">
-            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-          </div>
-        </div>
       [#else]
         [#-- Display Log History --]
         [#if history??][@log.logList list=history /][/#if] 

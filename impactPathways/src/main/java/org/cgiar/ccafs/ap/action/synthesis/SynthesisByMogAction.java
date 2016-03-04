@@ -144,13 +144,11 @@ public class SynthesisByMogAction extends BaseAction {
     try {
       liaisonInstitutionID =
         Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.LIAISON_INSTITUTION_REQUEST_ID)));
-    } catch (NumberFormatException e) {
+    } catch (Exception e) {
       if (this.getCurrentUser().getLiaisonInstitution() != null) {
-        if (this.hasSynthesisPermission("update", liaisonInstitutionID)) {
-          liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
-        } else {
-          liaisonInstitutionID = 7;
-        }
+
+        liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+
       } else {
         liaisonInstitutionID = 7;
       }
@@ -168,6 +166,9 @@ public class SynthesisByMogAction extends BaseAction {
       programID = Integer.parseInt(currentLiaisonInstitution.getIpProgram());
     } catch (Exception e) {
       programID = 1;
+      liaisonInstitutionID = 2;
+      currentLiaisonInstitution = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
+
     }
     program = ipProgramManager.getIPProgramById(programID);
 

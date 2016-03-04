@@ -43,7 +43,7 @@
     [#-- Title --]
     <h1 class="contentTitle">[@s.text name="planning.projectPartners.subMenu.partners" /]</h1>
     
-    [#if !newProject]
+    [#if !newProject || reportingCycle]
     [#-- Lessons and progress --]
     <div id="lessons" class="borderBox">
       [#if (!editable && canEdit)]

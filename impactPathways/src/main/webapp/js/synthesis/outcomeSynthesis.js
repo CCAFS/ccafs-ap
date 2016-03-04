@@ -8,7 +8,7 @@ function init() {
   // Set word limits to inputs that contains class limitWords-value, for example : <input class="limitWords-100" />
   setWordCounterToInputs('limitWords');
   // Adding DataTable plugin
-  $(".projectContributions").dataTable({
+  $(".regionalContributions, .projectContributions").dataTable({
       "bPaginate": false, // This option enable the table pagination
       "bLengthChange": false, // This option disables the select table size option
       "bFilter": false, // This option enable the search

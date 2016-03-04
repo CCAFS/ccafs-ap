@@ -95,8 +95,8 @@
                 [#if midOutcome.flagshipProgramType]
                 <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.regionalContributions" /]:</h6> 
                 <div class="fullPartBlock">
-                  <div class="fullPartBlock projectContributions-block viewMore-block">
-                    <table class="projectContributions">
+                  <div class="fullPartBlock synthesisContributions-block viewMore-block">
+                    <table class="regionalContributions">
                       <thead>
                         <tr class="header">
                           <th>Region</th>
@@ -124,9 +124,13 @@
                 [/#if]
                 
                 [#-- Project Contributions --]
-                <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
+                [#if midOutcome.flagshipProgramType]
+                  <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.globalProjectContributions" /]:</h6> 
+                [#else]
+                  <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
+                [/#if]
                 [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id))?has_content]
-                <div class="fullPartBlock projectContributions-block viewMore-block">
+                <div class="fullPartBlock synthesisContributions-block viewMore-block">
                   <table class="projectContributions">
                     <thead>
                       <tr class="header">
@@ -155,10 +159,15 @@
                 [#else]
                   <p>There is not project contributing to this indicator</p>
                 [/#if]
-                
               </div>
             [/#list]
           </div>
+          [#if editable] 
+          <div class="buttons clearfix">
+            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+          </div>
+          [/#if]
         </div>
         [/#list]
       </div>
@@ -166,12 +175,6 @@
       [#-- Button save and Log history --]
       [#if editable]
         <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
-        <div class="" >
-          <div class="buttons">
-            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-            [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-          </div>
-        </div>
       [#else]
         [#-- Display Log History --]
         [#if history??][@log.logList list=history /][/#if] 
