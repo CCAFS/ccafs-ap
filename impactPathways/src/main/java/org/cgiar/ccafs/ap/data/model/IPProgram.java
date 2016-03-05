@@ -29,6 +29,8 @@ public class IPProgram {
   private IPProgramType type;
   private long created;
 
+  private String error = "";
+
   public IPProgram() {
   }
 
@@ -45,9 +47,11 @@ public class IPProgram {
     return false;
   }
 
+
   public String getAcronym() {
     return acronym;
   }
+
 
   /**
    * This method returns a composed IPProgram name with the acronym on it.
@@ -73,6 +77,10 @@ public class IPProgram {
 
   public Date getCreationDate() {
     return new Date(created);
+  }
+
+  public String getError() {
+    return error;
   }
 
   public int getId() {
@@ -118,6 +126,10 @@ public class IPProgram {
 
   public void setCreated(long created) {
     this.created = created;
+  }
+
+  public void setError(String error) {
+    this.error = error;
   }
 
   public void setId(int id) {

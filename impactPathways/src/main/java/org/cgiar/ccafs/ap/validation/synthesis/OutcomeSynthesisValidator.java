@@ -15,10 +15,13 @@
 package org.cgiar.ccafs.ap.validation.synthesis;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.OutcomeSynthesis;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 
@@ -38,11 +41,14 @@ public class OutcomeSynthesisValidator extends BaseValidator {
   private IPElementManager ipElementManager;
   private IPIndicatorManager ipIndicatorManager;
 
+  private IPProgramManager ipProgramManager;
+
   @Inject
-  public OutcomeSynthesisValidator(IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager) {
+  public OutcomeSynthesisValidator(IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager,
+    IPProgramManager ipProgramManager) {
     super();
     this.ipIndicatorManager = ipIndicatorManager;
-
+    this.ipProgramManager = ipProgramManager;
     this.ipElementManager = ipElementManager;
   }
 
@@ -52,6 +58,7 @@ public class OutcomeSynthesisValidator extends BaseValidator {
     int indicatorFP2 = 1;
     int indicatorFP3 = 1;
     int indicatorFP4 = 1;
+    List<IPProgram> flagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
     for (OutcomeSynthesis synthe : synthesis) {
       IPElement midOutcome = ipElementManager.getIPElement(synthe.getMidOutcomeId());
       IPIndicator indicator = ipIndicatorManager.getIndicatorFlgship(synthe.getIndicadorId());
@@ -69,36 +76,72 @@ public class OutcomeSynthesisValidator extends BaseValidator {
       this.validateSynthesisGender(action, synthe.getSynthesisGender(), indicator.getDescription(),
         midOutcome.getComposedId());
       if (validationMessage.length() > 0) {
+
         int number = 0;
         if (indicator.getAcronym() != null) {
           switch (indicator.getAcronym()) {
             case "FP1":
               number = indicatorFP1;
-              indicatorFP1++;
               break;
             case "FP2":
               number = indicatorFP2;
-              indicatorFP2++;
               break;
             case "FP3":
               number = indicatorFP3;
-              indicatorFP3++;
               break;
             case "FP4":
               number = indicatorFP4;
-              indicatorFP4++;
+
               break;
             default:
               break;
           }
         }
+        int ipProgram = Integer.parseInt(indicator.getAcronym().replace("FP", ""));
 
-        msjFinal = msjFinal + "</br><p align='left'>- " + indicator.getAcronym() + ": Indicator " + number + "</p>";
+        IPProgram programAux = new IPProgram();
+        programAux.setId(ipProgram);
+        int index = flagships.indexOf(programAux);
+        IPProgram ipProgramMsj = flagships.get(index);
+        if (ipProgramMsj.getError().equals("")) {
+          ipProgramMsj.setError("Indicator " + number);
+        } else {
+          ipProgramMsj.setError(ipProgramMsj.getError() + ", Indicator " + number);
+        }
 
 
       }
+      if (indicator.getAcronym() != null) {
+        switch (indicator.getAcronym()) {
+          case "FP1":
+
+            indicatorFP1++;
+            break;
+          case "FP2":
+
+            indicatorFP2++;
+            break;
+          case "FP3":
+
+            indicatorFP3++;
+            break;
+          case "FP4":
+
+            indicatorFP4++;
+            break;
+          default:
+            break;
+        }
+      }
       validationMessage = new StringBuilder();
     }
+
+    for (IPProgram ipProgram : flagships) {
+      if (ipProgram.getError().length() > 0) {
+        msjFinal = msjFinal + "</br><p align='left'>- " + ipProgram.getAcronym() + ": " + ipProgram.getError() + "</p>";
+      }
+    }
+
     if (!action.getFieldErrors().isEmpty()) {
       action.addActionError(action.getText("saving.fields.required"));
     } else if (msjFinal.length() > 0) {

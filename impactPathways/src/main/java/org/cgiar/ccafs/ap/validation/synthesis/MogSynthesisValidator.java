@@ -15,9 +15,12 @@
 package org.cgiar.ccafs.ap.validation.synthesis;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.IPElementManager;
 import org.cgiar.ccafs.ap.data.manager.IPIndicatorManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.model.IPElement;
+import org.cgiar.ccafs.ap.data.model.IPProgram;
 import org.cgiar.ccafs.ap.data.model.MogSynthesis;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 
@@ -35,13 +38,14 @@ public class MogSynthesisValidator extends BaseValidator {
 
   private int c = 0;
   private IPElementManager ipElementManager;
-
+  private IPProgramManager ipProgramManager;
 
   @Inject
-  public MogSynthesisValidator(IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager) {
+  public MogSynthesisValidator(IPElementManager ipElementManager, IPIndicatorManager ipIndicatorManager,
+    IPProgramManager ipProgramManager) {
     super();
 
-
+    this.ipProgramManager = ipProgramManager;
     this.ipElementManager = ipElementManager;
   }
 
@@ -52,6 +56,7 @@ public class MogSynthesisValidator extends BaseValidator {
     int indicatorFP2 = 1;
     int indicatorFP3 = 1;
     int indicatorFP4 = 1;
+    List<IPProgram> flagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
     for (MogSynthesis synthe : synthesis) {
       IPElement midOutcome = ipElementManager.getIPElement(synthe.getMogId());
 
@@ -60,32 +65,68 @@ public class MogSynthesisValidator extends BaseValidator {
       this.validateSynthesisGender(action, synthe.getSynthesisGender(), midOutcome.getComposedId());
       if (validationMessage.length() > 0) {
         int number = 0;
-        switch (midOutcome.getProgram().getId()) {
-          case 1:
-            number = indicatorFP1;
+        if (midOutcome.getProgram().getAcronym() != null) {
+          switch (midOutcome.getProgram().getAcronym()) {
+            case "FP1":
+              number = indicatorFP1;
+              break;
+            case "FP2":
+              number = indicatorFP2;
+              break;
+            case "FP3":
+              number = indicatorFP3;
+              break;
+            case "FP4":
+              number = indicatorFP4;
+
+              break;
+            default:
+              break;
+          }
+        }
+        int ipProgram = Integer.parseInt(midOutcome.getProgram().getAcronym().replace("FP", ""));
+
+        IPProgram programAux = new IPProgram();
+        programAux.setId(ipProgram);
+        int index = flagships.indexOf(programAux);
+        IPProgram ipProgramMsj = flagships.get(index);
+        if (ipProgramMsj.getError().equals("")) {
+          ipProgramMsj.setError("Mog " + number);
+        } else {
+          ipProgramMsj.setError(ipProgramMsj.getError() + ", Mog " + number);
+        }
+
+
+      }
+      if (midOutcome.getProgram().getAcronym() != null) {
+        switch (midOutcome.getProgram().getAcronym()) {
+          case "FP1":
+
             indicatorFP1++;
             break;
-          case 2:
-            number = indicatorFP2;
+          case "FP2":
+
             indicatorFP2++;
             break;
-          case 3:
-            number = indicatorFP3;
+          case "FP3":
+
             indicatorFP3++;
             break;
-          case 4:
-            number = indicatorFP4;
+          case "FP4":
+
             indicatorFP4++;
             break;
           default:
             break;
         }
-        msjFinal = msjFinal + "</br><p align='left'>-" + midOutcome.getComposedId() + " " + number + " </p>";
-
-
       }
-      c++;
       validationMessage = new StringBuilder();
+    }
+
+    for (IPProgram ipProgram : flagships) {
+      if (ipProgram.getError().length() > 0) {
+        msjFinal = msjFinal + "</br><p align='left'>- " + ipProgram.getAcronym() + ": " + ipProgram.getError() + "</p>";
+      }
     }
     if (!action.getFieldErrors().isEmpty()) {
       action.addActionError(action.getText("saving.fields.required"));
