@@ -67,7 +67,7 @@ public interface ProjectContributionOverivewDAO {
    * @param year
    * @return
    */
-  public List<Map<String, String>> getProjectContributionOverviewsSynthesis(int mogId, int year);
+  public List<Map<String, String>> getProjectContributionOverviewsSynthesis(int mogId, int year, int program);
 
   /**
    * This method save into the database the outputs overview contained into the project identified by the value received

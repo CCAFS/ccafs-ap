@@ -67,7 +67,7 @@ public interface ProjectContributionOverviewManager {
    * @param year
    * @return
    */
-  public List<OutputOverview> getProjectContributionOverviewsSytnhesis(int mogId, int year);
+  public List<OutputOverview> getProjectContributionOverviewsSytnhesis(int mogId, int year, int program);
 
   /**
    * This method saves the output overviews contained in the project received by parameter.

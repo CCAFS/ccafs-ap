@@ -132,11 +132,12 @@ public class MySQLProjectContributionOverivewDAO implements ProjectContributionO
   }
 
   @Override
-  public List<Map<String, String>> getProjectContributionOverviewsSynthesis(int mogId, int year) {
+  public List<Map<String, String>> getProjectContributionOverviewsSynthesis(int mogId, int year, int program) {
     List<Map<String, String>> overviewsData = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("select * from ip_project_contribution_overviews where YEAR= ");
-    query.append(year + " and output_id=" + mogId + " and is_active=1");
+    query.append(year + " and output_id=" + mogId
+      + " and is_active=1 and project_id in (select project_id from project_focuses where program_id=" + program + ")");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
