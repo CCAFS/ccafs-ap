@@ -40,11 +40,11 @@
         [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-02-15" status="Open"/]
         [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-03-03" status="Close"/]
         
-        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points & Regional Program Leaders"  dateText="2016-03-07" status="Open"/]
-        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points &  Regional Program Leaders"  dateText="2016-03-15" status="Close"/]
+        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points & Regional Leaders"  dateText="2016-03-07" status="Open"/]
+        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points &  Regional Leaders"  dateText="2016-03-15" status="Close"/]
         
-        [@time title="CRP Indicators & Flagships Synthesis (FPLs)"  subTitle="Flagships Leaders"  dateText="2016-03-15" status="Open"/]
-        [@time title="CRP Indicators & Flagships Synthesis (FPLs)"  subTitle="Flagships Leaders"  dateText="2016-03-25" status="Close"/]
+        [@time title="CRP Indicators & Synthesis (FPLs & RPLs)"  subTitle="Flagships Leaders & Regional Leaders"  dateText="2016-03-15" status="Open"/]
+        [@time title="CRP Indicators & Synthesis (FPLs &  RPLs)"  subTitle="Flagships Leaders & Regional Leaders"  dateText="2016-03-25" status="Close"/]
       </ul> 
       <div class="clearfix"></div> 
     </div>
@@ -54,15 +54,9 @@
       <div id="deadline" class="borderBox">
         <ul class="subMenu">
           <li><a href="${baseUrl}/reporting/projectsList.do" class="">Projects</a></li>
-          [#if securityContext.FPL || securityContext.CP || securityContext.admin]
-            <li><a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" class="disabled">CRP Indicators</a></li>
-          [/#if]
-          [#if securityContext.FPL || securityContext.RPL || securityContext.admin]
-            <li><a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" class="disabled">Outcome Synthesis</a></li>
-          [/#if]
-          [#if securityContext.FPL || securityContext.RPL || securityContext.admin]
-            <li><a href="" class="disabled">Synthesis by MOG</a></li>
-          [/#if]
+          <li><a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" >CRP Indicators</a></li>
+          <li><a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" >Outcome Synthesis</a></li>
+          <li><a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true">Synthesis by MOG</a></li>
         </ul>
       </div>
     </div> <!-- End leftSide -->
