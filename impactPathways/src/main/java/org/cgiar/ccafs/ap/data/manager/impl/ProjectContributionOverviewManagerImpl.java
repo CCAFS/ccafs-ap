@@ -99,9 +99,13 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
   }
 
   @Override
-  public List<OutputOverview> getProjectContributionOverviewsSytnhesis(int mogId, int year) {
+  public List<OutputOverview> getProjectContributionOverviewsSytnhesis(int mogId, int year, int program) {
     List<OutputOverview> outputOverviews = new ArrayList<>();
-    List<Map<String, String>> overviewsData = overviewDAO.getProjectContributionOverviewsSynthesis(mogId, year);
+
+    List<Map<String, String>> overviewsData = null;
+
+    overviewsData = overviewDAO.getProjectContributionOverviewsSynthesis(mogId, year, program);
+
 
     for (Map<String, String> overviewData : overviewsData) {
       OutputOverview overview = new OutputOverview();
