@@ -19,9 +19,7 @@
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 
 <section class="content">
-  [#-- Help Message --]
-  <div class="helpMessage"><img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="reporting.synthesis.synthesisByMog.help" /]</p></div>
-  
+ 
   <article class="fullBlock clearfix" id="">
     [@s.form action="synthesisByMog" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
     

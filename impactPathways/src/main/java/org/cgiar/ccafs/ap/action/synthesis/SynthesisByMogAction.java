@@ -110,7 +110,8 @@ public class SynthesisByMogAction extends BaseAction {
   }
 
   public List<OutputOverview> getProjectOutputOverviews(int mogId) {
-    return overviewManager.getProjectContributionOverviewsSytnhesis(mogId, config.getReportingCurrentYear());
+    return overviewManager.getProjectContributionOverviewsSytnhesis(mogId, config.getReportingCurrentYear(),
+      program.getId());
   }
 
   public List<MogSynthesis> getRegionalSynthesis(int midoutcome) {
