@@ -131,7 +131,8 @@ public class EditProjectInterceptor extends AbstractInterceptor {
       setPermissionParameters(invocation, securityContext, projectManager);
       return invocation.invoke();
     } catch (Exception e) {
-      return "404";
+      BaseAction action = (BaseAction) invocation.getAction();
+      return action.NOT_FOUND;
 
     }
   }
