@@ -60,6 +60,7 @@ public class EditProjectInterceptor extends AbstractInterceptor {
       int projectID = Integer.parseInt(projectParameter);
       Project project = projectManager.getProjectBasicInfo(projectID);
 
+
       int currentCycleYear;
       if (baseAction.isReportingCycle()) {
         currentCycleYear = baseAction.getCurrentReportingYear();
@@ -126,7 +127,12 @@ public class EditProjectInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
-    setPermissionParameters(invocation, securityContext, projectManager);
-    return invocation.invoke();
+    try {
+      setPermissionParameters(invocation, securityContext, projectManager);
+      return invocation.invoke();
+    } catch (Exception e) {
+      return "404";
+
+    }
   }
 }
