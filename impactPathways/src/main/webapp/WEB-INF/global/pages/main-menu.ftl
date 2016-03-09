@@ -113,8 +113,7 @@
         <p class="name">${currentUser.firstName} ${currentUser.lastName}</p>  
         <p class="institution">${currentUser.email}</p>
         <p class="roles">${(securityContext.roles)!}
-          [#list currentUser.liaisonInstitution as liaison]
-         ${(liaison.acronym)!} [/#list]
+         [#if currentUser.liaisonInstitution??][#list currentUser.liaisonInstitution as liaison]${(liaison.acronym)!}[#sep], [/#list] [/#if]
         </p>
       </div>
   	[/#if]
