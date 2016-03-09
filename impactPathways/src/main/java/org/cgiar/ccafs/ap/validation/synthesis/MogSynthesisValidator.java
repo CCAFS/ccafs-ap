@@ -59,10 +59,16 @@ public class MogSynthesisValidator extends BaseValidator {
     List<IPProgram> flagships = ipProgramManager.getProgramsByType(APConstants.FLAGSHIP_PROGRAM_TYPE);
     for (MogSynthesis synthe : synthesis) {
       IPElement midOutcome = ipElementManager.getIPElement(synthe.getMogId());
+      IPProgram program = ipProgramManager.getIPProgramById(synthe.getProgramId());
+      if (program.isFlagshipProgram()) {
+        this.validateSynthesisAnual(action, synthe.getSynthesisReport(), midOutcome.getComposedId(), 200);
+        this.validateSynthesisGender(action, synthe.getSynthesisGender(), midOutcome.getComposedId(), 150);
 
+      } else {
+        this.validateSynthesisAnual(action, synthe.getSynthesisReport(), midOutcome.getComposedId(), 150);
+        this.validateSynthesisGender(action, synthe.getSynthesisGender(), midOutcome.getComposedId(), 100);
 
-      this.validateSynthesisAnual(action, synthe.getSynthesisReport(), midOutcome.getComposedId());
-      this.validateSynthesisGender(action, synthe.getSynthesisGender(), midOutcome.getComposedId());
+      }
       if (validationMessage.length() > 0) {
         int number = 0;
         if (midOutcome.getProgram().getAcronym() != null) {
@@ -138,15 +144,15 @@ public class MogSynthesisValidator extends BaseValidator {
   }
 
 
-  private void validateSynthesisAnual(BaseAction action, String synthesisAnual, String midOutcome) {
-    if (!(this.isValidString(synthesisAnual) && this.wordCount(synthesisAnual) <= 150)) {
+  private void validateSynthesisAnual(BaseAction action, String synthesisAnual, String midOutcome, int numberWords) {
+    if (!(this.isValidString(synthesisAnual) && this.wordCount(synthesisAnual) <= numberWords)) {
       this.addMessage(midOutcome + ": " + " Synthesis of annual progress towards ");
 
     }
   }
 
-  private void validateSynthesisGender(BaseAction action, String synthesisGender, String midOutcome) {
-    if (!(this.isValidString(synthesisGender) && this.wordCount(synthesisGender) <= 150)) {
+  private void validateSynthesisGender(BaseAction action, String synthesisGender, String midOutcome, int numberWords) {
+    if (!(this.isValidString(synthesisGender) && this.wordCount(synthesisGender) <= numberWords)) {
       this.addMessage(midOutcome + ": Synthesis of annual progress gender ");
 
     }
