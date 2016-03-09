@@ -139,14 +139,14 @@ public class MogSynthesisValidator extends BaseValidator {
 
 
   private void validateSynthesisAnual(BaseAction action, String synthesisAnual, String midOutcome) {
-    if (!(this.isValidString(synthesisAnual) && this.wordCount(synthesisAnual) <= 100)) {
+    if (!(this.isValidString(synthesisAnual) && this.wordCount(synthesisAnual) <= 150)) {
       this.addMessage(midOutcome + ": " + " Synthesis of annual progress towards ");
 
     }
   }
 
   private void validateSynthesisGender(BaseAction action, String synthesisGender, String midOutcome) {
-    if (!(this.isValidString(synthesisGender) && this.wordCount(synthesisGender) <= 100)) {
+    if (!(this.isValidString(synthesisGender) && this.wordCount(synthesisGender) <= 150)) {
       this.addMessage(midOutcome + ": Synthesis of annual progress gender ");
 
     }
