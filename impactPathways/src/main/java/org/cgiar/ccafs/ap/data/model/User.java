@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.data.model;
 import org.cgiar.ccafs.utils.MD5Convert;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -33,7 +34,7 @@ public class User {
   private String email;
   private boolean isCcafsUser;
   private boolean isActive;
-  private LiaisonInstitution liaisonInstitution;
+  private List<LiaisonInstitution> liaisonInstitution;
   private Date lastLogin;
 
   public User() {
@@ -101,7 +102,7 @@ public class User {
     return lastName;
   }
 
-  public LiaisonInstitution getLiaisonInstitution() {
+  public List<LiaisonInstitution> getLiaisonInstitution() {
     return liaisonInstitution;
   }
 
@@ -149,7 +150,7 @@ public class User {
     this.lastName = lastName;
   }
 
-  public void setLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
+  public void setLiaisonInstitution(List<LiaisonInstitution> liaisonInstitution) {
     this.liaisonInstitution = liaisonInstitution;
   }
 

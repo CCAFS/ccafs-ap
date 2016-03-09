@@ -66,8 +66,8 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
   }
 
   @Override
-  public Map<String, String> getLiaisonInstitutionByUser(int userID) {
-    Map<String, String> liaisonInstitution = new HashMap<>();
+  public List<Map<String, String>> getLiaisonInstitutionByUser(int userID) {
+    List<Map<String, String>> liaisonInstitutions = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT li.id, li.name, li.acronym FROM liaison_institutions li ");
     query.append("INNER JOIN liaison_users lu ON li.id = lu.institution_id ");
@@ -77,10 +77,13 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);
-      if (rs.next()) {
+      while (rs.next()) {
+        Map<String, String> liaisonInstitution = new HashMap<>();
+
         liaisonInstitution.put("id", rs.getString("id"));
         liaisonInstitution.put("name", rs.getString("name"));
         liaisonInstitution.put("acronym", rs.getString("acronym"));
+        liaisonInstitutions.add(liaisonInstitution);
       }
     } catch (SQLException e) {
       LOG.error(
@@ -88,7 +91,7 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
         userID, e);
     }
 
-    return liaisonInstitution;
+    return liaisonInstitutions;
   }
 
   @Override

@@ -56,7 +56,7 @@ public class EditSynthesisInterceptor extends AbstractInterceptor {
 
     } catch (NumberFormatException e) {
       if (user.getLiaisonInstitution() != null) {
-        liaisonInstitutionID = user.getLiaisonInstitution().getId();
+        liaisonInstitutionID = user.getLiaisonInstitution().get(0).getId();
       } else {
         liaisonInstitutionID = 1;
       }

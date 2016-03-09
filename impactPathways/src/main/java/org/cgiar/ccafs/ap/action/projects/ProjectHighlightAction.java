@@ -317,6 +317,9 @@ public class ProjectHighlightAction extends BaseAction {
         FileManager.copyFile(file, this.getHightlightImagePath() + fileFileName);
         highlight.setPhoto(fileFileName);
       }
+      if (highlight.getPhoto().equals("-1")) {
+        highlight.setPhoto(null);
+      }
 
 
       highlight.setProjectId(new Long(project.getId() + ""));

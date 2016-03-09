@@ -56,7 +56,7 @@
           <li><a href="${baseUrl}/reporting/projectsList.do" class="">Projects</a></li>
           <li><a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" >CRP Indicators</a></li>
           <li><a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" >Outcome Synthesis</a></li>
-          <li><a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true">Synthesis by MOG</a></li>
+          <li class="last"><a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true">Synthesis by MOG</a></li>
         </ul>
       </div>
     </div> <!-- End leftSide -->
