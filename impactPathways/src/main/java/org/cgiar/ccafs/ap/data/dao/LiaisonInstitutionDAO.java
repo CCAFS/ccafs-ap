@@ -44,7 +44,7 @@ public interface LiaisonInstitutionDAO {
    * @param userID - User identifier
    * @return a Map with the information.
    */
-  public Map<String, String> getLiaisonInstitutionByUser(int userID);
+  public List<Map<String, String>> getLiaisonInstitutionByUser(int userID);
 
   /**
    * This method return all the liaison institutions contained in the database.

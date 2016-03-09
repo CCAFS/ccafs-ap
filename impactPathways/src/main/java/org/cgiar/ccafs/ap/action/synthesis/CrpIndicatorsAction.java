@@ -132,7 +132,7 @@ public class CrpIndicatorsAction extends BaseAction {
     } catch (NumberFormatException e) {
       if (this.getCurrentUser().getLiaisonInstitution() != null) {
         if (this.hasSynthesisPermission("update", liaisonInstitutionID)) {
-          liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+          liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
           if (liaisonInstitutionID == 1) {
             liaisonInstitutionID = 2;
           }

@@ -28,6 +28,7 @@ function attachEvents() {
     var $parent = $(this).parent();
     $parent.parent().parent().find('img').attr('src', baseURL + '/images/global/defaultImage.png');
     var $inputFile = $('[id$=' + context + '-template]').clone(true).removeAttr("id");
+    $parent.parent().parent().append(' <input type="hidden" name="highlight.photo" value="-1" /> ');
     $parent.empty().append($inputFile);
     $inputFile.hide().fadeIn('slow');
     forceChange = true;

@@ -42,9 +42,9 @@ public interface LiaisonInstitutionManager {
    * if any
    * 
    * @param userID - user identifier
-   * @return a liaison institution object if the user is linked to any. False otherwise.
+   * @return a list for liaison institution object if the user is linked to any. False otherwise.
    */
-  public LiaisonInstitution getLiaisonInstitutionByUser(int userID);
+  public List<LiaisonInstitution> getLiaisonInstitutionByUser(int userID);
 
   /**
    * This method return all the liaison institutions contained in the database.

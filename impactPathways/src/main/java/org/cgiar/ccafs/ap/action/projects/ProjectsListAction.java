@@ -116,14 +116,24 @@ public class ProjectsListAction extends BaseAction {
     }
 
     newProject.setOwner(this.getCurrentUser());
-    LiaisonInstitution liaisonInstitution = this.getCurrentUser().getLiaisonInstitution();
-    if (liaisonInstitution != null) {
-      newProject.setLiaisonInstitution(liaisonInstitution);
+
+    List<LiaisonInstitution> liaisonInstitutions = this.getCurrentUser().getLiaisonInstitution();
+    if (liaisonInstitutions != null) {
+      for (LiaisonInstitution liaisonInstitution : liaisonInstitutions) {
+        if (liaisonInstitution != null) {
+          newProject.setLiaisonInstitution(liaisonInstitution);
+        } else {
+          LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!",
+            this.getCurrentUser().getId());
+          return -1;
+        }
+      }
     } else {
       LOG.error("-- execute() > the user identified with id={} and is not linked to any liaison institution!",
         this.getCurrentUser().getId());
       return -1;
     }
+
 
     newProject.setCreated(new Date().getTime());
     int result = projectManager.saveProjectDescription(newProject, this.getCurrentUser(), this.getJustification());

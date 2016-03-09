@@ -148,7 +148,7 @@ public class SynthesisByMogAction extends BaseAction {
     } catch (Exception e) {
       if (this.getCurrentUser().getLiaisonInstitution() != null) {
 
-        liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().getId();
+        liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
 
       } else {
         liaisonInstitutionID = 7;
