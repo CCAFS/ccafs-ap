@@ -94,7 +94,7 @@
     Tawk_API.onLoad = function() {
       Tawk_API.setAttributes({
           'name': $('#userInfo p.name').text() || 'Unknow Name',
-          'userName' : '${(currentUser.username)!'Unknow Username'}',
+          'userName' : '${(currentUser.username)!}',
           'userId': $('#userInfo p.userId').text() || 'Unknow Id',
           'roles': '[#if (securityContext.roles??)!false][#list securityContext.roles as rol]${(rol)!}[#sep], [/#list][/#if]',
           'liaisonInstitutions': '[#if (currentUser.liaisonInstitution??)!false][#list currentUser.liaisonInstitution as liaison]${(liaison.acronym)!}[#sep], [/#list][/#if]'

@@ -104,8 +104,8 @@
                 <thead>
                   <tr class="header">
                     <th class="col-projectId">Project</th>
-                    <th class="col-mogSynthesis">Expected annual ${currentReportingYear} contribution</th>
-                    <th class="col-mogSynthesis">Plan of the gender and social inclusion dimension of the expected annual output</th>
+                    <th class="col-mogSynthesis">Summary of actual ${currentReportingYear} contribution towards this MOG  </th>
+                    <th class="col-mogSynthesis">Summary of the gender and social inclusion dimension of the ${currentReportingYear} outputs</th>
                   </tr>
                 </thead>
                 <tbody>
