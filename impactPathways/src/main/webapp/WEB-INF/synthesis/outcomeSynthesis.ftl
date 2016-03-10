@@ -169,7 +169,30 @@
         [/#list]
       </div>
       
-      [#-- Button save and Log history --]
+      [#-- Synthesis Lessons --]
+      <div id="lessons" class="borderBox">
+        [#if (!editable && canEdit)]
+          <div class="editButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.edit" /]</a></div>
+        [#elseif canEdit]
+          <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
+        [/#if]
+        <div class="fullBlock">
+          <input type="hidden" name="synthesisLessons.id" value=${(synthesisLessons.id)!"-1"} />
+          <input type="hidden" name="synthesisLessons.year" value=${currentReportingYear} />
+          <input type="hidden" name="synthesisLessons.componentName" value="${actionName}">
+          ${program.flagshipProgram?string}
+          [@customForm.textArea name="synthesisLessons.lessons" i18nkey="reporting.synthesis.outcomeSynthesis.lessons" help="reporting.synthesis.outcomeSynthesis.lessons.help" className="synthesisLessons limitWords-100" required=true editable=editable /]
+        </div>
+        <br />
+        [#if editable] 
+        <div class="buttons clearfix">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
+        </div>
+        [/#if] 
+      </div>
+      
+      [#-- Log history --]
       [#if editable]
         <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
       [#else]
