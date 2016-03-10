@@ -127,7 +127,7 @@
                 [#else]
                   <h6>[@s.text name="reporting.synthesis.outcomeSynthesis.projectContributions" /]:</h6> 
                 [/#if]
-                [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id))?has_content]
+                [#if (action.getProjectIndicators(currentReportingYear, flagshipIndicator.id,midOutcome.id))?has_content]
                 <div class="fullPartBlock synthesisContributions-block viewMore-block">
                   <table class="projectContributions">
                     <thead>
@@ -140,7 +140,7 @@
                       </tr>
                   	</thead>
                   	<tbody>
-                    [#list action.getProjectIndicators(currentReportingYear, flagshipIndicator.id) as projectIndicator]
+                    [#list action.getProjectIndicators(currentReportingYear, flagshipIndicator.id,midOutcome.id) as projectIndicator]
                       <tr>
                       	<td class="center"><a href="[@s.url action="ccafsOutcomes" namespace="/reporting/projects"][@s.param name='projectID']${(projectIndicator.projectId)!}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">P${(projectIndicator.projectId)!}</a></td>
                       	<td class="center" title="${(projectIndicator.target)!''}" >[@utilities.wordCutter string=(projectIndicator.target)!'Prefilled when available' maxPos=25 /]</td>

@@ -122,9 +122,10 @@ public interface IPIndicatorDAO {
    * 
    * @param year
    * @param indicator
+   * @param midOutcome
    * @return a list of maps with the information
    */
-  public List<Map<String, String>> getProjectIndicatorsSynthesis(int year, int indicator, int program);
+  public List<Map<String, String>> getProjectIndicatorsSynthesis(int year, int indicator, int program, int midOutcome);
 
   /**
    * This method save the information of the indicator.
