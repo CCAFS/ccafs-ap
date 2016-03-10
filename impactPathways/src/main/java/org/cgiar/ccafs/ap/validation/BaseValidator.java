@@ -131,7 +131,7 @@ public class BaseValidator {
   protected void validateLessonsLearn(BaseAction action, Project project, String section) {
     if (!project.isNew(config.getCurrentPlanningStartDate())) {
       ComponentLesson lesson = action.getProjectLessons();
-      if (!this.isValidString(lesson.getLessons())) {
+      if (!(this.isValidString(lesson.getLessons()) && this.wordCount(lesson.getLessons()) <= 100)) {
         // Let them save.
         this.addMessage("Lessons");
         // action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
@@ -144,7 +144,7 @@ public class BaseValidator {
   protected void validateLessonsLearnSynthesis(BaseAction action) {
 
     ComponentLesson lesson = action.getProjectLessons();
-    if (!this.isValidString(lesson.getLessons())) {
+    if (!(this.isValidString(lesson.getLessons()) && this.wordCount(lesson.getLessons()) <= 100)) {
       // Let them save.
       this.addMessage("Lessons");
       // action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
