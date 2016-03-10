@@ -60,6 +60,18 @@ public interface ProjectLessonsManager {
 
 
   /**
+   * This method get the lessons on a given component for a specific project.
+   * 
+   * @param componentName - The name of the component
+   * @param programId - Program identifier
+   * @param year
+   * @return A ComponentLesson object with the information.
+   */
+  public ComponentLesson getProjectComponentLessonSynthesis(int programId, String componentName, int year,
+    String cycle);
+
+
+  /**
    * This method saves the lessons of a project component in the database.
    * 
    * @param lesson - The object with the information to be saved
@@ -71,4 +83,18 @@ public interface ProjectLessonsManager {
    */
   public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification,
     String cycle);
+
+
+  /**
+   * This method saves the lessons of a project component in the database.
+   * 
+   * @param lesson - The object with the information to be saved
+   * @param programId - The program id to which belongs the lesson
+   * @param user - The user who is making the change
+   * @param justification
+   * @param cycle Planning or Reporting
+   * @return true if the information was saved successfully. False otherwise.
+   */
+  public boolean saveProjectComponentLessonSynthesis(ComponentLesson lesson, int programId, User user,
+    String justification, String cycle);
 }

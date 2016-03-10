@@ -156,26 +156,86 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
     return componentLesson;
   }
 
+
+  @Override
+  public Map<String, String> getProjectComponentLessonSynthesis(int programId, String componentName, int year,
+    String cycle) {
+    Map<String, String> componentLesson = new HashMap<>();
+
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT * FROM project_component_lessons ");
+    query.append("WHERE ip_program_id = ");
+    query.append(programId);
+    query.append(" AND component_name = '");
+    query.append(componentName);
+    query.append("' AND year = ");
+    query.append(year);
+    query.append(" AND cycle = '");
+    query.append(cycle);
+    query.append("' ");
+
+    try (Connection con = daoManager.getConnection()) {
+      ResultSet rs = daoManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        componentLesson.put("id", rs.getString("id"));
+        componentLesson.put("lessons", rs.getString("lessons"));
+        componentLesson.put("year", rs.getString("year"));
+        componentLesson.put("component_name", rs.getString("component_name"));
+      }
+    } catch (SQLException e) {
+      String msg = "getProjectComponentLesson()> Exception raised trying to get the component lessons for project {} ";
+      msg += "in the section {} and for the year {}.";
+      LOG.error(msg, new Object[] {programId, componentName, year, e});
+    }
+
+    return componentLesson;
+  }
+
   @Override
   public boolean saveProjectComponentLesson(Map<String, Object> lessonData) {
-    String query = "INSERT INTO project_component_lessons (id, project_id, component_name, lessons, year, created_by, ";
-    query += "modified_by, modification_justification,cycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?) ";
-    query +=
-      "ON DUPLICATE KEY UPDATE is_active=TRUE, lessons = VALUES(lessons), cycle = VALUES(cycle), modified_by=VALUES(modified_by), ";
-    query += "modification_justification=VALUES(modification_justification) ";
 
-    Object[] values = new Object[9];
-    values[0] = lessonData.get("id");
-    values[1] = lessonData.get("project_id");
-    values[2] = lessonData.get("component_name");
-    values[3] = lessonData.get("lessons");
-    values[4] = lessonData.get("year");
-    values[5] = lessonData.get("created_by");
-    values[6] = lessonData.get("modified_by");
-    values[7] = lessonData.get("justification");
-    values[8] = lessonData.get("cycle");
-    int result = daoManager.saveData(query, values);
-    return result != -1;
+    if (lessonData.get("project_id") != null) {
+      String query =
+        "INSERT INTO project_component_lessons (id, project_id, component_name, lessons, year, created_by, ";
+      query += "modified_by, modification_justification,cycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?) ";
+      query +=
+        "ON DUPLICATE KEY UPDATE is_active=TRUE, lessons = VALUES(lessons), cycle = VALUES(cycle), modified_by=VALUES(modified_by), ";
+      query += "modification_justification=VALUES(modification_justification) ";
+
+      Object[] values = new Object[9];
+      values[0] = lessonData.get("id");
+      values[1] = lessonData.get("project_id");
+      values[2] = lessonData.get("component_name");
+      values[3] = lessonData.get("lessons");
+      values[4] = lessonData.get("year");
+      values[5] = lessonData.get("created_by");
+      values[6] = lessonData.get("modified_by");
+      values[7] = lessonData.get("justification");
+      values[8] = lessonData.get("cycle");
+      int result = daoManager.saveData(query, values);
+      return result != -1;
+    } else {
+      String query =
+        "INSERT INTO project_component_lessons (id, ip_program_id, component_name, lessons, year, created_by, ";
+      query += "modified_by, modification_justification,cycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?) ";
+      query +=
+        "ON DUPLICATE KEY UPDATE is_active=TRUE, lessons = VALUES(lessons), cycle = VALUES(cycle), modified_by=VALUES(modified_by), ";
+      query += "modification_justification=VALUES(modification_justification) ";
+
+      Object[] values = new Object[9];
+      values[0] = lessonData.get("id");
+      values[1] = lessonData.get("ip_program_id");
+      values[2] = lessonData.get("component_name");
+      values[3] = lessonData.get("lessons");
+      values[4] = lessonData.get("year");
+      values[5] = lessonData.get("created_by");
+      values[6] = lessonData.get("modified_by");
+      values[7] = lessonData.get("justification");
+      values[8] = lessonData.get("cycle");
+      int result = daoManager.saveData(query, values);
+      return result != -1;
+    }
+
   }
 
 }

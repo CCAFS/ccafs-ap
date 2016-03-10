@@ -90,6 +90,21 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
     return lesson;
   }
 
+  @Override
+  public ComponentLesson getProjectComponentLessonSynthesis(int programId, String componentName, int year,
+    String cycle) {
+    ComponentLesson lesson = new ComponentLesson();
+    Map<String, String> lessonData =
+      lessonDAO.getProjectComponentLessonSynthesis(programId, componentName, year, cycle);
+
+    if (!lessonData.isEmpty()) {
+      lesson.setId(Integer.parseInt(lessonData.get("id")));
+      lesson.setComponentName(componentName);
+      lesson.setLessons(lessonData.get("lessons"));
+      lesson.setYear(year);
+    }
+    return lesson;
+  }
 
   @Override
   public boolean saveProjectComponentLesson(ComponentLesson lesson, int projectID, User user, String justification,
@@ -113,4 +128,26 @@ public class ProjectLessonsManagerImpl implements ProjectLessonsManager {
     return lessonDAO.saveProjectComponentLesson(lessonData);
   }
 
+
+  @Override
+  public boolean saveProjectComponentLessonSynthesis(ComponentLesson lesson, int programID, User user,
+    String justification, String cylce) {
+    Map<String, Object> lessonData = new HashMap<>();
+
+    if (lesson.getId() != -1) {
+      lessonData.put("id", lesson.getId());
+    } else {
+      lessonData.put("id", null);
+    }
+
+    lessonData.put("ip_program_id", programID);
+    lessonData.put("component_name", lesson.getComponentName());
+    lessonData.put("lessons", lesson.getLessons());
+    lessonData.put("year", lesson.getYear());
+    lessonData.put("created_by", user.getId());
+    lessonData.put("modified_by", user.getId());
+    lessonData.put("justification", justification);
+    lessonData.put("cycle", cylce);
+    return lessonDAO.saveProjectComponentLesson(lessonData);
+  }
 }

@@ -27,13 +27,20 @@ public class ComponentLesson {
   private int year;
   private String lessons;
   private String componentName;
+  private int ipProgamId;
+
 
   public String getComponentName() {
     return componentName;
   }
 
+
   public int getId() {
     return id;
+  }
+
+  public int getIpProgamId() {
+    return ipProgamId;
   }
 
   public String getLessons() {
@@ -50,6 +57,10 @@ public class ComponentLesson {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setIpProgamId(int ipProgamId) {
+    this.ipProgamId = ipProgamId;
   }
 
   public void setLessons(String lessons) {

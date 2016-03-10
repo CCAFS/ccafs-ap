@@ -361,7 +361,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     permissionString.append(this.getActionName());
     permissionString.append(":");
     permissionString.append(fieldName);
-    
+
 
     return securityContext.hasPermission(permissionString.toString());
   }
@@ -557,6 +557,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   }
 
   protected boolean saveProjectLessons(int projectID) {
+    return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification,
+      this.getCycleName());
+  }
+
+  protected boolean saveProjectLessonsSynthesis(int projectID) {
     return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification,
       this.getCycleName());
   }
