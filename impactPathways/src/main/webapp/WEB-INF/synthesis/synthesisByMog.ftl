@@ -26,7 +26,7 @@
     [#-- Program (Regions and Flagships) --]
     <ul id="liaisonInstitutions" class="horizontalSubMenu">
       [#list liaisonInstitutions as institution]
-        <li class="[#if institution.id == liaisonInstitutionID]active[/#if]"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name='indicatorTypeID']${(indicatorTypeID)!}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">${institution.name}</a></li>
+        <li class="[#if institution.id == liaisonInstitutionID]active[/#if] ${action.hasSynthesisPermission('update', institution.id)?string('canEdit','onlyView')}"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">${institution.name}</a></li>
       [/#list]
     </ul>
     
@@ -142,7 +142,7 @@
           <input type="hidden" name="synthesisLessons.id" value=${(synthesisLessons.id)!"-1"} />
           <input type="hidden" name="synthesisLessons.year" value=${currentReportingYear} />
           <input type="hidden" name="synthesisLessons.componentName" value="${actionName}">
-          [@customForm.textArea name="synthesisLessons.lessons" i18nkey="reporting.synthesis.synthesisByMog.lessons" help="reporting.synthesis.synthesisByMog.lessons.help" className="synthesisLessons limitWords-100" required=true editable=editable /]
+          [@customForm.textArea name="synthesisLessons.lessons" i18nkey="reporting.synthesis.synthesisByMog.lessons" paramText="${program.flagshipProgram?string('project/regional', 'project')}" help="reporting.synthesis.synthesisByMog.lessons.help" className="synthesisLessons limitWords-100" required=true editable=editable /]
         </div>
         <br />
         [#if editable] 

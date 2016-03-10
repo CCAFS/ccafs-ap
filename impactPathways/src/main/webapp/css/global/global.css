@@ -723,18 +723,18 @@ ul.horizontalSubMenu li{
 
 ul.horizontalSubMenu li a{text-decoration: none;color: #B3B2B2;}
 
-ul.horizontalSubMenu li.active{
-  
-background: #1DA5CE;
-  
-border-color: #1DA5CE;
+ul.horizontalSubMenu li.active{ 
+  background: #1DA5CE;
+  border-color: #1DA5CE;
 }
 
 ul.horizontalSubMenu li.active a{
-  
-color: #fff;
+ color: #fff;
 }
 
+ul.horizontalSubMenu li.canEdit a:after{
+  content: "*";
+}
 /* Lessons and Implications */
 #lessons {
   padding-top: 31px;
