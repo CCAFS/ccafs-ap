@@ -93,14 +93,15 @@
     
     Tawk_API.onLoad = function() {
       Tawk_API.setAttributes({
-          'userName': $('#userInfo p.name').text() || 'Unknow User',
+          'name': $('#userInfo p.name').text() || 'Unknow Name',
+          'userName' : '${(currentUser.username)!'Unknow Username'}',
           'userId': $('#userInfo p.userId').text() || 'Unknow Id',
-          'roles': $('#userInfo p.roles').text(),
-          'liaisonInstitution': '${(currentUser.liaisonInstitution.acronym)!"null"}'
+          'roles': '[#if (securityContext.roles??)!false][#list securityContext.roles as rol]${(rol)!}[#sep], [/#list][/#if]',
+          'liaisonInstitutions': '[#if (currentUser.liaisonInstitution??)!false][#list currentUser.liaisonInstitution as liaison]${(liaison.acronym)!}[#sep], [/#list][/#if]'
           
       }, function(error) {
       });
-      Tawk_API.addTags([[#if (securityContext.roles??)!false][#list securityContext.roles as rol]'${(rol)!}', [/#list][/#if][#if (currentUser.liaisonInstitution??)!false][#list currentUser.liaisonInstitution as liaison]'${(liaison.acronym)!}'[#sep], [/#list][/#if]], 
+      Tawk_API.addTags([[#if (securityContext.roles??)!false][#list securityContext.roles as rol]'${(rol)!}'[#sep], [/#list][/#if][#if (currentUser.liaisonInstitution??)!false], [#list currentUser.liaisonInstitution as liaison]'${(liaison.acronym)!}'[#sep], [/#list][/#if]], 
       function(error){});
     };
     (function() {
