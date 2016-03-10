@@ -192,6 +192,8 @@ public class SynthesisByMogAction extends BaseAction {
       }
 
     }
+    this.setProjectLessons(lessonManager.getProjectComponentLessonSynthesis(program.getId(), this.getActionName(),
+      this.getCurrentReportingYear(), this.getCycleName()));
   }
 
 
@@ -203,7 +205,7 @@ public class SynthesisByMogAction extends BaseAction {
       mogSynthesisManager.saveMogSynthesis(synthe);
 
     }
-
+    this.saveProjectLessonsSynthesis(program.getId());
     Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
       String validationMessage = messages.iterator().next();

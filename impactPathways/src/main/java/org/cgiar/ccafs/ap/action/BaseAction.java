@@ -561,9 +561,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       this.getCycleName());
   }
 
-  protected boolean saveProjectLessonsSynthesis(int projectID) {
-    return lessonManager.saveProjectComponentLesson(projectLessons, projectID, this.getCurrentUser(), justification,
-      this.getCycleName());
+  protected boolean saveProjectLessonsSynthesis(int progamId) {
+    return lessonManager.saveProjectComponentLessonSynthesis(projectLessons, progamId, this.getCurrentUser(),
+      justification, this.getCycleName());
   }
 
   public void setAdd(boolean add) {

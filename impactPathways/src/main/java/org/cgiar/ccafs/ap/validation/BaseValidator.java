@@ -140,6 +140,19 @@ public class BaseValidator {
     }
   }
 
+
+  protected void validateLessonsLearnSynthesis(BaseAction action) {
+
+    ComponentLesson lesson = action.getProjectLessons();
+    if (!this.isValidString(lesson.getLessons())) {
+      // Let them save.
+      this.addMessage("Lessons");
+      // action.addFieldError("projectLessons.lessons", action.getText("validation.field.required"));
+
+
+    }
+  }
+
   /**
    * This method verify if the project was created in the current planning phase, if it was created previously the user
    * should provide a justification of the changes.

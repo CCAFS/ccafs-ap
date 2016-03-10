@@ -217,12 +217,12 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
     } else {
       String query =
         "INSERT INTO project_component_lessons (id, ip_program_id, component_name, lessons, year, created_by, ";
-      query += "modified_by, modification_justification,cycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?) ";
+      query += "modified_by, modification_justification,cycle,project_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?) ";
       query +=
         "ON DUPLICATE KEY UPDATE is_active=TRUE, lessons = VALUES(lessons), cycle = VALUES(cycle), modified_by=VALUES(modified_by), ";
       query += "modification_justification=VALUES(modification_justification) ";
 
-      Object[] values = new Object[9];
+      Object[] values = new Object[10];
       values[0] = lessonData.get("id");
       values[1] = lessonData.get("ip_program_id");
       values[2] = lessonData.get("component_name");
@@ -232,6 +232,7 @@ public class MySQLProjectLessonsDAO implements ProjectLessonsDAO {
       values[6] = lessonData.get("modified_by");
       values[7] = lessonData.get("justification");
       values[8] = lessonData.get("cycle");
+      values[9] = null;
       int result = daoManager.saveData(query, values);
       return result != -1;
     }

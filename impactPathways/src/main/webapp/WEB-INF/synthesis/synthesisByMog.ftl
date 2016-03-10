@@ -139,10 +139,10 @@
           <div class="viewButton"><a href="[@s.url][@s.param name ="liaisonInstitutionID"]${liaisonInstitutionID}[/@s.param][/@s.url]#lessons">[@s.text name="form.buttons.unedit" /]</a></div>
         [/#if]
         <div class="fullBlock">
-          <input type="hidden" name="synthesisLessons.id" value=${(synthesisLessons.id)!"-1"} />
-          <input type="hidden" name="synthesisLessons.year" value=${currentReportingYear} />
-          <input type="hidden" name="synthesisLessons.componentName" value="${actionName}">
-          [@customForm.textArea name="synthesisLessons.lessons" i18nkey="reporting.synthesis.synthesisByMog.lessons" paramText="${program.flagshipProgram?string('project/regional', 'project')}" help="reporting.synthesis.synthesisByMog.lessons.help" className="synthesisLessons limitWords-100" required=true editable=editable /]
+          <input type="hidden" name="projectLessons.id" value=${(projectLessons.id)!"-1"} />
+          <input type="hidden" name="projectLessons.year" value=${currentReportingYear} />
+          <input type="hidden" name="projectLessons.componentName" value="${actionName}">
+          [@customForm.textArea name="projectLessons.lessons" i18nkey="reporting.synthesis.synthesisByMog.lessons" paramText="${program.flagshipProgram?string('project/regional', 'project')}" help="reporting.synthesis.synthesisByMog.lessons.help" className="synthesisLessons limitWords-100" required=true editable=editable /]
         </div>
         <br />
         [#if editable] 

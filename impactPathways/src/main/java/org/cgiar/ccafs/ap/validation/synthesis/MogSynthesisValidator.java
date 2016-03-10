@@ -133,7 +133,15 @@ public class MogSynthesisValidator extends BaseValidator {
       if (ipProgram.getError().length() > 0) {
         msjFinal = msjFinal + "</br><p align='left'>- " + ipProgram.getAcronym() + ": " + ipProgram.getError() + "</p>";
       }
+
     }
+
+
+    this.validateLessonsLearnSynthesis(action);
+    if (validationMessage.length() > 0) {
+      msjFinal = msjFinal + "</br><p align='left'>-Lessons Learn </p>";
+    }
+
     if (!action.getFieldErrors().isEmpty()) {
       action.addActionError(action.getText("saving.fields.required"));
     } else if (msjFinal.length() > 0) {
