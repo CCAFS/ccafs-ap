@@ -83,6 +83,7 @@
   [#if customJS??][#list customJS as js]<script src="${js}"></script>[/#list][/#if]
   
   [#-- Tawk.to Live chat --]
+  
   <script type="text/javascript">
     Tawk_API = Tawk_API || {};
     Tawk_LoadStart = new Date();
@@ -99,6 +100,8 @@
           
       }, function(error) {
       });
+      Tawk_API.addTags([[#if (securityContext.roles??)!false][#list securityContext.roles as rol]'${(rol)!}', [/#list][/#if][#if (currentUser.liaisonInstitution??)!false][#list currentUser.liaisonInstitution as liaison]'${(liaison.acronym)!}'[#sep], [/#list][/#if]], 
+      function(error){});
     };
     (function() {
       var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];

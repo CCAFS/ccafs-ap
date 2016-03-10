@@ -414,7 +414,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
 
 
   @Override
-  public List<Map<String, String>> getProjectIndicatorsSynthesis(int year, int indicator, int program) {
+  public List<Map<String, String>> getProjectIndicatorsSynthesis(int year, int indicator, int program, int midOutcome) {
 
     List<Map<String, String>> indicatorsDataList = new ArrayList<>();
 
@@ -427,7 +427,7 @@ public class MySQLIPIndicatorDAO implements IPIndicatorDAO {
     query.append("INNER JOIN ip_indicators aip ON ai.parent_id = aip.id ");
     query.append("INNER JOIN ip_elements ie ON ai.outcome_id = ie.id ");
     query.append("WHERE ai.is_active = TRUE and aip.id=" + indicator + " and ai.year=" + year + " and ie.ip_program_id="
-      + program);
+      + program + " and ie.id=" + midOutcome);
 
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);

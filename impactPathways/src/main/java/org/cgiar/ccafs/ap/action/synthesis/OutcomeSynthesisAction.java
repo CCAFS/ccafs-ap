@@ -136,8 +136,8 @@ public class OutcomeSynthesisAction extends BaseAction {
     return program;
   }
 
-  public List<IPIndicator> getProjectIndicators(int year, int indicator) {
-    return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId());
+  public List<IPIndicator> getProjectIndicators(int year, int indicator, int midOutcome) {
+    return ipIndicatorManager.getIndicatorsSyntesis(year, indicator, program.getId(), midOutcome);
   }
 
   public List<OutcomeSynthesis> getRegionalSynthesis(int indicator, int midoutcome) {
