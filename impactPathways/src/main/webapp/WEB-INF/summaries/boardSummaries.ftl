@@ -74,6 +74,9 @@
             </div> --]
           </div>
           
+          
+          
+          
           [#-- Impact Pathways Contributions --] 
           <div class="summariesOption">
             <input type="radio" name="formOptions" id="impactPathwayContributionsSummary" value="impactPathwayContributionsSummary"/>
@@ -108,6 +111,21 @@
             <label for="expectedDeliverables">[@s.text name="summaries.board.report.expectedDeliverables" /] <span>XLSx</span></label>
             <p class="description">[@s.text name="summaries.board.report.expectedDeliverables.description" /] </p>
           </div>
+          
+          
+    
+          
+          
+                [#-- Expected deliverables --]
+          <div class="summariesOption">
+            <input type="radio" name="formOptions" id="allDeliverables" value="allDeliverables"/>
+            <label for="allDeliverables">All Deliverables<span>XLSx</span></label>
+           
+          </div>
+          
+          
+          
+          
         </div>
         [#-- -- -- Budget reports -- -- --]
         <div id="budget-contentOptions" style="display:none">

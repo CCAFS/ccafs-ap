@@ -24,6 +24,15 @@
       </result>
     </action>
 
+
+    <action  name="allDeliverables" class="org.cgiar.ccafs.ap.action.summaries.projects.DeliverableReportingSummaryAction">
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">text/xlsx</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+      </result>
+    </action>
+    
     <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.PartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
