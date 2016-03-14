@@ -107,33 +107,55 @@ public class MySQLIndicatorReportDAO implements IndicatorReportDAO {
     Object[] params = new Object[] {indicatorReportData.size(), activityLeaderId, year};
     LOG.debug(">> saveIndicatorsReport(indicatorsReport.size={}, activityLeaderId={}, year={})", params);
     boolean saved = false;
+    StringBuilder query = new StringBuilder();
 
-    Object[] values = new Object[6];
 
-    values[0] = indicatorReportData.get("target");
-    values[1] = indicatorReportData.get("actual");
-    values[2] = indicatorReportData.get("support_links");
-    values[3] = indicatorReportData.get("deviation");
-    values[4] = indicatorReportData.get("next_target");
+    if (indicatorReportData.get("id") == null) {
+      Object[] values = new Object[8];
+      values[0] = indicatorReportData.get("target");
+      values[1] = indicatorReportData.get("actual");
+      values[2] = indicatorReportData.get("support_links");
+      values[3] = indicatorReportData.get("deviation");
+      values[4] = indicatorReportData.get("next_target");
+      values[5] = indicatorReportData.get("liaison_institution_id");
+      values[6] = indicatorReportData.get("indicator_id");
+      values[7] = indicatorReportData.get("year");
+      query.append(
+        "insert into   crp_indicator_reports  (target,actual,support_links,deviation,next_target,liaison_institution_id,indicator_id,year) values (?,?,?,?,?,?,?,?)");
+      try (Connection con = databaseManager.getConnection()) {
+        int rows = databaseManager.saveData(query.toString(), values);
+        if (rows > 0) {
+          saved = true;
+        }
+      } catch (SQLException e) {
+        LOG.error("-- saveIndicatorReport() > There was an exception trying to save an indicator's report.", e);
+      }
+    } else {
+      Object[] values = new Object[6];
 
-    values[5] = indicatorReportData.get("id");
+      values[0] = indicatorReportData.get("target");
+      values[1] = indicatorReportData.get("actual");
+      values[2] = indicatorReportData.get("support_links");
+      values[3] = indicatorReportData.get("deviation");
+      values[4] = indicatorReportData.get("next_target");
+
+      values[5] = indicatorReportData.get("id");
+      query.append("update   crp_indicator_reports set  target=?, actual=?, ");
+      query.append(" support_links=?, deviation=?, next_target=?  ");
+      query.append(" where `id`=? ");
+      try (Connection con = databaseManager.getConnection()) {
+        int rows = databaseManager.saveData(query.toString(), values);
+        if (rows > 0) {
+          saved = true;
+        }
+      } catch (SQLException e) {
+        LOG.error("-- saveIndicatorReport() > There was an exception trying to save an indicator's report.", e);
+      }
+    }
+
     // The current target should be defined the previous year, by this reason, it is not
     // included in the query.
-    StringBuilder query = new StringBuilder();
-    query.append("update   crp_indicator_reports set  target=?, actual=?, ");
-    query.append(" support_links=?, deviation=?, next_target=?  ");
-    query.append(" where `id`=? ");
 
-    try (Connection con = databaseManager.getConnection()) {
-      int rows = databaseManager.saveData(query.toString(), values);
-      if (rows > 0) {
-        saved = true;
-      }
-
-
-    } catch (SQLException e) {
-      LOG.error("-- saveIndicatorReport() > There was an exception trying to save an indicator's report.", e);
-    }
 
     return saved;
   }

@@ -151,7 +151,7 @@ public class MySQLLiaisonInstitutionDAO implements LiaisonInstitutionDAO {
     List<Map<String, String>> liaisonInstitutions = new ArrayList<>();
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
-    query.append("FROM liaison_institutions li where id not in(1,6,7,8,9,10) ");
+    query.append("FROM liaison_institutions li where id not in(1) ");
 
     try (Connection con = daoManager.getConnection()) {
       ResultSet rs = daoManager.makeQuery(query.toString(), con);

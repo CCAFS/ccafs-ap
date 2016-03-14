@@ -73,17 +73,17 @@
               [/#if]
               [#-- Targets --]
               <div class="fullPartBlock">
-                <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].target" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" editable=false /]</div>
-                <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].actual" type="text" i18nkey="reporting.synthesis.crpIndicators.actual" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" required=canEdit editable=editable /]</div>
-                <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].nextYearTarget" type="text" i18nkey="reporting.synthesis.crpIndicators.nextYearTarget" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear+1}" required=canEdit editable=editable /]</div>
+                <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].target" type="text" i18nkey="reporting.synthesis.crpIndicators.target" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" editable=false /]</div>
+                <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].actual" type="text" i18nkey="reporting.synthesis.crpIndicators.actual" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear}" required=canEdit editable=editable /]</div>
+                <div class="thirdPartBlock">[@customForm.input name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].nextYearTarget" type="text" i18nkey="reporting.synthesis.crpIndicators.nextYearTarget" className="isNumeric" help="form.message.numericValue" paramText="${currentReportingYear+1}" required=canEdit editable=editable /]</div>
               </div>
               [#-- Link to supporting databases --]
               <div class="fullPartBlock">
-                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].supportLinks" i18nkey="reporting.synthesis.crpIndicators.links" required=canEdit editable=editable /]
+                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].supportLinks" i18nkey="reporting.synthesis.crpIndicators.links" required=canEdit editable=editable /]
               </div>
               [#-- Deviation --]
               <div class="fullPartBlock">
-                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.id)}].deviation" i18nkey="reporting.synthesis.crpIndicators.deviation" required=canEdit editable=editable /]
+                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].deviation" i18nkey="reporting.synthesis.crpIndicators.deviation" required=canEdit editable=editable /]
               </div>
             </div>
             [/#list]
