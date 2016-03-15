@@ -61,12 +61,9 @@
                     WHEN 5 THEN 'Cancelled'
           END 'Status',
           de.status_description,
-          replace(
+
           (
-                 SELECT group_concat(concat('* Next-user: ',de_next.`USER`,char(13) ,'Knowledge, attitude, skills and practice changes expected in next-user:',de_next.expected_changes,char(13) ,'What strategies (facilitation, engagement, knowledge sharing etc.) will be used to encourage and enable next-user to utilize deliverables and adopt changes: ',de_next.strategies,char(13),char(13) ))
-                 FROM   next_users de_next
-                 WHERE  de_next.is_active=1
-                 AND    de_next.deliverable_id=de.id),',Next-user:','Next-user:')'Next Users',
+               DeliverablenextUsers(de.id))'Next Users',
               replace( (
                      SELECT     group_concat( concat(us.first_name,' ',us.last_name,'<',us.email ,'> ' ,(case when ins.acronym is null then '' else ins.acronym end ),' - ',ins.`NAME`,' ',char(13) ))
                      FROM       deliverable_partnerships dp
@@ -107,23 +104,26 @@
           END 'Is this deliverable Open Access?',
           CASE disse.intellectual_property
                     WHEN 0 THEN 'No'
-                    WHEN 1 THEN 'Yes'
+                    WHEN 1 THEN 'Yes' else '<Not applicable>'
           END 'Intellectual Property Rights (confidential information)',
           CASE disse.limited_exclusivity
                     WHEN 0 THEN 'No'
                     WHEN 1 THEN 'Yes'
+										else '<Not applicable>'
           END 'Limited Exclusivity Agreements',
           CASE disse.restricted_use_agreement
                     WHEN 0 THEN 'No'
                     WHEN 1 THEN 'Yes'
+else '<Not applicable>'
           END 'Restricted Use Agreement - Restricted access',
           disse.restricted_access_until,
           CASE disse.effective_date_restriction
                     WHEN 0 THEN 'No'
                     WHEN 1 THEN 'Yes'
+else '<Not applicable>'
           END 'Effective Date Restriction - Embargoed period',
           disse.restricted_embargoed,
-          CASE  disse.already_disseminated  when true then 'Yes' else 'No' end 'Is this deliverable already disseminated?',
+          CASE  disse.already_disseminated  when true then 'Yes' else 'No'  end 'Is this deliverable already disseminated?',
           case (disse.dissemination_channel ) when '-1' then '' else disse.dissemination_channel  end'Dissemination Channel',
           disse.dissemination_url ,
 
@@ -480,10 +480,8 @@ AND       de.year in (2015,2014) order by de.project_id ;]]>
 						</jr:tableHeader>
 						<jr:detailCell style="table 1_TD" height="42" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="353" height="42" uuid="27bfc57c-f7c3-4d8d-ad6a-9f55dade051d"/>
-								<textElement verticalAlignment="Middle">
-									<font isBold="false" isItalic="false"/>
-								</textElement>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="353" height="42" uuid="bdad0420-3866-462e-a145-d454c7eb5fcb"/>
+								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{Next Users}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
