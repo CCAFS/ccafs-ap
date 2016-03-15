@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DeliverablesInformation" language="groovy" pageWidth="6960" pageHeight="9960" columnWidth="6960" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c434c62a-8b58-44f0-8d10-acf05917ea50">
-	<property name="ireport.zoom" value="0.3356218115529612"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="0.5945745120965776"/>
+	<property name="ireport.x" value="146"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table" fill="Solid" isBlankWhenNull="false" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 	<style name="table 1">
@@ -287,13 +287,13 @@ AND       de.year in (2015,2014) order by de.project_id ;]]>
 				<text><![CDATA[Metadata]]></text>
 			</staticText>
 			<image>
-				<reportElement x="864" y="0" width="287" height="124" uuid="aea05fce-f9f8-4721-9787-7dedd8de8d26"/>
-				<imageExpression><![CDATA["logo-ccafs.png"]]></imageExpression>
+				<reportElement x="864" y="0" width="447" height="124" uuid="2b6e8047-affc-45b3-ad8d-fdaa0314d2b4"/>
+				<imageExpression><![CDATA["http://activities.ccafs.cgiar.org/data/logo-ccafs.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="100"/>
+		<band height="98"/>
 	</pageHeader>
 	<detail>
 		<band height="800">
