@@ -108,6 +108,8 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
   private InstitutionManager institutionManager;
   // Model
   private Project project;
+  // HighLightsSummaryPDF projectPDF;
+
   ProjectSummaryPDF projectPDF;
   List<InputStream> streams;
 

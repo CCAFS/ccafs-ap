@@ -3732,7 +3732,7 @@ public class ProjectSummaryPDF extends BasePDF {
           paragraph.add(this.getText("summaries.project.reporting.highlight.publisher"));
           paragraph.setFont(TABLE_BODY_FONT);
           if (projectHighLigth != null) {
-            paragraph.add(this.messageReturn(projectHighLigth.getResults()));
+            paragraph.add(this.messageReturn(projectHighLigth.getPublisher()));
           } else {
             paragraph.add(this.messageReturn(null));
           }
@@ -3893,7 +3893,7 @@ public class ProjectSummaryPDF extends BasePDF {
           paragraph.add(this.getText("summaries.project.reporting.highlight.introduction"));
           paragraph.setFont(TABLE_BODY_FONT);
           if (projectHighLigth != null) {
-            paragraph.add(this.messageReturn(projectHighLigth.getAuthor()));
+            paragraph.add(this.messageReturn(projectHighLigth.getObjectives()));
           } else {
             paragraph.add(this.messageReturn(null));
           }
