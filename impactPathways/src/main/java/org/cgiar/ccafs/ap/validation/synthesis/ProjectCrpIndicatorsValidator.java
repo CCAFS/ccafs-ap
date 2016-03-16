@@ -60,8 +60,8 @@ public class ProjectCrpIndicatorsValidator extends BaseValidator {
       } catch (NumberFormatException e) {
         this.addMessage(indicatorReport.getIndicator().getName() + ": Expected Target");
       }
-      this.validateLink(action, indicatorReport.getSupportLinks(), indicatorReport.getIndicator().getName());
-      this.validateDeviation(action, indicatorReport.getDeviation(), indicatorReport.getIndicator().getName());
+      // this.validateLink(action, indicatorReport.getSupportLinks(), indicatorReport.getIndicator().getName());
+      // this.validateDeviation(action, indicatorReport.getDeviation(), indicatorReport.getIndicator().getName());
 
 
       if (validationMessage.length() > 0) {

@@ -171,10 +171,12 @@ public class CrpIndicatorsAction extends BaseAction {
     }
     indicatorsReportManager.saveIndicatorReportsList(indicatorReports, leader);
     Collection<String> messages = this.getActionMessages();
+
     if (!messages.isEmpty()) {
       String validationMessage = messages.iterator().next();
+
       this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + "</br>" + validationMessage);
+      this.addActionWarning(this.getText("saving.saved") + "" + validationMessage);
     } else {
       this.addActionMessage("All required fields are filled. You've successfully completed your work. Thank you!");
     }

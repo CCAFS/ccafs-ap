@@ -79,11 +79,11 @@
               </div>
               [#-- Link to supporting databases --]
               <div class="fullPartBlock">
-                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].supportLinks" i18nkey="reporting.synthesis.crpIndicators.links" required=canEdit editable=editable /]
+                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].supportLinks" i18nkey="reporting.synthesis.crpIndicators.links"  editable=editable /]
               </div>
               [#-- Deviation --]
               <div class="fullPartBlock">
-                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].deviation" i18nkey="reporting.synthesis.crpIndicators.deviation" required=canEdit editable=editable /]
+                [@customForm.textArea name="indicatorReports[${action.getIndicatorIndex(indicatorReport.indicator.id,indicatorReport.indicator.type.id)}].deviation" i18nkey="reporting.synthesis.crpIndicators.deviation"  editable=editable /]
               </div>
             </div>
             [/#list]
