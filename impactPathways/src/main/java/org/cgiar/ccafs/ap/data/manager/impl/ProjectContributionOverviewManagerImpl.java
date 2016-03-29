@@ -127,6 +127,36 @@ public class ProjectContributionOverviewManagerImpl implements ProjectContributi
     return outputOverviews;
   }
 
+
+  @Override
+  public List<OutputOverview> getProjectContributionOverviewsSytnhesisGlobal(int mogId, int year, int program) {
+    List<OutputOverview> outputOverviews = new ArrayList<>();
+
+    List<Map<String, String>> overviewsData = null;
+
+    overviewsData = overviewDAO.getProjectContributionOverviewsSynthesisGlobal(mogId, year, program);
+
+
+    for (Map<String, String> overviewData : overviewsData) {
+      OutputOverview overview = new OutputOverview();
+      overview.setId(Integer.parseInt(overviewData.get("id")));
+      overview.setExpectedAnnualContribution(overviewData.get("annual_contribution"));
+      overview.setSocialInclusionDimmension(overviewData.get("gender_contribution"));
+      overview.setBriefSummary(overviewData.get("brief_summary"));
+      overview.setSummaryGender(overviewData.get("summary_gender"));
+      IPElement output = new IPElement();
+      output.setId(Integer.parseInt(overviewData.get("output_id")));
+
+      overview.setOutput(output);
+      overview.setYear(Integer.parseInt(overviewData.get("year")));
+      overview.setProjectID(overviewData.get("project_id"));
+
+      outputOverviews.add(overview);
+    }
+
+    return outputOverviews;
+  }
+
   @Override
   public boolean saveProjectContribution(Project project, User user, String justification) {
     boolean saved = true;
