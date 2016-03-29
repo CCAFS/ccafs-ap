@@ -164,7 +164,7 @@ public class OutcomeSynthesisValidator extends BaseValidator {
   }
 
   private void validateSynthesisAnual(BaseAction action, String synthesisAnual, String indicator, String midOutcome) {
-    if (!(this.isValidString(synthesisAnual) && this.wordCount(synthesisAnual) <= 200)) {
+    if (!(this.isValidString(synthesisAnual) && this.wordCount(synthesisAnual) <= 250)) {
       this.addMessage(midOutcome + ": " + indicator + ": Synthesis of annual progress towards ");
 
     }

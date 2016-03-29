@@ -61,7 +61,7 @@
              [#assign index = action.getIndex(mog.id,program.id) /]
           [#-- Synthesis report for MOG --]
           <div class="fullPartBlock">
-            [@customForm.textArea name="synthesis[${index}].synthesisReport" i18nkey="reporting.synthesis.synthesisByMog.synthesisReport" paramText="${mog.getComposedId()}" className="synthesisReport limitWords-${program.flagshipProgram?string('200','150')}" required=canEdit editable=editable /]
+            [@customForm.textArea name="synthesis[${index}].synthesisReport" i18nkey="reporting.synthesis.synthesisByMog.synthesisReport" paramText="${mog.getComposedId()}" className="synthesisReport limitWords-${program.flagshipProgram?string('250','150')}" required=canEdit editable=editable /]
           </div>
           [#-- Gender synthesis report for MOG --]
           <div class="fullPartBlock">
