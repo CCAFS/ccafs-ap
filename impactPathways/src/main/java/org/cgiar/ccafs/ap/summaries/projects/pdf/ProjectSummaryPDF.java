@@ -1557,7 +1557,7 @@ public class ProjectSummaryPDF extends BasePDF {
             if (deliverableDataSharingFile != null) {
 
               anchor = new Anchor(deliverableDataSharingFile.getFile(), TABLE_BODY_FONT_LINK);
-              anchor.setReference(config.getDownloadURL() + "/projects/" + project.getId() + "/hightlightsImage/"
+              anchor.setReference(config.getDownloadURL() + "/projects/" + project.getId() + "/deliverableDataSharing/"
                 + deliverableDataSharingFile.getFile());
               myurl = new Phrase();
               myurl.add(anchor);
