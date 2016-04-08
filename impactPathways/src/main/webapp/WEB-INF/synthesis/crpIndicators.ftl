@@ -90,15 +90,16 @@
           </div>
         [/#list]
       </div>
-      
+        <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  /> 
       [#if editable]
-       <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  /> 
+     
         <div class="" >
           <div class="buttons">
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
             [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
           </div>
         </div>
+        
        
       [#else]
         [#-- Display Log History --]

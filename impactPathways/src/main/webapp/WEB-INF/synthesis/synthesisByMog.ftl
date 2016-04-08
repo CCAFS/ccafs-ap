@@ -152,10 +152,10 @@
         </div>
         [/#if] 
       </div>
-      
+        <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
       [#-- Log history --]
       [#if editable]
-      <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
+    
       [#else]
         [#-- Display Log History --]
         [#if history??][@log.logList list=history /][/#if] 
