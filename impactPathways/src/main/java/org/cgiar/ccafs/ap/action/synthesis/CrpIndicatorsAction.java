@@ -79,10 +79,10 @@ public class CrpIndicatorsAction extends BaseAction {
   }
 
 
-  public int getIndicatorIndex(int id) {
+  public int getIndicatorIndex(int id, int type) {
     int c = 0;
     for (IndicatorReport indicatorReport : indicatorReports) {
-      if (indicatorReport.getId() == id) {
+      if (indicatorReport.getIndicator().getId() == id && indicatorReport.getIndicator().getType().getId() == type) {
         return c;
       }
       c++;
@@ -131,6 +131,7 @@ public class CrpIndicatorsAction extends BaseAction {
         Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.LIAISON_INSTITUTION_REQUEST_ID)));
     } catch (NumberFormatException e) {
       if (this.getCurrentUser().getLiaisonInstitution() != null) {
+        liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
         if (this.hasSynthesisPermission("update", liaisonInstitutionID)) {
           liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
           if (liaisonInstitutionID == 1) {
@@ -165,12 +166,17 @@ public class CrpIndicatorsAction extends BaseAction {
   public String save() {
 
     LiaisonInstitution leader = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
+    for (IndicatorReport indicatorReport : indicatorReports) {
+      indicatorReport.setLiaisonInstitution(leader);
+    }
     indicatorsReportManager.saveIndicatorReportsList(indicatorReports, leader);
     Collection<String> messages = this.getActionMessages();
+
     if (!messages.isEmpty()) {
       String validationMessage = messages.iterator().next();
+
       this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + "</br>" + validationMessage);
+      this.addActionWarning(this.getText("saving.saved") + "" + validationMessage);
     } else {
       this.addActionMessage("All required fields are filled. You've successfully completed your work. Thank you!");
     }

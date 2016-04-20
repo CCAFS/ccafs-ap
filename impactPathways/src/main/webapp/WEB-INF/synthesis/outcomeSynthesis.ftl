@@ -80,7 +80,7 @@
                 
                 [#-- Synthesis of annual progress towards this indicator --]
                 <div class="fullPartBlock">
-                  [@customForm.textArea name="synthesis[${index}].synthesisAnual" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-200" required=canEdit editable=editable /]
+                  [@customForm.textArea name="synthesis[${index}].synthesisAnual" i18nkey="reporting.synthesis.outcomeSynthesis.progressIndicator" className="progressIndicator limitWords-250" required=canEdit editable=editable /]
                 </div>
                 
                 [#-- Synthesis of annual progress gender and social inclusion contribution towards this indicator --]
@@ -196,10 +196,10 @@
         </div>
         [/#if] 
       </div>
-      
+        <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  /> 
       [#-- Log history --]
       [#if editable]
-        <input type="hidden" name="liaisonInstitutionID" value="${liaisonInstitutionID}"  />
+        
       [#else]
         [#-- Display Log History --]
         [#if history??][@log.logList list=history /][/#if] 

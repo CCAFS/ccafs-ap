@@ -70,6 +70,15 @@ public interface ProjectContributionOverviewManager {
   public List<OutputOverview> getProjectContributionOverviewsSytnhesis(int mogId, int year, int program);
 
   /**
+   * TODO Falta documentar
+   * 
+   * @param mogId
+   * @param year
+   * @return
+   */
+  public List<OutputOverview> getProjectContributionOverviewsSytnhesisGlobal(int mogId, int year, int program);
+
+  /**
    * This method saves the output overviews contained in the project received by parameter.
    * 
    * @param project - Project that contains the output overviews to save.

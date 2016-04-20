@@ -61,7 +61,7 @@ public class MogSynthesisValidator extends BaseValidator {
       IPElement midOutcome = ipElementManager.getIPElement(synthe.getMogId());
       IPProgram program = ipProgramManager.getIPProgramById(synthe.getProgramId());
       if (program.isFlagshipProgram()) {
-        this.validateSynthesisAnual(action, synthe.getSynthesisReport(), midOutcome.getComposedId(), 200);
+        this.validateSynthesisAnual(action, synthe.getSynthesisReport(), midOutcome.getComposedId(), 250);
         this.validateSynthesisGender(action, synthe.getSynthesisGender(), midOutcome.getComposedId(), 150);
 
       } else {

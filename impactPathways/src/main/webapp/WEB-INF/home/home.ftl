@@ -33,7 +33,7 @@
         [/#if]
       </div>
     </div>
-    
+    [#if reportingActive]
     <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.deadline.title" /]</b></div>
     <div id="timelineBlock" class="borderBox">
       <ul class="timeline" id="timeline">
@@ -41,10 +41,13 @@
         [@time title="Project Reporting (PLs & CPs)"    subTitle="Project Leaders & Contact Points"   dateText="2016-03-03" status="Close"/]
         
         [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points & Regional Leaders"  dateText="2016-03-07" status="Open"/]
-        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points &  Regional Leaders"  dateText="2016-03-15" status="Close"/]
+        [@time title="CRP Indicators (CPs) & <br />Regional Synthesis (RPLs)"  subTitle="Contact Points &  Regional Leaders"  dateText="2016-03-18" status="Close"/]
         
-        [@time title="CRP Indicators & Synthesis (FPLs & RPLs)"  subTitle="Flagships Leaders & Regional Leaders"  dateText="2016-03-15" status="Open"/]
-        [@time title="CRP Indicators & Synthesis (FPLs &  RPLs)"  subTitle="Flagships Leaders & Regional Leaders"  dateText="2016-03-25" status="Close"/]
+        [@time title="CRP Indicators & Synthesis (FPLs & RPLs)"  subTitle="Flagships Leaders & Regional Leaders"  dateText="2016-03-21" status="Open"/]
+        [@time title="CRP Indicators & Synthesis (FPLs &  RPLs)"  subTitle="Flagships Leaders & Regional Leaders"  dateText="2016-04-01" status="Close"/]
+  
+  
+  
       </ul> 
       <div class="clearfix"></div> 
     </div>
@@ -60,6 +63,23 @@
         </ul>
       </div>
     </div> <!-- End leftSide -->
+    
+    
+    [/#if]
+    
+    [#if !reportingActive]
+    <div id="leftSide">
+      [#-- Deadline --]
+      <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.shortcuts" /]</b></div>
+      <div id="deadline" class="borderBox">
+        <ul class="subMenu">
+          <li><a href="${baseUrl}/planning/projectsList.do" class="">Projects</a></li>
+         
+        </ul>
+      </div>
+    </div> <!-- End leftSide -->
+    [/#if]
+    
     <div id="rightSide">
       [#-- DashBoard --]
       <div class="loadingBlock"></div>
@@ -73,7 +93,7 @@
           [#-- My projects --]
           <div id="projects"> 
             [#if projects?has_content]
-              [@projectList.projectsList projects=projects canValidate=true namespace="/reporting/projects" tableID="projects-table" /]
+              [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
             [#else]
               <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projectsList" /][/@s.param][/@s.text]<p>
             [/#if]

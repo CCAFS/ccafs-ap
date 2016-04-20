@@ -110,7 +110,8 @@ public class IndicatorReportManagerImpl implements IndicatorReportManager {
       indicatorReportData.put("support_links", ir.getSupportLinks());
       indicatorReportData.put("deviation", ir.getDeviation());
       indicatorReportData.put("indicator_id", String.valueOf(ir.getIndicator().getId()));
-
+      indicatorReportData.put("liaison_institution_id", String.valueOf(ir.getLiaisonInstitution().getId()));
+      indicatorReportData.put("year", String.valueOf(ir.getYear()));
       // This function return true if all the information was saved successfully.
       saved = indicatorReportDAO.saveIndicatorReport(indicatorReportData, leader.getId(), ir.getYear());
     }

@@ -1557,7 +1557,7 @@ public class ProjectSummaryPDF extends BasePDF {
             if (deliverableDataSharingFile != null) {
 
               anchor = new Anchor(deliverableDataSharingFile.getFile(), TABLE_BODY_FONT_LINK);
-              anchor.setReference(config.getDownloadURL() + "/projects/" + project.getId() + "/hightlightsImage/"
+              anchor.setReference(config.getDownloadURL() + "/projects/" + project.getId() + "/deliverableDataSharing/"
                 + deliverableDataSharingFile.getFile());
               myurl = new Phrase();
               myurl.add(anchor);
@@ -3732,7 +3732,7 @@ public class ProjectSummaryPDF extends BasePDF {
           paragraph.add(this.getText("summaries.project.reporting.highlight.publisher"));
           paragraph.setFont(TABLE_BODY_FONT);
           if (projectHighLigth != null) {
-            paragraph.add(this.messageReturn(projectHighLigth.getResults()));
+            paragraph.add(this.messageReturn(projectHighLigth.getPublisher()));
           } else {
             paragraph.add(this.messageReturn(null));
           }
@@ -3893,7 +3893,7 @@ public class ProjectSummaryPDF extends BasePDF {
           paragraph.add(this.getText("summaries.project.reporting.highlight.introduction"));
           paragraph.setFont(TABLE_BODY_FONT);
           if (projectHighLigth != null) {
-            paragraph.add(this.messageReturn(projectHighLigth.getAuthor()));
+            paragraph.add(this.messageReturn(projectHighLigth.getObjectives()));
           } else {
             paragraph.add(this.messageReturn(null));
           }
