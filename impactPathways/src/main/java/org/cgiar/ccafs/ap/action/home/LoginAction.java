@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,9 @@ public class LoginAction extends BaseAction {
   private InstitutionManager institutionManager;
   private RoleManager roleManager;
 
+  private String url;
+
+
   @Inject
   public LoginAction(APConfig config, UserManager userManager, InstitutionManager institutionManager,
     RoleManager roleManager) {
@@ -59,9 +63,14 @@ public class LoginAction extends BaseAction {
 
   }
 
+
   @Override
   public String execute() throws Exception {
     return SUCCESS;
+  }
+
+  public String getUrl() {
+    return url;
   }
 
   public User getUser() {
@@ -81,7 +90,23 @@ public class LoginAction extends BaseAction {
 
         this.getSession().put(APConstants.SESSION_USER, loggedUser);
         LOG.info("User " + user.getEmail() + " logged in successfully.");
-        return SUCCESS;
+
+        /*
+         * @Hjimenez
+         * Save the user url with trying to enter the system to redirect after
+         * loged.
+         */
+        String urlAction = ServletActionContext.getRequest().getHeader("Referer");
+        /*
+         * take the ".do" pattern in the url to differentiate the main page.
+         * also discard the "logut" url beacause this action close the user session.
+         */
+        if (urlAction.contains(".do") && !urlAction.contains("logout")) {
+          this.url = urlAction;
+          return LOGIN;
+        } else {
+          return SUCCESS;
+        }
       } else {
         LOG.info("User " + user.getEmail() + " tried to logged in but failed.");
         user.setPassword(null);
@@ -111,6 +136,10 @@ public class LoginAction extends BaseAction {
     }
 
     return SUCCESS;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public void setUser(User user) {

@@ -48,21 +48,21 @@ public class DashboardAction extends BaseAction {
   // Manager
   private ProjectManager projectManager;
 
+
   @Inject
   public DashboardAction(APConfig config, ProjectManager projectManager) {
     super(config);
     this.projectManager = projectManager;
   }
 
+
   public Activity getActivity() {
     return activity;
   }
 
-
   public Project getProject() {
     return project;
   }
-
 
   public List<Project> getProjects() {
     return projects;
@@ -72,13 +72,10 @@ public class DashboardAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     if (this.getCurrentUser() != null) {
-
       // ----- Listing Projects -----
       if (securityContext.isAdmin()) {
         projects = projectManager.getAllProjectsBasicInfo(APConstants.REPORTING_SECTION);
       } else {
-
-
         List<Project> allProjects = projectManager.getAllProjectsBasicInfo(APConstants.REPORTING_SECTION);
         List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
         projects = new ArrayList<>();
@@ -91,9 +88,7 @@ public class DashboardAction extends BaseAction {
             projects.add(allProjects.remove(index));
           }
         }
-
       }
-
     }
   }
 
@@ -105,10 +100,8 @@ public class DashboardAction extends BaseAction {
     this.project = project;
   }
 
-
   public void setProjects(List<Project> projects) {
     this.projects = projects;
   }
-
 
 }

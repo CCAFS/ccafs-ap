@@ -46,14 +46,6 @@ public class RequireUserInterceptor extends AbstractInterceptor {
     if (user != null) {
       return invocation.invoke();
     }
-    /*
-     * TODO HT - I tried to save the requested URL so the user can be redirected ones he is logged in.
-     * else {
-     * HttpServletRequest request = ServletActionContext.getRequest();
-     * session.put("savedUrl",
-     * request.getRequestURI() + (request.getQueryString() == null ? "" : ("?" + request.getQueryString())));
-     * }
-     */
     return BaseAction.NOT_LOGGED;
   }
 

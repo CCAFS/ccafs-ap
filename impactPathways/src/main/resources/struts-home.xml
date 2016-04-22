@@ -10,6 +10,7 @@
       <result name="success" type="redirectAction">
         <param name="actionName">dashboard</param>
       </result>
+      <result name="login" type="redirect">${url}</result>
     </action>
     
     <action name="logout" class="org.cgiar.ccafs.ap.action.home.LoginAction" method="logout">
