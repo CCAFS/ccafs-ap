@@ -605,7 +605,11 @@ function getMetadata(fillData) {
       pageID: optionSelected
     };
     if(optionSelected == 'cgspace') {
-      ajaxData.metadataID = "oai:" + uriHost + ":" + uriPath.slice(8, uriPath.length);
+      if(uriHost== "hdl.handle.net"){
+        ajaxData.metadataID = "oai:cgspace.cgiar.org:" + uriPath.slice(1, uriPath.length); 
+      }else{
+        ajaxData.metadataID = "oai:" + uriHost + ":" + uriPath.slice(8, uriPath.length);        
+      }
     }else if(optionSelected == 'other'){
       return
     } else {
