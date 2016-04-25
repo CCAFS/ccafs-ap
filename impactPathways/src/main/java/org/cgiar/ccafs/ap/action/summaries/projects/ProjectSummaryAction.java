@@ -44,13 +44,10 @@ import org.cgiar.ccafs.ap.data.manager.SubmissionManager;
 import org.cgiar.ccafs.ap.data.model.Budget;
 import org.cgiar.ccafs.ap.data.model.CaseStudieIndicators;
 import org.cgiar.ccafs.ap.data.model.CasesStudies;
-import org.cgiar.ccafs.ap.data.model.Country;
 import org.cgiar.ccafs.ap.data.model.IPElement;
 import org.cgiar.ccafs.ap.data.model.IPIndicator;
 import org.cgiar.ccafs.ap.data.model.OutputOverview;
 import org.cgiar.ccafs.ap.data.model.Project;
-import org.cgiar.ccafs.ap.data.model.ProjectHighligths;
-import org.cgiar.ccafs.ap.data.model.ProjectLeverage;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.ProjecteOtherContributions;
 import org.cgiar.ccafs.ap.summaries.projects.pdf.ProjectSummaryPDF;
@@ -295,20 +292,21 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     }
     project.setOutputsOverview(listaOver);
 
+
     // *************************Deliverables*****************************/
-    project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
+    // project.setDeliverables(deliverableManager.getDeliverablesByProject(projectID));
 
     // *************************Next users*****************************/
-    project.setNextUsers(this.projectNextUserManager.getProjectNextUserProject(projectID));
+    // project.setNextUsers(this.projectNextUserManager.getProjectNextUserProject(projectID));
 
     // *************************Outcomes*****************************/
     project.setOutcomes(projectOutcomeManager.getProjectOutcomesByProject(project.getId()));
 
-    project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
+    // project.setIpOtherContribution(ipOtherContributionManager.getIPOtherContributionByProjectId(projectID));
 
-    project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));
+    // project.setIndicators(indicatorManager.getProjectIndicators(project.getId()));
 
-    project.setActivities(activityManager.getActivitiesByProject(project.getId()));
+    // project.setActivities(activityManager.getActivitiesByProject(project.getId()));
 
 
     List<ProjecteOtherContributions> projectOtherList =
@@ -322,14 +320,10 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
         .setRegion(ipProgramManager.getIPProgramById(Integer.parseInt(projectOther.getRegion())).getComposedName());
     }
     project.setOtherContributions(projectOtherList);
-
     project.setListCRPContributions(crpManager.getCrpContributionsNature(project.getId()));
-
     List<CasesStudies> caseStudiesList = caseStudiesManager.getCaseStudysByProject(project.getId());
-
     List<IPIndicator> ipIndicatorList;
     IPIndicator ipIndicator;
-
     for (CasesStudies caseStudie : caseStudiesList) {
       ipIndicatorList = new ArrayList<IPIndicator>();
       for (CaseStudieIndicators indicatorCaseStudie : caseStudie.getCaseStudieIndicatorses()) {
@@ -341,7 +335,7 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
     project.setCaseStudies(caseStudiesList);
 
     // *************************Budgets******************************/
-    project.setBudgets(this.budgetManager.getBudgetsByProject(project));
+    // project.setBudgets(this.budgetManager.getBudgetsByProject(project));
 
     // Set Leasson regarding
     project.setComponentLessons(this.projectLessonsManager.getComponentLessonsByProjectAndCycle(projectID, cycle));
@@ -353,46 +347,46 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
 
     // *************************Annual contribution*******************/
-    for (Project projectContributor : project.getLinkedProjects()) {
-      if (project.isBilateralProject()) {
-        projectContributor.setAnualContribution(
-          this.getCofinancingBudget(projectContributor.getId(), projectID, config.getPlanningCurrentYear()));
-      } else if (project.isCoFundedProject()) {
-        projectContributor.setAnualContribution(
-          this.getCofinancingBudget(projectID, projectContributor.getId(), config.getPlanningCurrentYear()));
-      }
-    }
-
+    /*
+     * for (Project projectContributor : project.getLinkedProjects()) {
+     * if (project.isBilateralProject()) {
+     * projectContributor.setAnualContribution(
+     * this.getCofinancingBudget(projectContributor.getId(), projectID, config.getPlanningCurrentYear()));
+     * } else if (project.isCoFundedProject()) {
+     * projectContributor.setAnualContribution(
+     * this.getCofinancingBudget(projectID, projectContributor.getId(), config.getPlanningCurrentYear()));
+     * }
+     * }
+     */
     // ************************Project Leverage *******************
-
-    List<ProjectLeverage> projectLeverageList = projectLeverageManager.getProjectLeverageProject(projectID);
-    for (ProjectLeverage projectLeverage : projectLeverageList) {
-      if (projectLeverage.getInstitution() != null) {
-        projectLeverage.setMyInstitution(institutionManager.getInstitution(projectLeverage.getInstitution()));
-      }
-
-      if (projectLeverage.getFlagship() != null) {
-        projectLeverage.setMyFlagship(this.ipProgramManager.getIPProgramById(projectLeverage.getFlagship()));
-      }
-    }
-
-    project.setLeverages(projectLeverageList);
-
+    /*
+     * List<ProjectLeverage> projectLeverageList = projectLeverageManager.getProjectLeverageProject(projectID);
+     * for (ProjectLeverage projectLeverage : projectLeverageList) {
+     * if (projectLeverage.getInstitution() != null) {
+     * projectLeverage.setMyInstitution(institutionManager.getInstitution(projectLeverage.getInstitution()));
+     * }
+     * if (projectLeverage.getFlagship() != null) {
+     * projectLeverage.setMyFlagship(this.ipProgramManager.getIPProgramById(projectLeverage.getFlagship()));
+     * }
+     * }
+     * project.setLeverages(projectLeverageList);
+     */
     // ************************Project HighLigth *******************
 
-    List<ProjectHighligths> projectHighLightList = highlightManager.getHighLightsByProject(projectID);
-    List<Country> countryList;
-    for (ProjectHighligths projectHighligth : projectHighLightList) {
-      countryList = new ArrayList<Country>();
-      if (projectHighligth.getCountriesIds() != null) {
-        for (Integer countryId : projectHighligth.getCountriesIds()) {
-          countryList.add(this.locationManager.getCountry(countryId.intValue()));
-        }
-      }
-      projectHighligth.setCountries(countryList);
-    }
-    project.setHighlights(projectHighLightList);
-
+    /*
+     * List<ProjectHighligths> projectHighLightList = highlightManager.getHighLightsByProject(projectID);
+     * List<Country> countryList;
+     * for (ProjectHighligths projectHighligth : projectHighLightList) {
+     * countryList = new ArrayList<Country>();
+     * if (projectHighligth.getCountriesIds() != null) {
+     * for (Integer countryId : projectHighligth.getCountriesIds()) {
+     * countryList.add(this.locationManager.getCountry(countryId.intValue()));
+     * }
+     * }
+     * projectHighligth.setCountries(countryList);
+     * }
+     * project.setHighlights(projectHighLightList);
+     */
     //
     // for (ProjectHighligths projectHighLight : projectHighLightList) {
     // Set<ProjectHighligthsCountry> countriesHighLight = projectHighLight.getProjectHighligthsCountries();

@@ -365,7 +365,7 @@ public class ProjectCCAFSOutcomesAction extends BaseAction {
     if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
       evaluatingYear = this.getCurrentReportingYear();
     } else {
-      this.getCurrentPlanningYear();
+      evaluatingYear = this.getCurrentPlanningYear();
     }
     ComponentLesson lessons =
       lessonManager.getProjectComponentLesson(projectID, this.getActionName(), evaluatingYear, this.getCycleName());
