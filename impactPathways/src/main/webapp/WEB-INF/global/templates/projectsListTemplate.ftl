@@ -1,7 +1,7 @@
 [#ftl]
 [#import "/WEB-INF/global/macros/utils.ftl" as utilities/]
 [#-- This macro is being used in projectsListPreplanning.ftl and projectsListPlanning.ftl The idea is to represent a table with specific information about projects --]
-[#macro projectsList projects owned=true canValidate=false canEdit=false isPlanning=false namespace="/"]
+[#macro projectsList projects owned=true canValidate=false canEdit=false isPlanning=false namespace="/" defaultAction="description"]
   <table class="projectsList" id="projects">
     <thead>
       <tr class="header">
@@ -31,29 +31,22 @@
         <tr>
         [#-- ID --]
         <td class="projectId">
-          <a href="[@s.url namespace=namespace action='description'][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]">
-            P${project.id}
-          </a>
+          <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]"> P${project.id}</a>
         </td>
           [#-- Project Title --]
           <td class="left"> 
             [#if project.title?has_content]
-              <a href="[@s.url namespace=namespace action='description'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] "
-              title="${project.title}">
+              <a href="[@s.url namespace=namespace action=defaultAction] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url]" title="${project.title}">
               [#if project.title?length < 120] ${project.title}</a> [#else] [@utilities.wordCutter string=project.title maxPos=120 /]...</a> [/#if]
             [#else]
-              <a href="[@s.url namespace=namespace action='description' includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
+              <a href="[@s.url namespace=namespace action=defaultAction includeParams='get'] [@s.param name='projectID']${project.id?c}[/@s.param][/@s.url] ">
                 [@s.text name="preplanning.projects.title.none" /]
               </a>
             [/#if]
           </td>
           [#-- Project Leader --]
           <td class=""> 
-            [#if project.leadInstitutionAcronym?has_content]
-              ${project.leadInstitutionAcronym}
-            [#else]
-              [@s.text name="preplanning.projects.title.none" /]
-            [/#if]
+            [#if project.leadInstitutionAcronym?has_content]${project.leadInstitutionAcronym}[#else][@s.text name="preplanning.projects.title.none" /][/#if]
           </td>
           [#-- Project Type --]
           <td>
@@ -65,19 +58,11 @@
           </td>
           [#-- Region --]
           <td> 
-            [#if project.regionsAcronym?has_content]
-              ${project.regionsAcronym}
-            [#else]
-              [@s.text name="preplanning.projects.none" /]
-            [/#if]
+            [#if project.regionsAcronym?has_content]${project.regionsAcronym}[#else][@s.text name="preplanning.projects.none" /][/#if]
           </td>
           [#-- Flagship --]
           <td> 
-            [#if project.flagshipsAcronym?has_content]
-              ${project.flagshipsAcronym}
-            [#else]
-              [@s.text name="preplanning.projects.none" /]
-            [/#if]
+            [#if project.flagshipsAcronym?has_content]${project.flagshipsAcronym}[#else][@s.text name="preplanning.projects.none" /][/#if]
           </td>
           [#-- Budget W1/W2 --]
           <td class="budget"> 
@@ -151,5 +136,52 @@
       [/#list]
     </tbody>
   </table>
+[/#macro]
 
+[#macro evaluationProjects projects owned=true canValidate=false canEdit=false isPlanning=false namespace="/" defaultAction="evaluation"]
+  <table class="evaluationProjects" id="projects">
+    <thead> 
+      <tr class="subHeader">
+        <th id="ids">[@s.text name="preplanning.projects.projectids" /]</th>
+        <th id="projectTitles" >[@s.text name="preplanning.projects.projectTitles" /]</th>
+        <th>Leader</th>
+        <th>Region / Flagship</th>
+        <th>Year</th>
+        <th>Status</th>
+        <th>Total Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      [#list projects as project]
+        [#assign projectUrl][@s.url namespace=namespace action=defaultAction][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url][/#assign]
+        <tr>
+          [#-- ID --]
+          <td class="projectId">
+            <a href="${projectUrl}"> P${project.id}</a>
+          </td>
+          [#-- Project Title --]
+          <td class="left"> 
+            [#if project.title?has_content]
+              <a href="${projectUrl}" title="${project.title}">[@utilities.wordCutter string=project.title maxPos=120 /]</a>  
+            [#else]
+              <a href="${projectUrl}">[@s.text name="preplanning.projects.title.none" /]</a>
+            [/#if]
+          </td>
+          [#-- Leader --]
+          <td>[#if project.leadInstitutionAcronym?has_content]${project.leadInstitutionAcronym}[#else][@s.text name="preplanning.projects.title.none" /][/#if]</td>
+          [#-- Region / Flagship --]
+          <td>
+            [#if project.regionsAcronym?has_content]${project.regionsAcronym}[#else][@s.text name="preplanning.projects.none" /][/#if]
+            [#if project.flagshipsAcronym?has_content]${project.flagshipsAcronym}[#else][@s.text name="preplanning.projects.none" /][/#if]
+          </td>
+          [#-- Year --]
+          <td>2015</td>
+          [#-- Status --]
+          <td>Submitted</td>
+          [#-- Total Score --]
+          <td><span class="totalScore">3.5</span></td>
+        </tr>  
+      [/#list]
+    </tbody>
+  </table>
 [/#macro]

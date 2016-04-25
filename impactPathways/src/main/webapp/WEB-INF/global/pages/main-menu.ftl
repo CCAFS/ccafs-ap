@@ -44,22 +44,24 @@
               <a href="[#if reportingActive]${baseUrl}/reporting/projectsList.do[/#if]" class="[#if !reportingActive]disabled[/#if]">Projects</a>
             </li>
             [#-- Contact points and Flagships Leaders : securityContext.FPL || securityContext.CP || --]
-    
-              <li [#if reportingCycleValid && (currentCycleSection  == "crpIndicators")] class="currentSection" [/#if] >
-                <a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true"  class="[#if !reportingActive]disabled[/#if]">CRP Indicators</a>
-              </li>
+            <li [#if reportingCycleValid && (currentCycleSection  == "crpIndicators")] class="currentSection" [/#if] >
+              <a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true"  class="[#if !reportingActive]disabled[/#if]">CRP Indicators</a>
+            </li>
           
             [#-- Flagships Leaders and Regional Leaders : securityContext.FPL || securityContext.RPL || --]
-       
-              <li [#if reportingCycleValid && (currentCycleSection  == "outcomeSynthesis")] class="currentSection" [/#if] >
-                <a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" class="[#if !reportingActive]disabled[/#if]" >Outcome Synthesis</a>
-              </li>
+            <li [#if reportingCycleValid && (currentCycleSection  == "outcomeSynthesis")] class="currentSection" [/#if] >
+              <a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" class="[#if !reportingActive]disabled[/#if]" >Outcome Synthesis</a>
+            </li>
          
             [#-- Flagships Leaders and Regional Leaders : securityContext.FPL || securityContext.RPL || --]
-           
-              <li [#if reportingCycleValid && (currentCycleSection  == "synthesisByMog")] class="currentSection" [/#if] >
-                <a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true" class="[#if !reportingActive]disabled[/#if]" >Synthesis by MOG</a>
-              </li> 
+            <li [#if reportingCycleValid && (currentCycleSection  == "synthesisByMog")] class="currentSection" [/#if] >
+              <a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true" class="[#if !reportingActive]disabled[/#if]" >Synthesis by MOG</a>
+            </li> 
+            
+            [#-- Project Evaluation --]
+            <li [#if reportingCycleValid && (currentCycleSection  == "projectsEvaluation")] class="currentSection" [/#if] >
+              <a href="${baseUrl}/reporting/projectsEvaluation.do" class="[#if !reportingActive]disabled[/#if]" >Project Evaluation</a>
+            </li> 
           
             
           </ul>

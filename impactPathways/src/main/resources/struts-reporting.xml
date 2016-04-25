@@ -10,11 +10,14 @@
       <result name="input">/WEB-INF/projects/projectsList.ftl</result>
     </action>
     
+    <action name="projectsEvaluation" class="org.cgiar.ccafs.ap.action.projects.ProjectsEvaluationAction">
+      <result name="input">/WEB-INF/projects/projectsEvaluation.ftl</result>
+    </action>
+    
     <action name="uploadDeliverable" class="org.cgiar.ccafs.ap.action.json.projects.UploadDeliverableAction">
       <interceptor-ref name="defaultStack" />
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">314572900</param>
-        
       </interceptor-ref> 
       <result name="input">/WEB-INF/projects/deliverable/uploadDeliverableReporting.ftl</result>
       <result name="success">/WEB-INF/projects/deliverable/uploadDeliverableReporting.ftl</result>
@@ -46,6 +49,7 @@
         <param name="edit">true</param>
       </result>
     </action>
+    
   </package>
   
   <package name="reportingSynthesis" namespace="/reporting/synthesis" extends="ccafsap-default">
@@ -81,6 +85,8 @@
     
   </package>
   
+  
+  
   <package name="reportingProjects" namespace="/reporting/projects" extends="ccafsap-default">
     <default-interceptor-ref name="planningStackProjects" />
     <default-action-ref name="projects" />
@@ -104,8 +110,7 @@
       </result>
     </action>
     
-    <!-- Partners  -->
-    
+    <!-- Project Partners  -->
     <action name="partners" class="org.cgiar.ccafs.ap.action.projects.ProjectPartnersAction">
       <result name="input">/WEB-INF/projects/projectPartners.ftl</result>
       <result name="success" type="redirectAction">
@@ -123,6 +128,7 @@
       </result>
     </action>
 
+    <!-- Project Locations  -->
     <action name="locations" class="org.cgiar.ccafs.ap.action.projects.ProjectLocationsAction">
       <result name="input">/WEB-INF/projects/projectLocations.ftl</result> 
       <result name="success" type="redirectAction">
@@ -141,7 +147,6 @@
     </action>
     
     <!-- Project Outcomes  -->
-    
     <action name="outcomes" class="org.cgiar.ccafs.ap.action.projects.ProjectOutcomesAction">
       <result name="input">/WEB-INF/projects/projectOutcomes.ftl</result>		
       <result name="success" type="redirectAction">		
@@ -343,8 +348,7 @@
       </result>
     </action>
     
-    <!-- Project Budget  -->
-    
+    <!-- Project Leverages  -->
     <action name="leverages" class="org.cgiar.ccafs.ap.action.projects.ProjectLeveragesAction">
       <result name="input">/WEB-INF/projects/projectLeverages.ftl</result>
       <result name="success" type="redirectAction">
@@ -358,8 +362,6 @@
       </result>
     </action>
     
-    
-    
     <!-- Project Submission -->
     <action name="submit" class="org.cgiar.ccafs.ap.action.projects.ProjectSubmissionAction">
       <result name="input">/WEB-INF/projects/projectSubmission.ftl</result>
@@ -368,5 +370,20 @@
         <param name="projectID">${projectID}</param>        
       </result>
     </action>      
+
+    <!-- Project Evaluation  -->
+    <action name="evaluation" class="org.cgiar.ccafs.ap.action.projects.ProjectEvaluationAction">
+      <result name="input">/WEB-INF/projects/projectEvaluation.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">evaluation</param>
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">evaluation</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+
   </package>  
 </struts>

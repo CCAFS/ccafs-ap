@@ -53,7 +53,7 @@ public class ValidateProjectParameterInterceptor extends AbstractInterceptor {
     // if user is not in project list or creating a project.
     if (!actionName.equals("projectsList") && !actionName.equals("addNewCoreProject")
       && !actionName.equals("addNewBilateralProject") && !actionName.equals("addCoFundedProject")
-      && !actionName.equals("crpIndicators")) {
+      && !actionName.equals("projectsEvaluation")) {
       Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
       // Validate if project parameter exists in the URL.
       if (parameters.get(APConstants.PROJECT_REQUEST_ID) != null) {
