@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 26, 2016 12:00:17 PM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="org.cgiar.ccafs.ap.data.model.ProjectEvaluation" table="project_evaluation" catalog="ccafspr_ip" optimistic-lock="version">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="projectId" type="long">
+            <column name="project_id" not-null="true" />
+        </property>
+        <property name="typeEvaluation" type="string">
+            <column name="type_evaluation" length="100" not-null="true" />
+        </property>
+        <property name="userId" type="long">
+            <column name="user_id" not-null="true" />
+        </property>
+        <property name="isSubmited" type="boolean">
+            <column name="is_submited" not-null="true" />
+        </property>
+        <property name="rankingOutputs" type="double">
+            <column name="ranking_outputs" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="rankingOutcomes" type="double">
+            <column name="ranking_outcomes" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="rankingParternshipComunnication" type="double">
+            <column name="ranking_parternship_comunnication" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="rankingResponseTeam" type="double">
+            <column name="ranking_response_team" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="rankingQuality" type="double">
+            <column name="ranking_quality" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="communicationProducts" type="string">
+            <column name="communication_products" length="65535" not-null="true" />
+        </property>
+        <property name="projectHighlights" type="string">
+            <column name="project_highlights" length="65535" not-null="true" />
+        </property>
+        <property name="outcomeCaseStudies" type="string">
+            <column name="outcome_case_studies" length="65535" not-null="true" />
+        </property>
+        <property name="generalComments" type="string">
+            <column name="general_comments" length="65535" not-null="true" />
+        </property>
+        <property name="recommendations" type="string">
+            <column name="recommendations" length="65535" not-null="true" />
+        </property>
+        <property name="anyActionRequeried" type="string">
+            <column name="any_action_requeried" length="65535" not-null="true" />
+        </property>
+        <property name="totalScore" type="double">
+            <column name="total_score" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

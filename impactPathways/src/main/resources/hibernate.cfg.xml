@@ -33,6 +33,7 @@
     <mapping resource="xmls/MetadataElements.hbm.xml" />
     <mapping resource="xmls/OutcomeSynthesis.hbm.xml" />
     <mapping resource="xmls/MogSynthesis.hbm.xml" />
+    <mapping resource="xmls/ProjectEvaluation.hbm.xml" />
   </session-factory>
 </hibernate-configuration>
 
