@@ -85,8 +85,11 @@
         <div class="fullPartBlock">
           [#-- Project Leader --]
           <div class="halfPartBlock">
-            <div class="dottedBox select"><h6>Project Leader:</h6><p> {Project Leader Name} </p></div>
+            <div class="dottedBox select">
+              <h6>Project Leader:</h6><p>  </p>
+            </div>
           </div>
+          
           
           <div class="halfPartBlock">
             <div class="dottedBox">

@@ -26,7 +26,7 @@ import com.google.inject.ImplementedBy;
 public interface ProjectEvaluationDAO {
 
   /**
-   * Execute the query and get the project information by the project and user Id's
+   * Execute the query and get the evaluation project information by the project and user Id's
    * 
    * @param projectId - is the ID of the project.
    * @param userId - is the ID of the user
