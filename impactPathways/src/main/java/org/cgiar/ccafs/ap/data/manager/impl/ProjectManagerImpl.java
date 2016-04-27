@@ -362,11 +362,11 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
-  public List<Project> getProjectEvaluationInfo(int year, int roleId, int userId) {
+  public List<Project> getProjectEvaluationInfo(int year, int roleId, int userId, int ipProgramId) {
 
 
     List<Map<String, String>> projectDataList =
-      projectDAO.getProjectEvaluationInfo(year, roleId, userId, config.getCurrentReportingStartDate());
+      projectDAO.getProjectEvaluationInfo(year, roleId, userId, config.getCurrentReportingStartDate(), ipProgramId);
     List<Project> projectsList = new ArrayList<>();
     Project project;
     for (Map<String, String> projectData : projectDataList) {

@@ -160,9 +160,10 @@ public interface ProjectManager {
    * @param year the evaluating year
    * @param roleId the role id
    * @param userId the user id
+   * @param ipProgramId the ip_program id
    * @return a list with Project objects.
    */
-  public List<Project> getProjectEvaluationInfo(int year, int roleId, int userId);
+  public List<Project> getProjectEvaluationInfo(int year, int roleId, int userId, int ipProgramId);
 
   /**
    * This method returns the Project in which the activity belongs to.

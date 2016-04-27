@@ -14,18 +14,21 @@
 package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.UserRole;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class ProjectsEvaluationAction extends BaseAction {
@@ -33,11 +36,10 @@ public class ProjectsEvaluationAction extends BaseAction {
 
   private static final long serialVersionUID = 2845677913596494699L;
 
-  // LOG
-  private static Logger LOG = LoggerFactory.getLogger(ProjectsEvaluationAction.class);
 
   // Manager
   private ProjectManager projectManager;
+  private LiaisonInstitutionManager liaisonInstitutionManager;
   private UserRoleManagerImpl userRoleManager;
   // Model for the back-end
   private List<Project> projects;
@@ -45,10 +47,12 @@ public class ProjectsEvaluationAction extends BaseAction {
 
 
   @Inject
-  public ProjectsEvaluationAction(APConfig config, ProjectManager projectManager, UserRoleManagerImpl userRoleManager) {
+  public ProjectsEvaluationAction(APConfig config, ProjectManager projectManager, UserRoleManagerImpl userRoleManager,
+    LiaisonInstitutionManager liaisonInstitutionManager) {
     super(config);
     this.projectManager = projectManager;
     this.userRoleManager = userRoleManager;
+    this.liaisonInstitutionManager = liaisonInstitutionManager;
   }
 
 
@@ -65,15 +69,42 @@ public class ProjectsEvaluationAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     projects = new ArrayList<>();
-    String section = this.getCycleName();
 
+    Set<Project> myProjects = new HashSet<Project>();
 
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
     for (UserRole userRole : roles) {
 
-      projects = projectManager.getProjectEvaluationInfo(this.getCurrentReportingYear(), userRole.getId(),
-        this.getCurrentUser().getId());
+      switch (userRole.getId()) {
+        case APConstants.ROLE_ADMIN:
+        case APConstants.ROLE_EXTERNAL_EVALUATOR:
+        case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+        case APConstants.ROLE_PROJECT_LEADER:
+        case APConstants.ROLE_COORDINATING_UNIT:
+        case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
+          int liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
+          LiaisonInstitution currentLiaisonInstitution =
+            liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
+          if (currentLiaisonInstitution.getIpProgram() == null) {
+            currentLiaisonInstitution.setIpProgram("1");
+          }
+          List<Project> projectsBd =
+            projectManager.getProjectEvaluationInfo(this.getCurrentReportingYear(), userRole.getId(),
+              this.getCurrentUser().getId(), Integer.parseInt(currentLiaisonInstitution.getIpProgram()));
+
+          myProjects.addAll(projectsBd);
+
+          break;
+
+        default:
+          break;
+      }
+
+
     }
+    projects = new ArrayList<>();
+
+    projects.addAll(myProjects);
 
 
   }

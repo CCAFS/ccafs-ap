@@ -690,17 +690,18 @@ public class MySQLProjectDAO implements ProjectDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjectEvaluationInfo(int year, int roleId, int userId, Date reportingStratDate) {
+  public List<Map<String, String>> getProjectEvaluationInfo(int year, int roleId, int userId, Date reportingStratDate,
+    int ipProgramId) {
 
 
     List<Map<String, String>> projectList = new ArrayList<>();
     StringBuilder query = new StringBuilder();
 
-
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     switch (roleId) {
       case APConstants.ROLE_PROJECT_LEADER:
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
         query.append("SELECT p.id,");
         query.append("       p.title,");
         query.append("       p.type,");
@@ -755,6 +756,120 @@ public class MySQLProjectDAO implements ProjectDAO {
           "   inner join project_partner_persons ppe on ppe.project_partner_id=pp.id and ppe.is_active=1 and ppe.contact_type='PL' ");
         query.append("  where pp.project_id=p.id and pp.is_active=1  ) = " + userId + " ");
 
+
+        break;
+
+
+      case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+      case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
+
+
+        query.append("SELECT p.id,");
+        query.append("       p.title,");
+        query.append("       p.type,");
+        query.append("       p.summary,");
+        query.append("       p.active_since,");
+        query.append("       p.is_cofinancing,");
+        query.append("       (SELECT Ifnull(Sum(pb.amount), 0)");
+        query.append("        FROM   project_budgets pb");
+        query.append("        WHERE  p.id = pb.project_id");
+        query.append("               AND pb.is_active = true");
+        query
+          .append("               AND pb.budget_type = 1 and pb.`year`=YEAR(p.start_date) )  AS 'total_ccafs_amount',");
+        query.append("       (SELECT Ifnull(Sum(pb2.amount), 0)");
+        query.append("        FROM   project_budgets pb2");
+        query.append("        WHERE  p.id = pb2.project_id");
+        query.append("               AND pb2.is_active = true");
+        query.append(
+          "               AND pb2.budget_type = 2 and pb2.`year`=YEAR(p.start_date) ) AS 'total_bilateral_amount',");
+        query.append("       (SELECT Group_concat(ipp.acronym)");
+        query.append("        FROM   ip_programs ipp");
+        query.append("               INNER JOIN project_focuses pf");
+        query.append("                       ON ipp.id = pf.program_id");
+        query.append("        WHERE  pf.project_id = p.id");
+        query.append("               AND ipp.type_id = 5)     AS 'regions',");
+        query.append("       (SELECT Group_concat(ipp.acronym)");
+        query.append("        FROM   ip_programs ipp");
+        query.append("               INNER JOIN project_focuses pf");
+        query.append("                       ON ipp.id = pf.program_id");
+        query.append("        WHERE  pf.project_id = p.id");
+        query.append("               AND ipp.type_id = 4)     AS 'flagships'");
+        query.append(" ,(select ins.acronym");
+        query.append("    from project_partners pp ");
+        query.append("   inner join institutions ins on pp.institution_id=ins.id ");
+        query.append(
+          "   inner join project_partner_persons ppe on ppe.project_partner_id=pp.id and ppe.is_active=1 and ppe.contact_type='PL' ");
+        query.append(
+          "  where pp.project_id=p.id and pp.is_active=1  ) 'Leader' ,IFNULL((select case is_submited when 1 then 'Submitted' else 'Evaluating' end"
+            + "  from project_evaluation where year=" + year + " and project_id=p.id  and user_id=" + userId
+            + " ),'Pending') 'is_Submited'");
+
+        query.append(" ,IFNULL((select total_score" + "  from project_evaluation where year=" + year
+          + " and project_id=p.id and user_id=" + userId + " ),'N/A') 'Score'");
+
+        query.append(" FROM   projects AS p ");
+        query.append(" WHERE  p.is_active = true and p.start_date<='");
+        query.append(formatter.format(reportingStratDate));
+        query.append("' and ");
+        query.append(" " + ipProgramId
+          + " in (select program_id from project_focuses pf where pf.project_id=p.id and pf.is_active=1)");
+
+
+        break;
+
+
+      case APConstants.ROLE_ADMIN:
+      case APConstants.ROLE_COORDINATING_UNIT:
+      case APConstants.ROLE_EXTERNAL_EVALUATOR:
+
+
+        query.append("SELECT p.id,");
+        query.append("       p.title,");
+        query.append("       p.type,");
+        query.append("       p.summary,");
+        query.append("       p.active_since,");
+        query.append("       p.is_cofinancing,");
+        query.append("       (SELECT Ifnull(Sum(pb.amount), 0)");
+        query.append("        FROM   project_budgets pb");
+        query.append("        WHERE  p.id = pb.project_id");
+        query.append("               AND pb.is_active = true");
+        query
+          .append("               AND pb.budget_type = 1 and pb.`year`=YEAR(p.start_date) )  AS 'total_ccafs_amount',");
+        query.append("       (SELECT Ifnull(Sum(pb2.amount), 0)");
+        query.append("        FROM   project_budgets pb2");
+        query.append("        WHERE  p.id = pb2.project_id");
+        query.append("               AND pb2.is_active = true");
+        query.append(
+          "               AND pb2.budget_type = 2 and pb2.`year`=YEAR(p.start_date) ) AS 'total_bilateral_amount',");
+        query.append("       (SELECT Group_concat(ipp.acronym)");
+        query.append("        FROM   ip_programs ipp");
+        query.append("               INNER JOIN project_focuses pf");
+        query.append("                       ON ipp.id = pf.program_id");
+        query.append("        WHERE  pf.project_id = p.id");
+        query.append("               AND ipp.type_id = 5)     AS 'regions',");
+        query.append("       (SELECT Group_concat(ipp.acronym)");
+        query.append("        FROM   ip_programs ipp");
+        query.append("               INNER JOIN project_focuses pf");
+        query.append("                       ON ipp.id = pf.program_id");
+        query.append("        WHERE  pf.project_id = p.id");
+        query.append("               AND ipp.type_id = 4)     AS 'flagships'");
+        query.append(" ,(select ins.acronym");
+        query.append("    from project_partners pp ");
+        query.append("   inner join institutions ins on pp.institution_id=ins.id ");
+        query.append(
+          "   inner join project_partner_persons ppe on ppe.project_partner_id=pp.id and ppe.is_active=1 and ppe.contact_type='PL' ");
+        query.append(
+          "  where pp.project_id=p.id and pp.is_active=1  ) 'Leader' ,IFNULL((select case is_submited when 1 then 'Submitted' else 'Evaluating' end"
+            + "  from project_evaluation where year=" + year + " and project_id=p.id  and user_id=" + userId
+            + " ),'Pending') 'is_Submited'");
+
+        query.append(" ,IFNULL((select total_score" + "  from project_evaluation where year=" + year
+          + " and project_id=p.id and user_id=" + userId + " ),'N/A') 'Score'");
+
+        query.append(" FROM   projects AS p ");
+        query.append(" WHERE  p.is_active = true and p.start_date<='");
+        query.append(formatter.format(reportingStratDate));
+        query.append("'");
 
         break;
 

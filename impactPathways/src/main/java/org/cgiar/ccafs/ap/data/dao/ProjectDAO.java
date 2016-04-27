@@ -186,9 +186,11 @@ public interface ProjectDAO {
    * @param roleId the role id
    * @param userId the user id
    * @param reportingStratDate the date start reporting
+   * @param ipProgramId the progam id
    * @return a list with Project objects.
    */
-  public List<Map<String, String>> getProjectEvaluationInfo(int year, int roleId, int userId, Date reportingStratDate);
+  public List<Map<String, String>> getProjectEvaluationInfo(int year, int roleId, int userId, Date reportingStratDate,
+    int ipProgramId);
 
   /**
    * this method returns the project id in which the given activity belongs to.
