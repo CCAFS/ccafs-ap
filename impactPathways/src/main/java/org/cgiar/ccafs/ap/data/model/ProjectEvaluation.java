@@ -18,6 +18,7 @@ public class ProjectEvaluation implements java.io.Serializable {
   private String typeEvaluation;
   private long userId;
   private boolean isSubmited;
+  private int year;
   private double rankingOutputs;
   private double rankingOutcomes;
   private double rankingParternshipComunnication;
@@ -39,7 +40,7 @@ public class ProjectEvaluation implements java.io.Serializable {
   public ProjectEvaluation() {
   }
 
-  public ProjectEvaluation(long projectId, String typeEvaluation, long userId, boolean isSubmited,
+  public ProjectEvaluation(long projectId, String typeEvaluation, long userId, boolean isSubmited, int year,
     double rankingOutputs, double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam,
     double rankingQuality, String communicationProducts, String projectHighlights, String outcomeCaseStudies,
     String generalComments, String recommendations, String anyActionRequeried, double totalScore, boolean isActive,
@@ -48,6 +49,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.typeEvaluation = typeEvaluation;
     this.userId = userId;
     this.isSubmited = isSubmited;
+    this.year = year;
     this.rankingOutputs = rankingOutputs;
     this.rankingOutcomes = rankingOutcomes;
     this.rankingParternshipComunnication = rankingParternshipComunnication;
@@ -166,6 +168,14 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public boolean isIsSubmited() {
     return this.isSubmited;
+  }
+  
+    public int getYear() {
+    return this.year;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
   public void setActiveSince(Date activeSince) {

@@ -32,14 +32,7 @@
       <div style="display:none">
         [@projectList.evaluationProjects projects=projects canValidate=true canEdit=true namespace="/${currentSection}/projects" /]
       </div>
-    [#else]
-      <div class="borderBox center">
-        [#if canEdit]
-          <p>[@s.text name="planning.projects.empty"][@s.param][@s.url namespace="/pre-planning" action='projects'/][/@s.param][/@s.text]</p>
-        [#else]
-          <p>[@s.text name="planning.projects.empty.PL" /]</p>
-        [/#if]
-      </div>
+    
     [/#if]    
     <div class="clearfix"></div> 
   </article>
