@@ -25,13 +25,37 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ProjectEvaluationMySQLDAO.class)
 public interface ProjectEvaluationDAO {
 
-
+  /**
+   * Execute the query and get the project information by the project and user Id's
+   * 
+   * @param projectId - is the ID of the project.
+   * @param userId - is the ID of the user
+   * @return
+   */
   public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId);
 
+  /**
+   * Execute the query and get all evaluations of specific project.
+   * 
+   * @param projectId - is the ID of the project to Query
+   * @return
+   */
   public List<ProjectEvaluation> getEvaluationsProject(int projectId);
 
+  /**
+   * Execute the query and get only submit evaluations of the project.
+   * 
+   * @param projectId - is the ID of the project.
+   * @return
+   */
   public List<ProjectEvaluation> getSubmitedEvaluations(int projectId);
 
+  /**
+   * Execute the insert sentence to save the Project Evaluation information to the data base.
+   * 
+   * @param projectEvaluation - the project evaluation to save.
+   * @return
+   */
   public int save(ProjectEvaluation projectEvaluation);
 }
 
