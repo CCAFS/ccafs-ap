@@ -85,6 +85,7 @@ public class Project {
   private String leadInstitutionAcronym;
   private String statusEvaluation;
   private String totalScoreEvaluation;
+  private String yearEvaluation;
 
 
   public Project() {
@@ -190,6 +191,7 @@ public class Project {
     return false;
   }
 
+
   /**
    * Equals based on the the project id.
    */
@@ -201,6 +203,7 @@ public class Project {
     }
     return super.equals(obj);
   }
+
 
   public List<Activity> getActivities() {
     return activities;
@@ -348,7 +351,6 @@ public class Project {
     return null;
   }
 
-
   public String getComposedName() {
     return "P" + this.id + " - " + this.title;
   }
@@ -383,6 +385,7 @@ public class Project {
   public long getCreated() {
     return created;
   }
+
 
   public Date getCreationDate() {
     return new Date(created);
@@ -562,7 +565,6 @@ public class Project {
     return linkedProjects;
   }
 
-
   public List<CRPContribution> getListCRPContributions() {
     return listCRPContributions;
   }
@@ -570,6 +572,7 @@ public class Project {
   public List<Location> getLocations() {
     return locations;
   }
+
 
   public List<ProjectNextUser> getNextUsers() {
     return nextUsers;
@@ -579,11 +582,9 @@ public class Project {
     return otherContributions;
   }
 
-
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
   }
-
 
   /**
    * This method returns the output (MOG) represented with the given identifier.
@@ -661,6 +662,7 @@ public class Project {
     return owner;
   }
 
+
   /**
    * This method returns the list of partners that have a PPA institution associated.
    * 
@@ -678,6 +680,7 @@ public class Project {
     }
     return null;
   }
+
 
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
@@ -704,7 +707,6 @@ public class Project {
     }
     return regionAcronym.toString();
   }
-
 
   /**
    * This method returns the project identifier whether using composed codification (that is with the organization IATI
@@ -778,6 +780,7 @@ public class Project {
     return startDate;
   }
 
+
   public String getStatusEvaluation() {
     return statusEvaluation;
   }
@@ -816,7 +819,6 @@ public class Project {
     return title;
   }
 
-
   /**
    * This method gets the total bilateral budget for the current project.
    * 
@@ -846,6 +848,7 @@ public class Project {
     }
     return totalBudget;
   }
+
 
   /**
    * This method gets the total W1/W2 budget for this project.
@@ -879,6 +882,10 @@ public class Project {
    */
   public String getWorkplanURL() {
     return workplanURL;
+  }
+
+  public String getYearEvaluation() {
+    return yearEvaluation;
   }
 
   @Override
@@ -977,10 +984,10 @@ public class Project {
     return workplanRequired;
   }
 
-
   public void setActivities(List<Activity> activities) {
     this.activities = activities;
   }
+
 
   public void setAnnualReportDonor(String annualReportDonor) {
     this.annualReportDonor = annualReportDonor;
@@ -998,7 +1005,6 @@ public class Project {
     this.bilateralContractRequired = bilateralContractRequired;
   }
 
-
   public void setBudgets(List<Budget> budgets) {
     this.budgets = budgets;
   }
@@ -1007,6 +1013,7 @@ public class Project {
   public void setCaseStudies(List<CasesStudies> caseStudies) {
     this.caseStudies = caseStudies;
   }
+
 
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
@@ -1019,10 +1026,10 @@ public class Project {
     this.componentLessons = componentLessons;
   }
 
-
   public void setCoordinator(ProjectPartner coordinator) {
     this.coordinator = coordinator;
   }
+
 
   public void setCreated(long created) {
     this.created = created;
@@ -1072,10 +1079,10 @@ public class Project {
     this.leadInstitutionAcronym = leadInstitutionAcronym;
   }
 
-
   public void setLeverages(List<ProjectLeverage> leverages) {
     this.leverages = leverages;
   }
+
 
   public void setLiaisonInstitution(LiaisonInstitution liaisonInstitution) {
     this.liaisonInstitution = liaisonInstitution;
@@ -1101,10 +1108,10 @@ public class Project {
     this.otherContributions = otherContributions;
   }
 
-
   public void setOutcomes(Map<String, ProjectOutcome> outcomes) {
     this.outcomes = outcomes;
   }
+
 
   public void setOutputs(List<IPElement> outputs) {
     this.outputs = outputs;
@@ -1134,7 +1141,6 @@ public class Project {
     this.regions = regions;
   }
 
-
   public void setReporting(String cycle) {
     if (cycle.equals(APConstants.REPORTING_SECTION)) {
       this.isReporting = true;
@@ -1143,6 +1149,7 @@ public class Project {
     }
 
   }
+
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
@@ -1163,7 +1170,6 @@ public class Project {
   public void setTitle(String title) {
     this.title = title;
   }
-
 
   public void setTotalScoreEvaluation(String totalScoreEvaluation) {
     this.totalScoreEvaluation = totalScoreEvaluation;
@@ -1190,6 +1196,11 @@ public class Project {
    */
   public void setWorkplanURL(String workplanURL) {
     this.workplanURL = workplanURL;
+  }
+
+
+  public void setYearEvaluation(String yearEvaluation) {
+    this.yearEvaluation = yearEvaluation;
   }
 
 

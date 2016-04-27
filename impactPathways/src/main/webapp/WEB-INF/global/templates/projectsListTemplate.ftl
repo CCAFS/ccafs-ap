@@ -175,7 +175,7 @@
             [#if project.flagshipsAcronym?has_content]${project.flagshipsAcronym}[#else][@s.text name="preplanning.projects.none" /][/#if]
           </td>
           [#-- Year --]
-          <td>2015</td>
+          <td>${project.yearEvaluation}</td>
           [#-- Status --]
           <td>${project.statusEvaluation}</td>
           [#-- Total Score --]

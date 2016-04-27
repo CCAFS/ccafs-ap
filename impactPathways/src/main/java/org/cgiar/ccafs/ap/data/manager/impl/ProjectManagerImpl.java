@@ -379,6 +379,7 @@ public class ProjectManagerImpl implements ProjectManager {
       project.setType(projectData.get("type"));
       project.setStatusEvaluation(projectData.get("Evaluating"));
       project.setTotalScoreEvaluation(projectData.get("Score"));
+      project.setYearEvaluation(config.getReportingCurrentYear() + "");
 
       project.setType(projectData.get("type"));
       project.setSummary(projectData.get("summary"));
