@@ -18,6 +18,7 @@ package org.cgiar.ccafs.ap.data.manager.impl;
 import org.cgiar.ccafs.ap.data.dao.ProjectEvaluationDAO;
 import org.cgiar.ccafs.ap.data.manager.ProjectEvalutionManager;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -57,8 +58,14 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
 
 
   @Override
-  public int saveProjectEvalution(ProjectEvaluation projectEvaluation) {
+  public int saveProjectEvalution(ProjectEvaluation projectEvaluation, User user, String justification) {
 
+    if (projectEvaluation.getId() == null) {
+      projectEvaluation.setCreatedBy(Long.parseLong(user.getId() + ""));
+    }
+    projectEvaluation.setModifiedBy(Long.parseLong(user.getId() + ""));
+    projectEvaluation.setModificationJustification(justification);
+    projectEvaluation.setIsActive(true);
     return dao.save(projectEvaluation);
   }
 

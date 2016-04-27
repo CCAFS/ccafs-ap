@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 26, 2016 12:00:17 PM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Apr 26, 2016 4:09:11 PM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="org.cgiar.ccafs.ap.data.model.ProjectEvaluation" table="project_evaluation" catalog="ccafspr_ip" optimistic-lock="version">
         <id name="id" type="java.lang.Long">
@@ -55,6 +55,21 @@
         </property>
         <property name="totalScore" type="double">
             <column name="total_score" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="isActive" type="boolean">
+            <column name="is_active" not-null="true" />
+        </property>
+        <property name="activeSince" type="timestamp">
+            <column name="active_since" length="19" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="created_by" not-null="true" />
+        </property>
+        <property name="modifiedBy" type="long">
+            <column name="modified_by" not-null="true" />
+        </property>
+        <property name="modificationJustification" type="string">
+            <column name="modification_justification" length="65535" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

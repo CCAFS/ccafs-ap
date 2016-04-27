@@ -15,6 +15,7 @@ package org.cgiar.ccafs.ap.data.manager;
 
 import org.cgiar.ccafs.ap.data.manager.impl.ProjectEvaluationManagerImpl;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
+import org.cgiar.ccafs.ap.data.model.User;
 
 import java.util.List;
 
@@ -56,6 +57,6 @@ public interface ProjectEvalutionManager {
   /**
    * This method saves the information of the given ProjectEvalution
    */
-  public int saveProjectEvalution(ProjectEvaluation projectEvaluation);
+  public int saveProjectEvalution(ProjectEvaluation projectEvaluation, User user, String justification);
 
 }
