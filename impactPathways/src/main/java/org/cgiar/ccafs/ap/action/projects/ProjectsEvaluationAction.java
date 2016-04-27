@@ -67,7 +67,7 @@ public class ProjectsEvaluationAction extends BaseAction {
 
 
   @Override
-  public void prepare() throws Exception {
+  public void prepare() {
     projects = new ArrayList<>();
 
     Set<Project> myProjects = new HashSet<Project>();
@@ -82,7 +82,13 @@ public class ProjectsEvaluationAction extends BaseAction {
         case APConstants.ROLE_PROJECT_LEADER:
         case APConstants.ROLE_COORDINATING_UNIT:
         case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
-          int liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
+          int liaisonInstitutionID = 0;
+
+          try {
+            liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
+          } catch (Exception e) {
+            liaisonInstitutionID = 2;
+          }
           LiaisonInstitution currentLiaisonInstitution =
             liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
           if (currentLiaisonInstitution.getIpProgram() == null) {
