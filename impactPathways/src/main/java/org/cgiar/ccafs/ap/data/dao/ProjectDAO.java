@@ -175,6 +175,21 @@ public interface ProjectDAO {
    */
   public Map<String, String> getProjectCoordinator(int projectID);
 
+
+  /**
+   * This method returns the list of the projects evaluation
+   * but only with the basic information:
+   * ID, title, the regions and flagships to which the project contributes
+   * and the total budget, is_submited and total score
+   * 
+   * @param year the evaluating year
+   * @param roleId the role id
+   * @param userId the user id
+   * @param reportingStratDate the date start reporting
+   * @return a list with Project objects.
+   */
+  public List<Map<String, String>> getProjectEvaluationInfo(int year, int roleId, int userId, Date reportingStratDate);
+
   /**
    * this method returns the project id in which the given activity belongs to.
    * 

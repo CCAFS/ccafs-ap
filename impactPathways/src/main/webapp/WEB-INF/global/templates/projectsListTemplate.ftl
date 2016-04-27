@@ -177,9 +177,9 @@
           [#-- Year --]
           <td>2015</td>
           [#-- Status --]
-          <td>Submitted</td>
+          <td>${project.statusEvaluation}</td>
           [#-- Total Score --]
-          <td><span class="totalScore">3.5</span></td>
+          <td><span class="totalScore">${project.totalScoreEvaluation}</span></td>
         </tr>  
       [/#list]
     </tbody>

@@ -16,6 +16,8 @@ package org.cgiar.ccafs.ap.action.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
+import org.cgiar.ccafs.security.data.model.UserRole;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
@@ -36,17 +38,17 @@ public class ProjectsEvaluationAction extends BaseAction {
 
   // Manager
   private ProjectManager projectManager;
-
+  private UserRoleManagerImpl userRoleManager;
   // Model for the back-end
   private List<Project> projects;
   private List<Project> allProjects;
 
 
   @Inject
-  public ProjectsEvaluationAction(APConfig config, ProjectManager projectManager) {
+  public ProjectsEvaluationAction(APConfig config, ProjectManager projectManager, UserRoleManagerImpl userRoleManager) {
     super(config);
     this.projectManager = projectManager;
-
+    this.userRoleManager = userRoleManager;
   }
 
 
@@ -65,14 +67,12 @@ public class ProjectsEvaluationAction extends BaseAction {
     projects = new ArrayList<>();
     String section = this.getCycleName();
 
-    if (securityContext.isAdmin()) {
-      projects = projectManager.getAllProjectsBasicInfo(section);
-      allProjects = new ArrayList<>();
-    } else {
-      allProjects = projectManager.getAllProjectsBasicInfo(section);
-      List<Integer> editableProjectsIds = projectManager.getProjectIdsEditables(this.getCurrentUser().getId());
 
+    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
+    for (UserRole userRole : roles) {
 
+      projects = projectManager.getProjectEvaluationInfo(this.getCurrentReportingYear(), userRole.getId(),
+        this.getCurrentUser().getId());
     }
 
 

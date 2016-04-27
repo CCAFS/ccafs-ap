@@ -81,6 +81,7 @@ public interface ProjectManager {
    */
   public List<Project> getAllProjectsBasicInfo(String section);
 
+
   /**
    * This method returns the bilateral projects that contributes with the flagship and the regions received by
    * parameter.
@@ -105,7 +106,6 @@ public interface ProjectManager {
    */
   public List<Project> getBilateralProjectsLeaders();
 
-
   /**
    * This method returns the core projects that contributes with the flagship and the regions received by parameter.
    * If the parameters are '-1' they are not used to filter the list.
@@ -123,6 +123,7 @@ public interface ProjectManager {
    * @return a list of projects that only contains the id and title.
    */
   public List<Project> getCoreProjectsLeaders(int flagshipID, int regionID);
+
 
   /**
    * This method returns the list of project identifiers where the given user is assigned as Project Leader.
@@ -149,6 +150,19 @@ public interface ProjectManager {
    * @return a list with Project objects.
    */
   public Project getProjectBasicInfo(int projectID);
+
+  /**
+   * This method returns the list of the projects evaluation
+   * but only with the basic information:
+   * ID, title, the regions and flagships to which the project contributes
+   * and the total budget, is_submited and total score
+   * 
+   * @param year the evaluating year
+   * @param roleId the role id
+   * @param userId the user id
+   * @return a list with Project objects.
+   */
+  public List<Project> getProjectEvaluationInfo(int year, int roleId, int userId);
 
   /**
    * This method returns the Project in which the activity belongs to.

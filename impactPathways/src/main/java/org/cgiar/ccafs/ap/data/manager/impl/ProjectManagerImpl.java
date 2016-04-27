@@ -362,6 +362,82 @@ public class ProjectManagerImpl implements ProjectManager {
   }
 
   @Override
+  public List<Project> getProjectEvaluationInfo(int year, int roleId, int userId) {
+
+
+    List<Map<String, String>> projectDataList =
+      projectDAO.getProjectEvaluationInfo(year, roleId, userId, config.getCurrentReportingStartDate());
+    List<Project> projectsList = new ArrayList<>();
+    Project project;
+    for (Map<String, String> projectData : projectDataList) {
+
+      project = new Project(Integer.parseInt(projectData.get("id")));
+
+      project.setTitle(projectData.get("title"));
+      project.setCofinancing(Boolean.parseBoolean(projectData.get("is_cofinancing")));
+
+      project.setType(projectData.get("type"));
+      project.setStatusEvaluation(projectData.get("Evaluating"));
+      project.setTotalScoreEvaluation(projectData.get("Score"));
+
+      project.setType(projectData.get("type"));
+      project.setSummary(projectData.get("summary"));
+      project.setLeadInstitutionAcronym(projectData.get("leader"));
+      List<Budget> budgets = new ArrayList<>(2);
+
+      if (projectData.get("total_ccafs_amount") != null) {
+        Budget ccafsBudget = new Budget();
+        ccafsBudget.setAmount(Double.parseDouble(projectData.get("total_ccafs_amount")));
+        ccafsBudget.setType(BudgetType.W1_W2);
+        budgets.add(ccafsBudget);
+      }
+
+      if (projectData.get("total_bilateral_amount") != null) {
+        Budget ccafsBudget = new Budget();
+        ccafsBudget.setAmount(Double.parseDouble(projectData.get("total_bilateral_amount")));
+        ccafsBudget.setType(BudgetType.W3_BILATERAL);
+        budgets.add(ccafsBudget);
+      }
+
+      project.setBudgets(budgets);
+      project.setCreated(Long.parseLong(projectData.get("created")));
+
+      // Getting Project Focuses - Regions
+      if (projectData.get("regions") != null) {
+        String[] regionsAcronyms = projectData.get("regions").split(",");
+        List<IPProgram> regions = new ArrayList<>();
+        IPProgram region;
+        for (String regionAcronym : regionsAcronyms) {
+          region = new IPProgram();
+          region.setAcronym(regionAcronym);
+          regions.add(region);
+        }
+        project.setRegions(regions);
+      }
+
+      // Getting Project Focuses - Flagships
+      if (projectData.get("flagships") != null) {
+        String[] flagshipsAcronyms = projectData.get("flagships").split(",");
+        List<IPProgram> flagships = new ArrayList<>();
+        IPProgram flagship;
+        for (String flagshipAcronym : flagshipsAcronyms) {
+          flagship = new IPProgram();
+          flagship.setAcronym(flagshipAcronym);
+          flagships.add(flagship);
+        }
+        project.setFlagships(flagships);
+      }
+
+      // Getting all the project submissions.
+      project.setSubmissions(submissionManager.getProjectSubmissions(project));
+
+      // Adding project to the list
+      projectsList.add(project);
+    }
+    return projectsList;
+  }
+
+  @Override
   public Project getProjectFromActivityId(int activityID) {
     int projectID = projectDAO.getProjectIdFromActivityId(activityID);
     if (projectID != -1) {
