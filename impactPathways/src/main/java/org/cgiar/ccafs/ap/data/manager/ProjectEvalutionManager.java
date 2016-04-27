@@ -46,8 +46,13 @@ public interface ProjectEvalutionManager {
    */
   public List<ProjectEvaluation> getEvaluationsProject(int projectId);
 
-  /**
+  /***
    * This method saves the information of the given ProjectEvalution
+   * 
+   * @param projectEvaluation the project evaluation to save
+   * @param user the user who edits the evaluation
+   * @justification the justification for save
+   * @return the id of the projectEvaluation saved or updated
    */
   public int saveProjectEvalution(ProjectEvaluation projectEvaluation, User user, String justification);
 }

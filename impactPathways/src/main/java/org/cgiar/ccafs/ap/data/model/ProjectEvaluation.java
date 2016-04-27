@@ -1,5 +1,5 @@
 package org.cgiar.ccafs.ap.data.model;
-// Generated Apr 26, 2016 4:09:11 PM by Hibernate Tools 4.3.1.Final
+// Generated Apr 27, 2016 9:11:18 AM by Hibernate Tools 4.3.1.Final
 
 
 import java.util.Date;
@@ -15,6 +15,7 @@ public class ProjectEvaluation implements java.io.Serializable {
   private String typeEvaluation;
   private long userId;
   private boolean isSubmited;
+  private int year;
   private double rankingOutputs;
   private double rankingOutcomes;
   private double rankingParternshipComunnication;
@@ -36,7 +37,7 @@ public class ProjectEvaluation implements java.io.Serializable {
   public ProjectEvaluation() {
   }
 
-  public ProjectEvaluation(long projectId, String typeEvaluation, long userId, boolean isSubmited,
+  public ProjectEvaluation(long projectId, String typeEvaluation, long userId, boolean isSubmited, int year,
     double rankingOutputs, double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam,
     double rankingQuality, String communicationProducts, String projectHighlights, String outcomeCaseStudies,
     String generalComments, String recommendations, String anyActionRequeried, double totalScore, boolean isActive,
@@ -45,6 +46,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.typeEvaluation = typeEvaluation;
     this.userId = userId;
     this.isSubmited = isSubmited;
+    this.year = year;
     this.rankingOutputs = rankingOutputs;
     this.rankingOutcomes = rankingOutcomes;
     this.rankingParternshipComunnication = rankingParternshipComunnication;
@@ -102,6 +104,14 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setIsSubmited(boolean isSubmited) {
     this.isSubmited = isSubmited;
+  }
+
+  public int getYear() {
+    return this.year;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
   public double getRankingOutputs() {
