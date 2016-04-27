@@ -46,6 +46,17 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
   }
 
   @Override
+  public double getTraficLightScore(int projectId) {
+    final List<ProjectEvaluation> list = dao.getSubmitedEvaluations(projectId);
+    double avgScore = 0;
+    for (final ProjectEvaluation projectEvaluation : list) {
+      avgScore = avgScore + projectEvaluation.getTotalScore();
+    }
+    return avgScore / list.size();
+  }
+
+
+  @Override
   public int saveProjectEvalution(ProjectEvaluation projectEvaluation) {
 
     return dao.save(projectEvaluation);

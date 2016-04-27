@@ -26,7 +26,7 @@ import com.google.inject.Inject;
 public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
 
 
-  private StandardDAO dao;
+  private final StandardDAO dao;
 
   @Inject
   public ProjectEvaluationMySQLDAO(StandardDAO dao) {
@@ -35,9 +35,9 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
 
   @Override
   public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId) {
-    String sql =
+    final String sql =
       "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId + " and user_id=" + userId;
-    List<ProjectEvaluation> list = dao.findAll(sql);
+    final List<ProjectEvaluation> list = dao.findAll(sql);
     if (list.size() > 0) {
       return list.get(0);
     }
@@ -46,8 +46,16 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
 
   @Override
   public List<ProjectEvaluation> getEvaluationsProject(int projectId) {
-    String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId;
-    List<ProjectEvaluation> list = dao.findAll(sql);
+    final String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId;
+    final List<ProjectEvaluation> list = dao.findAll(sql);
+    return list;
+  }
+
+  @Override
+  public List<ProjectEvaluation> getSubmitedEvaluations(int projectId) {
+    final String sql =
+      "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId + " and is_submited=(1)";
+    final List<ProjectEvaluation> list = dao.findAll(sql);
     return list;
   }
 

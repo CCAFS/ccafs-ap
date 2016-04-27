@@ -55,6 +55,19 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.totalScore = totalScore;
   }
 
+  /**
+   * calculate the weighted average of the questions in the evaluation.
+   * 
+   * @return the evaluation total score
+   */
+  public double calculateTotalScore() {
+    return ((this.rankingOutcomes * EvaluationValueQuestions.RANKING_OUTCOMES.getValue())
+      + (this.rankingOutputs * EvaluationValueQuestions.RANKING_OUTPUTS.getValue())
+      + (this.rankingParternshipComunnication * EvaluationValueQuestions.RANKING_PARTERNSHIP.getValue())
+      + (this.rankingResponseTeam * EvaluationValueQuestions.RANKING_RESPONSE_TEAM.getValue())
+      + (this.rankingQuality * EvaluationValueQuestions.RANKING_QUALITY.getValue()));
+  }
+
   public String getAnyActionRequeried() {
     return this.anyActionRequeried;
   }

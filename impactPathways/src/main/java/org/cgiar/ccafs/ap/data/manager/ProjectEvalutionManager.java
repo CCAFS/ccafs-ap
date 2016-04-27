@@ -46,7 +46,16 @@ public interface ProjectEvalutionManager {
   public List<ProjectEvaluation> getEvaluationsProject(int projectId);
 
   /**
+   * this method calculate the total score average of the submit evaluations in the project
+   * 
+   * @param projectId - is the Id of the project
+   * @return the general total score of the project
+   */
+  public double getTraficLightScore(int projectId);
+
+  /**
    * This method saves the information of the given ProjectEvalution
    */
   public int saveProjectEvalution(ProjectEvaluation projectEvaluation);
+
 }

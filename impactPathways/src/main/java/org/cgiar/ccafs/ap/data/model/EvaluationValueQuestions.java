@@ -12,25 +12,34 @@
  * along with CCAFS P&R. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************/
 
-
-package org.cgiar.ccafs.ap.data.dao;
-
-import org.cgiar.ccafs.ap.data.dao.mysqlhiberate.ProjectEvaluationMySQLDAO;
-import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
-
-import java.util.List;
-
-import com.google.inject.ImplementedBy;
-
-@ImplementedBy(ProjectEvaluationMySQLDAO.class)
-public interface ProjectEvaluationDAO {
+package org.cgiar.ccafs.ap.data.model;
 
 
-  public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId);
+/**
+ * This enum contains the the weight that contains every questions in the project evaluation.
+ * 
+ * @author Hermes Jimenez - CIAT/CCAFS
+ */
+public enum EvaluationValueQuestions {
 
-  public List<ProjectEvaluation> getEvaluationsProject(int projectId);
+  RANKING_OUTPUTS(0.20), RANKING_OUTCOMES(0.35), RANKING_PARTERNSHIP(0.15), RANKING_RESPONSE_TEAM(0.20),
+  RANKING_QUALITY(0.15);
 
-  public List<ProjectEvaluation> getSubmitedEvaluations(int projectId);
+  private double value;
 
-  public int save(ProjectEvaluation projectEvaluation);
+  private EvaluationValueQuestions(double value) {
+    this.value = value;
+  }
+
+
+  public double getValue() {
+    return value;
+  }
+
+
+  public void setValue(double value) {
+    this.value = value;
+  }
+
+
 }
