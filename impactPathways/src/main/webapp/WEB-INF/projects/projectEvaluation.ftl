@@ -1,11 +1,25 @@
 [#ftl]
 [#assign title = "Project Evaluation" /]
 [#assign globalLibs = ["jquery", "noty", "autoSave", "select2"] /]
-[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectDescription.js"] /]
+[#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectEvaluation.js"] /]
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentCycleSection = "projectsEvaluation" /]
 [#assign currentStage = "evaluation" /]
 [#assign currentSubStage = "evaluation" /]
+
+[#-- To Delete --]
+[#function rand min max]
+  [#local now = .now?long?c /]
+  [#local randomNum = _rand +
+    ("0." + now?substring(now?length-1) + now?substring(now?length-2))?number /]
+  [#if (randomNum > 1)]
+    [#assign _rand = randomNum % 1 /]
+  [#else]
+    [#assign _rand = randomNum /]
+  [/#if]
+  [#return (min + ((max - min) * _rand)) /]
+[/#function]
+[#assign _rand = 0.36 /]
 
 [#assign breadCrumb = [
   {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
@@ -20,96 +34,96 @@
     
 <section class="content">
   <div class="helpMessage">
-    <img src="${baseUrl}/images/global/icon-help.png" /><p> [@s.text name="${currentSection}.projectDescription.help" /] </p>
-  </div>  
+    <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="${currentSection}.projectEvaluation.help" /]</p>
+  </div>
   
-  [@s.form action="description" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
+  [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
   <article class="fullBlock" id="mainInformation">
-    [#include "/WEB-INF/projects/dataSheet.ftl" /]
-    [#-- Informing user that he/she doesn't have enough privileges to edit. See GrantProjectPlanningAccessInterceptor--]
-    [#if submission?has_content]
-      <p class="projectSubmitted">[@s.text name="submit.projectSubmitted" ][@s.param]${(submission.dateTime?date)?string.full}[/@s.param][/@s.text]</p>
-    [#elseif !canEdit ]
-      <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]</p>
-    [/#if] 
-    <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>  
-    <div id="projectDescription" class="borderBox">
-      [#-- Button for edit this section --]
-      [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-      [#else]
-        [#if canEdit && !newProject]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
-        [/#if]
-      [/#if] 
+    <div id="" class="borderBox">
+      [#include "/WEB-INF/projects/dataSheet.ftl" /]
+      <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
       <fieldset class="fullBlock">
-        [#-- Project Title --]
         <div class="fullBlock">
-          [@customForm.textArea name="project.title" i18nkey="planning.projectDescription.projectTitle" required=true className="project-title" editable=editable && action.hasProjectPermission("title",project.id)/]
-        </div>
-        <div class="fullBlock">
-          [#-- Project Program Creator --]
-          <div class="halfPartBlock">
-            [@customForm.select name="project.liaisonInstitution" label="" disabled=( !editable || !action.hasProjectPermission("managementLiaison",project.id) ) i18nkey="planning.projectDescription.programCreator" listName="liaisonInstitutions" keyFieldName="id"  displayFieldName="name" required=true editable=( editable && action.hasProjectPermission("managementLiaison",project.id) ) /]
-          </div>
-          [#--  Project Owner Contact Person --]
-          <div class="halfPartBlock">
-            [@customForm.select name="project.owner" label="" disabled=( !editable || !action.hasProjectPermission("managementLiaison",project.id) ) i18nkey="preplanning.projectDescription.projectownercontactperson" listName="allOwners" keyFieldName="id"  displayFieldName="composedOwnerName" required=true editable=( editable && action.hasProjectPermission("managementLiaison",project.id) ) /]
-          </div> 
-        </div>  
-        <div class="fullBlock">  
-          [#-- Start Date --]
-          <div class="halfPartBlock">
-            [@customForm.input name="project.startDate" type="text" disabled=( !editable || !action.hasProjectPermission("startDate",project.id) ) i18nkey="preplanning.projectDescription.startDate" required=true editable=( editable && action.hasProjectPermission("startDate",project.id) ) /]
-          </div> 
-          [#-- End Date --]
-          <div class="halfPartBlock">
-            [@customForm.input name="project.endDate" type="text" disabled=( !editable || !action.hasProjectPermission("endDate",project.id) ) i18nkey="preplanning.projectDescription.endDate" required=true editable=( editable && action.hasProjectPermission("endDate",project.id) ) /]
+          <div class="dottedBox">
+            [#-- Project Title --]
+            <div class="select"><h6>[@s.text name="planning.projectDescription.projectTitle" /]:</h6><p> ${(project.title)!}</p></div>
+            <br />
+            <p class="control-summaryBox">[View Summary]</p>
+            [#-- Project Summary --]
+            <div id="summaryBox" class="fullBlock" style="display:none">
+              <br /><div class="select"><p>${(project.summary)!}</p></div>
+            </div>
           </div>
         </div>
         
-        [#-- Project Summary --]
         <div class="fullBlock">
-          [@customForm.textArea name="project.summary" i18nkey="preplanning.projectDescription.projectSummary" required=!project.bilateralProject className="project-description" editable=editable && action.hasProjectPermission("summary",project.id) /]
+          <div class="thirdPartBlock">
+            <div class="dottedBox">
+              [#-- Start Date --]
+              <div class="thirdPartBlock select"><h6>[@s.text name="preplanning.projectDescription.startDate" /]:</h6><p> ${(project.startDate?date)!}</p></div>
+              [#-- End Date --]
+              <div class=" thirdPartBlock select"><h6>[@s.text name="preplanning.projectDescription.endDate" /]:</h6><p> ${(project.endDate?date)!}</p></div>
+            </div>
+          </div>
+          [#-- Management Liaison --]
+          <div class="thirdPartBlock">
+            <div class="dottedBox select"><h6>Management Liaison:</h6><p> ${(project.liaisonInstitution.name)!} -  ${project.owner.composedOwnerName}</p></div>  
+          </div>
+          [#-- Flagships / Regions --] 
+          <div class="thirdPartBlock">
+            <div class="dottedBox">
+              <h6>[@s.text name="preplanning.projectDescription.flagships" /] / [@s.text name="preplanning.projectDescription.regions" /]:</h6>
+              <div class="checkboxGroup">
+                [#if project.flagships?has_content][#list project.flagships as element]<p class="focus">${element.acronym}</p>[/#list][/#if] 
+                [#if project.regions?has_content][#list project.regions as element]<p class="focus">${element.acronym}</p>[/#list][/#if]
+                <div class="clearfix"></div>
+              </div>
+            </div>
+             
+          </div> 
         </div>
-        
-        [#--  Regions/global and Flagships that the project is working on --]
-        <h6>[@customForm.text name="preplanning.projectDescription.projectWorking" readText=!editable /]:[#if !project.bilateralProject && editable ]<span class="red">*</span>[/#if] </h6> 
-        <div id="projectWorking" class="fullBlock clearfix">
-          [#-- Flagships --] 
-          <div id="projectFlagshipsBlock" class="grid_5">
-            <h6>[@s.text name="preplanning.projectDescription.flagships" /]</h6>
-            <div class="checkboxGroup">  
-              [#if project.flagships?has_content]
-                [#list project.flagships as element]
-                 <p class="checked">${element.composedName}</p>
-                [/#list]
-              [#else]
-                [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if]
-              [/#if]
+        <div class="fullPartBlock">
+          [#-- Project Leader --]
+          <div class="halfPartBlock">
+            <div class="dottedBox select"><h6>Project Leader:</h6><p> {Project Leader Name} </p></div>
+          </div>
+          
+          <div class="halfPartBlock">
+            <div class="dottedBox">
+              <div class="halfPartBlock"><div class="select"><h6>W1/W2 Budget:</h6><p> {US$ 0.00} </p></div>  </div>
+              <div class="halfPartBlock"><div class="select"><h6>W3/Bilateral Budget:</h6><p> {US$ 0.00} </p></div>  </div>
             </div>
-          </div> 
-          [#-- Regions --]
-          <div id="projectRegionsBlock" class="grid_4">
-            <h6>[@s.text name="preplanning.projectDescription.regions" /]</h6>
-            <div class="checkboxGroup">
-              [#if project.regions?has_content]
-                [#list project.regions as element]
-                  <p class="checked">${element.composedName}</p>
-                [/#list]
-              [#else]
-                [#if !project.bilateralProject]<span class="fieldError">[@s.text name="form.values.required" /]</span>[/#if]
-              [/#if]
-            </div>
-          </div> 
-        </div> 
+          </div>
+        </div>
       </fieldset>
+      
     </div> 
     
     [#-- Project Evaluations --]
-    <h1 class="contentTitle">Project Evaluations</h1>  
     <div id="projectDescription" class="borderBox">
+      <h1 class="contentTitle">Project Evaluations</h1>  
+      [#list 1..5 as evaluation]
+        <div class="simpleBox">
+          <table class="evaluationTable">
+          	<tr>
+          		<td class="statusCol">{status}</td>
+          		<td class="rolCol">{rolEvaluation}</td>
+          		<td class="personCol">{person}</td>
+          		<td class="totalScoreCol"><p class="totalScore">${rand(1, 5)?string["0.##"]}</p></td>
+          		<td class="detailCol center"><p class="control-evaluation_${evaluation_index}">[View Detailed]</p></td>
+          	</tr>
+          </table> 
+          <div id="evaluation_${evaluation_index}" style="display:none">
+            Evaluation Details #${evaluation_index}
+          </div>
+        </div>
+      [/#list] 
+    </div>
     
+    [#-- My Evaluation --]
+    <div id="projectDescription" class="borderBox">
+      <h1 class="contentTitle">My Evaluation</h1>  
+       
     </div>
     
     [#-- Project identifier --]

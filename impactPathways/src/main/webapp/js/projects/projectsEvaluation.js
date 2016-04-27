@@ -1,5 +1,20 @@
-var dialogOptions = {};
-$(document).ready(function() {
+$(document).ready(init);
+
+function init() {
+  initializeDataTable();
+  $('.loadingBlock').hide().next().fadeIn(500);
+  setScoresColor();
+
+  attachEvents();
+}
+
+function attachEvents() {
+  $('table.evaluationProjects').on('draw.dt', function() {
+    setScoresColor();
+  });
+}
+
+function initializeDataTable() {
   $('table.evaluationProjects').dataTable({
       "bPaginate": true, // This option enable the table pagination
       "bLengthChange": true, // This option disables the select table size option
@@ -18,7 +33,7 @@ $(document).ready(function() {
           {
               bSortable: false,
               aTargets: [
-                  -1,
+
               ]
           }, {
               sType: "natural",
@@ -28,50 +43,23 @@ $(document).ready(function() {
           }
       ]
   });
-  $('table.evaluationProjects').on('draw.dt', function() {
-    $("a.removeProject").on("click", removeProject);
-  });
 
-  $('.loadingBlock').hide().next().fadeIn(500);
-
-  // addJustificationPopUp();
-});
-
-// Justification popup global vars
-var dialog, projectId;
-var $dialogContent;
-
-function addJustificationPopUp() {
-  $dialogContent = $("#dialog-justification");
-  // Initializing justification dialog
-  dialog = $dialogContent.dialog({
-      autoOpen: false,
-      height: 200,
-      width: 400,
-      modal: true,
-      buttons: {
-          Cancel: function() {
-            $(this).dialog("close");
-          },
-          Remove: function() {
-            var $justification = $dialogContent.find("#justification");
-            if($justification.val().length > 0) {
-              $justification.removeClass('fieldError');
-              $dialogContent.find("form").submit();
-            } else {
-              $justification.addClass('fieldError');
-            }
-          }
-      },
-  });
-  // Event to open dialog to remove deliverable
-  $("a.removeProject").on("click", removeProject);
 }
 
-function removeProject(e) {
-  e.preventDefault();
-  $dialogContent.find("#justification").val('').removeClass('fieldError');
-  // Getting deliverable ID and setting input hidden to remove that deliverable
-  $dialogContent.find('input[name$=projectID]').val($(e.target).parent().attr('id').split('-')[1]);
-  dialog.dialog("open");
+/** Set colors to project scores * */
+
+function setScoresColor() {
+  $('p.totalScore').each(function(i,element) {
+    var score = parseFloat($(element).text());
+    if(score > 3.5) {
+      // 3.6 - 5.0 (Green)
+      $(element).addClass('green');
+    } else if((score > 2) && (score <= 3.5)) {
+      // 2.1 - 3.5 (Yellow)
+      $(element).addClass('yellow');
+    } else if(score <= 2) {
+      // 0,5 - 2.0 (Red)
+      $(element).addClass('red');
+    }
+  });
 }

@@ -88,12 +88,12 @@ table.dataTable thead th {
 }
 
 table.dataTable tr {
-  
 }
 
 table.dataTable td {
   border-bottom: 1px solid #AEAEAE;
   border-right: 1px solid #CCC;
+  vertical-align: middle;
 }
 
 table.dataTable a {

@@ -26,26 +26,36 @@ import com.google.inject.ImplementedBy;
 public interface ProjectEvaluationDAO {
 
   /**
-   * This method gets the Project Evaluation information by a given project id and user id
+   * Execute the query and get the project information by the project and user Id's
    * 
-   * @param projectId - is the Id of the project
-   * @param userId - is the Id of the user
-   * @return a ProjectEvaluation with the Information related with the project id and user id, null if ProjectEvaluation
-   *         doesn't exist
+   * @param projectId - is the ID of the project.
+   * @param userId - is the ID of the user
+   * @return
    */
   public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId);
 
-
   /**
-   * This method gets all the ProjectEvaluations information by a given project id
+   * Execute the query and get all evaluations of specific project.
    * 
-   * @param projectId - is the Id of the project
-   * @return a List of ProjectEvaluation with the Information related with the project id
+   * @param projectId - is the ID of the project to Query
+   * @return
    */
   public List<ProjectEvaluation> getEvaluationsProject(int projectId);
 
   /**
-   * This method saves the information of the given ProjectEvalution
+   * Execute the query and get only submit evaluations of the project.
+   * 
+   * @param projectId - is the ID of the project.
+   * @return
+   */
+  public List<ProjectEvaluation> getSubmitedEvaluations(int projectId);
+
+  /**
+   * Execute the insert sentence to save the Project Evaluation information to the data base.
+   * 
+   * @param projectEvaluation - the project evaluation to save.
+   * @return
    */
   public int save(ProjectEvaluation projectEvaluation);
 }
+

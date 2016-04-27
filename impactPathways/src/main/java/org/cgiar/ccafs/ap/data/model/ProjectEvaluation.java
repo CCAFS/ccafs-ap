@@ -1,6 +1,5 @@
 package org.cgiar.ccafs.ap.data.model;
-// Generated Apr 27, 2016 9:11:18 AM by Hibernate Tools 4.3.1.Final
-
+// Generated Apr 26, 2016 12:00:16 PM by Hibernate Tools 4.3.1.Final
 
 import java.util.Date;
 
@@ -10,6 +9,10 @@ import java.util.Date;
 public class ProjectEvaluation implements java.io.Serializable {
 
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 117258751413894335L;
   private Long id;
   private long projectId;
   private String typeEvaluation;
@@ -66,47 +69,108 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
+  /**
+   * calculate the weighted average of the questions in the evaluation.
+   * 
+   * @return the evaluation total score
+   */
+  public double calculateTotalScore() {
+    return ((this.rankingOutcomes * EvaluationValueQuestions.RANKING_OUTCOMES.getValue())
+      + (this.rankingOutputs * EvaluationValueQuestions.RANKING_OUTPUTS.getValue())
+      + (this.rankingParternshipComunnication * EvaluationValueQuestions.RANKING_PARTERNSHIP.getValue())
+      + (this.rankingResponseTeam * EvaluationValueQuestions.RANKING_RESPONSE_TEAM.getValue())
+      + (this.rankingQuality * EvaluationValueQuestions.RANKING_QUALITY.getValue()));
+  }
+
+  public Date getActiveSince() {
+    return this.activeSince;
+  }
+
+  public String getAnyActionRequeried() {
+    return this.anyActionRequeried;
+  }
+
+  public String getCommunicationProducts() {
+    return this.communicationProducts;
+  }
+
+  public long getCreatedBy() {
+    return this.createdBy;
+  }
+
+  public String getGeneralComments() {
+    return this.generalComments;
+  }
+
   public Long getId() {
     return this.id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public String getModificationJustification() {
+    return this.modificationJustification;
+  }
+
+  public long getModifiedBy() {
+    return this.modifiedBy;
+  }
+
+  public String getOutcomeCaseStudies() {
+    return this.outcomeCaseStudies;
+  }
+
+  public String getProjectHighlights() {
+    return this.projectHighlights;
   }
 
   public long getProjectId() {
     return this.projectId;
   }
 
-  public void setProjectId(long projectId) {
-    this.projectId = projectId;
+  public double getRankingOutcomes() {
+    return this.rankingOutcomes;
+  }
+
+  public double getRankingOutputs() {
+    return this.rankingOutputs;
+  }
+
+  public double getRankingParternshipComunnication() {
+    return this.rankingParternshipComunnication;
+  }
+
+  public double getRankingQuality() {
+    return this.rankingQuality;
+  }
+
+  public double getRankingResponseTeam() {
+    return this.rankingResponseTeam;
+  }
+
+  public String getRecommendations() {
+    return this.recommendations;
+  }
+
+  public double getTotalScore() {
+    return this.totalScore;
   }
 
   public String getTypeEvaluation() {
     return this.typeEvaluation;
   }
 
-  public void setTypeEvaluation(String typeEvaluation) {
-    this.typeEvaluation = typeEvaluation;
-  }
-
   public long getUserId() {
     return this.userId;
   }
 
-  public void setUserId(long userId) {
-    this.userId = userId;
+  public boolean isIsActive() {
+    return this.isActive;
   }
 
   public boolean isIsSubmited() {
     return this.isSubmited;
   }
-
-  public void setIsSubmited(boolean isSubmited) {
-    this.isSubmited = isSubmited;
-  }
-
-  public int getYear() {
+  
+    public int getYear() {
     return this.year;
   }
 
@@ -114,140 +178,92 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.year = year;
   }
 
-  public double getRankingOutputs() {
-    return this.rankingOutputs;
-  }
-
-  public void setRankingOutputs(double rankingOutputs) {
-    this.rankingOutputs = rankingOutputs;
-  }
-
-  public double getRankingOutcomes() {
-    return this.rankingOutcomes;
-  }
-
-  public void setRankingOutcomes(double rankingOutcomes) {
-    this.rankingOutcomes = rankingOutcomes;
-  }
-
-  public double getRankingParternshipComunnication() {
-    return this.rankingParternshipComunnication;
-  }
-
-  public void setRankingParternshipComunnication(double rankingParternshipComunnication) {
-    this.rankingParternshipComunnication = rankingParternshipComunnication;
-  }
-
-  public double getRankingResponseTeam() {
-    return this.rankingResponseTeam;
-  }
-
-  public void setRankingResponseTeam(double rankingResponseTeam) {
-    this.rankingResponseTeam = rankingResponseTeam;
-  }
-
-  public double getRankingQuality() {
-    return this.rankingQuality;
-  }
-
-  public void setRankingQuality(double rankingQuality) {
-    this.rankingQuality = rankingQuality;
-  }
-
-  public String getCommunicationProducts() {
-    return this.communicationProducts;
-  }
-
-  public void setCommunicationProducts(String communicationProducts) {
-    this.communicationProducts = communicationProducts;
-  }
-
-  public String getProjectHighlights() {
-    return this.projectHighlights;
-  }
-
-  public void setProjectHighlights(String projectHighlights) {
-    this.projectHighlights = projectHighlights;
-  }
-
-  public String getOutcomeCaseStudies() {
-    return this.outcomeCaseStudies;
-  }
-
-  public void setOutcomeCaseStudies(String outcomeCaseStudies) {
-    this.outcomeCaseStudies = outcomeCaseStudies;
-  }
-
-  public String getGeneralComments() {
-    return this.generalComments;
-  }
-
-  public void setGeneralComments(String generalComments) {
-    this.generalComments = generalComments;
-  }
-
-  public String getRecommendations() {
-    return this.recommendations;
-  }
-
-  public void setRecommendations(String recommendations) {
-    this.recommendations = recommendations;
-  }
-
-  public String getAnyActionRequeried() {
-    return this.anyActionRequeried;
+  public void setActiveSince(Date activeSince) {
+    this.activeSince = activeSince;
   }
 
   public void setAnyActionRequeried(String anyActionRequeried) {
     this.anyActionRequeried = anyActionRequeried;
   }
 
-  public double getTotalScore() {
-    return this.totalScore;
-  }
-
-  public void setTotalScore(double totalScore) {
-    this.totalScore = totalScore;
-  }
-
-  public boolean isIsActive() {
-    return this.isActive;
-  }
-
-  public void setIsActive(boolean isActive) {
-    this.isActive = isActive;
-  }
-
-  public Date getActiveSince() {
-    return this.activeSince;
-  }
-
-  public void setActiveSince(Date activeSince) {
-    this.activeSince = activeSince;
-  }
-
-  public long getCreatedBy() {
-    return this.createdBy;
+  public void setCommunicationProducts(String communicationProducts) {
+    this.communicationProducts = communicationProducts;
   }
 
   public void setCreatedBy(long createdBy) {
     this.createdBy = createdBy;
   }
 
-  public long getModifiedBy() {
-    return this.modifiedBy;
+  public void setGeneralComments(String generalComments) {
+    this.generalComments = generalComments;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public void setIsActive(boolean isActive) {
+    this.isActive = isActive;
+  }
+
+  public void setIsSubmited(boolean isSubmited) {
+    this.isSubmited = isSubmited;
+  }
+
+  public void setModificationJustification(String modificationJustification) {
+    this.modificationJustification = modificationJustification;
   }
 
   public void setModifiedBy(long modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 
-  public String getModificationJustification() {
-    return this.modificationJustification;
+  public void setOutcomeCaseStudies(String outcomeCaseStudies) {
+    this.outcomeCaseStudies = outcomeCaseStudies;
   }
 
-  public void setModificationJustification(String modificationJustification) {
-    this.modificationJustification = modificationJustification;
+  public void setProjectHighlights(String projectHighlights) {
+    this.projectHighlights = projectHighlights;
+  }
+
+  public void setProjectId(long projectId) {
+    this.projectId = projectId;
+  }
+
+  public void setRankingOutcomes(double rankingOutcomes) {
+    this.rankingOutcomes = rankingOutcomes;
+  }
+
+  public void setRankingOutputs(double rankingOutputs) {
+    this.rankingOutputs = rankingOutputs;
+  }
+
+  public void setRankingParternshipComunnication(double rankingParternshipComunnication) {
+    this.rankingParternshipComunnication = rankingParternshipComunnication;
+  }
+
+  public void setRankingQuality(double rankingQuality) {
+    this.rankingQuality = rankingQuality;
+  }
+
+  public void setRankingResponseTeam(double rankingResponseTeam) {
+    this.rankingResponseTeam = rankingResponseTeam;
+  }
+
+  public void setRecommendations(String recommendations) {
+    this.recommendations = recommendations;
+  }
+
+  public void setTotalScore(double totalScore) {
+    this.totalScore = totalScore;
+  }
+
+  public void setTypeEvaluation(String typeEvaluation) {
+    this.typeEvaluation = typeEvaluation;
+  }
+
+  public void setUserId(long userId) {
+    this.userId = userId;
   }
 
 
