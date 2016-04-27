@@ -117,19 +117,7 @@
     
     [#-- Project identifier --]
     <input name="projectID" type="hidden" value="${project.id?c}" />
-    [#if editable]
-      <div class="[#if !newProject]borderBox[/#if]" >
-        [#if !newProject] [@customForm.textArea name="justification" i18nkey="saving.justification" required=true className="justification"/][/#if]
-        <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [@s.submit type="button" name="next"][@s.text name="form.buttons.next" /][/@s.submit]
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.cancel" /][/@s.submit]
-        </div>
-      </div>
-    [#else]
-      [#-- Display Log History --]
-      [#if history??][@log.logList list=history /][/#if] 
-    [/#if]
+   
      
   </article>
   [/@s.form] 
@@ -184,33 +172,43 @@
   
   [#-- Communication products --]
   <div class="fullPartBlock">
-    [@customForm.textArea name="project.evaluations[${index}].p6" i18nkey="" editable=editable/]
+    [@customForm.textArea name="project.evaluations[${index}].p6" i18nkey="project.evaluation.communicationProducts" editable=editable/]
   </div>
   
   [#-- Project Highlight --]
   <div class="fullPartBlock">
-    [@customForm.textArea name="project.evaluations[${index}].p7" i18nkey="" editable=editable/]
+    [@customForm.textArea name="project.evaluations[${index}].p7" i18nkey="project.evaluation.projectHighlights" editable=editable/]
   </div>
   
   [#-- Outcome Case Studies --]
   <div class="fullPartBlock">
-    [@customForm.textArea name="project.evaluations[${index}].p8" i18nkey="" editable=editable/]
+    [@customForm.textArea name="project.evaluations[${index}].p8" i18nkey="project.evaluation.OutcomeCaseStudies" editable=editable/]
   </div>
   
   [#-- General comments on the reporting and the project's progress and clarifying questions --]
   <div class="fullPartBlock">
-    [@customForm.textArea name="project.evaluations[${index}].p9" i18nkey="" editable=editable/]
+    [@customForm.textArea name="project.evaluations[${index}].p9" i18nkey="project.evaluation.generalComments" editable=editable/]
   </div>
   
   [#-- Recommendations to the project team --]
   <div class="fullPartBlock">
-    [@customForm.textArea name="project.evaluations[${index}].p10" i18nkey="" editable=editable/]
+    [@customForm.textArea name="project.evaluations[${index}].p10" i18nkey="project.evaluation.recommendations" editable=editable/]
   </div>
   
   [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
   <div class="fullPartBlock">
-    [@customForm.textArea name="project.evaluations[${index}].p11" i18nkey="" editable=editable/]
+    [@customForm.textArea name="project.evaluations[${index}].p11" i18nkey="project.evaluation.anyActionRequired" editable=editable/]
   </div>
+  
+  [#if editable]
+    <hr />
+    <div class="" >
+      <div class="buttons">
+        [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit] 
+        [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
+      </div>
+    </div> 
+  [/#if]
   
 </div>
 
