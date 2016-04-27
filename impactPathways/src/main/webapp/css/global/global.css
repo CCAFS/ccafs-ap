@@ -3849,8 +3849,7 @@ padding: 2px 6px 3px 6px;}
 
 /* Ranking */
 
-.rankingBlock{
-position: relative;}
+.rankingBlock{position: relative;display: inline-block;}
 
 #rate-legend {
     margin: 15px 10px;
@@ -5150,4 +5149,15 @@ table.evaluationTable .rolCol{
 
 table.evaluationTable .statusCol{
   width: 10%;
+}
+
+table.evaluationRank thead {
+  background: #2ba6cb;
+  color: #fff;
+  border: none;
+}
+
+table.evaluationRank thead th{
+  color: #fff;
+  font-weight: normal;
 }
