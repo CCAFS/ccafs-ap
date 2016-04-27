@@ -102,75 +102,9 @@
     [#-- Project Evaluations --]
     <div id="projectDescription" class="borderBox">
       <h1 class="contentTitle">Project Evaluations</h1>  
-      [#list 1..4 as evaluation]
+      [#list 1..3 as evaluation]
         <div class="simpleBox">
-          <table class="evaluationTable">
-          	<tr>
-          		<td class="statusCol">{status}</td>
-          		<td class="rolCol">{rolEvaluation}</td>
-          		<td class="personCol">{person}</td>
-          		<td class="totalScoreCol"><p class="totalScore">${rand(1, 5)?string["0.##"]}</p></td>
-          		<td class="detailCol center"><p class="control-evaluation_${evaluation_index}">[View Detailed]</p></td>
-          	</tr>
-          </table> 
-          <div id="evaluation_${evaluation_index}" style="display:none">
-            <hr />
-            
-            [#-- Evaluation ranking --]
-            <div class="fullPartBlock">
-              <table class="default">
-                <thead>
-                  <tr>
-                    <th class="center" style="width:20%">Project progress towards outputs (20%) </td>
-                    <th class="center" style="width:20%">Project progress towards outcomes (35%)</td>
-                    <th class="center" style="width:20%">Reflections of CCAFS principles: quality of partnerships, communications, gender (15%)</td>
-                    <th class="center" style="width:20%">Response of team to the unexpected, ability to adapt and self-reflect (15%)</td>
-                    <th class="center" style="width:20%">Quality of reporting, incl. submission of deliverables and making them accessible (15%)</td>
-                  </tr>
-                </thead>
-              	<tbody>
-                  <tr>
-                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p1" editable=editable/]</td>
-                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p2" editable=editable/]</td>
-                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p3" editable=editable/]</td>
-                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p4" editable=editable/]</td>
-                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p5" editable=editable/]</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            
-            [#-- Communication products --]
-            <div class="fullPartBlock">
-              [@customForm.textArea name="project.evaluations[${evaluation_index}].p6" i18nkey="" editable=editable/]
-            </div>
-            
-            [#-- Project Highlight --]
-            <div class="fullPartBlock">
-              [@customForm.textArea name="project.evaluations[${evaluation_index}].p7" i18nkey="" editable=editable/]
-            </div>
-            
-            [#-- Outcome Case Studies --]
-            <div class="fullPartBlock">
-              [@customForm.textArea name="project.evaluations[${evaluation_index}].p8" i18nkey="" editable=editable/]
-            </div>
-            
-            [#-- General comments on the reporting and the project's progress and clarifying questions --]
-            <div class="fullPartBlock">
-              [@customForm.textArea name="project.evaluations[${evaluation_index}].p9" i18nkey="" editable=editable/]
-            </div>
-            
-            [#-- Recommendations to the project team --]
-            <div class="fullPartBlock">
-              [@customForm.textArea name="project.evaluations[${evaluation_index}].p10" i18nkey="" editable=editable/]
-            </div>
-            
-            [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
-            <div class="fullPartBlock">
-              [@customForm.textArea name="project.evaluations[${evaluation_index}].p11" i18nkey="" editable=editable/]
-            </div>
-            
-          </div>
+          [@projectEvaluation index=evaluation_index+1 editable=false  /]
         </div>
       [/#list] 
     </div>
@@ -178,7 +112,7 @@
     [#-- My Evaluation --]
     <div id="projectDescription" class="borderBox">
       <h1 class="contentTitle">My Evaluation</h1>  
-       
+       [@projectEvaluation index=0 editable=true own=true /]
     </div>
     
     [#-- Project identifier --]
@@ -208,3 +142,77 @@
   
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
+
+[#macro projectEvaluation index editable=false own=false]
+
+<table class="evaluationTable">
+  <tr>
+    <td class="statusCol">{status}</td>
+    <td class="rolCol">{rolEvaluation}</td>
+    <td class="personCol">{person}</td>
+    <td class="totalScoreCol"><p class="totalScore">${rand(1, 5)?string["0.##"]}</p></td>
+    [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
+  </tr>
+</table>
+
+<div id="evaluation_${index}" style="display:${own?string('block','none')}">
+  [#if !own]<hr />[/#if]
+  <br />
+  [#-- Evaluation ranking --]
+  <div class="fullPartBlock">
+    <table class="default" style="width:95%">
+      <thead>
+        <tr>
+          <th class="center" style="width:20%">Project progress towards outputs (20%) </td>
+          <th class="center" style="width:20%">Project progress towards outcomes (35%)</td>
+          <th class="center" style="width:20%">Reflections of CCAFS principles: quality of partnerships, communications, gender (15%)</td>
+          <th class="center" style="width:20%">Response of team to the unexpected, ability to adapt and self-reflect (15%)</td>
+          <th class="center" style="width:20%">Quality of reporting, incl. submission of deliverables and making them accessible (15%)</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="center">[@customForm.rank name="project.evaluations[${index}].p1" editable=editable/]</td>
+          <td class="center">[@customForm.rank name="project.evaluations[${index}].p2" editable=editable/]</td>
+          <td class="center">[@customForm.rank name="project.evaluations[${index}].p3" editable=editable/]</td>
+          <td class="center">[@customForm.rank name="project.evaluations[${index}].p4" editable=editable/]</td>
+          <td class="center">[@customForm.rank name="project.evaluations[${index}].p5" editable=editable/]</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  [#-- Communication products --]
+  <div class="fullPartBlock">
+    [@customForm.textArea name="project.evaluations[${index}].p6" i18nkey="" editable=editable/]
+  </div>
+  
+  [#-- Project Highlight --]
+  <div class="fullPartBlock">
+    [@customForm.textArea name="project.evaluations[${index}].p7" i18nkey="" editable=editable/]
+  </div>
+  
+  [#-- Outcome Case Studies --]
+  <div class="fullPartBlock">
+    [@customForm.textArea name="project.evaluations[${index}].p8" i18nkey="" editable=editable/]
+  </div>
+  
+  [#-- General comments on the reporting and the project's progress and clarifying questions --]
+  <div class="fullPartBlock">
+    [@customForm.textArea name="project.evaluations[${index}].p9" i18nkey="" editable=editable/]
+  </div>
+  
+  [#-- Recommendations to the project team --]
+  <div class="fullPartBlock">
+    [@customForm.textArea name="project.evaluations[${index}].p10" i18nkey="" editable=editable/]
+  </div>
+  
+  [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
+  <div class="fullPartBlock">
+    [@customForm.textArea name="project.evaluations[${index}].p11" i18nkey="" editable=editable/]
+  </div>
+  
+</div>
+
+[/#macro]
+
