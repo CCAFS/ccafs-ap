@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Evaluation" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "select2"] /]
+[#assign globalLibs = ["jquery", "noty", "autoSave", "star-rating", "select2"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectEvaluation.js"] /]
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentCycleSection = "projectsEvaluation" /]
@@ -102,7 +102,7 @@
     [#-- Project Evaluations --]
     <div id="projectDescription" class="borderBox">
       <h1 class="contentTitle">Project Evaluations</h1>  
-      [#list 1..5 as evaluation]
+      [#list 1..4 as evaluation]
         <div class="simpleBox">
           <table class="evaluationTable">
           	<tr>
@@ -114,7 +114,62 @@
           	</tr>
           </table> 
           <div id="evaluation_${evaluation_index}" style="display:none">
-            Evaluation Details #${evaluation_index}
+            <hr />
+            
+            [#-- Evaluation ranking --]
+            <div class="fullPartBlock">
+              <table class="default">
+                <thead>
+                  <tr>
+                    <th class="center" style="width:20%">Project progress towards outputs (20%) </td>
+                    <th class="center" style="width:20%">Project progress towards outcomes (35%)</td>
+                    <th class="center" style="width:20%">Reflections of CCAFS principles: quality of partnerships, communications, gender (15%)</td>
+                    <th class="center" style="width:20%">Response of team to the unexpected, ability to adapt and self-reflect (15%)</td>
+                    <th class="center" style="width:20%">Quality of reporting, incl. submission of deliverables and making them accessible (15%)</td>
+                  </tr>
+                </thead>
+              	<tbody>
+                  <tr>
+                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p1" editable=editable/]</td>
+                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p2" editable=editable/]</td>
+                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p3" editable=editable/]</td>
+                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p4" editable=editable/]</td>
+                    <td class="center">[@customForm.rank name="project.evaluations[${evaluation_index}].p5" editable=editable/]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            [#-- Communication products --]
+            <div class="fullPartBlock">
+              [@customForm.textArea name="project.evaluations[${evaluation_index}].p6" i18nkey="" editable=editable/]
+            </div>
+            
+            [#-- Project Highlight --]
+            <div class="fullPartBlock">
+              [@customForm.textArea name="project.evaluations[${evaluation_index}].p7" i18nkey="" editable=editable/]
+            </div>
+            
+            [#-- Outcome Case Studies --]
+            <div class="fullPartBlock">
+              [@customForm.textArea name="project.evaluations[${evaluation_index}].p8" i18nkey="" editable=editable/]
+            </div>
+            
+            [#-- General comments on the reporting and the project's progress and clarifying questions --]
+            <div class="fullPartBlock">
+              [@customForm.textArea name="project.evaluations[${evaluation_index}].p9" i18nkey="" editable=editable/]
+            </div>
+            
+            [#-- Recommendations to the project team --]
+            <div class="fullPartBlock">
+              [@customForm.textArea name="project.evaluations[${evaluation_index}].p10" i18nkey="" editable=editable/]
+            </div>
+            
+            [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
+            <div class="fullPartBlock">
+              [@customForm.textArea name="project.evaluations[${evaluation_index}].p11" i18nkey="" editable=editable/]
+            </div>
+            
           </div>
         </div>
       [/#list] 

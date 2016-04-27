@@ -80,7 +80,7 @@
       <tbody>
         <tr>
           <td class="key">[@s.text name="reporting.projectDeliverable.acknowledgeCCAFS" /]</td> 
-          <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.publicationMetadata.acknowledgeCcafs" editable=editable/]</td>
+          <td class="value">[@customForm.yesNoInput name="${params.deliverable.name}.publicationMetadata.acknowledgeCcafs" editable=editable/]</td>
         </tr>
       </tbody>
     </table>

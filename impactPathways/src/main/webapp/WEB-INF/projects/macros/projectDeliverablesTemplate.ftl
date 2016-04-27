@@ -88,47 +88,6 @@
 [/#if] 
 [/#macro]
 
-
-[#macro rank name disabled=false editable=true]
-  [#assign score][@s.property value="${name}"/][/#assign]
-  <div class="rankingBlock" style="text-align:center;">
-    [#if editable]
-    <input class="hover-star required" type="radio" name="${name}" value="1" [#if score == "1"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title=""/>
-    <input class="hover-star" type="radio" name="${name}" value="2" [#if score == "2"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title=""/>
-    <input class="hover-star" type="radio" name="${name}" value="3" [#if score == "3"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
-    <input class="hover-star" type="radio" name="${name}" value="4" [#if score == "4"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
-    <input class="hover-star" type="radio" name="${name}" value="5" [#if score == "5"]checked[/#if] [#if disabled]disabled="disabled"[/#if] title="" />
-    <div class="hover-test" style=""></div> 
-    <div class="clearfix"></div>
-    [#else]
-      [#if score?has_content]Rate ${score}[#else]Not rated[/#if]
-    [/#if]
-  </div>
-[/#macro]
-
-[#macro yesNoInput name disabled=false editable=true inverse=false value=""]
-  [#if value == ""]
-    [#assign customValue][@s.property value="${name}"/][/#assign]
-  [#else]
-    [#assign customValue=value /] 
-  [/#if]
-  <div class="onoffswitch">
-    [#if editable]
-      <div class="button-wrap">
-        [#-- Yes Button --]
-        <input type="radio" name="${name}" id="yes-button-${name}" value="true" [#if customValue == "true"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
-        <label for="yes-button-${name}" class="yes-button-label button-label [#if customValue == "true"]radio-checked[/#if]">Yes</label>
-        [#-- No Button --]
-        <input type="radio" name="${name}" id="no-button-${name}" value="false" [#if customValue == "false"]checked[/#if] class="hidden onoffswitch-radio [#if inverse]inverse[/#if]"/>
-        <label for="no-button-${name}" class="no-button-label button-label [#if customValue == "false"]radio-checked[/#if]">No</label>
-      </div>
-      [#if disabled] <input type="hidden" name="${name}" value="true" />[/#if] 
-    [#else]
-      <p style="text-align:center;">[#if customValue=="true"]Yes[#elseif customValue == "false"]No[#else]Not selected[/#if]</p>
-    [/#if]
-  </div>
-[/#macro]
-
 [#macro nextUserTemplate nu_name="" nu_index="0" nextUserValue="-1" template=false editable=true canEdit=true ]
   [#if template]
     <div id="projectNextUserTemplate" class="simpleBox" style="display:none">

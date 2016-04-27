@@ -6,7 +6,7 @@
     <tbody>
       <tr>
         <td class="key""><p>[@s.text name="reporting.projectDeliverable.dissemination.openAccessRestriction" /][@customForm.req required=finalizingCurrently /]</p></td> 
-        <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.isOpenAccess" editable=editable inverse=true/]</td>
+        <td class="value">[@customForm.yesNoInput name="${params.deliverable.name}.dissemination.isOpenAccess" editable=editable inverse=true/]</td>
       </tr>
     </tbody>
   </table>
@@ -57,7 +57,7 @@
     <tbody>
       <tr>
         <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.adoptedLicense" /]</p></td> 
-        <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.adoptedLicense" editable=editable value="${(adoptedLicense?has_content)?string}"/]</td>
+        <td class="value">[@customForm.yesNoInput name="${params.deliverable.name}.dissemination.adoptedLicense" editable=editable value="${(adoptedLicense?has_content)?string}"/]</td>
       </tr>
     </tbody>
   </table>
@@ -99,7 +99,7 @@
     <tbody>
       <tr>
         <td class="key"><p>[@s.text name="reporting.projectDeliverable.dissemination.alreadyDisseminated" /][@customForm.req required=finalizingCurrently /]</p></td> 
-        <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.dissemination.alreadyDisseminated" editable=editable/]</td>
+        <td class="value">[@customForm.yesNoInput name="${params.deliverable.name}.dissemination.alreadyDisseminated" editable=editable/]</td>
       </tr>
     </tbody>
   </table>
