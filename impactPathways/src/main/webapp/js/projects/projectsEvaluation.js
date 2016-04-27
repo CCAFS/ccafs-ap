@@ -12,6 +12,7 @@ function attachEvents() {
   $('table.evaluationProjects').on('draw.dt', function() {
     setScoresColor();
   });
+
 }
 
 function initializeDataTable() {
@@ -51,6 +52,7 @@ function initializeDataTable() {
 function setScoresColor() {
   $('p.totalScore').each(function(i,element) {
     var score = parseFloat($(element).text());
+    $(element).removeClass('green yellow red')
     if(score > 3.5) {
       // 3.6 - 5.0 (Green)
       $(element).addClass('green');
