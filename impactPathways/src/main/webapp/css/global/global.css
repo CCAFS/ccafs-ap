@@ -5128,8 +5128,12 @@ p.focus {
   color: #6F6F6F;
 }
 
+table.evaluationTable td{
+  padding:0 10px;
+}
+
 table.evaluationTable .detailCol{
-  width: 9%;
+  width: 5%;
 }
 
 table.evaluationTable .totalScoreCol{

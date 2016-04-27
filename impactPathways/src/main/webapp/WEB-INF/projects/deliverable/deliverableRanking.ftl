@@ -7,19 +7,19 @@
     <tbody>
       <tr>
         <td class="key">[@s.text name="reporting.projectDeliverable.ranking.addressGenderSocial" /]</td> 
-        <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.address" editable=editable/]</td>
+        <td class="value">[@customForm.rank name="${params.deliverable.name}.ranking.address" editable=editable/]</td>
       </tr>
       <tr>
         <td class="key">[@s.text name="reporting.projectDeliverable.ranking.potencialActualContribution" /]</td>
-        <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.potential" editable=editable/]</td>
+        <td class="value">[@customForm.rank name="${params.deliverable.name}.ranking.potential" editable=editable/]</td>
       </tr>
       <tr>
         <td class="key">[@s.text name="reporting.projectDeliverable.ranking.levelSharedOwnership" /] [@s.text name="reporting.projectDeliverable.ranking.levelSharedOwnership.complement" /]</td> 
-        <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.level" editable=editable/]</td>
+        <td class="value">[@customForm.rank name="${params.deliverable.name}.ranking.level" editable=editable/]</td>
       </tr>
       <tr>
         <td class="key">[@s.text name="reporting.projectDeliverable.ranking.productImportance" /]</td> 
-        <td class="value">[@deliverableTemplate.rank name="${params.deliverable.name}.ranking.personalPerspective" editable=editable/]</td>
+        <td class="value">[@customForm.rank name="${params.deliverable.name}.ranking.personalPerspective" editable=editable/]</td>
       </tr>
     </tbody>
   </table>
@@ -44,11 +44,11 @@
             [/#if] 
           </div>
         </td> 
-        <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.ranking.processData" editable=editable/]</td>
+        <td class="value">[@customForm.yesNoInput name="${params.deliverable.name}.ranking.processData" editable=editable/]</td>
       </tr>
       <tr>
         <td class="key">[@s.text name="reporting.projectDeliverable.compliance.dataDictionary" /]</td> 
-        <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.ranking.dictionary" editable=editable/]</td>
+        <td class="value">[@customForm.yesNoInput name="${params.deliverable.name}.ranking.dictionary" editable=editable/]</td>
       </tr>
       <tr>
         <td class="key">[@s.text name="reporting.projectDeliverable.compliance.toolsUsedDataCollection" /] 
@@ -56,7 +56,7 @@
             [@customForm.textArea name="${params.deliverable.name}.ranking.tooldataComment" i18nkey="reporting.projectDeliverable.compliance.toolsUsedDataCollection.links" editable=editable/]
           </div>
         </td> 
-        <td class="value">[@deliverableTemplate.yesNoInput name="${params.deliverable.name}.ranking.tooldata" editable=editable/]</td>
+        <td class="value">[@customForm.yesNoInput name="${params.deliverable.name}.ranking.tooldata" editable=editable/]</td>
       </tr>
     </tbody>
   </table>
