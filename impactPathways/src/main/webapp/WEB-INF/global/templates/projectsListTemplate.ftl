@@ -142,13 +142,13 @@
   <table class="evaluationProjects" id="projects">
     <thead> 
       <tr class="subHeader">
-        <th id="ids">[@s.text name="preplanning.projects.projectids" /]</th>
-        <th id="projectTitles" >[@s.text name="preplanning.projects.projectTitles" /]</th>
-        <th>Leader</th>
-        <th>Region / Flagship</th>
-        <th>Year</th>
-        <th>Status</th>
-        <th>Total Score</th>
+        <th class="idsCol">[@s.text name="preplanning.projects.projectids" /]</th>
+        <th class="projectTitlesCol" >[@s.text name="preplanning.projects.projectTitles" /]</th>
+        <th class="leaderCol">Leader</th>
+        <th class="focusCol">Region / Flagship</th>
+        <th class="yearCol">Year</th>
+        <th class="statusCol">Status</th>
+        <th class="totalScoreCol">Total Score</th>
       </tr>
     </thead>
     <tbody>
@@ -171,17 +171,30 @@
           <td>[#if project.leadInstitutionAcronym?has_content]${project.leadInstitutionAcronym}[#else][@s.text name="preplanning.projects.title.none" /][/#if]</td>
           [#-- Region / Flagship --]
           <td>
-            [#if project.regionsAcronym?has_content]${project.regionsAcronym}[#else][@s.text name="preplanning.projects.none" /][/#if]
-            [#if project.flagshipsAcronym?has_content]${project.flagshipsAcronym}[#else][@s.text name="preplanning.projects.none" /][/#if]
+            [#if project.flagships?has_content][#list project.flagships as element]<p class="focus region">${(element.acronym)!}</p>[/#list][/#if]
+            [#if project.regions?has_content][#list project.regions as element]<p class="focus flagship">${(element.acronym)!}</p>[/#list][/#if]
           </td>
           [#-- Year --]
-          <td>2015</td>
+          <td><p class="center">2015</p></td>
           [#-- Status --]
-          <td>Submitted</td>
+          <td><p class="center">Submitted</p></td>
           [#-- Total Score --]
-          <td><span class="totalScore">3.5</span></td>
+          <td><p class="totalScore">${rand(1, 5)?string["0.##"]}</p></td>
         </tr>  
       [/#list]
     </tbody>
   </table>
 [/#macro]
+
+[#function rand min max]
+  [#local now = .now?long?c /]
+  [#local randomNum = _rand +
+    ("0." + now?substring(now?length-1) + now?substring(now?length-2))?number /]
+  [#if (randomNum > 1)]
+    [#assign _rand = randomNum % 1 /]
+  [#else]
+    [#assign _rand = randomNum /]
+  [/#if]
+  [#return (min + ((max - min) * _rand)) /]
+[/#function]
+[#assign _rand = 0.36 /]
