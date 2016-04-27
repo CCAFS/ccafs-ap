@@ -17,12 +17,13 @@ package org.cgiar.ccafs.ap.data.model;
 
 /**
  * This enum contains the the weight that contains every questions in the project evaluation.
+ * The values is the decimal representation of percentage values (%)
  * 
  * @author Hermes Jimenez - CIAT/CCAFS
  */
 public enum EvaluationValueQuestions {
 
-  RANKING_OUTPUTS(0.20), RANKING_OUTCOMES(0.35), RANKING_PARTERNSHIP(0.15), RANKING_RESPONSE_TEAM(0.20),
+  RANKING_OUTPUTS(0.20), RANKING_OUTCOMES(0.35), RANKING_PARTERNSHIP(0.15), RANKING_RESPONSE_TEAM(0.15),
   RANKING_QUALITY(0.15);
 
   private double value;
