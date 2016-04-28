@@ -46,6 +46,16 @@ public interface ProjectEvalutionManager {
    */
   public List<ProjectEvaluation> getEvaluationsProject(int projectId);
 
+
+  /**
+   * This method gets all the ProjectEvaluations information by a given project id except the evaluation for ther userId
+   * 
+   * @param projectId - is the Id of the project
+   * @param userId - is the Id of the user
+   * @return a List of ProjectEvaluation with the Information related with the project id
+   */
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId);
+
   /**
    * this method calculate the total score average of the submit evaluations in the project
    * 

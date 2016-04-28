@@ -47,6 +47,11 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
   }
 
   @Override
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId) {
+    return dao.getEvaluationsProjectExceptUserId(projectId, userId);
+  }
+
+  @Override
   public double getTraficLightScore(int projectId) {
     final List<ProjectEvaluation> list = dao.getSubmitedEvaluations(projectId);
     double avgScore = 0;
