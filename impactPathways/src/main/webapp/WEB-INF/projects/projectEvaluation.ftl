@@ -7,20 +7,6 @@
 [#assign currentStage = "evaluation" /]
 [#assign currentSubStage = "evaluation" /]
 
-[#-- To Delete --]
-[#function rand min max]
-  [#local now = .now?long?c /]
-  [#local randomNum = _rand +
-    ("0." + now?substring(now?length-1) + now?substring(now?length-2))?number /]
-  [#if (randomNum > 1)]
-    [#assign _rand = randomNum % 1 /]
-  [#else]
-    [#assign _rand = randomNum /]
-  [/#if]
-  [#return (min + ((max - min) * _rand)) /]
-[/#function]
-[#assign _rand = 0.36 /]
-
 [#assign breadCrumb = [
   {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
   {"label":"projectsEvaluation", "nameSpace":"${currentSection}", "action":"projectsEvaluation"},
@@ -100,7 +86,7 @@
               </p></div></div>
               <div class="halfPartBlock"><div class="select"><h6>W3/Bilateral Budget:</h6>
                 <p>  
-                  US$ <span>${((totalBilateralBudgetbyYear)!0)?string(",##0.00")}</span> 
+                  US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span> 
                 </p></div></div>
             </div>
           </div>
@@ -221,4 +207,3 @@
 </div>
 
 [/#macro]
-
