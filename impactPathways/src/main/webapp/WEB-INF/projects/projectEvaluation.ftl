@@ -28,101 +28,98 @@
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
     <div id="" class="borderBox">
-      <fieldset class="fullBlock">
-        <div class="fullBlock">
-          <div class="dottedBox">
-            [#-- Project Title --]
-            <div class="select"><h6>[@s.text name="planning.projectDescription.projectTitle" /]:</h6><p> ${(project.title)!}</p></div>
-            <br />
-            <p class="control-summaryBox">[View Summary]</p>
-            [#-- Project Summary --]
-            <div id="summaryBox" class="fullBlock" style="display:none">
-              <br /><div class="select"><p>${(project.summary)!}</p></div>
-            </div>
+    
+      <div class="fullBlock">
+        <div class="dottedBox">
+          [#-- Project Title --]
+          <div class="select"><h6>[@s.text name="planning.projectDescription.projectTitle" /]:</h6><p> ${(project.title)!}</p></div>
+          <br />
+          <p class="control-summaryBox">[View Summary]</p>
+          [#-- Project Summary --]
+          <div id="summaryBox" class="fullBlock" style="display:none">
+            <br /><div class="select"><p>${(project.summary)!}</p></div>
           </div>
         </div>
-        <div class="fullBlock">
-          <div class="thirdPartBlock">
-            <div class="dottedBox">
-              [#-- Start Date --]
-              <div class="thirdPartBlock select"><h6>[@s.text name="preplanning.projectDescription.startDate" /]:</h6><p> ${(project.startDate?date)!}</p></div>
-              [#-- End Date --]
-              <div class=" thirdPartBlock select"><h6>[@s.text name="preplanning.projectDescription.endDate" /]:</h6><p> ${(project.endDate?date)!}</p></div>
+      </div>
+      <div class="fullBlock">
+        <div class="thirdPartBlock">
+          <div class="dottedBox">
+            [#-- Start Date --]
+            <div class="thirdPartBlock select"><h6>[@s.text name="preplanning.projectDescription.startDate" /]:</h6><p> ${(project.startDate?date)!}</p></div>
+            [#-- End Date --]
+            <div class=" thirdPartBlock select"><h6>[@s.text name="preplanning.projectDescription.endDate" /]:</h6><p> ${(project.endDate?date)!}</p></div>
+          </div>
+        </div>
+        [#-- Management Liaison --]
+        <div class="thirdPartBlock">
+          <div class="dottedBox select"><h6>Management Liaison:</h6><p> ${(project.liaisonInstitution.name)!} -  ${project.owner.composedOwnerName}</p></div>  
+        </div>
+        [#-- Flagships / Regions --] 
+        <div class="thirdPartBlock">
+          <div class="dottedBox">
+            <h6>[@s.text name="preplanning.projectDescription.flagships" /] / [@s.text name="preplanning.projectDescription.regions" /]:</h6>
+            <div class="checkboxGroup">
+              [#if project.flagships?has_content][#list project.flagships as element]<p class="focus">${element.acronym}</p>[/#list][/#if] 
+              [#if project.regions?has_content][#list project.regions as element]<p class="focus">${element.acronym}</p>[/#list][/#if]
+              <div class="clearfix"></div>
             </div>
           </div>
-          [#-- Management Liaison --]
-          <div class="thirdPartBlock">
-            <div class="dottedBox select"><h6>Management Liaison:</h6><p> ${(project.liaisonInstitution.name)!} -  ${project.owner.composedOwnerName}</p></div>  
-          </div>
-          [#-- Flagships / Regions --] 
-          <div class="thirdPartBlock">
-            <div class="dottedBox">
-              <h6>[@s.text name="preplanning.projectDescription.flagships" /] / [@s.text name="preplanning.projectDescription.regions" /]:</h6>
-              <div class="checkboxGroup">
-                [#if project.flagships?has_content][#list project.flagships as element]<p class="focus">${element.acronym}</p>[/#list][/#if] 
-                [#if project.regions?has_content][#list project.regions as element]<p class="focus">${element.acronym}</p>[/#list][/#if]
-                <div class="clearfix"></div>
-              </div>
+        </div> 
+      </div>
+      
+      <div class="fullPartBlock">
+        [#-- Project Leader --]
+        <div class="halfPartBlock">
+          <div class="dottedBox">
+            <div class="select"><h6>Project Leader:</h6>
+              <p>${projectLeader.institution.acronym} - [#list projectLeader.partnerPersons as partnerPerson]  ${partnerPerson.getComposedName()}[/#list] </p>
             </div>
           </div> 
         </div>
-        <div class="fullPartBlock">
-          [#-- Project Leader --]
-            <div class="dottedBox">
-              <div class="halfPartBlock"><div class="select"><h6>Project Leader:</h6><p> ${projectLeader.institution.getComposedName()}</p></div></div>
-              <div class="halfPartBlock"><div class="select"><h6>Contact:</h6> 
-              [#list projectLeader.partnerPersons as partnerPerson]
-                <p> ${partnerPerson.getComposedName()}</p>
-              [/#list]
-              </div></div>
-          </div>
-          
-          <div class="fullPartBlock">
-            <div class="dottedBox">
-              <div class="halfPartBlock"><div class="select"><h6>W1/W2 Budget:</h6>
-              <p>
-                [#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign]
-                US$ <span>${(totalProjectBudget?number)?string(",##0.00")}</span>
-              </p></div></div>
-              <div class="halfPartBlock"><div class="select"><h6>W3/Bilateral Budget:</h6>
-                <p>  
-                  US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span> 
-                </p></div></div>
+        [#-- Project Budget --]
+        <div class="halfPartBlock">
+          <div class="dottedBox">
+            <div class="halfPartBlock select"><h6>W1/W2 Budget:</h6>
+              <p>[#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign]
+              US$ <span>${(totalProjectBudget?number)?string(",##0.00")}</span></p>
+            </div>
+            <div class="halfPartBlock select">
+              <h6>W3/Bilateral Budget:</h6><p>US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span></p>
             </div>
           </div>
-        </div>
-      </fieldset>
+        </div> 
+      </div>
       
     </div> 
     
     [#-- Project Evaluations --]
-    <h1 class="contentTitle">Project Evaluations</h1>  
     <div id="" class="borderBox">
-      [#list 1..3 as evaluation]
+      <h1 class="contentTitle">Project Evaluations</h1>  
+      
+      [#list project.evaluations as evaluation]
+       
         <div class="simpleBox">
-          [@projectEvaluation index=evaluation_index+1 editable=false  /]
+        [#if evaluation_index+1 !=project.evaluations?size]  
+          [@projectEvaluation index=evaluation_index+1 editable=true  /]
+          [/#if]
         </div>
       [/#list] 
     </div>
     
     [#-- My Evaluation --]
-    <h1 class="contentTitle">My Evaluation</h1>  
     <div id="" class="borderBox">
+      <h1 class="contentTitle">My Evaluation</h1>  
        [@projectEvaluation index=0 editable=true own=true /]
     </div>
     
     [#-- Project identifier --]
     <input name="projectID" type="hidden" value="${project.id?c}" />
    
-     
   </article>
   [/@s.form] 
   [#-- Hidden values used by js --]
- 
   <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
  
-  
-  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
 
@@ -131,10 +128,12 @@
 <div class="evaluationBlock">
   <table class="evaluationTable">
     <tr>
-      [#if !own]<td class="statusCol">{status}</td>[/#if]
-      <td class="rolCol">{rolEvaluation}</td>
-      <td class="personCol">{person}</td>
-      <td class="totalScoreCol"><p class="totalScore">Pending</p></td>
+      [#if !own]<td class="statusCol">[@s.text name="project.evaluations[${index}].status" /]</td>[/#if]
+        [#assign userName = action.getUserName(project.evaluations[index].userId) /]
+      <td class="rolCol">  [@s.text name="project.evaluations[${index}].typeEvaluation" /]</td>
+    
+      <td class="personCol">[@s.text name="${userName}" /]</td>
+      <td class="totalScoreCol"><p class="totalScore">[@s.text name="project.evaluations[${index}].totalScore" /]</p></td>
       [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
     </tr>
   </table>
@@ -157,11 +156,11 @@
         <tbody>
           <tr>
        
-            <td class="center"><span class="weight" style="display:none">20</span>[@customForm.rank name="project.evaluations[${index}].rankingOutputs" editable=editable/]</td>
-            <td class="center"><span class="weight" style="display:none">35</span>[@customForm.rank name="project.evaluations[${index}].rankingOutcomes" editable=editable/]</td>
-            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingParternshipComunnication" editable=editable/]</td>
-            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingResponseTeam" editable=editable/]</td>
-            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingQuality" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">20</span>[@customForm.rank name="project.evaluations[${index}].rankingOutputs" editable=editable/][@s.text name="project.evaluations[${index}].rankingOutputs" /]</td>
+            <td class="center"><span class="weight" style="display:none">35</span>[@customForm.rank name="project.evaluations[${index}].rankingOutcomes" editable=editable/][@s.text name="project.evaluations[${index}].rankingOutcomes" /]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingParternshipComunnication" editable=editable/][@s.text name="project.evaluations[${index}].rankingParternshipComunnication" /]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingResponseTeam" editable=editable/][@s.text name="project.evaluations[${index}].rankingResponseTeam" /]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingQuality" editable=editable/][@s.text name="project.evaluations[${index}].rankingQuality" /]</td>
           </tr>
         </tbody>
       </table>
@@ -194,7 +193,7 @@
     
     [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].recommendations" i18nkey="project.evaluation.recommendations" className="anyActionRequired limitWords-500" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].anyActionRequeried" i18nkey="project.evaluation.anyActionRequired" className="anyActionRequired limitWords-500" editable=editable/]
     </div>
     
     [#if editable]

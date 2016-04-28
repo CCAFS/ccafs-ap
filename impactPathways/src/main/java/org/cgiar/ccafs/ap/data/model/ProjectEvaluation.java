@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 // Generated Apr 26, 2016 12:00:16 PM by Hibernate Tools 4.3.1.Final
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -39,8 +40,12 @@ public class ProjectEvaluation implements java.io.Serializable {
   private long modifiedBy;
   private String modificationJustification;
 
+  private String status;
+
+
   public ProjectEvaluation() {
   }
+
 
   public ProjectEvaluation(long projectId, String typeEvaluation, long userId, boolean isSubmited, int year,
     double rankingOutputs, double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam,
@@ -77,11 +82,14 @@ public class ProjectEvaluation implements java.io.Serializable {
    * @return the evaluation total score
    */
   public double calculateTotalScore() {
-    return ((this.rankingOutcomes * EvaluationValueQuestions.RANKING_OUTCOMES.getValue())
+    double totalScore = ((this.rankingOutcomes * EvaluationValueQuestions.RANKING_OUTCOMES.getValue())
       + (this.rankingOutputs * EvaluationValueQuestions.RANKING_OUTPUTS.getValue())
       + (this.rankingParternshipComunnication * EvaluationValueQuestions.RANKING_PARTERNSHIP.getValue())
       + (this.rankingResponseTeam * EvaluationValueQuestions.RANKING_RESPONSE_TEAM.getValue())
       + (this.rankingQuality * EvaluationValueQuestions.RANKING_QUALITY.getValue()));
+    DecimalFormat df = new DecimalFormat("#.00");
+    return Double.parseDouble(df.format(totalScore));
+
   }
 
   @Override
@@ -172,6 +180,13 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public String getRecommendations() {
     return this.recommendations;
+  }
+
+  public String getStatus() {
+    if (isSubmited) {
+      return "Submitted";
+    }
+    return "Evaluating";
   }
 
   public double getTotalScore() {
@@ -280,6 +295,10 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setRecommendations(String recommendations) {
     this.recommendations = recommendations;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public void setTotalScore(double totalScore) {

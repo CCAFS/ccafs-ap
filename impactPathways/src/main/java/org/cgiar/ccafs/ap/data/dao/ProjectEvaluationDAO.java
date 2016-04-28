@@ -42,6 +42,16 @@ public interface ProjectEvaluationDAO {
    */
   public List<ProjectEvaluation> getEvaluationsProject(int projectId);
 
+
+  /**
+   * Execute the query and get all evaluations of specific project except the evaluation for this userId.
+   * 
+   * @param projectId - is the ID of the project to Query
+   * @param userId - is the ID of the user to Query
+   * @return
+   */
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId);
+
   /**
    * Execute the query and get only submit evaluations of the project.
    * 

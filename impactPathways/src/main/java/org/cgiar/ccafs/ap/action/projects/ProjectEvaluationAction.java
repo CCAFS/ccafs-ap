@@ -217,22 +217,22 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectEvalutionManager;
-import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.UserRole;
 import org.cgiar.ccafs.utils.APConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -251,7 +251,7 @@ public class ProjectEvaluationAction extends BaseAction {
   private final ProjectEvalutionManager projectEvaluationManager;
   private final BudgetManager budgetManager;
   private final UserRoleManagerImpl userRoleManager;
-
+  private final UserManager userManager;
   // Model for the back-end
   private Project project;
   private int projectID;
@@ -263,13 +263,15 @@ public class ProjectEvaluationAction extends BaseAction {
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
-    ProjectEvalutionManager projectEvaluationManager, UserRoleManagerImpl userRoleManager) {
+    ProjectEvalutionManager projectEvaluationManager, UserRoleManagerImpl userRoleManager, UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
     this.projectEvaluationManager = projectEvaluationManager;
     this.userRoleManager = userRoleManager;
     this.budgetManager = budgetManager;
+    this.userManager = userManager;
+
   }
 
 
@@ -308,6 +310,11 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
 
+  public String getUserName(int userId) {
+    User user = userManager.getUser(userId);
+    return user.getComposedName();
+  }
+
   @Override
   public String next() {
     final String result = this.save();
@@ -317,6 +324,7 @@ public class ProjectEvaluationAction extends BaseAction {
       return result;
     }
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -354,7 +362,7 @@ public class ProjectEvaluationAction extends BaseAction {
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
 
-    Set<ProjectEvaluation> evaluations = new HashSet<>();
+    List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
     ProjectEvaluation evaluationUser =
       projectEvaluationManager.getEvaluationProjectByUser(projectID, this.getCurrentUser().getId());
     if (evaluationUser == null) {
@@ -364,6 +372,7 @@ public class ProjectEvaluationAction extends BaseAction {
       evaluationUser.setIsActive(true);
       evaluationUser.setActiveSince(new Date());
       evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+      // evaluationUser.setId(new Long(-1));
       final List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
       for (final UserRole userRole : roles) {
 
@@ -381,11 +390,14 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
     }
-    evaluations.add(evaluationUser);
-    evaluations.addAll(projectEvaluationManager.getEvaluationsProject(projectID));
-    List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
-    lstEvaluations.addAll(evaluations);
+    lstEvaluations.add(evaluationUser);
+    lstEvaluations
+      .addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, this.getCurrentUser().getId()));
+
+
     project.setEvaluations(lstEvaluations);
+
+
   }
 
   @Override
@@ -393,7 +405,20 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
     for (ProjectEvaluation projectEvaluation : project.getEvaluations()) {
+
+      projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
+
       projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
+    }
+
+
+    Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty()) {
+      String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else {
+      this.addActionMessage(this.getText("saving.saved"));
     }
     return SUCCESS;
 
