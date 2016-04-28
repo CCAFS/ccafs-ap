@@ -201,7 +201,8 @@
       <div class="" >
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit] 
-          [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
+          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.submit" /][/@s.submit]
+              <a class="addButton" href="[@s.url namespace="/${currentSection}/projects" action='submitEvaluation'/]">[@s.text name="form.buttons.submit" /]</a>
         </div>
       </div> 
     [/#if]

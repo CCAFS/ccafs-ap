@@ -69,6 +69,7 @@ public class ProjectEvaluationAction extends BaseAction {
   private double totalBilateralBudget;
   private PartnerPerson partnerPerson;
 
+
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
@@ -139,16 +140,6 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
   @Override
-  public String next() {
-    final String result = this.save();
-    if (result.equals(BaseAction.SUCCESS)) {
-      return BaseAction.NEXT;
-    } else {
-      return result;
-    }
-  }
-
-  @Override
   public void prepare() throws Exception {
 
     super.prepare();
@@ -215,12 +206,10 @@ public class ProjectEvaluationAction extends BaseAction {
     lstEvaluations
       .addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, this.getCurrentUser().getId()));
 
-
     project.setEvaluations(lstEvaluations);
 
 
   }
-
 
   @Override
   public String save() {
@@ -250,7 +239,6 @@ public class ProjectEvaluationAction extends BaseAction {
     this.partnerPerson = partnerPerson;
   }
 
-
   public void setProject(Project project) {
     this.project = project;
   }
@@ -270,8 +258,34 @@ public class ProjectEvaluationAction extends BaseAction {
     this.totalBilateralBudget = totalBilateralBudget;
   }
 
+
   public void setTotalCCAFSBudget(double totalCCAFSBudget) {
     this.totalCCAFSBudget = totalCCAFSBudget;
+  }
+
+  public String submitEvaluation() {
+
+    final ProjectEvaluation projectEvaluation = project.getEvaluations().get(0);
+
+    projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
+    projectEvaluation.setIsSubmited(true);
+    projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
+
+
+    final Collection<String> messages = this.getActionMessages();
+    if (!messages.isEmpty())
+
+    {
+      final String validationMessage = messages.iterator().next();
+      this.setActionMessages(null);
+      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+    } else
+
+    {
+      this.addActionMessage(this.getText("saving.saved"));
+    }
+    return SUCCESS;
+
   }
 
 
