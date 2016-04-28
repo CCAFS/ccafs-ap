@@ -255,4 +255,8 @@ public class ProjectEvaluationAction extends BaseAction {
 
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> branch 'develop' of https://github.com/CCAFS/ccafs-ap.git
