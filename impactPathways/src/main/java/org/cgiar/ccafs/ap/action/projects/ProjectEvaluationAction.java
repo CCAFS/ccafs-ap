@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
@@ -45,8 +46,8 @@ public class ProjectEvaluationAction extends BaseAction {
   private Project project;
   private int projectID;
   private ProjectPartner projectLeader;
+  private PartnerPerson partnerPerson;
   private double totalCCAFSBudget;
-
   private double totalBilateralBudget;
 
 
@@ -60,7 +61,6 @@ public class ProjectEvaluationAction extends BaseAction {
     this.ipProgramManager = ipProgramManager;
   }
 
-
   public BudgetManager getBudgetManager() {
     return budgetManager;
   }
@@ -68,6 +68,11 @@ public class ProjectEvaluationAction extends BaseAction {
 
   public IPProgramManager getIpProgramManager() {
     return ipProgramManager;
+  }
+
+
+  public PartnerPerson getPartnerPerson() {
+    return partnerPerson;
   }
 
 
@@ -111,6 +116,7 @@ public class ProjectEvaluationAction extends BaseAction {
     }
   }
 
+
   @Override
   public void prepare() throws Exception {
 
@@ -137,6 +143,9 @@ public class ProjectEvaluationAction extends BaseAction {
     // get the Project Leader information
     projectLeader = project.getLeader();
 
+    // get the PL partner person information
+    partnerPerson = project.getLeaderPerson();
+
     // calculate the cumulative total budget
     totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
     totalBilateralBudget =
@@ -149,6 +158,10 @@ public class ProjectEvaluationAction extends BaseAction {
 
     return SUCCESS;
 
+  }
+
+  public void setPartnerPerson(PartnerPerson partnerPerson) {
+    this.partnerPerson = partnerPerson;
   }
 
 

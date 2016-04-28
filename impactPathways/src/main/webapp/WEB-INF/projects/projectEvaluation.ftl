@@ -71,9 +71,7 @@
             <div class="dottedBox">
               <div class="halfPartBlock"><div class="select"><h6>Project Leader:</h6><p> ${projectLeader.institution.getComposedName()}</p></div></div>
               <div class="halfPartBlock"><div class="select"><h6>Contact:</h6> 
-              [#list projectLeader.partnerPersons as partnerPerson]
                 <p> ${partnerPerson.getComposedName()}</p>
-              [/#list]
               </div></div>
           </div>
           
