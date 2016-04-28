@@ -52,6 +52,14 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
   }
 
   @Override
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId) {
+    final String sql =
+      "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId + " and user_id <>" + userId;
+    final List<ProjectEvaluation> list = dao.findAll(sql);
+    return list;
+  }
+
+  @Override
   public List<ProjectEvaluation> getSubmitedEvaluations(int projectId) {
     final String sql =
       "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId + " and is_submited=(1)";

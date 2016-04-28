@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.data.model;
 // Generated Apr 26, 2016 12:00:16 PM by Hibernate Tools 4.3.1.Final
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -77,11 +78,14 @@ public class ProjectEvaluation implements java.io.Serializable {
    * @return the evaluation total score
    */
   public double calculateTotalScore() {
-    return ((this.rankingOutcomes * EvaluationValueQuestions.RANKING_OUTCOMES.getValue())
+    double totalScore = ((this.rankingOutcomes * EvaluationValueQuestions.RANKING_OUTCOMES.getValue())
       + (this.rankingOutputs * EvaluationValueQuestions.RANKING_OUTPUTS.getValue())
       + (this.rankingParternshipComunnication * EvaluationValueQuestions.RANKING_PARTERNSHIP.getValue())
       + (this.rankingResponseTeam * EvaluationValueQuestions.RANKING_RESPONSE_TEAM.getValue())
       + (this.rankingQuality * EvaluationValueQuestions.RANKING_QUALITY.getValue()));
+    DecimalFormat df = new DecimalFormat("#.00");
+    return Double.parseDouble(df.format(totalScore));
+
   }
 
   @Override
