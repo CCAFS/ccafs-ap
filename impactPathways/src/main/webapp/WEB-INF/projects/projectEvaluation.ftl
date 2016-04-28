@@ -7,20 +7,6 @@
 [#assign currentStage = "evaluation" /]
 [#assign currentSubStage = "evaluation" /]
 
-[#-- To Delete --]
-[#function rand min max]
-  [#local now = .now?long?c /]
-  [#local randomNum = _rand +
-    ("0." + now?substring(now?length-1) + now?substring(now?length-2))?number /]
-  [#if (randomNum > 1)]
-    [#assign _rand = randomNum % 1 /]
-  [#else]
-    [#assign _rand = randomNum /]
-  [/#if]
-  [#return (min + ((max - min) * _rand)) /]
-[/#function]
-[#assign _rand = 0.36 /]
-
 [#assign breadCrumb = [
   {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
   {"label":"projectsEvaluation", "nameSpace":"${currentSection}", "action":"projectsEvaluation"},
@@ -100,7 +86,7 @@
               </p></div></div>
               <div class="halfPartBlock"><div class="select"><h6>W3/Bilateral Budget:</h6>
                 <p>  
-                  US$ <span>${((totalBilateralBudgetbyYear)!0)?string(",##0.00")}</span> 
+                  US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span> 
                 </p></div></div>
             </div>
           </div>
@@ -175,6 +161,11 @@
             <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingParternshipComunnication" editable=editable/]</td>
             <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingResponseTeam" editable=editable/]</td>
             <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingQuality" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">20</span>[@customForm.rank name="project.evaluations[${index}].p1" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">35</span>[@customForm.rank name="project.evaluations[${index}].p2" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].p3" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].p4" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].p5" editable=editable/]</td>
           </tr>
         </tbody>
       </table>
