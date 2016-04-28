@@ -27,6 +27,7 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.ap.data.model.User;
+import org.cgiar.ccafs.ap.validation.projects.ProjectEvaluationValidator;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.UserRole;
 import org.cgiar.ccafs.utils.APConfig;
@@ -48,13 +49,14 @@ public class ProjectEvaluationAction extends BaseAction {
   private static final long serialVersionUID = 2845669913596494699L;
 
   // Manager
-  private final ProjectManager projectManager;
-  private final ProjectPartnerManager projectPartnerManager;
-  private final ProjectEvalutionManager projectEvaluationManager;
-  private final BudgetManager budgetManager;
-  private final UserRoleManagerImpl userRoleManager;
-  private final UserManager userManager;
-  private final IPProgramManager ipProgramManager;
+  private ProjectManager projectManager;
+  private ProjectPartnerManager projectPartnerManager;
+  private ProjectEvalutionManager projectEvaluationManager;
+  private BudgetManager budgetManager;
+  private UserRoleManagerImpl userRoleManager;
+  private UserManager userManager;
+  private IPProgramManager ipProgramManager;
+  private ProjectEvaluationValidator validator;
 
 
   // Model for the back-end
@@ -71,7 +73,7 @@ public class ProjectEvaluationAction extends BaseAction {
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
     ProjectEvalutionManager projectEvaluationManager, IPProgramManager ipProgramManager,
-    UserRoleManagerImpl userRoleManager, UserManager userManager) {
+    ProjectEvaluationValidator validator, UserRoleManagerImpl userRoleManager, UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -80,6 +82,7 @@ public class ProjectEvaluationAction extends BaseAction {
     this.budgetManager = budgetManager;
     this.userManager = userManager;
     this.ipProgramManager = ipProgramManager;
+    this.validator = validator;
 
   }
 
@@ -274,8 +277,9 @@ public class ProjectEvaluationAction extends BaseAction {
 
   @Override
   public void validate() {
+    // validate only the request user evaluation.
     if (save) {
-
+      validator.validate(this, project, project.getEvaluations().get(0), this.getCycleName());
     }
   }
 }
