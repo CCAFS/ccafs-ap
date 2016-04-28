@@ -38,9 +38,9 @@ public class ProjectsEvaluationAction extends BaseAction {
 
 
   // Manager
-  private ProjectManager projectManager;
-  private LiaisonInstitutionManager liaisonInstitutionManager;
-  private UserRoleManagerImpl userRoleManager;
+  private final ProjectManager projectManager;
+  private final LiaisonInstitutionManager liaisonInstitutionManager;
+  private final UserRoleManagerImpl userRoleManager;
   // Model for the back-end
   private List<Project> projects;
   private List<Project> allProjects;
@@ -70,10 +70,10 @@ public class ProjectsEvaluationAction extends BaseAction {
   public void prepare() {
     projects = new ArrayList<>();
 
-    Set<Project> myProjects = new HashSet<Project>();
+    final Set<Project> myProjects = new HashSet<Project>();
 
-    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
-    for (UserRole userRole : roles) {
+    final List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
+    for (final UserRole userRole : roles) {
 
       switch (userRole.getId()) {
         case APConstants.ROLE_ADMIN:
@@ -86,15 +86,15 @@ public class ProjectsEvaluationAction extends BaseAction {
 
           try {
             liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
-          } catch (Exception e) {
+          } catch (final Exception e) {
             liaisonInstitutionID = 2;
           }
-          LiaisonInstitution currentLiaisonInstitution =
+          final LiaisonInstitution currentLiaisonInstitution =
             liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
           if (currentLiaisonInstitution.getIpProgram() == null) {
             currentLiaisonInstitution.setIpProgram("1");
           }
-          List<Project> projectsBd =
+          final List<Project> projectsBd =
             projectManager.getProjectEvaluationInfo(this.getCurrentReportingYear(), userRole.getId(),
               this.getCurrentUser().getId(), Integer.parseInt(currentLiaisonInstitution.getIpProgram()));
 

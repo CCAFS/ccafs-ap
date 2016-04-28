@@ -82,13 +82,26 @@
         </div>
         <div class="fullPartBlock">
           [#-- Project Leader --]
-          <div class="halfPartBlock">
-            <div class="dottedBox select"><h6>Project Leader:</h6><p> {Project Leader Name} </p></div>
-          </div>
-          <div class="halfPartBlock">
             <div class="dottedBox">
-              <div class="halfPartBlock"><div class="select"><h6>W1/W2 Budget:</h6><p> {US$ 0.00} </p></div>  </div>
-              <div class="halfPartBlock"><div class="select"><h6>W3/Bilateral Budget:</h6><p> {US$ 0.00} </p></div>  </div>
+              <div class="halfPartBlock"><div class="select"><h6>Project Leader:</h6><p> ${projectLeader.institution.getComposedName()}</p></div></div>
+              <div class="halfPartBlock"><div class="select"><h6>Contact:</h6> 
+              [#list projectLeader.partnerPersons as partnerPerson]
+                <p> ${partnerPerson.getComposedName()}</p>
+              [/#list]
+              </div></div>
+          </div>
+          
+          <div class="fullPartBlock">
+            <div class="dottedBox">
+              <div class="halfPartBlock"><div class="select"><h6>W1/W2 Budget:</h6>
+              <p>
+                [#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign]
+                US$ <span>${(totalProjectBudget?number)?string(",##0.00")}</span>
+              </p></div></div>
+              <div class="halfPartBlock"><div class="select"><h6>W3/Bilateral Budget:</h6>
+                <p>  
+                  US$ <span>${((totalBilateralBudgetbyYear)!0)?string(",##0.00")}</span> 
+                </p></div></div>
             </div>
           </div>
         </div>

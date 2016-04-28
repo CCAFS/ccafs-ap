@@ -15,8 +15,12 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
 
 import com.google.inject.Inject;
@@ -31,18 +35,45 @@ public class ProjectEvaluationAction extends BaseAction {
   private static final long serialVersionUID = 2845669913596494699L;
 
   // Manager
-  private ProjectManager projectManager;
+  private final ProjectManager projectManager;
+  private final ProjectPartnerManager projectPartnerManager;
+  private final BudgetManager budgetManager;
 
   // Model for the back-end
   private Project project;
   private int projectID;
+  private ProjectPartner projectLeader;
+  private double totalCCAFSBudget;
+  private double totalBilateralBudget;
 
 
   @Inject
-  public ProjectEvaluationAction(APConfig config, ProjectManager projectManager) {
+  public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
+    ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager) {
     super(config);
     this.projectManager = projectManager;
+    this.projectPartnerManager = projectPartnerManager;
+    this.budgetManager = budgetManager;
+  }
 
+
+  public BudgetManager getBudgetManager() {
+    return budgetManager;
+  }
+
+
+  public Project getProject() {
+    return project;
+  }
+
+
+  public int getProjectID() {
+    return projectID;
+  }
+
+
+  public ProjectPartner getProjectLeader() {
+    return projectLeader;
   }
 
 
@@ -51,16 +82,25 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
 
+  public double getTotalBilateralBudget() {
+    return totalBilateralBudget;
+  }
+
+
+  public double getTotalCCAFSBudget() {
+    return totalCCAFSBudget;
+  }
+
+
   @Override
   public String next() {
-    String result = this.save();
+    final String result = this.save();
     if (result.equals(BaseAction.SUCCESS)) {
       return BaseAction.NEXT;
     } else {
       return result;
     }
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -69,7 +109,7 @@ public class ProjectEvaluationAction extends BaseAction {
 
     try {
       projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    } catch (NumberFormatException e) {
+    } catch (final NumberFormatException e) {
       LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e);
       projectID = -1;
       return; // Stop here and go to execute method.
@@ -77,9 +117,27 @@ public class ProjectEvaluationAction extends BaseAction {
     // Getting project
     project = projectManager.getProject(projectID);
 
+    // Getting all the project partners.
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+
+    // Positioning project leader to be the first in the list.
+    final ProjectPartner leader = project.getLeader();
+    if (leader != null) {
+      // First we remove the element from the array.
+      project.getProjectPartners().remove(leader);
+      // then we add it to the first position.
+      project.getProjectPartners().add(0, leader);
+    }
+
+    // get the Project Leader information
+    projectLeader = project.getProjectPartners().get(0);
+
+    // calculate the cumulative total budget
+    totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
+    totalBilateralBudget =
+      budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
   }
-
 
   @Override
   public String save() {
@@ -93,8 +151,23 @@ public class ProjectEvaluationAction extends BaseAction {
     this.project = project;
   }
 
+
   public void setProjectID(int projectID) {
     this.projectID = projectID;
+  }
+
+
+  public void setProjectLeader(ProjectPartner projectLeader) {
+    this.projectLeader = projectLeader;
+  }
+
+
+  public void setTotalBilateralBudget(double totalBilateralBudget) {
+    this.totalBilateralBudget = totalBilateralBudget;
+  }
+
+  public void setTotalCCAFSBudget(double totalCCAFSBudget) {
+    this.totalCCAFSBudget = totalCCAFSBudget;
   }
 
 

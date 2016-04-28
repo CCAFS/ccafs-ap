@@ -86,6 +86,7 @@ public class Project {
   private String statusEvaluation;
   private String totalScoreEvaluation;
   private String yearEvaluation;
+  private List<ProjectEvaluation> evaluations;
 
 
   public Project() {
@@ -209,6 +210,7 @@ public class Project {
     return activities;
   }
 
+
   /**
    * This method calculates all the years between the start date and the end date.
    * 
@@ -232,6 +234,7 @@ public class Project {
 
     return allYears;
   }
+
 
   public String getAnnualReportDonor() {
     return annualReportDonor;
@@ -359,7 +362,6 @@ public class Project {
     return coordinator;
   }
 
-
   /**
    * This method gets all the coordinators working for this project.
    * 
@@ -395,12 +397,17 @@ public class Project {
     return crossCutting;
   }
 
+
   public List<Deliverable> getDeliverables() {
     return deliverables;
   }
 
   public Date getEndDate() {
     return endDate;
+  }
+
+  public List<ProjectEvaluation> getEvaluations() {
+    return evaluations;
   }
 
   public List<IPProgram> getFlagships() {
@@ -573,10 +580,10 @@ public class Project {
     return locations;
   }
 
-
   public List<ProjectNextUser> getNextUsers() {
     return nextUsers;
   }
+
 
   public List<ProjecteOtherContributions> getOtherContributions() {
     return otherContributions;
@@ -602,7 +609,6 @@ public class Project {
     }
     return null;
   }
-
 
   /**
    * this method gets a specific Overview by MOG taking into account a given year and a given output (MOG).
@@ -685,6 +691,7 @@ public class Project {
   public List<ProjectPartner> getProjectPartners() {
     return projectPartners;
   }
+
 
   public List<IPProgram> getRegions() {
     return regions;
@@ -780,10 +787,10 @@ public class Project {
     return startDate;
   }
 
-
   public String getStatusEvaluation() {
     return statusEvaluation;
   }
+
 
   public List<Submission> getSubmissions() {
     return submissions;
@@ -849,7 +856,6 @@ public class Project {
     return totalBudget;
   }
 
-
   /**
    * This method gets the total W1/W2 budget for this project.
    * 
@@ -864,6 +870,7 @@ public class Project {
     }
     return totalBudget;
   }
+
 
   public String getTotalScoreEvaluation() {
     return totalScoreEvaluation;
@@ -988,10 +995,10 @@ public class Project {
     this.activities = activities;
   }
 
-
   public void setAnnualReportDonor(String annualReportDonor) {
     this.annualReportDonor = annualReportDonor;
   }
+
 
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
@@ -1009,7 +1016,6 @@ public class Project {
     this.budgets = budgets;
   }
 
-
   public void setCaseStudies(List<CasesStudies> caseStudies) {
     this.caseStudies = caseStudies;
   }
@@ -1018,6 +1024,7 @@ public class Project {
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
   }
+
 
   /**
    * @param componentLessons the componentLessons to set
@@ -1030,10 +1037,10 @@ public class Project {
     this.coordinator = coordinator;
   }
 
-
   public void setCreated(long created) {
     this.created = created;
   }
+
 
   public void setCrossCutting(CrossCuttingContribution crossCutting) {
     this.crossCutting = crossCutting;
@@ -1045,6 +1052,10 @@ public class Project {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
+  }
+
+  public void setEvaluations(List<ProjectEvaluation> evaluations) {
+    this.evaluations = evaluations;
   }
 
   public void setFlagships(List<IPProgram> flagships) {
