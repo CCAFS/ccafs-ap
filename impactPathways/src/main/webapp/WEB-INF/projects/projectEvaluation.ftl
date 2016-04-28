@@ -117,7 +117,7 @@
           [/#if]
         [/#if]
         <br />
-        [@projectEvaluation index=0 editable=editable own=true /]
+       [@projectEvaluation index=0 editable=(!project.evaluations[0].isSubmited && editable) own=true /]
     </div>
     
     [#-- Project identifier --]
