@@ -124,7 +124,7 @@
 <div class="evaluationBlock">
   <table class="evaluationTable">
     <tr>
-      [#if !own]<td class="statusCol">{status}</td>[/#if]
+      [#if !own]<td class="statusCol">[@s.text name="project.evaluations[${index}].status" /]</td>[/#if]
         [#assign userName = action.getUserName(project.evaluations[index].userId) /]
       <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /] Evaluation</td>
       <td class="personCol">[@s.text name="${userName}" /]</td>
@@ -203,4 +203,3 @@
 </div>
 
 [/#macro]
-

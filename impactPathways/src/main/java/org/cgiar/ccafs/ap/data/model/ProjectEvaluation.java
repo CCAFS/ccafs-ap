@@ -40,8 +40,12 @@ public class ProjectEvaluation implements java.io.Serializable {
   private long modifiedBy;
   private String modificationJustification;
 
+  private String status;
+
+
   public ProjectEvaluation() {
   }
+
 
   public ProjectEvaluation(long projectId, String typeEvaluation, long userId, boolean isSubmited, int year,
     double rankingOutputs, double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam,
@@ -178,6 +182,13 @@ public class ProjectEvaluation implements java.io.Serializable {
     return this.recommendations;
   }
 
+  public String getStatus() {
+    if (isSubmited) {
+      return "Submitted";
+    }
+    return "Evaluating";
+  }
+
   public double getTotalScore() {
     return this.totalScore;
   }
@@ -284,6 +295,10 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setRecommendations(String recommendations) {
     this.recommendations = recommendations;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public void setTotalScore(double totalScore) {

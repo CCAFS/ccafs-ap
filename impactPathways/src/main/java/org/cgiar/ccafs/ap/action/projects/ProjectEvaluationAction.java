@@ -111,7 +111,7 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
   public String getUserName(int userId) {
-    User user = userManager.getUser(userId);
+    final User user = userManager.getUser(userId);
     return user.getComposedName();
   }
 
@@ -162,7 +162,7 @@ public class ProjectEvaluationAction extends BaseAction {
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
 
-    List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
+    final List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
     ProjectEvaluation evaluationUser =
       projectEvaluationManager.getEvaluationProjectByUser(projectID, this.getCurrentUser().getId());
     if (evaluationUser == null) {
@@ -204,7 +204,7 @@ public class ProjectEvaluationAction extends BaseAction {
   public String save() {
 
 
-    for (ProjectEvaluation projectEvaluation : project.getEvaluations()) {
+    for (final ProjectEvaluation projectEvaluation : project.getEvaluations()) {
 
       projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
 
@@ -212,9 +212,9 @@ public class ProjectEvaluationAction extends BaseAction {
     }
 
 
-    Collection<String> messages = this.getActionMessages();
+    final Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
-      String validationMessage = messages.iterator().next();
+      final String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
       this.addActionWarning(this.getText("saving.saved") + validationMessage);
     } else {
@@ -256,3 +256,4 @@ public class ProjectEvaluationAction extends BaseAction {
     }
   }
 }
+
