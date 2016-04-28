@@ -100,7 +100,7 @@
               </p></div></div>
               <div class="halfPartBlock"><div class="select"><h6>W3/Bilateral Budget:</h6>
                 <p>  
-                  US$ <span>${((totalBilateralBudgetbyYear)!0)?string(",##0.00")}</span> 
+                  US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span> 
                 </p></div></div>
             </div>
           </div>
