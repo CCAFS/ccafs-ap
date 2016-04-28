@@ -384,6 +384,24 @@
         <param name="projectID">${project.id}</param>
       </result>
     </action>
+    
+     <action name="submitEvaluation" method="submitEvaluation" class="org.cgiar.ccafs.ap.action.projects.ProjectEvaluationAction">
+      <result name="input">/WEB-INF/projects/projectEvaluation.ftl</result>
+      <result name="success" type="redirectAction">
+        <param name="actionName">evaluation</param>
+        <param name="projectID">${project.id}</param>
+        <param name="edit">true</param>
+      </result>
+      <result name="cancel" type="redirectAction">
+        <param name="actionName">evaluation</param>
+        <param name="projectID">${project.id}</param>
+      </result>
+    </action>
+        
+    
+    
+    
+   
 
   </package>  
 </struts>
