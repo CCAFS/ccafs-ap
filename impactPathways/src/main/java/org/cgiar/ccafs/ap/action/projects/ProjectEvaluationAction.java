@@ -16,6 +16,7 @@ package org.cgiar.ccafs.ap.action.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
@@ -38,27 +39,35 @@ public class ProjectEvaluationAction extends BaseAction {
   private final ProjectManager projectManager;
   private final ProjectPartnerManager projectPartnerManager;
   private final BudgetManager budgetManager;
+  private final IPProgramManager ipProgramManager;
 
   // Model for the back-end
   private Project project;
   private int projectID;
   private ProjectPartner projectLeader;
   private double totalCCAFSBudget;
+
   private double totalBilateralBudget;
 
 
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
-    ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager) {
+    ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager, IPProgramManager ipProgramManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
     this.budgetManager = budgetManager;
+    this.ipProgramManager = ipProgramManager;
   }
 
 
   public BudgetManager getBudgetManager() {
     return budgetManager;
+  }
+
+
+  public IPProgramManager getIpProgramManager() {
+    return ipProgramManager;
   }
 
 
@@ -119,6 +128,11 @@ public class ProjectEvaluationAction extends BaseAction {
 
     // Getting all the project partners.
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+
+    // Getting the information of the Flagships Program associated with the project
+    project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
+    // Getting the information of the Regions Program associated with the project
+    project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
 
     // get the Project Leader information
     projectLeader = project.getLeader();
