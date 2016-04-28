@@ -25,9 +25,9 @@
   
   [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
   <article class="fullBlock" id="mainInformation">
+    [#include "/WEB-INF/projects/dataSheet.ftl" /]
+    <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
     <div id="" class="borderBox">
-      [#include "/WEB-INF/projects/dataSheet.ftl" /]
-      <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
       <fieldset class="fullBlock">
         <div class="fullBlock">
           <div class="dottedBox">
@@ -96,8 +96,8 @@
     </div> 
     
     [#-- Project Evaluations --]
+    <h1 class="contentTitle">Project Evaluations</h1>  
     <div id="" class="borderBox">
-      <h1 class="contentTitle">Project Evaluations</h1>  
       [#list 1..3 as evaluation]
         <div class="simpleBox">
           [@projectEvaluation index=evaluation_index+1 editable=false  /]
@@ -106,8 +106,8 @@
     </div>
     
     [#-- My Evaluation --]
+    <h1 class="contentTitle">My Evaluation</h1>  
     <div id="" class="borderBox">
-      <h1 class="contentTitle">My Evaluation</h1>  
        [@projectEvaluation index=0 editable=true own=true /]
     </div>
     
