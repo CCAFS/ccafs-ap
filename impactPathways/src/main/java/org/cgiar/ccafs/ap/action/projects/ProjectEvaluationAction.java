@@ -15,8 +15,10 @@ package org.cgiar.ccafs.ap.action.projects;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
 import org.cgiar.ccafs.utils.APConfig;
@@ -35,19 +37,28 @@ public class ProjectEvaluationAction extends BaseAction {
   // Manager
   private final ProjectManager projectManager;
   private final ProjectPartnerManager projectPartnerManager;
+  private final BudgetManager budgetManager;
 
   // Model for the back-end
   private Project project;
   private int projectID;
   private ProjectPartner projectLeader;
+  private double totalCCAFSBudget;
+  private double totalBilateralBudget;
 
 
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
-    ProjectPartnerManager projectPartnerManager) {
+    ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
+    this.budgetManager = budgetManager;
+  }
+
+
+  public BudgetManager getBudgetManager() {
+    return budgetManager;
   }
 
 
@@ -65,9 +76,21 @@ public class ProjectEvaluationAction extends BaseAction {
     return projectLeader;
   }
 
+
   public String getProjectRequest() {
     return APConstants.PROJECT_REQUEST_ID;
   }
+
+
+  public double getTotalBilateralBudget() {
+    return totalBilateralBudget;
+  }
+
+
+  public double getTotalCCAFSBudget() {
+    return totalCCAFSBudget;
+  }
+
 
   @Override
   public String next() {
@@ -78,7 +101,6 @@ public class ProjectEvaluationAction extends BaseAction {
       return result;
     }
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -107,8 +129,15 @@ public class ProjectEvaluationAction extends BaseAction {
       project.getProjectPartners().add(0, leader);
     }
 
-  }
+    // get the Project Leader information
+    projectLeader = project.getProjectPartners().get(0);
 
+    // calculate the cumulative total budget
+    totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
+    totalBilateralBudget =
+      budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
+
+  }
 
   @Override
   public String save() {
@@ -127,8 +156,18 @@ public class ProjectEvaluationAction extends BaseAction {
     this.projectID = projectID;
   }
 
+
   public void setProjectLeader(ProjectPartner projectLeader) {
     this.projectLeader = projectLeader;
+  }
+
+
+  public void setTotalBilateralBudget(double totalBilateralBudget) {
+    this.totalBilateralBudget = totalBilateralBudget;
+  }
+
+  public void setTotalCCAFSBudget(double totalCCAFSBudget) {
+    this.totalCCAFSBudget = totalCCAFSBudget;
   }
 
 
