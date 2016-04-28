@@ -112,7 +112,7 @@
     [#-- My Evaluation --]
     <h1 class="contentTitle">My Evaluation</h1>
     <div id="" class="borderBox">
-       [@projectEvaluation index=0 editable=true own=true /]
+       [@projectEvaluation index=0 editable=!project.evaluations[0].isSubmited own=true /]
     </div>
     
     [#-- Project identifier --]
@@ -201,7 +201,7 @@
       <div class="" >
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit] 
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.submit" /][/@s.submit]
+       
               <a class="addButton" href="[@s.url namespace="/${currentSection}/projects" action='submitEvaluation'/]">[@s.text name="form.buttons.submit" /]</a>
         </div>
       </div> 
