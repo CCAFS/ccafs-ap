@@ -13,7 +13,9 @@ public class ProjectEvaluation implements java.io.Serializable {
    * 
    */
   private static final long serialVersionUID = 117258751413894335L;
+
   private Long id;
+
   private long projectId;
   private String typeEvaluation;
   private long userId;
@@ -80,6 +82,28 @@ public class ProjectEvaluation implements java.io.Serializable {
       + (this.rankingParternshipComunnication * EvaluationValueQuestions.RANKING_PARTERNSHIP.getValue())
       + (this.rankingResponseTeam * EvaluationValueQuestions.RANKING_RESPONSE_TEAM.getValue())
       + (this.rankingQuality * EvaluationValueQuestions.RANKING_QUALITY.getValue()));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    ProjectEvaluation other = (ProjectEvaluation) obj;
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
+    }
+    return true;
   }
 
   public Date getActiveSince() {
@@ -162,20 +186,24 @@ public class ProjectEvaluation implements java.io.Serializable {
     return this.userId;
   }
 
+  public int getYear() {
+    return this.year;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
   public boolean isIsActive() {
     return this.isActive;
   }
 
   public boolean isIsSubmited() {
     return this.isSubmited;
-  }
-  
-    public int getYear() {
-    return this.year;
-  }
-
-  public void setYear(int year) {
-    this.year = year;
   }
 
   public void setActiveSince(Date activeSince) {
@@ -264,6 +292,10 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setUserId(long userId) {
     this.userId = userId;
+  }
+
+  public void setYear(int year) {
+    this.year = year;
   }
 
 
