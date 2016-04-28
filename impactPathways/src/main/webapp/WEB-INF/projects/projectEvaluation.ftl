@@ -23,9 +23,13 @@
     <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="${currentSection}.projectEvaluation.help" /]</p>
   </div>
   
+  [#if !canEdit ]<p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name="planning.project"/][/@s.param][/@s.text]</p>[/#if]
+  
   [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
   <article class="fullBlock" id="mainInformation">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
+    
+    
     <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
     <div id="" class="borderBox">
       <div class="fullBlock">
@@ -66,23 +70,18 @@
         </div> 
       </div>
       
-      <div class="fullPartBlock">
+      <div class="halfPartBlock">
         [#-- Project Leader --]
         <div class="dottedBox">
           <div class="halfPartBlock">
             <div class="select"><h6>Project Leader:</h6>
-              <p>${projectLeader.institution.getComposedName()}</p>
+              <p>${projectLeader.institution.acronym} - ${partnerPerson.getComposedName()}</p>
             </div>
-          </div>
-          <div class="halfPartBlock">
-            <div class="select"><h6>Contact:</h6>
-              <p>${partnerPerson.getComposedName()}</p>
-            </div>
-          </div>
-      </div>    
-        </div>
+          </div> 
+        </div>    
+      </div>
         [#-- Project Budget --]
-        <div class="fullPartBlock">
+        <div class="halfPartBlock">
           <div class="dottedBox">
             <div class="halfPartBlock select"><h6>W1/W2 Budget:</h6>
               <p>[#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign]
@@ -112,7 +111,7 @@
     [#-- My Evaluation --]
     <h1 class="contentTitle">My Evaluation</h1>
     <div id="" class="borderBox">
-       [@projectEvaluation index=0 editable=true own=true /]
+       [@projectEvaluation index=0 editable=editable own=true /]
     </div>
     
     [#-- Project identifier --]
