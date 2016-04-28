@@ -129,9 +129,9 @@ public class ProjectEvaluationAction extends BaseAction {
     // Getting all the project partners.
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
-    // Getting the information of the Flagships Program associated with the project
-    project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
     // Getting the information of the Regions Program associated with the project
+    project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
+    // Getting the information of the Flagships Program associated with the project
     project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
 
     // get the Project Leader information
