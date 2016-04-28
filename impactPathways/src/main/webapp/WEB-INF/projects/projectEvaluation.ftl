@@ -29,7 +29,6 @@
   <article class="fullBlock" id="mainInformation">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     
-    
     <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
     <div id="" class="borderBox">
       <div class="fullBlock">
@@ -91,9 +90,7 @@
               <h6>W3/Bilateral Budget:</h6><p>US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span></p>
             </div>
           </div>
-        </div> 
-      
-      
+        </div>  
     </div> 
     
     [#-- Project Evaluations --]
@@ -111,7 +108,16 @@
     [#-- My Evaluation --]
     <h1 class="contentTitle">My Evaluation</h1>
     <div id="" class="borderBox">
-       [@projectEvaluation index=0 editable=editable own=true /]
+        [#-- Button for edit this section --]
+        [#if (!editable && canEdit)]
+          <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+        [#else]
+          [#if canEdit]
+            <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+          [/#if]
+        [/#if]
+        <br />
+        [@projectEvaluation index=0 editable=editable own=true /]
     </div>
     
     [#-- Project identifier --]
@@ -199,9 +205,10 @@
       <hr />
       <div class="" >
         <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit] 
-          [@s.submit type="button" name="cancel"][@s.text name="form.buttons.submit" /][/@s.submit]
-              <a class="addButton" href="[@s.url namespace="/${currentSection}/projects" action='submitEvaluation'/]">[@s.text name="form.buttons.submit" /]</a>
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          <a class="addButton" href="[@s.url namespace="/${currentSection}/projects" action='submitEvaluation'][@s.param name="projectID"]${project.id?c}[/@s.param][/@s.url]">
+            [@s.text name="form.buttons.submit" /]
+          </a>
         </div>
       </div> 
     [/#if]
