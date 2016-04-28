@@ -5146,6 +5146,7 @@ table.evaluationTable .personCol{
 
 table.evaluationTable .rolCol{
   width: 10%;
+  font-weight: bold;
 }
 
 table.evaluationTable .statusCol{

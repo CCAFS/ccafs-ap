@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Evaluation" /]
-[#assign globalLibs = ["jquery", "noty", "autoSave", "star-rating", "select2"] /]
+[#assign globalLibs = ["jquery", "noty", "star-rating"] /]
 [#assign customJS = ["${baseUrl}/js/global/utils.js", "${baseUrl}/js/projects/projectEvaluation.js"] /]
 [#assign currentSection = cycleName?lower_case /]
 [#assign currentCycleSection = "projectsEvaluation" /]
@@ -28,7 +28,6 @@
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
     <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
     <div id="" class="borderBox">
-    
       <div class="fullBlock">
         <div class="dottedBox">
           [#-- Project Title --]
@@ -93,22 +92,20 @@
     </div> 
     
     [#-- Project Evaluations --]
+    <h1 class="contentTitle">Project Evaluations</h1>  
     <div id="" class="borderBox">
-      <h1 class="contentTitle">Project Evaluations</h1>  
-      
-      [#list project.evaluations as evaluation]
-       
-        <div class="simpleBox">
-        [#if evaluation_index+1 !=project.evaluations?size]  
-          [@projectEvaluation index=evaluation_index+1 editable=true  /]
-          [/#if]
-        </div>
-      [/#list] 
+      [#if project.evaluations?size >1]
+        [#list project.evaluations as evaluation]
+          [#if evaluation_index+1 !=project.evaluations?size]<div class="simpleBox">[@projectEvaluation index=evaluation_index+1 editable=false  /]</div>[/#if]
+        [/#list]
+      [#else]
+        <p>There is no assessment for this project.</p>
+      [/#if]
     </div>
     
     [#-- My Evaluation --]
+    <h1 class="contentTitle">My Evaluation</h1>
     <div id="" class="borderBox">
-      <h1 class="contentTitle">My Evaluation</h1>  
        [@projectEvaluation index=0 editable=true own=true /]
     </div>
     
@@ -117,8 +114,7 @@
    
   </article>
   [/@s.form] 
-  [#-- Hidden values used by js --]
-  <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
+ 
  
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
@@ -130,8 +126,7 @@
     <tr>
       [#if !own]<td class="statusCol">{status}</td>[/#if]
         [#assign userName = action.getUserName(project.evaluations[index].userId) /]
-      <td class="rolCol">  [@s.text name="project.evaluations[${index}].typeEvaluation" /]</td>
-    
+      <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /] Evaluation</td>
       <td class="personCol">[@s.text name="${userName}" /]</td>
       <td class="totalScoreCol"><p class="totalScore">[@s.text name="project.evaluations[${index}].totalScore" /]</p></td>
       [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
@@ -155,7 +150,6 @@
         </thead>
         <tbody>
           <tr>
-       
             <td class="center"><span class="weight" style="display:none">20</span>[@customForm.rank name="project.evaluations[${index}].rankingOutputs" editable=editable/][@s.text name="project.evaluations[${index}].rankingOutputs" /]</td>
             <td class="center"><span class="weight" style="display:none">35</span>[@customForm.rank name="project.evaluations[${index}].rankingOutcomes" editable=editable/][@s.text name="project.evaluations[${index}].rankingOutcomes" /]</td>
             <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingParternshipComunnication" editable=editable/][@s.text name="project.evaluations[${index}].rankingParternshipComunnication" /]</td>
@@ -178,7 +172,7 @@
     
     [#-- Outcome Case Studies --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].outcomeCaseStudies" i18nkey="project.evaluation.outcomeCaseStudies" className="OutcomeCaseStudies limitWords-50" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].outcomeCaseStudies" i18nkey="project.evaluation.outcomeCaseStudies" className="outcomeCaseStudies limitWords-50" editable=editable/]
     </div>
     
     [#-- General comments on the reporting and the project's progress and clarifying questions --]
