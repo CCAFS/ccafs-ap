@@ -132,10 +132,9 @@
   </article>
   [/@s.form] 
   [#-- Hidden values used by js --]
-  <input id="minDateValue" value="${newProject?string(currentPlanningYear,startYear)}-01-01" type="hidden"/>
-  <input id="maxDateValue" value="${endYear?c}-12-31" type="hidden"/> 
+ 
   <input id="programID" value="${project.liaisonInstitution.id?c}" type="hidden"/>
-  <input id="projectsAction" type="hidden" value="${project.bilateralProject?string('coreProjects.do','bilateralCoFinancingProjects.do')}" />
+ 
   
   
 </section>
@@ -171,11 +170,11 @@
         </thead>
         <tbody>
           <tr>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p1" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p2" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p3" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p4" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p5" editable=editable/]</td>
+            <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingOutputs" editable=editable/]</td>
+            <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingOutcomes" editable=editable/]</td>
+            <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingParternshipComunnication" editable=editable/]</td>
+            <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingResponseTeam" editable=editable/]</td>
+            <td class="center">[@customForm.rank name="project.evaluations[${index}].rankingQuality" editable=editable/]</td>
           </tr>
         </tbody>
       </table>
@@ -183,32 +182,32 @@
     
     [#-- Communication products --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].p6" i18nkey="project.evaluation.communicationProducts" className="communicationProducts limitWords-50" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].communicationProducts" i18nkey="project.evaluation.communicationProducts" className="communicationProducts limitWords-50" editable=editable/]
     </div>
     
     [#-- Project Highlight --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].p7" i18nkey="project.evaluation.projectHighlights" className="projectHighlights limitWords-50" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].projectHighlights" i18nkey="project.evaluation.projectHighlights" className="projectHighlights limitWords-50" editable=editable/]
     </div>
     
     [#-- Outcome Case Studies --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].p8" i18nkey="project.evaluation.OutcomeCaseStudies" className="OutcomeCaseStudies limitWords-50" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].outcomeCaseStudies" i18nkey="project.evaluation.outcomeCaseStudies" className="OutcomeCaseStudies limitWords-50" editable=editable/]
     </div>
     
     [#-- General comments on the reporting and the project's progress and clarifying questions --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].p9" i18nkey="project.evaluation.generalComments" className="generalComments limitWords-500" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].generalComments" i18nkey="project.evaluation.generalComments" className="generalComments limitWords-500" editable=editable/]
     </div>
     
     [#-- Recommendations to the project team --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].p10" i18nkey="project.evaluation.recommendations" className="recommendations limitWords-500" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].recommendations" i18nkey="project.evaluation.recommendations" className="recommendations limitWords-500" editable=editable/]
     </div>
     
     [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
     <div class="fullPartBlock">
-      [@customForm.textArea name="project.evaluations[${index}].p11" i18nkey="project.evaluation.anyActionRequired" className="anyActionRequired limitWords-500" editable=editable/]
+      [@customForm.textArea name="project.evaluations[${index}].recommendations" i18nkey="project.evaluation.recommendations" className="anyActionRequired limitWords-500" editable=editable/]
     </div>
     
     [#if editable]

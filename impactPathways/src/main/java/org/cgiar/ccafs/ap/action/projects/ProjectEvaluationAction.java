@@ -16,12 +16,22 @@ package org.cgiar.ccafs.ap.action.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.ProjectEvalutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.Project;
+import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
+import org.cgiar.ccafs.security.data.model.UserRole;
 import org.cgiar.ccafs.utils.APConfig;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +47,9 @@ public class ProjectEvaluationAction extends BaseAction {
   // Manager
   private final ProjectManager projectManager;
   private final ProjectPartnerManager projectPartnerManager;
+  private final ProjectEvalutionManager projectEvaluationManager;
   private final BudgetManager budgetManager;
+  private final UserRoleManagerImpl userRoleManager;
 
   // Model for the back-end
   private Project project;
@@ -49,10 +61,13 @@ public class ProjectEvaluationAction extends BaseAction {
 
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
-    ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager) {
+    ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
+    ProjectEvalutionManager projectEvaluationManager, UserRoleManagerImpl userRoleManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
+    this.projectEvaluationManager = projectEvaluationManager;
+    this.userRoleManager = userRoleManager;
     this.budgetManager = budgetManager;
   }
 
@@ -137,11 +152,48 @@ public class ProjectEvaluationAction extends BaseAction {
     totalBilateralBudget =
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
+
+    Set<ProjectEvaluation> evaluations = new HashSet<>();
+    ProjectEvaluation evaluationUser =
+      projectEvaluationManager.getEvaluationProjectByUser(projectID, this.getCurrentUser().getId());
+    if (evaluationUser == null) {
+      evaluationUser = new ProjectEvaluation();
+      evaluationUser.setProjectId(new Long(projectID));
+      evaluationUser.setYear(this.getCurrentReportingYear());
+      evaluationUser.setIsActive(true);
+      evaluationUser.setActiveSince(new Date());
+      evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+      final List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
+      for (final UserRole userRole : roles) {
+
+        switch (userRole.getId()) {
+          case APConstants.ROLE_ADMIN:
+          case APConstants.ROLE_EXTERNAL_EVALUATOR:
+          case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+          case APConstants.ROLE_PROJECT_LEADER:
+          case APConstants.ROLE_COORDINATING_UNIT:
+          case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
+            evaluationUser.setTypeEvaluation(userRole.getAcronym());
+            break;
+        }
+      }
+
+
+    }
+    evaluations.add(evaluationUser);
+    evaluations.addAll(projectEvaluationManager.getEvaluationsProject(projectID));
+    List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
+    lstEvaluations.addAll(evaluations);
+    project.setEvaluations(lstEvaluations);
   }
 
   @Override
   public String save() {
 
+
+    for (ProjectEvaluation projectEvaluation : project.getEvaluations()) {
+      projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
+    }
     return SUCCESS;
 
   }
