@@ -68,15 +68,21 @@
       
       <div class="fullPartBlock">
         [#-- Project Leader --]
-        <div class="halfPartBlock">
-          <div class="dottedBox">
+        <div class="dottedBox">
+          <div class="halfPartBlock">
             <div class="select"><h6>Project Leader:</h6>
-              <p>${projectLeader.institution.acronym} - [#list projectLeader.partnerPersons as partnerPerson]  ${partnerPerson.getComposedName()}[/#list] </p>
+              <p>${projectLeader.institution.getComposedName()}</p>
             </div>
-          </div> 
+          </div>
+          <div class="halfPartBlock">
+            <div class="select"><h6>Contact:</h6>
+              <p>${partnerPerson.getComposedName()}</p>
+            </div>
+          </div>
+      </div>    
         </div>
         [#-- Project Budget --]
-        <div class="halfPartBlock">
+        <div class="fullPartBlock">
           <div class="dottedBox">
             <div class="halfPartBlock select"><h6>W1/W2 Budget:</h6>
               <p>[#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign]
@@ -87,7 +93,7 @@
             </div>
           </div>
         </div> 
-      </div>
+      
       
     </div> 
     
