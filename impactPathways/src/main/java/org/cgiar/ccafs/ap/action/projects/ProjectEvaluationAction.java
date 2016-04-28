@@ -120,17 +120,8 @@ public class ProjectEvaluationAction extends BaseAction {
     // Getting all the project partners.
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
-    // Positioning project leader to be the first in the list.
-    final ProjectPartner leader = project.getLeader();
-    if (leader != null) {
-      // First we remove the element from the array.
-      project.getProjectPartners().remove(leader);
-      // then we add it to the first position.
-      project.getProjectPartners().add(0, leader);
-    }
-
     // get the Project Leader information
-    projectLeader = project.getProjectPartners().get(0);
+    projectLeader = project.getLeader();
 
     // calculate the cumulative total budget
     totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
