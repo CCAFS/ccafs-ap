@@ -158,11 +158,11 @@
         </thead>
         <tbody>
           <tr>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p1" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p2" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p3" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p4" editable=editable/]</td>
-            <td class="center">[@customForm.rank name="project.evaluations[${index}].p5" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">20</span>[@customForm.rank name="project.evaluations[${index}].p1" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">35</span>[@customForm.rank name="project.evaluations[${index}].p2" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].p3" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].p4" editable=editable/]</td>
+            <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].p5" editable=editable/]</td>
           </tr>
         </tbody>
       </table>

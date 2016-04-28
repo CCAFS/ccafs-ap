@@ -17,13 +17,12 @@ function attachEvents() {
   // $('input.hover-star[name$=p1]:checked').val()
   $('input.hover-star').on('change', function() {
     var $rank = $(this).parents('tr');
-    var p1 = $($rank.find('td')[0]).find('input.hover-star:checked').val() || 0;
-    var p2 = $($rank.find('td')[1]).find('input.hover-star:checked').val() || 0;
-    var p3 = $($rank.find('td')[2]).find('input.hover-star:checked').val() || 0;
-    var p4 = $($rank.find('td')[3]).find('input.hover-star:checked').val() || 0;
-    var p5 = $($rank.find('td')[4]).find('input.hover-star:checked').val() || 0;
-
-    var totalScore = (p1 * 0.2) + (p2 * 0.35) + (p3 * 0.15) + (p4 * 0.15) + (p5 * 0.15)
+    var totalScore = 0;
+    $rank.find('td').each(function(i,element) {
+      var value = $(element).find('input.hover-star:checked').val() || 0;
+      var weight = $(element).find('span.weight').text() || 0;
+      totalScore += value * (weight / 100);
+    });
     $(this).parents('.evaluationBlock').find('p.totalScore').text(totalScore.toFixed(2));
     setScoresColor();
   });
