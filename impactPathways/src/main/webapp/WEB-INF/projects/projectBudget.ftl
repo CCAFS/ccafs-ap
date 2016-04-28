@@ -302,6 +302,8 @@
     </div>
     <div class="clearfix"></div>
   </div><!-- End project-${(linkedProject.id)!''} budget -->
+  
+  
 [/#macro]
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

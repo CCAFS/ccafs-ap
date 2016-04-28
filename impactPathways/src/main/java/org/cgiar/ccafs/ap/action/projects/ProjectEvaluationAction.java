@@ -16,11 +16,13 @@ package org.cgiar.ccafs.ap.action.projects;
 import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
+import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectEvalutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
@@ -52,18 +54,25 @@ public class ProjectEvaluationAction extends BaseAction {
   private final BudgetManager budgetManager;
   private final UserRoleManagerImpl userRoleManager;
   private final UserManager userManager;
+  private final IPProgramManager ipProgramManager;
+
+
   // Model for the back-end
   private Project project;
+
+
   private int projectID;
   private ProjectPartner projectLeader;
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
+  private PartnerPerson partnerPerson;
 
 
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
-    ProjectEvalutionManager projectEvaluationManager, UserRoleManagerImpl userRoleManager, UserManager userManager) {
+    ProjectEvalutionManager projectEvaluationManager, IPProgramManager ipProgramManager,
+    UserRoleManagerImpl userRoleManager, UserManager userManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -71,12 +80,23 @@ public class ProjectEvaluationAction extends BaseAction {
     this.userRoleManager = userRoleManager;
     this.budgetManager = budgetManager;
     this.userManager = userManager;
+    this.ipProgramManager = ipProgramManager;
 
   }
 
 
   public BudgetManager getBudgetManager() {
     return budgetManager;
+  }
+
+
+  public IPProgramManager getIpProgramManager() {
+    return ipProgramManager;
+  }
+
+
+  public PartnerPerson getPartnerPerson() {
+    return partnerPerson;
   }
 
 
@@ -134,17 +154,16 @@ public class ProjectEvaluationAction extends BaseAction {
     // Getting all the project partners.
     project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
 
-    // Positioning project leader to be the first in the list.
-    final ProjectPartner leader = project.getLeader();
-    if (leader != null) {
-      // First we remove the element from the array.
-      project.getProjectPartners().remove(leader);
-      // then we add it to the first position.
-      project.getProjectPartners().add(0, leader);
-    }
+    // Getting the information of the Regions Program associated with the project
+    project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));
+    // Getting the information of the Flagships Program associated with the project
+    project.setFlagships(ipProgramManager.getProjectFocuses(projectID, APConstants.FLAGSHIP_PROGRAM_TYPE));
 
     // get the Project Leader information
-    projectLeader = project.getProjectPartners().get(0);
+    projectLeader = project.getLeader();
+
+    // get the Project Leader contact information
+    partnerPerson = project.getLeaderPerson();
 
     // calculate the cumulative total budget
     totalCCAFSBudget = budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W1_W2.getValue());
@@ -211,6 +230,10 @@ public class ProjectEvaluationAction extends BaseAction {
     }
     return SUCCESS;
 
+  }
+
+  public void setPartnerPerson(PartnerPerson partnerPerson) {
+    this.partnerPerson = partnerPerson;
   }
 
   public void setProject(Project project) {
