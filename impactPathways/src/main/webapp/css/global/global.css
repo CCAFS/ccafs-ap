@@ -1868,7 +1868,7 @@ color: #949292;
   color: #663300;
   font-size: 1.7em;
   font-weight: lighter;
-  margin-bottom: 13px;
+  margin: 14px 0 0px 0;
   padding-bottom: 3px;
 }
 
@@ -1923,8 +1923,8 @@ a#backHome {
   border-bottom: 1px solid #884809;
   color: #663300;
   font-size: 1.7em;
-  padding-bottom: 2px;
-  margin: 0  0 14px 0;
+  padding-bottom: 3px;
+  margin: 5px  0px 10px 0;
   font-weight: lighter;
   font-family: 'Open Sans', sans-serif;
 }
@@ -1963,8 +1963,9 @@ h1.simpleTitle span {
 
 .fullBlock {
   display: block;
-  margin: 0px 0 20px 0;
+  margin: 4px 0 20px 0;
   width: 100%;
+  position: relative;
 }
 
 .fullBlock .input input{
@@ -3620,8 +3621,8 @@ input.projectBudget, input.projectGenderBudget, input.percentage {
   font-size: 1.1em;
   cursor: pointer;
   position: absolute;
-  right: 0;
-  top: -6px;
+  right: 0.2em;
+  top: 0.2em;
 }
 
 #top-quote img { 

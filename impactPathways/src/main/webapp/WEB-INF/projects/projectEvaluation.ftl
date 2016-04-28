@@ -25,9 +25,9 @@
   
   [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
   <article class="fullBlock" id="mainInformation">
+    [#include "/WEB-INF/projects/dataSheet.ftl" /]
+    <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
     <div id="" class="borderBox">
-      [#include "/WEB-INF/projects/dataSheet.ftl" /]
-      <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
       <fieldset class="fullBlock">
         <div class="fullBlock">
           <div class="dottedBox">
