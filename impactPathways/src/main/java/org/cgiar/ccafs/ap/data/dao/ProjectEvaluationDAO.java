@@ -32,25 +32,29 @@ public interface ProjectEvaluationDAO {
    * @param userId - is the ID of the user
    * @return
    */
-  public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId);
+  public ProjectEvaluation getEvaluationProjectByUser(int projectId, String type, Integer programId);
 
   /**
    * Execute the query and get all evaluations of specific project.
    * 
    * @param projectId - is the ID of the project to Query
+   * @param type - is the type of evaluation
+   * @param programId - is the ID of the program
    * @return
    */
   public List<ProjectEvaluation> getEvaluationsProject(int projectId);
 
 
   /**
-   * Execute the query and get all evaluations of specific project except the evaluation for this userId.
+   * Execute the query and get all evaluations of specific project except the evaluation for this type evaluation and
+   * programId.
    * 
    * @param projectId - is the ID of the project to Query
-   * @param userId - is the ID of the user to Query
+   * @param type - is the type of evaluation
+   * @param programId - is the ID of the program
    * @return
    */
-  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId);
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, String type, Integer programId);
 
   /**
    * Execute the query and get only submit evaluations of the project.

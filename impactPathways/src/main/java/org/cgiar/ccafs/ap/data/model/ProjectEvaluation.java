@@ -19,7 +19,8 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   private long projectId;
   private String typeEvaluation;
-  private long userId;
+  private Long userId;
+  private Long programId;
   private boolean isSubmited;
   private int year;
   private double rankingOutputs;
@@ -40,14 +41,12 @@ public class ProjectEvaluation implements java.io.Serializable {
   private long modifiedBy;
   private String modificationJustification;
 
-  private String status;
-
 
   public ProjectEvaluation() {
   }
 
 
-  public ProjectEvaluation(long projectId, String typeEvaluation, long userId, boolean isSubmited, int year,
+  public ProjectEvaluation(long projectId, String typeEvaluation, Long userId, boolean isSubmited, int year,
     double rankingOutputs, double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam,
     double rankingQuality, String communicationProducts, String projectHighlights, String outcomeCaseStudies,
     String generalComments, String recommendations, String anyActionRequeried, double totalScore, boolean isActive,
@@ -150,6 +149,10 @@ public class ProjectEvaluation implements java.io.Serializable {
     return this.outcomeCaseStudies;
   }
 
+  public Long getProgramId() {
+    return programId;
+  }
+
   public String getProjectHighlights() {
     return this.projectHighlights;
   }
@@ -197,7 +200,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     return this.typeEvaluation;
   }
 
-  public long getUserId() {
+  public Long getUserId() {
     return this.userId;
   }
 
@@ -265,6 +268,10 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.outcomeCaseStudies = outcomeCaseStudies;
   }
 
+  public void setProgramId(Long programId) {
+    this.programId = programId;
+  }
+
   public void setProjectHighlights(String projectHighlights) {
     this.projectHighlights = projectHighlights;
   }
@@ -297,21 +304,21 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.recommendations = recommendations;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
 
   public void setTotalScore(double totalScore) {
     this.totalScore = totalScore;
   }
 
+
   public void setTypeEvaluation(String typeEvaluation) {
     this.typeEvaluation = typeEvaluation;
   }
 
-  public void setUserId(long userId) {
+
+  public void setUserId(Long userId) {
     this.userId = userId;
   }
+
 
   public void setYear(int year) {
     this.year = year;

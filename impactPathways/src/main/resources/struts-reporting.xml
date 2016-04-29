@@ -369,9 +369,14 @@
         <param name="actionName">submit</param>
         <param name="projectID">${projectID}</param>        
       </result>
-    </action>      
-
-    <!-- Project Evaluation  -->
+    </action>
+  </package>
+  
+  <!-- Project Evaluation Package -->
+  <package name="projectEvaluation" namespace="/reporting/evaluation" extends="ccafsap-default">
+    <default-interceptor-ref name="stackProjectEvaluation" />
+    <default-action-ref name="projects" />
+        <!-- Project Evaluation  -->
     <action name="evaluation" class="org.cgiar.ccafs.ap.action.projects.ProjectEvaluationAction">
       <result name="input">/WEB-INF/projects/projectEvaluation.ftl</result>
       <result name="success" type="redirectAction">
@@ -384,7 +389,7 @@
         <param name="projectID">${project.id}</param>
       </result>
     </action>
-    
+
      <action name="submitEvaluation" method="submitEvaluation" class="org.cgiar.ccafs.ap.action.projects.ProjectEvaluationAction">
       <result name="input">/WEB-INF/projects/projectEvaluation.ftl</result>
       <result name="success" type="redirectAction">
@@ -397,11 +402,5 @@
         <param name="projectID">${project.id}</param>
       </result>
     </action>
-        
-    
-    
-    
-   
-
   </package>  
 </struts>

@@ -34,9 +34,15 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
   }
 
   @Override
-  public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId) {
-    final String sql =
-      "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId + " and user_id=" + userId;
+  public ProjectEvaluation getEvaluationProjectByUser(int projectId, String type, Integer programId) {
+    String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId
+      + " and type_evaluation='" + type + "'";
+
+
+    if (programId != null) {
+      sql = sql + " and program_id=" + programId;
+    }
+
     final List<ProjectEvaluation> list = dao.findAll(sql);
     if (list.size() > 0) {
       return list.get(0);
@@ -46,15 +52,20 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
 
   @Override
   public List<ProjectEvaluation> getEvaluationsProject(int projectId) {
-    final String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId;
+    String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId;
     final List<ProjectEvaluation> list = dao.findAll(sql);
     return list;
   }
 
   @Override
-  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId) {
-    final String sql =
-      "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId + " and user_id <>" + userId;
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, String type, Integer programId) {
+    String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId
+      + " and type_evaluation <>'" + type + "'";
+
+    if (programId != null) {
+      sql = sql + " and program_id <>" + programId + " or program_id is null";
+    }
+
     final List<ProjectEvaluation> list = dao.findAll(sql);
     return list;
   }

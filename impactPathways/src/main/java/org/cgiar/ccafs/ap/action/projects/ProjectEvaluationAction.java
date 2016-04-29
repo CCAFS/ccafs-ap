@@ -17,11 +17,13 @@ import org.cgiar.ccafs.ap.action.BaseAction;
 import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.BudgetManager;
 import org.cgiar.ccafs.ap.data.manager.IPProgramManager;
+import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectEvalutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
@@ -68,13 +70,14 @@ public class ProjectEvaluationAction extends BaseAction {
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
   private PartnerPerson partnerPerson;
-
+  private final LiaisonInstitutionManager liaisonInstitutionManager;
 
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
     ProjectEvalutionManager projectEvaluationManager, IPProgramManager ipProgramManager,
-    ProjectEvaluationValidator validator, UserRoleManagerImpl userRoleManager, UserManager userManager) {
+    ProjectEvaluationValidator validator, UserRoleManagerImpl userRoleManager, UserManager userManager,
+    LiaisonInstitutionManager liaisonInstitutionManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -84,6 +87,7 @@ public class ProjectEvaluationAction extends BaseAction {
     this.userManager = userManager;
     this.ipProgramManager = ipProgramManager;
     this.validator = validator;
+    this.liaisonInstitutionManager = liaisonInstitutionManager;
 
   }
 
@@ -173,38 +177,81 @@ public class ProjectEvaluationAction extends BaseAction {
     totalBilateralBudget =
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
-
+    final List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
     final List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
-    ProjectEvaluation evaluationUser =
-      projectEvaluationManager.getEvaluationProjectByUser(projectID, this.getCurrentUser().getId());
-    if (evaluationUser == null) {
-      evaluationUser = new ProjectEvaluation();
-      evaluationUser.setProjectId(new Long(projectID));
-      evaluationUser.setYear(this.getCurrentReportingYear());
-      evaluationUser.setIsActive(true);
-      evaluationUser.setActiveSince(new Date());
-      evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
-      // evaluationUser.setId(new Long(-1));
-      final List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
-      for (final UserRole userRole : roles) {
 
+    // evaluationUser.setId(new Long(-1));
+    int liaisonInstitutionID = 0;
+    try {
+      liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
+    } catch (final Exception e) {
+
+    }
+    final LiaisonInstitution currentLiaisonInstitution =
+      liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
+    if (currentLiaisonInstitution.getIpProgram() == null) {
+      currentLiaisonInstitution.setIpProgram("1");
+    }
+    for (final UserRole userRole : roles) {
+      ProjectEvaluation evaluationUser = null;
+      if (lstEvaluations.size() == 0) {
         switch (userRole.getId()) {
+
+          case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+          case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
+            evaluationUser = projectEvaluationManager.getEvaluationProjectByUser(projectID, userRole.getAcronym(),
+              Integer.parseInt(currentLiaisonInstitution.getIpProgram()));
+            if (evaluationUser == null) {
+              evaluationUser = new ProjectEvaluation();
+              evaluationUser.setProjectId(new Long(projectID));
+              evaluationUser.setYear(this.getCurrentReportingYear());
+              evaluationUser.setIsActive(true);
+              evaluationUser.setActiveSince(new Date());
+              evaluationUser.setProgramId(new Long(currentLiaisonInstitution.getIpProgram()));
+              evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+              evaluationUser.setTypeEvaluation(userRole.getAcronym());
+
+            }
+            lstEvaluations.add(evaluationUser);
+
+
+            lstEvaluations.addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID,
+              userRole.getAcronym(), Integer.parseInt(currentLiaisonInstitution.getIpProgram())));
+            break;
+
+
           case APConstants.ROLE_ADMIN:
           case APConstants.ROLE_EXTERNAL_EVALUATOR:
-          case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+
+
           case APConstants.ROLE_PROJECT_LEADER:
           case APConstants.ROLE_COORDINATING_UNIT:
-          case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
-            evaluationUser.setTypeEvaluation(userRole.getAcronym());
+
+            evaluationUser =
+              projectEvaluationManager.getEvaluationProjectByUser(projectID, userRole.getAcronym(), null);
+            if (evaluationUser == null) {
+              evaluationUser = new ProjectEvaluation();
+              evaluationUser.setProjectId(new Long(projectID));
+              evaluationUser.setYear(this.getCurrentReportingYear());
+              evaluationUser.setIsActive(true);
+              evaluationUser.setActiveSince(new Date());
+              evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+              evaluationUser.setTypeEvaluation(userRole.getAcronym());
+
+            }
+            lstEvaluations.add(evaluationUser);
+
+
+            lstEvaluations.addAll(
+              projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, userRole.getAcronym(), null));
+
             break;
         }
       }
 
 
     }
-    lstEvaluations.add(evaluationUser);
-    lstEvaluations
-      .addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, this.getCurrentUser().getId()));
+
 
     project.setEvaluations(lstEvaluations);
 
@@ -278,18 +325,12 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
     projectEvaluation.setIsSubmited(true);
     projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
-
-
     final Collection<String> messages = this.getActionMessages();
-    if (!messages.isEmpty())
-
-    {
+    if (!messages.isEmpty()) {
       final String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
       this.addActionWarning(this.getText("saving.saved") + validationMessage);
-    } else
-
-    {
+    } else {
       this.addActionMessage(this.getText("saving.saved"));
     }
     return SUCCESS;

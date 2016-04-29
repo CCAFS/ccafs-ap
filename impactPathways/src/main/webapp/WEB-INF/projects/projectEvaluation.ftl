@@ -10,7 +10,7 @@
 [#assign breadCrumb = [
   {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
   {"label":"projectsEvaluation", "nameSpace":"${currentSection}", "action":"projectsEvaluation"},
-  {"label":"evaluation", "nameSpace":"${currentSection}/projects", "action":"evaluation", "param":"projectID=${project.id}"}
+  {"label":"evaluation", "nameSpace":"${currentSection}/evaluation", "action":"evaluation", "param":"projectID=${project.id}"}
 ] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -213,17 +213,16 @@
       </div>
       
       [#if editable]
-        <hr />
-        <div class="" >
-          <div class="buttons">
-            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-            <a class="addButton" href="[@s.url namespace="/${currentSection}/projects" action='submitEvaluation'][@s.param name="projectID"]${project.id?c}[/@s.param][/@s.url]">
-              [@s.text name="form.buttons.submit" /]
-            </a>
-          </div>
-        </div> 
-      [/#if]
-    </div>
+      <hr />
+      <div class="" >
+        <div class="buttons">
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+          <a class="addButton" href="[@s.url namespace="/${currentSection}/evaluation" action='submitEvaluation'][@s.param name="projectID"]${project.id?c}[/@s.param][/@s.url]">
+            [@s.text name="form.buttons.submit" /]
+          </a>
+        </div>
+      </div> 
+    [/#if]
   </div>
 
 [/#macro]

@@ -30,7 +30,7 @@
       <h3 class="projectSubTitle">  Evaluation Projects </h3>
       <div class="loadingBlock"></div>
       <div style="display:none">
-        [@projectList.evaluationProjects projects=projects canValidate=true canEdit=true namespace="/${currentSection}/projects" /]
+        [@projectList.evaluationProjects projects=projects canValidate=true canEdit=true namespace="/${currentSection}/evaluation" /]
       </div>
     
     [/#if]    
