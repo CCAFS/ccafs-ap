@@ -59,7 +59,10 @@
       
       [#if libraryName="select2"] <script src="${baseUrl}/js/libs/select2-3.5.4/select2.min.js"></script>[/#if]
       
-      [#if libraryName="star-rating"] <script src="${baseUrl}/js/libs/star-rating/jquery.rating.js"></script>[/#if]
+      [#if libraryName="star-rating"]
+        <script src="${baseUrl}/js/libs/star-rating/jquery.MetaData.js"></script>
+        <script src="${baseUrl}/js/libs/star-rating/jquery.rating.js"></script>
+      [/#if]
       
       [#if libraryName="dropzone"]          <script src="${baseUrl}/js/libs/dropzone/dropzone-3.12.0.js"></script>[/#if]
       
