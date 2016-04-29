@@ -185,7 +185,7 @@ public class ProjectEvaluationAction extends BaseAction {
     try {
       liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
     } catch (final Exception e) {
-
+      liaisonInstitutionID = 2;
     }
     final LiaisonInstitution currentLiaisonInstitution =
       liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);

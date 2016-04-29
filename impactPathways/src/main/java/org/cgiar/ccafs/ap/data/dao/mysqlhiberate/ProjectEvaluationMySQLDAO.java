@@ -63,7 +63,7 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
       + " and type_evaluation <>'" + type + "'";
 
     if (programId != null) {
-      sql = sql + " and program_id <>" + programId + " or program_id is null";
+      sql = sql + " and ( program_id <>" + programId + " or program_id is null )";
     }
 
     final List<ProjectEvaluation> list = dao.findAll(sql);
