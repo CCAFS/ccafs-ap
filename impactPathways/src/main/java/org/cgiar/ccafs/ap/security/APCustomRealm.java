@@ -234,9 +234,7 @@ public class APCustomRealm extends AuthorizingRealm {
         UserRole role = entry.getValue();
 
         for (String permission : role.getPermissions()) {
-          if (permission.equals("reporting:projects:evaluation:*")) {
-            System.out.println("a");
-          }
+
           // Add the project identifier to the permission only if the permission is not at project level.
           // The following permission will be ignored: planning:projects:5:description:update
           // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
@@ -263,6 +261,7 @@ public class APCustomRealm extends AuthorizingRealm {
         }
       }
     }
+    System.out.println(authorizationInfo.getStringPermissions());
     if (authorizationInfo.getStringPermissions() != null) {
       // Converting those general roles into specific for the SYNTHESIS where they are able to edit.
       List<String> newPermissions = new ArrayList<>();
