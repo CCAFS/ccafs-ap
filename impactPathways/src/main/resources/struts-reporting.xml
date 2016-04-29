@@ -373,7 +373,7 @@
   </package>
   
   <!-- Project Evaluation Package -->
-  <package name="projectEvaluation" namespace="/reporting/evaluation" extends="ccafsap-default">
+  <package name="projectEvaluation" namespace="/reporting/projects/evaluation" extends="ccafsap-default">
     <default-interceptor-ref name="stackProjectEvaluation" />
     <default-action-ref name="projects" />
         <!-- Project Evaluation  -->
