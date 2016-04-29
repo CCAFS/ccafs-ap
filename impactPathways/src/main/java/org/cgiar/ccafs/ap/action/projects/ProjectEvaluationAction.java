@@ -318,18 +318,24 @@ public class ProjectEvaluationAction extends BaseAction {
     this.totalCCAFSBudget = totalCCAFSBudget;
   }
 
-  public String submitEvaluation() {
+  @Override
+  public String submit() {
 
     final ProjectEvaluation projectEvaluation = project.getEvaluations().get(0);
+    validator.validate(this, project, project.getEvaluations().get(0), this.getCycleName());
 
+    if (!validator.hasErrors) {
+      projectEvaluation.setIsSubmited(true);
+
+
+    }
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-    projectEvaluation.setIsSubmited(true);
     projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
     final Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
       final String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      this.addActionWarning(this.getText("saving.savednotSubmit") + "" + validationMessage);
     } else {
       this.addActionMessage(this.getText("saving.saved"));
     }

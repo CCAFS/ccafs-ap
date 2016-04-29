@@ -217,8 +217,8 @@
       <div class="" >
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          <a class="addButton" href="[@s.url namespace="/${currentSection}/evaluation" action='submitEvaluation'][@s.param name="projectID"]${project.id?c}[/@s.param][/@s.url]">
-            [@s.text name="form.buttons.submit" /]
+          [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
+        
           </a>
         </div>
       </div> 
