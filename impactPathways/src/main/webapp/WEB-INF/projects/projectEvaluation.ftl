@@ -10,7 +10,7 @@
 [#assign breadCrumb = [
   {"label":"${currentSection}", "nameSpace":"${currentSection}", "action":"projectsList"},
   {"label":"projectsEvaluation", "nameSpace":"${currentSection}", "action":"projectsEvaluation"},
-  {"label":"evaluation", "nameSpace":"${currentSection}/evaluation", "action":"evaluation", "param":"projectID=${project.id}"}
+  {"label":"evaluation", "nameSpace":"${currentSection}/projects/evaluation", "action":"evaluation", "param":"projectID=${project.id}"}
 ] /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]

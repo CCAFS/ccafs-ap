@@ -245,15 +245,16 @@
 [#macro advancedRank name stars=5 split=1 disabled=false editable=true]
   [#assign score][@s.property value="${name}"/][/#assign]
   <div class="rankingBlock" style="text-align:center;">
+    <span class="rankSplit" style="display:none">${split}</span>
     [#if editable]
       [#list 1..(stars*split) as star]
-        <input class="hover-star [#if star_index = 0]required[/#if] [#if split > 1]{split:${split}}[/#if]" type="radio" name="${name}" value="${star_index+1}" [#if score?number == star_index+1]checked="checked"[/#if] [#if disabled]disabled="disabled"[/#if] title="${(star_index+1)/2}"/>
+        <input class="hover-star [#if star_index = 0]required[/#if] [#if split > 1]{split:${split}}[/#if]" type="radio" name="${name}" value="${star_index+1}" [#if score?number == star_index+1]checked="checked"[/#if] [#if disabled]disabled="disabled"[/#if] title="${(star_index+1)/split}"/>
       [/#list]
       <div class="hover-test" style=""></div> 
       <div class="clearfix"></div>
     [#else]
       [#if score?has_content]Rate ${score}[#else]Not rated[/#if]
-    [/#if] 
+    [/#if]
   </div>
 [/#macro]
 
