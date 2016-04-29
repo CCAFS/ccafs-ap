@@ -247,7 +247,7 @@
   <div class="rankingBlock" style="text-align:center;">
     [#if editable]
       [#list 1..(stars*split) as star]
-        <input class="hover-star [#if star_index = 0]required[/#if] [#if split > 1]{split:${split}}[/#if]" type="radio" name="${name}" value="${star_index+1}" [#if score?number == star_index+1]checked="checked"[/#if] [#if disabled]disabled="disabled"[/#if] title=""/>
+        <input class="hover-star [#if star_index = 0]required[/#if] [#if split > 1]{split:${split}}[/#if]" type="radio" name="${name}" value="${star_index+1}" [#if score?number == star_index+1]checked="checked"[/#if] [#if disabled]disabled="disabled"[/#if] title="${(star_index+1)/2}"/>
       [/#list]
       <div class="hover-test" style=""></div> 
       <div class="clearfix"></div>

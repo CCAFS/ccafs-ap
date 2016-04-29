@@ -23,6 +23,7 @@ function attachEvents() {
       var weight = $(element).find('span.weight').text() || 0;
       totalScore += value * (weight / 100);
     });
+    totalScore = totalScore/2;
     $(this).parents('.evaluationBlock').find('p.totalScore').text(totalScore.toFixed(2));
     setScoresColor();
   });
