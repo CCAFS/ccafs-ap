@@ -32,11 +32,12 @@ public interface ProjectEvalutionManager {
    * This method gets the Project Evaluation information by a given project id and user id
    * 
    * @param projectId - is the Id of the project
-   * @param userId - is the Id of the user
+   * @param type - is the type of evaluation
+   * @param programId - is the ID of the program
    * @return a ProjectEvaluation with the Information related with the project id and user id, null if ProjectEvaluation
    *         doesn't exist
    */
-  public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId);
+  public ProjectEvaluation getEvaluationProjectByUser(int projectId, String type, Integer programId);
 
   /**
    * This method gets all the ProjectEvaluations information by a given project id
@@ -51,10 +52,11 @@ public interface ProjectEvalutionManager {
    * This method gets all the ProjectEvaluations information by a given project id except the evaluation for ther userId
    * 
    * @param projectId - is the Id of the project
-   * @param userId - is the Id of the user
+   * @param type - is the type of evaluation
+   * @param programId - is the ID of the program
    * @return a List of ProjectEvaluation with the Information related with the project id
    */
-  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId);
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, String type, Integer programId);
 
   /**
    * this method calculate the total score average of the submit evaluations in the project

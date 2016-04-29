@@ -37,8 +37,8 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
 
 
   @Override
-  public ProjectEvaluation getEvaluationProjectByUser(int projectId, int userId) {
-    return dao.getEvaluationProjectByUser(projectId, userId);
+  public ProjectEvaluation getEvaluationProjectByUser(int projectId, String type, Integer programId) {
+    return dao.getEvaluationProjectByUser(projectId, type, programId);
   }
 
   @Override
@@ -47,8 +47,8 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
   }
 
   @Override
-  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, int userId) {
-    return dao.getEvaluationsProjectExceptUserId(projectId, userId);
+  public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, String type, Integer programId) {
+    return dao.getEvaluationsProjectExceptUserId(projectId, type, programId);
   }
 
   @Override

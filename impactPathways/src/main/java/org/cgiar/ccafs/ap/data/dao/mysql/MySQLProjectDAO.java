@@ -739,10 +739,10 @@ public class MySQLProjectDAO implements ProjectDAO {
           "   inner join project_partner_persons ppe on ppe.project_partner_id=pp.id and ppe.is_active=1 and ppe.contact_type='PL' ");
         query.append(
           "  where pp.project_id=p.id and pp.is_active=1  ) 'Leader' ,IFNULL((select case BIT_AND(is_submited) when 1 then 'Submitted' when 18446744073709551615 then null else 'Evaluating' end"
-            + "  from project_evaluation where year=" + year + " and project_id=p.id  ),'Pending') 'is_Submited'");
-        query
-          .append(" ,IFNULL((select TRUNCATE(SUM(total_score)/COUNT('x'),2)  " + "  from project_evaluation where year="
-            + year + " and project_id=p.id and type_evaluation!='PL' ),'N/A') 'Score'");
+            + "  from project_evaluations where year=" + year + " and project_id=p.id  ),'Pending') 'is_Submited'");
+        query.append(
+          " ,IFNULL((select TRUNCATE(SUM(total_score)/COUNT('x'),2)  " + "  from project_evaluations where year=" + year
+            + " and project_id=p.id and type_evaluation!='PL'  and is_submited=(1)),'N/A') 'Score'");
 
         query.append(" FROM   projects AS p ");
         query.append(" WHERE  p.is_active = true and p.start_date<='");
@@ -802,11 +802,11 @@ public class MySQLProjectDAO implements ProjectDAO {
 
         query.append(
           "  where pp.project_id=p.id and pp.is_active=1  ) 'Leader' ,IFNULL((select case BIT_AND(is_submited) when 1 then 'Submitted' when 18446744073709551615 then null else 'Evaluating' end"
-            + "  from project_evaluation where year=" + year + " and project_id=p.id  ),'Pending') 'is_Submited'");
+            + "  from project_evaluations where year=" + year + " and project_id=p.id  ),'Pending') 'is_Submited'");
 
-        query
-          .append(" ,IFNULL((select TRUNCATE(SUM(total_score)/COUNT('x'),2)  " + "  from project_evaluation where year="
-            + year + " and project_id=p.id and type_evaluation!='PL' ),'N/A') 'Score'");
+        query.append(
+          " ,IFNULL((select TRUNCATE(SUM(total_score)/COUNT('x'),2)  " + "  from project_evaluations where year=" + year
+            + " and project_id=p.id and type_evaluation!='PL'  and is_submited=(1) ),'N/A') 'Score'");
 
         query.append(" FROM   projects AS p ");
         query.append(" WHERE  p.is_active = true and p.start_date<='");
@@ -861,11 +861,11 @@ public class MySQLProjectDAO implements ProjectDAO {
           "   inner join project_partner_persons ppe on ppe.project_partner_id=pp.id and ppe.is_active=1 and ppe.contact_type='PL' ");
         query.append(
           "  where pp.project_id=p.id and pp.is_active=1  ) 'Leader' ,IFNULL((select case BIT_AND(is_submited) when 1 then 'Submitted' when 18446744073709551615 then null else 'Evaluating' end"
-            + "  from project_evaluation where year=" + year + " and project_id=p.id  ),'Pending') 'is_Submited'");
+            + "  from project_evaluations where year=" + year + " and project_id=p.id  ),'Pending') 'is_Submited'");
 
-        query
-          .append(" ,IFNULL((select TRUNCATE(SUM(total_score)/COUNT('x'),2)  " + "  from project_evaluation where year="
-            + year + " and project_id=p.id and type_evaluation!='PL' ),'N/A') 'Score'");
+        query.append(
+          " ,IFNULL((select TRUNCATE(SUM(total_score)/COUNT('x'),2)  " + "  from project_evaluations where year=" + year
+            + " and project_id=p.id and type_evaluation!='PL' and is_submited=(1)),'N/A') 'Score'");
 
         query.append(" FROM   projects AS p ");
         query.append(" WHERE  p.is_active = true and p.start_date<='");
