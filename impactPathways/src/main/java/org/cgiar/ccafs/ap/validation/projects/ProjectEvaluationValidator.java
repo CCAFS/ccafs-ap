@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 public class ProjectEvaluationValidator extends BaseValidator {
 
   private ProjectEvaluation projectEvaluation;
+  public boolean hasErrors = true;
 
   @Inject
   public ProjectEvaluationValidator(ProjectEvaluation projectEvaluation) {
@@ -44,7 +45,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   public void validate(BaseAction action, Project project, ProjectEvaluation projectEvaluation, String cycle) {
     if (projectEvaluation != null) {
-
+      hasErrors = false;
       // validate the correct values depend of the atribute (String, number, date...)
       this.validateRankingOutputs(action, projectEvaluation);
       this.validateRankingOutcomes(action, projectEvaluation);
@@ -79,6 +80,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateAnyActionRequeried(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!this.isValidString(projectEvaluation.getAnyActionRequeried())) {
+      hasErrors = true;
       this.addMessage("Any Action Requeried");
     }
   }
@@ -91,6 +93,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateCommunicationProducts(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!this.isValidString(projectEvaluation.getCommunicationProducts())) {
+      hasErrors = true;
       this.addMessage("Communication Products");
     }
   }
@@ -103,6 +106,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateGeneralComments(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!this.isValidString(projectEvaluation.getGeneralComments())) {
+      hasErrors = true;
       this.addMessage("General Comments");
     }
   }
@@ -115,6 +119,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateOutcomeCaseStudies(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!this.isValidString(projectEvaluation.getOutcomeCaseStudies())) {
+      hasErrors = true;
       this.addMessage("Outcome Case Studies");
     }
   }
@@ -127,6 +132,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateProjectHighlights(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!this.isValidString(projectEvaluation.getProjectHighlights())) {
+      hasErrors = true;
       this.addMessage("Project Highlights");
     }
   }
@@ -140,6 +146,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateRankingOutcomes(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!(projectEvaluation.getRankingOutcomes() > 0)) {
+      hasErrors = true;
       this.addMessage("Ranking Outcomes");
     }
   }
@@ -153,6 +160,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateRankingOutputs(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!(projectEvaluation.getRankingOutputs() > 0)) {
+      hasErrors = true;
       this.addMessage("Ranking Outputs");
     }
   }
@@ -166,6 +174,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateRankingPartCom(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!(projectEvaluation.getRankingParternshipComunnication() > 0)) {
+      hasErrors = true;
       this.addMessage("Ranking Parternship Comunnication");
     }
   }
@@ -179,6 +188,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateRankingQuality(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!(projectEvaluation.getRankingQuality() > 0)) {
+      hasErrors = true;
       this.addMessage("Ranking Quality");
     }
   }
@@ -192,6 +202,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateRankingResponseTeam(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!(projectEvaluation.getRankingResponseTeam() > 0)) {
+      hasErrors = true;
       this.addMessage("Ranking Response Team");
     }
   }
@@ -204,6 +215,7 @@ public class ProjectEvaluationValidator extends BaseValidator {
    */
   private void validateRecommendations(BaseAction action, ProjectEvaluation projectEvaluation) {
     if (!this.isValidString(projectEvaluation.getRecommendations())) {
+      hasErrors = true;
       this.addMessage("Recommendations");
     }
   }

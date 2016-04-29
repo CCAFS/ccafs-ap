@@ -60,7 +60,7 @@ public class ProjectEvaluationAction extends BaseAction {
   private IPProgramManager ipProgramManager;
   private ProjectEvaluationValidator validator;
 
-
+  private final int STAR_DIV = 2;
   // Model for the back-end
   private Project project;
 
@@ -252,7 +252,14 @@ public class ProjectEvaluationAction extends BaseAction {
 
     }
 
-
+    for (ProjectEvaluation projectEvaluation : lstEvaluations) {
+      projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() * STAR_DIV);
+      projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() * STAR_DIV);
+      projectEvaluation
+        .setRankingParternshipComunnication(projectEvaluation.getRankingParternshipComunnication() * STAR_DIV);
+      projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() * STAR_DIV);
+      projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() * STAR_DIV);
+    }
     project.setEvaluations(lstEvaluations);
 
     /*
@@ -271,7 +278,12 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
     for (final ProjectEvaluation projectEvaluation : project.getEvaluations()) {
-
+      projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / STAR_DIV);
+      projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / STAR_DIV);
+      projectEvaluation
+        .setRankingParternshipComunnication(projectEvaluation.getRankingParternshipComunnication() / STAR_DIV);
+      projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
+      projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
       projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
 
       projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
@@ -318,18 +330,29 @@ public class ProjectEvaluationAction extends BaseAction {
     this.totalCCAFSBudget = totalCCAFSBudget;
   }
 
-  public String submitEvaluation() {
+  @Override
+  public String submit() {
 
     final ProjectEvaluation projectEvaluation = project.getEvaluations().get(0);
+    validator.validate(this, project, project.getEvaluations().get(0), this.getCycleName());
 
+    if (!validator.hasErrors) {
+      projectEvaluation.setIsSubmited(true);
+
+
+    }
+    projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / 2);
+    projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / 2);
+    projectEvaluation.setRankingParternshipComunnication(projectEvaluation.getRankingParternshipComunnication() / 2);
+    projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / 2);
+    projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / 2);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-    projectEvaluation.setIsSubmited(true);
     projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
     final Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
       final String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
-      this.addActionWarning(this.getText("saving.saved") + validationMessage);
+      this.addActionWarning(this.getText("saving.savednotSubmit") + "" + validationMessage);
     } else {
       this.addActionMessage(this.getText("saving.saved"));
     }

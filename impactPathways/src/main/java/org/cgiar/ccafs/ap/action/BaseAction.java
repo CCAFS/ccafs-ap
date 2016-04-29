@@ -69,6 +69,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected boolean next;
   protected boolean delete;
   protected boolean cancel;
+  protected boolean submit;
   protected boolean dataSaved;
   protected boolean add;
   // User actions
@@ -163,6 +164,8 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       return this.next();
     } else if (add) {
       return this.add();
+    } else if (submit) {
+      return this.submit();
     }
     return INPUT;
   }
@@ -184,9 +187,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return boardMessageManager.getAllBoardMessages();
   }
 
+
   public APConfig getConfig() {
     return config;
   }
+
 
   public int getCurrentPlanningYear() {
     return config.getPlanningCurrentYear();
@@ -238,7 +243,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return null;
   }
 
-
   @SuppressWarnings("rawtypes")
   public List<LogHistory> getHistory() {
     return history;
@@ -268,6 +272,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public ComponentLesson getProjectLessonsPreview() {
     return projectLessonsPreview;
   }
+
 
   /**
    * This method gets the specific section status from the sectionStatuses array.
@@ -471,7 +476,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return dataSaved;
   }
 
-
   public boolean isEditable() {
     return isEditable;
   }
@@ -486,6 +490,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     }
     return false;
   }
+
 
   /**
    * Validate if the user is already logged in or not.
@@ -523,6 +528,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
   public boolean isSaveable() {
     return saveable;
+  }
+
+  public boolean isSubmit() {
+    return submit;
   }
 
   public boolean isSummariesActive() {
@@ -582,7 +591,6 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     this.dataSaved = dataSaved;
   }
 
-
   public void setDelete(boolean delete) {
     this.delete = delete;
   }
@@ -590,6 +598,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   public void setEditableParameter(boolean isEditable) {
     this.isEditable = isEditable;
   }
+
 
   public void setFullEditable(boolean fullEditable) {
     this.fullEditable = fullEditable;
@@ -632,6 +641,14 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   @Override
   public void setSession(Map<String, Object> session) {
     this.session = session;
+  }
+
+  public void setSubmit(boolean submit) {
+    this.submit = true;
+  }
+
+  public String submit() {
+    return SUCCESS;
   }
 
 }

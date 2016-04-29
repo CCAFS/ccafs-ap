@@ -172,11 +172,11 @@
           </thead>
           <tbody>
             <tr>
-              <td class="center"><span class="weight" style="display:none">20</span>[@customForm.rank name="project.evaluations[${index}].rankingOutputs" editable=editable/][@s.text name="project.evaluations[${index}].rankingOutputs" /]</td>
-              <td class="center"><span class="weight" style="display:none">35</span>[@customForm.rank name="project.evaluations[${index}].rankingOutcomes" editable=editable/][@s.text name="project.evaluations[${index}].rankingOutcomes" /]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingParternshipComunnication" editable=editable/][@s.text name="project.evaluations[${index}].rankingParternshipComunnication" /]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingResponseTeam" editable=editable/][@s.text name="project.evaluations[${index}].rankingResponseTeam" /]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.rank name="project.evaluations[${index}].rankingQuality" editable=editable/][@s.text name="project.evaluations[${index}].rankingQuality" /]</td>
+              <td class="center"><span class="weight" style="display:none">20</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutputs" split=2 editable=editable/] </td>
+              <td class="center"><span class="weight" style="display:none">35</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutcomes" split=2 editable=editable/]</td>
+              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingParternshipComunnication" split=2 editable=editable/]</td>
+              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingResponseTeam" split=2 editable=editable/]</td>
+              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingQuality" split=2 editable=editable/]</td>
             </tr>
           </tbody>
         </table>
@@ -217,8 +217,8 @@
       <div class="" >
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          <a class="addButton" href="[@s.url namespace="/${currentSection}/projects/evaluation" action='submitEvaluation'][@s.param name="projectID"]${project.id?c}[/@s.param][/@s.url]">
-            [@s.text name="form.buttons.submit" /]
+          [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
+        
           </a>
         </div>
       </div> 

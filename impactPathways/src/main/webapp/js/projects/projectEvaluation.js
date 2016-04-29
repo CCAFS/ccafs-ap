@@ -21,7 +21,7 @@ function attachEvents() {
     $rank.find('td').each(function(i,element) {
       var value = $(element).find('input.hover-star:checked').val() || 0;
       var weight = $(element).find('span.weight').text() || 0;
-      totalScore += value * (weight / 100);
+      totalScore += (value * (weight / 100)) / parseInt($(element).find('span.rankSplit').text() || 1);
     });
     $(this).parents('.evaluationBlock').find('p.totalScore').text(totalScore.toFixed(2));
     setScoresColor();
