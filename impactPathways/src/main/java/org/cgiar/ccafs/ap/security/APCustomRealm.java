@@ -15,6 +15,8 @@
 package org.cgiar.ccafs.ap.security;
 
 import org.cgiar.ccafs.ap.config.APConstants;
+import org.cgiar.ccafs.ap.data.manager.impl.LiaisonInstitutionManagerImpl;
+import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
 import org.cgiar.ccafs.security.authentication.Authenticator;
 import org.cgiar.ccafs.security.data.manager.ProjectSpecificUserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.manager.UserManagerImpl;
@@ -68,6 +70,7 @@ public class APCustomRealm extends AuthorizingRealm {
 
   // Managers
   private UserManagerImpl userManager;
+  private LiaisonInstitutionManagerImpl liaisonInstitutionManager;
   private UserRoleManagerImpl userRoleManager;
   private ProjectSpecificUserRoleManagerImpl projectSpecificUserRoleManager;
   private APConfig config;
@@ -83,13 +86,15 @@ public class APCustomRealm extends AuthorizingRealm {
   @Inject
   public APCustomRealm(UserManagerImpl userManager, UserRoleManagerImpl userRoleManager,
     ProjectSpecificUserRoleManagerImpl projectSpecificUserRoleManager, @Named("DB") Authenticator dbAuthenticator,
-    @Named("LDAP") Authenticator ldapAuthenticator, APConfig config) {
+    @Named("LDAP") Authenticator ldapAuthenticator, APConfig config,
+    LiaisonInstitutionManagerImpl liaisonInstitutionManager) {
     super(new MemoryConstrainedCacheManager());
     this.userManager = userManager;
     this.userRoleManager = userRoleManager;
     this.projectSpecificUserRoleManager = projectSpecificUserRoleManager;
     this.dbAuthenticator = dbAuthenticator;
     this.ldapAuthenticator = ldapAuthenticator;
+    this.liaisonInstitutionManager = liaisonInstitutionManager;
     injector = Guice.createInjector();
     this.config = config;
     this.setName("APCustomRealm");
@@ -187,6 +192,18 @@ public class APCustomRealm extends AuthorizingRealm {
         case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
         case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
           liaisonInstitutionIDs.addAll(userRoleManager.getLiaisonInstitutionID(userID));
+
+          for (Integer liaisonInstitutionID : liaisonInstitutionIDs) {
+            final LiaisonInstitution currentLiaisonInstitution =
+              liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
+            if (currentLiaisonInstitution.getIpProgram() == null) {
+              currentLiaisonInstitution.setIpProgram("1");
+            }
+            projectRoles
+              .add(userRoleManager.getProgramProjects(Integer.parseInt(currentLiaisonInstitution.getIpProgram())));
+          }
+
+
           break;
       }
     }
@@ -217,6 +234,9 @@ public class APCustomRealm extends AuthorizingRealm {
         UserRole role = entry.getValue();
 
         for (String permission : role.getPermissions()) {
+          if (permission.equals("reporting:projects:evaluation:*")) {
+            System.out.println("a");
+          }
           // Add the project identifier to the permission only if the permission is not at project level.
           // The following permission will be ignored: planning:projects:5:description:update
           // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {

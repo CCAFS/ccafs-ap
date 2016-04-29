@@ -54,6 +54,15 @@ public interface UserRoleDAO {
    */
   public List<Map<String, String>> getManagementLiaisonProjects(int userID);
 
+
+  /**
+   * This method gets the projects where the user is assigned as FPL or RPL.
+   * 
+   * @param programID - PROGRAM identifier
+   * @return a list of maps with the project identifier and the contact point role information.
+   */
+  public List<Map<String, String>> getProgramProjects(int programID);
+
   /**
    * This method gets the projects where the user is assigned as coordinator.
    * 
