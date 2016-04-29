@@ -255,6 +255,14 @@ public class ProjectEvaluationAction extends BaseAction {
 
     project.setEvaluations(lstEvaluations);
 
+    /*
+     * verify if the user has been submit the evaluation
+     * if is true, the user can not change the evaluation
+     */
+    if (project.getEvaluations().get(0).isIsSubmited()) {
+      this.setCanEdit(false);
+      this.setEditableParameter(false);
+    }
 
   }
 
