@@ -49,6 +49,9 @@
       <interceptor name="grantProjectPlanningAccess" class="org.cgiar.ccafs.ap.interceptor.planning.GrantProjectPlanningAccessInterceptor" />
       <interceptor name="canEditProjectPlanning" class="org.cgiar.ccafs.ap.interceptor.EditProjectInterceptor" />
       
+      <!-- ************************** Interceptors for (Project Evaluation) ********************** -->
+      <interceptor name="canEditProjectEvaluation" class="org.cgiar.ccafs.ap.interceptor.EditProjectEvaluationInterceptor" />
+      
       <!-- ************************** Interceptors for (Deliverables) ****************************** -->
       
       <!-- Custom interceptor to validate that the deliverable parameter is correct and the deliverable actually exists -->
@@ -101,6 +104,17 @@
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="validateProjectParameter" />
         <interceptor-ref name="canEditProjectPlanning" />
+        <interceptor-ref name="accessibleStage" />
+        <interceptor-ref name="trimInputs" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+      
+      <!-- "Stack"the Project Evaluation -->
+      <interceptor-stack name="stackProjectEvaluation">
+        <interceptor-ref name="requireUser" />
+        <interceptor-ref name="keepRedirectMessages"/>
+        <interceptor-ref name="validateProjectParameter" />
+        <interceptor-ref name="canEditProjectEvaluation" />
         <interceptor-ref name="accessibleStage" />
         <interceptor-ref name="trimInputs" />
         <interceptor-ref name="defaultStack" />
