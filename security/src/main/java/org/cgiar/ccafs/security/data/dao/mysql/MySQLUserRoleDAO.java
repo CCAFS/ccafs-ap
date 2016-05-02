@@ -121,6 +121,19 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
   }
 
   @Override
+  public List<Map<String, String>> getProjectExternalEvaluator(int userID) {
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym, p.id project_id ");
+    query.append("FROM  roles r, projects p ");
+    query.append("WHERE  ");
+    query.append(" r.id = 13 and p.is_active=1 ");
+
+
+    return this.setData(query.toString());
+  }
+
+
+  @Override
   public List<Map<String, String>> getProjectLeaderProjects(int userID) {
     StringBuilder query = new StringBuilder();
     query.append("SELECT r.id, r.name, r.acronym, project_id ");
