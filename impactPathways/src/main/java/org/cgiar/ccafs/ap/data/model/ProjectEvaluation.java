@@ -116,11 +116,11 @@ public class ProjectEvaluation implements java.io.Serializable {
     } else if (!programId.equals(other.programId)) {
       return false;
     }
-    if (userId == null) {
-      if (other.userId != null) {
+    if (typeEvaluation == null) {
+      if (other.typeEvaluation != null) {
         return false;
       }
-    } else if (!userId.equals(other.userId)) {
+    } else if (!typeEvaluation.equals(other.typeEvaluation)) {
       return false;
     }
     return true;
@@ -221,6 +221,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     return this.userId;
   }
 
+
   public int getYear() {
     return this.year;
   }
@@ -230,7 +231,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((programId == null) ? 0 : programId.hashCode());
-    result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+    result = prime * result + ((typeEvaluation == null) ? 0 : typeEvaluation.hashCode());
     return result;
   }
 
