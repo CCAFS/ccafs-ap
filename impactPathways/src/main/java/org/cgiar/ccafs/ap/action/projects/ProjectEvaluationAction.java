@@ -33,6 +33,7 @@ import org.cgiar.ccafs.ap.validation.projects.ProjectEvaluationValidator;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.UserRole;
 import org.cgiar.ccafs.utils.APConfig;
+import org.cgiar.ccafs.utils.SendMail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +59,6 @@ public class ProjectEvaluationAction extends BaseAction {
   private UserRoleManagerImpl userRoleManager;
   private UserManager userManager;
   private IPProgramManager ipProgramManager;
-  private ProjectEvaluationValidator validator;
 
   private final int STAR_DIV = 2;
   // Model for the back-end
@@ -71,13 +71,15 @@ public class ProjectEvaluationAction extends BaseAction {
   private double totalBilateralBudget;
   private PartnerPerson partnerPerson;
   private final LiaisonInstitutionManager liaisonInstitutionManager;
+  private ProjectEvaluationValidator validator;
+  private SendMail sendMail;
 
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
     ProjectEvalutionManager projectEvaluationManager, IPProgramManager ipProgramManager,
     ProjectEvaluationValidator validator, UserRoleManagerImpl userRoleManager, UserManager userManager,
-    LiaisonInstitutionManager liaisonInstitutionManager) {
+    LiaisonInstitutionManager liaisonInstitutionManager, SendMail sednMail) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -88,6 +90,7 @@ public class ProjectEvaluationAction extends BaseAction {
     this.ipProgramManager = ipProgramManager;
     this.validator = validator;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
+    this.sendMail = sednMail;
 
   }
 
@@ -305,9 +308,46 @@ public class ProjectEvaluationAction extends BaseAction {
 
   }
 
+  /**
+   * 
+   */
+  private void sendNitificationEmail() {
+    // Building the email message
+    StringBuilder message = new StringBuilder();
+
+    /*
+     * TODO
+     * This method is in test mode, for now, only use test sends.
+     * should ask how will users send the email.
+     */
+    String toEmail = null;
+    String ccEmail = null;
+    /*
+     * put in array the information that contains the email.
+     * [0] = User name that has been submited the evaluation.
+     * [1] = The evaluated project name.
+     * [2] = the evaluated project id.
+     */
+    String[] values = new String[3];
+    values[0] = this.getCurrentUser().getComposedCompleteName();
+    values[1] = project.getTitle();
+    values[3] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
+
+    String subject = this.getText("planning.submit.email.subject", values);
+    message.append(this.getText("planning.submit.email.message", values));
+    message.append(this.getText("planning.manageUsers.email.support"));
+    message.append(this.getText("planning.manageUsers.email.bye"));
+
+    sendMail = new SendMail(this.config);
+    // Send Test Email
+    sendMail.send(this.config.getEmailNotification(), null, null, subject, message.toString(), null, null, null);
+
+  }
+
   public void setPartnerPerson(PartnerPerson partnerPerson) {
     this.partnerPerson = partnerPerson;
   }
+
 
   public void setProject(Project project) {
     this.project = project;
@@ -327,7 +367,6 @@ public class ProjectEvaluationAction extends BaseAction {
   public void setTotalBilateralBudget(double totalBilateralBudget) {
     this.totalBilateralBudget = totalBilateralBudget;
   }
-
 
   public void setTotalCCAFSBudget(double totalCCAFSBudget) {
     this.totalCCAFSBudget = totalCCAFSBudget;
@@ -350,7 +389,11 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / 2);
     projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / 2);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-    projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
+    int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
+    // if the evaluation has submited, send the email notification
+    if (iReturn > 0) {
+      this.sendNitificationEmail();
+    }
     final Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
       final String validationMessage = messages.iterator().next();
@@ -362,7 +405,6 @@ public class ProjectEvaluationAction extends BaseAction {
     return SUCCESS;
 
   }
-
 
   @Override
   public void validate() {
