@@ -264,6 +264,40 @@ public class DeliverableManagerImpl implements DeliverableManager {
     return null;
   }
 
+
+  @Override
+  public List<Deliverable> getDeliverablesBasciByProject(int projectID) {
+
+    List<Deliverable> deliverableList = new ArrayList<>();
+    List<Map<String, String>> deliverableDataList = deliverableDAO.getDeliverablesByProject(projectID);
+    for (Map<String, String> deliverableData : deliverableDataList) {
+      Deliverable deliverable = new Deliverable();
+      // Deliverable basic information
+      deliverable.setId(Integer.parseInt(deliverableData.get("id")));
+      deliverable.setTitle(deliverableData.get("title"));
+      deliverable.setYear(Integer.parseInt(deliverableData.get("year")));
+      deliverable.setCreated(Long.parseLong(deliverableData.get("active_since")));
+      if (deliverableData.get("status") != null) {
+        deliverable.setStatus(Integer.parseInt(deliverableData.get("status")));
+      }
+
+      deliverable.setStatusDescription(deliverableData.get("status_description"));
+      // Type
+      if (deliverableData.get("type_id") != null) {
+        deliverable
+          .setType(deliverableTypeManager.getDeliverableTypeById(Integer.parseInt(deliverableData.get("type_id"))));
+      }
+      deliverable.setTypeOther(deliverableData.get("type_other"));
+      // Next users
+      deliverable.setNextUsers(nextUserManager.getNextUsersByDeliverableId(deliverable.getId()));
+      // MOG
+      deliverable.setOutput(this.getDeliverableOutput(Integer.parseInt(deliverableData.get("id"))));
+      deliverableList.add(deliverable);
+    }
+
+    return deliverableList;
+  }
+
   @Override
   public List<Deliverable> getDeliverablesByProject(int projectID) {
     List<Deliverable> deliverableList = new ArrayList<>();
