@@ -130,6 +130,11 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
 
+  public int getStartsDiv() {
+    return STAR_DIV;
+  }
+
+
   public double getTotalBilateralBudget() {
     return totalBilateralBudget;
   }
@@ -144,7 +149,6 @@ public class ProjectEvaluationAction extends BaseAction {
     final User user = userManager.getUser(userId);
     return user.getComposedName();
   }
-
 
   @Override
   public void prepare() throws Exception {

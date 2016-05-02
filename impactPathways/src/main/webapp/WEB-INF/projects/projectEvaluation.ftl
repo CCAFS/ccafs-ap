@@ -125,8 +125,8 @@
       
       [#-- Is my evaluation submitted ? --]
       [#if project.evaluations[0].isSubmited]<p class="projectSubmitted">This  evaluation was submitted on {date}</p><br />[/#if]
-      
       [@projectEvaluation index=0 editable=(!project.evaluations[0].isSubmited && editable)  own=true /]
+      
     </div>
     
     [#-- Project identifier --]
@@ -147,8 +147,8 @@
     <table class="evaluationTable">
       <tr>
         [#if !own]<td class="statusCol">[@s.text name="project.evaluations[${index}].status" /]</td>[/#if]
-          [#assign userName = action.getUserName(project.evaluations[index].userId) /]
         <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /] Evaluation</td>
+        [#assign userName = action.getUserName(project.evaluations[index].userId) /]
         <td class="personCol">[@s.text name="${userName}" /]</td>
         <td class="totalScoreCol"><p class="totalScore">[@s.text name="project.evaluations[${index}].totalScore" /]</p></td>
         [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
@@ -156,8 +156,7 @@
     </table>
     
     <div id="evaluation_${index}" style="display:${own?string('block','none')}">
-      <hr />
-      <br />
+      <hr /><br />
       [#-- Evaluation ranking --]
       <div class="fullPartBlock">
         <table class="evaluationRank default" style="width:98%">
@@ -172,11 +171,11 @@
           </thead>
           <tbody>
             <tr>
-              <td class="center"><span class="weight" style="display:none">20</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutputs" split=2 editable=editable/] </td>
-              <td class="center"><span class="weight" style="display:none">35</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutcomes" split=2 editable=editable/]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingParternshipComunnication" split=2 editable=editable/]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingResponseTeam" split=2 editable=editable/]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingQuality" split=2 editable=editable/]</td>
+              <td class="center"><span class="weight" style="display:none">20</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutputs" split=action.getStartsDiv() editable=editable/] </td>
+              <td class="center"><span class="weight" style="display:none">35</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutcomes" split=action.getStartsDiv() editable=editable/]</td>
+              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingParternshipComunnication" split=action.getStartsDiv() editable=editable/]</td>
+              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingResponseTeam" split=action.getStartsDiv() editable=editable/]</td>
+              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingQuality" split=action.getStartsDiv() editable=editable/]</td>
             </tr>
           </tbody>
         </table>
@@ -218,11 +217,9 @@
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
-        
-          </a>
         </div>
       </div> 
-    [/#if]
+      [/#if]
+    </div>  
   </div>
-
 [/#macro]
