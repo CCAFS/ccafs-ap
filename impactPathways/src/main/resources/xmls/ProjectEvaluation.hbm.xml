@@ -68,6 +68,10 @@
         <property name="activeSince" type="timestamp">
             <column name="active_since" length="19" not-null="true" />
         </property>
+        
+          <property name="submitedDate" type="timestamp">
+            <column name="submited_date" length="19"  />
+        </property>
         <property name="createdBy" type="long">
             <column name="created_by" not-null="true" />
         </property>
