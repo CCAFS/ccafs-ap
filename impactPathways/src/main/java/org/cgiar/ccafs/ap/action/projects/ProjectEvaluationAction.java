@@ -127,11 +127,6 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
 
-  public int getSTAR_DIV() {
-    return STAR_DIV;
-  }
-
-
   public double getTotalBilateralBudget() {
     return totalBilateralBudget;
   }
