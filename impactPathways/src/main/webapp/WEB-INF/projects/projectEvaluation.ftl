@@ -103,9 +103,16 @@
     [#-- Project Evaluations --]
     <h1 class="contentTitle">Project Evaluations</h1>  
     <div id="" class="borderBox">
+      [#-- Button for edit this section --]
+      [#if (!editable && canEdit)]
+        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+      [#elseif canEdit]
+          <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+      [/#if]
+      
       [#if project.evaluations?size >1]
         [#list project.evaluations as evaluation]
-          [@projectEvaluation index=evaluation_index editable=false /]
+          [@projectEvaluation index=evaluation_index editable=editable /]
         [/#list]
       [#else]
         <p>There is no assessment for this project.</p>
@@ -127,27 +134,21 @@
   [#assign element = (customName?eval)! /]
   
   
-  <div class="simpleBox evaluationBlock">
-    [#-- Button for edit this section --]
-    [#if (!editable && canEdit)]
-      <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-    [#elseif canEdit]
-        <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
-    [/#if]
+  <div class="simpleBox evaluationBlock"> 
   
     <table class="evaluationTable">
       <tr>
-        [#if !own]<td class="statusCol">[@s.text name="project.evaluations[${index}].status" /]</td>[/#if]
-        <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /] Evaluation</td>
+        [#if !own]<td class="statusCol">${element.status} </td>[/#if]
+        <td class="rolCol">${element.typeEvaluation} Evaluation</td>
         [#assign userName = action.getUserName(project.evaluations[index].userId) /]
-        <td class="personCol">[@s.text name="${userName}" /]</td>
-        <td class="totalScoreCol"><p class="totalScore">[@s.text name="project.evaluations[${index}].totalScore" /]</p></td>
+        <td class="personCol">${userName}</td>
+        <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
         [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
       </tr>
     </table>
     
     <div id="evaluation_${index}" style="display:${own?string('block','none')}">
-    [#assign canAccess = own || action.hasProjectPermission("access${element.typeEvaluation}",project.id) /]
+    [#assign canAccess = true /]
     [#if canAccess]
       <hr /><br />
       [#-- Evaluation ranking --]
