@@ -333,8 +333,8 @@ public class ProjectEvaluationAction extends BaseAction {
     values[1] = project.getTitle();
     values[2] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
 
-    String subject = this.getText("planning.submit.email.subject", values);
-    message.append(this.getText("planning.submit.email.message", values));
+    String subject = this.getText("evaluation.submit.email.subject", values);
+    message.append(this.getText("evaluation.submit.email.message", values));
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("planning.manageUsers.email.bye"));
 
