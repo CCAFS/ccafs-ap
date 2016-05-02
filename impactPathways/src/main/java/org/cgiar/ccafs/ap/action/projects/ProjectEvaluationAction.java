@@ -59,6 +59,7 @@ public class ProjectEvaluationAction extends BaseAction {
   private UserRoleManagerImpl userRoleManager;
   private UserManager userManager;
   private IPProgramManager ipProgramManager;
+  private LiaisonInstitutionManager liaisonInstitutionManager;
 
   private final int STAR_DIV = 2;
   // Model for the back-end
@@ -70,7 +71,6 @@ public class ProjectEvaluationAction extends BaseAction {
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
   private PartnerPerson partnerPerson;
-  private final LiaisonInstitutionManager liaisonInstitutionManager;
   private ProjectEvaluationValidator validator;
   private SendMail sendMail;
 
@@ -157,7 +157,7 @@ public class ProjectEvaluationAction extends BaseAction {
 
     try {
       projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    } catch (final NumberFormatException e) {
+    } catch (NumberFormatException e) {
       LOG.error("-- prepare() > There was an error parsing the project identifier '{}'.", projectID, e);
       projectID = -1;
       return; // Stop here and go to execute method.
@@ -184,22 +184,22 @@ public class ProjectEvaluationAction extends BaseAction {
     totalBilateralBudget =
       budgetManager.calculateTotalProjectBudgetByType(projectID, BudgetType.W3_BILATERAL.getValue());
 
-    final List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
-    final List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
+    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
+    List<ProjectEvaluation> lstEvaluations = new ArrayList<ProjectEvaluation>();
 
     // evaluationUser.setId(new Long(-1));
     int liaisonInstitutionID = 0;
     try {
       liaisonInstitutionID = this.getCurrentUser().getLiaisonInstitution().get(0).getId();
-    } catch (final Exception e) {
+    } catch (Exception e) {
       liaisonInstitutionID = 2;
     }
-    final LiaisonInstitution currentLiaisonInstitution =
+    LiaisonInstitution currentLiaisonInstitution =
       liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
     if (currentLiaisonInstitution.getIpProgram() == null) {
       currentLiaisonInstitution.setIpProgram("1");
     }
-    for (final UserRole userRole : roles) {
+    for (UserRole userRole : roles) {
       ProjectEvaluation evaluationUser = null;
       if (lstEvaluations.size() == 0) {
         switch (userRole.getId()) {
@@ -283,7 +283,7 @@ public class ProjectEvaluationAction extends BaseAction {
   public String save() {
 
 
-    for (final ProjectEvaluation projectEvaluation : project.getEvaluations()) {
+    for (ProjectEvaluation projectEvaluation : project.getEvaluations()) {
       projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / STAR_DIV);
       projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / STAR_DIV);
       projectEvaluation
@@ -296,9 +296,9 @@ public class ProjectEvaluationAction extends BaseAction {
     }
 
 
-    final Collection<String> messages = this.getActionMessages();
+    Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
-      final String validationMessage = messages.iterator().next();
+      String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
       this.addActionWarning(this.getText("saving.saved") + validationMessage);
     } else {
@@ -309,9 +309,9 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
   /**
-   * 
+   * Send Email notification when the user submit the evaluation.
    */
-  private void sendNitificationEmail() {
+  private void sendNotificationEmail() {
     // Building the email message
     StringBuilder message = new StringBuilder();
 
@@ -375,7 +375,7 @@ public class ProjectEvaluationAction extends BaseAction {
   @Override
   public String submit() {
 
-    final ProjectEvaluation projectEvaluation = project.getEvaluations().get(0);
+    ProjectEvaluation projectEvaluation = project.getEvaluations().get(0);
     validator.validate(this, project, project.getEvaluations().get(0), this.getCycleName());
 
     if (!validator.hasErrors) {
@@ -392,11 +392,11 @@ public class ProjectEvaluationAction extends BaseAction {
     int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
     // if the evaluation has submited, send the email notification
     if (iReturn > 0) {
-      this.sendNitificationEmail();
+      this.sendNotificationEmail();
     }
-    final Collection<String> messages = this.getActionMessages();
+    Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
-      final String validationMessage = messages.iterator().next();
+      String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
       this.addActionWarning(this.getText("saving.savednotSubmit") + "" + validationMessage);
     } else {
