@@ -43,7 +43,7 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
       sql = sql + " and program_id=" + programId;
     }
 
-    final List<ProjectEvaluation> list = dao.findAll(sql);
+    List<ProjectEvaluation> list = dao.findAll(sql);
     if (list.size() > 0) {
       return list.get(0);
     }
@@ -53,31 +53,32 @@ public class ProjectEvaluationMySQLDAO implements ProjectEvaluationDAO {
   @Override
   public List<ProjectEvaluation> getEvaluationsProject(int projectId) {
     String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId;
-    final List<ProjectEvaluation> list = dao.findAll(sql);
+    List<ProjectEvaluation> list = dao.findAll(sql);
     return list;
   }
 
   @Override
   public List<ProjectEvaluation> getEvaluationsProjectExceptUserId(int projectId, String type, Integer programId) {
-    String sql = "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId;
+    StringBuilder sql =
+      new StringBuilder("from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId);
     // + " and type_evaluation <>'" + type + "'";
 
     if (programId != null) {
-      sql = sql + " and ( program_id <>" + programId + " or program_id is null )";
+      sql.append(" and ( program_id <>" + programId + " or program_id is null )");
     } else {
-      sql = sql + " and type_evaluation <>'" + type + "'";
+      sql.append(" and type_evaluation <>'" + type + "'");
 
     }
 
-    final List<ProjectEvaluation> list = dao.findAll(sql);
+    List<ProjectEvaluation> list = dao.findAll(sql.toString());
     return list;
   }
 
   @Override
   public List<ProjectEvaluation> getSubmitedEvaluations(int projectId) {
-    final String sql =
+    String sql =
       "from " + ProjectEvaluation.class.getName() + " where project_id=" + projectId + " and is_submited=(1)";
-    final List<ProjectEvaluation> list = dao.findAll(sql);
+    List<ProjectEvaluation> list = dao.findAll(sql);
     return list;
   }
 

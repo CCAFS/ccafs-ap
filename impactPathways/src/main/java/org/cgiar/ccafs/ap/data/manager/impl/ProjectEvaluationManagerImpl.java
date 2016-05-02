@@ -53,9 +53,9 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
 
   @Override
   public double getTraficLightScore(int projectId) {
-    final List<ProjectEvaluation> list = dao.getSubmitedEvaluations(projectId);
+    List<ProjectEvaluation> list = dao.getSubmitedEvaluations(projectId);
     double avgScore = 0;
-    for (final ProjectEvaluation projectEvaluation : list) {
+    for (ProjectEvaluation projectEvaluation : list) {
       avgScore = avgScore + projectEvaluation.getTotalScore();
     }
     return avgScore / list.size();
@@ -70,7 +70,7 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
     }
     projectEvaluation.setModifiedBy(Long.parseLong(user.getId() + ""));
     projectEvaluation.setModificationJustification(justification);
-    projectEvaluation.setIsActive(true);
+    projectEvaluation.setActive(true);
     return dao.save(projectEvaluation);
   }
 
