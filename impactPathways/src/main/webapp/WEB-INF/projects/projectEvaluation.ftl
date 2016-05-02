@@ -19,12 +19,16 @@
 [#import "/WEB-INF/global/macros/logHistory.ftl" as log/]
     
 <section class="content">
+  [#-- 
   <div class="helpMessage">
     <img src="${baseUrl}/images/global/icon-help.png" /><p>[@s.text name="${currentSection}.projectEvaluation.help" /]</p>
   </div>
-  
+  --]
   [#-- Privileges message --] 
-  [#if !project.evaluations[0].submited && !canEdit ]
+  [#assign submission = (project.isSubmitted(currentReportingYear, 'Reporting'))!/]
+  [#if !submission?has_content]
+    <p class="readPrivileges">This project has not been reported yet.</p>
+  [#elseif !project.evaluations[0].submited && !canEdit ]
     <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
   [/#if]
   
@@ -116,10 +120,8 @@
       [#-- Button for edit this section --]
       [#if (!editable && canEdit)]
         <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-      [#else]
-        [#if canEdit]
+      [#elseif canEdit]
           <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
-        [/#if]
       [/#if]
       <br />
       [#-- Is my evaluation submitted ? --]
@@ -146,14 +148,13 @@
     <table class="evaluationTable">
       <tr>
         [#if !own]<td class="statusCol">[@s.text name="project.evaluations[${index}].status" /]</td>[/#if]
-        <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /]Evaluation</td>
+        <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /] Evaluation</td>
         [#assign userName = action.getUserName(project.evaluations[index].userId) /]
         <td class="personCol">[@s.text name="${userName}" /]</td>
         <td class="totalScoreCol"><p class="totalScore">[@s.text name="project.evaluations[${index}].totalScore" /]</p></td>
         [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
       </tr>
     </table>
-    
     
     <div id="evaluation_${index}" style="display:${own?string('block','none')}">
     [#assign canAccess = own || action.hasProjectPermission("access${element.typeEvaluation}",project.id) /]
@@ -221,7 +222,7 @@
         </div>
       [/#if]
     [#else]
-      <p>You do not have sufficient privileges to access to this evaluation</p>
+      <p class="center">You do not have sufficient privileges to access to this evaluation</p>
     [/#if]
     </div>
      
