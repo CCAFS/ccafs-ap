@@ -59,7 +59,6 @@ public class ProjectEvaluationAction extends BaseAction {
   private UserRoleManagerImpl userRoleManager;
   private UserManager userManager;
   private IPProgramManager ipProgramManager;
-  private LiaisonInstitutionManager liaisonInstitutionManager;
 
   private final int STAR_DIV = 2;
   // Model for the back-end
@@ -394,7 +393,7 @@ public class ProjectEvaluationAction extends BaseAction {
     int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
     // if the evaluation has submited, send the email notification
     if (iReturn > 0 && !validator.hasErrors) {
-      this.sendNotificationEmail();
+      this.sendNitificationEmail();
     }
     Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
