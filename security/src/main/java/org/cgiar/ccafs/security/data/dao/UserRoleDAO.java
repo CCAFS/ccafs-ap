@@ -73,6 +73,15 @@ public interface UserRoleDAO {
 
 
   /**
+   * This method gets the projects that external evaluator can grade it
+   * 
+   * @param userID - user identifier
+   * @return a list of maps with the project identifier and the contact point role information.
+   */
+  public List<Map<String, String>> getProjectExternalEvaluator(int userID);
+
+
+  /**
    * This method gets the projects where the user is assigned as leader .
    * 
    * @param userID - user identifier

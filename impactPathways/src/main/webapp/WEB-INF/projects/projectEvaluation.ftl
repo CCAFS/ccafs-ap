@@ -24,7 +24,7 @@
   </div>
   
   [#-- Privileges message --] 
-  [#if !project.evaluations[0].isSubmited && !canEdit ]
+  [#if !project.evaluations[0].submited && !canEdit ]
     <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
   [/#if]
   
@@ -122,13 +122,10 @@
         [/#if]
       [/#if]
       <br />
-      
       [#-- Is my evaluation submitted ? --]
-      [#if project.evaluations[0].isSubmited]<p class="projectSubmitted">This  evaluation was submitted on [@s.text name="project.evaluations[0].submitedDate" /]</p><br />[/#if]
-      
+      [#if project.evaluations[0].submited]<p class="projectSubmitted">This  evaluation was submitted on [@s.text name="project.evaluations[0].submittedDate" /]</p><br />[/#if]
       [#-- My Evaluation --]
-      [@projectEvaluation index=0 editable=(!project.evaluations[0].isSubmited && editable)  own=true /]
-      
+      [@projectEvaluation index=0 editable=(!project.evaluations[0].submited && editable)  own=true /]
     </div>
     
     [#-- Project identifier --]

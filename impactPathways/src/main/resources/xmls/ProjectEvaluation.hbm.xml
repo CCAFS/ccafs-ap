@@ -20,7 +20,7 @@
         <property name="userId" type="java.lang.Long">
             <column name="user_id" />
         </property>
-        <property name="isSubmited" type="boolean">
+        <property name="submited" type="boolean">
             <column name="is_submited" not-null="true" />
         </property>
         <property name="year" type="int">
@@ -62,14 +62,14 @@
         <property name="totalScore" type="double">
             <column name="total_score" precision="22" scale="0" not-null="true" />
         </property>
-        <property name="isActive" type="boolean">
+        <property name="active" type="boolean">
             <column name="is_active" not-null="true" />
         </property>
         <property name="activeSince" type="timestamp">
             <column name="active_since" length="19" not-null="true" />
         </property>
         
-          <property name="submitedDate" type="timestamp">
+          <property name="submittedDate" type="timestamp">
             <column name="submited_date" length="19"  />
         </property>
         <property name="createdBy" type="long">

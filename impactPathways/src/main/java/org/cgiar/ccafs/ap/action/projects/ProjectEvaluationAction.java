@@ -59,7 +59,6 @@ public class ProjectEvaluationAction extends BaseAction {
   private UserRoleManagerImpl userRoleManager;
   private UserManager userManager;
   private IPProgramManager ipProgramManager;
-  private LiaisonInstitutionManager liaisonInstitutionManager;
 
   private final int STAR_DIV = 2;
   // Model for the back-end
@@ -71,6 +70,7 @@ public class ProjectEvaluationAction extends BaseAction {
   private double totalCCAFSBudget;
   private double totalBilateralBudget;
   private PartnerPerson partnerPerson;
+  private LiaisonInstitutionManager liaisonInstitutionManager;
   private ProjectEvaluationValidator validator;
   private SendMail sendMail;
 
@@ -146,7 +146,7 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
   public String getUserName(int userId) {
-    final User user = userManager.getUser(userId);
+    User user = userManager.getUser(userId);
     return user.getComposedName();
   }
 
@@ -212,7 +212,7 @@ public class ProjectEvaluationAction extends BaseAction {
               evaluationUser = new ProjectEvaluation();
               evaluationUser.setProjectId(new Long(projectID));
               evaluationUser.setYear(this.getCurrentReportingYear());
-              evaluationUser.setIsActive(true);
+              evaluationUser.setActive(true);
               evaluationUser.setActiveSince(new Date());
               evaluationUser.setProgramId(new Long(currentLiaisonInstitution.getIpProgram()));
               evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
@@ -238,7 +238,7 @@ public class ProjectEvaluationAction extends BaseAction {
               evaluationUser = new ProjectEvaluation();
               evaluationUser.setProjectId(new Long(projectID));
               evaluationUser.setYear(this.getCurrentReportingYear());
-              evaluationUser.setIsActive(true);
+              evaluationUser.setActive(true);
               evaluationUser.setActiveSince(new Date());
               evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
               evaluationUser.setTypeEvaluation(userRole.getAcronym());
@@ -271,7 +271,7 @@ public class ProjectEvaluationAction extends BaseAction {
      * verify if the user has been submit the evaluation
      * if is true, the user can not change the evaluation
      */
-    if (project.getEvaluations().get(0).isIsSubmited()) {
+    if (project.getEvaluations().get(0).isSubmited()) {
       this.setCanEdit(false);
       this.setEditableParameter(false);
     }
@@ -311,7 +311,7 @@ public class ProjectEvaluationAction extends BaseAction {
   /**
    * Send Email notification when the user submit the evaluation.
    */
-  private void sendNotificationEmail() {
+  private void sendNitificationEmail() {
     // Building the email message
     StringBuilder message = new StringBuilder();
 
@@ -331,10 +331,10 @@ public class ProjectEvaluationAction extends BaseAction {
     String[] values = new String[3];
     values[0] = this.getCurrentUser().getComposedCompleteName();
     values[1] = project.getTitle();
-    values[3] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
+    values[2] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
 
-    String subject = this.getText("planning.submit.email.subject", values);
-    message.append(this.getText("planning.submit.email.message", values));
+    String subject = this.getText("evaluation.submit.email.subject", values);
+    message.append(this.getText("evaluation.submit.email.message", values));
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("planning.manageUsers.email.bye"));
 
@@ -379,20 +379,21 @@ public class ProjectEvaluationAction extends BaseAction {
     validator.validate(this, project, project.getEvaluations().get(0), this.getCycleName());
 
     if (!validator.hasErrors) {
-      projectEvaluation.setIsSubmited(true);
-      projectEvaluation.setSubmitedDate(new Date());
+      projectEvaluation.setSubmited(true);
+      projectEvaluation.setSubmittedDate(new Date());
 
     }
-    projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / 2);
-    projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / 2);
-    projectEvaluation.setRankingParternshipComunnication(projectEvaluation.getRankingParternshipComunnication() / 2);
-    projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / 2);
-    projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / 2);
+    projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / STAR_DIV);
+    projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / STAR_DIV);
+    projectEvaluation
+      .setRankingParternshipComunnication(projectEvaluation.getRankingParternshipComunnication() / STAR_DIV);
+    projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
+    projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
     int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
     // if the evaluation has submited, send the email notification
-    if (iReturn > 0) {
-      this.sendNotificationEmail();
+    if (iReturn > 0 && !validator.hasErrors) {
+      this.sendNitificationEmail();
     }
     Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {

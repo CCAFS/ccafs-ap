@@ -95,6 +95,14 @@ public class UserRoleManagerImpl {
   }
 
 
+  public Map<String, UserRole> getProjectExternalEvaluator(int userID) {
+
+
+    List<Map<String, String>> userRoleData = userRoleDAO.getProjectExternalEvaluator(userID);
+    return this.getData(userRoleData);
+  }
+
+
   public Map<String, UserRole> getProjectLeaderProjects(int userID) {
     List<Map<String, String>> userRoleData = userRoleDAO.getProjectLeaderProjects(userID);
     return this.getData(userRoleData);

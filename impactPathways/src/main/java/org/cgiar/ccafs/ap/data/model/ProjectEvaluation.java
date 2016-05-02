@@ -21,7 +21,7 @@ public class ProjectEvaluation implements java.io.Serializable {
   private String typeEvaluation;
   private Long userId;
   private Long programId;
-  private boolean isSubmited;
+  private boolean submited;
   private int year;
   private double rankingOutputs;
   private double rankingOutcomes;
@@ -35,9 +35,9 @@ public class ProjectEvaluation implements java.io.Serializable {
   private String recommendations;
   private String anyActionRequeried;
   private double totalScore;
-  private boolean isActive;
+  private boolean active;
   private Date activeSince;
-  private Date submitedDate;
+  private Date submittedDate;
 
   private long createdBy;
 
@@ -58,7 +58,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.projectId = projectId;
     this.typeEvaluation = typeEvaluation;
     this.userId = userId;
-    this.isSubmited = isSubmited;
+    this.submited = isSubmited;
     this.year = year;
     this.rankingOutputs = rankingOutputs;
     this.rankingOutcomes = rankingOutcomes;
@@ -72,7 +72,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.recommendations = recommendations;
     this.anyActionRequeried = anyActionRequeried;
     this.totalScore = totalScore;
-    this.isActive = isActive;
+    this.active = isActive;
     this.activeSince = activeSince;
     this.createdBy = createdBy;
     this.modifiedBy = modifiedBy;
@@ -192,14 +192,14 @@ public class ProjectEvaluation implements java.io.Serializable {
   }
 
   public String getStatus() {
-    if (isSubmited) {
+    if (submited) {
       return "Submitted";
     }
     return "Evaluating";
   }
 
-  public Date getSubmitedDate() {
-    return submitedDate;
+  public Date getSubmittedDate() {
+    return submittedDate;
   }
 
   public double getTotalScore() {
@@ -226,12 +226,16 @@ public class ProjectEvaluation implements java.io.Serializable {
     return result;
   }
 
-  public boolean isIsActive() {
-    return this.isActive;
+  public boolean isActive() {
+    return this.active;
   }
 
-  public boolean isIsSubmited() {
-    return this.isSubmited;
+  public boolean isSubmited() {
+    return this.submited;
+  }
+
+  public void setActive(boolean isActive) {
+    this.active = isActive;
   }
 
   public void setActiveSince(Date activeSince) {
@@ -256,14 +260,6 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public void setIsActive(boolean isActive) {
-    this.isActive = isActive;
-  }
-
-  public void setIsSubmited(boolean isSubmited) {
-    this.isSubmited = isSubmited;
   }
 
   public void setModificationJustification(String modificationJustification) {
@@ -314,8 +310,12 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.recommendations = recommendations;
   }
 
-  public void setSubmitedDate(Date submitedDate) {
-    this.submitedDate = submitedDate;
+  public void setSubmited(boolean isSubmited) {
+    this.submited = isSubmited;
+  }
+
+  public void setSubmittedDate(Date submitedDate) {
+    this.submittedDate = submitedDate;
   }
 
 
