@@ -21,6 +21,7 @@ import org.cgiar.ccafs.ap.data.manager.LiaisonInstitutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectEvalutionManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectManager;
 import org.cgiar.ccafs.ap.data.manager.ProjectPartnerManager;
+import org.cgiar.ccafs.ap.data.manager.RoleManager;
 import org.cgiar.ccafs.ap.data.manager.UserManager;
 import org.cgiar.ccafs.ap.data.model.BudgetType;
 import org.cgiar.ccafs.ap.data.model.LiaisonInstitution;
@@ -60,6 +61,7 @@ public class ProjectEvaluationAction extends BaseAction {
   private UserRoleManagerImpl userRoleManager;
   private UserManager userManager;
   private IPProgramManager ipProgramManager;
+  private RoleManager roleManager;
 
   private final int STAR_DIV = 2;
   // Model for the back-end
@@ -80,7 +82,7 @@ public class ProjectEvaluationAction extends BaseAction {
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
     ProjectEvalutionManager projectEvaluationManager, IPProgramManager ipProgramManager,
     ProjectEvaluationValidator validator, UserRoleManagerImpl userRoleManager, UserManager userManager,
-    LiaisonInstitutionManager liaisonInstitutionManager, SendMail sednMail) {
+    LiaisonInstitutionManager liaisonInstitutionManager, SendMail sednMail, RoleManager roleManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -92,10 +94,14 @@ public class ProjectEvaluationAction extends BaseAction {
     this.validator = validator;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.sendMail = sednMail;
-
+    this.roleManager = roleManager;
   }
 
-
+  /**
+   * TODO
+   * 
+   * @return
+   */
   public boolean canEditEvaluation() {
     return true;
   }
@@ -339,7 +345,7 @@ public class ProjectEvaluationAction extends BaseAction {
     values[0] = this.getCurrentUser().getComposedCompleteName();
     values[1] = project.getTitle();
     values[2] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
-    // values[3] = userRoleManager.getUserRole(submitedEvaluation.getTypeEvaluation());
+    values[3] = roleManager.getRoleNameByAcronym(submitedEvaluation.getTypeEvaluation());
 
     String subject = this.getText("evaluation.submit.email.subject", values);
     message.append(this.getText("evaluation.submit.email.message", values));
