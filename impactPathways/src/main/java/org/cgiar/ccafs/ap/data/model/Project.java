@@ -86,6 +86,8 @@ public class Project {
   private String statusEvaluation;
   private String totalScoreEvaluation;
   private String yearEvaluation;
+  private int leaderUserId;
+
   private List<ProjectEvaluation> evaluations;
 
 
@@ -240,9 +242,11 @@ public class Project {
     return annualReportDonor;
   }
 
+
   public Budget getAnualContribution() {
     return anualContribution;
   }
+
 
   /**
    * This method returns the name of the file that was uploaded with the bilateral contract.
@@ -388,7 +392,6 @@ public class Project {
     return created;
   }
 
-
   public Date getCreationDate() {
     return new Date(created);
   }
@@ -405,6 +408,7 @@ public class Project {
   public Date getEndDate() {
     return endDate;
   }
+
 
   public List<ProjectEvaluation> getEvaluations() {
     return evaluations;
@@ -556,6 +560,10 @@ public class Project {
     return leaderResponsabilities;
   }
 
+  public int getLeaderUserId() {
+    return leaderUserId;
+  }
+
   public String getLeadInstitutionAcronym() {
     return leadInstitutionAcronym;
   }
@@ -584,10 +592,10 @@ public class Project {
     return nextUsers;
   }
 
-
   public List<ProjecteOtherContributions> getOtherContributions() {
     return otherContributions;
   }
+
 
   public Map<String, ProjectOutcome> getOutcomes() {
     return outcomes;
@@ -625,7 +633,6 @@ public class Project {
     }
     return null;
   }
-
 
   public List<IPElement> getOutputs() {
     return outputs;
@@ -696,6 +703,7 @@ public class Project {
   public List<IPProgram> getRegions() {
     return regions;
   }
+
 
   /**
    * This method gets the list of Region acronyms separated by comma (, ).
@@ -791,10 +799,10 @@ public class Project {
     return statusEvaluation;
   }
 
-
   public List<Submission> getSubmissions() {
     return submissions;
   }
+
 
   /**
    * This method gets the submissison for the current planning year of current project.
@@ -871,10 +879,10 @@ public class Project {
     return totalBudget;
   }
 
-
   public String getTotalScoreEvaluation() {
     return totalScoreEvaluation;
   }
+
 
   public String getType() {
     return type;
@@ -999,10 +1007,10 @@ public class Project {
     this.annualReportDonor = annualReportDonor;
   }
 
-
   public void setAnualContribution(Budget anualContribution) {
     this.anualContribution = anualContribution;
   }
+
 
   public void setBilateralContractProposalName(String bilateralContractProposalName) {
     this.bilateralContractProposalName = bilateralContractProposalName;
@@ -1020,7 +1028,6 @@ public class Project {
     this.caseStudies = caseStudies;
   }
 
-
   public void setCofinancing(boolean isCofinancing) {
     this.isCofinancing = isCofinancing;
   }
@@ -1033,6 +1040,7 @@ public class Project {
     this.componentLessons = componentLessons;
   }
 
+
   public void setCoordinator(ProjectPartner coordinator) {
     this.coordinator = coordinator;
   }
@@ -1041,10 +1049,10 @@ public class Project {
     this.created = created;
   }
 
-
   public void setCrossCutting(CrossCuttingContribution crossCutting) {
     this.crossCutting = crossCutting;
   }
+
 
   public void setDeliverables(List<Deliverable> deliverables) {
     this.deliverables = deliverables;
@@ -1084,6 +1092,10 @@ public class Project {
 
   public void setLeaderResponsabilities(String leaderResponsabilities) {
     this.leaderResponsabilities = leaderResponsabilities;
+  }
+
+  public void setLeaderUserId(int leaderUserId) {
+    this.leaderUserId = leaderUserId;
   }
 
   public void setLeadInstitutionAcronym(String leadInstitutionAcronym) {

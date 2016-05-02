@@ -319,6 +319,11 @@ public class ProjectManagerImpl implements ProjectManager {
     project.setTitle(projectData.get("title"));
     project.setCofinancing(Boolean.valueOf(projectData.get("is_cofinancing")));
     project.setType(projectData.get("type"));
+    try {
+      project.setLeaderUserId(Integer.parseInt(projectData.get("leader")));
+    } catch (NumberFormatException e) {
+
+    }
 
     Budget totalBudget = new Budget();
     List<Budget> budgets = new ArrayList<>(1);
