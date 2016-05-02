@@ -83,12 +83,22 @@ public interface DeliverableManager {
   public IPElement getDeliverableOutput(int deliverableID);
 
   /**
+   * This method gets all the deliverables basic information by a given project identifier.
+   * 
+   * @param projectID - is the Id of the project
+   * @return a List of deliverables with the Information related with the project
+   */
+  public List<Deliverable> getDeliverablesBasciByProject(int projectID);
+
+
+  /**
    * This method gets all the deliverables information by a given project identifier.
    * 
    * @param projectID - is the Id of the project
    * @return a List of deliverables with the Information related with the project
    */
   public List<Deliverable> getDeliverablesByProject(int projectID);
+
 
   /**
    * This method gets the list of deliverables that are being contributed by the given project partner.

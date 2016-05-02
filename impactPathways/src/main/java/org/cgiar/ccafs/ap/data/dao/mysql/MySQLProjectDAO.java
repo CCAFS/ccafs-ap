@@ -621,9 +621,12 @@ public class MySQLProjectDAO implements ProjectDAO {
       "SELECT p.id, p.title, p.type, p.is_cofinancing,p.active_since, SUM(pb.amount) as 'total_budget_amount', ");
 
     query.append("GROUP_CONCAT( DISTINCT ipp1.acronym ) as 'regions', ");
-    query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships' ");
+    query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships',ppp.user_id 'Leader' ");
     query.append("FROM projects as p ");
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
+    query.append("INNER JOIN project_partners pp ON p.id = pp.project_id and pp.is_active=1 ");
+    query.append(
+      "INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id and ppp.is_active=1 and ppp.contact_type='PL' ");
     query.append("LEFT JOIN project_focuses pf ON p.id = pf.project_id ");
     query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
     query.append(APConstants.REGION_PROGRAM_TYPE);
@@ -643,6 +646,7 @@ public class MySQLProjectDAO implements ProjectDAO {
         projectData.put("regions", rs.getString("regions"));
         projectData.put("flagships", rs.getString("flagships"));
         projectData.put("is_cofinancing", String.valueOf(rs.getBoolean("is_cofinancing")));
+        projectData.put("leader", String.valueOf(rs.getString("Leader")));
       }
       rs.close();
     } catch (SQLException e) {

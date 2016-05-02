@@ -156,7 +156,7 @@ public class ProjectDeliverablesListAction extends BaseAction {
 
     // Getting the List of Expected Deliverables
 
-    List<Deliverable> deliverables = deliverableManager.getDeliverablesByProject(projectID);
+    List<Deliverable> deliverables = deliverableManager.getDeliverablesBasciByProject(projectID);
     project.setDeliverables(deliverables);
 
     // Initializing Section Statuses:

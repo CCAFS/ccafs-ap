@@ -242,11 +242,37 @@ public class ProjectEvaluationAction extends BaseAction {
             userRole.getAcronym(), Integer.parseInt(currentLiaisonInstitution.getIpProgram())));
           break;
 
+        case APConstants.ROLE_PROJECT_LEADER:
 
+          Project p = projectManager.getProjectBasicInfo(projectID);
+          if (p.getLeaderUserId() == this.getCurrentUser().getId()) {
+            evaluationUser =
+              projectEvaluationManager.getEvaluationProjectByUser(projectID, userRole.getAcronym(), null);
+            if (evaluationUser == null) {
+              evaluationUser = new ProjectEvaluation();
+              evaluationUser.setProjectId(new Long(projectID));
+              evaluationUser.setYear(this.getCurrentReportingYear());
+              evaluationUser.setActive(true);
+              evaluationUser.setActiveSince(new Date());
+              evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+              evaluationUser.setTypeEvaluation(userRole.getAcronym());
+
+            }
+            evaluations.add(evaluationUser);
+
+
+            evaluations.addAll(
+              projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, userRole.getAcronym(), null));
+
+          }
+
+
+          break;
         case APConstants.ROLE_ADMIN:
         case APConstants.ROLE_EXTERNAL_EVALUATOR:
-        case APConstants.ROLE_PROJECT_LEADER:
+
         case APConstants.ROLE_COORDINATING_UNIT:
+
 
           evaluationUser = projectEvaluationManager.getEvaluationProjectByUser(projectID, userRole.getAcronym(), null);
           if (evaluationUser == null) {

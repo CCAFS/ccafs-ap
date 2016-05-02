@@ -110,7 +110,7 @@
           <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
       [/#if]
       
-      [#if project.evaluations?size >1]
+      [#if project.evaluations?size >0]
         [#list project.evaluations as evaluation]
           [@projectEvaluation index=evaluation_index editable=editable /]
         [/#list]
