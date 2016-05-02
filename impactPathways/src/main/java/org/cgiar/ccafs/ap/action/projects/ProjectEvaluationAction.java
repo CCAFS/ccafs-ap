@@ -341,7 +341,7 @@ public class ProjectEvaluationAction extends BaseAction {
 
     if (!validator.hasErrors) {
       projectEvaluation.setIsSubmited(true);
-
+      projectEvaluation.setSubmitedDate(new Date());
 
     }
     projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / 2);

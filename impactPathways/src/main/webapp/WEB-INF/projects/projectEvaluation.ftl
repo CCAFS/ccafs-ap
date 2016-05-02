@@ -124,7 +124,7 @@
       <br />
       
       [#-- Is my evaluation submitted ? --]
-      [#if project.evaluations[0].isSubmited]<p class="projectSubmitted">This  evaluation was submitted on {date}</p><br />[/#if]
+      [#if project.evaluations[0].isSubmited]<p class="projectSubmitted">This  evaluation was submitted on [@s.text name="project.evaluations[0].submitedDate" /]</p><br />[/#if]
       [@projectEvaluation index=0 editable=(!project.evaluations[0].isSubmited && editable)  own=true /]
       
     </div>

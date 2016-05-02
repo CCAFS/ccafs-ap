@@ -37,14 +37,18 @@ public class ProjectEvaluation implements java.io.Serializable {
   private double totalScore;
   private boolean isActive;
   private Date activeSince;
-  private long createdBy;
-  private long modifiedBy;
-  private String modificationJustification;
+  private Date submitedDate;
 
+  private long createdBy;
+
+
+  private long modifiedBy;
+
+
+  private String modificationJustification;
 
   public ProjectEvaluation() {
   }
-
 
   public ProjectEvaluation(long projectId, String typeEvaluation, Long userId, boolean isSubmited, int year,
     double rankingOutputs, double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam,
@@ -75,6 +79,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
+
   /**
    * calculate the weighted average of the questions in the evaluation.
    * 
@@ -90,6 +95,7 @@ public class ProjectEvaluation implements java.io.Serializable {
     return Double.parseDouble(df.format(totalScore));
 
   }
+
 
   @Override
   public boolean equals(Object obj) {
@@ -190,6 +196,10 @@ public class ProjectEvaluation implements java.io.Serializable {
       return "Submitted";
     }
     return "Evaluating";
+  }
+
+  public Date getSubmitedDate() {
+    return submitedDate;
   }
 
   public double getTotalScore() {
@@ -302,6 +312,10 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setRecommendations(String recommendations) {
     this.recommendations = recommendations;
+  }
+
+  public void setSubmitedDate(Date submitedDate) {
+    this.submitedDate = submitedDate;
   }
 
 
