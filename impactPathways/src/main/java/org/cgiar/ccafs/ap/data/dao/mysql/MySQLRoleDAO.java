@@ -105,6 +105,27 @@ public class MySQLRoleDAO implements RoleDAO {
 
 
   @Override
+  public String getRoleNameByAcronym(String acronym) {
+    StringBuilder query = new StringBuilder();
+    String roleName = null;
+    query.append("SELECT name FROM roles WHERE acronym=");
+    query.append(acronym);
+    try (Connection con = databaseManager.getConnection()) {
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      if (rs.next()) {
+        roleName = rs.getString("name");
+      }
+      rs.close();
+    } catch (SQLException e) {
+      String exceptionMessage = "-- getRoleNameByAcronym() > Exception raised trying";
+      exceptionMessage += "to execute the following query " + query;
+
+      LOG.error(exceptionMessage, e);
+    }
+    return roleName;
+  }
+
+  @Override
   public boolean saveRole(int userID, int roleID) {
     String query = "INSERT IGNORE INTO user_roles (user_id, role_id) VALUES (?, ?)";
     int result = databaseManager.saveData(query, new Object[] {userID, roleID});
