@@ -23,7 +23,6 @@ import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.security.SecurityContext;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -84,9 +83,9 @@ public class EditProjectEvaluationInterceptor extends AbstractInterceptor implem
       // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
       // TODO Cambiar el método para que extraiga los proyectos en donde el usuario es, o PL, o ML, o FPL, RPL.
       // <Analizar más en detalle>
-      List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
+      // List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
       // Projects wont be able to edit the project if the project has been already submitted.
-      if ((projectsEditable.contains(new Integer(projectID)) && baseAction.hasProjectPermission("update", projectID))) {
+      if (baseAction.hasProjectPermission("update", projectID)) {
         // [assumption] in this case, if the project is submit, the user can perform a evaluation.
         if (submission != null) {
           canEditProject = true;

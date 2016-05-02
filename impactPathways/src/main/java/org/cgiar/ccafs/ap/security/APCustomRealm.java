@@ -240,6 +240,7 @@ public class APCustomRealm extends AuthorizingRealm {
           // if (!permission.matches("((?:project:[\0-9]{1,10}:)")) {
           if (permission.contains(":projects:")) {
             permission = permission.replace("projects:", "projects:" + projectID + ":");
+
           }
 
           addPermission = true;
@@ -254,6 +255,7 @@ public class APCustomRealm extends AuthorizingRealm {
               addPermission = false;
             }
           }
+          System.out.println(addPermission);
           if (addPermission) {
             authorizationInfo.addStringPermission(permission);
           }
@@ -261,7 +263,6 @@ public class APCustomRealm extends AuthorizingRealm {
         }
       }
     }
-    System.out.println(authorizationInfo.getStringPermissions());
     if (authorizationInfo.getStringPermissions() != null) {
       // Converting those general roles into specific for the SYNTHESIS where they are able to edit.
       List<String> newPermissions = new ArrayList<>();

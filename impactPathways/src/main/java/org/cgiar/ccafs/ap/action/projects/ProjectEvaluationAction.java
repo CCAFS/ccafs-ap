@@ -222,8 +222,6 @@ public class ProjectEvaluationAction extends BaseAction {
 
           case APConstants.ROLE_ADMIN:
           case APConstants.ROLE_EXTERNAL_EVALUATOR:
-
-
           case APConstants.ROLE_PROJECT_LEADER:
           case APConstants.ROLE_COORDINATING_UNIT:
 
