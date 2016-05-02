@@ -105,30 +105,12 @@
     <div id="" class="borderBox">
       [#if project.evaluations?size >1]
         [#list project.evaluations as evaluation]
-          [#if evaluation_index+1 !=project.evaluations?size]
-            <div class="simpleBox">[@projectEvaluation index=evaluation_index+1 editable=false /]</div>
-          [/#if]
+          [@projectEvaluation index=evaluation_index editable=false /]
         [/#list]
       [#else]
         <p>There is no assessment for this project.</p>
       [/#if]
-    </div>
-    
-    [#-- My Evaluation --]
-    <h1 class="contentTitle">My Evaluation</h1>
-    <div id="" class="borderBox">
-      [#-- Button for edit this section --]
-      [#if (!editable && canEdit)]
-        <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
-      [#elseif canEdit]
-          <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
-      [/#if]
-      <br />
-      [#-- Is my evaluation submitted ? --]
-      [#if project.evaluations[0].submited]<p class="projectSubmitted">This  evaluation was submitted on [@s.text name="project.evaluations[0].submittedDate" /]</p><br />[/#if]
-      [#-- My Evaluation --]
-      [@projectEvaluation index=0 editable=(!project.evaluations[0].submited && editable)  own=true /]
-    </div>
+    </div> 
     
     [#-- Project identifier --]
     <input name="projectID" type="hidden" value="${project.id?c}" />
@@ -144,7 +126,15 @@
   [#assign customName = "project.evaluations[${index}]"/]
   [#assign element = (customName?eval)! /]
   
-  <div class="evaluationBlock">
+  
+  <div class="simpleBox evaluationBlock">
+    [#-- Button for edit this section --]
+    [#if (!editable && canEdit)]
+      <div class="editButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][@s.param name="edit"]true[/@s.param][/@s.url]">[@s.text name="form.buttons.edit" /]</a></div>
+    [#elseif canEdit]
+        <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
+    [/#if]
+  
     <table class="evaluationTable">
       <tr>
         [#if !own]<td class="statusCol">[@s.text name="project.evaluations[${index}].status" /]</td>[/#if]
@@ -217,8 +207,8 @@
       [#if editable]
         <hr />
         <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
-          [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
+          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][@s.param name="evaluationIndex" value=index/][/@s.submit]
+          [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][@s.param name="evaluationIndex" value=index/][/@s.submit]
         </div>
       [/#if]
     [#else]
