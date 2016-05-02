@@ -105,15 +105,16 @@ public class MySQLRoleDAO implements RoleDAO {
 
 
   @Override
-  public String getRoleNameByAcronym(String acronym) {
+  public Map<String, String> getRoleByAcronym(String acronym) {
     StringBuilder query = new StringBuilder();
-    String roleName = null;
-    query.append("SELECT name FROM roles WHERE acronym=");
+    Map<String, String> roleData = new HashMap<>();
+    query.append("SELECT id, name FROM roles WHERE acronym=");
     query.append(acronym);
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
-        roleName = rs.getString("name");
+        roleData.put("id", rs.getString("id"));
+        roleData.put("name", rs.getString("name"));
       }
       rs.close();
     } catch (SQLException e) {
@@ -122,7 +123,7 @@ public class MySQLRoleDAO implements RoleDAO {
 
       LOG.error(exceptionMessage, e);
     }
-    return roleName;
+    return roleData;
   }
 
   @Override

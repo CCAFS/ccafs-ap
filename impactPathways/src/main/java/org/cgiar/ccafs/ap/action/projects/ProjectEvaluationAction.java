@@ -82,7 +82,7 @@ public class ProjectEvaluationAction extends BaseAction {
     ProjectPartnerManager projectPartnerManager, BudgetManager budgetManager,
     ProjectEvalutionManager projectEvaluationManager, IPProgramManager ipProgramManager,
     ProjectEvaluationValidator validator, UserRoleManagerImpl userRoleManager, UserManager userManager,
-    LiaisonInstitutionManager liaisonInstitutionManager, SendMail sednMail, RoleManager roleManager) {
+    LiaisonInstitutionManager liaisonInstitutionManager, SendMail sendMail, RoleManager roleManager) {
     super(config);
     this.projectManager = projectManager;
     this.projectPartnerManager = projectPartnerManager;
@@ -93,7 +93,7 @@ public class ProjectEvaluationAction extends BaseAction {
     this.ipProgramManager = ipProgramManager;
     this.validator = validator;
     this.liaisonInstitutionManager = liaisonInstitutionManager;
-    this.sendMail = sednMail;
+    this.sendMail = sendMail;
     this.roleManager = roleManager;
   }
 
@@ -102,7 +102,9 @@ public class ProjectEvaluationAction extends BaseAction {
    * 
    * @return
    */
-  public boolean canEditEvaluation() {
+  public boolean canEditEvaluation(ProjectEvaluation projectEvaluation) {
+
+
     return true;
   }
 
@@ -345,7 +347,7 @@ public class ProjectEvaluationAction extends BaseAction {
     values[0] = this.getCurrentUser().getComposedCompleteName();
     values[1] = project.getTitle();
     values[2] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
-    values[3] = roleManager.getRoleNameByAcronym(submitedEvaluation.getTypeEvaluation());
+    values[3] = roleManager.getRoleByAcronym(submitedEvaluation.getTypeEvaluation()).getName();
 
     String subject = this.getText("evaluation.submit.email.subject", values);
     message.append(this.getText("evaluation.submit.email.message", values));

@@ -44,9 +44,9 @@ public interface RoleManager {
    * This method get the role name according to its acronym
    * 
    * @param acronym - The Role Acronym
-   * @return String with the role name or null if the acronym consulted not exist
+   * @return the Role information instance
    */
-  public String getRoleNameByAcronym(String acronym);
+  public Role getRoleByAcronym(String acronym);
 
   /**
    * This method saves into the database the role assigned to the user.

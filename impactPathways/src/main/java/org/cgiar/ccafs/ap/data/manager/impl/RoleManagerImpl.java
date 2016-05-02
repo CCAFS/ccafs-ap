@@ -57,8 +57,14 @@ public class RoleManagerImpl implements RoleManager {
   }
 
   @Override
-  public String getRoleNameByAcronym(String acronym) {
-    return roleDAO.getRoleNameByAcronym(acronym);
+  public Role getRoleByAcronym(String acronym) {
+    Role role = new Role();
+    Map<String, String> roleData = roleDAO.getRoleByAcronym(acronym);
+
+    role.setId(Integer.parseInt(roleData.get("id")));
+    role.setName(roleData.get("name"));
+    role.setAcronym(acronym);
+    return role;
   }
 
 
