@@ -80,10 +80,6 @@ public class EditProjectEvaluationInterceptor extends AbstractInterceptor implem
     if (securityContext.isAdmin()) {
       canEditProject = true;
     } else {
-      // Get the identifiers of the projects that the user can edit and validate if that list contains the projectID.
-      // TODO Cambiar el método para que extraiga los proyectos en donde el usuario es, o PL, o ML, o FPL, RPL.
-      // <Analizar más en detalle>
-      // List<Integer> projectsEditable = projectManager.getProjectIdsEditables(user.getId());
       // Projects wont be able to edit the project if the project has been already submitted.
       if (baseAction.hasProjectPermission("update", projectID)) {
         // [assumption] in this case, if the project is submit, the user can perform a evaluation.
