@@ -95,6 +95,11 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
 
+  public boolean canEditEvaluation() {
+    return true;
+  }
+
+
   public BudgetManager getBudgetManager() {
     return budgetManager;
   }
@@ -144,11 +149,11 @@ public class ProjectEvaluationAction extends BaseAction {
     return totalCCAFSBudget;
   }
 
-
   public String getUserName(int userId) {
     User user = userManager.getUser(userId);
     return user.getComposedName();
   }
+
 
   @Override
   public void prepare() throws Exception {
@@ -278,7 +283,6 @@ public class ProjectEvaluationAction extends BaseAction {
 
   }
 
-
   @Override
   public String save() {
 
@@ -311,7 +315,7 @@ public class ProjectEvaluationAction extends BaseAction {
   /**
    * Send Email notification when the user submit the evaluation.
    */
-  private void sendNitificationEmail() {
+  private void sendNotificationEmail(ProjectEvaluation submitedEvaluation) {
     // Building the email message
     StringBuilder message = new StringBuilder();
 
@@ -328,10 +332,11 @@ public class ProjectEvaluationAction extends BaseAction {
      * [1] = The evaluated project name.
      * [2] = the evaluated project id.
      */
-    String[] values = new String[3];
+    String[] values = new String[4];
     values[0] = this.getCurrentUser().getComposedCompleteName();
     values[1] = project.getTitle();
     values[2] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
+    // values[3] = userRoleManager.getUserRole(submitedEvaluation.getTypeEvaluation());
 
     String subject = this.getText("evaluation.submit.email.subject", values);
     message.append(this.getText("evaluation.submit.email.message", values));
@@ -343,6 +348,7 @@ public class ProjectEvaluationAction extends BaseAction {
     sendMail.send(this.config.getEmailNotification(), null, null, subject, message.toString(), null, null, null);
 
   }
+
 
   public void setPartnerPerson(PartnerPerson partnerPerson) {
     this.partnerPerson = partnerPerson;
@@ -362,7 +368,6 @@ public class ProjectEvaluationAction extends BaseAction {
   public void setProjectLeader(ProjectPartner projectLeader) {
     this.projectLeader = projectLeader;
   }
-
 
   public void setTotalBilateralBudget(double totalBilateralBudget) {
     this.totalBilateralBudget = totalBilateralBudget;
@@ -393,7 +398,7 @@ public class ProjectEvaluationAction extends BaseAction {
     int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
     // if the evaluation has submited, send the email notification
     if (iReturn > 0 && !validator.hasErrors) {
-      this.sendNitificationEmail();
+      this.sendNotificationEmail(projectEvaluation);
     }
     Collection<String> messages = this.getActionMessages();
     if (!messages.isEmpty()) {
