@@ -125,6 +125,8 @@
       
       [#-- Is my evaluation submitted ? --]
       [#if project.evaluations[0].isSubmited]<p class="projectSubmitted">This  evaluation was submitted on [@s.text name="project.evaluations[0].submitedDate" /]</p><br />[/#if]
+      
+      [#-- My Evaluation --]
       [@projectEvaluation index=0 editable=(!project.evaluations[0].isSubmited && editable)  own=true /]
       
     </div>
@@ -141,13 +143,13 @@
 
 [#macro projectEvaluation index editable=false own=false]
   [#assign customName = "project.evaluations[${index}]"/]
-  [#assign element = (customName?eval)! /]  
+  [#assign element = (customName?eval)! /]
   
   <div class="evaluationBlock">
     <table class="evaluationTable">
       <tr>
         [#if !own]<td class="statusCol">[@s.text name="project.evaluations[${index}].status" /]</td>[/#if]
-        <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /] Evaluation</td>
+        <td class="rolCol">[@s.text name="project.evaluations[${index}].typeEvaluation" /]Evaluation</td>
         [#assign userName = action.getUserName(project.evaluations[index].userId) /]
         <td class="personCol">[@s.text name="${userName}" /]</td>
         <td class="totalScoreCol"><p class="totalScore">[@s.text name="project.evaluations[${index}].totalScore" /]</p></td>
@@ -155,7 +157,10 @@
       </tr>
     </table>
     
+    
     <div id="evaluation_${index}" style="display:${own?string('block','none')}">
+    [#assign canAccess = own || action.hasProjectPermission("access${element.typeEvaluation}",project.id) /]
+    [#if canAccess]
       <hr /><br />
       [#-- Evaluation ranking --]
       <div class="fullPartBlock">
@@ -212,14 +217,16 @@
       </div>
       
       [#if editable]
-      <hr />
-      <div class="" >
+        <hr />
         <div class="buttons">
           [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
           [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
         </div>
-      </div> 
       [/#if]
-    </div>  
+    [#else]
+      <p>You do not have sufficient privileges to access to this evaluation</p>
+    [/#if]
+    </div>
+     
   </div>
 [/#macro]
