@@ -331,7 +331,7 @@ public class ProjectEvaluationAction extends BaseAction {
     String[] values = new String[3];
     values[0] = this.getCurrentUser().getComposedCompleteName();
     values[1] = project.getTitle();
-    values[3] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER);
+    values[3] = project.getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER).toString();
 
     String subject = this.getText("planning.submit.email.subject", values);
     message.append(this.getText("planning.submit.email.message", values));
