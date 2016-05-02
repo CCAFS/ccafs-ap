@@ -253,7 +253,7 @@
       <div class="hover-test" style=""></div> 
       <div class="clearfix"></div>
     [#else]
-      [#if score?has_content]Rate ${score}[#else]Not rated[/#if]
+      [#if score?has_content]Rate ${(score?number)/split}[#else]Not rated[/#if]
     [/#if]
   </div>
 [/#macro]

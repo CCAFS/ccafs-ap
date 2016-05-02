@@ -5141,16 +5141,16 @@ table.evaluationTable .totalScoreCol{
 }
 
 table.evaluationTable .personCol{
-  width: 25%;
+  width: 30%;
 }
 
 table.evaluationTable .rolCol{
-  width: 10%;
+  width: 6%;
   font-weight: bold;
 }
 
 table.evaluationTable .statusCol{
-  width: 10%;
+  width: 5%;
 }
 
 table.evaluationRank thead {
