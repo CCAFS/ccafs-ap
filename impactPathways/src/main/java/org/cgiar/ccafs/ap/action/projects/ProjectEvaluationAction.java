@@ -109,7 +109,7 @@ public class ProjectEvaluationAction extends BaseAction {
    */
   public boolean checkEditByProgram(ProjectEvaluation projectEvaluation) {
     boolean bCheckProgram = false;
-    if (projectEvaluation.getProgramId() == Integer.parseInt(currentLiaisonInstitution.getIpProgram())) {
+    if (projectEvaluation.getProgramId().intValue() == Integer.parseInt(currentLiaisonInstitution.getIpProgram())) {
       bCheckProgram = true;
     }
     return bCheckProgram;
@@ -135,7 +135,7 @@ public class ProjectEvaluationAction extends BaseAction {
       return true;
     }
     for (UserRole userRole : roles) {
-      if (userRole.getId() == role.getId()) {
+      if (userRole.getId().intValue() == role.getId()) {
         bCheckRole = true;
         if (projectEvaluation.getProgramId() != null) {
           bCheckRole = bCheckRole && this.checkEditByProgram(projectEvaluation);
