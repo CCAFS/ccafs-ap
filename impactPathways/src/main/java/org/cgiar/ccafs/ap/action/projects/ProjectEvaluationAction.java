@@ -42,7 +42,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -147,6 +146,24 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
 
+  public boolean existEvaluation(List<ProjectEvaluation> projectEvualtions, ProjectEvaluation projectEvaluation) {
+    for (ProjectEvaluation projectEv : projectEvualtions) {
+      if (projectEv.getTypeEvaluation().equals(projectEvaluation.getTypeEvaluation())) {
+        if (projectEvaluation.getProgramId() != null) {
+          if (projectEvaluation.getProgramId().equals(projectEv.getProgramId())) {
+            return true;
+          }
+
+        } else {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+
   public BudgetManager getBudgetManager() {
     return budgetManager;
   }
@@ -191,16 +208,15 @@ public class ProjectEvaluationAction extends BaseAction {
     return totalBilateralBudget;
   }
 
-
   public double getTotalCCAFSBudget() {
     return totalCCAFSBudget;
   }
+
 
   public String getUserName(int userId) {
     User user = userManager.getUser(userId);
     return user.getComposedName();
   }
-
 
   @Override
   public void prepare() throws Exception {
@@ -251,7 +267,8 @@ public class ProjectEvaluationAction extends BaseAction {
       currentLiaisonInstitution.setIpProgram("1");
     }
 
-    HashSet<ProjectEvaluation> evaluations = new HashSet<>();
+
+    lstEvaluations.addAll(projectEvaluationManager.getEvaluationsProject(projectID));
     for (UserRole userRole : roles) {
       ProjectEvaluation evaluationUser = null;
 
@@ -259,64 +276,27 @@ public class ProjectEvaluationAction extends BaseAction {
 
         case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
         case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
-          evaluationUser = projectEvaluationManager.getEvaluationProjectByUser(projectID, userRole.getAcronym(),
-            Integer.parseInt(currentLiaisonInstitution.getIpProgram()));
-          if (evaluationUser == null) {
-            evaluationUser = new ProjectEvaluation();
-            evaluationUser.setProjectId(new Long(projectID));
-            evaluationUser.setYear(this.getCurrentReportingYear());
-            evaluationUser.setActive(true);
-            evaluationUser.setActiveSince(new Date());
-            evaluationUser.setProgramId(new Long(currentLiaisonInstitution.getIpProgram()));
-            evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
-            evaluationUser.setTypeEvaluation(userRole.getAcronym());
+          evaluationUser = new ProjectEvaluation();
+          evaluationUser.setProjectId(new Long(projectID));
+          evaluationUser.setYear(this.getCurrentReportingYear());
+          evaluationUser.setActive(true);
+          evaluationUser.setActiveSince(new Date());
+          evaluationUser.setProgramId(new Long(currentLiaisonInstitution.getIpProgram()));
+          evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+          evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
+          if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
+            lstEvaluations.add(evaluationUser);
           }
-          evaluations.add(evaluationUser);
 
 
-          evaluations.addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID,
-            userRole.getAcronym(), Integer.parseInt(currentLiaisonInstitution.getIpProgram())));
           break;
 
         case APConstants.ROLE_PROJECT_LEADER:
 
           Project p = projectManager.getProjectBasicInfo(projectID);
           if (p.getLeaderUserId() == this.getCurrentUser().getId()) {
-            evaluationUser =
-              projectEvaluationManager.getEvaluationProjectByUser(projectID, userRole.getAcronym(), null);
-            if (evaluationUser == null) {
-              evaluationUser = new ProjectEvaluation();
-              evaluationUser.setProjectId(new Long(projectID));
-              evaluationUser.setYear(this.getCurrentReportingYear());
-              evaluationUser.setActive(true);
-              evaluationUser.setActiveSince(new Date());
-              evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
-              evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
-            }
-            evaluations.add(evaluationUser);
-
-
-            evaluations.addAll(
-              projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, userRole.getAcronym(), null));
-
-          }
-
-
-          break;
-        case APConstants.ROLE_ADMIN:
-
-          evaluations
-            .addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, userRole.getAcronym(), null));
-          break;
-        case APConstants.ROLE_EXTERNAL_EVALUATOR:
-
-        case APConstants.ROLE_COORDINATING_UNIT:
-
-
-          evaluationUser = projectEvaluationManager.getEvaluationProjectByUser(projectID, userRole.getAcronym(), null);
-          if (evaluationUser == null) {
             evaluationUser = new ProjectEvaluation();
             evaluationUser.setProjectId(new Long(projectID));
             evaluationUser.setYear(this.getCurrentReportingYear());
@@ -325,12 +305,34 @@ public class ProjectEvaluationAction extends BaseAction {
             evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
             evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
+            if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
+              lstEvaluations.add(evaluationUser);
+            }
+
+
           }
-          evaluations.add(evaluationUser);
 
 
-          evaluations
-            .addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, userRole.getAcronym(), null));
+          break;
+
+        case APConstants.ROLE_EXTERNAL_EVALUATOR:
+
+        case APConstants.ROLE_COORDINATING_UNIT:
+
+
+          evaluationUser = new ProjectEvaluation();
+          evaluationUser.setProjectId(new Long(projectID));
+          evaluationUser.setYear(this.getCurrentReportingYear());
+          evaluationUser.setActive(true);
+          evaluationUser.setActiveSince(new Date());
+          evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+          evaluationUser.setTypeEvaluation(userRole.getAcronym());
+
+
+          if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
+            lstEvaluations.add(evaluationUser);
+          }
+
 
           break;
 
@@ -338,7 +340,7 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
     }
-    lstEvaluations.addAll(evaluations);
+
 
     for (ProjectEvaluation projectEvaluation : lstEvaluations) {
       projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() * STAR_DIV);

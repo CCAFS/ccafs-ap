@@ -99,31 +99,15 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-    ProjectEvaluation other = (ProjectEvaluation) obj;
-    if (programId == null) {
-      if (other.programId != null) {
-        return false;
+
+    if (obj != null) {
+      if (obj instanceof ProjectEvaluation) {
+        ProjectEvaluation projectEvaluation = (ProjectEvaluation) obj;
+        return projectEvaluation.id.equals(this.getId());
       }
-    } else if (!programId.equals(other.programId)) {
-      return false;
     }
-    if (typeEvaluation == null) {
-      if (other.typeEvaluation != null) {
-        return false;
-      }
-    } else if (!typeEvaluation.equals(other.typeEvaluation)) {
-      return false;
-    }
-    return true;
+
+    return false;
   }
 
   public Date getActiveSince() {
@@ -228,11 +212,8 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((programId == null) ? 0 : programId.hashCode());
-    result = prime * result + ((typeEvaluation == null) ? 0 : typeEvaluation.hashCode());
-    return result;
+
+    return id.hashCode();
   }
 
   public boolean isActive() {
