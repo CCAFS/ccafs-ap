@@ -200,9 +200,9 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public String getStatus() {
     if (submited) {
-      return "Submitted";
+      return "SUBMITTED";
     }
-    return "Evaluating";
+    return "IN_PROGRESS";
   }
 
   public Date getSubmittedDate() {

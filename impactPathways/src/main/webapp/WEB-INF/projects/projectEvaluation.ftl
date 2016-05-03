@@ -32,10 +32,9 @@
     <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
   [/#if]
   
-  [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
+  
   <article class="fullBlock" id="mainInformation">
     [#include "/WEB-INF/projects/dataSheet.ftl" /]
-    
     <h1 class="contentTitle">[@s.text name="planning.projectDescription.title" /]</h1>
     <div id="" class="borderBox">
       <div class="fullBlock">
@@ -123,7 +122,7 @@
     <input name="projectID" type="hidden" value="${project.id?c}" />
    
   </article>
-  [/@s.form] 
+  
  
  
 </section>
@@ -133,12 +132,11 @@
   [#assign customName = "project.evaluations[${index}]"/]
   [#assign element = (customName?eval)! /]
   
-  
   <div class="simpleBox evaluationBlock"> 
-  
+    [#-- Basic information --]
     <table class="evaluationTable">
       <tr>
-        [#if !own]<td class="statusCol">${element.status} </td>[/#if]
+        [#if !own]<td class="statusCol">${element.status}</td>[/#if]
         <td class="rolCol">${element.typeEvaluation} Evaluation</td>
         [#assign userName = action.getUserName(project.evaluations[index].userId) /]
         <td class="personCol">${userName}</td>
@@ -146,75 +144,80 @@
         [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
       </tr>
     </table>
-    
+    [#-- Evaluation Content --]
     <div id="evaluation_${index}" style="display:${own?string('block','none')}">
-    [#assign canAccess = true /]
-    [#if canAccess]
-      <hr /><br />
-      [#-- Evaluation ranking --]
-      <div class="fullPartBlock">
-        <table class="evaluationRank default" style="width:98%">
-          <thead>
-            <tr>
-              <th class="center" style="width:20%">Project progress towards outputs (20%) </td>
-              <th class="center" style="width:20%">Project progress towards outcomes (35%)</td>
-              <th class="center" style="width:20%">Reflections of CCAFS principles: quality of partnerships, communications, gender (15%)</td>
-              <th class="center" style="width:20%">Response of team to the unexpected, ability to adapt and self-reflect (15%)</td>
-              <th class="center" style="width:20%">Quality of reporting, incl. submission of deliverables and making them accessible (15%)</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="center"><span class="weight" style="display:none">20</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutputs" split=action.getStartsDiv() editable=editable/] </td>
-              <td class="center"><span class="weight" style="display:none">35</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutcomes" split=action.getStartsDiv() editable=editable/]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingParternshipComunnication" split=action.getStartsDiv() editable=editable/]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingResponseTeam" split=action.getStartsDiv() editable=editable/]</td>
-              <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingQuality" split=action.getStartsDiv() editable=editable/]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      [#-- Communication products --]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="project.evaluations[${index}].communicationProducts" i18nkey="project.evaluation.communicationProducts" className="communicationProducts limitWords-50" editable=editable/]
-      </div>
-      
-      [#-- Project Highlight --]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="project.evaluations[${index}].projectHighlights" i18nkey="project.evaluation.projectHighlights" className="projectHighlights limitWords-50" editable=editable/]
-      </div>
-      
-      [#-- Outcome Case Studies --]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="project.evaluations[${index}].outcomeCaseStudies" i18nkey="project.evaluation.outcomeCaseStudies" className="outcomeCaseStudies limitWords-50" editable=editable/]
-      </div>
-      
-      [#-- General comments on the reporting and the project's progress and clarifying questions --]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="project.evaluations[${index}].generalComments" i18nkey="project.evaluation.generalComments" className="generalComments limitWords-500" editable=editable/]
-      </div>
-      
-      [#-- Recommendations to the project team --]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="project.evaluations[${index}].recommendations" i18nkey="project.evaluation.recommendations" className="recommendations limitWords-500" editable=editable/]
-      </div>
-      
-      [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
-      <div class="fullPartBlock">
-        [@customForm.textArea name="project.evaluations[${index}].anyActionRequeried" i18nkey="project.evaluation.anyActionRequired" className="anyActionRequired limitWords-500" editable=editable/]
-      </div>
-      
-      [#if editable]
-        <hr />
-        <div class="buttons">
-          [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][@s.param name="evaluationIndex" value=index/][/@s.submit]
-          [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][@s.param name="evaluationIndex" value=index/][/@s.submit]
+      [#assign canAccess = true /]
+      [#if canAccess]
+        [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
+        <hr /><br />
+        [#-- Evaluation ranking --]
+        <div class="fullPartBlock">
+          <table class="evaluationRank default" style="width:98%">
+            <thead>
+              <tr>
+                <th class="center" style="width:20%">Project progress towards outputs (20%) </td>
+                <th class="center" style="width:20%">Project progress towards outcomes (35%)</td>
+                <th class="center" style="width:20%">Reflections of CCAFS principles: quality of partnerships, communications, gender (15%)</td>
+                <th class="center" style="width:20%">Response of team to the unexpected, ability to adapt and self-reflect (15%)</td>
+                <th class="center" style="width:20%">Quality of reporting, incl. submission of deliverables and making them accessible (15%)</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center"><span class="weight" style="display:none">20</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutputs" split=action.getStartsDiv() editable=editable/] </td>
+                <td class="center"><span class="weight" style="display:none">35</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingOutcomes" split=action.getStartsDiv() editable=editable/]</td>
+                <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingParternshipComunnication" split=action.getStartsDiv() editable=editable/]</td>
+                <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingResponseTeam" split=action.getStartsDiv() editable=editable/]</td>
+                <td class="center"><span class="weight" style="display:none">15</span>[@customForm.advancedRank name="project.evaluations[${index}].rankingQuality" split=action.getStartsDiv() editable=editable/]</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        
+        [#-- Communication products --]
+        <div class="fullPartBlock">
+          [@customForm.textArea name="project.evaluations[${index}].communicationProducts" i18nkey="project.evaluation.communicationProducts" className="communicationProducts limitWords-50" editable=editable/]
+        </div>
+        
+        [#-- Project Highlight --]
+        <div class="fullPartBlock">
+          [@customForm.textArea name="project.evaluations[${index}].projectHighlights" i18nkey="project.evaluation.projectHighlights" className="projectHighlights limitWords-50" editable=editable/]
+        </div>
+        
+        [#-- Outcome Case Studies --]
+        <div class="fullPartBlock">
+          [@customForm.textArea name="project.evaluations[${index}].outcomeCaseStudies" i18nkey="project.evaluation.outcomeCaseStudies" className="outcomeCaseStudies limitWords-50" editable=editable/]
+        </div>
+        
+        [#-- General comments on the reporting and the project's progress and clarifying questions --]
+        <div class="fullPartBlock">
+          [@customForm.textArea name="project.evaluations[${index}].generalComments" i18nkey="project.evaluation.generalComments" className="generalComments limitWords-500" editable=editable/]
+        </div>
+        
+        [#-- Recommendations to the project team --]
+        <div class="fullPartBlock">
+          [@customForm.textArea name="project.evaluations[${index}].recommendations" i18nkey="project.evaluation.recommendations" className="recommendations limitWords-500" editable=editable/]
+        </div>
+        
+        [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
+        <div class="fullPartBlock">
+          [@customForm.textArea name="project.evaluations[${index}].anyActionRequeried" i18nkey="project.evaluation.anyActionRequired" className="anyActionRequired limitWords-500" editable=editable/]
+        </div>
+        
+        [#-- Save and Submit buttons --]
+        [#if editable]
+          <hr />
+          <div class="buttons">
+            [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
+            <input type="hidden" name="evaluationIndex" value="${index}" />
+          </div>
+        [/#if]
+        
+        [/@s.form] 
+      [#else]
+        <p class="center">You do not have sufficient privileges to access to this evaluation</p>
       [/#if]
-    [#else]
-      <p class="center">You do not have sufficient privileges to access to this evaluation</p>
-    [/#if]
     </div>
      
   </div>
