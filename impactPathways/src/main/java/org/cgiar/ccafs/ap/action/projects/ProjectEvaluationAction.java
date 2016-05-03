@@ -39,6 +39,8 @@ import org.cgiar.ccafs.utils.SendMail;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -342,6 +344,17 @@ public class ProjectEvaluationAction extends BaseAction {
       projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() * STAR_DIV);
       projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() * STAR_DIV);
     }
+
+    Collections.sort(lstEvaluations, new Comparator<ProjectEvaluation>() {
+
+      @Override
+      public int compare(ProjectEvaluation s1, ProjectEvaluation s2) {
+        Boolean p1 = s1.isSubmited();
+        Boolean p2 = s2.isSubmited();
+        return p1.compareTo(p2) * -1;
+      }
+    });
+
     project.setEvaluations(lstEvaluations);
 
 
