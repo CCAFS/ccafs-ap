@@ -424,14 +424,15 @@ public class ProjectEvaluationAction extends BaseAction {
 
     String subject = this.getText("evaluation.submit.email.subject", values);
     message.append(this.getText("evaluation.submit.email.message", values));
-    message.append(this.getText("<br>"));
+    message.append(this.getText("\n\n"));
     message.append(this.getText("planning.manageUsers.email.support"));
-    message.append(this.getText("<br>"));
+    message.append(this.getText("\n"));
     message.append(this.getText("planning.manageUsers.email.bye"));
 
     sendMail = new SendMail(this.config);
     // Send Test Email
-    sendMail.send(this.config.getEmailNotification(), null, null, subject, message.toString(), null, null, null);
+    // this.config.getEmailNotification()
+    sendMail.send("h.jimenez@cgiar.org", "hermesjim88@gmail.com", null, subject, message.toString(), null, null, null);
 
   }
 
