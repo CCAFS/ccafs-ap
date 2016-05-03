@@ -306,6 +306,10 @@ public class ProjectEvaluationAction extends BaseAction {
 
           break;
         case APConstants.ROLE_ADMIN:
+
+          evaluations
+            .addAll(projectEvaluationManager.getEvaluationsProjectExceptUserId(projectID, userRole.getAcronym(), null));
+          break;
         case APConstants.ROLE_EXTERNAL_EVALUATOR:
 
         case APConstants.ROLE_COORDINATING_UNIT:
