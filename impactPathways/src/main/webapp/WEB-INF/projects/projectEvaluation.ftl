@@ -117,9 +117,6 @@
         <p>There is no assessment for this project.</p>
       [/#if]
     </div> 
-    
-    [#-- Project identifier --]
-    <input name="projectID" type="hidden" value="${project.id?c}" />
    
   </article>
   
@@ -208,9 +205,11 @@
         [#if editable]
           <hr />
           <div class="buttons">
+            [#-- Project identifier --]
+            <input name="projectID" type="hidden" value="${project.id?c}" />
+            <input type="hidden" name="evaluationIndex" value="${index}" />
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
             [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
-            <input type="hidden" name="evaluationIndex" value="${index}" />
           </div>
         [/#if]
         
