@@ -125,7 +125,7 @@ public class SendMail {
         mimeMultipart.addBodyPart(attachmentBodyPart);
       }
 
-      msg.setContent(mimeMultipart);
+      msg.setContent(mimeMultipart, "text/html; charset=utf-8");
       // msg.setText(messageContent);
       Transport.send(msg);
       LOG.info("Message sent: " + subject);
