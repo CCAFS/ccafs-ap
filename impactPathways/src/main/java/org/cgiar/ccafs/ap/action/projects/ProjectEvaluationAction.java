@@ -29,6 +29,7 @@ import org.cgiar.ccafs.ap.data.model.PartnerPerson;
 import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
 import org.cgiar.ccafs.ap.data.model.ProjectPartner;
+import org.cgiar.ccafs.ap.data.model.Role;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.validation.projects.ProjectEvaluationValidator;
 import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
@@ -76,6 +77,7 @@ public class ProjectEvaluationAction extends BaseAction {
   private LiaisonInstitutionManager liaisonInstitutionManager;
   private ProjectEvaluationValidator validator;
   private SendMail sendMail;
+  private LiaisonInstitution currentLiaisonInstitution;
 
   @Inject
   public ProjectEvaluationAction(APConfig config, ProjectManager projectManager,
@@ -98,14 +100,38 @@ public class ProjectEvaluationAction extends BaseAction {
   }
 
   /**
-   * TODO
+   * this method check if the user can rank this evaluation by his program
    * 
-   * @return
+   * @param projectEvaluation - The evaluation to check
+   * @return true if the user belong to the program or false if not belong.
    */
-  public boolean canEditEvaluation(ProjectEvaluation projectEvaluation) {
+  public boolean checkEditByProgram(ProjectEvaluation projectEvaluation) {
+    boolean bCheckProgram = false;
+    if (projectEvaluation.getProgramId() == Integer.parseInt(currentLiaisonInstitution.getIpProgram())) {
+      bCheckProgram = true;
+    }
+    return bCheckProgram;
+  }
 
+  /**
+   * this method check if the user can rank this evaluation by his role
+   * 
+   * @param projectEvaluation - The evaluation to check
+   * @return true if the user have the role of false if not have.
+   */
+  public boolean checkEditByRole(ProjectEvaluation projectEvaluation) {
 
-    return true;
+    boolean bCheckRole = false;
+    Role role = roleManager.getRoleByAcronym(projectEvaluation.getTypeEvaluation());
+    List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
+
+    for (UserRole userRole : roles) {
+      if (userRole.getId() == role.getId()) {
+        bCheckRole = true;
+        break;
+      }
+    }
+    return bCheckRole;
   }
 
 
@@ -208,8 +234,7 @@ public class ProjectEvaluationAction extends BaseAction {
     } catch (Exception e) {
       liaisonInstitutionID = 2;
     }
-    LiaisonInstitution currentLiaisonInstitution =
-      liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
+    currentLiaisonInstitution = liaisonInstitutionManager.getLiaisonInstitution(liaisonInstitutionID);
     if (currentLiaisonInstitution.getIpProgram() == null) {
       currentLiaisonInstitution.setIpProgram("1");
     }
