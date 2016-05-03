@@ -108,7 +108,7 @@
       [#elseif canEdit]
           <div class="viewButton"><a href="[@s.url][@s.param name ="projectID"]${project.id}[/@s.param][/@s.url]">[@s.text name="form.buttons.unedit" /]</a></div>
       [/#if]
-      
+      <br />
       [#if project.evaluations?size >0]
         [#list project.evaluations as evaluation]
           [@projectEvaluation index=evaluation_index editable=editable /]
@@ -135,7 +135,7 @@
       <tr>
         [#if !own]<td class="statusCol">${element.status}</td>[/#if]
         <td class="rolCol">${element.typeEvaluation} Evaluation</td>
-        [#assign userName = action.getUserName(project.evaluations[index].userId) /]
+        [#assign userName = action.getUserName(element.userId) /]
         <td class="personCol">${userName}</td>
         <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
         [#if !own]<td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>[/#if]
@@ -214,6 +214,7 @@
         
         [/@s.form] 
       [#else]
+        <br />
         <p class="center">You do not have sufficient privileges to access to this evaluation</p>
       [/#if]
     </div>
