@@ -109,7 +109,7 @@ public class ProjectEvaluationAction extends BaseAction {
    */
   public boolean checkEditByProgram(ProjectEvaluation projectEvaluation) {
     boolean bCheckProgram = false;
-    if (projectEvaluation.getProgramId() == Integer.parseInt(currentLiaisonInstitution.getIpProgram())) {
+    if (projectEvaluation.getProgramId().intValue() == Integer.parseInt(currentLiaisonInstitution.getIpProgram())) {
       bCheckProgram = true;
     }
     return bCheckProgram;
@@ -135,7 +135,7 @@ public class ProjectEvaluationAction extends BaseAction {
       return true;
     }
     for (UserRole userRole : roles) {
-      if (userRole.getId() == role.getId()) {
+      if (userRole.getId().intValue() == role.getId()) {
         bCheckRole = true;
         if (projectEvaluation.getProgramId() != null) {
           bCheckRole = bCheckRole && this.checkEditByProgram(projectEvaluation);
@@ -396,6 +396,8 @@ public class ProjectEvaluationAction extends BaseAction {
 
   /**
    * Send Email notification when the user submit the evaluation.
+   * 
+   * @param submitedEvaluation - The user submit evaluation
    */
   private void sendNotificationEmail(ProjectEvaluation submitedEvaluation) {
     // Building the email message
@@ -422,7 +424,9 @@ public class ProjectEvaluationAction extends BaseAction {
 
     String subject = this.getText("evaluation.submit.email.subject", values);
     message.append(this.getText("evaluation.submit.email.message", values));
+    message.append(this.getText("<br>"));
     message.append(this.getText("planning.manageUsers.email.support"));
+    message.append(this.getText("<br>"));
     message.append(this.getText("planning.manageUsers.email.bye"));
 
     sendMail = new SendMail(this.config);
