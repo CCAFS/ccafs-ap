@@ -153,7 +153,7 @@
     </thead>
     <tbody>
       [#list projects as project]
-        [#assign projectUrl][@s.url namespace=namespace action=defaultAction][@s.param name='projectID']${project.id?c}[/@s.param][/@s.url][/#assign]
+        [#assign projectUrl][@s.url namespace=namespace action=defaultAction][@s.param name='projectID']${project.id?c}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url][/#assign]
         <tr>
           [#-- ID --]
           <td class="projectId">
