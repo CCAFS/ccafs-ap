@@ -35,6 +35,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.inject.Inject;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.struts2.ServletActionContext;
@@ -101,6 +102,9 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   protected ProjectLessonsManager lessonManager;
   @Inject
   private SectionStatusManager sectionStatusManager;
+
+
+  private Map parameters = null;
 
   @Inject
   public BaseAction(APConfig config) {
@@ -187,19 +191,19 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return boardMessageManager.getAllBoardMessages();
   }
 
-
   public APConfig getConfig() {
     return config;
   }
-
 
   public int getCurrentPlanningYear() {
     return config.getPlanningCurrentYear();
   }
 
+
   public int getCurrentReportingYear() {
     return config.getReportingCurrentYear();
   }
+
 
   /**
    * Get the user that is currently saved in the session.
@@ -260,9 +264,22 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return Locale.ENGLISH;
   }
 
-
   public String getOrganizationIdentifier() {
     return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
+  }
+
+  public final Map getParameters() {
+    parameters = ActionContext.getContext().getParameters();
+    return parameters;
+  }
+
+
+  public String getParameterValue(String param) {
+    Object paramObj = this.getParameters().get(param);
+    if (paramObj == null) {
+      return null;
+    }
+    return ((String[]) paramObj)[0];
   }
 
   public ComponentLesson getProjectLessons() {

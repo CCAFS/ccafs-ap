@@ -325,6 +325,7 @@ public class ProjectEvaluationAction extends BaseAction {
 
 
     for (ProjectEvaluation projectEvaluation : project.getEvaluations()) {
+
       projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / STAR_DIV);
       projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / STAR_DIV);
       projectEvaluation
