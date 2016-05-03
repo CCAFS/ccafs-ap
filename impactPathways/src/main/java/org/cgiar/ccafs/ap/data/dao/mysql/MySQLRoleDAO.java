@@ -108,8 +108,9 @@ public class MySQLRoleDAO implements RoleDAO {
   public Map<String, String> getRoleByAcronym(String acronym) {
     StringBuilder query = new StringBuilder();
     Map<String, String> roleData = new HashMap<>();
-    query.append("SELECT id, name FROM roles WHERE acronym=");
+    query.append("SELECT id, name FROM roles WHERE acronym= '");
     query.append(acronym);
+    query.append("'");
     try (Connection con = databaseManager.getConnection()) {
       ResultSet rs = databaseManager.makeQuery(query.toString(), con);
       if (rs.next()) {
