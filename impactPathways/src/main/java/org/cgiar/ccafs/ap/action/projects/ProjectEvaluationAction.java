@@ -378,7 +378,7 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
     projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-
+    projectEvaluation.setUserId(new Long(this.getCurrentUser().getId()));
     projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
 
 
@@ -487,6 +487,7 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
     projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
+    projectEvaluation.setUserId(new Long(this.getCurrentUser().getId()));
     int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
     // if the evaluation has submited, send the email notification
     if (iReturn > 0 && !validator.hasErrors) {
