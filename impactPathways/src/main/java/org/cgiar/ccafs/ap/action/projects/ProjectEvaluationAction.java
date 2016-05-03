@@ -436,10 +436,18 @@ public class ProjectEvaluationAction extends BaseAction {
     message.append(this.getText("planning.manageUsers.email.bye"));
 
     sendMail = new SendMail(this.config);
-    // Send Test Email
-    // this.config.getEmailNotification()
-    sendMail.send("h.jimenez@cgiar.org", "hermesjim88@gmail.com", null, subject, message.toString(), null, null, null);
 
+    /*
+     * ask if the application is in production to add the users
+     * that send the notification else the email will send to developer team
+     */
+    if (this.config.isProduction()) {
+      toEmail = this.getCurrentUser().getEmail();
+    } else {
+      toEmail = this.config.getEmailNotification();
+    }
+
+    sendMail.send(toEmail, ccEmail, null, subject, message.toString(), null, null, null);
   }
 
 
