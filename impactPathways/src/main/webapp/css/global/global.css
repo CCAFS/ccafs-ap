@@ -5163,3 +5163,17 @@ table.evaluationRank thead th{
   color: #fff;
   font-weight: normal;
 }
+
+.evaluationBlock.IN_PROGRESS {
+  /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+  /* IE 5-7 */
+  filter: alpha(opacity=60);
+  /* Netscape */
+  -moz-opacity: 0.6;
+  /* Safari 1.x */
+  -khtml-opacity: 0.6;
+  /* Good browsers */
+  opacity: 0.6;
+  border: 1px solid #d0d0d0;
+}

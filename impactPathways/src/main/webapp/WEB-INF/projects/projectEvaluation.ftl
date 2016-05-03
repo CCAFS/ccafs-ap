@@ -129,7 +129,7 @@
   [#assign customName = "project.evaluations[${index}]"/]
   [#assign element = (customName?eval)! /]
   
-  <div class="simpleBox evaluationBlock"> 
+  <div class="simpleBox evaluationBlock ${element.status}"> 
     [#-- Basic information --]
     <table class="evaluationTable">
       <tr>
@@ -143,8 +143,7 @@
     </table>
     [#-- Evaluation Content --]
     <div id="evaluation_${index}" style="display:${own?string('block','none')}">
-      [#assign canAccess = true /]
-      [#if canAccess]
+      [#if own]
         [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
         <hr /><br />
         [#-- Evaluation ranking --]
