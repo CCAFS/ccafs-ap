@@ -111,7 +111,7 @@
       <br />
       [#if project.evaluations?size >0]
         [#list project.evaluations as evaluation]
-          [@projectEvaluation index=evaluation_index editable=editable && action.checkEditByRole(evaluation) own=action.checkEditByRole(evaluation) /]
+          [@projectEvaluation index=evaluation_index editable=(editable && action.checkEditByRole(evaluation)) own=action.checkEditByRole(evaluation) canAccess=true /]
         [/#list]
       [#else]
         <p>[@s.text name="project.evaluation.isEmpty" /]</p>
@@ -125,7 +125,7 @@
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
 
-[#macro projectEvaluation index editable=false own=false]
+[#macro projectEvaluation index editable=false own=false canAccess=true]
   [#assign customName = "project.evaluations[${index}]"/]
   [#assign element = (customName?eval)! /]
   
@@ -134,7 +134,7 @@
     <table class="evaluationTable">
       <tr>
         <td class="statusCol">[@s.text name="project.evaluation.status.${element.status}" /]</td>
-        <td class="rolCol">${element.typeEvaluation} [@s.text name="project.evaluation.evaluation" /]</td>
+        <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${element.typeEvaluation}[/@s.param][/@s.text]</td>
         [#assign userName = action.getUserName(element.userId) /]
         <td class="personCol">${userName}</td>
         <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
@@ -143,7 +143,7 @@
     </table>
     [#-- Evaluation Content --]
     <div id="evaluation_${index}" style="display:${own?string('block','none')}">
-      [#if own]
+      [#if canAccess]
         [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
         <hr /><br />
         [#-- Evaluation ranking --]
@@ -151,11 +151,11 @@
           <table class="evaluationRank default">
             <thead>
               <tr>
-                <th class="center" style="width:20%">[@s.text name="project.evaluation.rankingOutputs" /]</td>
-                <th class="center" style="width:20%">[@s.text name="project.evaluation.rankingOutcomes" /]</td>
-                <th class="center" style="width:20%">[@s.text name="project.evaluation.rankingParternshipComunnication" /]</td>
-                <th class="center" style="width:20%">[@s.text name="project.evaluation.rankingResponseTeam" /]</td>
-                <th class="center" style="width:20%">[@s.text name="project.evaluation.rankingQuality" /]</td>
+                <th class="center" style="width:20%" title="[@s.text name="project.evaluation.rankingOutputs.help" /]" >[@s.text name="project.evaluation.rankingOutputs" /]</td>
+                <th class="center" style="width:20%" title="[@s.text name="project.evaluation.rankingOutcomes.help" /]">[@s.text name="project.evaluation.rankingOutcomes" /]</td>
+                <th class="center" style="width:20%" title="[@s.text name="project.evaluation.rankingParternshipComunnication.help" /]">[@s.text name="project.evaluation.rankingParternshipComunnication" /]</td>
+                <th class="center" style="width:20%" title="[@s.text name="project.evaluation.rankingResponseTeam.help" /]">[@s.text name="project.evaluation.rankingResponseTeam" /]</td>
+                <th class="center" style="width:20%" title="[@s.text name="project.evaluation.rankingQuality.help" /]">[@s.text name="project.evaluation.rankingQuality" /]</td>
               </tr>
             </thead>
             <tbody>
