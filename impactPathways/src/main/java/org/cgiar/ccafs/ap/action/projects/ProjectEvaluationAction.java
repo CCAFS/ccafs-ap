@@ -124,10 +124,20 @@ public class ProjectEvaluationAction extends BaseAction {
     boolean bCheckRole = false;
     Role role = roleManager.getRoleByAcronym(projectEvaluation.getTypeEvaluation());
     List<UserRole> roles = userRoleManager.getUserRolesByUserID(String.valueOf(this.getCurrentUser().getId()));
+    if (projectEvaluation.isSubmited()) {
+      return false;
+    }
 
+    UserRole adminRole = new UserRole(APConstants.ROLE_ADMIN);
+    if (roles.contains(adminRole)) {
+      return true;
+    }
     for (UserRole userRole : roles) {
       if (userRole.getId() == role.getId()) {
         bCheckRole = true;
+        if (projectEvaluation.getProgramId() != null) {
+          bCheckRole = bCheckRole && this.checkEditByProgram(projectEvaluation);
+        }
         break;
       }
     }
@@ -334,41 +344,37 @@ public class ProjectEvaluationAction extends BaseAction {
     }
     project.setEvaluations(lstEvaluations);
 
-    /*
-     * verify if the user has been submit the evaluation
-     * if is true, the user can not change the evaluation
-     */
-    if (project.getEvaluations().get(0).isSubmited()) {
-      this.setCanEdit(false);
-      this.setEditableParameter(false);
-    }
 
   }
 
   @Override
   public String save() {
 
+    int index = Integer.parseInt(this.getParameterValue("evaluationIndex"));
 
-    for (ProjectEvaluation projectEvaluation : project.getEvaluations()) {
+    ProjectEvaluation projectEvaluation = project.getEvaluations().get(index);
 
-      projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / STAR_DIV);
-      projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / STAR_DIV);
-      projectEvaluation
-        .setRankingParternshipComunnication(projectEvaluation.getRankingParternshipComunnication() / STAR_DIV);
-      projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
-      projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
-      projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
+    projectEvaluation.setRankingOutcomes(projectEvaluation.getRankingOutcomes() / STAR_DIV);
+    projectEvaluation.setRankingOutputs(projectEvaluation.getRankingOutputs() / STAR_DIV);
+    projectEvaluation
+      .setRankingParternshipComunnication(projectEvaluation.getRankingParternshipComunnication() / STAR_DIV);
+    projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
+    projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
+    projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
 
-      projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
-    }
+    projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
 
 
     Collection<String> messages = this.getActionMessages();
-    if (!messages.isEmpty()) {
+    if (!messages.isEmpty())
+
+    {
       String validationMessage = messages.iterator().next();
       this.setActionMessages(null);
       this.addActionWarning(this.getText("saving.saved") + validationMessage);
-    } else {
+    } else
+
+    {
       this.addActionMessage(this.getText("saving.saved"));
     }
     return SUCCESS;
@@ -443,7 +449,9 @@ public class ProjectEvaluationAction extends BaseAction {
   @Override
   public String submit() {
 
-    ProjectEvaluation projectEvaluation = project.getEvaluations().get(0);
+    int index = Integer.parseInt(this.getParameterValue("evaluationIndex"));
+
+    ProjectEvaluation projectEvaluation = project.getEvaluations().get(index);
     validator.validate(this, project, project.getEvaluations().get(0), this.getCycleName());
 
     if (!validator.hasErrors) {

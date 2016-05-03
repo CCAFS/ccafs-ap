@@ -104,7 +104,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
   private SectionStatusManager sectionStatusManager;
 
 
-  private Map parameters = null;
+  private Map<String, Object> parameters;
 
   @Inject
   public BaseAction(APConfig config) {
@@ -268,7 +268,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
   }
 
-  public final Map getParameters() {
+  public Map<String, Object> getParameters() {
     parameters = ActionContext.getContext().getParameters();
     return parameters;
   }

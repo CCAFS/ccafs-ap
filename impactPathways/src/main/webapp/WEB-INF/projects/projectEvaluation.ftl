@@ -111,7 +111,7 @@
       
       [#if project.evaluations?size >0]
         [#list project.evaluations as evaluation]
-          [@projectEvaluation index=evaluation_index editable=editable /]
+          [@projectEvaluation index=evaluation_index editable=editable && action.checkEditByRole(evaluation) /]
         [/#list]
       [#else]
         <p>There is no assessment for this project.</p>
