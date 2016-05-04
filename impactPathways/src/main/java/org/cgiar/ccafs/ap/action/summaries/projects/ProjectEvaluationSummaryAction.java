@@ -82,7 +82,7 @@ public class ProjectEvaluationSummaryAction extends BaseAction implements Summar
     parametersMap.put("project_id", projectId);
     JasperPrint jasperPrint = JasperFillManager.fillReport(is, parametersMap, dao.getConnection());
 
-
+ 
     JasperExportManager.exportReportToPdfStream(jasperPrint, os);
     bytesPDF = os.toByteArray();
     is.close();
