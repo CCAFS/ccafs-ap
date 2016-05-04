@@ -17,9 +17,7 @@
        <property name="programId" type="java.lang.Long">
             <column name="program_id" />
         </property>
-        <property name="userId" type="java.lang.Long">
-            <column name="user_id" />
-        </property>
+       
         <property name="submited" type="boolean">
             <column name="is_submited" not-null="true" />
         </property>
@@ -72,6 +70,11 @@
           <property name="submittedDate" type="timestamp">
             <column name="submited_date" length="19"  />
         </property>
+        
+         <property name="modifiedDate" type="timestamp">
+            <column name="modified_date" length="19"  />
+        </property>
+        
         <property name="createdBy" type="long">
             <column name="created_by" not-null="true" />
         </property>

@@ -282,7 +282,7 @@ public class ProjectEvaluationAction extends BaseAction {
           evaluationUser.setActive(true);
           evaluationUser.setActiveSince(new Date());
           evaluationUser.setProgramId(new Long(currentLiaisonInstitution.getIpProgram()));
-          evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+
           evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
           if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
@@ -302,7 +302,7 @@ public class ProjectEvaluationAction extends BaseAction {
             evaluationUser.setYear(this.getCurrentReportingYear());
             evaluationUser.setActive(true);
             evaluationUser.setActiveSince(new Date());
-            evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+
             evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
             if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
@@ -325,7 +325,7 @@ public class ProjectEvaluationAction extends BaseAction {
           evaluationUser.setYear(this.getCurrentReportingYear());
           evaluationUser.setActive(true);
           evaluationUser.setActiveSince(new Date());
-          evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+
           evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
 
@@ -380,7 +380,7 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
     projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-    projectEvaluation.setUserId(new Long(this.getCurrentUser().getId()));
+    projectEvaluation.setModifiedBy(new Long(this.getCurrentUser().getId()));
     projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
 
 
@@ -436,10 +436,18 @@ public class ProjectEvaluationAction extends BaseAction {
     message.append(this.getText("planning.manageUsers.email.bye"));
 
     sendMail = new SendMail(this.config);
-    // Send Test Email
-    // this.config.getEmailNotification()
-    sendMail.send("h.jimenez@cgiar.org", "hermesjim88@gmail.com", null, subject, message.toString(), null, null, null);
 
+    /*
+     * ask if the application is in production to add the users
+     * that send the notification else the email will send to developer team
+     */
+    if (this.config.isProduction()) {
+      toEmail = this.getCurrentUser().getEmail();
+    } else {
+      toEmail = this.config.getEmailNotification();
+    }
+
+    sendMail.send(toEmail, ccEmail, null, subject, message.toString(), null, null, null);
   }
 
 
@@ -490,8 +498,10 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
     projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-    projectEvaluation.setUserId(new Long(this.getCurrentUser().getId()));
+    projectEvaluation.setModifiedBy(new Long(this.getCurrentUser().getId()));
+
     int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
+
     // if the evaluation has submited, send the email notification
     if (iReturn > 0 && !validator.hasErrors) {
       this.sendNotificationEmail(projectEvaluation);

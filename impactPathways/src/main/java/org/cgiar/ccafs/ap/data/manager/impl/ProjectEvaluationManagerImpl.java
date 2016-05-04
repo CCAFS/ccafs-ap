@@ -20,6 +20,7 @@ import org.cgiar.ccafs.ap.data.manager.ProjectEvalutionManager;
 import org.cgiar.ccafs.ap.data.model.ProjectEvaluation;
 import org.cgiar.ccafs.ap.data.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -71,6 +72,7 @@ public class ProjectEvaluationManagerImpl implements ProjectEvalutionManager {
     projectEvaluation.setModifiedBy(Long.parseLong(user.getId() + ""));
     projectEvaluation.setModificationJustification(justification);
     projectEvaluation.setActive(true);
+    projectEvaluation.setModifiedDate(new Date());
     return dao.save(projectEvaluation);
   }
 
