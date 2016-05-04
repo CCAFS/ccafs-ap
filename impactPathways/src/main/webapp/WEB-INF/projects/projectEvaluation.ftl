@@ -28,7 +28,7 @@
   [#assign submission = (project.isSubmitted(currentReportingYear, 'Reporting'))!/]
   [#if !submission?has_content]
     <p class="readPrivileges">[@s.text name="project.evaluation.notReportedForevaluation" /]</p>
-  [#elseif !project.evaluations[0].submited && !canEdit ]
+  [#elseif !canEdit ]
     <p class="readPrivileges">[@s.text name="saving.read.privileges"][@s.param][@s.text name=title/][/@s.param][/@s.text]</p>
   [/#if]
   
@@ -66,10 +66,9 @@
         <div class="thirdPartBlock">
           <div class="dottedBox">
             <h6>[@s.text name="preplanning.projectDescription.flagships" /] / [@s.text name="preplanning.projectDescription.regions" /]:</h6>
-            <div class="checkboxGroup">
+            <div class="checkboxGroup clearfix">
               [#if project.flagships?has_content][#list project.flagships as element]<p class="focus">${element.acronym}</p>[/#list][/#if] 
               [#if project.regions?has_content][#list project.regions as element]<p class="focus">${element.acronym}</p>[/#list][/#if]
-              <div class="clearfix"></div>
             </div>
           </div>
         </div> 
@@ -79,8 +78,7 @@
         [#-- Project Leader --]
         <div class="dottedBox">
           <div class="halfPartBlock">
-            <div class="select"><h6>Project Leader:</h6>
-              <p>${projectLeader.institution.acronym} - ${partnerPerson.getComposedName()}</p>
+            <div class="select"><h6>Project Leader:</h6><p>${projectLeader.institution.acronym} - ${partnerPerson.getComposedName()}</p>
             </div>
           </div> 
         </div>    
@@ -88,12 +86,13 @@
         [#-- Project Budget --]
         <div class="halfPartBlock">
           <div class="dottedBox">
-            <div class="halfPartBlock select"><h6>W1/W2 Budget:</h6>
-              <p>[#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign]
-              US$ <span>${(totalProjectBudget?number)?string(",##0.00")}</span></p>
+            <div class="halfPartBlock select">
+              <h6>W1/W2 Budget:</h6>
+              <p>[#assign totalProjectBudget]${((!project.bilateralProject)?string(totalCCAFSBudget!0, totalBilateralBudget!0))}[/#assign] US$ <span>${(totalProjectBudget?number)?string(",##0.00")}</span></p>
             </div>
             <div class="halfPartBlock select">
-              <h6>W3/Bilateral Budget:</h6><p>US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span></p>
+              <h6>W3/Bilateral Budget:</h6>
+              <p>US$ <span>${(totalBilateralBudget!0)?string(",##0.00")}</span></p>
             </div>
           </div>
         </div>  
@@ -111,7 +110,7 @@
       <br />
       [#if project.evaluations?size >0]
         [#list project.evaluations as evaluation]
-          [@projectEvaluation index=evaluation_index editable=(editable && action.checkEditByRole(evaluation)) own=action.checkEditByRole(evaluation) canAccess=true /]
+          [@projectEvaluation index=evaluation_index editable=(editable && action.checkEditByRole(evaluation)) canAccess=true /]
         [/#list]
       [#else]
         <p>[@s.text name="project.evaluation.isEmpty" /]</p>
@@ -119,13 +118,10 @@
     </div> 
    
   </article>
-  
- 
- 
 </section>
 [#include "/WEB-INF/global/pages/footer.ftl"]
 
-[#macro projectEvaluation index editable=false own=false canAccess=true]
+[#macro projectEvaluation index editable=false canAccess=true]
   [#assign customName = "project.evaluations[${index}]"/]
   [#assign element = (customName?eval)! /]
   
@@ -135,14 +131,13 @@
       <tr>
         <td class="statusCol">[@s.text name="project.evaluation.status.${element.status}" /]</td>
         <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${element.typeEvaluation}[/@s.param][/@s.text]</td>
-        [#assign userName = action.getUserName(element.userId) /]
-        <td class="personCol">${userName}</td>
+        <td class="personCol">[#assign userName = action.getUserName(element.userId) /]${userName}</td>
         <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
         <td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>
       </tr>
     </table>
     [#-- Evaluation Content --]
-    <div id="evaluation_${index}" style="display:${own?string('block','none')}">
+    <div id="evaluation_${index}" style="display:${editable?string('block','none')}">
       [#if canAccess]
         [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
         <hr /><br />

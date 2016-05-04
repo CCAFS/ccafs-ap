@@ -3416,7 +3416,7 @@ span.partnerTag {
 .budget {
   margin-top: 0px;
   margin-bottom: 3px;
-  padding: 5px 0 5px 8px;
+  /* padding: 5px 0 5px 8px; */
   border-left: 2px solid #FFFFFF;
 }
 .budget:hover {
