@@ -33,6 +33,18 @@
       </result>
     </action>
     
+    
+    
+    
+     <action  name="projectEvaluation" class="org.cgiar.ccafs.ap.action.summaries.projects.ProjectEvaluationSummaryAction">
+      <result name="success" type="stream">
+        <param name="inputName">inputStream</param>
+        <param name="contentType">${contentType}</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+      </result>
+    </action>
+    
+    
     <action name="projectPartnersSummary" class="org.cgiar.ccafs.ap.action.summaries.projects.PartnersSummaryAction">
       <result name="success" type="stream">
         <param name="inputName">inputStream</param>
