@@ -125,20 +125,21 @@
   [#assign customName = "project.evaluations[${index}]"/]
   [#assign element = (customName?eval)! /]
   
-  <div class="simpleBox evaluationBlock ${element.status}"> 
+  [#assign canView = canAccess && (element.submited || editable) /]
+  <div class="simpleBox evaluationBlock ${(canView)?string('visible','notVisible')}"> 
     [#-- Basic information --]
     <table class="evaluationTable">
       <tr>
         <td class="statusCol">[@s.text name="project.evaluation.status.${element.status}" /]</td>
-        <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${element.typeEvaluation}[/@s.param][/@s.text]</td>
-        <td class="personCol">[#assign userName = action.getUserName(element.modifiedBy)/]${userName}</td>
-        <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
+        <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${(action.getProgramEvaluation(element))!element.typeEvaluation}[/@s.param][/@s.text]</td>
+        <td class="personCol">${action.getUserName(element.modifiedBy)?html}</td>
+        <td class="totalScoreCol"><p class="totalScore">${canView?string(element.totalScore,'Pending')}</p></td>
         <td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>
       </tr>
     </table>
     [#-- Evaluation Content --]
-    <div id="evaluation_${index}" class="evaluationContent" style="display:${editable?string('block','none')}">
-      [#if canAccess]
+    <div id="evaluation_${index}" class="evaluationContent" style="display:${(editable)?string('block','none')}">
+      [#if canView]
         [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
         <br />
         [#-- Evaluation ranking --]
