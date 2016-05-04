@@ -39,17 +39,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jorge Leonardo Solis B. CCAFS
+ * @author Christia Garcia
  */
 public class ProjectEvaluationSummaryAction extends BaseAction implements Summary {
 
   /**
    * 
    */
-  private static final long serialVersionUID = -6569401871980127876L;
+  private static final long serialVersionUID = -3652138144212588870L;
+
+  /**
+   * 
+   */
+
   public static Logger LOG = LoggerFactory.getLogger(ProjectEvaluationSummaryAction.class);
 
-  // XLS bytes
+  // PDF bytes
   private byte[] bytesPDF;
 
   // Streams
