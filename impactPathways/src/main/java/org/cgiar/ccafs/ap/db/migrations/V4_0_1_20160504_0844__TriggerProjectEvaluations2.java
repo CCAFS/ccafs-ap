@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Héctor Fabio Tobón R. - CIAT/CCAFS
+ * @author Christian Garcia. - CIAT/CCAFS
  **/
 
 public class V4_0_1_20160504_0844__TriggerProjectEvaluations2 implements JdbcMigration {

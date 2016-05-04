@@ -37,13 +37,19 @@ import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
 import org.cgiar.ccafs.security.data.model.UserRole;
 import org.cgiar.ccafs.utils.APConfig;
 import org.cgiar.ccafs.utils.SendMail;
+import org.cgiar.ccafs.utils.URLFileDownloader;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -303,7 +309,7 @@ public class ProjectEvaluationAction extends BaseAction {
           evaluationUser.setActive(true);
           evaluationUser.setActiveSince(new Date());
           evaluationUser.setProgramId(new Long(currentLiaisonInstitution.getIpProgram()));
-
+          evaluationUser.setModifiedBy(new Long(this.getCurrentUser().getId()));
           evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
           if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
@@ -323,6 +329,7 @@ public class ProjectEvaluationAction extends BaseAction {
             evaluationUser.setYear(this.getCurrentReportingYear());
             evaluationUser.setActive(true);
             evaluationUser.setActiveSince(new Date());
+            evaluationUser.setModifiedBy(new Long(this.getCurrentUser().getId()));
 
             evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
@@ -346,7 +353,7 @@ public class ProjectEvaluationAction extends BaseAction {
           evaluationUser.setYear(this.getCurrentReportingYear());
           evaluationUser.setActive(true);
           evaluationUser.setActiveSince(new Date());
-
+          evaluationUser.setModifiedBy(new Long(this.getCurrentUser().getId()));
           evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
 
@@ -458,6 +465,35 @@ public class ProjectEvaluationAction extends BaseAction {
     message.append(this.getText("planning.manageUsers.email.support"));
     message.append(this.getText("\n"));
     message.append(this.getText("planning.manageUsers.email.bye"));
+    ByteBuffer buffer = null;
+    String fileName = null;
+    String contentType = null;
+
+    switch (roleManager.getRoleByAcronym(submittedEvaluation.getTypeEvaluation()).getId()) {
+      case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
+      case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
+
+        try {
+          // Making the URL to get the report.
+          URL pdfURL = new URL(config.getBaseUrl() + "/summaries/projectEvaluation.do?" + APConstants.PROJECT_REQUEST_ID
+            + "=" + projectID);
+          // Getting the file data.
+          Map<String, Object> fileProperties = URLFileDownloader.getAsByteArray(pdfURL);
+          buffer = fileProperties.get("byte_array") != null ? (ByteBuffer) fileProperties.get("byte_array") : null;
+          fileName = fileProperties.get("filename") != null ? (String) fileProperties.get("filename") : null;
+          contentType = fileProperties.get("mime_type") != null ? (String) fileProperties.get("mime_type") : null;
+        } catch (MalformedURLException e) {
+          // Do nothing.
+          LOG.error("There was an error trying to get the URL to download the PDF file: " + e.getMessage());
+        } catch (IOException e) {
+          // Do nothing
+          LOG.error("There was a problem trying to download the PDF file for the projectID=" + projectID + " : "
+            + e.getMessage());
+        }
+
+        break;
+
+    }
 
     sendMail = new SendMail(this.config);
 
@@ -476,7 +512,11 @@ public class ProjectEvaluationAction extends BaseAction {
       toEmail = this.config.getEmailNotification();
     }
 
-    sendMail.send("h.jimenez@cgiar.org", ccEmail, null, subject, message.toString(), null, null, null);
+    if (buffer != null && fileName != null && contentType != null) {
+      sendMail.send(toEmail, ccEmail, null, subject, message.toString(), buffer.array(), contentType, fileName);
+    } else {
+      sendMail.send(toEmail, ccEmail, null, subject, message.toString(), null, null, null);
+    }
   }
 
 
