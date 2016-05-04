@@ -5169,3 +5169,8 @@ table.evaluationRank thead th{
 
 .evaluationBlock.SUBMITTED {
 }
+
+.evaluationContent {
+  width: 98%;
+  margin:0 auto;
+}
