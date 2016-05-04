@@ -459,7 +459,6 @@ public class ProjectEvaluationAction extends BaseAction {
     }
 
     String subject = this.getText("evaluation.submit.email.subject", values);
-    message.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
     message.append(this.getText("evaluation.submit.email.message", values));
     message.append(this.getText("\n\n"));
     message.append(this.getText("planning.manageUsers.email.support"));
