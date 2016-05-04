@@ -135,7 +135,7 @@
       <tr>
         <td class="statusCol">[@s.text name="project.evaluation.status.${element.status}" /]</td>
         <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${element.typeEvaluation}[/@s.param][/@s.text]</td>
-        [#assign userName = action.getUserName(element.userId) /]
+        [#assign userName = action.getUserName(element.modifiedBy) /]
         <td class="personCol">${userName}</td>
         <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
         <td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>

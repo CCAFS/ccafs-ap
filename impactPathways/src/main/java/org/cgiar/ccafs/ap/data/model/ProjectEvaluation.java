@@ -19,7 +19,6 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   private long projectId;
   private String typeEvaluation;
-  private Long userId;
   private Long programId;
   private boolean submited;
   private int year;
@@ -43,21 +42,24 @@ public class ProjectEvaluation implements java.io.Serializable {
 
 
   private long modifiedBy;
+  private Date modifiedDate;
 
 
   private String modificationJustification;
 
+
   public ProjectEvaluation() {
   }
 
-  public ProjectEvaluation(long projectId, String typeEvaluation, Long userId, boolean isSubmited, int year,
-    double rankingOutputs, double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam,
-    double rankingQuality, String communicationProducts, String projectHighlights, String outcomeCaseStudies,
-    String generalComments, String recommendations, String anyActionRequeried, double totalScore, boolean isActive,
-    Date activeSince, long createdBy, long modifiedBy, String modificationJustification) {
+
+  public ProjectEvaluation(long projectId, String typeEvaluation, boolean isSubmited, int year, double rankingOutputs,
+    double rankingOutcomes, double rankingParternshipComunnication, double rankingResponseTeam, double rankingQuality,
+    String communicationProducts, String projectHighlights, String outcomeCaseStudies, String generalComments,
+    String recommendations, String anyActionRequeried, double totalScore, boolean isActive, Date activeSince,
+    long createdBy, long modifiedBy, String modificationJustification) {
     this.projectId = projectId;
     this.typeEvaluation = typeEvaluation;
-    this.userId = userId;
+
     this.submited = isSubmited;
     this.year = year;
     this.rankingOutputs = rankingOutputs;
@@ -79,7 +81,6 @@ public class ProjectEvaluation implements java.io.Serializable {
     this.modificationJustification = modificationJustification;
   }
 
-
   /**
    * calculate the weighted average of the questions in the evaluation.
    * 
@@ -96,7 +97,6 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   }
 
-
   @Override
   public boolean equals(Object obj) {
 
@@ -110,9 +110,11 @@ public class ProjectEvaluation implements java.io.Serializable {
     return false;
   }
 
+
   public Date getActiveSince() {
     return this.activeSince;
   }
+
 
   public String getAnyActionRequeried() {
     return this.anyActionRequeried;
@@ -140,6 +142,10 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public long getModifiedBy() {
     return this.modifiedBy;
+  }
+
+  public Date getModifiedDate() {
+    return modifiedDate;
   }
 
   public String getOutcomeCaseStudies() {
@@ -201,14 +207,10 @@ public class ProjectEvaluation implements java.io.Serializable {
     return this.typeEvaluation;
   }
 
-  public Long getUserId() {
-    return this.userId;
-  }
-
-
   public int getYear() {
     return this.year;
   }
+
 
   @Override
   public int hashCode() {
@@ -258,6 +260,10 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setModifiedBy(long modifiedBy) {
     this.modifiedBy = modifiedBy;
+  }
+
+  public void setModifiedDate(Date modifiedDate) {
+    this.modifiedDate = modifiedDate;
   }
 
   public void setOutcomeCaseStudies(String outcomeCaseStudies) {
@@ -316,11 +322,6 @@ public class ProjectEvaluation implements java.io.Serializable {
 
   public void setTypeEvaluation(String typeEvaluation) {
     this.typeEvaluation = typeEvaluation;
-  }
-
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
   }
 
 

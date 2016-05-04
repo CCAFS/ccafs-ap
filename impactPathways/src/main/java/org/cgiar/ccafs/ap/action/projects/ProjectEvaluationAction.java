@@ -282,7 +282,7 @@ public class ProjectEvaluationAction extends BaseAction {
           evaluationUser.setActive(true);
           evaluationUser.setActiveSince(new Date());
           evaluationUser.setProgramId(new Long(currentLiaisonInstitution.getIpProgram()));
-          evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+
           evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
           if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
@@ -302,7 +302,7 @@ public class ProjectEvaluationAction extends BaseAction {
             evaluationUser.setYear(this.getCurrentReportingYear());
             evaluationUser.setActive(true);
             evaluationUser.setActiveSince(new Date());
-            evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+
             evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
             if (!this.existEvaluation(lstEvaluations, evaluationUser)) {
@@ -325,7 +325,7 @@ public class ProjectEvaluationAction extends BaseAction {
           evaluationUser.setYear(this.getCurrentReportingYear());
           evaluationUser.setActive(true);
           evaluationUser.setActiveSince(new Date());
-          evaluationUser.setUserId(new Long(this.getCurrentUser().getId()));
+
           evaluationUser.setTypeEvaluation(userRole.getAcronym());
 
 
@@ -380,7 +380,7 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
     projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-    projectEvaluation.setUserId(new Long(this.getCurrentUser().getId()));
+    projectEvaluation.setModifiedBy(new Long(this.getCurrentUser().getId()));
     projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
 
 
@@ -498,8 +498,10 @@ public class ProjectEvaluationAction extends BaseAction {
     projectEvaluation.setRankingResponseTeam(projectEvaluation.getRankingResponseTeam() / STAR_DIV);
     projectEvaluation.setRankingQuality(projectEvaluation.getRankingQuality() / STAR_DIV);
     projectEvaluation.setTotalScore(projectEvaluation.calculateTotalScore());
-    projectEvaluation.setUserId(new Long(this.getCurrentUser().getId()));
+    projectEvaluation.setModifiedBy(new Long(this.getCurrentUser().getId()));
+
     int iReturn = projectEvaluationManager.saveProjectEvalution(projectEvaluation, this.getCurrentUser(), "");
+
     // if the evaluation has submited, send the email notification
     if (iReturn > 0 && !validator.hasErrors) {
       this.sendNotificationEmail(projectEvaluation);
