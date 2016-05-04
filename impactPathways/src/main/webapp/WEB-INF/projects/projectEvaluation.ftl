@@ -130,7 +130,7 @@
     <table class="evaluationTable">
       <tr>
         <td class="statusCol">[@s.text name="project.evaluation.status.${element.status}" /]</td>
-        <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${element.typeEvaluation}[/@s.param][/@s.text]</td>
+        <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${action.getProgramEvaluation(element)}[/@s.param][/@s.text]</td>
         <td class="personCol">${action.getUserName(element.modifiedBy)}</td>
         <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
         <td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>
