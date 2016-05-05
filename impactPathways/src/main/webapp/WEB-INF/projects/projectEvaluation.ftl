@@ -60,7 +60,7 @@
         </div>
         [#-- Management Liaison --]
         <div class="thirdPartBlock">
-          <div class="dottedBox select"><h6>Management Liaison:</h6><p> ${(project.liaisonInstitution.name)!} -  ${project.owner.composedOwnerName}</p></div>  
+          <div class="dottedBox select"><h6>Management Liaison:</h6><p> ${(project.liaisonInstitution.name)!} -  ${project.owner.composedOwnerName?html}</p></div>  
         </div>
         [#-- Flagships / Regions --] 
         <div class="thirdPartBlock">
@@ -77,10 +77,7 @@
       <div class="halfPartBlock">
         [#-- Project Leader --]
         <div class="dottedBox">
-          <div class="halfPartBlock">
-            <div class="select"><h6>Project Leader:</h6><p>${projectLeader.institution.acronym} - ${partnerPerson.getComposedName()}</p>
-            </div>
-          </div> 
+          <div class="select"><h6>Project Leader:</h6><p>${projectLeader.institution.acronym} - ${partnerPerson.getComposedName()?html}</p></div>
         </div>    
       </div>
         [#-- Project Budget --]
@@ -208,6 +205,7 @@
             [@s.submit type="button" name="save"][@s.text name="form.buttons.save" /][/@s.submit]
             [@s.submit type="button" name="submit"][@s.text name="form.buttons.submit" /][/@s.submit]
           </div>
+          <br />
         [/#if]
         
         [/@s.form] 
