@@ -23,7 +23,6 @@ import org.cgiar.ccafs.utils.summaries.Summary;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,11 +70,10 @@ public class ProjectEvaluationSummaryAction extends BaseAction implements Summar
 
   @Override
   public String execute() throws Exception {
-    File jasperFile = this.getFile("jaspers/ProjectEvaluation.jasper");
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     InputStream is = null;
     try {
-      is = new FileInputStream(jasperFile);
+      is = this.getClass().getResourceAsStream("/jaspers/ProjectEvaluation.jasper");
     } catch (Exception e) {
       LOG.info(e.getMessage());
     }
