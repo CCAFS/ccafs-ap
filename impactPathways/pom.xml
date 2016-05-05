@@ -284,6 +284,17 @@
   <version>2.4.6</version>
 </dependency>
 
+<dependency>
+ <groupId>xml-apis</groupId>
+ <artifactId>xml-apis</artifactId>
+ <version>1.4.01</version>
+</dependency>
+
+ <dependency>
+ <groupId>net.sf.jasperreports</groupId>
+  <artifactId>jasperreports-fonts</artifactId>
+  <version>5.6.1</version>
+ </dependency>
       <!-- End jasper -->
   </dependencies>
   
