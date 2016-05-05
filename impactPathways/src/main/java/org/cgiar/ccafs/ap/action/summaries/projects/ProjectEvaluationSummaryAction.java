@@ -77,7 +77,7 @@ public class ProjectEvaluationSummaryAction extends BaseAction implements Summar
     try {
       is = new FileInputStream(jasperFile);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.info(e.getMessage());
     }
     Map<String, Object> parametersMap = new HashMap<>();
     parametersMap.put("project_id", projectId);
