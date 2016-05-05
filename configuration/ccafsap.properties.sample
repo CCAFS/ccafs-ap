@@ -20,7 +20,7 @@ mysql.port=3306
 # ------------------------------------------------
 
 # This variable should be configured in each WAR project
-ccafsap.baseUrl=localhost:8443/impactPathways/
+ccafsap.baseUrl=https://localhost:8443/impactPathways/
 
 # Application properties
 ccafsap.planning.currentYear=2015

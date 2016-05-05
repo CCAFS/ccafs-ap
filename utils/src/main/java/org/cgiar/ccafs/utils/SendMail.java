@@ -109,11 +109,11 @@ public class SendMail {
       msg.setSubject(subject);
       msg.setSentDate(new Date());
 
-      MimeMultipart mimeMultipart = new MimeMultipart("related");
+      MimeMultipart mimeMultipart = new MimeMultipart("alternative");
 
       // Body content: TEXT
       MimeBodyPart mimeBodyPart = new MimeBodyPart();
-      mimeBodyPart.setContent(messageContent, "text/html;charset=utf-8");
+      mimeBodyPart.setContent(messageContent, "text/html; charset=utf-8");
       mimeMultipart.addBodyPart(mimeBodyPart);
 
       if (attachment != null && attachmentMimeType != null && fileName != null) {
@@ -125,7 +125,7 @@ public class SendMail {
         mimeMultipart.addBodyPart(attachmentBodyPart);
       }
 
-      msg.setContent(mimeMultipart, "text/html");
+      msg.setContent(mimeMultipart);
       Transport.send(msg);
       LOG.info("Message sent: " + subject);
       LOG.info("   - TO: " + toEmail);

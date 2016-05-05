@@ -484,7 +484,6 @@ public class ProjectEvaluationAction extends BaseAction {
       case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
 
         try {
-          int i = 0;
           // Making the URL to get the report.
           URL pdfURL = new URL(config.getBaseUrl() + "/summaries/projectEvaluation.do?" + APConstants.PROJECT_REQUEST_ID
             + "=" + projectID);
