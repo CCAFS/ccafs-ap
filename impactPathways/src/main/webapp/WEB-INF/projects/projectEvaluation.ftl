@@ -125,22 +125,23 @@
   [#assign customName = "project.evaluations[${index}]"/]
   [#assign element = (customName?eval)! /]
   
-  <div class="simpleBox evaluationBlock ${element.status}"> 
+  [#assign canView = canAccess && (element.submited || editable) /]
+  <div class="simpleBox evaluationBlock ${(canView)?string('visible','notVisible')}"> 
     [#-- Basic information --]
     <table class="evaluationTable">
       <tr>
         <td class="statusCol">[@s.text name="project.evaluation.status.${element.status}" /]</td>
-        <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${action.getProgramEvaluation(element)}[/@s.param][/@s.text]</td>
-        <td class="personCol">${action.getUserName(element.modifiedBy)}</td>
-        <td class="totalScoreCol"><p class="totalScore">${element.totalScore}</p></td>
+        <td class="rolCol">[@s.text name="project.evaluation.evaluation" ][@s.param]${(action.getProgramEvaluation(element))!element.typeEvaluation}[/@s.param][/@s.text]</td>
+        <td class="personCol">${action.getUserName(element.modifiedBy)?html}</td>
+        <td class="totalScoreCol"><p class="totalScore">${canView?string(element.totalScore,'Pending')}</p></td>
         <td class="detailCol center"><p class="control-evaluation_${index}">[View Detailed]</p></td>
       </tr>
     </table>
     [#-- Evaluation Content --]
-    <div id="evaluation_${index}" style="display:${editable?string('block','none')}">
-      [#if canAccess]
+    <div id="evaluation_${index}" class="evaluationContent" style="display:${(editable)?string('block','none')}">
+      [#if canView]
         [@s.form action="evaluation" method="POST" enctype="multipart/form-data" cssClass="pure-form"]
-        <hr /><br />
+        <br />
         [#-- Evaluation ranking --]
         <div class="fullPartBlock" style="width:98%">
           <table class="evaluationRank default">
@@ -165,39 +166,41 @@
           </table>
         </div>
         
-        [#-- Communication products --]
-        <div class="fullPartBlock">
-          [@customForm.textArea name="${customName}.communicationProducts" i18nkey="project.evaluation.communicationProducts" className="communicationProducts limitWords-50" editable=editable/]
-        </div>
-        
-        [#-- Project Highlight --]
-        <div class="fullPartBlock">
-          [@customForm.textArea name="${customName}.projectHighlights" i18nkey="project.evaluation.projectHighlights" className="projectHighlights limitWords-50" editable=editable/]
-        </div>
-        
-        [#-- Outcome Case Studies --]
-        <div class="fullPartBlock">
-          [@customForm.textArea name="${customName}.outcomeCaseStudies" i18nkey="project.evaluation.outcomeCaseStudies" className="outcomeCaseStudies limitWords-50" editable=editable/]
-        </div>
-        
-        [#-- General comments on the reporting and the project's progress and clarifying questions --]
-        <div class="fullPartBlock">
-          [@customForm.textArea name="${customName}.generalComments" i18nkey="project.evaluation.generalComments" className="generalComments limitWords-500" editable=editable/]
-        </div>
-        
-        [#-- Recommendations to the project team --]
-        <div class="fullPartBlock">
-          [@customForm.textArea name="${customName}.recommendations" i18nkey="project.evaluation.recommendations" className="recommendations limitWords-500" editable=editable/]
-        </div>
-        
-        [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
-        <div class="fullPartBlock">
-          [@customForm.textArea name="${customName}.anyActionRequeried" i18nkey="project.evaluation.anyActionRequired" className="anyActionRequired limitWords-500" editable=editable/]
+        <div class="fullBlock">
+          [#-- Communication products --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="${customName}.communicationProducts" i18nkey="project.evaluation.communicationProducts" className="communicationProducts limitWords-50" editable=editable/]
+          </div>
+          
+          [#-- Project Highlight --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="${customName}.projectHighlights" i18nkey="project.evaluation.projectHighlights" className="projectHighlights limitWords-50" editable=editable/]
+          </div>
+          
+          [#-- Outcome Case Studies --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="${customName}.outcomeCaseStudies" i18nkey="project.evaluation.outcomeCaseStudies" className="outcomeCaseStudies limitWords-50" editable=editable/]
+          </div>
+          
+          [#-- General comments on the reporting and the project's progress and clarifying questions --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="${customName}.generalComments" i18nkey="project.evaluation.generalComments" className="generalComments limitWords-500" editable=editable/]
+          </div>
+          
+          [#-- Recommendations to the project team --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="${customName}.recommendations" i18nkey="project.evaluation.recommendations" className="recommendations limitWords-500" editable=editable/]
+          </div>
+          
+          [#-- Any action required. Please indicate a time period, e.g. within the next 6 months --]
+          <div class="fullPartBlock">
+            [@customForm.textArea name="${customName}.anyActionRequeried" i18nkey="project.evaluation.anyActionRequired" className="anyActionRequired limitWords-500" editable=editable/]
+          </div>
         </div>
         
         [#-- Save and Submit buttons --]
         [#if editable]
-          <hr />
+          <br />
           <div class="buttons">
             [#-- Project identifier --]
             <input name="projectID" type="hidden" value="${project.id?c}" />

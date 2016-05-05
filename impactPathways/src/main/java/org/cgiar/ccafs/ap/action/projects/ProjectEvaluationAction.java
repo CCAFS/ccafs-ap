@@ -198,12 +198,11 @@ public class ProjectEvaluationAction extends BaseAction {
       if (program != null) {
         return program.getAcronym();
       } else {
-        return "";
+        return null;
       }
     } else {
-      return "";
+      return null;
     }
-
   }
 
 

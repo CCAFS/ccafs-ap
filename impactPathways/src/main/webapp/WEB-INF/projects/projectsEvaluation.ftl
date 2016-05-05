@@ -32,7 +32,6 @@
       <div style="display:none">
         [@projectList.evaluationProjects projects=projects canValidate=true canEdit=true namespace="/${currentSection}/projects/evaluation" /]
       </div>
-    
     [/#if]    
     <div class="clearfix"></div> 
   </article>
