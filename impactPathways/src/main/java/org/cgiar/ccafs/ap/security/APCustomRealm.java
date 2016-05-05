@@ -183,6 +183,7 @@ public class APCustomRealm extends AuthorizingRealm {
           break;
 
         case APConstants.ROLE_EXTERNAL_EVALUATOR:
+        case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
 
           projectRoles.add(userRoleManager.getProjectExternalEvaluator(userID));
           break;

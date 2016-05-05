@@ -355,7 +355,7 @@ public class ProjectEvaluationAction extends BaseAction {
           break;
 
         case APConstants.ROLE_EXTERNAL_EVALUATOR:
-
+        case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
         case APConstants.ROLE_COORDINATING_UNIT:
 
 
