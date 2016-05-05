@@ -141,8 +141,20 @@ public class ProjectEvaluationAction extends BaseAction {
       return true;
     }
     for (UserRole userRole : roles) {
+
       if (userRole.getId().intValue() == role.getId()) {
-        bCheckRole = true;
+        if (userRole.getId().intValue() == APConstants.ROLE_PROJECT_LEADER) {
+          Project p = projectManager.getProjectBasicInfo(projectID);
+          if (p.getLeaderUserId() == this.getCurrentUser().getId()) {
+            bCheckRole = true;
+          } else {
+            bCheckRole = false;
+          }
+        } else {
+          bCheckRole = true;
+        }
+
+
         if (projectEvaluation.getProgramId() != null) {
           bCheckRole = bCheckRole && this.checkEditByProgram(projectEvaluation);
         }
