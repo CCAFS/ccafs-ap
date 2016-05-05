@@ -113,7 +113,7 @@ public class SendMail {
 
       // Body content: TEXT
       MimeBodyPart mimeBodyPart = new MimeBodyPart();
-      mimeBodyPart.setContent(messageContent, "text/html");
+      mimeBodyPart.setContent(messageContent, "text/html;charset=utf-8");
       mimeMultipart.addBodyPart(mimeBodyPart);
 
       if (attachment != null && attachmentMimeType != null && fileName != null) {
