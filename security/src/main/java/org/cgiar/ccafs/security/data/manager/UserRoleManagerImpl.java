@@ -108,6 +108,13 @@ public class UserRoleManagerImpl {
     return this.getData(userRoleData);
   }
 
+  public Map<String, UserRole> getProjectProgramDirector(int userID) {
+
+
+    List<Map<String, String>> userRoleData = userRoleDAO.getProjectExternalEvaluator(userID);
+    return this.getData(userRoleData);
+  }
+
   /**
    * This method get a specific role from the database.
    * 

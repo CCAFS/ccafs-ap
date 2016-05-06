@@ -80,7 +80,6 @@ public interface UserRoleDAO {
    */
   public List<Map<String, String>> getProjectExternalEvaluator(int userID);
 
-
   /**
    * This method gets the projects where the user is assigned as leader .
    * 
@@ -88,6 +87,14 @@ public interface UserRoleDAO {
    * @return a list of maps with the project identifier and the contact point role information.
    */
   public List<Map<String, String>> getProjectLeaderProjects(int userID);
+
+  /**
+   * This method gets the projects that program director can grade it
+   * 
+   * @param userID - user identifier
+   * @return a list of maps with the project identifier and the contact point role information.
+   */
+  public List<Map<String, String>> getProjectProgramDirector(int userID);
 
   /**
    * This method gets all the permissions assigned to the role
