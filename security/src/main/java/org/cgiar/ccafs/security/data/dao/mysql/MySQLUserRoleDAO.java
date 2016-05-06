@@ -132,7 +132,6 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
     return this.setData(query.toString());
   }
 
-
   @Override
   public List<Map<String, String>> getProjectLeaderProjects(int userID) {
     StringBuilder query = new StringBuilder();
@@ -142,6 +141,18 @@ public class MySQLUserRoleDAO implements UserRoleDAO {
     query.append("WHERE ( ppp.contact_type = 'PL') ");
     query.append("AND pp.is_active = 1 AND ppp.is_active = 1 AND r.id = 7 AND ppp.user_id = ");
     query.append(userID);
+
+    return this.setData(query.toString());
+  }
+
+  @Override
+  public List<Map<String, String>> getProjectProgramDirector(int userID) {
+    StringBuilder query = new StringBuilder();
+    query.append("SELECT r.id, r.name, r.acronym, p.id project_id ");
+    query.append("FROM  roles r, projects p ");
+    query.append("WHERE  ");
+    query.append(" r.id = 14 and p.is_active=1 ");
+
 
     return this.setData(query.toString());
   }

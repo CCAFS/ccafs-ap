@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Role {
 
   public enum UserRole {
-    Admin, FPL, RPL, CP, AL, CU, Guest, PL, PC,FP
+    Admin, FPL, RPL, CP, AL, CU, Guest, PL, PC, FP, EE, PD
   }
 
   private int id;

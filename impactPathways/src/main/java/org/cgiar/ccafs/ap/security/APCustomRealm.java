@@ -183,10 +183,15 @@ public class APCustomRealm extends AuthorizingRealm {
           break;
 
         case APConstants.ROLE_EXTERNAL_EVALUATOR:
-        case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
+
 
           projectRoles.add(userRoleManager.getProjectExternalEvaluator(userID));
           break;
+
+        case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
+          projectRoles.add(userRoleManager.getProjectProgramDirector(userID));
+          break;
+
 
         case APConstants.ROLE_PROJECT_COORDINATOR:
           projectRoles.add(userRoleManager.getProjectCordinatorProjects(userID));
@@ -262,7 +267,7 @@ public class APCustomRealm extends AuthorizingRealm {
               addPermission = false;
             }
           }
-          System.out.println(addPermission);
+
           if (addPermission) {
             authorizationInfo.addStringPermission(permission);
           }
