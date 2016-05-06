@@ -22,7 +22,6 @@ import org.cgiar.ccafs.utils.summaries.Summary;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,11 +62,11 @@ public class DeliverableReportingSummaryAction extends BaseAction implements Sum
 
   @Override
   public String execute() throws Exception {
-    File jasperFile = this.getFile("jaspers/DeliverablesInformation.jasper");
+
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     InputStream is = null;
     try {
-      is = new FileInputStream(jasperFile);
+      is = this.getClass().getResourceAsStream("/jaspers/DeliverablesInformation.jasper");
     } catch (Exception e) {
     }
     JasperPrint jasperPrint = JasperFillManager.fillReport(is, new HashMap<String, Object>(), dao.getConnection());
