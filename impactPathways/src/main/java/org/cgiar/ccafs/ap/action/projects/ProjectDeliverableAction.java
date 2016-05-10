@@ -417,59 +417,66 @@ public class ProjectDeliverableAction extends BaseAction {
     this.getSession().put("indexTab", indexTab);
     project = projectManager.getProjectFromDeliverableId(deliverableID);
     if (this.hasProjectPermission("update", project.getId())) {
-      if (file != null) {
-        FileManager.deleteFile(this.getRankingPath() + deliverable.getRanking().getProcessDataFile());
-        FileManager.copyFile(file, this.getRankingPath() + fileFileName);
-
-        deliverable.getRanking().setProcessDataFile(fileFileName);
-      }
-      List<DeliverableDataSharingFile> files = new ArrayList<>();
-      if (deliverable.getFiles() != null) {
-        for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
-
-          DeliverableDataSharingFile file = new DeliverableDataSharingFile();
-          file.setDeliverableId(deliverableID);
-          if (deliverabelFile.getId() > 0) {
-            file.setId((deliverabelFile.getId()));
-            files.add(file);
-          } else {
-            if (!deliverabelFile.getLink().equals("")) {
-              file.setFile(deliverabelFile.getLink());
-            } else {
-              file.setFile(deliverabelFile.getName());
-            }
-
-            file.setType(deliverabelFile.getHosted());
 
 
-            if (file.getFile() != null) {
+      if (this.isReportingCycle()) {
+        if (file != null) {
+          FileManager.deleteFile(this.getRankingPath() + deliverable.getRanking().getProcessDataFile());
+          FileManager.copyFile(file, this.getRankingPath() + fileFileName);
+
+          deliverable.getRanking().setProcessDataFile(fileFileName);
+        }
+
+
+        List<DeliverableDataSharingFile> files = new ArrayList<>();
+        if (deliverable.getFiles() != null) {
+          for (DeliverableFile deliverabelFile : deliverable.getFiles()) {
+
+            DeliverableDataSharingFile file = new DeliverableDataSharingFile();
+            file.setDeliverableId(deliverableID);
+            if (deliverabelFile.getId() > 0) {
+              file.setId((deliverabelFile.getId()));
               files.add(file);
+            } else {
+              if (!deliverabelFile.getLink().equals("")) {
+                file.setFile(deliverabelFile.getLink());
+              } else {
+                file.setFile(deliverabelFile.getName());
+              }
+
+              file.setType(deliverabelFile.getHosted());
+
+
+              if (file.getFile() != null) {
+                files.add(file);
+              }
             }
+
+
           }
-
-
         }
+
+        DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
+
+        if (deliverable.getDissemination().getRestrictedAccessUntilText() != null) {
+          try {
+            deliverable.getDissemination().setRestrictedAccessUntil(
+              dateformatter.parse(deliverable.getDissemination().getRestrictedAccessUntilText()));
+          } catch (ParseException e) {
+            deliverable.getDissemination().setRestrictedAccessUntil(null);
+          }
+        }
+        if (deliverable.getDissemination().getRestrictedEmbargoedText() != null) {
+          try {
+            deliverable.getDissemination()
+              .setRestrictedEmbargoed(dateformatter.parse(deliverable.getDissemination().getRestrictedEmbargoedText()));
+          } catch (ParseException e) {
+            deliverable.getDissemination().setRestrictedEmbargoed(null);
+          }
+        }
+        deliverable.setDataSharingFile(files);
       }
 
-      DateFormat dateformatter = new SimpleDateFormat(APConstants.DATE_FORMAT);
-
-      if (deliverable.getDissemination().getRestrictedAccessUntilText() != null) {
-        try {
-          deliverable.getDissemination().setRestrictedAccessUntil(
-            dateformatter.parse(deliverable.getDissemination().getRestrictedAccessUntilText()));
-        } catch (ParseException e) {
-          deliverable.getDissemination().setRestrictedAccessUntil(null);
-        }
-      }
-      if (deliverable.getDissemination().getRestrictedEmbargoedText() != null) {
-        try {
-          deliverable.getDissemination()
-            .setRestrictedEmbargoed(dateformatter.parse(deliverable.getDissemination().getRestrictedEmbargoedText()));
-        } catch (ParseException e) {
-          deliverable.getDissemination().setRestrictedEmbargoed(null);
-        }
-      }
-      deliverable.setDataSharingFile(files);
       // -------- Saving main information
       deliverableManager.saveDeliverable(project.getId(), deliverable, this.getCurrentUser(), this.getJustification());
 
