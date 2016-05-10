@@ -81,6 +81,8 @@ public class ProjectsEvaluationAction extends BaseAction {
         case APConstants.ROLE_FLAGSHIP_PROGRAM_LEADER:
         case APConstants.ROLE_PROJECT_LEADER:
         case APConstants.ROLE_COORDINATING_UNIT:
+        case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
+
         case APConstants.ROLE_REGIONAL_PROGRAM_LEADER:
           int liaisonInstitutionID = 0;
 

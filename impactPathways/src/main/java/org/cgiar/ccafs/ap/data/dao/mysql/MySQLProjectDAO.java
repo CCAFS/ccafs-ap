@@ -826,7 +826,7 @@ public class MySQLProjectDAO implements ProjectDAO {
       case APConstants.ROLE_ADMIN:
       case APConstants.ROLE_COORDINATING_UNIT:
       case APConstants.ROLE_EXTERNAL_EVALUATOR:
-
+      case APConstants.ROLE_PROGRAM_DIRECTOR_EVALUATOR:
 
         query.append("SELECT p.id,");
         query.append("       p.title,");
