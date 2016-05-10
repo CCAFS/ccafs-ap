@@ -517,10 +517,16 @@ public class DeliverableManagerImpl implements DeliverableManager {
     int result = deliverableDAO.saveDeliverable(deliverableData);
     // if (deliverable.getRanking().getDeliverableId() == null) {
     if (result == 0) {
-      deliverable.getRanking().setDeliverableId(new Long(deliverable.getId()));
-      deliverable.getDissemination().setDeliverableId((deliverable.getId()));
-      // deliverable.getDataSharing().setDeliverableId((deliverable.getId()));
-      deliverable.getPublicationMetadata().setDeliverableId((deliverable.getId()));
+      if (deliverable.getRanking() != null) {
+        deliverable.getRanking().setDeliverableId(new Long(deliverable.getId()));
+      }
+      if (deliverable.getDissemination() != null) {
+        deliverable.getDissemination().setDeliverableId((deliverable.getId()));
+      } // deliverable.getDataSharing().setDeliverableId((deliverable.getId()));
+      if (deliverable.getPublicationMetadata() != null) {
+        deliverable.getPublicationMetadata().setDeliverableId((deliverable.getId()));
+      }
+
       deliverableId = deliverable.getId();
     } else {
       if (deliverable.getDissemination() != null) {

@@ -54,6 +54,7 @@ public class EditProjectEvaluationInterceptor extends AbstractInterceptor implem
     ProjectManager projectManager) {
 
     BaseAction baseAction = (BaseAction) invocation.getAction();
+
     Map<String, Object> parameters = invocation.getInvocationContext().getParameters();
     String actionName = ServletActionContext.getActionMapping().getName();
 
