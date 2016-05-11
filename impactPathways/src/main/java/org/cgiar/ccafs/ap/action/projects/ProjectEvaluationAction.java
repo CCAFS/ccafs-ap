@@ -76,7 +76,6 @@ public class ProjectEvaluationAction extends BaseAction {
   // Model for the back-end
   private Project project;
 
-
   private int projectID;
   private ProjectPartner projectLeader;
   private double totalCCAFSBudget;
