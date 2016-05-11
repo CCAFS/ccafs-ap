@@ -109,19 +109,23 @@ public class Project {
 
     int acumulative = 0;
 
-    for (IPIndicator indicators : this.getIndicators()) {
-      if (indicators.getYear() <= year && indicators.getParent().getId() == id.getParent().getId()) {
-        if (indicators.getTarget() != null) {
-          if (!indicators.getTarget().equals("")) {
-            try {
-              acumulative = acumulative + Integer.parseInt(indicators.getTarget());
-            } catch (NumberFormatException e) {
-              return "Cannot be Calculated";
+    try {
+      for (IPIndicator indicators : this.getIndicators()) {
+        if (indicators.getYear() <= year && indicators.getParent().getId() == id.getParent().getId()) {
+          if (indicators.getTarget() != null) {
+            if (!indicators.getTarget().equals("")) {
+              try {
+                acumulative = acumulative + Integer.parseInt(indicators.getTarget());
+              } catch (NumberFormatException e) {
+                return "Cannot be Calculated";
+              }
             }
           }
         }
-      }
 
+      }
+    } catch (Exception e) {
+      return "Cannot be Calculated";
     }
     return String.valueOf(acumulative);
   }
