@@ -42,12 +42,13 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
   }
 
   @Override
-  public SectionStatus getSectionStatus(Deliverable deliverable, String cycle, String section) {
-    Map<String, String> statusData = statusDAO.getDeliverableSectionStatus(deliverable.getId(), cycle, section);
+  public SectionStatus getSectionStatus(Deliverable deliverable, String cycle, String section, int year) {
+    Map<String, String> statusData = statusDAO.getDeliverableSectionStatus(deliverable.getId(), cycle, section, year);
     if (statusData != null && !statusData.isEmpty()) {
       SectionStatus status = new SectionStatus();
       status.setId(Integer.parseInt(statusData.get("id")));
       status.setCycle(statusData.get("cycle"));
+      status.setYear(Integer.parseInt(statusData.get("year")));
       status.setSection(statusData.get("section_name"));
       status.setMissingFields(statusData.get("missing_fields"));
       status.setProjectID(statusData.get("project_id") != null ? Integer.parseInt(statusData.get("project_id")) : -1);
@@ -59,12 +60,13 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
   }
 
   @Override
-  public SectionStatus getSectionStatus(Project project, String cycle, String section) {
-    Map<String, String> statusData = statusDAO.getProjectSectionStatus(project.getId(), cycle, section);
+  public SectionStatus getSectionStatus(Project project, String cycle, String section, int year) {
+    Map<String, String> statusData = statusDAO.getProjectSectionStatus(project.getId(), cycle, section, year);
     if (statusData != null && !statusData.isEmpty()) {
       SectionStatus status = new SectionStatus();
       status.setId(Integer.parseInt(statusData.get("id")));
       status.setCycle(statusData.get("cycle"));
+      status.setYear(Integer.parseInt(statusData.get("year")));
       status.setSection(statusData.get("section_name"));
       status.setMissingFields(statusData.get("missing_fields"));
       status.setProjectID(statusData.get("project_id") != null ? Integer.parseInt(statusData.get("project_id")) : -1);
@@ -76,14 +78,15 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
   }
 
   @Override
-  public List<SectionStatus> getSectionStatuses(Project project, String cycle) {
+  public List<SectionStatus> getSectionStatuses(Project project, String cycle, int year) {
     List<SectionStatus> statuses = new ArrayList<>();
-    List<Map<String, String>> statusDataList = statusDAO.getProjectSectionStatuses(project.getId(), cycle);
+    List<Map<String, String>> statusDataList = statusDAO.getProjectSectionStatuses(project.getId(), cycle, year);
     if (statusDataList != null) {
       for (Map<String, String> statusData : statusDataList) {
         SectionStatus status = new SectionStatus();
         status.setId(Integer.parseInt(statusData.get("id")));
         status.setCycle(statusData.get("cycle"));
+        status.setYear(Integer.parseInt(statusData.get("year")));
         status.setSection(statusData.get("section_name"));
         status.setMissingFields(statusData.get("missing_fields"));
         status.setProjectID(statusData.get("project_id") != null ? Integer.parseInt(statusData.get("project_id")) : -1);
@@ -105,6 +108,7 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
       statusData.put("id", status.getId());
     }
     statusData.put("cycle", status.getCycle());
+    statusData.put("year", status.getYear());
     statusData.put("section_name", status.getSection());
     statusData.put("project_id", project.getId());
     statusData.put("missing_fields", status.getMissingFieldsWithPrefix());
@@ -120,6 +124,8 @@ public class SectionStatusManagerImpl implements SectionStatusManager {
     statusData.put("cycle", status.getCycle());
     statusData.put("section_name", status.getSection());
     statusData.put("project_id", project.getId());
+    statusData.put("year", status.getYear());
+
     statusData.put("deliverable_id", deliverable.getId());
     statusData.put("missing_fields", status.getMissingFieldsWithPrefix());
     return statusDAO.saveDeliverableSectionStatus(statusData);

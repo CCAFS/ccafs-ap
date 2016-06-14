@@ -450,7 +450,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
    *         error occurred.
    */
   public void initializeProjectSectionStatuses(Project project, String cycle) {
-    this.sectionStatuses = sectionStatusManager.getSectionStatuses(project, cycle);
+    int year = 0;
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    this.sectionStatuses = sectionStatusManager.getSectionStatuses(project, cycle, year);
   }
 
   public boolean isCanEdit() {

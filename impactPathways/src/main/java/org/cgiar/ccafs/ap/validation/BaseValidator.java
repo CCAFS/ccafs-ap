@@ -1,6 +1,7 @@
 package org.cgiar.ccafs.ap.validation;
 
 import org.cgiar.ccafs.ap.action.BaseAction;
+import org.cgiar.ccafs.ap.config.APConstants;
 import org.cgiar.ccafs.ap.data.manager.SectionStatusManager;
 import org.cgiar.ccafs.ap.data.model.ComponentLesson;
 import org.cgiar.ccafs.ap.data.model.Deliverable;
@@ -103,9 +104,16 @@ public class BaseValidator {
    */
   protected void saveMissingFields(Project project, Deliverable deliverable, String cycle, String sectionName) {
     // Reporting missing fields into the database.
-    SectionStatus status = statusManager.getSectionStatus(deliverable, cycle, sectionName);
+    int year = 0;
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    SectionStatus status = statusManager.getSectionStatus(deliverable, cycle, sectionName, year);
     if (status == null) {
-      status = new SectionStatus(cycle, sectionName);
+
+      status = new SectionStatus(cycle, sectionName, year);
     }
     status.setMissingFields(this.missingFields.toString());
     statusManager.saveSectionStatus(status, project, deliverable);
@@ -120,9 +128,16 @@ public class BaseValidator {
    */
   protected void saveMissingFields(Project project, String cycle, String sectionName) {
     // Reporting missing fields into the database.
-    SectionStatus status = statusManager.getSectionStatus(project, cycle, sectionName);
+    int year = 0;
+    if (cycle.equals(APConstants.REPORTING_SECTION)) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    SectionStatus status = statusManager.getSectionStatus(project, cycle, sectionName, year);
     if (status == null) {
-      status = new SectionStatus(cycle, sectionName);
+
+      status = new SectionStatus(cycle, sectionName, year);
     }
     status.setMissingFields(this.missingFields.toString());
     statusManager.saveSectionStatus(status, project);

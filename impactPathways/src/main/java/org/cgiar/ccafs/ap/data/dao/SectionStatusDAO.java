@@ -33,9 +33,10 @@ public interface SectionStatusDAO {
    * @param deliverableID is the deliverable identifier related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
    * @param section is the name of the section
+   * @param year the year of the cycle
    * @return a Map with the information requested. An empty Map if no data was found, or null if some error occurred.
    */
-  public Map<String, String> getDeliverableSectionStatus(int deliverableID, String cycle, String section);
+  public Map<String, String> getDeliverableSectionStatus(int deliverableID, String cycle, String section, int year);
 
   /**
    * This method gets the section status information of a given project in a given cycle.
@@ -43,9 +44,10 @@ public interface SectionStatusDAO {
    * @param projectID is the project identifier related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
    * @param section is the name of the section
+   * @param year the year of the cycle
    * @return a Map with the information requested. An empty Map if no data was found, or null if some error occurred.
    */
-  public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section);
+  public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section, int year);
 
   /**
    * This method gets a list of Section Status data from a specific project in a specific cycle.
@@ -54,7 +56,7 @@ public interface SectionStatusDAO {
    * @param cycle is the name of the cycle ('Planning' or 'Reporting').
    * @return a list of Map with the information requested.
    */
-  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle);
+  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle, int year);
 
   /**
    * This method saves into the database the current section status with regards the missing fields.

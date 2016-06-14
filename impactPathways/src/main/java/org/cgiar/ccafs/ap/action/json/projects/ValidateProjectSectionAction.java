@@ -242,7 +242,13 @@ public class ValidateProjectSectionAction extends BaseAction {
       // for deliverables, we going to create a fake section status with all the missing fields for all the deliverables
       // on it. Please refer to the method validateDeliverables().
       if (!sectionName.equals("deliverablesList")) {
-        sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), currentCycle, sectionName);
+        int year = 0;
+        if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+          year = config.getReportingCurrentYear();
+        } else {
+          year = config.getPlanningCurrentYear();
+        }
+        sectionStatus = sectionStatusManager.getSectionStatus(new Project(projectID), currentCycle, sectionName, year);
       }
     }
     return SUCCESS;
@@ -464,7 +470,13 @@ public class ValidateProjectSectionAction extends BaseAction {
     sectionStatus.setSection("deliverablesList");
     StringBuilder missingFieldsAllDeliverables = new StringBuilder();
     // Getting the status made before.
-    SectionStatus tempStatus = sectionStatusManager.getSectionStatus(project, currentCycle, "deliverablesList");
+    int year = 0;
+    if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    SectionStatus tempStatus = sectionStatusManager.getSectionStatus(project, currentCycle, "deliverablesList", year);
     // Adding the missing fields to the concatenated deliverablesStatus.
     missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
 
@@ -475,7 +487,7 @@ public class ValidateProjectSectionAction extends BaseAction {
             deliverable = deliverableManager.getDeliverableById(deliverable.getId());
             deliverableValidator.validate(this, project, deliverable, currentCycle, -1);
             // Appending all the missing fields for the current deliverable.
-            tempStatus = sectionStatusManager.getSectionStatus(deliverable, currentCycle, "deliverable");
+            tempStatus = sectionStatusManager.getSectionStatus(deliverable, currentCycle, "deliverable", year);
             missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
 
           }
@@ -483,7 +495,7 @@ public class ValidateProjectSectionAction extends BaseAction {
           deliverable = deliverableManager.getDeliverableById(deliverable.getId());
           deliverableValidator.validate(this, project, deliverable, currentCycle, -1);
           // Appending all the missing fields for the current deliverable.
-          tempStatus = sectionStatusManager.getSectionStatus(deliverable, currentCycle, "deliverable");
+          tempStatus = sectionStatusManager.getSectionStatus(deliverable, currentCycle, "deliverable", year);
           missingFieldsAllDeliverables.append(tempStatus.getMissingFieldsWithPrefix());
         }
 
@@ -512,9 +524,17 @@ public class ValidateProjectSectionAction extends BaseAction {
 
       }
       if (list.isEmpty()) {
-        SectionStatus status = statusManager.getSectionStatus(project, currentCycle, "highlights");
+        int year = 0;
+        if (currentCycle.equals(APConstants.REPORTING_SECTION)) {
+          year = config.getReportingCurrentYear();
+        } else {
+          year = config.getPlanningCurrentYear();
+        }
+        SectionStatus status = statusManager.getSectionStatus(project, currentCycle, "highlights", year);
         if (status == null) {
-          status = new SectionStatus(currentCycle, "highlights");
+
+
+          status = new SectionStatus(currentCycle, "highlights", year);
         }
         status.setMissingFields("");
         statusManager.saveSectionStatus(status, project);

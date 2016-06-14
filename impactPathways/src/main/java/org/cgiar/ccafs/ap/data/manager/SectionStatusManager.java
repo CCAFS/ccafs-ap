@@ -31,9 +31,10 @@ public interface SectionStatusManager {
    * @param deliverable is the deliverable related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
    * @param section is the name of a section.
+   * @param year is the year of the cycle.
    * @return SectionStatus object with all the information encapsulated on it.
    */
-  public SectionStatus getSectionStatus(Deliverable deliverable, String cycle, String section);
+  public SectionStatus getSectionStatus(Deliverable deliverable, String cycle, String section, int year);
 
   /**
    * This method gets the section status of a given project in a given cycle.
@@ -41,18 +42,20 @@ public interface SectionStatusManager {
    * @param project is the project related to the status.
    * @param cycle is the project cycle (Planning or Reporting).
    * @param section is the name of a section.
+   * @param year is the year of the cycle.
    * @return SectionStatus object with all the information encapsulated on it.
    */
-  public SectionStatus getSectionStatus(Project project, String cycle, String section);
+  public SectionStatus getSectionStatus(Project project, String cycle, String section, int year);
 
   /**
    * This method gets all the statuses of a project for a given a specific cycle.
    * 
    * @param project is some project.
    * @param cycle could be 'Planning' or 'Reporting'.
+   * @param year is the year of the cycle.
    * @return a List if SectionStatus objects with the information requested.
    */
-  public List<SectionStatus> getSectionStatuses(Project project, String cycle);
+  public List<SectionStatus> getSectionStatuses(Project project, String cycle, int year);
 
   /**
    * This method saves into the database the current section status with regards the missing fields.

@@ -46,9 +46,9 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
   }
 
   @Override
-  public Map<String, String> getDeliverableSectionStatus(int deliverableID, String cycle, String section) {
-    LOG.debug(">> getDeliverableSectionStatus deliverableID = {}, cycle = {} and section = {})", new Object[] {
-      deliverableID, cycle, section});
+  public Map<String, String> getDeliverableSectionStatus(int deliverableID, String cycle, String section, int year) {
+    LOG.debug(">> getDeliverableSectionStatus deliverableID = {}, cycle = {} and section = {})",
+      new Object[] {deliverableID, cycle, section});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
@@ -59,7 +59,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     query.append(cycle);
     query.append("' AND section_name = '");
     query.append(section);
-    query.append("'");
+    query.append("' and year=" + year);
 
     LOG.debug(">> getDeliverableSectionStatus() > Calling method executeQuery to get the results");
 
@@ -72,6 +72,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
         statusData.put("project_id", rs.getString("project_id"));
         statusData.put("deliverable_id", rs.getString("deliverable_id"));
         statusData.put("cycle", rs.getString("cycle"));
+        statusData.put("year", rs.getString("year"));
         statusData.put("section_name", rs.getString("section_name"));
         statusData.put("missing_fields", rs.getString("missing_fields"));
       }
@@ -88,9 +89,9 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
   }
 
   @Override
-  public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section) {
-    LOG.debug(">> getProjectSectionStatus projectID = {}, cycle = {} and section = {})", new Object[] {projectID,
-      cycle, section});
+  public Map<String, String> getProjectSectionStatus(int projectID, String cycle, String section, int year) {
+    LOG.debug(">> getProjectSectionStatus projectID = {}, cycle = {} and section = {})",
+      new Object[] {projectID, cycle, section});
 
     StringBuilder query = new StringBuilder();
     query.append("SELECT * ");
@@ -101,7 +102,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     query.append(cycle);
     query.append("' AND section_name = '");
     query.append(section);
-    query.append("'");
+    query.append("' and year=" + year);
 
     LOG.debug(">> getProjectSectionStatus() > Calling method executeQuery to get the results");
 
@@ -114,6 +115,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
         statusData.put("project_id", rs.getString("project_id"));
         statusData.put("deliverable_id", rs.getString("deliverable_id"));
         statusData.put("cycle", rs.getString("cycle"));
+        statusData.put("year", rs.getString("year"));
         statusData.put("section_name", rs.getString("section_name"));
         statusData.put("missing_fields", rs.getString("missing_fields"));
       }
@@ -130,7 +132,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
   }
 
   @Override
-  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle) {
+  public List<Map<String, String>> getProjectSectionStatuses(int projectID, String cycle, int year) {
     LOG.debug(">> getProjectSectionStatuses projectID = {} and cycle = {} )", new Object[] {projectID, cycle});
 
     StringBuilder query = new StringBuilder();
@@ -141,7 +143,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     query.append(projectID);
     query.append(" AND cycle = '");
     query.append(cycle);
-    query.append("' AND (d.is_active IS NULL OR d.is_active = 1)");
+    query.append("' and ss.year=" + year + "  AND (d.is_active IS NULL OR d.is_active = 1)");
     // query.append(" AND ss.deliverable_id is NULL");
 
     LOG.debug(">> getProjectSectionStatuses() > Calling method executeQuery to get the results");
@@ -154,6 +156,7 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
         statusData.put("project_id", rs.getString("project_id"));
         statusData.put("deliverable_id", rs.getString("deliverable_id"));
         statusData.put("cycle", rs.getString("cycle"));
+        statusData.put("year", rs.getString("year"));
         statusData.put("section_name", rs.getString("section_name"));
         statusData.put("missing_fields", rs.getString("missing_fields"));
         statusDataList.add(statusData);
@@ -177,14 +180,16 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     Object[] values;
     int result = -1;
     if (statusData.get("id") == null) {
-      query.append("INSERT INTO section_statuses (project_id, deliverable_id, cycle, section_name, missing_fields) ");
-      query.append("VALUES (?, ?, ?, ?, ?) ");
-      values = new Object[5];
+      query
+        .append("INSERT INTO section_statuses (project_id, deliverable_id, cycle, section_name, missing_fields,year) ");
+      query.append("VALUES (?, ?, ?, ?, ?,?) ");
+      values = new Object[6];
       values[0] = statusData.get("project_id");
       values[1] = statusData.get("deliverable_id");
       values[2] = statusData.get("cycle");
       values[3] = statusData.get("section_name");
       values[4] = statusData.get("missing_fields");
+      values[5] = statusData.get("year");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
         LOG.error("A problem happened trying to add a new section_status for the project_id={}",
@@ -192,16 +197,17 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
       }
     } else {
       // Updating submission record.
-      query
-        .append("UPDATE section_statuses SET project_id = ?, deliverable_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
+      query.append(
+        "UPDATE section_statuses SET project_id = ?, deliverable_id = ?, cycle = ?, section_name = ?, missing_fields = ?, year=? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[7];
       values[0] = statusData.get("project_id");
       values[1] = statusData.get("deliverable_id");
       values[2] = statusData.get("cycle");
       values[3] = statusData.get("section_name");
       values[4] = statusData.get("missing_fields");
-      values[5] = statusData.get("id");
+      values[5] = statusData.get("year");
+      values[6] = statusData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the section_status identified with the id = {}",
@@ -218,13 +224,14 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
     Object[] values;
     int result = -1;
     if (statusData.get("id") == null) {
-      query.append("INSERT INTO section_statuses (project_id, cycle, section_name, missing_fields) ");
-      query.append("VALUES (?, ?, ?, ?) ");
-      values = new Object[4];
+      query.append("INSERT INTO section_statuses (project_id, cycle, section_name, missing_fields,year) ");
+      query.append("VALUES (?, ?, ?, ?,?) ");
+      values = new Object[5];
       values[0] = statusData.get("project_id");;
       values[1] = statusData.get("cycle");
       values[2] = statusData.get("section_name");
       values[3] = statusData.get("missing_fields");
+      values[4] = statusData.get("year");
       result = databaseManager.saveData(query.toString(), values);
       if (result <= 0) {
         LOG.error("A problem happened trying to add a new section_status for the project_id={}",
@@ -232,14 +239,16 @@ public class MySQLSectionStatusDAO implements SectionStatusDAO {
       }
     } else {
       // Updating submission record.
-      query.append("UPDATE section_statuses SET project_id = ?, cycle = ?, section_name = ?, missing_fields = ? ");
+      query.append(
+        "UPDATE section_statuses SET project_id = ?, cycle = ?, section_name = ?, missing_fields = ? , year=? ");
       query.append("WHERE id = ? ");
-      values = new Object[5];
+      values = new Object[6];
       values[0] = statusData.get("project_id");
       values[1] = statusData.get("cycle");
       values[2] = statusData.get("section_name");
       values[3] = statusData.get("missing_fields");
-      values[4] = statusData.get("id");
+      values[4] = statusData.get("year");
+      values[5] = statusData.get("id");
       result = databaseManager.saveData(query.toString(), values);
       if (result == -1) {
         LOG.error("A problem happened trying to update the section_status identified with the id = {}",
