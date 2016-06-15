@@ -15,18 +15,47 @@
 
 package org.cgiar.ccafs.ap.util;
 
+import java.io.InputStreamReader;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.hibernate.internal.util.xml.DTDEntityResolver;
 import org.json.JSONObject;
-import se.kb.oai.pmh.OaiPmhServer;
-import se.kb.oai.pmh.Record;
 
 /**
  * @author Christian David Garcia Oviedo
  */
 public class ClientRepository {
 
+  protected static Element getDocumentRoot(InputStreamReader stream) {
+    try {
+      SAXReader saxReader = new SAXReader();
+      saxReader.setEntityResolver(new DTDEntityResolver());
+      saxReader.setMergeAdjacentText(true);
+      return saxReader.read(stream).getRootElement();
+    } catch (DocumentException de) {
+      throw new RuntimeException(de);
+    }
+  }
+
+  private final String CGSPACEHANDLE = "https://cgspace.cgiar.org/rest/handle/{0}";
 
   public JSONObject getMetadata(String linkRequest, String id) {
 
@@ -34,19 +63,31 @@ public class ClientRepository {
     JSONObject jo = new JSONObject();
 
     try {
+      /*
+       * OaiPmhServer server = new OaiPmhServer(linkRequest);
+       * Record record = server.getRecord(id, "oai_dc");
+       */
 
-      OaiPmhServer server = new OaiPmhServer(linkRequest);
-      Record record = server.getRecord(id, "oai_dc");
-      Element metadata = record.getMetadata();
 
+      String handleUrl = CGSPACEHANDLE.replace("{0}", id.replace("oai:cgspace.cgiar.org:", ""));
+
+
+      Element elementHandle = this.getXmlRestClient(handleUrl);
+      id = elementHandle.element("id").getStringValue();
+
+      linkRequest = linkRequest.replace("{0}", id);
+      Element metadata = this.getXmlRestClient(linkRequest);
       List<Element> elements = metadata.elements();
       for (Element element : elements) {
+        Element key = element.element("key");
+        Element value = element.element("value");
+        String keyValue = key.getStringValue();
+        keyValue = keyValue.substring(3);
 
-
-        if (jo.has(element.getQName().getName())) {
-          jo.put(element.getQName().getName(), jo.get(element.getQName().getName()) + "," + element.getStringValue());
+        if (jo.has(keyValue)) {
+          jo.put(keyValue, jo.get(keyValue) + "," + value.getStringValue());
         } else {
-          jo.put(element.getQName().getName(), element.getStringValue());
+          jo.put(keyValue, value.getStringValue());
         }
 
 
@@ -54,11 +95,80 @@ public class ClientRepository {
 
 
     } catch (Exception e) {
+      e.printStackTrace();
       jo = null;
       e.printStackTrace();
     }
 
     return jo;
+  }
+
+  public Element getXmlRestClient(String linkRequest) {
+    DefaultHttpClient httpClient = new DefaultHttpClient();
+    httpClient = this.verifiedClient(httpClient);
+
+
+    HttpGet getRequest = new HttpGet(linkRequest);
+    getRequest.addHeader("accept", "application/xml");
+
+    HttpResponse response = null;
+    try {
+      response = httpClient.execute(getRequest);
+    } catch (ClientProtocolException e) {
+
+      e.printStackTrace();
+    } catch (Exception e) {
+
+      e.printStackTrace();
+    }
+
+    if (response.getStatusLine().getStatusCode() != 200) {
+      throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+    }
+
+    InputStreamReader br;
+    try {
+      br = new InputStreamReader((response.getEntity().getContent()));
+      Element metadata = getDocumentRoot(br);
+      return metadata;
+    } catch (Exception e) {
+
+      e.printStackTrace();
+    }
+
+    return null;
+
+  }
+
+  public DefaultHttpClient verifiedClient(HttpClient base) {
+    try {
+      SSLContext ctx = SSLContext.getInstance("SSL");
+      X509TrustManager tm = new X509TrustManager() {
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+
+        @Override
+        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+          return null;
+        }
+      };
+
+      ctx.init(null, new TrustManager[] {tm}, null);
+      SSLSocketFactory ssf = new SSLSocketFactory(ctx, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+      ClientConnectionManager mgr = base.getConnectionManager();
+      SchemeRegistry registry = mgr.getSchemeRegistry();
+      registry.register(new Scheme("https", 443, ssf));
+      return new DefaultHttpClient(mgr, base.getParams());
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
+    }
   }
 
 

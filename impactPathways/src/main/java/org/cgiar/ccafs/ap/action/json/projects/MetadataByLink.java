@@ -34,7 +34,7 @@ public class MetadataByLink extends BaseAction {
   // Managers
   private ClientRepository clientRepository;
 
-  private final String CGSPACE = "https://cgspace.cgiar.org/oai/request";
+  private final String CGSPACE = "https://cgspace.cgiar.org/rest/items/{0}/metadata";
   private final String AGTRIALS = "http://oai2.agtrials.org/oai2.php";
   private final String AMKN = "http://lab.amkn.org/oai/";
 
@@ -63,13 +63,6 @@ public class MetadataByLink extends BaseAction {
         linkRequest = CGSPACE;
         break;
 
-      case "agtrials":
-        linkRequest = AGTRIALS;
-        break;
-
-      case "amkn":
-        linkRequest = AMKN;
-        break;
 
       default:
         break;

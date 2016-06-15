@@ -93,9 +93,9 @@
           [#-- My projects --]
           <div id="projects"> 
             [#if projects?has_content]
-              [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
+              [@projectList.projectsList projects=projects canValidate=true namespace="/reporting/projects" tableID="projects-table" /]
             [#else]
-              <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/planning" action="projectsList" /][/@s.param][/@s.text]<p>
+              <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/reporting" action="projectsList" /][/@s.param][/@s.text]<p>
             [/#if]
           </div>
           [#-- IP Graph --]

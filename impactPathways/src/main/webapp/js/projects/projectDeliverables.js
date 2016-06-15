@@ -11,8 +11,8 @@ function init() {
   $deliverablesSubTypes = $("#deliverable_deliverable_type");
   $alreadyDisseminated = $('input[name="deliverable.dissemination.alreadyDisseminated"]');
   $disseminationChannels = $('#deliverable_deliverable_dissemination_disseminationChannel');
-  
-  
+
+
   $statuses = $('#deliverable_deliverable_status');
   $statusDescription = $('#statusDescription');
   implementationStatus = $statuses.find('option[value="2"]').text();
@@ -25,7 +25,7 @@ function init() {
 
   // Initialize metadata functions
   initMetadataFunctions();
-  
+
   // Initialize datepicker for period inputs
   $('input.period').datepicker();
   $('input.period').datepicker( "option", "dateFormat", "yy-mm-dd" );
@@ -51,7 +51,7 @@ function init() {
 
   // Validate justification at save
   if(isPlanningCycle()){validateEvent([ "#justification" ]);}
- 
+
 }
 
 function attachEvents() {
@@ -71,7 +71,7 @@ function attachEvents() {
   $('.openAccessRestrictionOption input').on('change', changeOARestriction);
 
   $disseminationChannels.on('change', changeDisseminationChannel);
-  
+
   $alreadyDisseminated.on('change', changeDisseminatedOption);
 
   // Yes / No Event
@@ -83,8 +83,8 @@ function attachEvents() {
   $(".removeInput").on("click", removeFileUploaded);
   // This event is when will be add one URL
   $(".addFileURL").on("click", addfileURL);
-  
-  
+
+
   // Status
   $statuses.on('change', function(e) {
     var statusId = $(this).val();
@@ -112,7 +112,7 @@ function changeDisseminatedOption(){
   }
 }
 
-function changeStatus(){ 
+function changeStatus(){
   checkImplementationStatus($(this).val());
 }
 
@@ -166,7 +166,7 @@ function changeOARestriction() {
 
 function yesnoEvent() {
   // var isChecked = $(this).is(':checked');
-  var isChecked = ($(this).val() === "true");  
+  var isChecked = ($(this).val() === "true");
   $(this).siblings().removeClass('radio-checked');
   $(this).next().addClass('radio-checked');
   var array = (this.name).split('.');
@@ -207,19 +207,19 @@ function initDeliverableTabs() {
     // Set index tab after save
     $( "#projectDeliverable" ).tabs({ active: $('#indexTab').val() });
   }
-  
+
   // Check tab for justification field
   var currentIndexTab = $('#projectDeliverable ul.ui-tabs-nav li.ui-state-active').index();
   checkIndexTab(currentIndexTab);
   $('#indexTab').val(currentIndexTab);
-  
+
   // Event when tabs are clicked
   $('#projectDeliverable ul.ui-tabs-nav li').on('click', function(){
     var indexTab = $(this).index();
     $('#indexTab').val(indexTab);
     checkIndexTab(indexTab);
   });
-  
+
 }
 
 function checkIndexTab(indexTab){
@@ -564,7 +564,7 @@ function initMetadataFunctions() {
   $disseminationChannels.on('change',function(e) {
     e.preventDefault();
     var optionSelected = $disseminationChannels.val();
-    $checkButton.show(); 
+    $checkButton.show();
     if(optionSelected == -1) {
       $('.example').fadeOut();
       $disseminationUrl.fadeOut(500);
@@ -606,19 +606,19 @@ function getMetadata(fillData) {
     };
     if(optionSelected == 'cgspace') {
       if(uriHost== "hdl.handle.net"){
-        ajaxData.metadataID = "oai:cgspace.cgiar.org:" + uriPath.slice(1, uriPath.length); 
+        ajaxData.metadataID = "oai:cgspace.cgiar.org:" + uriPath.slice(1, uriPath.length);
       }else{
-        ajaxData.metadataID = "oai:" + uriHost + ":" + uriPath.slice(8, uriPath.length);        
+        ajaxData.metadataID = "oai:" + uriHost + ":" + uriPath.slice(8, uriPath.length);
       }
     }else if(optionSelected == 'other'){
       return
     } else {
       ajaxData.metadataID = channelUrl;
     }
-    
+
     // Show metadata fields
     $('#deliverable-metadata').show(200);
-    
+
     $.ajax({
         'url': baseURL + '/metadataByLink.do',
         'type': "GET",
@@ -629,6 +629,7 @@ function getMetadata(fillData) {
           $metadataOutput.html("Searching ... " + ajaxData.metadataID);
         },
         success: function(data) {
+
           if(data.errorMessage) {
             $metadataOutput.html(data.errorMessage);
           } else {
@@ -636,12 +637,15 @@ function getMetadata(fillData) {
             if (jQuery.isEmptyObject(data.metadata)){
               $metadataOutput.html("Metdata empty");
             }else{
-              var fields = []; 
+              var fields = [];
               $.each( data.metadata, function( key, value ) {
                 fields.push(key.charAt(0).toUpperCase() + key.slice(1));
               });
               $metadataOutput.empty().append("Found metadata for " + ajaxData.metadataID +" <br /> " + fields.reverse().join(', '));
-              if(fillData){setMetadata(data.metadata);}
+
+              if(fillData){
+
+                setMetadata(data.metadata);}
             }
           }
         },
@@ -656,18 +660,19 @@ function getMetadata(fillData) {
 }
 
 function setMetadata(data) {
-  $(".descriptionMetadata").val(data.description).autoGrow();
-  $(".creatorMetadata").val(data.creator);
-  $(".identifierMetadata").val(data.identifier);
+  console.log(data);
+  $(".descriptionMetadata").val(data['description.abstract']).autoGrow();
+  $(".creatorMetadata").val(data['contributor.author']);
+  $(".identifierMetadata").val(data['identifier.doi']);
   $(".publishierMetadata").val(data.publishier);
-  $(".dateMetadata").val(data.date);
+  $(".dateMetadata").val(data['date.available']);
   $(".relationMetadata").val(data.relation);
   $(".contributorMetadata").val(data.contributor);
   $(".subjectMetadata").val(data.subject);
   $(".sourceMetadata").val(data.source);
   $(".publicationMetada").val(data.publication);
-  $(".languageMetadata").val(data.language);
-  $(".coverageMetadata").val(data.coverage);
+  $(".languageMetadata").val(data['language.iso']);
+  $(".coverageMetadata").val(data['coverage']);
   $(".formatMetadata").val(data.format);
   $(".rigthsMetadata").val(data.rigths);
   $(".citation").val(data.citation);

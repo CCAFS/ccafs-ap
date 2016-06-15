@@ -258,16 +258,10 @@
     
  <!-- PROTOCOL get Metadata -->
    
-    <dependency>
-       <groupId>se.kb</groupId>
-      <artifactId>oai4j</artifactId>
-      <version>0.6b1</version>
-    </dependency>
-    
-    <dependency>
-     <groupId>com.ibm.icu</groupId>
-     <artifactId>icu4j</artifactId>
-     <version>56.1</version>
+   <dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId>
+    <version>4.1.1</version>
   </dependency>
   
      <!-- END PROTOCOL Metadata -->
