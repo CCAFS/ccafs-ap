@@ -84,9 +84,10 @@ public interface ProjectPartnerManager {
    * This method returns all the project partners that belong to a specific project.
    * 
    * @param project is the project object which we want to get the list of partners.
+   * @param year cycle year
    * @return a list of project partners, an empty list if nothing found or null if some error occur.
    */
-  public List<ProjectPartner> getProjectPartners(Project project);
+  public List<ProjectPartner> getProjectPartners(Project project, int year);
 
   /**
    * This method adds or updates a given project partner.
@@ -98,7 +99,8 @@ public interface ProjectPartnerManager {
    * @param justification is the justification for the change made.
    * @return the id of the project partner inserted, 0 if the record was updated and -1 if some error occurred.
    */
-  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification);
+  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification,
+    int year);
 
   /**
    * This method saves into the database the contributions made by some project partner(s) to the partner received by
@@ -121,10 +123,11 @@ public interface ProjectPartnerManager {
    * @param user is the user that is making the change.
    * @param justification is the justification statement.
    * @param overall is the overall statement.
+   * @param year cycle year.
    * @return true if all partners were successfully saved; false otherwise.
    */
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
-    String justification, String overall);
+    String justification, String overall, int year);
 
   /**
    * This method is used to export all the current and active partners that are working with CCAFS in an XML format for

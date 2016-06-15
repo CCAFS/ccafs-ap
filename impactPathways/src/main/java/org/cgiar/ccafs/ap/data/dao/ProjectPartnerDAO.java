@@ -91,10 +91,11 @@ public interface ProjectPartnerDAO {
    * This method gets the project partners information given the project Id
    * 
    * @param projectId - is the id of a project
+   * @param year year cycle
    * @return a list of project partners that belong to the given project; an empty list if nothing was found or NULL if
    *         an error occurred.
    */
-  public List<Map<String, String>> getProjectPartners(int projectId);
+  public List<Map<String, String>> getProjectPartners(int projectId, int year);
 
   /**
    * This method saves into the database a new Project Partner

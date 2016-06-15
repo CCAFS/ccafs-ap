@@ -142,9 +142,9 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public List<ProjectPartner> getProjectPartners(Project project) {
+  public List<ProjectPartner> getProjectPartners(Project project, int year) {
     List<ProjectPartner> partners = new ArrayList<>();
-    List<Map<String, String>> projectPartnerDataList = projectPartnerDAO.getProjectPartners(project.getId());
+    List<Map<String, String>> projectPartnerDataList = projectPartnerDAO.getProjectPartners(project.getId(), year);
     for (Map<String, String> projectPartnerData : projectPartnerDataList) {
       ProjectPartner projectPartner = new ProjectPartner();
       projectPartner.setOverall((projectPartnerData.get("overall")));
@@ -166,7 +166,8 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
   }
 
   @Override
-  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification) {
+  public int saveProjectPartner(Project project, ProjectPartner projectPartner, User user, String justification,
+    int year) {
     Map<String, Object> projectPartnerData = new HashMap<>();
     // Project partners must have an institution associated.
     if (projectPartner.getInstitution() == null || projectPartner.getInstitution().getId() == -1) {
@@ -181,6 +182,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     }
     projectPartnerData.put("project_id", project.getId());
     projectPartnerData.put("overall", projectPartner.getOverall());
+    projectPartnerData.put("year", year);
     projectPartnerData.put("institution_id", projectPartner.getInstitution().getId());
     projectPartnerData.put("modified_by", user.getId());
     projectPartnerData.put("modification_justification", justification);
@@ -254,7 +256,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
 
   @Override
   public boolean saveProjectPartners(Project project, List<ProjectPartner> projectPartners, User user,
-    String justification, String overall) {
+    String justification, String overall, int year) {
     boolean result = true;
 
 
@@ -263,7 +265,7 @@ public class ProjectPartnerManagerImpl implements ProjectPartnerManager {
     for (ProjectPartner partner : projectPartners) {
 
       partner.setOverall(overall);
-      if (this.saveProjectPartner(project, partner, user, justification) == -1) {
+      if (this.saveProjectPartner(project, partner, user, justification, year) == -1) {
         result = false;
 
       }

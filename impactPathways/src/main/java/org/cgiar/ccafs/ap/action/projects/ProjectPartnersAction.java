@@ -401,11 +401,17 @@ public class ProjectPartnersAction extends BaseAction {
 
     // Getting all Project Leaders
     allUsers = userManager.getAllUsers();
-
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
     // Getting all the project partners.
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project, year));
     if (!project.getProjectPartners().isEmpty()) {
       overrall = project.getProjectPartners().get(0).getOverall();
+
     }
 
     // Positioning project leader to be the first in the list.
@@ -441,7 +447,7 @@ public class ProjectPartnersAction extends BaseAction {
 
     previousProject = new Project();
     previousProject.setId(project.getId());
-    previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    previousProject.setProjectPartners(projectPartnerManager.getProjectPartners(project, year));
 
     if (this.getRequest().getMethod().equalsIgnoreCase("post")) {
       // Clear out the list if it has some element
@@ -496,9 +502,15 @@ public class ProjectPartnersAction extends BaseAction {
             this.getCurrentUser(), this.getJustification());
         }
       }
+      int year = 0;
+      if (this.isReportingCycle()) {
+        year = config.getReportingCurrentYear();
+      } else {
+        year = config.getPlanningCurrentYear();
+      }
 
       projectPartnerManager.saveProjectPartners(project, project.getProjectPartners(), this.getCurrentUser(),
-        this.getJustification(), overrall);
+        this.getJustification(), overrall, year);
 
       // Check if the project leader has changed and send the corresponding emails
       PartnerPerson previousLeader = previousProject.getLeaderPerson();

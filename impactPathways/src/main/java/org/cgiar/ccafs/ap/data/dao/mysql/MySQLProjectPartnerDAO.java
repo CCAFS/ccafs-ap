@@ -131,7 +131,11 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       while (rs.next()) {
         Map<String, String> projectPartnerData = new HashMap<String, String>();
         projectPartnerData.put("id", rs.getString("id"));
-        projectPartnerData.put("overall", rs.getString("overall"));
+        try {
+          projectPartnerData.put("overall", rs.getString("partener_overall"));
+        } catch (Exception e) {
+
+        }
         projectPartnerData.put("project_id", rs.getString("project_id"));
         projectPartnerData.put("institution_id", rs.getString("institution_id"));
         projectPartnerList.add(projectPartnerData);
@@ -244,13 +248,16 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
 
 
   @Override
-  public List<Map<String, String>> getProjectPartners(int projectID) {
+  public List<Map<String, String>> getProjectPartners(int projectID, int year) {
     LOG.debug(">> getProjectPartners projectID = {} )", projectID);
 
     StringBuilder query = new StringBuilder();
-    query.append("SELECT pp.*   ");
-    query.append("FROM project_partners as pp ");
-    query.append("WHERE pp.project_id = ");
+    query.append("SELECT pp.*,ppo.overall 'partener_overall'   ");
+    query.append(
+      "FROM project_partners as pp left join project_partner_overall ppo on ppo.project_partner_id=pp.id and ppo.year= ");
+    query.append(year);
+
+    query.append(" WHERE pp.project_id = ");
     query.append(projectID);
     query.append(" AND pp.is_active = 1 ");
 
@@ -266,30 +273,29 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
     if (projectPartnerData.get("id") == null) {
       // Insert new record
       query.append("INSERT INTO project_partners (id, project_id, institution_id, created_by, modified_by, ");
-      query.append("modification_justification,overall) VALUES (?, ?, ?, ?, ?, ?,?) ");
+      query.append("modification_justification) VALUES (?, ?, ?, ?, ?, ?) ");
       query.append("ON DUPLICATE KEY UPDATE is_active=TRUE, modified_by=VALUES(modified_by),  ");
       query.append("modification_justification=VALUES(modification_justification) ");
 
-      values = new Object[7];
+      values = new Object[6];
       values[0] = projectPartnerData.get("id");
       values[1] = projectPartnerData.get("project_id");
       values[2] = projectPartnerData.get("institution_id");
       values[3] = projectPartnerData.get("created_by");
       values[4] = projectPartnerData.get("modified_by");
       values[5] = projectPartnerData.get("modification_justification");
-      values[6] = projectPartnerData.get("overall");
+
     } else {
       // update record
       query.append(
-        "UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? , overall=? ");
+        "UPDATE project_partners SET project_id = ?, institution_id = ?, modified_by = ?, modification_justification = ? ");
       query.append("WHERE id = ? ");
-      values = new Object[6];
+      values = new Object[5];
       values[0] = projectPartnerData.get("project_id");
       values[1] = projectPartnerData.get("institution_id");
       values[2] = projectPartnerData.get("modified_by");
       values[3] = projectPartnerData.get("modification_justification");
-      values[4] = projectPartnerData.get("overall");
-      values[5] = projectPartnerData.get("id");
+      values[4] = projectPartnerData.get("id");
     }
 
     int result = databaseManager.saveData(query.toString(), values);
@@ -305,6 +311,8 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
         ResultSet rs = databaseManager.makeQuery(query.toString(), con);
         if (rs.next()) {
           result = rs.getInt("id");
+
+
         }
       } catch (SQLException e) {
         LOG.error("There was an error getting the partner id of project {} with the insitution {}.",
@@ -312,7 +320,42 @@ public class MySQLProjectPartnerDAO implements ProjectPartnerDAO {
       }
     }
 
+    if (projectPartnerData.containsKey("id")) {
+      result = Integer.parseInt(projectPartnerData.get("id").toString());
+    }
     LOG.debug("<< saveProjectPartner():{}", result);
+    try (Connection con = databaseManager.getConnection()) {
+
+      query.setLength(0);
+      query.append("select * from project_partner_overall where project_partner_id=");
+      query.append(result);
+      query.append(" and year=");
+      query.append(projectPartnerData.get("year"));
+
+      ResultSet rs = databaseManager.makeQuery(query.toString(), con);
+      query.setLength(0);
+      if (rs.next()) {
+        query.append("update project_partner_overall set overall='");
+        query.append(projectPartnerData.get("overall"));
+        query.append("' where project_partner_id=");
+        query.append(result);
+        query.append(" and year=");
+        query.append(projectPartnerData.get("year"));
+
+      } else {
+        query.append("insert INTO project_partner_overall (project_partner_id,year,overall) values(");
+        query.append(result + ",");
+        query.append(projectPartnerData.get("year") + ",'");
+        query.append(projectPartnerData.get("overall") + "')");
+
+
+      }
+      values = new Object[0];
+      databaseManager.saveData(query.toString(), values);
+      rs.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     return result;
   }
 
