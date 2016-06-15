@@ -115,7 +115,7 @@ public class BudgetSummaryAction extends BaseAction implements Summary {
     for (Project project : projectList) {
 
       // ***************** Partners ******************************
-      partnersList = projectPartnerManager.getProjectPartners(project);
+      partnersList = projectPartnerManager.getProjectPartners(project, 0);
       project.setProjectPartners(partnersList);
 
       // *************************Budgets ******************************

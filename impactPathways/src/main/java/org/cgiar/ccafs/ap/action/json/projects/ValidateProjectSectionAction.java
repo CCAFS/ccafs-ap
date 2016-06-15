@@ -383,8 +383,10 @@ public class ValidateProjectSectionAction extends BaseAction {
       project.setLinkedProjects(linkedProjectManager.getLinkedCoreProjects(projectID));
       project.setOverhead(overheadManager.getProjectBudgetOverhead(projectID));
     }
+
+
     // Getting project partners
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project, 0));
 
     if (project.getLeader() != null) {
       // Getting the list of budgets for the current planning year.
@@ -696,7 +698,7 @@ public class ValidateProjectSectionAction extends BaseAction {
   private void validateProjectPartners() {
     // Getting the Project information.
     Project project = projectManager.getProject(projectID);
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project, 0));
     int evaluatingYear = 0;
     if (this.currentCycle.equals(APConstants.REPORTING_SECTION)) {
       evaluatingYear = this.getCurrentReportingYear();

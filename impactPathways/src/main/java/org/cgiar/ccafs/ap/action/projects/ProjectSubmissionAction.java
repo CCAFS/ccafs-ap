@@ -85,17 +85,16 @@ public class ProjectSubmissionAction extends BaseAction {
       if (this.isComplete()) {
         // Getting all the submissions made for this project.
         List<Submission> submissions = submissionManager.getProjectSubmissions(project);
-        int evaluatingYear=0;
+        int evaluatingYear = 0;
         if (this.getCycleName().equals(APConstants.REPORTING_SECTION)) {
-          evaluatingYear=this.getCurrentReportingYear();
+          evaluatingYear = this.getCurrentReportingYear();
         } else {
-          evaluatingYear=this.getCurrentPlanningYear();
+          evaluatingYear = this.getCurrentPlanningYear();
         }
         for (Submission theSubmission : submissions) {
           // Get the submission we need.
-          
-          if (theSubmission.getYear() == evaluatingYear
-            && theSubmission.getCycle().equals(this.getCycleName())) {
+
+          if (theSubmission.getYear() == evaluatingYear && theSubmission.getCycle().equals(this.getCycleName())) {
             submission = theSubmission;
             alreadySubmitted = true;
           }
@@ -148,9 +147,15 @@ public class ProjectSubmissionAction extends BaseAction {
       return; // Stop here and go to execute method.
     }
 
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
     // Getting the project information.
     project = projectManager.getProject(projectID);
-    project.setProjectPartners(partnerManager.getProjectPartners(project));
+    project.setProjectPartners(partnerManager.getProjectPartners(project, year));
 
     // Initializing Section Statuses:
     this.initializeProjectSectionStatuses(project, this.getCycleName());

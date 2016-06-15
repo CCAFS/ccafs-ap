@@ -256,8 +256,13 @@ public class ProjectSummaryAction extends BaseAction implements Summary {
 
     // Set submissions
     project.setSubmissions(submisssionManager.getProjectSubmissions(project));
-
-    List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project);
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project, year);
 
     for (ProjectPartner projectPartner : projectPartnerList) {
       projectPartner.setPartnerPersons(this.partnerPersonManager.getPartnerPersons(projectPartner));

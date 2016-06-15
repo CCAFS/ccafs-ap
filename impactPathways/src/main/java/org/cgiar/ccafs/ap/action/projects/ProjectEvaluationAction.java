@@ -271,7 +271,13 @@ public class ProjectEvaluationAction extends BaseAction {
     project = projectManager.getProject(projectID);
 
     // Getting all the project partners.
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project, year));
 
     // Getting the information of the Regions Program associated with the project
     project.setRegions(ipProgramManager.getProjectFocuses(projectID, APConstants.REGION_PROGRAM_TYPE));

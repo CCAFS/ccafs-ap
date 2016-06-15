@@ -161,8 +161,13 @@ public class ActivitiesListAction extends BaseAction {
     projectID = Integer.parseInt(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
     project = projectManager.getProject(projectID);
     project.setActivities(activityManager.getActivitiesByProject(projectID));
-
-    projectPartners = projectPartnerManager.getProjectPartners(project);
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    projectPartners = projectPartnerManager.getProjectPartners(project, year);
 
     // Creating Map of partner persons to be displayed in the view.
     projectPartnerPersons = new HashMap<>();

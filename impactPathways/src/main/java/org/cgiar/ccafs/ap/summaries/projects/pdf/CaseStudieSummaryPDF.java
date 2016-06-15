@@ -355,7 +355,7 @@ public class CaseStudieSummaryPDF extends BasePDF {
           project.setFlagships(ipProgramManager.getProjectFocuses(project.getId(), APConstants.FLAGSHIP_PROGRAM_TYPE));
 
 
-          List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project);
+          List<ProjectPartner> projectPartnerList = this.partnerManager.getProjectPartners(project, 0);
 
           for (ProjectPartner projectPartner : projectPartnerList) {
             projectPartner.setPartnerPersons(this.partnerPersonManager.getPartnerPersons(projectPartner));

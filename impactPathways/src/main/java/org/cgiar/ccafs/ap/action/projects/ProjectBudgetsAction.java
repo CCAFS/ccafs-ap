@@ -221,8 +221,13 @@ public class ProjectBudgetsAction extends BaseAction {
       }
       previousProject.setLinkedProjects(linkedProjects);
     }
-
-    project.setProjectPartners(projectPartnerManager.getProjectPartners(project));
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    project.setProjectPartners(projectPartnerManager.getProjectPartners(project, year));
     projectPPAPartners = new HashSet<Institution>();
 
     // If the project is bilateral only ask budget for the lead institution
@@ -387,7 +392,13 @@ public class ProjectBudgetsAction extends BaseAction {
             projectManager.getProject(linkedProject.getAnualContribution().getCofinancingProject().getId());
 
           // Getting the Project Leader.
-          cofinancingProject.setProjectPartners(projectPartnerManager.getProjectPartners(cofinancingProject));
+          int year = 0;
+          if (this.isReportingCycle()) {
+            year = config.getReportingCurrentYear();
+          } else {
+            year = config.getPlanningCurrentYear();
+          }
+          cofinancingProject.setProjectPartners(projectPartnerManager.getProjectPartners(cofinancingProject, year));
           if (!cofinancingProject.getProjectPartners().isEmpty()) {
             // cofinancingProject.setLeader(ppArray.get(0));
 

@@ -338,7 +338,13 @@ public class ProjectDeliverableAction extends BaseAction {
     for (LiaisonInstitution inst : listInstitutions) {
       centers.put(String.valueOf(inst.getId()), inst.getName() + "(" + inst.getAcronym() + ")");
     }
-    projectPartners = projectPartnerManager.getProjectPartners(project);
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    projectPartners = projectPartnerManager.getProjectPartners(project, year);
 
     // Getting the partner persons in a single HashMap to be displayed in the view.
     projectPartnerPersons = new HashMap<>();
