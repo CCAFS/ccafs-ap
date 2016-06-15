@@ -65,6 +65,8 @@
   
 </section>
 [#-- TODO: Change function to delete --]
+
+
 [@customForm.confirmJustification action="deleteHighLight" namespace="/reporting/projects" nameId="deliverableID" projectID="${projectID}" title="Remove project highlights" /]
  
 [#include "/WEB-INF/global/pages/footer.ftl"]
