@@ -18,7 +18,7 @@
     <div id="decisionTree" class="borderBox">
       <div id="newProject" class="option disabled" title="This link is disabled"><p>Enter a new project</p></div>
       <div id="updatePlanning" class="option disabled" title="This link is disabled"><p>Update planning of an ongoing project</p></div>
-      <a href="[@s.url namespace="/reporting" action='projectsList'/]"><div id="reportProject" class="option "><p>Report on an ongoing project</p></div></a>
+      <a href="[@s.url namespace="/planning" action='projectsList'/]"><div id="reportProject" class="option "><p>Report on an ongoing project</p></div></a>
       <div class="clearfix"></div>
       <div class="addProjectButtons clearfix" style="display:none">
         <p class="title">What type of project do you want to enter?</p>
@@ -56,7 +56,7 @@
       <div id="deadlineTitle"  class="homeTitle"><b>[@s.text name="home.dashboard.shortcuts" /]</b></div>
       <div id="deadline" class="borderBox">
         <ul class="subMenu">
-          <li><a href="${baseUrl}/reporting/projectsList.do" class="">Projects</a></li>
+          <li><a href="${baseUrl}/planning/projectsList.do" class="">Projects</a></li>
           <li><a href="${baseUrl}/reporting/synthesis/crpIndicators.do?liaisonInstitutionID&edit=true" >CRP Indicators</a></li>
           <li><a href="${baseUrl}/reporting/synthesis/outcomeSynthesis.do?liaisonInstitutionID&edit=true" >Outcome Synthesis</a></li>
           <li class="last"><a href="${baseUrl}/reporting/synthesis/synthesisByMog.do?liaisonInstitutionID&edit=true">Synthesis by MOG</a></li>
@@ -93,7 +93,7 @@
           [#-- My projects --]
           <div id="projects"> 
             [#if projects?has_content]
-              [@projectList.projectsList projects=projects canValidate=true namespace="/reporting/projects" tableID="projects-table" /]
+              [@projectList.projectsList projects=projects canValidate=true namespace="/planning/projects" tableID="projects-table" /]
             [#else]
               <p class="emptyMessage">[@s.text name="home.dashboard.projects.empty"][@s.param][@s.url namespace="/reporting" action="projectsList" /][/@s.param][/@s.text]<p>
             [/#if]
