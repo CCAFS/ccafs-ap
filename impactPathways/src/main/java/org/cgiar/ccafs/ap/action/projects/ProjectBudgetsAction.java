@@ -221,7 +221,7 @@ public class ProjectBudgetsAction extends BaseAction {
       }
       previousProject.setLinkedProjects(linkedProjects);
     }
-    int year = 0;
+
     if (this.isReportingCycle()) {
       year = config.getReportingCurrentYear();
     } else {
@@ -392,7 +392,7 @@ public class ProjectBudgetsAction extends BaseAction {
             projectManager.getProject(linkedProject.getAnualContribution().getCofinancingProject().getId());
 
           // Getting the Project Leader.
-          int year = 0;
+
           if (this.isReportingCycle()) {
             year = config.getReportingCurrentYear();
           } else {
