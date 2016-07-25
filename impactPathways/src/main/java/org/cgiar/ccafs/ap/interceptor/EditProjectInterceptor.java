@@ -21,6 +21,8 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.data.model.Submission;
 import org.cgiar.ccafs.ap.data.model.User;
 import org.cgiar.ccafs.ap.security.SecurityContext;
+import org.cgiar.ccafs.security.data.manager.UserRoleManagerImpl;
+import org.cgiar.ccafs.security.data.model.UserRole;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,8 @@ import org.apache.struts2.ServletActionContext;
 public class EditProjectInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = -2202897612842611068L;
+
+  private static UserRoleManagerImpl userRoleManager;
 
   public static void setPermissionParameters(ActionInvocation invocation, SecurityContext securityContext,
     ProjectManager projectManager) {
@@ -111,19 +115,33 @@ public class EditProjectInterceptor extends AbstractInterceptor {
       }
     }
 
+
     // Set the variable that indicates if the user can edit the section
     baseAction.setEditableParameter(hasPermissionToEdit && canEditProject);
     baseAction.setCanEdit(canEditProject);
+    System.out.println(baseAction.getActionName());
+    if (baseAction.getActionName().equals("budget")) {
+      List<UserRole> userRoles = userRoleManager.getUserRolesByUserID(user.getId() + "");
+      for (UserRole userRole : userRoles) {
+        if (userRole.getAcronym().equals("Finance")) {
+          baseAction.setEditableParameter(true);
+          baseAction.setCanEdit(true);
+        }
+      }
+    }
+
   }
 
   private SecurityContext securityContext;
-
   private ProjectManager projectManager;
 
   @Inject
-  public EditProjectInterceptor(SecurityContext securityContext, ProjectManager projectManager) {
+  public EditProjectInterceptor(SecurityContext securityContext, ProjectManager projectManager,
+    UserRoleManagerImpl userRoleManager) {
     this.securityContext = securityContext;
     this.projectManager = projectManager;
+    this.userRoleManager = userRoleManager;
+
   }
 
   @Override
