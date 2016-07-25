@@ -624,9 +624,9 @@ public class MySQLProjectDAO implements ProjectDAO {
     query.append("GROUP_CONCAT( DISTINCT ipp2.acronym ) as 'flagships',ppp.user_id 'Leader' ");
     query.append("FROM projects as p ");
     query.append("LEFT JOIN project_budgets pb ON p.id = pb.project_id ");
-    query.append("INNER JOIN project_partners pp ON p.id = pp.project_id and pp.is_active=1 ");
+    query.append("LEFT JOIN project_partners pp ON p.id = pp.project_id and pp.is_active=1 ");
     query.append(
-      "INNER JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id and ppp.is_active=1 and ppp.contact_type='PL' ");
+      "LEFT JOIN project_partner_persons ppp ON pp.id = ppp.project_partner_id and ppp.is_active=1 and ppp.contact_type='PL' ");
     query.append("LEFT JOIN project_focuses pf ON p.id = pf.project_id ");
     query.append("LEFT JOIN ip_programs ipp1 ON pf.program_id = ipp1.id AND ipp1.type_id = ");
     query.append(APConstants.REGION_PROGRAM_TYPE);
