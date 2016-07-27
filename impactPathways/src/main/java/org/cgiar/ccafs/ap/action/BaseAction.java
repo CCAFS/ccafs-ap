@@ -474,13 +474,13 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
       return false;
     }
 
-    SectionStatusEnum seciones[] = SectionStatusEnum.values();
+    SectionStatusEnum sections[] = SectionStatusEnum.values();
     if (this.isReportingCycle()) {
-      if (seciones.length - 2 != this.realSize(this.sectionStatuses)) {
+      if (sections.length - 2 != this.realSize(this.sectionStatuses)) {
         return false;
       }
     } else {
-      if (seciones.length - 4 != this.realSize(this.sectionStatuses)) {
+      if (sections.length - 4 != this.realSize(this.sectionStatuses)) {
         return false;
       }
     }
