@@ -16,9 +16,12 @@
     <h1>[@s.text name="home.dashboard.title" /]</h1>
     <div class="homeTitle"><b>What do you want to do ?</b></div>
     <div id="decisionTree" class="borderBox">
-      <div id="newProject" class="option disabled" title="This link is disabled"><p>Enter a new project</p></div>
-      <div id="updatePlanning" class="option disabled" title="This link is disabled"><p>Update planning of an ongoing project</p></div>
-      <a href="[@s.url namespace="/planning" action='projectsList'/]"><div id="reportProject" class="option "><p>Report on an ongoing project</p></div></a>
+      <div id="newProject" class="option"><p>Enter a new project</p></div>
+      <a href="[@s.url namespace="/planning" action='projectsList'/]">
+      <div id="updatePlanning" class="option"><p>Update planning of an ongoing project</p></div>
+     </a>
+      
+      <div id="reportProject" class="option disabled" title="This link is disabled"><p>Report on an ongoing project</p></div>
       <div class="clearfix"></div>
       <div class="addProjectButtons clearfix" style="display:none">
         <p class="title">What type of project do you want to enter?</p>
