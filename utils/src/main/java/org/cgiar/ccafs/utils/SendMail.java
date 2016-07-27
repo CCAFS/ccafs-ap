@@ -113,7 +113,7 @@ public class SendMail {
 
       // Body content: TEXT
       MimeBodyPart mimeBodyPart = new MimeBodyPart();
-      mimeBodyPart.setContent(messageContent, "text/html; charset=utf-8");
+      mimeBodyPart.setText(messageContent);
       mimeMultipart.addBodyPart(mimeBodyPart);
 
       if (attachment != null && attachmentMimeType != null && fileName != null) {
@@ -126,6 +126,7 @@ public class SendMail {
       }
 
       msg.setContent(mimeMultipart);
+      // msg.setText(messageContent);
       Transport.send(msg);
       LOG.info("Message sent: " + subject);
       LOG.info("   - TO: " + toEmail);
