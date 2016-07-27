@@ -480,7 +480,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
         return false;
       }
     } else {
-      if (seciones.length != this.realSize(this.sectionStatuses)) {
+      if (seciones.length - 4 != this.realSize(this.sectionStatuses)) {
         return false;
       }
     }

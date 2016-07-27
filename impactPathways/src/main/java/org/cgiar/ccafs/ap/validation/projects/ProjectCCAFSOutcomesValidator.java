@@ -22,8 +22,6 @@ import org.cgiar.ccafs.ap.data.model.Project;
 import org.cgiar.ccafs.ap.validation.BaseValidator;
 import org.cgiar.ccafs.ap.validation.model.ProjectValidator;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,24 +139,20 @@ public class ProjectCCAFSOutcomesValidator extends BaseValidator {
             evaluatingYear = action.getCurrentPlanningYear();
           }
           yearsToValidate.put(evaluatingYear, false); // 2016
-          if (cycle.equals(APConstants.PLANNING_SECTION)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-            try {
-              if (project.getEndDate().compareTo(sdf.parse("01/01/2017")) >= 0) {
-
-                yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
-              }
-
-              if (project.getEndDate().compareTo(sdf.parse("01/01/2019")) >= 0) {
-
-                yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
-              }
-            } catch (ParseException e) {
-
-            }
-          }
-
+          /*
+           * if (cycle.equals(APConstants.PLANNING_SECTION)) {
+           * SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+           * try {
+           * if (project.getEndDate().compareTo(sdf.parse("01/01/2017")) >= 0) {
+           * yearsToValidate.put(config.getPlanningCurrentYear() + 1, false);// 2017
+           * }
+           * if (project.getEndDate().compareTo(sdf.parse("01/01/2019")) >= 0) {
+           * yearsToValidate.put(config.getMidOutcomeYear(), false); // 2019
+           * }
+           * } catch (ParseException e) {
+           * }
+           * }
+           */
 
           for (IPIndicator indicator : indicatorsMap.get(outcome)) {
             if (yearsToValidate.keySet().contains(indicator.getYear())) {

@@ -82,6 +82,7 @@ public class ProjectSubmissionAction extends BaseAction {
 
     if (this.hasProjectPermission("submitProject", projectID, "manage")) {
       // isComplete method comes from BaseAction.
+      int i = 0;
       if (this.isComplete()) {
         // Getting all the submissions made for this project.
         List<Submission> submissions = submissionManager.getProjectSubmissions(project);

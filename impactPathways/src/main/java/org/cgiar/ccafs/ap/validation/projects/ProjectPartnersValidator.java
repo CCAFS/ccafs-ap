@@ -52,14 +52,16 @@ public class ProjectPartnersValidator extends BaseValidator {
     if (project != null) {
       if (!action.isReportingCycle()) {
         this.validateProjectJustification(action, project);
-      }
-      if (!project.getProjectPartners().isEmpty() && (project.isCoreProject() || project.isCoFundedProject())) {
-        if (!this.isValidString(project.getProjectPartners().get(0).getOverall())) {
-          this.addMessage(
-            action.getText("Please provide Partnerships overall performance over the last reporting period"));
-          this.addMissingField("project.partners.overall");
+      } else {
+        if (!project.getProjectPartners().isEmpty() && (project.isCoreProject() || project.isCoFundedProject())) {
+          if (!this.isValidString(project.getProjectPartners().get(0).getOverall())) {
+            this.addMessage(
+              action.getText("Please provide Partnerships overall performance over the last reporting period"));
+            this.addMissingField("project.partners.overall");
+          }
         }
       }
+
       if (project.isCoreProject() || project.isCoFundedProject()) {
         this.validateLessonsLearn(action, project, "partners");
         if (this.validationMessage.toString().contains("Lessons")) {
