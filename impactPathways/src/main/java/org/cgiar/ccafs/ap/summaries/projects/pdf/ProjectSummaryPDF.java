@@ -888,7 +888,12 @@ public class ProjectSummaryPDF extends BasePDF {
         if (project.isReporting()) {
           deliverableBlock.add(this.getText("summaries.project.deliverable") + " #" + counter);
         } else {
-          deliverableBlock.add(this.getText("summaries.project.deliverable.expected") + " #" + counter);
+          if (deliverable.getYear() < config.getPlanningCurrentYear()) {
+            deliverableBlock.add(this.getText("summaries.project.deliverable") + " #" + counter);
+          } else {
+            deliverableBlock.add(this.getText("summaries.project.deliverable.expected") + " #" + counter);
+          }
+
         }
 
         deliverableBlock.add(Chunk.NEWLINE);
@@ -1023,6 +1028,9 @@ public class ProjectSummaryPDF extends BasePDF {
         deliverableBlock.setFont(TABLE_BODY_FONT);
         stringBuilder = new StringBuilder();
         if (deliverable.getStatus() != 0) {
+          if (deliverable.getStatus() == Integer.parseInt(ProjectStatusEnum.Cancelled.getStatusId())) {
+            deliverableBlock.setFont(TABLE_BODY_FONT_RED);
+          }
           stringBuilder.append(this.statuses.get(String.valueOf(deliverable.getStatus())));
         } else {
           stringBuilder.append(this.messageReturn(null));
@@ -4125,7 +4133,6 @@ public class ProjectSummaryPDF extends BasePDF {
     for (ProjectStatusEnum projectStatusEnum : list) {
       statuses.put(projectStatusEnum.getStatusId(), projectStatusEnum.getStatus());
     }
-
 
     this.mapPartnerPersons = projectPartnerManager.getAllProjectPartnersPersonsWithTheirInstitution();
 
