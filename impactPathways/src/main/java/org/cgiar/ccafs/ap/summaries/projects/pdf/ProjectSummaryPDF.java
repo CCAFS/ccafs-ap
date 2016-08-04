@@ -1029,6 +1029,7 @@ public class ProjectSummaryPDF extends BasePDF {
         stringBuilder = new StringBuilder();
         if (deliverable.getStatus() != 0) {
           if (deliverable.getStatus() == Integer.parseInt(ProjectStatusEnum.Cancelled.getStatusId())) {
+
             deliverableBlock.setFont(TABLE_BODY_FONT_RED);
           }
           stringBuilder.append(this.statuses.get(String.valueOf(deliverable.getStatus())));
