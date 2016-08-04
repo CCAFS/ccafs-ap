@@ -46,7 +46,7 @@ public class BasePDF {
   // Colors
   public final static Color titleColor = new Color(102, 55, 0);
   public final static Color bodyColor = new Color(34, 34, 34);
-
+  public final static Color redColor = new Color(210, 35, 35);
   // Fonts
   public final static Font HEADING1_FONT = new Font(FontFactory.getFont("openSans", 24, Font.BOLD, titleColor));
   public final static Font HEADING2_FONT = new Font(FontFactory.getFont("openSans", 16, Font.BOLD, titleColor));
@@ -61,6 +61,7 @@ public class BasePDF {
     new Font(Font.getFamilyIndex("openSans"), 10, Font.UNDERLINE, Color.BLUE);
   public final static Font TABLE_HEADER_FONT = new Font(FontFactory.getFont("openSans", 10, Font.BOLD, Color.WHITE));
   public final static Font TABLE_BODY_FONT = new Font(FontFactory.getFont("openSans", 10, bodyColor));
+  public final static Font TABLE_BODY_FONT_RED = new Font(FontFactory.getFont("openSans", 10, redColor));
   public final static Font TABLE_BODY_BOLD_FONT = new Font(FontFactory.getFont("openSans", 10, Font.BOLD, bodyColor));
 
   // Backgrounds colors
