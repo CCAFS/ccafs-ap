@@ -13,7 +13,6 @@
  *****************************************************************/
 package org.cgiar.ccafs.ap.data.model;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -240,8 +239,8 @@ public class Deliverable {
    * @param currentPlanningYear
    * @return true if the deliverable is new, false otherwise
    */
-  public boolean isNew(Date planningStartDate) {
-    return new Date(this.getCreated()).after(planningStartDate);
+  public boolean isNew(int currentYear) {
+    return year == currentYear;
   }
 
   /**

@@ -220,6 +220,16 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return u;
   }
 
+  public int getCurrentYear() {
+    int year = 0;
+    if (this.isReportingCycle()) {
+      year = config.getReportingCurrentYear();
+    } else {
+      year = config.getPlanningCurrentYear();
+    }
+    return year;
+  }
+
   public String getCycleName() {
     boolean isReporting = this.isReportingCycle();
     if (isReporting) {
@@ -268,11 +278,11 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return APConstants.CCAFS_ORGANIZATION_IDENTIFIER;
   }
 
+
   public Map<String, Object> getParameters() {
     parameters = ActionContext.getContext().getParameters();
     return parameters;
   }
-
 
   public String getParameterValue(String param) {
     Object paramObj = this.getParameters().get(param);
@@ -286,10 +296,10 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
     return projectLessons;
   }
 
+
   public ComponentLesson getProjectLessonsPreview() {
     return projectLessonsPreview;
   }
-
 
   /**
    * This method gets the specific section status from the sectionStatuses array.
@@ -439,6 +449,7 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
     return securityContext.hasPermission(permissionString.toString());
   }
+
 
   /**
    * This method returns the status of the given section in a specific cycle (Planning or Reporting).
