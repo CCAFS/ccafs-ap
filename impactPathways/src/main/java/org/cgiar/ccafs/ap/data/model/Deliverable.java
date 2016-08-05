@@ -240,7 +240,7 @@ public class Deliverable {
    * @return true if the deliverable is new, false otherwise
    */
   public boolean isNew(int currentYear) {
-    return year == currentYear;
+    return year >= currentYear;
   }
 
   /**
