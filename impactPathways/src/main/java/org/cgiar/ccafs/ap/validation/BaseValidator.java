@@ -175,7 +175,7 @@ public class BaseValidator {
    * @param project
    */
   protected void validateProjectJustification(BaseAction action, Deliverable deliverable) {
-    if (!deliverable.isNew(config.getCurrentPlanningStartDate())) {
+    if (!deliverable.isNew(config.getPlanningCurrentYear())) {
       if (action.getJustification() == null || action.getJustification().isEmpty()) {
         action.addActionError(action.getText("validation.justification"));
         action.addFieldError("justification", action.getText("validation.field.required"));
