@@ -169,10 +169,17 @@ public class ProjectSummaryPDF extends BasePDF {
           if (activity != null) {
             if (!project.isReporting()) {
               Calendar c = Calendar.getInstance();
-              c.setTime(activity.getStartDate());
+              c.setTime(activity.getEndDate());
+              Calendar cStartDate = Calendar.getInstance();
+              cStartDate.setTime(activity.getStartDate());
               if (c.get(Calendar.YEAR) != config.getPlanningCurrentYear()) {
-                printActity = false;
+                if (cStartDate.get(Calendar.YEAR) != config.getPlanningCurrentYear()) {
+                  printActity = false;
+                }
+
               }
+
+
               if (activity.getActivityStatus() == Integer.parseInt(ProjectStatusEnum.Cancelled.getStatusId())) {
                 printActity = false;
               }
