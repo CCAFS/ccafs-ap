@@ -22,7 +22,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <struts2.version>2.3.24.1</struts2.version>
+    <struts2.version>2.3.34</struts2.version>
     <struts2-json.version>2.3.16</struts2-json.version>
     <guice.version>3.0</guice.version>
     <mysql.version>5.1.38</mysql.version>
@@ -261,7 +261,7 @@
    <dependency>
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpclient</artifactId>
-    <version>4.1.1</version>
+    <version>4.3.6</version>
   </dependency>
   
      <!-- END PROTOCOL Metadata -->
